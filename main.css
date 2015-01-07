@@ -1,0 +1,246 @@
+@font-face
+{
+	font-family: asdf;
+	src: url(kapak.ttf);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url(http://upload.wikimedia.org/wikipedia/commons/b/b0/Pinus_peuce_in_Pelister.jpg);
+	background-size:contain;
+	background-position: 0px -300px;
+	font-family:'Montserrat', asdf, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	overflow-x:hidden;
+}
+
+.homeWrapper {
+	background-color:rgba(1,0,50,0.7);
+	text-align:center;
+	color:#EEE;
+	
+}
+
+.homeWrapper .itemsWrapper {
+}
+
+.homeWrapper .title {
+	position:relative;
+	color: #FFF;
+/*	text-shadow:
+	2px 2px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;*/
+	font-size:100px;
+	letter-spacing:-4px;
+}
+
+.blue {
+	display:none;
+	color:#C00;
+}
+
+.other {
+	font-size:0;
+	opacity: 0;
+}
+
+.homeWrapper .subtitle {
+	position:relative;
+	top:20px;
+	font-size:42px;
+	color:rgba(255,255,255,0.8);
+	padding:10px;
+	/*background-color:rgba(0,0,0,0.6);
+	box-shadow:0px 2px 1px 0px #000;
+	border-bottom: 3px solid rgba(0,0,0,0.7);*/
+	width: auto;
+	max-width: 100%;
+}
+
+.workWrapper {
+	font-family: 'Indie Flower', cursive;
+	min-height:1000px;
+}
+
+.workWrapper, .infoWrapper {
+	position:relative;
+	z-index:2;
+	box-shadow: -4px 0px 4px #000;
+	background-color: #EEE;
+}
+
+.workWrapper .itemsWrapper {
+	position:relative;
+	margin: 0 auto;
+	width:60%;
+	text-align:center;
+	padding-top:30px;
+}
+
+.workWrapper .itemsWrapper .title {
+	font-size:52px;
+	color:#333;
+}
+
+.itemBox {
+	font-family:'Montserrat', Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-align:left;
+	/*box-shadow:0px 0px 2px #AAA;*/
+	background-color:rgba(0,0,0,0.02);
+	background-size:cover;
+	min-height:100px;
+	margin-bottom:10px;
+	font-size:42px;
+	color:#000;
+	padding:20px;
+	/*text-shadow:
+   -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+     1px 1px 0 #000;*/
+}
+
+.itemBox .experience .skill {
+	margin-bottom: 20px;
+}
+
+.itemBox .experience .skill .name {
+	padding: 10px 30px 10px 0px;
+}
+
+.bar {
+	width: 100%;
+}
+
+.fullBar {
+	position: relative;
+	background-color: #FAFAFA;
+}
+
+.filledBar {
+	background-color:#060;
+	width:0%;
+	color: #FFF;
+	font-size: 26px;
+	text-shadow:
+   -2px -2px 0 #000,  
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+     2px 2px 0 #000;
+}
+
+.itemBox .ttl {
+	position: relative;
+	top:6px;
+	left:15px;
+	padding:0px 20px;
+	background-color:rgba(0,0,0,0.8);
+}
+
+
+.infoWrapper {
+	/*font-family: 'Indie Flower', cursive;*/
+	color:#FFF;
+	box-shadow:none;
+	background-color:rgba(0,52,103,0.97);
+	/*box-shadow:inset 1px 0px 10px 1px #AAA;*/
+}
+
+.infoWrapper img {
+	width:100%;
+}
+
+.help {
+	font-family: 'Indie Flower', cursive;
+	font-size: 20px;
+}
+
+.help .ltt {
+	margin: 42px 0px;
+	font-size: 36px;
+}
+
+.stuffDesc {
+	font-family: 'Indie Flower', cursive;
+	font-size: 36px;
+}
+
+.picture {
+	padding-top:5px;
+	width:50%;
+	display:inline-block;
+	/*box-shadow:2px 0px 5px 2px #000;*/
+	background-color:#000;
+}
+
+.elseWrapper {
+	font-family: 'Indie Flower', cursive;
+	float:right;
+	width:50%;
+	display:inline-block;
+	font-size:22px;
+}
+
+.elseWrapper .title {
+	font-size:60px;
+}
+
+.padder {
+	padding: 20px;
+}
+
+.contact {
+	background-color:rgba(0,0,0,0.9);
+	/*background-image:url('bg.png');*/
+	min-height:300px;
+	color:rgba(255,255,255,0.5);
+}
+
+.contact .left, .contact .right {
+	display:inline-block;
+	width:50%;
+}
+
+.contact .right {
+	float:right;
+}
+
+.contact .container {
+	padding:40px;
+	padding-left:100px;
+}
+
+.contact .title {
+	font-size:32px;
+}
+
+.contact .content {
+	color:rgba(255,255,255,0.9);
+}
+
+.contact .content a:link, 
+.contact .content a:visited, 
+.contact .content a:hover {
+	text-decoration:none;
+	color:rgba(0,132,253,0.97);
+}
+
+.copyright {
+	margin-top:70px;
+	text-align:center;
+}
+
+.tech {
+	font-size:10px;
+}
+
+hr {
+	margin:13px 0px;
+	border: none;
+	border-top:solid thin #CCC;
+}
