@@ -1,4 +1,5 @@
 var subtitles = ["cube rubixer", "web development ninja", "computer engineering student", "voodoo guitar specialist",  "retro gamer", "brainstormer extraordinare" ]
+var titleColors = ["#18163C", "#39AB4D", "#DE0325", "#222222", "#A60F27", "#19524A"];
 var rnd;
 var prev;
 var subIntID;
@@ -111,6 +112,11 @@ $(document).ready(function(){
 	var paddingTop = ($(window).height() / 2) - ( parseInt($(".homeWrapper .title").css("fontSize")) / 2);		
 	$(".homeWrapper").css("paddingTop", paddingTop);	
 	$(".homeWrapper").css('height', $(window).height() - paddingTop);
+
+	$('.workWrapper .itemsWrapper .itemBox .title').each(function() {
+			rnd = Math.floor(Math.random() * titleColors.length);
+			$(this).css('backgroundColor', titleColors[rnd]);
+	});
 	
 	$(window).load(function(){
 		$('.blue').fadeIn(1000);
@@ -128,17 +134,26 @@ $(document).ready(function(){
 				changeSubtitleInterval = setInterval(changeSubtitle, 2700);
 			}
 			
-			var scroll = $(window).scrollTop();		
 			var height = $(document).height() - $(window).height();
-			
+			var scroll;
+
+			if($('.infoWrapper').offset().top - $(window).scrollTop() - $(window).height() - 100 < 0) {
+				scroll = $(document).height() - $(document).scrollTop() + 150;		
+			}
+			else {
+				scroll = $(window).scrollTop();		
+			}
+
 			var scrollCoef = scroll / height;
 			var trueScrollCoef = scroll / $(window).height();
-			var pos = - 300 + (scrollCoef * 700);
-			
-			
+			var pos = - 300 + (scrollCoef * 3000);
+
 			$('body').css('backgroundPosition', '0px ' + pos + 'px' );
+			
 			$('.homeWrapper').css({'opacity': 1 - trueScrollCoef * 3});
 			$('.homeWrapper .itemsWrapper .subtitle').css({'opacity': 1 - trueScrollCoef * 8});
+
+			
 			
 			var iterator = 0;
 			

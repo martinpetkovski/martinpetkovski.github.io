@@ -30,11 +30,6 @@ body {
 .homeWrapper .title {
 	position:relative;
 	color: #FFF;
-/*	text-shadow:
-	2px 2px 0 #000,  
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-     1px 1px 0 #000;*/
 	font-size:100px;
 	letter-spacing:-4px;
 }
@@ -55,9 +50,6 @@ body {
 	font-size:42px;
 	color:rgba(255,255,255,0.8);
 	padding:10px;
-	/*background-color:rgba(0,0,0,0.6);
-	box-shadow:0px 2px 1px 0px #000;
-	border-bottom: 3px solid rgba(0,0,0,0.7);*/
 	width: auto;
 	max-width: 100%;
 }
@@ -70,39 +62,46 @@ body {
 .workWrapper, .infoWrapper {
 	position:relative;
 	z-index:2;
-	box-shadow: -4px 0px 4px #000;
 	background-color: #EEE;
 }
 
 .workWrapper .itemsWrapper {
-	position:relative;
+	position: relative;
 	margin: 0 auto;
 	width:60%;
 	text-align:center;
 	padding-top:30px;
 }
 
+.workWrapper .title#main {
+	font-size:66px;
+	margin-top:50px;
+}
+
 .workWrapper .itemsWrapper .title {
 	font-size:52px;
 	color:#333;
+	margin-top:30px;
+}
+
+
+
+.workWrapper .itemsWrapper .photos img {
+	margin-top: 20px;
+	width:100%;
 }
 
 .itemBox {
 	font-family:'Montserrat', Verdana, Geneva, Arial, Helvetica, sans-serif;
 	text-align:left;
-	/*box-shadow:0px 0px 2px #AAA;*/
-	background-color:rgba(0,0,0,0.02);
+	background-color:rgba(0,0,0,0.05);
 	background-size:cover;
 	min-height:100px;
-	margin-bottom:10px;
+	margin-bottom:0px;
 	font-size:42px;
 	color:#000;
 	padding:20px;
-	/*text-shadow:
-   -1px -1px 0 #000,  
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-     1px 1px 0 #000;*/
+	border-left: solid 6px #111;
 }
 
 .itemBox .experience .skill {
@@ -134,27 +133,6 @@ body {
      2px 2px 0 #000;
 }
 
-.itemBox .ttl {
-	position: relative;
-	top:6px;
-	left:15px;
-	padding:0px 20px;
-	background-color:rgba(0,0,0,0.8);
-}
-
-
-.infoWrapper {
-	/*font-family: 'Indie Flower', cursive;*/
-	color:#FFF;
-	box-shadow:none;
-	background-color:rgba(0,52,103,0.97);
-	/*box-shadow:inset 1px 0px 10px 1px #AAA;*/
-}
-
-.infoWrapper img {
-	width:100%;
-}
-
 .help {
 	font-family: 'Indie Flower', cursive;
 	font-size: 20px;
@@ -170,11 +148,42 @@ body {
 	font-size: 36px;
 }
 
+.itemsWrapper .itemBox .title {
+	padding: 5px 10px;
+	margin: -20px -20px 20px -20px;
+	background-color: #069;
+	color:#FFF;
+}
+
+.itemsWrapper .itemBox .title img {
+	width:50px;
+	margin-right:20px;
+	vertical-align: -5px;
+}
+
+.itemsWrapper .itemBox a {
+	text-decoration: none;
+}
+
+.itemsWrapper .itemBox .description {
+	font-size: 28px;
+	font-family: 'Indie Flower', cursive;
+}
+
+.infoWrapper {
+	color:#FFF;
+	box-shadow:none;
+	background-color:rgba(0,52,103,0.97);
+}
+
+.infoWrapper img {
+	width:100%;
+}
+
 .picture {
 	padding-top:5px;
 	width:50%;
 	display:inline-block;
-	/*box-shadow:2px 0px 5px 2px #000;*/
 	background-color:#000;
 }
 
@@ -183,20 +192,20 @@ body {
 	float:right;
 	width:50%;
 	display:inline-block;
-	font-size:22px;
+	font-size:26px;
 }
 
 .elseWrapper .title {
-	font-size:60px;
+	font-size:80px;
 }
 
 .padder {
-	padding: 20px;
+	padding: 26px;
 }
+
 
 .contact {
 	background-color:rgba(0,0,0,0.9);
-	/*background-image:url('bg.png');*/
 	min-height:300px;
 	color:rgba(255,255,255,0.5);
 }
