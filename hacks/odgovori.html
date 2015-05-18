@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+	<title>Одоговори</title>
+	<meta charset="utf8">
+	<style>
+	.paragraf {
+		margin-bottom:30px;
+	}
+	</style>
+</head>
+<body>
+	<div class="paragraf">
+		<b>Зошто се користи <code> &lt;area&gt; </code> елементот?</b><br>
+		<code> &lt;area&gt; </code> претставува или хиперлинк со текст и соодветен простор на image-map или мртов простор на image-map. Image-map овозможува геометриски простори на слика да бидат поврзани со хиперлинк.<br>
+
+		<a href="http://www.w3.org/TR/html5/embedded-content-0.html#the-area-element">Референца</a>
+	</div>
+	<div class="paragraf">
+		<b>Колкава ќе биде вкупната ширина на еден HTML елемент за кој е дефинирано: <br>
+		Width: 244px, margin: 15px, padding: 8px и border: 5px;?</b><br>
+		width + padding + border = 244 + 8 + 5 = 257px<br>
+
+		<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing">Референца</a>
+	</div>
+
+	<div class="paragraf"><b>
+		Ако за некој HTML елемент се дефинира margin: 20px 30px колкави ќе бидат маргините горе, долу, лево, десно?</b><br>
+		горе: 20px<br>
+		долу: 20px<br>
+		лево: 30px<br>
+		десно 30px<br>
+
+		 <a href="https://developer.mozilla.org/en/docs/Web/CSS/margin">Референца</a>
+	</div>
+
+	<div class="paragraf">
+		<b>Напишете HTML код за подредена листа која ќе набројува како во следниот пример:</b><br>
+			a. Млеко<br>
+			b. Какао<br>
+			c. Шеќер<br>
+
+		<pre>
+&lt;ol style="list-style-type:lower-alpha"&gt;
+	&lt;li&gt; Млеко &lt;/li&gt;
+	&lt;li&gt; Какао &lt;/li&gt;
+	&lt;li&gt; Шеќер &lt;/li&gt;
+&lt;/ol&gt;
+		</pre>
+		<a href="http://www.w3.org/TR/html401/struct/lists.html#h-10.3.1">Референца</a>
+	</div>
+
+	<div class="paragraf">
+		<b>Дефинирајте HTML код за следната содржина (форма):
+		<form>
+			<label> Корисничко име: </label><input type="text" /><br>
+			<label> Лозинка: </label><input type="password" />
+		</form></b>
+<pre>
+&lt;form&gt;
+	&lt;label&gt; &#1050;&#1086;&#1088;&#1080;&#1089;&#1085;&#1080;&#1095;&#1082;&#1086; &#1080;&#1084;&#1077;: &lt;/label&gt;&lt;input type=&quot;text&quot; /&gt;&lt;br&gt;
+	&lt;label&gt; &#1051;&#1086;&#1079;&#1080;&#1085;&#1082;&#1072;: &lt;/label&gt;&lt;input type=&quot;password&quot; /&gt;
+&lt;/form&gt;
+</pre>
+		<a href="http://www.w3.org/TR/html401/interact/forms.html">Референца</a>
+	</div>
+
+	<div class="paragraf">
+		<b>Со кои два HTML елементи може да се става YouTube видео на Веб страниците?</b><br>
+		<code>&lt;embed&gt;</code><br>
+		<code>&lt;iframe&gt;</code><br>
+		<a href="https://developers.google.com/youtube/player_parameters">Референца</a>
+	</div>
+
+	<div class="paragraf">
+		<b>Најдобриот начин за презентација на Видео содржини во Веб страниците е со комбинирање на КОИ HTML елементи?</b><br>
+		Најдобриот и единствен native HTML начин е со комбинирање на елементите: <br>
+		<code>&lt;video&gt;</code><br>
+		<code>&lt;source&gt;</code><br>
+		<a href="http://www.w3schools.com/html/html5_video.asp">Референца</a><br>
+		Други начини се со <code>&lt;iframe&gt;</code>, <code>&lt;embed&gt;</code> или со комбинација на двата начини така што <code>&lt;embed&gt;</code> ќе биде вгнезден во <code>&lt;video&gt;</code> тагот...<br>
+		<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/embed">Референца</a><br>
+	</div>
+
+	<div class="paragraf">
+		<b>Дефинирај Internal css стил (во рамки на <code>&lt;head&gt;</code> елементот) за <code>&lt;table id="tab"&gt; </code> елементот со кој табелата нема да има граници. </b><br>
+		<pre>
+&lt;head&gt;
+	&lt;style&gt;
+		table#tab {
+			border: none;
+		}
+	&lt;/style&gt;
+&lt;/head&gt;
+		</pre><br>
+	</div>
+
+	<div class="paragraf">
+		<b>Во рамките на <code>&lt;head&gt;</code> елементот дефинирај соодветен елемент во кој ќе стои дека клучните зборови на Веб страницата се: јаболка, круши и праски.</b><br>
+		<pre>
+&lt;head&gt;
+	&lt;meta name="keywords" content="јаболка, круши, праски" /&gt;
+&lt;/head&gt;
+		</pre><br>
+		<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta">Референца</a>
+	</div>
+
+
+</body>
+</html>
