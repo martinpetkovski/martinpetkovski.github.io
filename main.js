@@ -1,10 +1,4 @@
-var subtitles = ["cube rubixer", "web development ninja", "computer engineering student", "voodoo guitar specialist",  "retro gamer", "brainstormer extraordinare" ]
 var titleColors = ["#18163C", "#39AB4D", "#DE0325", "#222222", "#A60F27", "#19524A"];
-var rnd;
-var prev;
-var subIntID;
-var i;
-var changeSubtitleInterval;
 
 var Skill = (function(){
 	var name;
@@ -51,57 +45,15 @@ var skills = [
 		];
 
 function getPercentage(id) {
-	/*var p = 0;
-	for(j=0;j<skills.length;j++)
-		p += skills[j].time;
-	
-	return (100 - ((skills[id].time / p) * 100));*/
-	
-
 	var byTimeSpent = skills[id].getPercentage();
 	var byEvaluation = skills[id].evaluation;
 	
 	return ((byTimeSpent + byEvaluation) / 2);
 }
 
-function writeChar() {
-	var currentChar = subtitles[rnd].charAt(i);
-
-	$('.homeWrapper .itemsWrapper .subtitle').append(currentChar);
-	
-	i++;
-	if (i == subtitles[rnd].length)
-	{
-		clearInterval(subIntID);
-	}
-}
-
-function changeSubtitle(callback) {
-	$('.homeWrapper .itemsWrapper .subtitle').html("");
-	
-	while(prev == rnd)
-		rnd = Math.floor(Math.random() * subtitles.length);
-	
-	prev = rnd
-	
-	i=0;
-	
-	subIntID = setInterval(writeChar, 40);	
-}
-
-$(window).focusout(function() {
-	clearInterval(changeSubtitleInterval);
-	changeSubtitleInterval = false;
-});
-
-$(window).focusin(function() {
-	if ($('.homeWrapper .itemsWrapper .subtitle').css("opacity") != 0 && changeSubtitleInterval == false) {
-		changeSubtitleInterval = setInterval(changeSubtitle, 2700);
-	}
-});
-
 $(document).ready(function(){
 	
+	var pam = new PamTypewriter('.homeWrapper .itemsWrapper .subtitle');
 	
 	for(j = 0; j<skills.length; j++)
 	{
@@ -120,18 +72,13 @@ $(document).ready(function(){
 	$(window).load(function(){
 		$('.blue').fadeIn(1000);
 		$('.other').delay(700).animate({'fontSize':100}, 1000, 'easeInOutCubic').animate({'opacity': 1}, 1000);
-		changeSubtitleInterval = setInterval(changeSubtitle, 2700);
-		
+
+		pam.startTypewriting();
+		pam.fixFocus();
+
 		$(window).scroll(function(){
-			
-			if ($('.homeWrapper .itemsWrapper .subtitle').css("opacity") == 0) {
-				clearInterval(changeSubtitleInterval);
-				changeSubtitleInterval = false;
-			}
-			
-			if ($('.homeWrapper .itemsWrapper .subtitle').css("opacity") != 0 && changeSubtitleInterval == false) {
-				changeSubtitleInterval = setInterval(changeSubtitle, 2700);
-			}
+
+			pam.stopIfTransparent();
 			
 			var height = $(document).height() - $(window).height();
 			var scroll;
@@ -153,8 +100,6 @@ $(document).ready(function(){
 			$('.homeWrapper .itemsWrapper .title').css({'opacity': 1 - trueScrollCoef * 3});
 			$('.homeWrapper .itemsWrapper .subtitle').css({'opacity': 1 - trueScrollCoef * 2});
 
-			
-			
 			var iterator = 0;
 			
 			$('.itemBox .skill').each(function(){
