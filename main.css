@@ -16,13 +16,10 @@ body {
 }
 
 .homeWrapper {
-	background-color:rgba(0,0,0,0.998);
+	background-color:rgba(0,0,0,0.98);
 	text-align:center;
 	color:#EEE;
 	
-}
-
-.homeWrapper .itemsWrapper {
 }
 
 .homeWrapper .title {
