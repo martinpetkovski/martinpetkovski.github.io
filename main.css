@@ -10,15 +10,13 @@
 }
 
 body {
-	background-image: url(http://upload.wikimedia.org/wikipedia/commons/b/b0/Pinus_peuce_in_Pelister.jpg);
-	background-size:contain;
-	background-position: 0px -300px;
+	background-image: url(space.jpg);
 	font-family:'Montserrat', asdf, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	overflow-x:hidden;
 }
 
 .homeWrapper {
-	background-color:rgba(1,0,50,0.7);
+	background-color:rgba(0,0,0,0.998);
 	text-align:center;
 	color:#EEE;
 	
@@ -57,6 +55,7 @@ body {
 .workWrapper {
 	font-family: 'Indie Flower', cursive;
 	min-height:1000px;
+	box-shadow: 0px 0px 20px #000;
 }
 
 .workWrapper, .infoWrapper {
@@ -66,11 +65,13 @@ body {
 }
 
 .workWrapper .itemsWrapper {
-	position: relative;
-	margin: 0 auto;
-	width:60%;
 	text-align:center;
 	padding-top:30px;
+}
+
+.workWrapper .itemsWrapper .graphs {
+	margin: 0 auto;
+	width:60%;
 }
 
 .workWrapper .title#main {
@@ -83,8 +84,6 @@ body {
 	color:#333;
 	margin-top:30px;
 }
-
-
 
 .workWrapper .itemsWrapper .photos img {
 	margin-top: 20px;
@@ -104,12 +103,67 @@ body {
 	border-left: solid 6px #111;
 }
 
+.itemsWrapper .stuff {
+	width: 100%;
+	background-color: #000;
+}
+
+.itemsWrapper .stuff .title {
+	margin: 0;
+	padding: 0;
+	color: #FFF;
+}
+
+.stuff .itemBox {
+	background-position: center;
+	background-size: auto;
+	background-repeat: repeat;
+	width: 100%;
+	border-left: none;
+	padding:0px;
+	margin-bottom: 0px;
+	color:#FFF;
+}
+
+.stuff .title#main {
+	font-size: 100px;
+}
+
+.stuff .description {
+	background-color: rgba(0,0,0,0.9);
+	margin: 0 auto;
+	padding: 20px 5%;
+}
+
+.stuff .description a:link,
+.stuff .description a:visited{
+	color: #09A;
+}
+
+.stuff .description a:hover {
+	color: #069;
+}
+
+.stuff .description .red {
+	color: #C00;
+}
+
 .itemBox .experience .skill {
 	margin-bottom: 20px;
 }
 
 .itemBox .experience .skill .name {
 	padding: 10px 30px 10px 0px;
+}
+
+.itemBox .technologies {
+	font-size: 0px;
+}
+
+.itemBox .technology {
+	display: inline-block;
+	font-size: 20px;
+	padding: 0px 10px 3px 0px;
 }
 
 .bar {
@@ -150,7 +204,6 @@ body {
 
 .itemsWrapper .itemBox .title {
 	padding: 5px 10px;
-	margin: -20px -20px 20px -20px;
 	background-color: #069;
 	color:#FFF;
 }
@@ -158,7 +211,7 @@ body {
 .itemsWrapper .itemBox .title img {
 	width:50px;
 	margin-right:20px;
-	vertical-align: -5px;
+	vertical-align: middle;
 }
 
 .itemsWrapper .itemBox a {
@@ -173,7 +226,7 @@ body {
 .infoWrapper {
 	color:#FFF;
 	box-shadow:none;
-	background-color:rgba(0,52,103,0.97);
+	background-color:rgba(24,27,53,0.95);
 }
 
 .infoWrapper img {
@@ -182,15 +235,14 @@ body {
 
 .picture {
 	padding-top:5px;
-	width:50%;
+	width:30%;
 	display:inline-block;
-	background-color:#000;
 }
 
 .elseWrapper {
 	font-family: 'Indie Flower', cursive;
 	float:right;
-	width:50%;
+	width:70%;
 	display:inline-block;
 	font-size:26px;
 }
@@ -205,7 +257,7 @@ body {
 
 
 .contact {
-	background-color:rgba(0,0,0,0.9);
+	background-color:rgba(0,0,0,0.95);
 	min-height:300px;
 	color:rgba(255,255,255,0.5);
 }
@@ -237,6 +289,10 @@ body {
 .contact .content a:hover {
 	text-decoration:none;
 	color:rgba(0,132,253,0.97);
+}
+
+.contact .content img {
+	vertical-align: middle;
 }
 
 .copyright {

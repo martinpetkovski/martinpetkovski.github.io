@@ -35,17 +35,16 @@ var Skill = (function(){
 })();
 
 var skills = [
-	      
-		new Skill("HTML", 1251763200, 86, true),
-		new Skill("CSS", 1277942400, 100, true),
-		new Skill("JavaScript", 1291161600, 30, true),
-		new Skill("JQuery", 1301616000, 48, true),
-		new Skill("PHP", 1285891200, 69, true),
-		new Skill("MySQLi", 1285891200, 71, true),
-		new Skill("C", 1262304000, 42, false),
-	        new Skill("C++", 1283299200, 95, true),
-		new Skill("C#", 1328054400, 70, false),
-		new Skill("Java", 1412121600, 67, true),
+	    
+	    new Skill("C", 1262304000, 42, true),
+	    new Skill("C++", 1283299200, 100, true),
+	    new Skill("Java", 1412121600, 67, true),
+	    new Skill("C#", 1328054400, 70, false),
+		new Skill("HTML", 1251763200, 66, true),
+		new Skill("CSS", 1277942400, 73, true),
+		new Skill("SQL", 1285891200, 71, true),
+		new Skill("PHP", 1285891200, 29, false),
+		new Skill("JavaScript", 1291161600, 30, false),
 		new Skill("MatLab", 1412121600, 14, false),
 		new Skill("GML", 1388534400, 22, false)
 		
@@ -146,12 +145,13 @@ $(document).ready(function(){
 
 			var scrollCoef = scroll / height;
 			var trueScrollCoef = scroll / $(window).height();
-			var pos = - 300 + (scrollCoef * 3000);
+			var pos = scrollCoef * 3000;
 
 			$('body').css('backgroundPosition', '0px ' + pos + 'px' );
 			
-			$('.homeWrapper').css({'opacity': 1 - trueScrollCoef * 3});
-			$('.homeWrapper .itemsWrapper .subtitle').css({'opacity': 1 - trueScrollCoef * 8});
+			$('.homeWrapper').css({'opacity': 1 - trueScrollCoef});
+			$('.homeWrapper .itemsWrapper .title').css({'opacity': 1 - trueScrollCoef * 3});
+			$('.homeWrapper .itemsWrapper .subtitle').css({'opacity': 1 - trueScrollCoef * 2});
 
 			
 			
@@ -163,8 +163,8 @@ $(document).ready(function(){
 				
 				if(offset < (scroll + $(window).height()))
 				{
-					
-					$(this).find('.filledBar').delay(500).animate({'width': getPercentage(iterator) + '%'}, 2000);
+					var width = Math.round(getPercentage(iterator));
+					$(this).find('.filledBar').delay(500).animate({'width': width + '%'}, 1000);
 					
 					if (skills[iterator].active === false)
 					{
