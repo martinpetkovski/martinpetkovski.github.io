@@ -12,5 +12,6 @@ $(document).ready(function(){
 
 		pam.startTypewriting();
 		pam.fixFocus();
+		
 	});
 });
