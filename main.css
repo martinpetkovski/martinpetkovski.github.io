@@ -25,7 +25,6 @@ a:link, a:visited {
 .homeWrapper .title {
 	position:relative;
 	color: #FFF;
-	font-size:120px;
 	letter-spacing:-4px;
 }
 
@@ -55,17 +54,21 @@ a:link, a:visited {
 	bottom: 0px;
 	background-color: #010101;
 	width: 100%;
+	font-size: 16px;
 }
 
 .homeWrapper .contact img {
 	vertical-align: -2px;
-	padding-right: 5px;
 }
 
 .homeWrapper .contact .link {
 	display: inline-block;
 	padding: 5px;
 	border-radius: 2px;
+}
+
+.homeWrapper .contact .link span {
+	padding-left: 0px;
 }
 
 .homeWrapper .contact .link:hover {
