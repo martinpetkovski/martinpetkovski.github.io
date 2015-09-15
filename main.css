@@ -59,6 +59,7 @@ a:link, a:visited {
 
 .homeWrapper .contact img {
 	vertical-align: -2px;
+	width: 16px;
 }
 
 .homeWrapper .contact .link {
