@@ -14,11 +14,7 @@ int euclid_nzd_iterative(int m, int n)
 {
 	int temp = 0;
 	if (m < n)
-	{
-		temp = m;
-		m = n;
-		n = temp;
-	}
+		swap(m, n);
 	while (n != 0)
 	{
 		temp = m % n;

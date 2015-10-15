@@ -13,7 +13,7 @@ dword faktoriel_recursive(dword n)
 dword faktoriel_iterative(dword n)
 {
 	dword ret = 1;
-	for (dword i = 1; i <= n; ++i)
+	for (dword i = 1; i <= n; i++)
 		ret *= i;
 	return ret;
 }

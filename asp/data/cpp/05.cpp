@@ -4,8 +4,12 @@ using namespace std;
 
 void selection_sort(int niza[], dword n)
 {
-	for (dword i = 0; i < n - 1; i++)
-		for (dword j = i; j < n; j++)
-			if (niza[i] > niza[j])
-				swap(niza[i], niza[j]);
+	for (dword i = 1; i < n; i++) {
+		dword min = i;
+		for (dword j = i + 1; j < n; j++)
+			if (niza[j] < niza[min])
+				min = j;
+		if (min != i)
+			swap(niza[min], niza[i]);
+	}
 }
