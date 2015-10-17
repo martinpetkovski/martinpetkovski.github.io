@@ -1,8 +1,7 @@
 #include<iostream>
-#include"util\util.h"
 using namespace std;
 
-dword faktoriel_recursive(dword n)
+int faktoriel_recursive(int n)
 {
 	if (n == 1)
 		return 1;
@@ -10,10 +9,10 @@ dword faktoriel_recursive(dword n)
 		return n * faktoriel_recursive(n - 1);
 }
 
-dword faktoriel_iterative(dword n)
+int faktoriel_iterative(int n)
 {
-	dword ret = 1;
-	for (dword i = 1; i <= n; i++)
+	int ret = 1;
+	for (int i = 1; i <= n; i++)
 		ret *= i;
 	return ret;
 }

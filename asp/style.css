@@ -25,4 +25,6 @@ nav { font-size:18px; position:relative; z-index:10; width: 100%; background-col
 #mainContent .section #meta { font-size:14px; padding-bottom:15px; }
 .mainContent pre { font-family: ConsolasInner, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif }
 .code { padding-left:15px; }
+#pr-link { font-size:18px; color: #069;}
+#pr-link:hover { color: #09F; }
 footer { margin-bottom: 30px; }

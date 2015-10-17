@@ -1,8 +1,7 @@
 #include<iostream>
-#include"util\util.h"
 using namespace std;
 
-int binarno_prebaruvanje_recursive(int niza[], dword n_max, int kluch, dword n_min = 0)
+int binarno_prebaruvanje_recursive(int niza[], int n_max, int kluch, int n_min = 0)
 {
 	if (n_max < n_min)
 		return -1;
@@ -19,13 +18,13 @@ int binarno_prebaruvanje_recursive(int niza[], dword n_max, int kluch, dword n_m
 	}
 }
 
-int binarno_prebaruvanje_iterative(int niza[], dword n_max, int kluch)
+int binarno_prebaruvanje_iterative(int niza[], int n_max, int kluch)
 {
-	dword n_min = 0;
+	int n_min = 0;
 
 	while (n_max >= n_min)
 	{
-		dword sredina = (n_min + n_max) / 2;
+		int sredina = (n_min + n_max) / 2;
 		if (niza[sredina] == kluch)
 			return sredina;
 		else if (niza[sredina] < kluch)

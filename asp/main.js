@@ -1,4 +1,6 @@
-﻿function compareDates(a, b) {
+﻿var vezhbi_number = 1;
+
+function compareDates(a, b) {
     if (a.date < b.date)
         return -1;
     else if (a.date > b.date)
@@ -25,22 +27,29 @@ function printExercises(query, extension) {
 
     var pseudoLink = "";
     if (env === 0)
-        pseudoLink = '<a href="psevdokod.html#%">Псевдокод</a></div>';
+        pseudoLink = '<br/><a href="psevdokod.html#%" id="pr-link">Псевдокод</a>';
     else if (env === 1)
-        pseudoLink = '<a href=".#%">Решение</a></div>';
+        pseudoLink = '<br/><a href=".#%" id="pr-link">Решение</a>';
+
+    var v = false;
+    if ($("#search input").val().indexOf("#") !== -1)
+        v = true;
 
     $.getJSON("data/exercises.json", function (json) {
         var exercises = json.exercises;
         exercises.sort(compareDates);
         exercises.forEach(function (exs) {
-            if (exs.title.toLowerCase().indexOf(query.toLowerCase()) != -1 || exs.meta.toLowerCase().indexOf(query.toLowerCase()) != -1 || exs.date.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+            if ((((exs.title.toLowerCase().indexOf(query.toLowerCase()) !== -1 || exs.meta.toLowerCase().indexOf(query.toLowerCase()) !== -1 || exs.date.toLowerCase().indexOf(query.toLowerCase()) !== -1) && !v)
+                || (exs.vezhbiid.indexOf(query.substr(1)) !== -1 && v))
+                && (parseInt(exs.vezhbiid) > 0 && parseInt(exs.vezhbiid) <= vezhbi_number)) {
                 $.ajax({
+                    async: false,
                     url: "data/cpp/" + exs.id + extension,
                     dataType: "text",
                     success: function (cpp) {
                         cpp = cpp.replace("<", "&lt;");
                         cpp = cpp.replace(">", "&gt;");
-                        $('#mainContent').append('<div class="section" id="'+exs.id+'"><div id="title">' + exs.title + '</div><div id="meta">' + exs.meta + " " + pseudoLink.replace("%", exs.id) +' <pre class="brush: cpp; toolbar: false;">' + cpp + '</pre></div><hr/>');
+                        $('#mainContent').append('<div class="section" id="' + exs.id + '"><div id="title">' + exs.title + '</div><div id="meta">' + exs.meta + '</div> <pre class="brush: cpp; toolbar: false;">' + cpp + '</pre> ' + pseudoLink.replace("%", exs.id) + '</div><hr/>');
                         SyntaxHighlighter.highlight();
                         scrollToAnchor();
                     }
@@ -51,6 +60,11 @@ function printExercises(query, extension) {
 }
 
 $(document).ready(function () {
+    $.ajaxSetup({ cache: false });
+
+    $("#search input").focus(function () {
+        window.location.hash = '';
+    });
     
     if (env === 0) {
         printExercises("", ".cpp");

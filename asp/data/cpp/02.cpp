@@ -1,5 +1,4 @@
 #include<iostream>
-#include"util\util.h"
 using namespace std;
 
 int euclid_nzd_recursive(int m, int n)

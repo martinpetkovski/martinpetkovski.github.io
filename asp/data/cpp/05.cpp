@@ -1,12 +1,11 @@
 #include<iostream>
-#include"util\util.h"
 using namespace std;
 
-void selection_sort(int niza[], dword n)
+void selection_sort(int niza[], int n)
 {
-	for (dword i = 1; i < n; i++) {
-		dword min = i;
-		for (dword j = i + 1; j < n; j++)
+	for (int i = 0; i < n; i++) {
+		int min = i;
+		for (int j = i + 1; j < n; j++)
 			if (niza[j] < niza[min])
 				min = j;
 		if (min != i)

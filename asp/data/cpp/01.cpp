@@ -1,5 +1,4 @@
 ﻿#include<iostream>
-#include"util\util.h"
 using namespace std;
 
 bool pechati_parni_broevi_recursive(int min, int max)
