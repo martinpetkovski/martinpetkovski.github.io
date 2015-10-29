@@ -13,10 +13,3 @@ int zbir_na_cifri(int n)
 
 	return zbir;
 }
-
-int main()
-{
-	cout << zbir_na_cifri(45);
-	system("pause");
-	return 0;
-}
