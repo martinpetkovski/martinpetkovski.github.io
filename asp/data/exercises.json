@@ -53,22 +53,36 @@
       "title": "Секвенцијално пребарување",
       "meta": "",
       "date": "15.10.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "1",
       "id": "08"
     },
     {
       "title": "Бинарно пребарување",
       "meta": "",
       "date": "15.10.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "1",
       "id": "09"
     },
     {
       "title": "Збир на цифри на n-цифрен број",
       "meta": "",
       "date": "15.10.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "1",
       "id": "10"
+    },
+    {
+      "title": "Поврзани листи и хеш табели",
+      "meta": "",
+      "date": "12.11.2015 / 19.11.2015",
+      "vezhbiid": "2",
+      "id": "11"
+    },
+    {
+      "title": "Breadth First Search / Depth First Search",
+      "meta": "",
+      "date": "12.11.2015 / 19.11.2015",
+      "vezhbiid": "2",
+      "id": "12"
     }
   ]
 }
