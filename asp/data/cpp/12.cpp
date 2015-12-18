@@ -1,32 +1,31 @@
 
-
-#include<iostream>
-#include<list>
-#include<stack>
+#include&lt;iostream&gt;
+#include&lt;list&gt;
+#include&lt;stack&gt;
 
 using namespace std;
 
 typedef unsigned int dword;
-template<typename T>
+template&lt;typename T&gt;
 void pechati_niza(T niza, int n)
 {
-	for (int i = 0; i < n; i++)
-		cout << niza[i] << " ";
+	for (int i = 0; i &lt; n; i++)
+		cout &lt;&lt; niza[i] &lt;&lt; " ";
 }
 
-template<typename T>
+template&lt;typename T&gt;
 void pechati_kolekcija(T kolekcija)
 {
 	for (T::iterator it = kolekcija.begin(); it != kolekcija.end(); ++it)
-		cout << *it << " ";
+		cout &lt;&lt; *it &lt;&lt; " ";
 }
 
 class Graph
 {
 private:
 	int V;
-	list<int> *adj;
-	list<int> *node_queue;
+	list&lt;int&gt; *adj;
+	list&lt;int&gt; *node_queue;
 public:
 	Graph(int V);
 
@@ -34,14 +33,14 @@ public:
 	void BFS(int s);
 	void DFS(int s);
 
-	list<int> get_node_queue();
+	list&lt;int&gt; get_node_queue();
 };
 
 Graph::Graph(int V)
 {
-	this->V = V;
-	adj = new list<int>[V];
-	node_queue = new list<int>;
+	this-&gt;V = V;
+	adj = new list&lt;int&gt;[V];
+	node_queue = new list&lt;int&gt;;
 }
 
 void Graph::add_edge(int v, int w)
@@ -51,24 +50,24 @@ void Graph::add_edge(int v, int w)
 
 void Graph::BFS(int s)
 {
-	node_queue->resize(0);
+	node_queue-&gt;resize(0);
 
 	bool *visited = new bool[V];
-	for (int i = 0; i < V; i++)
+	for (int i = 0; i &lt; V; i++)
 		visited[i] = false;
 
 	visited[s] = true;
 
-	list<int> queue;
+	list&lt;int&gt; queue;
 	queue.push_back(s);
 
 	while (!queue.empty())
 	{
 		s = queue.front();
-		node_queue->push_back(s);
+		node_queue-&gt;push_back(s);
 		queue.pop_front();
 
-		for (list<int>::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
+		for (list&lt;int&gt;::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
 		{
 			if (!visited[*it])
 			{
@@ -81,13 +80,13 @@ void Graph::BFS(int s)
 
 void Graph::DFS(int s)
 {
-	node_queue->resize(0);
+	node_queue-&gt;resize(0);
 
 	bool *visited = new bool[V];
-	for (int i = 0; i < V; i++)
+	for (int i = 0; i &lt; V; i++)
 		visited[i] = false;
 
-	stack<int> stack;
+	stack&lt;int&gt; stack;
 
 	visited[s] = true;
 	stack.push(s);
@@ -95,10 +94,10 @@ void Graph::DFS(int s)
 	while (!stack.empty())
 	{
 		s = stack.top();
-		node_queue->push_back(s);
+		node_queue-&gt;push_back(s);
 		stack.pop();
 
-		for (list<int>::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
+		for (list&lt;int&gt;::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
 		{
 			if (!visited[*it])
 			{
@@ -109,7 +108,7 @@ void Graph::DFS(int s)
 	}
 }
 
-list<int> Graph::get_node_queue()
+list&lt;int&gt; Graph::get_node_queue()
 {
 	return *node_queue;
 }
@@ -126,7 +125,7 @@ int main()
 
 	g.BFS(2);
 	pechati_kolekcija(g.get_node_queue());
-	cout << endl << "------------" << endl;
+	cout &lt;&lt; endl &lt;&lt; "------------" &lt;&lt; endl;
 	g.DFS(0);
 	pechati_kolekcija(g.get_node_queue());
 

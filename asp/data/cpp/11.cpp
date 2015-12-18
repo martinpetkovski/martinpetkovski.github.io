@@ -1,7 +1,5 @@
-﻿
-
-#include<string>
-#include<iostream>
+﻿#include&lt;string&gt;
+#include&lt;iostream&gt;
 using namespace std;
 
 /*
@@ -39,16 +37,16 @@ public:
 LinkedList::LinkedList()
 {
 	head = new Item; // динамичка алокација на нов елемент кој ќе биде почетен елемент на листата
-	head->next = nullptr; // првиот елемент добива вредност nullptr (null покажувач)
+	head-&gt;next = nullptr; // првиот елемент добива вредност nullptr (null покажувач)
 	length = 0; // должината се иницијализира на 0
 }
 
 // вметнување на нов елемент 
 void LinkedList::insert_item(Item * newItem)
 {
-	if (!head->next) // ако првиот елемент нема следен елемент
+	if (!head-&gt;next) // ако првиот елемент нема следен елемент
 	{
-		head->next = newItem; // новиот елемент се вметнува после првиот елемент
+		head-&gt;next = newItem; // новиот елемент се вметнува после првиот елемент
 		length++; // должината на листата се зголемува за 1
 		return; // прекин на функцијата
 	}
@@ -57,30 +55,30 @@ void LinkedList::insert_item(Item * newItem)
 	while (q) // итерирање низ елементите се дури q не е покажувач кон nullptr
 	{
 		p = q;
-		q = p->next;
+		q = p-&gt;next;
 	} // кога циклусот прекинува во p го имаме последниот елемент
-	p->next = newItem; // елементот после p (последниот елемент) е новиот елемент кој сакаме да во вметнеме
-	newItem->next = nullptr; // покажувачот на последниот елемент е кон nullptr
+	p-&gt;next = newItem; // елементот после p (последниот елемент) е новиот елемент кој сакаме да во вметнеме
+	newItem-&gt;next = nullptr; // покажувачот на последниот елемент е кон nullptr
 	length++; // должината на листата се зголемува за 1
 }
 
 // бришење на елемент со даден клуч
 bool LinkedList::remove_item(string itemKey)
 {
-	if (!head->next) return false; // ако листата нема елементи врати false (елементот не постои)
+	if (!head-&gt;next) return false; // ако листата нема елементи врати false (елементот не постои)
 	Item * p = head; // помошна променилва
 	Item * q = head; // помошна променлива
 	while (q) // се додека вредноста на елементот q не е null
 	{
-		if (q->key == itemKey) // ако вредноста на клучот на q е идентична со клучот кој се бара
+		if (q-&gt;key == itemKey) // ако вредноста на клучот на q е идентична со клучот кој се бара
 		{
-			p->next = q->next;  // „одкачување“ на елементот од поврзаната листа
+			p-&gt;next = q-&gt;next;  // „одкачување“ на елементот од поврзаната листа
 			delete q; // пришење на елементот 
 			length--; // должината на листата се намалува за еден
 			return true; // успешно извршена операција
 		}
 		p = q; // замена на местата на помошните промениви
-		q = p->next; // следната итерација низ листата
+		q = p-&gt;next; // следната итерација низ листата
 	}
 	return false; // неуспешно извршена операција (елементот не постои)
 }
@@ -93,9 +91,9 @@ Item * LinkedList::get_item(string itemKey)
 	while (q) // се додека не стигниме до последниот елемент (null)
 	{
 		p = q; // помош при итерацијата низ елементите
-		if ((p != head) && (p->key == itemKey)) // ако разгледуваниот елемент од листата не е првиот(главата) и неговиот клуч е еднаков со клучот кој се бара
+		if ((p != head) && (p-&gt;key == itemKey)) // ако разгледуваниот елемент од листата не е првиот(главата) и неговиот клуч е еднаков со клучот кој се бара
 			return p; // врати го разгледуваниот елемент (од итерацијата)
-		q = p->next; // ако функцијата не заврши q покажува кон следниот елемент
+		q = p-&gt;next; // ако функцијата не заврши q покажува кон следниот елемент
 	}
 	return nullptr; // ако функцијата заврши без да се врати некаков елемент елементот не постои (nullptr)
 }
@@ -105,24 +103,24 @@ void LinkedList::print_list()
 {
 	if (length == 0)
 	{
-		cout << "\n{ }\n";
+		cout &lt;&lt; "\n{ }\n";
 		return;
 	}
 	Item * p = head;
 	Item * q = head;
-	cout << "\n{ ";
+	cout &lt;&lt; "\n{ ";
 	while (q)
 	{
 		p = q;
 		if (p != head)
 		{
-			cout << p->key;
-			if (p->next) cout << ", ";
-			else cout << " ";
+			cout &lt;&lt; p-&gt;key;
+			if (p-&gt;next) cout &lt;&lt; ", ";
+			else cout &lt;&lt; " ";
 		}
-		q = p->next;
+		q = p-&gt;next;
 	}
-	cout << "}\n";
+	cout &lt;&lt; "}\n";
 }
 
 // земи ја должината на листата
@@ -139,7 +137,7 @@ LinkedList::~LinkedList()
 	while (q) // се додека не стигниме до крајот на листата (null елемент)
 	{
 		p = q; // помошната променлива p ја иницијализираме на q
-		q = p->next; // q е покажувач до следниот елемент
+		q = p-&gt;next; // q е покажувач до следниот елемент
 		if (q) delete p; // ако елементот постои, избриши го
 	}
 }
@@ -173,7 +171,7 @@ public:
 // конструктор
 HashTable::HashTable(int tableLength)
 {
-	if (tableLength <= 0) tableLength = 42; // должината дифолтнува на 42 
+	if (tableLength &lt;= 0) tableLength = 42; // должината дифолтнува на 42 
 	array = new LinkedList[tableLength]; // должината се однесува на секоја кофичка
 	length = tableLength; // должината која ја бараме е и големината на хеш табелата
 }
@@ -194,7 +192,7 @@ HashTable::HashTable(int tableLength)
 int HashTable::hash(string itemKey)
 {
 	int value = 0; // збирот на ASCII вредностите на буквите се иницијализира на 0
-	for (int i = 0; i < itemKey.length(); i++) // се додека не се стигне до крајот на клучот
+	for (int i = 0; i &lt; itemKey.length(); i++) // се додека не се стигне до крајот на клучот
 		value += itemKey[i]; // вредноста се зголемува за ASCII вредноста на буквата на местото на вредноста на итераторот
 	return (value * itemKey.length()) % length; // пресметка за индексот објаснета погоре
 }
@@ -202,7 +200,7 @@ int HashTable::hash(string itemKey)
 // вметнување на нов елемент во хеш табелата
 void HashTable::insert_item(Item * newItem)
 {
-	int index = hash(newItem->key); // индексот се добива од хеш функцијата
+	int index = hash(newItem-&gt;key); // индексот се добива од хеш функцијата
 	array[index].insert_item(newItem); // вметнување на новиот елемент на индексот добиен од хеш функцијата (array е од тип LinkedList)
 }
 
@@ -222,10 +220,10 @@ Item * HashTable::get_item_by_key(string itemKey)
 // Печатење на табелата
 void HashTable::print_table()
 {
-	cout << "\n\nHash tabela:\n";
-	for (int i = 0; i < length; i++)
+	cout &lt;&lt; "\n\nHash tabela:\n";
+	for (int i = 0; i &lt; length; i++)
 	{
-		cout << "Kofichka " << i + 1 << ": ";
+		cout &lt;&lt; "Kofichka " &lt;&lt; i + 1 &lt;&lt; ": ";
 		array[i].print_list();
 	}
 }
@@ -233,14 +231,14 @@ void HashTable::print_table()
 // Печатење на хистограм
 void HashTable::print_histogram()
 {
-	cout << "\n\nHash tabelata sodrzhi ";
-	cout << get_number_of_items() << " elementi vkupno\n";
-	for (int i = 0; i < length; i++)
+	cout &lt;&lt; "\n\nHash tabelata sodrzhi ";
+	cout &lt;&lt; get_number_of_items() &lt;&lt; " elementi vkupno\n";
+	for (int i = 0; i &lt; length; i++)
 	{
-		cout << i + 1 << ":\t";
-		for (int j = 0; j < array[i].get_length(); j++)
-			cout << " X";
-		cout << "\n";
+		cout &lt;&lt; i + 1 &lt;&lt; ":\t";
+		for (int j = 0; j &lt; array[i].get_length(); j++)
+			cout &lt;&lt; " X";
+		cout &lt;&lt; "\n";
 	}
 }
 
@@ -254,7 +252,7 @@ int HashTable::get_length()
 int HashTable::get_number_of_items()
 {
 	int itemCount = 0;
-	for (int i = 0; i < length; i++)
+	for (int i = 0; i &lt; length; i++)
 	{
 		itemCount += array[i].get_length();
 	}
@@ -344,7 +342,7 @@ int main()
 	system("cls");
 
 	Item * result = table.get_item_by_key("Zeus");
-	cout << result->key << endl;
+	cout &lt;&lt; result-&gt;key &lt;&lt; endl;
 
 	system("pause");
 	system("cls");
