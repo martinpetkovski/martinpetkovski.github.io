@@ -52,13 +52,17 @@ var PamTypewriter = (function(){
 
 	PamTypewriter.prototype.stopIfTransparent = function() {
 		if ($(this.element).css("opacity") == 0) {
-			clearInterval(this.changeSubtitleInterval);
-			this.changeSubtitleInterval = false;
+		    this.stop();
 		}
 		
 		if ($(this.element).css("opacity") != 0 && this.changeSubtitleInterval === false) {
 			this.changeSubtitleInterval = setInterval(this.changeSubtitle.bind(this), this.interval);
 		}
+	}
+
+	PamTypewriter.prototype.stop = function () {
+	    clearInterval(this.changeSubtitleInterval);
+	    this.changeSubtitleInterval = false;
 	}
 
 	PamTypewriter.prototype.fixFocus = function() {

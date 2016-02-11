@@ -1,10 +1,11 @@
-* {
+els * {
 	margin: 0;
 	padding: 0;
 }
 
 body {
 	font-family:'Montserrat', Verdana, Geneva, Arial, Helvetica, sans-serif;
+    background: url("resources/background.jpg") repeat;
 	overflow-x:hidden;
 }
 
@@ -13,69 +14,97 @@ a:link, a:visited {
 	text-decoration: none;
 }
 
-.homeWrapper {
-	position: absolute;
-	width: 100%;
-	background-color:#000;
+.page {
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:#000;
+    background-color:rgba(0,5,15,0.95);
 	text-align:center;
 	color:#EEE;
-	
 }
 
-.homeWrapper .title {
+.page .pager:not(#home) {
+    display: none;
+}
+
+.page .pager .title {
+    position: absolute;
+    width:100%;
+    text-align:center;
+    font-size: 50px;
+}
+
+
+/* HOME */
+
+.page .pager#home .title {
 	position:relative;
 	color: #FFF;
 	letter-spacing:-4px;
 }
 
-.homeWrapper .title .blue {
+.page .pager#home .title .blue {
 	display:none;
 	color:#C00;
 }
 
-.homeWrapper .title .other {
+.page .pager#home .title .other {
 	opacity: 0;
 	font-size: 0;
 }
 
-.homeWrapper .subtitle {
+.page .pager#home .subtitle {
 	position: relative;
 	top:20px;
 	font-size:50px;
-	color:rgba(255,255,255,0.8);
+	color:rgba(255,255,255,0.6);
 	padding:10px;
 	width: auto;
 	max-width: 100%;
 }
 
-.homeWrapper .contact {
-	display: none;
-	position: absolute;
-	bottom: 0px;
-	background-color: #010101;
-	width: 100%;
-	font-size: 16px;
+.page .pager#home .help {
+    position:absolute;
+    bottom:10px;
+    width: 100%;
+    text-align:center;
+    display:none;
+    color:rgba(255,255,255,0.8);
 }
 
-.homeWrapper .contact img {
-	vertical-align: -2px;
-	width: 16px;
+
+/* COMMANDS */
+
+.page .pager#commands #commandsWrapper {
+    width:100%;
+    text-align:center;
+    position:absolute;
+    top:150px;
 }
 
-.homeWrapper .contact .link {
-	display: inline-block;
-	padding: 5px;
-	border-radius: 2px;
+.page .pager#commands .commandRow {
+    display:none;
+    margin-top:10px;
 }
 
-.homeWrapper .contact .link span {
-	padding-left: 0px;
+.page .pager#commands .commandKey {
+    display:inline-block;
+    background-color: #FFF;
+    width:40px;
+    height:40px;
+    line-height:40px;
+    color: #069;
+    border-top:solid 2px #DDD;
+    border-left: solid 2px #DDD;
+    border-bottom: solid 7px #DDD;
+    border-right: solid 7px #DDD;
+    border-radius:2px;
+    vertical-align:middle;
 }
 
-.homeWrapper .contact .link:hover {
-	background-color: #222;
-}
-
-.homeWrapper .contact .link:active {
-	box-shadow: inset 0px 0px 5px #000;
+.page .pager#commands .commandDescription {
+    display:inline-block;
+    margin-left:20px;
 }

@@ -1,14 +1,15 @@
 $(document).ready(function(){
 	
-	var pam = new PamTypewriter('.homeWrapper .itemsWrapper .subtitle');
+	var pam = new PamTypewriter('.page .pager#home .subtitle');
 	var leslie = new Leslie();
+	var animations = new Animations(leslie);
 
-	leslie.calculateHomeWrapperDimensions();
+	leslie.calculatePageDimensions();
 	
-	$(window).load(function(){
-		$('.blue').fadeIn(1000);
-		$('.other').delay(700).animate({'fontSize':leslie.getTitleFontSize(10)}, 1000).animate({'opacity': 1}, 1000);
-		$('.contact').delay(2700).fadeIn(500);
+	$(window).load(function () {
+	    animations.homeAnimations();
+
+		gainKeyboardControl(animations);
 
 		pam.startTypewriting();
 		pam.fixFocus();

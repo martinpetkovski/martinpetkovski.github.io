@@ -15,48 +15,58 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>	
 		<script src="PamTypewriter.js"></script>
 		<script src="Leslie.js"></script>
+        <script src="KeyboardControl.js"></script>
+        <script src="Animations.js"></script>
 		<script src="Main.js"></script>
 		
 	</head>
 	<body>
-		<div class="homeWrapper">
-			<div class="itemsWrapper">
+		<div class="page">
+			<div class="pager" id="home">
 				<div class="title"><span class="blue">M</span><span class="other">artin</span><span class="blue">P</span><span class="other">etkovski</span><br/></div> 
 				<div class="subtitle"></div>
+                
+                <div class="help">
+                    <!-- Press C for all available commands -->
+                </div>
+            </div>
 
-				<div class="contact">
-					<a href="https://github.com/martinpetkovski" target="_BLANK">
-						<div class="link">
-							<img src="favicons/github.ico"/>
-							<span>GitHub</span>
-						</div>
-					</a> 
-					<a href="http://stackoverflow.com/users/708642/martin" target="_BLANK"> 
-						<div class="link">
-							<img src="favicons/so.ico" />
-							<span>StackOverflow</span>
-						</div>
-					</a>
-					<a href="https://mk.linkedin.com/pub/martin-petkovski/103/b72/614" target="_BLANK">
-						<div class="link">
-							<img src="favicons/linkedin.ico" />
-							<span>LinkedIn</span>
-						</div>
-					</a>
-					<a href="https://twitter.com/misteriozen" target="_BLANK">
-						<div class="link">
-							<img src="favicons/twitter.ico"/>
-							<span>Twitter</span>
-						</div>
-					</a> 
-					<a href="http://www.last.fm/user/martinpetkovski" target="_BLANK">
-						<div class="link">
-							<img src="favicons/lastfm.ico" />
-							<span>LastFm</span>
-						</div>
-					</a>
-				</div>
-			</div>
+            <div class="pager" id="commands">
+                <div class="title">Commands</div>
+                <div id="commandsWrapper">
+                    <div class="commandRow">
+                        <div class="commandKey">H</div>
+                        <div class="commandDescription">home page</div>
+                    </div>
+
+                    <div class="commandRow">
+                        <div class="commandKey">C</div>
+                        <div class="commandDescription">list all commands</div>
+                    </div>
+
+                    <div class="commandRow">
+                        <div class="commandKey">T</div>
+                        <div class="commandDescription">show timeline</div>
+                    </div>
+
+                    <div class="commandRow">
+                        <div class="commandKey">A</div>
+                        <div class="commandDescription">about me</div>
+                    </div>
+
+                    <div class="commandRow">
+                        <div class="commandKey">K</div>
+                        <div class="commandDescription">contact</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pager" id="projects">
+                <div class="title">Timeline</div>
+            </div>
 		</div>
+        <div class="stuff">
+
+        </div>
 	</body>
 </html>
