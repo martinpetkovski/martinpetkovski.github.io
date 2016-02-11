@@ -17,20 +17,21 @@ var Animations = (function () {
 
     Animations.prototype.projectsAnimations = function () {
         $(".pager").hide();
-        $(".page").css("backgroundColor", "rgba(0,0,5,0.99)");
+        $(".page").animate({ "backgroundColor": "rgba(0,0,5,0.99)" }, 500);
         $(".pager#projects").stop().fadeIn(1000);
-        $('.page .pager#projects .title').delay(1000).animate({ 'top': projectsTitleFinalPositionFromTop }, 700);
+        $('.page .pager#projects .title').delay(1000).animate({ 'top': projectsTitleFinalPositionFromTop }, 700, "easeOutQuad");
     }
 
     Animations.prototype.commandsAnimations = function () {
-        $(".help").css({ "color": "rgba(200,0,0,0.8)" }).fadeOut(500, function () {
+        $(".page").animate({ "backgroundColor": "rgba(0,0,5,0.99)" }, 500);
+        $(".pager#home").fadeOut(500);
+        $(".help").slideUp(500, function () {
 
             $(".pager").hide();
             $(".page .pager#commands .commandRow").hide();
 
-            $(".page").css("backgroundColor", "rgba(0,0,5,0.99)");
-            $(".pager#commands").stop().fadeIn(1000);
-            $('.page .pager#commands .title').delay(1000).animate({ 'top': projectsTitleFinalPositionFromTop }, 700, function () {
+            $(".pager#commands").fadeIn(1000);
+            $('.page .pager#commands .title').delay(1000).animate({ 'top': projectsTitleFinalPositionFromTop }, 700, "easeOutQuad", function () {
                 var animationTimeout = 200;
 
                 $(".page .pager#commands .commandRow").each(function (i) {

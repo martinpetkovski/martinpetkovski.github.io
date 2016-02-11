@@ -67,7 +67,8 @@ a:link, a:visited {
 
 .page .pager#home .help {
     position:absolute;
-    bottom:10px;
+    bottom:0px;
+    padding-bottom:10px;
     width: 100%;
     text-align:center;
     display:none;

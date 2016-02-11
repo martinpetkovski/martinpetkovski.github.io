@@ -13,13 +13,13 @@ function gainKeyboardControl(anim) {
         }
 
         if (e.which == "t".charCodeAt(0)) {
-            anim.leslie.update();
             anim.projectsAnimations();
+            anim.leslie.update();
         }
 
         if (e.which == "c".charCodeAt(0)) {
-            anim.leslie.update();
             anim.commandsAnimations();
+            anim.leslie.update();
         }
     });
 }
