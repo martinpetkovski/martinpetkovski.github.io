@@ -1,5 +1,12 @@
-var Leslie = (function(){
-	function Leslie() {}
+var Leslie = (function () {
+
+    var marginTop;
+
+    function Leslie() { }
+
+    Leslie.prototype.getMarginTop = function() {
+        return ($(window).height() / 2) - (parseInt($(".pager .title").css("fontSize")) / 2) - 80;
+    }
 
 	Leslie.prototype.getTitleFontSize = function(additor) {
 		var title = $(".page .title").html().replace(/(<([^>]+)>)/ig,"");
@@ -23,8 +30,8 @@ var Leslie = (function(){
 		$(".page .title .blue").css({"fontSize": fontSize});
 		$(".page .subtitle").css({"fontSize": halfFontSize});
 		
-		var marginTop = ($(window).height() / 2) - ( parseInt($(".page .title").css("fontSize")) / 2) - 80;		
-		$(".pager#home .title").css("marginTop", marginTop);	
+		this.marginTop = ($(window).height() / 2) - ( parseInt($(".pager .title").css("fontSize")) / 2) - 80;		
+		$(".pager#home .title").css("marginTop", this.marginTop);	
 		$(".page").css("height", $(window).height());
 	}
 
@@ -44,10 +51,9 @@ var Leslie = (function(){
 		$(".page .title .blue, .page .title .other").stop().animate({"fontSize": fontSize}, 500);
 		$(".page .subtitle").stop().animate({"fontSize": halfFontSize}, 500);
 
-		var marginTop = ($(window).height() / 2) - (parseInt($(".pager#home .title").css("fontSize")) / 2) - 80;
-		marginTop = Math.round(marginTop);
-		$(".pager#home .title").css("marginTop", marginTop);
-		$(".pager:not(#home) .title").css("top", marginTop);
+		this.marginTop = ($(window).height() / 2) - (parseInt($(".pager .title").css("fontSize")) / 2) - 80;
+		this.marginTop = Math.round(this.marginTop);
+		$(".pager#home .title").css("marginTop", this.marginTop);
 		$(".page").css("height", $(window).height());
 	}
 
