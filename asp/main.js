@@ -104,7 +104,8 @@ $(document).ready(function () {
         printExercises("", ".cpp");
 
         $("#search input").keyup(function (e) {
-            setTimeout(printExercises, 500, $(this).val(), ".cpp");
+            if(e.which == 13 || e.which == 32 || e.which == 0)
+                printExercises($(this).val(), ".cpp");
         });
     }
 
@@ -112,7 +113,8 @@ $(document).ready(function () {
         printExercises("", ".pseudo");
 
         $("#search input").keyup(function (e) {
-            setTimeout(printExercises, 500, $(this).val(), ".pseudo");
+            if(e.which == 13 || e.which == 32 || e.which == 0)
+                printExercises($(this).val(), ".pseudo");
         });
     }
 });
