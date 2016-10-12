@@ -1,4 +1,38 @@
-﻿var vezhbi_number = 2;
+﻿var vezhbi_number = 4;
+/*
+function transliterate(a) {
+
+    a = a.toLowerCase();
+
+    var CyrlicAlphabet = "абвгдѓежзѕијклљмнњопрстќуфхцчџш";
+    var LatinAlphabet = ["a", "b", "v", "g", "d", "gj", "e", "zh", "z", "dz", "i", "j", "k", "l", "lj", "m", "n", "nj", "o", "p", "r", "s", "t", "kj", "u", "f", "h", "c", "ch", "dj", "sh"];
+    var transliterated = "";
+    var i, j;
+    var flag;
+
+    for(i=0; i<a.length; i++) {
+        for(j=0; j<CyrlicAlphabet.length; j++) {
+            if(a[i] === CyrlicAlphabet[j]) {
+                transliterated += LatinAlphabet[j];
+                flag = false;
+                break;
+            }
+            else if(a[i] === LatinAlphabet[j]) {
+                transliterated += CyrlicAlphabet[j];
+                flag = false;
+                break;
+            }
+            else
+                flag = true;
+        }
+
+        if(flag) {
+            transliterated += a[i];
+        }
+    }
+
+    return transliterated;
+}*/
 
 function compareDates(a, b) {
     if (a.date < b.date)
@@ -70,7 +104,7 @@ $(document).ready(function () {
         printExercises("", ".cpp");
 
         $("#search input").keyup(function (e) {
-            printExercises($(this).val(), ".cpp");
+            setTimeout(printExercises, 500, $(this).val(), ".cpp");
         });
     }
 
@@ -78,7 +112,7 @@ $(document).ready(function () {
         printExercises("", ".pseudo");
 
         $("#search input").keyup(function (e) {
-            printExercises($(this).val(), ".pseudo");
+            setTimeout(printExercises, 500, $(this).val(), ".pseudo");
         });
     }
 });
