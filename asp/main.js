@@ -102,7 +102,7 @@ $(document).ready(function () {
     });
 
     $("#search input").blur(function () {
-        $("#upatstvo").slideUp(600);
+        $("#upatstvo").slideUp(200);
     });
     
     if (env === 0) {
