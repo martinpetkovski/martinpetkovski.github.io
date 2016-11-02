@@ -53,14 +53,14 @@
       "title": "Секвенцијално пребарување",
       "meta": "",
       "date": "15.10.2015",
-      "vezhbiid": "1",
+      "vezhbiid": "2",
       "id": "08"
     },
     {
       "title": "Бинарно пребарување",
       "meta": "",
       "date": "15.10.2015",
-      "vezhbiid": "1",
+      "vezhbiid": "2",
       "id": "09"
     },
     {
@@ -81,50 +81,71 @@
       "title": "Breadth First Search / Depth First Search",
       "meta": "",
       "date": "12.11.2015 / 19.11.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "12"
     },
     {
       "title": "Warshall-ов алгоритам",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "13"
     },
     {
       "title": "Примов алгоритам",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "14"
     },
     {
       "title": "Крускалов алгоритам",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "15"
     },
     {
       "title": "Алгоритамот на Dijkstra",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "16"
     },
     {
       "title": "Heapsort",
       "meta": "",
       "date": "10.12.2015 / 17.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "17"
     },
     {
       "title": "Preorder, Inorder, Postorder минување на бинарни дрва",
       "meta": "",
       "date": "10.12.2015 / 17.12.2015",
-      "vezhbiid": "2",
+      "vezhbiid": "3",
       "id": "18"
+    },
+    {
+      "title": "Низи и адресирање",
+      "meta": "",
+      "date": "",
+      "vezhbiid": "2",
+      "id": "19"
+    },
+    {
+      "title": "Stack",
+      "meta": "",
+      "date": "",
+      "vezhbiid": "2",
+      "id": "20"
+    },
+    {
+      "title": "Queue",
+      "meta": "",
+      "date": "",
+      "vezhbiid": "2",
+      "id": "21"
     }
   ]
 }
