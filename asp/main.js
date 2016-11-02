@@ -1,4 +1,4 @@
-﻿var vezhbi_number = 4;
+﻿var vezhbi_number = 2;
 /*
 function transliterate(a) {
 
