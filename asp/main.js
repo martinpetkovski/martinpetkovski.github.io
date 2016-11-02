@@ -98,6 +98,11 @@ $(document).ready(function () {
 
     $("#search input").focus(function () {
         window.location.hash = '';
+        $("#upatstvo").slideDown(600);
+    });
+
+    $("#search input").blur(function () {
+        $("#upatstvo").slideUp(600);
     });
     
     if (env === 0) {
