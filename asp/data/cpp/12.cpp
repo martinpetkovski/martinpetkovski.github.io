@@ -1,135 +1,95 @@
-
-#include&lt;iostream&gt;
-#include&lt;list&gt;
-#include&lt;stack&gt;
-
-using namespace std;
-
-typedef unsigned int dword;
-template&lt;typename T&gt;
-void pechati_niza(T niza, int n)
-{
-	for (int i = 0; i &lt; n; i++)
-		cout &lt;&lt; niza[i] &lt;&lt; " ";
-}
-
-template&lt;typename T&gt;
-void pechati_kolekcija(T kolekcija)
-{
-	for (T::iterator it = kolekcija.begin(); it != kolekcija.end(); ++it)
-		cout &lt;&lt; *it &lt;&lt; " ";
-}
-
-class Graph
+class AdjacencyMatrixGraph
 {
 private:
-	int V;
-	list&lt;int&gt; *adj;
-	list&lt;int&gt; *node_queue;
+	vector<vector<bool>> matrix;
 public:
-	Graph(int V);
-
-	void add_edge(int v, int w);
-	void BFS(int s);
-	void DFS(int s);
-
-	list&lt;int&gt; get_node_queue();
+	AdjacencyMatrixGraph(vector<vector<bool>> initial_matrix);
+	void print();
+	vector<int> get_connections_from_node(int node_index);
+	vector<int> get_connections_to_node(int node_index);
+	void add_node(vector<int> connections);
+	void establish_connection(int nodeA, int nodeB);
+	void remove_connection(int nodeA, int nodeB);
+	int matrix_size();
 };
 
-Graph::Graph(int V)
+AdjacencyMatrixGraph::AdjacencyMatrixGraph(vector<vector<bool>> initial_matrix)
 {
-	this-&gt;V = V;
-	adj = new list&lt;int&gt;[V];
-	node_queue = new list&lt;int&gt;;
+	this->matrix = initial_matrix;
 }
 
-void Graph::add_edge(int v, int w)
+void AdjacencyMatrixGraph::print()
 {
-	adj[v].push_back(w);
-}
-
-void Graph::BFS(int s)
-{
-	node_queue-&gt;resize(0);
-
-	bool *visited = new bool[V];
-	for (int i = 0; i &lt; V; i++)
-		visited[i] = false;
-
-	visited[s] = true;
-
-	list&lt;int&gt; queue;
-	queue.push_back(s);
-
-	while (!queue.empty())
+	cout << setfill(' ') << setw(5);
+	for (int i = 0; i < matrix.size(); i++)
 	{
-		s = queue.front();
-		node_queue-&gt;push_back(s);
-		queue.pop_front();
-
-		for (list&lt;int&gt;::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
-		{
-			if (!visited[*it])
-			{
-				visited[*it] = true;
-				queue.push_back(*it);
-			}
-		}
+		cout << i << " ";
 	}
-}
+	cout << "\n" << setfill('-') << setw(matrix.size() * 2 + 4);
+	cout << "\n";
 
-void Graph::DFS(int s)
-{
-	node_queue-&gt;resize(0);
-
-	bool *visited = new bool[V];
-	for (int i = 0; i &lt; V; i++)
-		visited[i] = false;
-
-	stack&lt;int&gt; stack;
-
-	visited[s] = true;
-	stack.push(s);
-
-	while (!stack.empty())
+	for (int i = 0; i < matrix.size(); i++)
 	{
-		s = stack.top();
-		node_queue-&gt;push_back(s);
-		stack.pop();
-
-		for (list&lt;int&gt;::iterator it = adj[s].begin(); it != adj[s].end(); ++it)
+		cout << i << " | ";
+		for (int j = 0; j < matrix[i].size(); j++)
 		{
-			if (!visited[*it])
-			{
-				visited[*it] = true;
-				stack.push(*it);
-			}
+			cout << matrix[i][j] << " ";
 		}
+		cout << endl;
 	}
-}
-
-list&lt;int&gt; Graph::get_node_queue()
-{
-	return *node_queue;
-}
-
-int main()
-{
-	Graph g(5);
-	g.add_edge(1, 0);
-	g.add_edge(0, 2);
-	g.add_edge(2, 1);
-	g.add_edge(0, 3);
-	g.add_edge(3, 4);
-	g.add_edge(4, 0);
-
-	g.BFS(2);
-	pechati_kolekcija(g.get_node_queue());
-	cout &lt;&lt; endl &lt;&lt; "------------" &lt;&lt; endl;
-	g.DFS(0);
-	pechati_kolekcija(g.get_node_queue());
-
 	system("pause");
+}
 
-	return 0;
+vector<int> AdjacencyMatrixGraph::get_connections_from_node(int node_index)
+{
+	vector<int> result;
+	for (int i = 0; i < matrix[node_index].size(); i++)
+	{
+		if (matrix[node_index][i] == 1)
+			result.push_back(matrix[node_index][i]);
+	}
+
+	return result;
+}
+
+vector<int> AdjacencyMatrixGraph::get_connections_to_node(int node_index)
+{
+	return get_connections_from_node(node_index);
+}
+
+void AdjacencyMatrixGraph::add_node(vector<int> connections)
+{
+	vector<bool> temp_zeros(matrix.size());
+	matrix.push_back(temp_zeros);
+	for (int i = 0; i < matrix.size(); i++)
+	{
+		matrix[i].push_back(0);
+	}
+
+	int current_node = matrix.size() - 1;
+	for (int i = 0; i < connections.size(); i++)
+	{
+		establish_connection(connections[i], current_node);
+	}
+}
+
+void AdjacencyMatrixGraph::establish_connection(int nodeA, int nodeB)
+{
+	if (matrix[nodeA][nodeB])
+		matrix[nodeA][nodeB] = 1;
+	if (matrix[nodeB][nodeA])
+		matrix[nodeB][nodeA] = 1;
+}
+
+void AdjacencyMatrixGraph::remove_connection(int nodeA, int nodeB)
+{
+	if (matrix[nodeA][nodeB])
+		matrix[nodeA][nodeB] = 0;
+	if (matrix[nodeB][nodeA])
+		matrix[nodeB][nodeA] = 0;
+}
+
+int AdjacencyMatrixGraph::matrix_size()
+{
+	return matrix.size();
 }

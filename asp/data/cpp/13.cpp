@@ -1,51 +1,78 @@
-#include&lt;stdio.h&gt;
-#include&lt;conio.h&gt;
-#include&lt;iostream&gt;
-using namespace std;
-
-void tranzitivno(int graph[4][4])
+class AdjacencyListGraph
 {
-	int n = 4;
-	int R[n][n], i, j, k;
+private:
+	vector<vector<int>> adj_list;
+public:
+	AdjacencyListGraph(vector<vector<int>> initial_list);
+	void print();
+	void add_node(vector<int> connections);
+	vector<int> get_connections_from_node(int node_index);
+	vector<int> get_connections_to_node(int node_index);
+	void establish_connection(int nodeA, int nodeB);
+	void remove_connection(int nodeA, int nodeB);
+	int ajd_list_size();
+};
 
+AdjacencyListGraph::AdjacencyListGraph(vector<vector<int>> initial_list)
+{
+	this->adj_list = initial_list;
+}
 
-	for (i = 0; i &lt; n; i++)
+void AdjacencyListGraph::print()
+{
+	for (int i = 0; i < adj_list.size(); i++)
 	{
-		for (j = 0; j &lt; n; j++)
+		cout << i << " | ";
+		for (int j = 0; j < adj_list[i].size(); j++)
 		{
-			R[i][j] = graph[i][j];
+			cout << adj_list[i][j] << " ";
 		}
+		cout << endl;
 	}
-	for (k = 0; k &lt; n; k++)
+	system("pause");
+}
+
+void AdjacencyListGraph::add_node(vector<int> connections)
+{
+	adj_list.push_back(connections);
+}
+
+vector<int> AdjacencyListGraph::get_connections_from_node(int node_index)
+{
+	return adj_list[node_index];
+}
+
+vector<int> AdjacencyListGraph::get_connections_to_node(int node_index)
+{
+	vector<int> connections_to_node;
+	for (int i = 0; i < adj_list.size(); i++)
 	{
-		for (i = 0; i &lt; n; i++)
-		{
-			for (j = 0; j &lt; n; j++)
-			{
-				R[i][j] = R[i][j] || (R[i][k] && R[k][j]);
-			}
-		}
+		vector<int> current_node_connections = get_connections_from_node(i);
+		if (find(current_node_connections.begin(), current_node_connections.end(), node_index) != current_node_connections.end())
+			connections_to_node.push_back(i);
 	}
-	cout &lt;&lt; "Tranzitivno zatvoranje so Warshall-ov:  \n";
-	for (int i = 0; i &lt; n; i++)
+
+	return connections_to_node;
+}
+
+void AdjacencyListGraph::establish_connection(int nodeA, int nodeB)
+{
+	adj_list[nodeA].push_back(nodeB);
+}
+
+void AdjacencyListGraph::remove_connection(int nodeA, int nodeB)
+{
+	for (int i = 0; i < adj_list[nodeA].size(); i++)
 	{
-		for (int j = 0; j &lt; n; j++)
+		if (adj_list[nodeA][i] == nodeB)
 		{
-			cout &lt;&lt; R[i][j];
+			swap(adj_list[nodeA][i], adj_list[nodeA][adj_list[nodeA].size() - 1]);
+			adj_list[nodeA].pop_back();
 		}
-		cout &lt;&lt; endl;
 	}
 }
-int main()
-{
-	int n = 4;
-	int graph[4][4] = {
-		{ 0, 0, 1, 0 },
-		{ 1, 0, 0, 1 },
-		{ 0, 0, 0, 0 },
-		{ 0, 1, 0, 0 },
-	};
-	tranzitivno(graph);
-	return 0;
 
+int AdjacencyListGraph::ajd_list_size()
+{
+	return adj_list.size();
 }

@@ -78,14 +78,14 @@
       "id": "11"
     },
     {
-      "title": "Breadth First Search / Depth First Search",
+      "title": "Матрица на соседство / Adjacency Matrix",
       "meta": "",
       "date": "12.11.2015 / 19.11.2015",
       "vezhbiid": "3",
       "id": "12"
     },
     {
-      "title": "Warshall-ов алгоритам",
+      "title": "Листа на соседство / Adjacency List",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
       "vezhbiid": "3",
@@ -95,32 +95,32 @@
       "title": "Примов алгоритам",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "3",
+      "vezhbiid": "4",
       "id": "14"
     },
     {
       "title": "Крускалов алгоритам",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "3",
+      "vezhbiid": "4",
       "id": "15"
     },
     {
       "title": "Алгоритамот на Dijkstra",
       "meta": "",
       "date": "26.11.2015 / 03.12.2015",
-      "vezhbiid": "3",
+      "vezhbiid": "4",
       "id": "16"
     },
     {
-      "title": "Heapsort",
+      "title": "Depth First Search / DFS",
       "meta": "",
       "date": "10.12.2015 / 17.12.2015",
       "vezhbiid": "3",
       "id": "17"
     },
     {
-      "title": "Preorder, Inorder, Postorder минување на бинарни дрва",
+      "title": "Breadth First Search / BFS",
       "meta": "",
       "date": "10.12.2015 / 17.12.2015",
       "vezhbiid": "3",
@@ -146,6 +146,13 @@
       "date": "",
       "vezhbiid": "2",
       "id": "21"
+    },
+    {
+      "title": "Topological sort / Тополошко сортирање",
+      "meta": "",
+      "date": "",
+      "vezhbiid": "3",
+      "id": "22"
     }
   ]
 }

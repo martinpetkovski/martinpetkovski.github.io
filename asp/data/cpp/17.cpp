@@ -1,67 +1,41 @@
-#include &lt;iostream&gt;
-using namespace std;
-
-void max_heapify(int a[], int i, int n)
+void print_vector(vector<int> vector_to_print)
 {
-	int najgolem, l, r, loc;
-	l = 2 * i;
-	r = (2 * i + 1);
-	if ((l &lt;= n) && a[l] &gt; a[i])
-		najgolem = l;
-	else
-		najgolem = i;
-	if ((r &lt;= n) && (a[r] &gt; a[najgolem]))
-		najgolem = r;
-	if (najgolem != i)
+	for (int i = 0; i < vector_to_print.size(); i++)
 	{
-		loc = a[i];
-		a[i] = a[najgolem];
-		a[najgolem] = loc;
-		max_heapify(a, najgolem, n);
+		cout << vector_to_print[i] << " ";
 	}
+
+	system("pause");
 }
 
-void build_max_heap(int a[], int n)
+bool is_marked(vector<int> marked, int node_index)
 {
-	for (int k = n / 2; k &gt;= 1; k--)
-	{
-		max_heapify(a, k, n);
-	}
+	return find(marked.begin(), marked.end(), node_index) != marked.end();
 }
 
-void heapsort(int a[], int n)
+vector<int> DFS(AdjacencyListGraph alg, int root_node)
 {
+	vector<int> the_stack;
+	vector<int> marked;
 
-	build_max_heap(a, n);
-	int i, temp;
-	for (i = n; i &gt;= 2; i--)
+	the_stack.push_back(root_node);
+	while (the_stack.size() > 0)
 	{
-		temp = a[i];
-		a[i] = a[1];
-		a[1] = temp;
-
-
-		max_heapify(a, 1, i - 1);
-	}
-}
-
-int main()
-{
-	int n;
-	cout &lt;&lt; "Vnesi go brojot na elementi " &lt;&lt; endl;
-	cin &gt;&gt; n;
-	int a[n];
-	cout &lt;&lt; "Vnesi gi elementite " &lt;&lt; endl;
-	for (int i = 1; i &lt;= n; i++)
-	{
-		cin &gt;&gt; a[i];
-	}
-	heapsort(a, n);
-
-	cout &lt;&lt; "Sortirana niza:" &lt;&lt; endl;
-	for (int i = 1; i &lt;= n; i++)
-	{
-		cout &lt;&lt; a[i] &lt;&lt; endl;
+		root_node = the_stack.back();
+		the_stack.pop_back();
+		if (!is_marked(marked, root_node))
+		{
+			marked.push_back(root_node);
+			vector<int> current_node_connections = alg.get_connections_from_node(root_node);
+			for (int i = 0; i < current_node_connections.size(); i++)
+			{
+				if (!is_marked(marked, current_node_connections[i]))
+				{
+					the_stack.push_back(current_node_connections[i]);
+				}
+			}
+		}
 	}
 
+	return marked;
 }
