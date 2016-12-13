@@ -1,49 +1,49 @@
 class AdjacencyMatrixGraph
 {
 private:
-	vector<vector<bool>> matrix;
+	vector&lt;vector&lt;bool&gt;&gt; matrix;
 public:
-	AdjacencyMatrixGraph(vector<vector<bool>> initial_matrix);
+	AdjacencyMatrixGraph(vector&lt;vector&lt;bool&gt;&gt; initial_matrix);
 	void print();
-	vector<int> get_connections_from_node(int node_index);
-	vector<int> get_connections_to_node(int node_index);
-	void add_node(vector<int> connections);
+	vector&lt;int&gt; get_connections_from_node(int node_index);
+	vector&lt;int&gt; get_connections_to_node(int node_index);
+	void add_node(vector&lt;int&gt; connections);
 	void establish_connection(int nodeA, int nodeB);
 	void remove_connection(int nodeA, int nodeB);
 	int matrix_size();
 };
 
-AdjacencyMatrixGraph::AdjacencyMatrixGraph(vector<vector<bool>> initial_matrix)
+AdjacencyMatrixGraph::AdjacencyMatrixGraph(vector&lt;vector&lt;bool&gt;&gt; initial_matrix)
 {
-	this->matrix = initial_matrix;
+	this-&gt;matrix = initial_matrix;
 }
 
 void AdjacencyMatrixGraph::print()
 {
-	cout << setfill(' ') << setw(5);
-	for (int i = 0; i < matrix.size(); i++)
+	cout &lt;&lt; setfill(' ') &lt;&lt; setw(5);
+	for (int i = 0; i &lt; matrix.size(); i++)
 	{
-		cout << i << " ";
+		cout &lt;&lt; i &lt;&lt; " ";
 	}
-	cout << "\n" << setfill('-') << setw(matrix.size() * 2 + 4);
-	cout << "\n";
+	cout &lt;&lt; "\n" &lt;&lt; setfill('-') &lt;&lt; setw(matrix.size() * 2 + 4);
+	cout &lt;&lt; "\n";
 
-	for (int i = 0; i < matrix.size(); i++)
+	for (int i = 0; i &lt; matrix.size(); i++)
 	{
-		cout << i << " | ";
-		for (int j = 0; j < matrix[i].size(); j++)
+		cout &lt;&lt; i &lt;&lt; " | ";
+		for (int j = 0; j &lt; matrix[i].size(); j++)
 		{
-			cout << matrix[i][j] << " ";
+			cout &lt;&lt; matrix[i][j] &lt;&lt; " ";
 		}
-		cout << endl;
+		cout &lt;&lt; endl;
 	}
 	system("pause");
 }
 
-vector<int> AdjacencyMatrixGraph::get_connections_from_node(int node_index)
+vector&lt;int&gt; AdjacencyMatrixGraph::get_connections_from_node(int node_index)
 {
-	vector<int> result;
-	for (int i = 0; i < matrix[node_index].size(); i++)
+	vector&lt;int&gt; result;
+	for (int i = 0; i &lt; matrix[node_index].size(); i++)
 	{
 		if (matrix[node_index][i] == 1)
 			result.push_back(matrix[node_index][i]);
@@ -52,22 +52,22 @@ vector<int> AdjacencyMatrixGraph::get_connections_from_node(int node_index)
 	return result;
 }
 
-vector<int> AdjacencyMatrixGraph::get_connections_to_node(int node_index)
+vector&lt;int&gt; AdjacencyMatrixGraph::get_connections_to_node(int node_index)
 {
 	return get_connections_from_node(node_index);
 }
 
-void AdjacencyMatrixGraph::add_node(vector<int> connections)
+void AdjacencyMatrixGraph::add_node(vector&lt;int&gt; connections)
 {
-	vector<bool> temp_zeros(matrix.size());
+	vector&lt;bool&gt; temp_zeros(matrix.size());
 	matrix.push_back(temp_zeros);
-	for (int i = 0; i < matrix.size(); i++)
+	for (int i = 0; i &lt; matrix.size(); i++)
 	{
 		matrix[i].push_back(0);
 	}
 
 	int current_node = matrix.size() - 1;
-	for (int i = 0; i < connections.size(); i++)
+	for (int i = 0; i &lt; connections.size(); i++)
 	{
 		establish_connection(connections[i], current_node);
 	}
