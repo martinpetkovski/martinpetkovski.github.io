@@ -1,0 +1,59 @@
+{
+    "reviews" :
+    [
+        {
+            "title" : "The Smashing Pumpkins - Siamese Dream",
+            "type" : "Music Album",
+            "rating" : "100",
+            "description" : "A true classic. One of the best albums ever made. Billy Corgan learned all the tricks of making a great album, but still hasn't been spoiled by success."
+        },
+        {
+            "title" : "Remo Drive - Greatest Hits",
+            "type" : "Music Album",
+            "rating" : "70",
+            "description" : "Generic emo-punk album of the year 2017."
+        },
+        {
+            "title" : "*shels - Plains of the Purple Buffalo",
+            "type" : "Music Album",
+            "rating" : "92",
+            "description" : "Emotional rollercoaster. Great use of trumpets in an otherwise shoegazy post-rock-ish setting."
+        },
+        {
+            "title" : "The Smashing Pumpkins - Gish",
+            "type" : "Music Album",
+            "rating" : "92",
+            "description" : "Billy Corgan's classic rock influences are most noticable on this album. It's something like 70s classic rock meets grunge in Chicago."
+        },
+        {
+            "title" : "The Smashing Pumpkins - Mellon Collie and The Infinte Sadness",
+            "type" : "Music Album",
+            "rating" : "86",
+            "description" : "Probably the worst album of the Smashing Pumpkins recognized trilogy. Has the most girth but lacks the emotional honesty that Gish and Siamese Dream have."
+        },
+        {
+            "title" : "American Football - American Football LP1",
+            "type" : "Music Album",
+            "rating" : "100",
+            "description" : "Masterfully captures the american midwestern vibe."
+        },
+        {
+            "title" : "Blink-182 - Cheshire Cat",
+            "type" : "Music Album",
+            "rating" : "90",
+            "description" : "This album makes all the difference between Blink-182 and all the bands that try to be Blink-182 and that's melody on top of the generic american punk chords."
+        },
+        {
+            "title" : "American Football - American Football LP2",
+            "type" : "Music Album",
+            "rating" : "86",
+            "description" : "At first I thought that it tries to perfectly match the LP1, but it gets better with every subsequent listen. I predict in 10 years time this album will be as classic as the LP1."
+        },
+        {
+            "title" : "Payday 2",
+            "type" : "Game",
+            "rating" : "48",
+            "description" : "Multiplayer is okay, singleplayer feels like a boring late 90s FPS. The visuals are not that great. There is nothing distinctive in the graphics by itslef. The texture quallity is really shitty for a 2013 game even when maxed out. The AI is simple and predictable and doesn't react well when the player is really close. The sound and music quality are adequate. "
+        }
+    ]
+}

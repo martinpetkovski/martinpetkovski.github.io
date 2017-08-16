@@ -1,0 +1,222 @@
+* { 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "VenusRising", Verdana, Geneva, Tahoma, sans-serif;  
+}
+
+body {
+    background-color: #0F6;
+    background-image: url("../resources/tileable_background_hologram.png"), url("../resources/background_filter.png");
+    background-blend-mode: overlay, multiply;
+/*    animation-name: "backgroundMovement";
+    animation-iteration-count: infinite;
+    animation-duration: 100s;*/
+    background-size: 8px, 100%;
+    background-attachment: fixed;
+    color: #FFF;
+}
+
+header {
+    position: relative;
+    width: 50%;
+    left: 25%;
+    top: 40px;
+    text-align: center;
+    padding: 60px;
+    font-size: 40px;
+    /*background-color: rgba(19, 71, 70, 0.1); */
+    border-top: rgba(19, 71, 70, 0.3) 1px solid;
+    border-bottom: rgba(19, 71, 70, 0.3) 1px solid;
+    background: linear-gradient(to left, rgba(19, 71, 70, 0.05) 0%,rgba(19, 71, 70, 0.2) 80%,rgba(19, 71, 70, 0.3) 100%); 
+    /*animation-name: "backgroundMovement";
+    animation-duration: 10s;
+    animation-iteration-count: infinite;*/
+}
+
+main {
+    position: relative;
+    width: 50%;
+    left: 25%;
+    top: 80px;
+ /*   border-bottom: rgba(00, 51, 50, 0.8) 2px solid;*/
+    text-shadow: none;
+}
+
+footer {
+    position: relative;
+    width: 50%;
+    left: 25%;
+    top:100px;
+    padding: 10px 0px;
+    border-top: 1px solid rgba(00, 51, 50, 0.8);
+}
+
+p {
+    margin: 20px 0px;
+}
+
+audio {
+    width: 100%;
+}
+
+img {
+    width:50%;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+td {
+    border-bottom: 1px solid #197270;
+    padding: 30px 0px;
+    font-size: 0.7vw;
+}
+
+td a:link, td a:visited {
+    font-size: 0.7vw;
+}
+
+input {
+    font-size: 26px;
+    padding: 10px 26px;
+    border-radius: 10px;
+    border: 1px solid #197270;
+    background-color: rgba(00, 51, 50, 0.6);
+    color: #FFF;
+    width: 100%;
+    margin:10px 0px 5px 0px;
+}
+
+input:focus {
+    background-color: rgba(50, 101, 100, 0.1);
+    border-radius: 36px;
+    animation-name: 'inputAnimation';
+    animation-duration: 0.3s;
+    animation-timing-function:  linear;
+}
+
+.image{
+    display: inline-block;
+    width: 100%;
+    background-size: cover;
+    background-blend-mode: cover;
+}
+
+.videoDescription {
+    font-size: 1vw;
+    position: relative;
+    top: -60px;
+    padding: 10px 20px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.sectionTitle {
+    text-align: center;
+    color: #197270;
+    font-size: 42px;
+    background: linear-gradient(to top, rgba(19, 71, 70, 0.1) 0%,rgba(19, 71, 70, 0.2) 75%,rgba(19, 71, 70, 0.3) 100%);
+    border: rgba(00, 51, 50, 0.8) 1px solid;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.sectionHeader
+{
+    font-size: 3.5vw;
+    font-family: "SpyAgency", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.sectionSubtitle {
+    text-align: center;
+    color: #197270;
+    font-size: 1.5vw;
+    padding: 5px 10px;
+    background-color: rgba(9, 28, 27, 0.7);
+    margin-top: 40px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(9, 28, 27, 1);
+}
+
+.sectionTextTitle {
+    text-align: center;
+    color: #197270;
+    font-size: 1.1vw;
+    padding: 5px 10px;
+    background-color: rgba(9, 28, 27, 0.7);
+    margin-top: 40px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(9, 28, 27, 1);
+}
+
+.progressBarBorder {
+    width: 100%;
+    border: 2px solid #A10;
+    border-radius: 5px;
+    margin: 8px 0px;
+    font-size: 12px;
+}
+
+.progressBarFill {
+    width: 0%;
+    padding: 5px 0px;
+    background: linear-gradient(to right, rgba(90,0,0,0.7) 0%,rgba(144,0,0,0.9) 50%,rgba(97,3,3,0.7) 100%);
+    text-align: center;
+    box-shadow: 0 0 10px 1px rgba(144,0,0,1);
+    white-space: nowrap; 
+}
+
+.progressBarFill .reviewText {
+    font-family: "Nulshock", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.progressBarFill .reviewTitle {
+    color: #AAA;
+}
+
+.progressBarFill .reviewText, .progressBarFill .reviewTitle {
+    white-space: pre-wrap;
+}
+
+#review .reviewType {
+    color: #F44;
+}
+
+.sectionText p {
+    font-family: "Nulshock", Arial, Helvetica, sans-serif;
+    text-align: justify;
+    padding-top: 0px;
+    font-size: 16px;
+}
+
+.sectionText .contact {
+    margin: 20px 0px;
+    text-align: center;
+}
+
+.sectionText .contact .contactTitle {
+    font-size: 1vw;
+    color: #197270;
+}
+.sectionText .contact .contactContent, .sectionText .contact .contactContent a {
+    font-size: 1.3vw;
+}
+
+.trHeader {
+    color: #197270;
+}
+
+.lh {
+    font-size: 24px;
+}
+
+#review div {
+    padding: 10px;
+    text-align: left;
+}
+
+#review .reviewTitle {
+    font-size: 1.1vw;
+}
