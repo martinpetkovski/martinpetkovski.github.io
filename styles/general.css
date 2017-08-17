@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #0F6;
+    background-color: #000;
     background-image: url("../resources/tileable_background_hologram.png"), url("../resources/background_filter.png");
     background-blend-mode: overlay, multiply;
 /*    animation-name: "backgroundMovement";

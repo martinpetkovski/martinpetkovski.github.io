@@ -2,21 +2,10 @@ $.ajaxSetup ({
     cache: false
 });
 
-var player;
-function onYouTubePlayerAPIReady() {
-    player = new YT.Player('youTubeVideo', {
-        playerVars: {
-            'mute': 1
-        },
-
-        events: {
-            'onReady': onPlayerReady
-        }
-    });
-}
-function onPlayerReady(event) {
-    event.target.mute();
-}
+$('<img/>').attr('src', 'resources/background_filter.png').on('load', function() {
+   $(this).remove(); // prevent memory leaks
+   $('body').css({'background-color': '#00FF66'});
+});
 
 $(document).ready(function(){
     $(document).on("click", ".navigationItem", function(event){
