@@ -1,0 +1,147 @@
+{ "story":[
+        {
+            "line":"<span class=\"ignore_solid_font\"> <span class=\"title_arrows\" id=\"left_arrows\">>></span>Detective Spook<span class=\"title_arrows\" id=\"right_arrows\"><<</span><br/>P.I. <div id=\"scroll_arrow\"><</div></span>", 
+            "character": "",
+            "scene": ""
+        },
+        {
+            "line": "Vidi sa šo e muabeto...",
+            "character": "Detective Spook",
+            "scene": "Novinarot vnimatelno zapišva stoejki do fikusot"
+        },
+        {
+            "line": "Arkadite kaj Ljube se ušte ne se spremni za moeto prisustvo", 
+            "character": "Detective Spook",
+            "scene": "Pogledot na detektivot e nasocen niz džamot na devettiot kat.",
+            "scene_on_top": "1" 
+        },
+        {
+            "line":"Kako misliš?", 
+            "character": "Novinarot"
+        },
+        {
+            "line":"Sedni de, šo stojš?",
+            "character": "Detective Spook",
+            "scene": "Novinarot go vadi svoeto dolgo palto pod koe se krie zimski džemper i sednuva vo foteljata"
+        },
+        {
+            "line":"Cigara?",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"Ne fala, ne pušam",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Veliš od Skopje se nakrena da dojš, a?",
+            "character": "Detective Spook",
+            "scene": "Izusti detektivot palejki ja cigarata so kibrit"
+        },
+        {
+            "line":"Koga dobiv dojava od mojot doušnik za Vašata lokacija vednaš trgnav za Bitola.  ",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Celata charshija vo Skopje brui za Vašiot podvig na Super Galaxian pred eden mesec. ",
+            "character": "Novinarot",
+            "scene": "Vozbudeno vosklikna"
+        },
+        {
+            "line":"Me interesira... Zošto baš 'Detektivot'? Toa nema nikakva vrska so Vašata profesija",
+            "character": "Novinarot",
+            "scene": "Blaga nasmevka na liceto na Detektivot dodeka šarmantno chapa dim od svojata cigara. Kratka pauza koja novinarot ja prekinuva.",
+            "scene_on_top": "1"
+        },
+        {
+            "line":"Taka se potpišvav na igrite. Taka me znat site vo klanot. Taka me znat i site komši.",
+            "character": "Detective Spook",
+            "scene": "Tresejki ja cigarata vo pepeljarata so graviran zmej"
+        },
+        {
+            "line":"Go znae nekoj Vašiot vistinski identitet?",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Siguren sum deka ne i siguren sum deka i ke ostani taka.",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"Dzvoni telefonot na detektivot, a toj odgovara na povikot",
+            "scene_on_top": "1",
+            "line": "Da. Aren sum, ama kje mi pomini. Da. Aj ne me davi žitise.",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"Mirno spuštajkji go telefonot, detektivot prodolži",
+            "line":"Vidi brat...",
+            "character": "Detective Spook",
+            "scene_on_top":"1"
+        },
+        {
+            "scene":"Izusti samouvereno tresejkji ja cigarata koja nemaše dovolno pepel.",
+            "line":"životo e ko tetriso",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"Tetriso kolku i da go nauchish da go igraš, sekoaš postoj možnos da ti se padni forma šo ke te skisni",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"Detektivot sedna na slobodnata fotelja do novinarot i zavrtuvajki ja cigarata vo pepeljarata nekolku pati toj prodolži",
+            "scene_on_top":"1",
+            "line":"Fintata e šo postoj šansa da ti se padni i forma so koja šo ke go srušiš hajskoro, ti teknuva?",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"Detektivot molskavichno stana i se približi kon džamot, se ušte držejkji ja vekje skoro istrošenata cigara",
+            "scene_on_top":"1",
+            "line":"Ako me prašvaš oti sum detektivo - odgovoro e lesen. Da ne bev detektivo, žežokglavovski kje pobedvashe...",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"Zavrtuvajkji se kon novinarot",
+            "scene_on_top":"1",
+            "line":"...a tetrisot ne moži da si go dozvoli to.",
+            "character": "Detective Spook"
+        },
+        {
+            "scene":"se slušat samo potezite so stiloto na novinarot",
+            "scene_on_top":"1",
+            "line":"",
+            "character": ""
+        },
+        {
+            "scene":"novinarot samouvereno prodolži so prashanjeto",
+            "scene_on_top":"1",
+            "line":"A arkadite kaj Ljube? Vašiot hajskor pokažuva deka mnogu lesno bi možele da go osvoite trofejot.",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Mojot doušnik od Skopje me posovetuva deka ne sum dobredojden tamu. Arkadite na Ljube ne se spremni za mene.",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"Site samoproglaseni mafijaši ko žežokglavovski igrat kaj Ljube. A jas igram samo na domašen teren. Kaj šo možam da gi krcnam ko smoka.",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"Vo Bitola ne e predizvik da se imaat site hajskorovi. Vo Skopje e. Vo Skopje ima lugje koi se natprevaruvaat na svetsko nivo.",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Bitola e grad na duhoj na smetka na Skopje koj kontinuirano go dezintegrira Bitolskio klan prezemajki chlenoj.... Ustvari stoj malce...",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"...žežokglavovski te pušti da me razubediš, m?",
+            "character": "Detective Spook"
+        },
+        {
+            "line":"Da. Saka direktno da se  soochi so tebe. Kaj Ljube.",
+            "character": "Novinarot"
+        },
+        {
+            "line":"Zbogum.",
+            "character": "Detective Spook"
+        }
+]}
