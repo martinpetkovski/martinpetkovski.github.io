@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: "VenusRising", Verdana, Geneva, Tahoma, sans-serif;  
+    font-family: "VenusRising", Geneva, Verdana, Tahoma, sans-serif;  
 }
 
 body {
@@ -69,7 +69,8 @@ img {
 
 td {
     border-bottom: 1px solid #197270;
-    padding: 30px 0px;
+	border-right: 1px solid #197270;
+    padding: 30px 20px;
     font-size: 0.7vw;
 }
 
@@ -168,8 +169,9 @@ input:focus {
 }
 
 .progressBarFill .reviewText {
-    font-family: "Nulshock", Arial, Helvetica, sans-serif;
+    font-family: "Nulshock", Geneva, Helvetica, sans-serif;
     font-size: 12px;
+	
 }
 
 .progressBarFill .reviewTitle {
