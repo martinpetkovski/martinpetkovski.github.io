@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>op wormhole</title>
+        <style>
+            body { margin: 50px; background-color: black; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 50px;}
+            input { font-size: 30px;}
+            a, a:visited { color:#09f; margin: 0px 30px; text-decoration: none;}
+            a:hover { text-decoration: underline;}
+            #why-are-you-looking-at-the-source { font-size:14px;  }
+        </style>
+        <script>
+            function wormhole()
+            {
+                input = document.getElementById("hmmmmm").value;
+                var x = document.getElementById("why-are-you-looking-at-the-source");
+                if(input == "yes")
+                {
+                    x.style.display = "block";
+                }
+                else
+                {
+                    x.style.display = "none";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        Welcome to wormhole. <br><br><br>
+        Are you a worm? <br>
+        <input id="hmmmmm" type="text" onkeyup="wormhole()"/>
+
+        <div id="why-are-you-looking-at-the-source" style="margin-top: 60px; display: none;">
+            <a href="https://twitter.com/OficialZaev">joke</a>
+            <a href="https://www.facebook.com/petkovskimartin">msg</a>
+            <a href="https://www.instagram.com/neelix64/">meh</a>
+            <a href="https://www.last.fm/user/martinpetkovski">MUSIC</a>
+            <a href="asp">asp2015</a>
+            <a href="archive/aug20">archive2020</a>
+        </div>
+    </body>
+</html>

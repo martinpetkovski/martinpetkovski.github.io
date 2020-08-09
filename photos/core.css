@@ -1,0 +1,25 @@
+body { background-color: #000;}
+
+.container { 
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;   
+  }
+  
+  img {
+    flex: flex-shrink;
+    width: 250px;
+    height: 100%;
+  }
+
+  img:active {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
