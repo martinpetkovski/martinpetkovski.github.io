@@ -1,4 +1,4 @@
-body { background-color: #000;}
+body { background-color: #111;}
 
 .container { 
     display: flex;
@@ -12,6 +12,7 @@ body { background-color: #000;}
     flex: flex-shrink;
     width: 250px;
     height: 100%;
+    padding: 5px;
   }
 
   img:active {
