@@ -10,17 +10,5 @@ body { background-color: #111;}
   
   img {
     flex: flex-shrink;
-    width: 250px;
-    height: 100%;
     padding: 5px;
-  }
-
-  img:active {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    box-sizing: border-box;
   }
