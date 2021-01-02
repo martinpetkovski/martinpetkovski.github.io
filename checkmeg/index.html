@@ -182,7 +182,7 @@
                     <hr>
                     <ol>
                         <li>Select some text anywhere inside windows.</li>
-                        <li>Hit <kbd class="kbc-button">⊞WIN</kbd>+<kbd class="kbc-button">CTRL</kbd> at the same time.</li>
+                        <li>Hit <kbd class="kbc-button">CTRL</kbd><kbd class="kbc-button">⊞WIN</kbd> at the same time.</li>
                         <li>Enter a bin path (ex. <pre>music:2020:rock</pre> will put the item inside a bin named "music", then inside a bin named "2020", then inside a bin named "rock").</li>
                         <li><span class="tip">(Optional)</span> You can edit the contents of the bookmark.</li>
                         <li><span class="tip">(Tip)</span> If you leave the path blank the bookmark will be automatically be saved into a temporary bin.</li>
@@ -195,15 +195,15 @@
                     <h1 id="HowToFindBookmarks">Finding bookmarks</h1>
                     <hr>
                     <ol>
-                        <li>Hit <kbd class="kbc-button">⊞WIN</kbd>+<kbd class="kbc-button">Alt</kbd>.</li>
+                        <li>Hit <kbd class="kbc-button">⊞WIN</kbd><kbd class="kbc-button">Alt</kbd> at the same time.</li>
                         <li>Type a search query.</li>
                         <li><span class="tip">(Optional)</span> Advanced queries can contain the following flags:
                             <ul>
-                                <li><pre>-q Some Query</pre></li>
-                                <li><pre>-p literal:path</pre></li>
-                                <li><pre>-d 27.11.2020 01.01.2021</pre></li>
-                                <li><pre>-t text</pre></li>
-                                <li><pre>-a Everything</pre></li>
+                                <li><pre>-q Some Query</pre> - Search with plain text inside bookmark content.</li>
+                                <li><pre>-p literal:path</pre> - Search literal bin path.</li>
+                                <li><pre>-d 27.11.2020 01.01.2021</pre> - Filter by date or range of dates.</li>
+                                <li><pre>-t link</pre> - Filter by bookmark type (link, text, image, dir, file).</li>
+                                <li><pre>-a Everything</pre> - Everything.</li>
                             </ul>
                         </li>
                         <li><span class="tip">(Optional)</span> Flag combinations are allowed (ex. <pre>-q youtube -t link -d 22.11.2020</pre> will find all youtube links that were added on 22.11.2020).</li>
@@ -262,8 +262,8 @@
                         <li>"Select All in Bin" will select all bookmarks in the current bin.</li>
                         <li>"Select Add All in Bin" will add to the selection all bookmarks in the current bin.</li>
                         <li>"Deselect All" will deselect everything. This can be also done by clicking somewhere outside the bookmark area.</li>
-                        <li>"Move Selected Here" will move all selected bookmarks to the selected bin</li>
-                        <li>"Change Path" will change a bin's path</li>
+                        <li>"Move Selected Here" will move all selected bookmarks to the selected bin.</li>
+                        <li>"Change Path" will change a bin's path.</li>
                     </ul>
                 </div>
             </div>
