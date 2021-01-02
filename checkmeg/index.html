@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <title>Checkmeg</title>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-
+        <link rel="stylesheet" href="keyboardButtons.css" type="text/css">
         <style>
             @keyframes backgroundScale {
                 from {background-size: 100vh;}
@@ -29,12 +29,34 @@
                 margin: 0 0 2vh 0;
                 padding: 5px;
             }
+            a, a:link, a:visited {
+                color: #09F;
+            }
             hr { border: 1px solid #333; }
+            ol, ul {
+                font-size: 1vw;
+                margin-left: 5vw;
+            }
+            li { 
+                vertical-align: middle;
+            }
+            ol, ul.marginTop {
+                margin-top:3vh;
+            }
+            h1 {
+                padding: 1vh;
+            }
+            pre {
+                font-family: monospace;
+                background: #555;
+                margin: 2px;
+                display: inline-block;
+            }
             .logo { height:25vh; margin-top: 10vh;}
             .title { font-size: 8vh; margin-top: 5vh; color: #000; }
             .description { font-size:1.5vh; color: #000; }
             .buttons { margin-top: 15vh; }
-            .anchorButton { 
+            a.anchorButton { 
                 text-decoration: none;
                 margin:0px;
                 border:1px solid #111;
@@ -59,15 +81,28 @@
                 animation-duration: 10s; 
                 animation-iteration-count: infinite;
                 animation-direction: alternate; 
+                padding-bottom: 5vh;
             }
             .shadow {
                 box-shadow: 2vh 2vh 2vh 2vh #111;
             }
-            .caption { background-color: rgba(255,255,255,0.05); padding: 1vh; font-size: 3vw; border-top:1px solid #333; border-bottom: 1px solid #333; }
-            .sectionBlock { margin:2vh; font-size: 1vw;}
+            .caption { 
+                background-color: rgba(255,255,255,0.05); 
+                text-align: center;  
+                padding: 1vh; 
+                font-size: 3vw;
+                border-top:1px solid #333; 
+                border-bottom: 1px solid #333; 
+            }
+            .sectionBlock { margin:2vh auto; font-size: 1vw; width: 50vw; min-width: 1000px; }
+            .sectionWrapper { margin-top: 5vh; }
             .label { font-size: 2vh; }
             .invertedBackground { background: url(background_inverted.png); color:#000 }
-            .inline { display: inline-block; max-width: 40vw; vertical-align: middle; padding: 2vw; font-size: 1.5vw;}
+            .inline { display: inline-block; width: 40%; vertical-align: middle; padding: 2vw; font-size: 1.5vw;}
+            .tip, .optional { color:orange; }
+            .tip:before {
+                content: "💡";
+            }
         </style>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
         <script type="text/javascript">
@@ -107,39 +142,130 @@
         </header>
         <div id="Features" class="section shadow">
             <div class="caption">Features</div>
-            <div class="sectionBlock">
-                <img class="inline" src="screenshots/ss_createbookmark.png">
-                <div class="inline">Bookmark anything that can be selected. <br><br>Select something.<br>Hit a button.<br>Select a bin to place within.<br>Hit 'Enter'.<br>Access anywhere. </div>
-                <hr/>
-            </div>
-            <div class="sectionBlock">
-                <div class="inline">Quickly find any bookmark inside any bin.<br><br> Advanced search allows searching by date or within two dates, filtering by bins, finding various bookmark types and much more!</div>
-                <img class="inline" src="screenshots/ss_findbookmark.png">
-                <hr/>
-            </div>
-            <div class="sectionBlock">
-                <img class="inline" src="screenshots/ss_addFromWindows.png">
-                <div class="inline">Add a bookmark to any folder or file from within windows.</div>
-                <hr/>
-            </div>
-            <div class="sectionBlock">
-                <div class="inline">Quckly preview any bookmark just by hovering the cursor over it.</div>
-                <img class="inline" src="screenshots/ss_previewanything.png">
-                <hr/>
-            </div>
-            <div class="sectionBlock">
-                <img class="inline" src="screenshots/ss_actions.png">
-                <div class="inline">Perform various operations with and over bookmarks.</div>
-            </div>
-            <hr>
-            <div class="sectionBlock" style="margin: 0; padding: 40px; font-size: 1.8vw;">
-                <div>Feature requests are open, head over to the <a href="#MessageMe" class="anchorButton">Message Me</a> section to send a feature request.</div>
+            <div class="sectionWrapper">
+                <div class="sectionBlock">
+                    <img class="inline" src="screenshots/ss_createbookmark.png">
+                    <div class="inline">Bookmark anything that can be selected. <br><br>Access your bookmarks anywhere.<br><br><a href="#HowToCreateBookmark">Learn how to create a bookmark ></a> </div>
+                    <hr/>
+                </div>
+                <div class="sectionBlock">
+                    <div class="inline">Quickly find any bookmark inside any bin.<br><br> Advanced search allows searching by date or within two dates, filtering by bins, finding various bookmark types and much more!<br><br><a href="#HowToFindBookmarks">Learn how to find bookmarks ></a></div>
+                    <img class="inline" src="screenshots/ss_findbookmark.png">
+                    <hr/>
+                </div>
+                <div class="sectionBlock">
+                    <img class="inline" src="screenshots/ss_addFromWindows.png">
+                    <div class="inline">Add a bookmark to any folder or file from within windows.<br><br><a href="#HowToUseWindowsShell">Learn how to bookmark folders and files ></a></div>
+                    <hr/>
+                </div>
+                <div class="sectionBlock">
+                    <div class="inline">Quckly preview any bookmark just by hovering the cursor over it.<br><br><a href="#TipsAndTricks">Tips and tricks when using bookmarks ></a></div>
+                    <img class="inline" src="screenshots/ss_previewanything.png">
+                    <hr/>
+                </div>
+                <div class="sectionBlock">
+                    <img class="inline" src="screenshots/ss_actions.png">
+                    <div class="inline">Perform various operations with and over bookmarks.<br><br><a href="#HowToBookmarkActions">List of available actions with bookmarks ></a></div>
+                </div>
+                <hr>
+                <div class="sectionBlock" style="margin: 0 auto; padding: 40px; font-size: 1.5vw;">
+                    <div>Feature requests are open, head over to the <a href="#MessageMe" class="anchorButton">Message Me</a> section to send a feature request.</div>
+                </div>
             </div>
         </div>
         <div id="UserGuide" class="section">
             <div class="caption">User Guide</div>
             <div class="sectionBlock">
-                Coming Soon!
+                <div class="sectionWrapper">
+                    <hr>
+                    <h1 id="HowToCreateBookmark">Create a bookmark</h1>
+                    <hr>
+                    <ol>
+                        <li>Select some text anywhere inside windows.</li>
+                        <li>Hit <kbd class="kbc-button">⊞WIN</kbd>+<kbd class="kbc-button">CTRL</kbd> at the same time.</li>
+                        <li>Enter a bin path (ex. <pre>music:2020:rock</pre> will put the item inside a bin named "music" then inside a bin named "2020" then inside a bin named "rock").</li>
+                        <li><span class="tip">(Optional)</span> You can edit the contents of the bookmark.</li>
+                        <li><span class="tip">(Tip)</span> If you leave the path blank the bookmark will be automatically be saved into a temporary bin.</li>
+                        <li>Hit <kbd class="kbc-button">↵Enter</kbd> or click "Create".</li>
+                        <li><span class="tip">(Tip)</span> Hit <kbd class="kbc-button">Esc</kbd> or click on another window to cancel the action.</li>
+                    </ol>
+                </div>
+                <div class="sectionWrapper">
+                    <hr>
+                    <h1 id="HowToFindBookmarks">Finding bookmarks</h1>
+                    <hr>
+                    <ol>
+                        <li>Hit <kbd class="kbc-button">⊞WIN</kbd>+<kbd class="kbc-button">Alt</kbd>.</li>
+                        <li>Type a search query.</li>
+                        <li><span class="tip">(Optional)</span> Advanced queries can contain the following flags:
+                            <ul>
+                                <li><pre>-q Some Query</pre></li>
+                                <li><pre>-p literal:path</pre></li>
+                                <li><pre>-d 27.11.2020 01.01.2021</pre></li>
+                                <li><pre>-t text</pre></li>
+                                <li><pre>-a Everything</pre></li>
+                            </ul>
+                        </li>
+                        <li><span class="tip">(Optional)</span> Flag combinations are allowed (ex. <pre>-q youtube -t link -d 22.11.2020</pre> will find all youtube links that were added on 22.11.2020).</li>
+                        <li><span class="tip">(Tip)</span> Hit <kbd class="kbc-button">Esc</kbd> or click on another window to cancel the action.</li>
+                    </ol>
+                </div>
+                <div class="sectionWrapper">
+                    <hr>
+                    <h1 id="HowToUseWindowsShell">How to bookmark folders and files</h1>
+                    <hr>
+                    <ol>
+                        <li>Add Checkmeg to Windows context menu (Admin rights needed).
+                            <ul>
+                                <li>Go to Profile->Actions.</li>
+                                <li>
+                                    Click on the "Add to Windows Context Menu" button  .
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Right click on any file or folder in Windows Explorer.</li>
+                        <li>Go to Checkmeg submenu and choose your desired action.</li>
+                    </ol>
+                </div>
+                <div class="sectionWrapper">
+                    <hr>
+                    <h1 id="TipsAndTricks">Tips and tricks when using bookmarks</h1>
+                    <hr>
+                    <ul class="marginTop">
+                        <li>Hovering over a bookmark will show its contents.</li>
+                        <li>Clicking a bookmark will execute its action.
+                            <ul>
+                                <li>If the bookmark is of type <pre>text/unknown</pre>, the text will be copied to clipboard.</li>
+                                <li>If the bookmark is of type <pre>link</pre>, the link will open in your deafult browser.</li>
+                                <li>If the bookmark is of type <pre>file/folder</pre>, the file/folder will be opened in Windows.</li>
+                            </ul>
+                        </li>
+                        <li>Clicking a bin will scope to that bin.</li>
+                    </ul>
+                </div>
+                <div class="sectionWrapper">
+                    <hr>
+                    <h1 id="HowToBookmarkActions">Available actions with bookmarks</h1>
+                    <hr>
+                    <ul class="marginTop">
+                        <li>Right clicking a bookmark or a bin will show the available actions.</li>
+                        <li>You can view and edit the bookmark by opening the Details window.</li>
+                        <li>When changing a bookmark's path, it will automatically be moved to a new bin.</li>
+                        <li>When changing a bin's path, the bin/bookmark hierarchy beneath the bin will be preserved.</li>
+                        <li>"New Here" will create a new bookmark in the current bin.</li>
+                        <li>"Archive" will move all selected bookmarks/bins to a special bin named "_ARCHIVE".</li>
+                        <li>"Copy Content" will copy the content of the bookmark regardless of the type.</li>
+                        <li>"Copy Path" will copy the bookmark path.</li>
+                        <li>"Copy Add" will add the bookmark content to the current clipboard content.</li>
+                        <li>"Delete" will delete the selected bookmarks.</li>
+                        <li>"Select" will select the current bookmark.</li>
+                        <li>"Select All in Bin" will select all bookmarks in the current bin.</li>
+                        <li>"Select Add All in Bin" will add to the selection all bookmarks in the current bin.</li>
+                        <li>"Deselect All" will deselect everything. This can be also done by clicking somewhere outside the bookmark area.</li>
+                        <li>"Move Selected Here" will move all selected bookmarks to the selected bin</li>
+                        <li>"Change Path" will change a bin's path</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div id="MessageMe" class="section invertedBackground">
