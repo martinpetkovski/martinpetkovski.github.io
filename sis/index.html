@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Саше Ивановски Симулатор</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script>
+		var buffer;
+		$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) {
+			myItems = data.items;
+			console.log(myItems);
+		});
+		
+		var chesticaEden = ["еден", "една", "едно"];
+
+		function getRandomInt(max) {
+		  return Math.floor(Math.random() * Math.floor(max));
+		}
+
+		function GenerateRod()
+		{
+			return getRandomInt(3);
+		}
+
+		function Generate(rod)
+		{
+			var imenkaTxt = "";
+			var epitetTxt = "";
+			
+			while(imenkaTxt === "")
+			{
+				var rndImenka = getRandomInt(imenki.length-1) + 1;
+				imenkaTxt = imenki[rndImenka][rod];
+			}
+			
+			while(epitetTxt === "")
+			{
+				var rndEpitet = getRandomInt(epiteti.length-1) + 1;
+				epitetTxt = epiteti[rndEpitet][rod];
+			}
+			
+			return imenkaTxt + " " + chesticaEden[rod] + " " + epitetTxt;
+		}
+
+		function GenerateN(num, rod)
+		{
+			var retVal = "";
+			for(i=0;i<num;i++)
+			{
+				now = i-1;
+				if(now!==num)
+				{
+					retVal += Generate(rod) + ", ";
+				}
+				else
+				{
+					retVal += Generate(rod);
+				}
+			}
+			
+			retVal = retVal.substr(0, retVal.length-2);
+			
+			return retVal;
+		}
+		
+		function CyrlToLat(str)
+		{
+			var retVal = "";
+			for(i=0;i<str.length;i++)
+			{
+				if(str[i] === 'а') retVal += 'a'; 
+				if(str[i] === 'б') retVal += 'b'; 
+				if(str[i] === 'в') retVal += 'v'; 
+				if(str[i] === 'г') retVal += 'g'; 
+				if(str[i] === 'д') retVal += 'd'; 
+				if(str[i] === 'ѓ') retVal += 'gj'; 
+				if(str[i] === 'е') retVal += 'e'; 
+				if(str[i] === 'ж') retVal += 'z'; 
+				if(str[i] === 'з') retVal += 'z'; 
+				if(str[i] === 'ѕ') retVal += 'dz'; 
+				if(str[i] === 'и') retVal += 'i'; 
+				if(str[i] === 'ј') retVal += 'j'; 
+				if(str[i] === 'к') retVal += 'k'; 
+				if(str[i] === 'л') retVal += 'l'; 
+				if(str[i] === 'љ') retVal += 'lj'; 
+				if(str[i] === 'м') retVal += 'm'; 
+				if(str[i] === 'н') retVal += 'n'; 
+				if(str[i] === 'њ') retVal += 'nj'; 
+				if(str[i] === 'о') retVal += 'o'; 
+				if(str[i] === 'п') retVal += 'p'; 
+				if(str[i] === 'р') retVal += 'r'; 
+				if(str[i] === 'с') retVal += 's'; 
+				if(str[i] === 'т') retVal += 't'; 
+				if(str[i] === 'ќ') retVal += 'k'; 
+				if(str[i] === 'у') retVal += 'u'; 
+				if(str[i] === 'ф') retVal += 'f'; 
+				if(str[i] === 'х') retVal += 'h'; 
+				if(str[i] === 'ц') retVal += 'c'; 
+				if(str[i] === 'ч') retVal += 'c'; 
+				if(str[i] === 'џ') retVal += 'dj'; 
+				if(str[i] === 'ш') retVal += 's'; 
+				if(str[i] === ' ') retVal += ' ';
+				if(str[i] === ',') retVal += ',';
+			}
+			
+			return retVal;
+		}
+	</script>
+</head>
+<body>
+	<div class="title">Саше Ивановски Симулатор</div>
+	<div class="options"><span>Итерации </span><input type="text" /></div>
+	<button onClick="Generate()">Еби му мајката!</button>
+</body>
+</html>
