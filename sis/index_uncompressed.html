@@ -6,23 +6,11 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
 		var buffer;
+		$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) {
+			myItems = data.items;
+			console.log(myItems);
+		});
 		
-		$.ajax({
-			async:false,
-			url: 'https:\\www.najjak.com\\sasheivanovskisimulator\\imenki.csv',
-			dataType: 'text',
-			success: function(data) 
-			{
-				buffer = data;
-			}
-        });
-		console.log("buffer: " + buffer);
-		
-		var imenki = csv.toArrays(buffer);
-
-		buffer = fs.readFileSync(path + "\\epiteti.csv", 'utf-8');
-		var epiteti = csv.toArrays(buffer);
-
 		var chesticaEden = ["еден", "една", "едно"];
 
 		function getRandomInt(max) {
