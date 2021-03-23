@@ -14,6 +14,7 @@
 				$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) 
 				{
 					imenki = data;
+					Render();
 				});
 			});
 		});
@@ -114,26 +115,37 @@
 		
 		function Render()
 		{
-			var text = GenerateN($("#iteracii").val(), CyrlToLat($("#rod").val()));
+			getParameter = (key) => { 
+				address = window.location.search;
+				parameterList = new URLSearchParams(address);
+				return parameterList.get(key);
+			} 
+		  
+			var num = getParameter("n");
+			if(num == null)
+				num = 1;
+				
+			var rod = getParameter("r");
+			if(rod == null)
+				rod = "toj";
+				
+			var lat = getParameter("l");
+			if(lat == null)
+				lat = false;
+				
+			var caps = getParameter("c");
+			if(caps == null)
+				caps = false;
 			
-			if($("#latinica").prop("checked"))
+			var text = GenerateN(num, rod);
+			
+			if(lat === "true" || lat === "1")
 				text = CyrlToLat(text);
 				
-			if($("#capslock").prop("checked"))
+			if(caps === "true" || caps === "1")
 				text = text.toUpperCase();
 
 			$("#result").html(text);
-		}
-		
-		function Copy() {
-		  var copyText = $("#result").html();
-
-		  navigator.clipboard.writeText(copyText);
-		} 
-		
-		function GoToTemplate()
-		{
-			window.location = "https:\\www.najjak.com\sis\rnd.html?n=" + $("#iteracii").val() + "&r=" + CyrlToLat($("#rod").val()) + "&l=" + $("#latinica").prop("checked") + "&c=" + $("#capslock").prop("checked");
 		}
 	</script>
 	<style>
@@ -167,26 +179,11 @@
 	
 	button { padding: 20px; font-size:30px; min-width:300px; background-color: red; color: white; }
 	
-	#result { font-size: 3vw; color: #F00; padding:40px; }
+	#result { font-size: 3vw; color: #F00; margin-top:42vh }
 	.footer { font-size:10px; }
 	</style>
 </head>
 <body>
-	
-	<div class="header">
-		<div class="logo"><img src="sashe_ivanovski.png" height="300px" /></div>
-		<div class="title">SASHE IVANOVSKI SIMULATOR</div>
-	</div>
-	<div class="mainContainer">
-		<div class="options"><span>Колку пати </span><input type="number" id="iteracii" min="1" max="5"/></div>
-		<div class="options"><span>Субјектот е </span><select id="rod"><option>тој</option><option>таа</option><option>тоа</option></select></div>
-		<div class="options"><span>Со дерење</span><input type="checkbox" id="capslock"/></div>
-		<div class="options"><span>Na latinica</span><input type="checkbox" id="latinica"/></div>
-		<button onclick="Render()">Дај</button>
-		<button onclick="Copy()" style="background:#09F;">Копирај</button>
-		<button onclick="GoToTemplate()" style="background:#09F;">Темплејт</button>
-	</div>
 	<div id="result"></div>
-	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=BiqDZlAZygU">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
 </body>
 </html>
