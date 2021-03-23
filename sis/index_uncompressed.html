@@ -5,13 +5,20 @@
 	<title>Саше Ивановски Симулатор</title>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
-		var buffer;
-		$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) {
-			myItems = data.items;
-			console.log(myItems);
+		var imenki, epiteti;
+
+		$(document).ready(function()
+		{
+			$.getJSON('https://www.najjak.com/sis/epiteti.json', function(data) {
+				epiteti = data;
+				$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) 
+				{
+					imenki = data;
+				});
+			});
 		});
 		
-		var chesticaEden = ["еден", "една", "едно"];
+		var chesticaEden = [{"toj":"еден","taa":"една","toa":"едно"}];
 
 		function getRandomInt(max) {
 		  return Math.floor(Math.random() * Math.floor(max));
@@ -38,8 +45,7 @@
 				var rndEpitet = getRandomInt(epiteti.length-1) + 1;
 				epitetTxt = epiteti[rndEpitet][rod];
 			}
-			
-			return imenkaTxt + " " + chesticaEden[rod] + " " + epitetTxt;
+			return imenkaTxt + " " + chesticaEden[0][rod] + " " + epitetTxt;
 		}
 
 		function GenerateN(num, rod)
@@ -105,11 +111,76 @@
 			
 			return retVal;
 		}
+		
+		function Render()
+		{
+			var text = GenerateN($("#iteracii").val(), CyrlToLat($("#rod").val()));
+			
+			if($("#latinica").prop("checked"))
+				text = CyrlToLat(text);
+				
+			if($("#capslock").prop("checked"))
+				text = text.toUpperCase();
+
+			$("#result").html(text);
+		}
+		
+		function Copy() {
+		  var copyText = $("#result").html();
+
+		  navigator.clipboard.writeText(copyText);
+		} 
 	</script>
+	<style>
+	@font-face{
+	  font-family: "Pantera";
+	  src: url("pantera.ttf") format("truetype");
+	}
+	* { margin:0; padding:0; text-align: center; background-color:#FAFAFA; }
+	.header {
+		margin-top:30px;
+		font-family:Pantera;
+		font-size:6vw;
+	}
+	.title, .logo { display:inline-block; vertical-align: middle;}
+	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:2vw; padding: 20px; }
+	input, select, option { font-size:2vw; }
+	input[type='checkbox'] {
+	  vertical-align: middle;
+	  outline: none;
+	  font-size: inherit;
+	  cursor: pointer;
+	  width: 1.0em;
+	  height: 1.0em;
+	  background: white;
+	  border-radius: 0.25em;
+	  border: 0.125em solid #555;
+	  position: relative;
+	}
+	
+	.mainContainer { border:1px #333 solid; background-color:#CCC; }
+	
+	button { padding: 20px; font-size:30px; min-width:300px; background-color: red; color: white; }
+	
+	#result { font-size: 3vw; color: #F00; padding:40px; }
+	.footer { font-size:10px; }
+	</style>
 </head>
 <body>
-	<div class="title">Саше Ивановски Симулатор</div>
-	<div class="options"><span>Итерации </span><input type="text" /></div>
-	<button onClick="Generate()">Еби му мајката!</button>
+	
+	<div class="header">
+		<div class="logo"><img src="sashe_ivanovski.png" height="300px" /></div>
+		<div class="title">SASHE IVANOVSKI SIMULATOR</div>
+	</div>
+	<div class="mainContainer">
+		<div class="options"><span>Колку пати </span><input type="number" id="iteracii" min="1" max="5"/></div>
+		<div class="options"><span>Субјектот е </span><select id="rod"><option>тој</option><option>таа</option><option>тоа</option></select></div>
+		<div class="options"><span>Со дерење</span><input type="checkbox" id="capslock"/></div>
+		<div class="options"><span>Na latinica</span><input type="checkbox" id="latinica"/></div>
+		<button onclick="Render()">Дај</button>
+		<button onclick="Copy()" style="background:#09F;">Копирај</button>
+	</div>
+	<div id="result"></div>
+	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=BiqDZlAZygU">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
 </body>
 </html>
