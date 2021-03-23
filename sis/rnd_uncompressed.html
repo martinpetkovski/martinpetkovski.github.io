@@ -113,37 +113,50 @@
 			return retVal;
 		}
 		
+		function GetParameter(key)
+		{ 
+			address = window.location.search;
+			parameterList = new URLSearchParams(address);
+			return parameterList.get(key);
+		} 
+		
 		function Render()
 		{
-			getParameter = (key) => { 
-				address = window.location.search;
-				parameterList = new URLSearchParams(address);
-				return parameterList.get(key);
-			} 
-		  
-			var num = getParameter("n");
+			num = GetParameter("n");
 			if(num == null)
+			{
 				num = 1;
+			}
 				
-			var rod = getParameter("r");
+			rod = GetParameter("r");
 			if(rod == null)
+			{
 				rod = "toj";
+			}
 				
-			var lat = getParameter("l");
+			lat = GetParameter("l");
 			if(lat == null)
+			{
 				lat = false;
+			}
 				
-			var caps = getParameter("c");
+			caps = GetParameter("c");
 			if(caps == null)
+			{
 				caps = false;
+			}
 			
-			var text = GenerateN(num, rod);
+			text = GenerateN(num, rod);
 			
 			if(lat === "true" || lat === "1")
+			{
 				text = CyrlToLat(text);
+			}
 				
 			if(caps === "true" || caps === "1")
+			{
 				text = text.toUpperCase();
+			}
 
 			$("#result").html(text);
 		}
