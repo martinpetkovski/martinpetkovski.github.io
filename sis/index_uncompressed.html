@@ -133,7 +133,7 @@
 		
 		function GoToTemplate()
 		{
-			window.location = "https:\\www.najjak.com\sis\rnd.html?n=" + $("#iteracii").val() + "&r=" + CyrlToLat($("#rod").val()) + "&l=" + $("#latinica").prop("checked") + "&c=" + $("#capslock").prop("checked");
+			window.location = "https:\\www.najjak.com\\sis\\rnd.html?n=" + $("#iteracii").val() + "&r=" + CyrlToLat($("#rod").val()) + "&l=" + $("#latinica").prop("checked") + "&c=" + $("#capslock").prop("checked");
 		}
 	</script>
 	<style>
@@ -147,6 +147,7 @@
 		font-family:Pantera;
 		font-size:6vw;
 	}
+	.title { margin-left:20px; }
 	.title, .logo { display:inline-block; vertical-align: middle;}
 	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:2vw; padding: 20px; }
 	input, select, option { font-size:2vw; }
@@ -178,7 +179,7 @@
 		<div class="title">SASHE IVANOVSKI SIMULATOR</div>
 	</div>
 	<div class="mainContainer">
-		<div class="options"><span>Колку пати </span><input type="number" id="iteracii" min="1" max="5"/></div>
+		<div class="options"><span>Колку пати </span><input type="number" id="iteracii" min="1" max="5" value="1"/></div>
 		<div class="options"><span>Субјектот е </span><select id="rod"><option>тој</option><option>таа</option><option>тоа</option></select></div>
 		<div class="options"><span>Со дерење</span><input type="checkbox" id="capslock"/></div>
 		<div class="options"><span>Na latinica</span><input type="checkbox" id="latinica"/></div>
