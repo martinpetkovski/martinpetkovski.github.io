@@ -1,60 +1,61 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf8">
-	<title>Martin Petkovski</title>
-
-	<style>
-		body { padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; background-color: #0E0E0E; color: #FFF;  }
-		a { color:inherit; font-size: 60px; text-decoration: unset; display: block;}
-		hr { border: 0px; border-top: 1px dashed #FFF; }
-		a:hover { color: inherit; text-decoration: line-through; }
-		a:active { color: inherit; }
-		a:visited { color: inherit; }
-		.site-title { text-align: center; padding:30px 0px; font-size: 12px; background-color: #080808; }
-		.super-title { position: relative; left:-140px; }
-		.mp { position: relative; left: 0px; top:0px; font-size: 60px; }
-		.sub-title { position: relative; display: inline-block; left:116px; top: -8px; }
-		.sub-sub-title { margin-top: 50px; }
-		.special-links { margin: 80px 0px; }
-		.listening { font-size: 12px; text-align: center; margin:50px 0px; }
-	</style>
-
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-	<script>
+	<head>
+		<title>najjak.com</title>
+		<meta charset="utf-8" />
 		
-		apiKey = "a9bf6ce80aefc721551e173736eb4690";
-
-		$(document).ready(function(){
-			$.ajax({url: "http://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=martinpetkovski&api_key=" + apiKey + "&format=json", success: function(result){
-				$(".listening").append('Lately I\'ve been listening to a lot of <a href="https://www.youtube.com/results?search_query=' + result.weeklytrackchart.track[0].artist["#text"] + ' ' + result.weeklytrackchart.track[0].name + '">' + result.weeklytrackchart.track[0].artist["#text"] + '</a> and I listened to this one song called <a href="' + result.weeklytrackchart.track[0].url + '">' + result.weeklytrackchart.track[0].name + '</a> a whopping <font color="red">' + result.weeklytrackchart.track[0].playcount + '</font> times in the past week.');
-
-				console.log(result.weeklytrackchart.track[0]);
-			}});
-		});
-	</script>
-</head>
-
-<body>
-	<div class="header">
-		<div class="site-title">
-			<div class="super-title">created and administered by</div>
-			<div class="mp">Martin Petkovski</div>
-			<div class="sub-title">the one and the only genuine NAJJAK</div>
-			<div class="sub-sub-title">if you want to win you mustn't lose</div>
-		</div>
-		<hr/>
-		<div class="special-links">
-			<a href="music" class="btn" style="margin-left:30px;">🎵 <font color="#09F">musi</font>c<font color="yellow">ing</font></a>
-			<a href="photos" class="btn" style="margin-left:100px;">📷 <font color="#0F0">photo</font><font color="#F00">mann</font>ing</a>
-			<a href="jobbing.html" class="btn" style="margin-left:130px;">💼 <font color="brown">job</font>bing</a>
+		<style>
+			* { margin:0; padding:0; font-family: Arial Black, Arial; }
+			body {
+				background-color:#111;
+				padding:30px;
+			}
 			
-			<a href="other.html" class="btn" style="margin-left:300px;">☄️ wormhole<font color="grey">ing</font></a>
-
+			#title {
+				font-size:3vw;
+				color:red;
+				margin-bottom:10px;
+			}
+			
+			#navigation {
+				margin-left:-10px;
+			}
+			
+			a:link, a:visited {
+				color: #09F;
+				padding:10px;
+				margin-right:10px;
+				text-decoration:none;
+			}
+			
+			a:hover {
+				padding:9px;
+				color: #9EF;
+				border: 1px solid #06A;
+			}
+			
+			a:active {
+				color: #F00;
+				border: 1px solid #F00;
+			}
+			
+			#contact { 
+				color:#AAA;
+				font-size:1vw;
+				margin-top:20px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div id="title">najjak.com</div>
+		<div id="navigation">
+			<a href="checkmeg\index.html">checkmeg</a>
+			<a href="sis\index.html">sashe ivanovski simulator</a>
+			<a href="xtoolkit\docs\index.html">xtoolkit</a>
+			<a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">youtube</a>
+			<a href="https://twitter.com/OficialZaev">twitter</a>
 		</div>
-		<hr/>
-		<div class="listening"></div>
-		<hr/>
-	</div>
-</body>
+		<div id="contact">contact deeeeelay@gmail.com</div>
+	</body>
 </html>
