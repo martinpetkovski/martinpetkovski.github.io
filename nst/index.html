@@ -3,20 +3,8 @@
 	<head>
 		<meta charset="utf8">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-		 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 		
+		 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 	 
 		<style>
-			html,
-			body {
-			  display: flex;
-			  align-items: stretch;
-			  align-content: stretch;
-			  width: 100%;
-			  height: 100%;
-			  margin:0;
-			  padding:0;
-			  background: #fff;
-			}
-
 			#canvas {
 			  display: block;
 			  position: fixed;
@@ -28,16 +16,18 @@
 			
 			* { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; }
 			body { background-color: #FFF; }
-			div { z-index:2; }
+			img { width: 100%; }
+			div { position:relative; z-index:10; }
 			#container { margin-top:30px; margin-left:auto; margin-right:auto; width: 600px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; text-align:justify; }
 			#title { font-size:34px; margin-bottom:12px; }
 			#caption { background-color: #0000FF0A; padding:40px; }
-			.section { padding: 20px;  }
+			.section { padding: 20px; }
 			a.anchorButton { color: #FFF; background-color: #0A0; padding: 10px 30px; text-decoration:none; border-right:3px solid #000; border-bottom:3px solid #000; border-radius:4px; margin:5px; }
 			.orange { background-color:#FFA500 !important; color: #000 !important; }
 			a:visited.anchorButton { color: #FFF; }
 			a:active.anchorButton { position:relative; left:3px; top:3px; border:none; margin-right:8px; }
 			.section .caption { font-size:30px; }
+			.content { margin-top:30px; } 
 		</style>
 	</head>
 	<body>
@@ -73,7 +63,7 @@
 				
 				for(key in sections)
 				{
-					renderData += "<div class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
+					renderData += "<div id=\"" + sections[key].anchor + "\" class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
 				}
 			
 				$("#generated").html(renderData);
@@ -101,7 +91,6 @@
 			//get DPI
 			let dpi = window.devicePixelRatio || 1;
 			context.scale(dpi, dpi);
-			console.log(dpi);
 
 			function fix_dpi() {
 			//get CSS height
