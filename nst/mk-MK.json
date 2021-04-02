@@ -1,0 +1,14 @@
+{
+  "title": "Алатка за нелинеарни системи",
+  "intro": "Алатка за пишување на приказни, раскази, поеми и останати форми на текст на разгранлив начин кој не следи само еден линеарен начин на кој нешта кои можат да се случат. <br><br>Состојбите меѓусебно можат да содржат зависности како: <br><br>X може да се случи ако Y веќе се случило<br> X може да се случи ако и Y може да се случи<br> X може да се случи ако имало некогаш можност да се случи Y<br> X може да се случи ако Y се случува во моментот. <br><br><br><br>Алатката може бесплатно да се симне на следниот <a href=\"https://www.najjak.com/nst/NST.zip\">линк</a>.",
+  "sections": {
+    "section1": {
+      "caption": "Lorem ipsum",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesqueconsequat cursus mauris dapibus interdum. Praesent neque urna, dictumnon iaculis a, elementum eget justo. In maximus scelerisque ipsum. Duisnon ante sed magna porttitor varius. Donec malesuada non magna egetfermentum. Sed erat purus, euismod nec vehicula eu, fringilla ac ligula.Nullam non quam nibh. Fusce sagittis hendrerit nulla, ac ultricies nuncvolutpat ac. Nullam fermentum lacus et erat lacinia suscipit.Pellentesque quis nulla lobortis, convallis elit ut, pellentesquelibero. Nulla cursus, purus porttitor tempor gravida, sapien velithendrerit nunc, at ornare quam odio vitae ante. Maecenas placeratultricies massa a sodales. Vestibulum placerat euismod ornare. \n\nPraesent vitae massa molestie, convallis diam quis, sagittis metus.Vestibulum convallis est ac risus mattis, ac malesuada lorem congue.Pellentesque pretium urna in mi aliquet tristique. Donec iaculis lacusat posuere iaculis. Donec luctus sapien a massa tincidunt, vel ornarevelit ullamcorper. Integer hendrerit eget dui vel porta. Suspendisse acelit ante."
+    },
+    "section2": {
+      "caption": "Lorem sfasdi",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Pellentesqueconsequat cursus mauris dapibus interdum. Praesent nequeurna, dictumnon iaculis a, elementum eget justo. In maximus scelerisqueipsum. Duisnon ante sed magna porttitor varius. Donec malesuada nonmagna egetfermentum. Sed erat purus, euismod nec vehicula eu, fringillaac ligula.Nullam non quam nibh. Fusce sagittis hendrerit nulla, acultricies nuncvolutpat ac. Nullare.\n\nPraesent vitae massa molestie, convallis diam quis, sagittismetus.Vestibulum convallis est ac risus mattis, ac malesuada loremcongue.Pellentesque pretium urna in mi aliquet tristique. Donec iaculislacusat posuere iaculis. Donec luctus sapien a massa tincidunt, velornarevelit ullamcorper. Integer hendrerit eget dui vel porta.Suspendisse acelit ante."
+    }
+  }
+}
