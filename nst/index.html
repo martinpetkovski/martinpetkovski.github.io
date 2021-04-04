@@ -24,20 +24,22 @@
 			.notice:before { content: "⚠️"; margin-right: 10px; }
 			.menuPath { display:inline-block; background-color: #00F2; padding: 2px; margin: 0px 0px; }
 			.menuPath:before { content: "🖥️"; margin-right: 10px; }
-			#container { margin-top:30px; margin-left:auto; margin-right:auto; width:90%; max-width: 600px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; }
+			#container { margin-top:30px; margin-left:auto; margin-right:auto; width:90%; max-width: 710px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; }
 			#title { font-size:34px; margin-bottom:12px; }
 			#caption { background-color: #0000FF0A; padding:40px; }
 			.section { padding: 20px; }
-			a.anchorButton { color: #FFF; background-color: #0A0; padding: 10px 30px; text-decoration:none; border-right:3px solid #000; border-bottom:3px solid #555; border-radius:4px; margin:5px; }
+			a.anchorButton { display:inline-block; color: #FFF; background-color: #0A0; padding: 10px 30px; text-decoration:none; border-right:3px solid #000; border-bottom:3px solid #555; border-radius:4px; margin:0px 5px; }
 			.orange { background-color:#FFA500 !important; color: #000 !important; }
+			.purple { background-color:#369 !important; color: #FFF !important; padding: 0px 10px !important; margin: 10px !important; border-color: #000 !important; }
 			.compact { padding:0px 10px !important; }
 			a:visited.anchorButton { color: #FFF; }
-			a:active.anchorButton { position:relative; left:3px; top:3px; border:none; margin-right:8px; }
+			a:active.anchorButton { position:relative; left:3px; top:3px; border:none; margin-right:8px; margin-bottom:3px; }
 			.section .caption { font-size:30px; }
 			.content { margin-top:30px; } 
 			.script { background-color: #444; color:#EEE; font-family:Consolas, monospace; display:inline-block; padding:1px 6px; margin: 2px 0px; }
 			.script .highlight { color: #4cc097;  font-family:inherit; }
 			.script .highlightBlue { color: #9CF; font-family: inherit; }
+			#guide { line-height:60px; text-align:center; } 
 		</style>
 	</head>
 	<body>
@@ -46,6 +48,11 @@
 			<div id="caption">
 				<div id="title"></div>
 				<div id="intro"></div>
+			</div>
+			<div class="section">
+				<div class="caption guide"></div>
+				<hr>
+				<div id="guide"></div>
 			</div>
 			<div id="generated">
 			</div>
@@ -70,14 +77,19 @@
 				var renderData = "";
 				$("#title").html(data["title"]);
 				$("#intro").html(data["intro"]);
+				$(".guide").html(data["guideTitle"]);
 				
+				var guide = "";
 				var sections = data["sections"];
 				
 				for(key in sections)
-				{
+				{					
+					guide += "<a href=\"#"+ sections[key].anchor + "\" class=\"anchorButton purple\">" + sections[key].caption + "</a> ";
+					
 					renderData += "<div id=\"" + sections[key].anchor + "\" class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
 				}
-			
+				
+				$("#guide").html(guide);
 				$("#generated").html(renderData);
 			}
 			</script>
