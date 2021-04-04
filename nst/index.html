@@ -61,7 +61,9 @@
 			});
 			
 			function Render()
-			{	
+			{
+				document.title = data["title"];
+			
 				var renderData = "";
 				$("#title").html(data["title"]);
 				$("#intro").html(data["intro"]);
