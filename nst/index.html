@@ -16,7 +16,7 @@
 			
 			* { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; }
 			body { background-color: #FFF; }
-			img { width: 100%; }
+			img { max-width: 100%; }
 			div { position:relative; z-index:10; }
 			.note { background-color: #00F2; padding: 10px; margin: 30px 0px; }
 			.note:before { content: "ℹ️"; margin-right: 10px; }
@@ -24,7 +24,7 @@
 			.notice:before { content: "⚠️"; margin-right: 10px; }
 			.menuPath { display:inline-block; background-color: #00F2; padding: 2px; margin: 0px 0px; }
 			.menuPath:before { content: "🖥️"; margin-right: 10px; }
-			#container { margin-top:30px; margin-left:auto; margin-right:auto; width: 600px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; }
+			#container { margin-top:30px; margin-left:auto; margin-right:auto; width:90%; max-width: 600px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; }
 			#title { font-size:34px; margin-bottom:12px; }
 			#caption { background-color: #0000FF0A; padding:40px; }
 			.section { padding: 20px; }
@@ -35,6 +35,9 @@
 			a:active.anchorButton { position:relative; left:3px; top:3px; border:none; margin-right:8px; }
 			.section .caption { font-size:30px; }
 			.content { margin-top:30px; } 
+			.script { background-color: #444; color:#EEE; font-family:Consolas, monospace; display:inline-block; padding:1px 6px; margin: 2px 0px; }
+			.script .highlight { color: #4cc097;  font-family:inherit; }
+			.script .highlightBlue { color: #9CF; font-family: inherit; }
 		</style>
 	</head>
 	<body>
