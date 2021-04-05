@@ -18,6 +18,7 @@
 			body { background-color: #FFF; }
 			img { max-width: 100%; }
 			div { position:relative; z-index:10; }
+			input[type="text"] { width: 96%; padding:2%; font-size:24px; }
 			.note { background-color: #00F2; padding: 10px; margin: 30px 0px; }
 			.note:before { content: "ℹ️"; margin-right: 10px; }
 			.notice { background-color: #FA04; padding: 10px; margin: 30px 0px; }
@@ -54,6 +55,9 @@
 				<hr>
 				<div id="guide"></div>
 			</div>
+			<div class="section">
+				<input type="text" id="txtfilter" onkeyup="Render()"/>
+			</div>
 			<div id="generated">
 			</div>
 		</div>
@@ -71,22 +75,27 @@
 			});
 			
 			function Render()
-			{
+			{			
 				document.title = data["title"];
 			
 				var renderData = "";
 				$("#title").html(data["caption"]);
 				$("#intro").html(data["intro"]);
 				$(".guide").html(data["guideTitle"]);
+				$("#txtfilter").attr("placeholder", data["filterTitle"]);
 				
 				var guide = "";
 				var sections = data["sections"];
+				var filterText = $("#txtfilter").val();
 				
 				for(key in sections)
 				{					
 					guide += "<a href=\"#"+ sections[key].anchor + "\" class=\"anchorButton purple\">" + sections[key].caption + "</a> ";
 					
-					renderData += "<div id=\"" + sections[key].anchor + "\" class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
+					if(filterText === "" || sections[key].content.search(filterText) !== -1)
+					{
+						renderData += "<div id=\"" + sections[key].anchor + "\" class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
+					}
 				}
 				
 				$("#guide").html(guide);
