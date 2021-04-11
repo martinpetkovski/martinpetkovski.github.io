@@ -86,11 +86,30 @@
 	</body>
 	
 	<script>
+			function GetUrlParams() {
+				var vars = {};
+				var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+					vars[key] = value;
+				});
+				return vars;
+			}
+	
 			var data;
 			
 			$(document).ready(function()
 			{
-				$.getJSON('mk-MK.json', function(d) {
+				var lang = GetUrlParams()['lang'];
+				var resLang = "en-US";
+				
+				if(lang !== "undefined")
+				{				
+					switch(lang)
+					{
+						case "mk": resLang="mk-MK"; break;
+					}
+				}
+				
+				$.getJSON(resLang + '.json', function(d) {
 					data = d;
 					Render();
 				});
