@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'UniSans';
+    src: url('resources/uni-sans.otf');
+}
+
+@font-face {
+    font-family: 'Rektec';
+    src: url('resources/Rektec.otf');
+}
+
+@font-face {
+    font-family: 'FontAwesome5Brands';
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/webfonts/fa-brands-400.ttf');
+}
+
+@font-face {
+    font-family: 'FontAwesome5';
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf');
+}
+
+* { padding:0; margin:0; font-family: 'Roboto', FontAwesome5, FontAwesome5Brands, sans-serif; }
+body { background-color: #121a1d; }
+#header { background-color:#212e37; padding:10px; }
+#header img { width: 96px; }
+#wrapper { margin: 0 auto; width: 40vw; }
+.nst { font-family: 'Rektec', Arial, Verdana; margin-left:2vw; color: #fff; font-size:64px; }
+.title { font-family: 'UniSans', Arial, Verdana; display: inline-block; color:#fff; font-size:16px; margin-left:2vw;}
+.section { position:relative; left:0px; font-family: 'UniSans', FontAwesome5, FontAwesome5Brands, Arial, Verdana; font-size:2vw; padding: 20px; margin:20px 0px; background-color:#212e37; color:#fff; transition: left 0.5s ease-out, box-shadow 0.3s ease-out; box-shadow: 0px 0px 0px #000A;}
+.section:hover { cursor:pointer; transition: left 0.5s ease-out, box-shadow 0.3s ease-out; left: 20px; box-shadow: 10px 10px 20px #000A;}
+.section:active { left: 0px; box-shadow:0px 0px 0px #000; transition: 0.01s; }
+.page { height: 100vh; }
+.button { 
+	background: rgb(33,81,104);
+	background: linear-gradient(180deg, rgba(33,81,104,1) 0%, rgba(28,57,73,1) 100%);
+	color: #fff;
+	border: thin solid #6666;
+	border-radius:4px;
+	padding: 10px;
+	display:inline-block;
+}
+
+.button:hover { 
+	cursor: pointer;
+}
+
+.button:active { 
+	background: rgb(33,81,104); 
+	background: linear-gradient(0deg, rgba(33,81,104,1) 0%, rgba(28,57,73,1) 100%);
+}
+
+a, a:visited, a:active { text-decoration: none; color: #FFF; }
+
+b { text-shadow: 0px 0px 20px #000; }
+
+#getOnSteam {
+	font-size: 28px;
+	margin-left: 100px;
+}
+
+#landingSection {
+	color: #FFF;
+	padding-top:20px;
+	font-size: 2vw;
+}

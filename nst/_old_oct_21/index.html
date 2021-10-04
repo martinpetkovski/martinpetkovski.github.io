@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf8">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet"> 	 
+		<style>
+			#canvas {
+			  display: block;
+			  position: fixed;
+			  width: 100%;
+			  height: 100%;
+			  margin: 0 auto;
+			  z-index:1;
+			}
+			
+			.kbc-button {
+				font-size: inherit;
+				line-height: inherit;
+				margin: .25rem .25rem .4375rem;
+				padding: .1rem .4rem;
+				box-shadow: 0 0 #d9d9d9,0 0 #d9d9d9,0 1px #d9d9d9,0 2px #d9d9d9,0 3px #d9d9d9,0 4px #d9d9d9,0 5px #d9d9d9,2px 2.5px 4px #adb5bd,0 -1px 2.5px #adb5bd;
+				background-color: #FFF;
+				color: #343a40;
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+				border: 1px solid #e6e6e6;
+				border-radius: .25rem;
+				display: inline-block;
+				font-family: SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+				font-weight: 400;
+				text-align: left;
+				transform: translateZ(5px);
+				transform-style: preserve-3d;
+				transition: all .25s cubic-bezier(.2,1,.2,1);
+			}			
+
+			
+			* { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; }
+			body { background-color: #FFF; }
+			img { max-width: 100%; }
+			div { position:relative; z-index:10; }
+			a:link, a:visited { text-decoration: none; }
+			input[type="text"] { width: 96%; padding:2%; font-size:24px; }
+			.note { background-color: #00F2; padding: 10px; margin: 30px 0px; }
+			.note:before { content: "ℹ️"; margin-right: 10px; }
+			.notice { background-color: #FA04; padding: 10px; margin: 30px 0px; }
+			.notice:before { content: "⚠️"; margin-right: 10px; }
+			.menuPath { display:inline-block; background-color: #00F2; padding: 2px; margin: 0px 0px; }
+			.menuPath:before { content: "🖥️"; margin-right: 10px; }
+			#container { margin-top:30px; margin-left:auto; margin-right:auto; width:90%; max-width: 710px; box-shadow:0px 0px 50px 0px #EEF; background-color: #FAFFFFEE; }
+			#title { font-size:34px; margin-bottom:12px; }
+			#caption { background-color: #0000FF0A; padding:40px; }
+			.section { padding: 20px; }
+			a.anchorButton { display:inline-block; color: #FFF; background-color: #0A0; padding: 10px 30px; text-decoration:none; border-right:3px solid #000; border-bottom:3px solid #555; border-radius:4px; margin:0px 5px; }
+			.orange { background-color:#FFA500 !important; color: #000 !important; }
+			.purple { background-color:#369 !important; color: #FFF !important; padding: 0px 10px !important; margin: 10px !important; border-color: #000 !important; }
+			.compact { padding:0px 10px !important; }
+			a:visited.anchorButton { color: #FFF; }
+			a:active.anchorButton { position:relative; left:3px; top:3px; border:none; margin-right:8px; margin-bottom:3px; }
+			.section .caption { font-size:30px; }
+			.content { margin-top:30px; } 
+			.script { background-color: #444; color:#EEE; font-family:Consolas, monospace; display:inline-block; padding:1px 6px; margin: 2px 0px; }
+			.script .highlight { color: #4cc097;  font-family:inherit; }
+			.script .highlightBlue { color: #9CF; font-family: inherit; }
+			#guide { line-height:60px; text-align:center; }
+			#lang { position: absolute; right: 10px; font-size:24px; z-index:14; }
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<div id="container">
+			<div id="lang"><a href="?lang=en">🇺🇸</a> <a href="?lang=mk">🇲🇰</a></div>
+			<div id="caption">
+				<div id="title"></div>
+				<div id="intro"></div>
+			</div>
+			<div class="section">
+				<div class="caption guide"></div>
+				<hr>
+				<div id="guide"></div>
+			</div>
+			<div class="section">
+				<input type="text" id="txtfilter" onkeyup="Render()"/>
+			</div>
+			<div id="generated">
+			</div>
+		</div>
+	</body>
+	
+	<script>
+			function GetUrlParams() {
+				var vars = {};
+				var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+					vars[key] = value;
+				});
+				return vars;
+			}
+	
+			var data;
+			
+			$(document).ready(function()
+			{
+				var lang = GetUrlParams()['lang'];
+				var resLang = "en-US";
+				
+				if(lang !== "undefined")
+				{				
+					switch(lang)
+					{
+						case "mk": resLang="mk-MK"; break;
+					}
+				}
+				
+				$.getJSON(resLang + '.json', function(d) {
+					data = d;
+					Render();
+				});
+			});
+			
+			function Render()
+			{			
+				document.title = data["title"];
+			
+				var renderData = "";
+				$("#title").html(data["caption"]);
+				$("#intro").html(data["intro"]);
+				$(".guide").html(data["guideTitle"]);
+				$("#txtfilter").attr("placeholder", data["filterTitle"]);
+				
+				var guide = "";
+				var sections = data["sections"];
+				var filterText = $("#txtfilter").val();
+				
+				for(key in sections)
+				{					
+					guide += "<a href=\"#"+ sections[key].anchor + "\" class=\"anchorButton purple\">" + sections[key].caption + "</a> ";
+					
+					if(filterText === "" || sections[key].content.search(filterText) !== -1)
+					{
+						renderData += "<div id=\"" + sections[key].anchor + "\" class=\"section\"><div class=\"caption\">" + sections[key].caption + "</div><hr><div class=\"content\">" + sections[key].content + "</div></div>"
+					}
+				}
+				
+				$("#guide").html(guide);
+				$("#generated").html(renderData);
+			}
+			</script>
+			
+			<script>
+			window.requestAnimFrame = function()
+			{
+				return (
+					window.requestAnimationFrame       || 
+					window.webkitRequestAnimationFrame || 
+					window.mozRequestAnimationFrame    || 
+					window.oRequestAnimationFrame      || 
+					window.msRequestAnimationFrame     || 
+					function(/* function */ callback){
+						window.setTimeout(callback, 1000 / 60);
+					}
+				);
+			}();
+
+			var canvas = document.getElementById('canvas'); 
+			var context = canvas.getContext('2d');
+
+			//get DPI
+			let dpi = window.devicePixelRatio || 1;
+			context.scale(dpi, dpi);
+
+			function fix_dpi() {
+			//get CSS height
+			//the + prefix casts it to an integer
+			//the slice method gets rid of "px"
+			let style_height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+			let style_width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+
+			//scale the canvas
+			canvas.setAttribute('height', style_height * dpi);
+			canvas.setAttribute('width', style_width * dpi);
+			}
+
+			var particle_count = 15,
+				particles = [],
+				couleurs   = ["#08415C", "#CC2936", "#6B818C","#F1BF98"];
+			function Particle()
+			{
+
+				this.radius = Math.round((Math.random()*3)+5);
+				this.x = Math.floor((Math.random() * ((+getComputedStyle(canvas).getPropertyValue("width").slice(0, -2) * dpi) - this.radius + 1) + this.radius));
+				this.y = Math.floor((Math.random() * ((+getComputedStyle(canvas).getPropertyValue("height").slice(0, -2) * dpi) - this.radius + 1) + this.radius));
+				this.color = couleurs[Math.floor(Math.random()*couleurs.length)];
+				this.speedx = Math.round((Math.random()*40)+0)/100;
+				this.speedy = Math.round((Math.random()*40)+0)/100;
+
+				switch (Math.round(Math.random()*couleurs.length))
+				{
+					case 1:
+					this.speedx *= 1;
+					this.speedy *= 1;
+					break;
+					case 2:
+					this.speedx *= -1;
+					this.speedy *= 1;
+					break;
+					case 3:
+					this.speedx *= 1;
+					this.speedy *= -1;
+					break;
+					case 4:
+					this.speedx *= -1;
+					this.speedy *= -1;
+					break;
+				}
+					
+				this.move = function()
+				{
+					
+					context.beginPath();
+					context.globalCompositeOperation = 'source-over';
+					context.fillStyle   = this.color;
+					context.globalAlpha = 1;
+					context.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+					context.fill();
+					context.closePath();
+
+					this.x = this.x + this.speedx;
+					this.y = this.y + this.speedy;
+					
+					if(this.x <= 0+this.radius)
+					{
+						this.speedx *= -1;
+					}
+					if(this.x >= canvas.width-this.radius)
+					{
+						this.speedx *= -1;
+					}
+					if(this.y <= 0+this.radius)
+					{
+						this.speedy *= -1;
+					}
+					if(this.y >= canvas.height-this.radius)
+					{
+						this.speedy *= -1;
+					}
+
+					for (var j = 0; j < particle_count; j++)
+					{
+						var particleActuelle = particles[j],
+							yd = particleActuelle.y - this.y,
+							xd = particleActuelle.x - this.x,
+							d  = Math.sqrt(xd * xd + yd * yd);
+						
+						var lineDistance = 500;
+						if ( d < lineDistance)
+						{
+							context.beginPath();
+							context.globalAlpha = (lineDistance - d) / (lineDistance - 0);
+							context.globalCompositeOperation = 'destination-over';
+							context.lineWidth = 1;
+							context.moveTo(this.x, this.y);
+							context.lineTo(particleActuelle.x, particleActuelle.y);
+							context.strokeStyle = this.color;
+							context.lineCap = "round";
+							context.stroke();
+							context.closePath();
+						}
+					}
+				};
+			};
+			for (var i = 0; i < particle_count; i++)
+			{
+				fix_dpi();
+				var particle = new Particle();
+				particles.push(particle);
+			}
+
+
+			function animate()
+			{
+				fix_dpi();
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				for (var i = 0; i < particle_count; i++)
+				{
+					particles[i].move();
+				}
+				requestAnimFrame(animate);
+			}
+			
+			animate(); 
+		</script>
+</html>
