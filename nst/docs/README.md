@@ -23,9 +23,14 @@ When starting NST Editor for the first time, a new story is automatically create
 >[!TIP]
 To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the availabile stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
 ### Using States
-To create a new state inside the story you must use the &#xf009; States Browser window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The &#xf009; States Browser in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
+To create a new state in the story you can use the &#xf009; States Browser window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The &#xf009; States Browser in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
 ![Empty States Browser window](StatesBrowserEmpty.png)
-Clicking on the **&#xf055;&#xf013;** button on the far left will create a new state. Each state in the &#xf009; States Browser window is represented by a clickable button. To edit a state you have to right-click it and select &#xf044; **Edit** which will automatically open the &#xf044; **State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
+Clicking on the **&#xf055;&#xf013;** button on the far left will create a new state. 
+
+>[!TIP]
+Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
+
+Each state in the &#xf009; States Browser window is represented by a clickable button. To edit a state you have to right-click it and select &#xf044; **Edit** which will automatically open the &#xf044; **State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 ### Using Properties
 ## Reference
