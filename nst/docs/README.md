@@ -5,7 +5,6 @@ Interactive stories require the one who interacts to make a choice. Choices make
 NST consists of an Editor and a Reader, which are separate standalone programs. The NST Editor helps authors in creating nonlinear or branching stories, which then can be read inside the NST Reader. 
 
 ![NST Editor](editorss.jpg)
-*The NST Editor in action*
 
 ## Concepts
 ### &#xf085; Systems
