@@ -116,6 +116,8 @@ Clicking on any of the buttons inside the **&#xf0e7; Read in Editor** should lea
 **&#xf188; BUG:** When creating new states you should hit F5 to propagate the changes, just in case. This is not the intended behavior and will be fixed in future versions.
 
 ## Reference
+### State Button
+### Property Button
 ### State Editor
 #### State Name
 All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states.
