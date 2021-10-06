@@ -32,12 +32,12 @@ Clicking on the **&#xf055;&#xf013;** button on the far left will create a new st
 >[!TIP]
 Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
 
-Each &#xf013; state in the &#xf009; States Browser window is represented by a clickable button. To edit a &#xf013; state you have to right-click it and select &#xf044; **Edit** which will automatically open the &#xf044; **State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
+Each &#xf013; state in the &#xf009; States Browser window is represented by a clickable button. To edit a &#xf013; state you have to right-click it and select &#xf044; **Edit** which will automatically open the **&#xf044; State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 
 You can edit all internal state properties in the &#xf044; State Editor. All edits are propagated inside the system by hitting the **&#xf093; Update** button.
 >[!WARNING]
-Selecting another state will **not** automatically update the changes on the current state. You must hit the **&#xf093; Update** button to propagate the changes.
+Selecting another state will **not** automatically update the changes on the current state. You must hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
 
 &#xf02b; Rename the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
 
@@ -47,9 +47,38 @@ In the situation field for the *SpookEntersAlley* state enter the following text
 
 >You steer into a dark New York alley. Northwards, you see police officers coming towards you. They have police dogs with them in an attempt to track you down. Eastwards you see another alley, and with it comes a chance to run for it. Westwards you have a fire escape which you may attempt to climb. What is your next step?
 
-The State Editor window should look like the image below.
+Save the Notepad file and close the Notepad window. The State Editor window should look like the image below. Hit the **&#xf093; Update** button once again.
 
 ![State Editor for SpookEntersAlley](SpookEntersAlleyFull.png)
+
+To create a new simple choice after Spook has entered the Alley, click on the **Create Choice** button. Clicking this button will create a new state which will be automatically linked to the *SpookEntersAlley* state. The newly created state will be automatically selected.
+
+Rename the state to *SpookChargesCops* and hit **&#xf093; Update**. Right-click on the situation for the *SpookChargesCops* state, hit **Edit With > Notepad**, and enter the following in the Notepad window:
+
+>You charge the police officers and their dogs bare-handed. You quickly realize that you don't stand a chance alone. They put you to the ground and swiftly arrest you.
+
+Save the file in Notepad and close the window. As you may notice, this time the **&#xf044; State Editor** looks a bit different than *SpookEntersAlley*'s view:
+
+![State Editor for SpookChargesCops](SpookChargesCopsStateEditor.png)
+
+There is a field for the **Availability Expression** which has the value:
+	
+	IS_HAPPENING SpookEntersAlley
+	
+This means that when the state *SpookEntersAlley* is the current moment in time (i.e., active state), the state *SpookChargesCops* will be an available choice for the reader. 
+
+In this case, clicking the **Create Choice** button fills the **Availability Expression** automagically, but it is fully editable nontheless.
+
+Click **&#xf093; Update** to propagate the state changes.
+
+You can now see the changes in action inside the **Read in Editor** window. You can open this window by clicking on **&#xf2d0; Window > Read in Editor**. This window shows the story in the current moment in time. To restart the story you can hit the **F5** button on the keyboard. The **Read in Editor** should look like the image below:
+
+![Read in Editor](ReadInEditor_2.png)
+
+Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you must specify the **Dialog Statement** for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the **&#xf009; States Browser**. Scroll down to **Dialog Statements** inside the **&#xf044; State Editor**. From the dropdown select *SpookEntersAlley* and hit the &#xf055; button. In the **Dialog Statement** field enter "*Charge the cops!*". Hit **&#xf093; Update** on the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* is the active state.
+
+>[!TIP]
+Selecting *_ALL* in the **Dialog Statement** dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional **Dialog Statements** for specific states will simply override the label for the specified states, but will leave the *_ALL* be valid for the rest.
 
 ### Using Properties
 ## Reference
