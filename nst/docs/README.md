@@ -1,4 +1,10 @@
 # Nonlinear System Tools
+## Version
+**Version:** 0.2.211203
+
+**Last Updated:** 8 October 2021
+
+**Caretaker:** Martin Petkovski
 ## Overview
 Interactive stories require the one who reads to make a choice. Choices make the story take a turn for the better or for the worse. NST is a full suite of tools for creating, analyzing and rendering branching or nonlinear stories, novels, poems, generic text or even other media such as music or films.
 
@@ -25,14 +31,14 @@ When starting NST Editor for the first time, a new story is automatically create
 >[!TIP]
 To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the availabile stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
 ### Using States
-To create a new &#xf013; state in the story you can use the &#xf009; States Browser window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The &#xf009; States Browser in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
+To create a new &#xf013; state in the story you can use the **&#xf009; States Browser** window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The &#xf009; States Browser in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
 ![Empty States Browser window](StatesBrowserEmpty.png)
 Clicking on the **&#xf055;&#xf013;** button on the far left will create a new state. 
 
 >[!TIP]
 Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
 
-Each &#xf013; state in the &#xf009; States Browser window is represented by a clickable button. To edit a &#xf013; state you have to right-click it and select &#xf044; **Edit** which will automatically open the **&#xf044; State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
+Each &#xf013; state in the &#xf009; States Browser window is represented by a clickable button. To edit a &#xf013; state you have to right-click it and select **&#xf044; Edit** which will automatically open the **&#xf044; State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 
 You can edit all internal state properties in the &#xf044; State Editor. All edits are propagated inside the system by hitting the **&#xf093; Update** button.
@@ -40,6 +46,12 @@ You can edit all internal state properties in the &#xf044; State Editor. All edi
 Selecting another state will **not** automatically update the changes on the current state. You must hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
 
 &#xf02b; Rename the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
+
+>[!NOTE]
+Updating the same state with a different name will effectively trigger a rename. A state rename will warn the user if a name exists or if the name contains an illegal word or character.
+
+>[!TIP]
+You can view warnings and errors inside the **&#xf1c9; Log** window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
 
 The state **&#xf000; Situation** describes what is happening in the current moment in time. You can right-click on the **&#xf000; Situation** and choose **&#xf044; Edit With > &#xf15b; Notepad**. A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
 
@@ -116,29 +128,158 @@ Clicking on any of the buttons inside the **&#xf0e7; Read in Editor** should lea
 **&#xf188; BUG:** When creating new states you should hit F5 to propagate the changes, just in case. This is not the intended behavior and will be fixed in future versions.
 
 ## Reference
-### State Button
-### Property Button
-### State Editor
-#### State Name
+
+### Main Menu
+
+### Text Input
+All text components inside NST Editor can be edited with the right-click context menu. NST Editor doesn't ship with an integrated text editor, but allows the author to choose a preffered external text editor. Currently there are 4 available editors: Notepad (ships with Windows), [Notepad++](https://notepad-plus-plus.org/), [Sublime Text 4](https://www.sublimetext.com/) and [Microsoft Word](https://www.office.com/). The text editor will be launched inside the NST Editor and behaves as any other NST Editor window does. It can be moved, docked, undocked and closed. Saving the file inside the preffered text editor will automagically propagate the changes made to the text inside the NST Editor. The standard items found in the right-click context menu include:
+
+**&#xf044; Edit With > [Preffered Editor]** - Edits the text contents. After selecting a text editor, a new window of your preffered editor will pop-up. You may drag and dock this window as you do with other windows. After you are satisfied with your changes you need to hit save in your preffered editor and with that the changes you made will be automagically propagated inside the NST Editor. At this point you may close the text editor window.
+
+**&#xf0c5; Copy** - Copy the text contents.
+
+**&#xf0c4; Cut** - Cut the text contents.
+
+**&#xf0ea; Paste** - Paste the text contents.
+
+**&#xf057; Clear** - Clear the text contents.
+
+### &#xf013; State Button
+Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the **&#xf044; State Editor**. Holding ctrl and clicking on state buttons will select multiple states. Selected states have a golden border around the button.
+
+The active state's button is red, if the state is available the button is green and if the state has been activated the button is dark red. The entry state has the &#xf061; icon in front of the name.
+
+Right-clicking a state's button will open up a context menu containing additional actions. 
+![State's context menu](StateContextMenu.png)
+
+**&#xf044; Edit** - Will select the state and open the **&#xf044; State Editor**.
+
+**&#xf079; Reset** - Will reset all passive properties of a state. It will clear the *activated* flag as if this state never happened.
+
+**&#xf04b; Try Activate** - The state will be activated only if it's available.
+
+**&#xf144; Force Activate** - The state will be forcefully activated.
+
+**&#xf0a8; Set Entry State** - The state will become the entry state to the story. The entry state becomes the active state when the story is started / restarted.
+
+**&#xf24d; Duplicate** - Creates a perfect copy of the state with a new name.
+
+**&#xf0c5; Copy** - Copies the specified state property to clipboard.
+
+**&#xf1f8; Delete** - Deletes the state. The entry state cannot be deleted - specify a new entry state before deleting it.
+
+**&#xf055; Create Choice** - Creates a new state, selects it and links the contexted state to it with `IS_HAPPENING [ContextedStateName]`.
+ 
+**&#xf060; Depends** - If applicable, lists all the states on which this state depends (i.e. what needs to happen for this state to become available). 
+
+**&#xf061; Dependent** - If applicable, lists all the states that depend on this state (i.e. the contexted state needs to happen for these states to become available).
+
+**&#xf061; Changing Properties** - If applicable, lists all the properties that are changed by this state.
+
+**&#xf249; Notes** - Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this state.
+
+If multiple states are selected the context menu offers limited options which include: **&#xf079; Reset**, **&#xf24d; Duplicate** and **&#xf1f8; Delete**.
+
+### &#xf02d; Property Button
+Each **&#xf02d; property** in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, sometimes besides states. You can distinguish between them by the icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
+
+Right-clicking a property's button will open up a context menu containing additional actions.
+![Property's context menu](PropertyContextMenu.png)
+ 
+ **Name** - The name of the property. It must be unique, not contain special characters or blank spaces. Updating the same property with a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.
+ 
+ **Value** - The current value of the property.
+ 
+ **Initial Value** - The initial value of the property. The property value will be set to this value when the story is started or restarted.
+ 
+ **Value Min** - If the current value is less than this value it will be set to this value.
+ 
+ **Value Max** - If the current value exceeds this value it will be set to this value.
+ 
+ **Randomize on Reset** - Each time the story restarts, the current value will get a random value in a specified range. The value will depend on the story or branch seed.
+ 
+ **Randomize Min** - The lower bound for the random number.
+ 
+ **Randomize Max** - The upper bound for the random number.
+ 
+ **&#xf093; Update** - Updates the property with the new values.
+ 
+ **&#xf1f8; Delete** - Deletes the property.
+ 
+ **Dependent States** - Lists all dependent states. These states will be highlighted by clicking on the property button. 
+ 
+ **&#xf249; Notes** - Lists all the notes attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.
+
+### &#xf06c; Branch Expander
+Each **&#xf06c; branch** is represented by an expander inside the **&#xf017; Time Controller** window. A branch can be active (loaded) inside the story to which it belongs. The branch that is active can be time-manipulated by the user. Each branch may be saved and loaded (activated).
+
+![Branches' Expander](BranchExpander.png)
+
+The expander displays the name of the branch. It will show **&#xf0e7; Active** in front of the name of the branch that is currently active. The expander can be expanded and collapsed. The content when it is expanded are the sequence of states representing the branch. There may be duplicate states in the sequence if the state has been activated multiple times.
+
+Right-clicking on the expander title will open a context menu. 
+
+**&#xf253; Load** - Will load the branch (make it active). Loading the branch will activate a state which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may **&#xf017; control the time** on it by rewinding or advancing the state activation.
+
+**&#xf246; Rename** - Renames the branch.
+
+**&#xf1f8; Delete** - Deletes the branch.
+
+### &#xf249; Note Display
+
+Notes may be displayed on various places inside the NST Editor. They have a frame with a **&#xf249; Note** caption. Notes are a [standard text input component](#text-input) and can be edited by right-clicking on the content. There are additional items in the context menu specific to notes:
+
+**&#xf08d; Pin** - Pins the note to the top.
+
+**&#xf12a; Important** - Colors the note red.
+
+**&#xf0c1; Detach** - Detaches the note from the item. This does not delete the note, it will still be available through the **&#xf249; Note Editor**.
+
+**&#xf1f8; Delete** - Detaches the note from all items and deletes it.
+
+### &#xf14b; State Editor
+#### Action Buttons
+The topmost element is the [State Button](#xf013-state-button) for the currently selected state.
+
+**&#xf144; Activate** - The state will be forcefully activated.
+
+**&#xf093; Update** - All changes to the state inside the editor will be propagated inside the system.
+
+**&#xf1f8; Delete** - Deletes the state.
+
+#### &#xf02b; State Name
 All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states.
 
->[!NOTE]
-Updating the same state with a different name will effectively trigger a rename. A state rename will warn the user if a name exists or if the name contains an illegal word or character.
+#### Situation
 
->[!TIP]
-You can view warnings and errors inside the **&#xf1c9; Log** window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
-#### Availability Expression
+#### Create Choice button
+
 #### Change Expression
-### States Browser
-### Property Editor
-### Read in Editor
-### Content Browser
-### Time Controller
-### Note Editor
-### Steam Workshop
-### Log
-### Profiler
-### Command History
+
+#### Availability Expression
+
+#### This state depends on
+
+#### States dependent on this
+
+#### Dialog statements
+
+#### Options
+
+#### State Head
+
+#### Notes
+
+### &#xf009; States Browser
+### &#xf02d; Property Editor
+### &#xf0e7; Read in Editor
+### &#xf1b2; Content Browser
+### &#xf017; Time Controller
+### &#xf249; Note Editor
+### &#xf1b7; Steam Workshop
+### &#xf1c9; Log
+### &#xf0ae; Profiler
+### &#xf1da; Command History
 ### Syncing Reader
 ### Settings
 ## Files
@@ -149,5 +290,3 @@ You can view warnings and errors inside the **&#xf1c9; Log** window located unde
 ## Loading Stories
 ## Reading Stories
 # Changelog
-> [!NOTE]
-Last Updated: 5 October 2021
