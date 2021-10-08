@@ -24,6 +24,9 @@ A **&#xf02d; property** is a named numeric value which can be used inside expres
 ### &#xf06c; Branches
 A **&#xf06c; branch** is a special type of component in a system which tracks what has already happened (the order of activation of states). This allows authors to rewind the time or advance it forwards. Branches can also be saved and reloaded later.
 # NST Editor
+
+The NST Editor is the place where stories are edited and debugged. In the current version, it requires a working internet connection and an active &#xf1b7; Steam connection. Anonymous data is sent back to us only when the editor crashes, containing information related to the crash.
+
 ## Quick Start Guide
 In this guide we will create a simple branching story to demonstrate capabilities of the NST Editor. This story is called Spook's Adventures, and is also available on the &#xf1b7; Steam Workshop and is also showcased in some of the trailer videos. The main character (Spook) finds himself in a New York alley, chased by cops. He will have 3 choices. His choices will be: to charge the cops, to run for it eastwards, or to take the stairs inside an apartment. 2 of the choices will lead to him being arrested in 2 different ways, and the third one will give Spook 2 additional choices. We will implement this mini story using the NST Editor.
 ### Creating Stories
@@ -130,6 +133,135 @@ Clicking on any of the buttons inside the **&#xf0e7; Read in Editor** should lea
 ## Reference
 
 ### Main Menu
+
+The main menu is shown at the top of the NST Editor. If you are not logged in to &#xf1b7; Steam, a message will appear instead of the main menu items. If another thread is currently doing some work (i.e., loading a story), a progress bar will appear instead of the items. The items will be shown again as soon as the thread finishes it's work. 
+
+The items on the main menu have various general-purpose functions which will be listed below.
+
+---
+
+#### NST
+The name of the editor, animates when actions on the story file are performed.
+
+---
+
+#### [Story Name]
+
+ Indicates the currently loaded story. This story may or may not be saved on disk. To view actions that can be performed on the story itself click on the story name.
+
+![Main Menu -> Story Name](MainMenuStoryName.png)
+
+**Reload** - If there is a file for the story present on disk, it will reload the story from that file.
+
+**Target Folder** - Opens the folder where the story is located or would be located on disk.
+
+**Save** - Saves the current story in the target folder in binary **.nts** format. The target folder is located in **[exe folder]/stories**.
+
+**Save As** - Saves the current story in the target folder with a new name which the user can specify before clicking **Confirm**. The format is **.nts** binary.
+
+**Compile As** - Compiles the current story in binary **.nts** format, effectively making the file contents read-only. Use with caution.
+
+**Export** - Saves the current story in the exports folder in plain text **.xml** format. The target folder is located in **[exe folder]/exports**.
+
+**Export As** - Saves the current story in the exports folder in plain text **.xml** format with a new name. The target folder is located in **[exe folder]/exports**.
+
+**Discard Changes** - Undo-s everything up until the last save. This action can be redo-ed later.
+
+---
+
+#### File
+This menu holds all file-related functions of the NST Editor.
+
+![Main Menu -> File](MainMenuFile.png)
+
+**New** - Will create a new story with a randomly generated name.
+
+**Load File...** - Will open a load file dialog in which you can select a **.nst** file to load. 
+
+**Load** - Will list all **.nst** files available inside the **[exe folder]/stories** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.
+
+**Open Recent** - Lists all recently opened files, with the topmost being the most recent. Clicking on an item will load it.
+
+**Import File...** - Will open an import file dialog in which you can select a **.xml** file to load.
+
+**Import** - Will list all **.xml** files available inside the **[exe folder]/exports** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.
+
+**Load Last Backup** - Will load the last available backup. This might not match the current story, depending on when it was saved. The last saved time will show up when the item is hovered.
+
+**Stories Folder** - Will open the **[exe folder]/stories** folder in Windows Explorer.
+
+**Exports Folder** - Will open the **[exe folder]/exports** folder in Windows Explorer.
+
+**Exit** - Will gracefully close the editor.
+
+---
+
+#### Edit
+This menu holds the undo / redo commands.
+
+**Undo** - Undo-s the last command.
+
+**Redo** - Executes the next command again.
+
+---
+
+#### System 
+This menu holds all commands related to the system.
+
+![Main Menu -> System](MainMenuSystem.png)
+
+**Run Reader** - If the NST Reader exists in the same working directory, it can be started by clicking on this item.
+
+**Sync with Reader** - Enabled if applicable. Can be true or false. If it's true than the previously started instance of the NST Reader will sync to the actions inside the NST Editor.
+
+**Create** - Lists the system components. You can create both states and properties from this menu.
+
+**Reset** - Resets the complete system and assigns a new seed value. This means that random events will have new values.
+
+**Reset Branch** - Resets only the branch you are currently on, keeping the seed value. Random events will happen in the same way each time you reset the branch.
+
+**Pause Tick** - Will pause the system updates. This will not stop the editor execution, but will stop the evaluation of all internal state and system properties.
+
+---
+
+#### Window
+Holds list of all available windows in the NST Editor. This does not include external editors or the NST Reader. This list includes:
+
+Editor Utilities: Log, Profiler, Command History
+
+State Editor
+
+Property Editor
+
+States Browser
+
+Read in Editor
+
+Content Browser
+
+Time Controller
+
+Note Editor
+
+Steam Workshop
+
+---
+
+#### Settings
+Lists all the available editor options. A click selects only one option.
+
+Available languages: English (Default) and Macedonian
+
+Available themes: Aegean Nights (desturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue)
+
+Backup frequencies: No backups, Rare (backup every 30 actions), Frequent (backup every 5 actions), Always (backup on every action).
+
+---
+
+#### Notification area
+Displays short message for a few seconds. This message is also available in the Log window.
+
+---
 
 ### Text Input
 All text components inside NST Editor can be edited with the right-click context menu. NST Editor doesn't ship with an integrated text editor, but allows the author to choose a preffered external text editor. Currently there are 4 available editors: Notepad (ships with Windows), [Notepad++](https://notepad-plus-plus.org/), [Sublime Text 4](https://www.sublimetext.com/) and [Microsoft Word](https://www.office.com/). The text editor will be launched inside the NST Editor and behaves as any other NST Editor window does. It can be moved, docked, undocked and closed. Saving the file inside the preffered text editor will automagically propagate the changes made to the text inside the NST Editor. The standard items found in the right-click context menu include:
@@ -238,6 +370,9 @@ Notes may be displayed on various places inside the NST Editor. They have a fram
 **&#xf1f8; Delete** - Detaches the note from all items and deletes it.
 
 ### &#xf14b; State Editor
+
+>[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected the editor will show a message to indicate so.
+
 #### Action Buttons
 The topmost element is the [State Button](#xf013-state-button) for the currently selected state.
 
@@ -245,22 +380,39 @@ The topmost element is the [State Button](#xf013-state-button) for the currently
 
 **&#xf093; Update** - All changes to the state inside the editor will be propagated inside the system.
 
+>[!WARNING]
+Hit the **&#xf093; Update** button as often as possible when making changes. If another state is selected without first updating the current state all changes will be lost. This behavior is still under development and will change in future releases.
+
 **&#xf1f8; Delete** - Deletes the state.
 
 #### &#xf02b; State Name
-All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states.
+All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
 
 #### Situation
+The situation is the description of what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
+
+>[!TIP]
+The situation content may contain any HTML5 / JS / CSS code you may choose to enter. This code will be rendered inside the NST Reader, but not inside the Read in Editor window.
 
 #### Create Choice button
 
+Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's availability expression. The newly created state will then be automatically selected.
+
 #### Change Expression
+
+>[!WARNING] This component is still under development and may or may not change in future releases.
 
 #### Availability Expression
 
+>[!WARNING] This component is still under development and may or may not change in future releases.
+
 #### This state depends on
 
+Lists all the states and properties that this state depends on. The dependency might or might not be exclusive.
+
 #### States dependent on this
+
+Lists all states that depend on this state. The dependency might or might not be exclusive.
 
 #### Dialog statements
 
