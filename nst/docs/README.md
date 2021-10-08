@@ -136,11 +136,11 @@ All text components inside NST Editor can be edited with the right-click context
 
 **&#xf044; Edit With > [Preffered Editor]** - Edits the text contents. After selecting a text editor, a new window of your preffered editor will pop-up. You may drag and dock this window as you do with other windows. After you are satisfied with your changes you need to hit save in your preffered editor and with that the changes you made will be automagically propagated inside the NST Editor. At this point you may close the text editor window.
 
-**&#xf0c5; Copy** - Copy the text contents.
+**&#xf0c5; Copy** - Copy the text contents to clipboard.
 
-**&#xf0c4; Cut** - Cut the text contents.
+**&#xf0c4; Cut** - Cut the text contents to clipboard.
 
-**&#xf0ea; Paste** - Paste the text contents.
+**&#xf0ea; Paste** - Paste from clipboard to text contents. This action will overwrite the existing content.
 
 **&#xf057; Clear** - Clear the text contents.
 
