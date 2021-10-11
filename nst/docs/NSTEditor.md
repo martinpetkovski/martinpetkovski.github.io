@@ -560,11 +560,27 @@ Lists all states that depend on this state. The dependency might or might not be
 
 ### Dialog statements
 
+Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "_ALL" token, or may use a specific state to define the dialog statement for that state.
+
+To create a dialog statement, you must select a state (or "_ALL") from the dropdown menu, and then click on the &#xf055; button.
+
 ### Options
+
+**Can Happen Again** - If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.
+
+**Is Exclusively Available** - If checked, when this state is available, it will be the only available state, regardless of the availability of other states.
+
+**Is Global** - If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).
+
+**Exclude Global States** - If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.
 
 ### State Head
 
+When this state is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
+
 ### Notes
+
+Displays all the notes attached to this state.
 
 ## &#xf009; States Browser
 ## &#xf02d; Property Editor
