@@ -4,6 +4,13 @@
 **Last Updated:** 12 October 2021
 
 **Caretaker:** Martin Petkovski
+
+# Contact
+
+**Email:** (martin@najjak.com)
+
+**Discord:** https://discord.com/invite/sxeD79nuBP 
+
 # Overview
 Interactive stories require the one who reads to make a choice. Choices make the story take a turn for the better or for the worse. NST is a full suite of tools for creating, analyzing and rendering branching or nonlinear stories, novels, poems, generic text or even other media such as music or films.
 
@@ -93,7 +100,7 @@ You can now see the changes in action inside the **&#xf0e7; Read in Editor** win
 Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you must specify the **&#xf075; Dialog Statement** for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the **&#xf009; States Browser**. Scroll down to **&#xf075; Dialog Statements** inside the **&#xf044; State Editor**. From the dropdown select *SpookEntersAlley* and hit the &#xf055; button. In the **&#xf075; Dialog Statement** field enter "*Charge the cops!*". Hit **&#xf093; Update** on the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* is the active state.
 
 >[!TIP]
-Selecting *_ALL* in the **&#xf075; Dialog Statement** dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional **&#xf075; Dialog Statements** for specific states will simply override the label for the specified states, but will leave the *_ALL* be valid for the rest.
+Selecting *__ALL* in the **&#xf075; Dialog Statement** dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional **&#xf075; Dialog Statements** for specific states will simply override the label for the specified states, but will leave the *__ALL* be valid for the rest.
 
 Next, create a new state and rename it to *SpookRunsEastwards*. Set the **&#xf000; Situation** to:
 
@@ -210,9 +217,12 @@ This menu holds all commands related to the system.
 
 ![Main Menu -> System](MainMenuSystem.png)
 
-**Run Reader** - If the NST Reader exists in the same working directory, it can be started by clicking on this item.
+**Run Reader** - If the NST Reader exists in the same working directory, it can be started by clicking on this item. If a story is loaded inside the editor, this reader instance will also load it.
 
 **Sync with Reader** - Enabled if applicable. Can be true or false. If it's true than the previously started instance of the NST Reader will sync to the actions inside the NST Editor.
+
+>[!WARNING]
+Sync with Reader is still in BETA. It doesn't work well with huge story files. Use it sparingly.
 
 **Create** - Lists the system components. You can create both states and properties from this menu.
 
@@ -393,6 +403,9 @@ The situation is the description of what's going on at some point in time. It wi
 
 >[!TIP]
 The situation content may contain any HTML5 / JS / CSS code you may choose to enter. This code will be rendered inside the NST Reader, but not inside the Read in Editor window.
+
+>[!TIP]
+Writing a property name between [ and ] will render the value of the property instead of the property name. Example: `Strength: [Start_Strength]` will yeild `Strength: 10.0`
 
 ### Create Choice button
 
@@ -585,9 +598,9 @@ Lists all states that depend on this state. The dependency might or might not be
 
 ### Dialog statements
 
-Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "_ALL" token, or may use a specific state to define the dialog statement for that state.
+Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
 
-To create a dialog statement, you must select a state (or "_ALL") from the dropdown menu, and then click on the &#xf055; button.
+To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
 
 ### Options
 
@@ -628,7 +641,7 @@ This view is useful for creating a mental map of where in the story a state may 
 The purpose of the Paths View is to display a number of different ways in which a reader may get from one state to another. The Paths View displays a sequence of states called "a path". Generated paths are sorted by number of states, thus the first path is always the shortest path between two states (the quickest way for the reader to get into a state).
 
 >[!WARNING]
-Each path in the Paths View is generated only using state and not property dependencies, for performance reasons. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
+For performance/memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
 
 **Source** - The source state for the path.
 
@@ -652,15 +665,109 @@ The story may be read inside the Read in Editor. This window reflects the curren
 
 ## &#xf1b2; Content Browser
 
+The &#xf1b2; Content Browser is used to manage content inside stories. 
+
+### Resources
+
+You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the person who reads it must have an active internet connection. An example of loading a resource from the internet, would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
+
+ NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. 
+
+This is a list of all supported file formats that can be loaded via the Resource panel:
+
+* apng
+* avif
+* gif
+* jpg
+* jpeg
+* jfif
+* pjpeg
+* pjp
+* png
+* svg
+* webp
+* wav
+* wave
+* webm
+* ogg
+* css
+* csv
+* webm
+* js
+* json
+* mp3
+* mpeg
+* oga
+* ogv
+* otf
+* ttf
+* txt
+* xml
+* mp4
+
+To embed an offline resource inside a state you need to reference it by its name using the `{resource=ResourceName}` syntax.
+
+Examples:
+
+`<img src="{resource=ResourceName}"/>`
+`<video controls src="{resource=20200510_171050}">`
+
+To rename a resource you enter a new name inside the appropriate textbox in the **Actions** column. After you enter the desired name, click on the **&#xf0c7; Save** button. 
+
+To delete a resource click on the **&#xf1f8; Delete** button. 
+
+Hitting the **&#xf0c5; Copy** button will copy the correct HTML snippet for the selected resource. The examples above are generated in such manner. 
+
+Clicking on the **&#xf07c; Load** button will allow you to load the same resource from another file.
+
+### Global Head
+
+This is a code snippet that will be embedded between the `<head>...here...</head>` tags on all states inside the story. You can add JS code or CSS styles for you story here. The global head is a [standard text input component](#text-input) and can be edited as such.
+
+### Labeled Properties
+
+Labeled properties are properties that you might want to have visible inside the Reader all the time. They usually appear on the left of the story, but can be styled however using the Global Head styles. The list inside the Reader has the property label and the current value shown.
+
+To add a new label, select a property from the properties dropdown, write a label and hit the left-most &#xf055; button.
+
+To change the label of a labeled property enter a new name in the textbox below the **Label** column. After you have entered the desired name click on the **&#xf0c7; Save** button to save your changes. The **&#xf0c7; Save** button will be disabled if the label has not been changed.
+
+The order of the list inside the Editor is also the order of the list inside the Reader. Each labeled property can be reordered by clicking on the **arrow buttons** right beside the label textbox. 
+
+To delete a labeled property click on the **&#xf1f8; Delete** button.
+
 ## &#xf017; Time Controller
 
+The time controller window enables you to rewind or advance the history of events inside the story. It has two tabs - the **Time Controls** and the **Branches Browser** tab.
+
+### Time Controls
+
+**Reset** - Clicking on this button will reset the *whole story*, meaning the story will begin from the start with a new seed.
+
+**Rewind** - Will rewind the history of events by a single event.
+
+**Advance** - Will advance the history of events by a single event.
+
+**Time** - A slider that numbers all events that have happened inside the story. You can enter any number to go at that event in the story.
+
+**Reset Branch** - Clicking on this button will reset only the *current branch*, meaning the story will begin from the start with *the same seed*. All random events will happen in the same way.
+
+**Save** - Will save the active branch. All saved branches appear in the **Branches Browser**. You can load a branch at any point as long as the story hasn't changed in a way in which the branch can no longer execute (i.e., you have deleted a state that happened in a branch). 
+
+**Seed** - This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then hitting on the **&#xf0c7; Save** button. A seed can be reset after editing by clicking on the **Cancel** button.
+
+### Branches Browser
+
+The branches browser lists all saved branches in the [Branch Expander](#xf06c-branch-expander) format.
+
 ## &#xf249; Note Editor
+
+The note editor displays all notes available inside the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
+
 ## &#xf1b7; Steam Workshop
 ## &#xf1c9; Log
 ## &#xf0ae; Profiler
 ## &#xf1da; Command History
-## Syncing Reader
-## Settings
 ## Keyboard Shortcuts
 
 # NST Reader
