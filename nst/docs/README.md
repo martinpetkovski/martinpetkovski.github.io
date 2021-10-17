@@ -413,7 +413,7 @@ Clicking this button will create a new state which will be automatically linked 
 
 ### Change Expression
 
->[!WARNING] This component is still under development and may or may not change in future releases.
+>[!NOTE] This component is still under development and may or may not change in future releases.
 
 The change expression defines how a property changes when the state is activated. The result of a change expression is a floating-point precision number which changes a property value in some manner. The author may use other properties in the change expression.
 
@@ -477,7 +477,7 @@ Right-clicking on the expression will bring up a context menu containing a searc
 
 ### Availability Expression
 
->[!WARNING] This component is still under development and may or may not change in future releases.
+>[!NOTE] This component is still under development and may or may not change in future releases.
 
 The availability expression is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false). True if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
 
@@ -765,18 +765,166 @@ The branches browser lists all saved branches in the [Branch Expander](#xf06c-br
 The note editor displays all notes available inside the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
 
 ## &#xf1b7; Steam Workshop
+
+The **&#xf1b7; Steam Workshop** window allows an integrated connection to the Steam Workshop. Requires an active internet connection and an active connection to Steam. 
+
+**Browse Workshop** - Will open the NST Steam Workshop in an Steam overlay.
+
+**[Story Name]** - If available, will open the Steam Workshop page for the current story in the Steam overlay.
+
+**Synchronize** - Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.
+
+**Delete** - If applicable, will delete the story from the Steam Workshop.
+
+This window by default lists all the Steam Workshop stories you are subscribed to. To download a story click on the **Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. 
+
+If a story is already available this button will be named **Update & Load** and clicking it will automatically load the story inside the Editor.
+
+Clicking on the **Open Workshop Page** button will open the Steam Workshop page of the selected story in an Steam overlay window.
+
+Clicking on **Unsubscribe** will remove the story from the list of stories you are subscribed to.
+
+### Publishing a Story
+To publish a story on the Steam Workshop you need to have the story you want to publish opened in the Editor. In the Steam Workshop window click on the **Publish Story** button. This will open a new view which will allow you to publish your story on the Steam Workshop.
+
+**Public** checkbox - If checked the story will be public after publishing, otherwise it will be unlisted.
+
+**Compiled** checkbox - If checked the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.
+
+>[!WARNING]
+Compiled stories cannot be decompiled and decrypted.
+
+**Description** - The description which will appear on the Steam Workshop page.
+
+**Tags** - Tags for this story. Each tag should be separated by a comma.
+
+**Describe your changes** - This comment will appear in the list of changes on your private view of the Steam Workshop page.
+
+**Load Preview Image** - The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture you can clear it by clicking the **Clear** button to the right of the filepath.
+
+**Publish** - Will publish the story on the Steam Workshop with the given settings.
+
+**Cancel** - Will cancel the publishing and show the subscriptions view of the stories.
+
 ## &#xf1c9; Log
+
+All messages that the Editor generates will pop up inside the **&#xf1c9; Log** window. These messages can be useful both to the author of the story and to the developers. There are 6 relevant columns for each message.
+
+**#** - The number of occurances.
+
+**Level** - The type of message and how it affects the system. STATEMENT and NOTICE messages provide a general information about an event, WARNING and ERROR are usually messages of concern that should be addressed.
+
+**Time** - The time at which the message occured.
+
+**Subsystem** - The internal subsystem in which the message occured.
+
+**Line** - The line in the subsystem at which the message was fired.
+
+**Message** - The message text.
+
 ## &#xf0ae; Profiler
+
+>[!NOTE] The &#xf0ae; Profiler is an internal developer tool, you will probably rarely (if ever) need it. It's used to test the performance of the Editor when writing complex stories.
+
 ## &#xf1da; Command History
+
+The history of all commands executed in the Editor is listed inside the **&#xf1da; Command History** window. This is the undo / redo stack. You can move anywhere in the history of commands by selecting any command. The current command is highlighted and has a **bolt** icon. All previous commands are colored with a lighter color, all commands that are after the current command are colored with a darker color. The point at which you saved the story has a **save** icon before the identifier and is also highlighted in orange. Discarding changes will set the history cursor to this point.
+
 ## Keyboard Shortcuts
+
+>[!NOTE] Keyboard shortcuts are Editor-wide, they do not conform to the context of the selected window.
+
+| Key Combination | Action |
+|---------------|----------| 
+| **Ctrl + S**  | Save the currently open story as .nts|
+| **Ctrl + N**  | Create a new story|
+| **Ctrl + R**  | Reset the branch and keep the story seed|
+| **F5** | Reset the story with a new seed|
+| **Alt + Arrow Left** | Rewind the story|
+| **Alt + Arrow Right** | Advance the story|
+| **Ctrl + Shift + Del** | Delete the story|
+| **F2** | Create a new state|
+| **F3** | Create a new property|
+| **Ctrl + Z** | Undo|
+| **Ctrl + Y** | Redo|
+| **F1** | Help|
+| **Ctrl + E** | Export the story to .xml|
+| **Ctrl + O** | Stream a story in from a .nts file|
+| **Ctrl + Shift + O** | Open target folder for saving .nts files|
+| **Ctrl + I** | Import a story from an .xml file|
+| **Ctrl + Shift + R** | Reload an already loaded story|
+| **Ctrl + C** | Copy|
+| **Ctrl + X** | Cut|
+| **Ctrl + V** | Paste|
+| **Ctrl + Arrow Left** | Go back to the previously visited state|
+| **Ctrl + Arrow Right** | Go forward to the next visited state|
+| **F9** | Update state|
+| **Ctrl + A** | Try activating the currently selected state|
+| **Ctrl + F** | Force activate the currently selected state|
+| **Ctrl + 1** | Set the currently selected state to be the entry state|
+
 
 # NST Reader
 ## Loading Stories
 ## Reading Stories
 
 # Files
-## NTX
 ## NTS
+Encrypted binary file. Both the Editor and the Reader can open NTS files. NTS files are not backwards compatible. Can be compiled (read-only) or not compiled. Compiled NTS files can only be opened as read-only in the Editor or inside the Reader. There is no (official) way to decompile a NTS file.
+
+## NTX
+ASCII file that can be read in the Editor. This is a text format that contains a special syntax which is easier for non-technical people to write in. NTX files can be imported in the Editor using the import pipeline. A story cannot be exported to NTX because of the limited possibilities of NTX.
+
+### Syntax
+
+To define a state you need to write inside the NTX file:
+
+	===
+	[StateName]
+	Here you describe the situation inside this state.
+
+To define the state's connections you write:
+
+	===
+	[StateName]
+	Here you describe the situation inside this state.
+	---
+	[SomeOtherState]: Click here to go to SomeOtherState
+	
+To define a complex state **availabilty expression** write:
+
+	===
+	[StateName]
+	Here you describe the situation inside this state.
+	---
+	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
+	
+Properties are declared at the top of the file. The first parameter is the current value of the property, the second is the minimum value and the third is the maximum value. Example:
+
+	[Property1]: 0 -1 1
+	[Property2]: 15 4 5
+	===
+	[StateName]
+	Here you describe the situation inside this state.
+	---
+	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
+	
+Properties can be used inside a state using the **change expressions**:
+
+	[Property1]: 0 -1 1
+	[Property2]: 15 4 5
+	===
+	[StateName]
+	Here you describe the situation inside this state.
+	---
+	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
+	[Property1]: DELTANEG 3
+	[Property2]: SET 3
+
+
 ## XML
+Every story can be exported to XML. Stories in XML format are not encrypted and cannot be compiled to XML. The XML format is backwards compatible, meaning that XML stories created using different versions of the Editor can be opened in any Editor version. Stories in XML format can only be read inside the Editor. If you are using a version control system, it is highly recommended that you keep the stories in XML format. 
 
 # Changelog
+
+Nothing to show. Initial release date is 3 December 2021.
