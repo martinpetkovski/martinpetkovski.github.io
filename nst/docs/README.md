@@ -24,48 +24,51 @@ NST consists of an Editor and a Reader, which are separate standalone programs. 
 ## &#xf085; Systems
 A &#xf085; **system** or a **story** is a **project** created inside NST. Creating a new story in NST means creating a new project. Each system has only 2 components: **&#xf013; states** and &#xf02d; **properties**. Systems are completely deterministic.
 ## &#xf013; States
-A **&#xf013; state** is a single moment in time in a story. One story has only one active state at every moment, which describes what's the situation at that point in time. The state can be activated by a player choice, may it be active or passive. Each story has a single **&#xf061; entry state** which describes the starting point of the story. The state may be available based on the state's **&#xf0cb; availability expression**. The &#xf0cb; availability expression describes what needs to have happened in the story for the state to become a choice for the one who interacts. For example, one can drive a car if he had previously at some point bought a car. This is a relationship specified in the state's &#xf0cb; availability expression. When a state becomes active (a player makes a choice) it can change a property value using the **&#xf069; change expressions**.  
+A **&#xf013; state** is a single moment in time in a story. One story has only one active state at every moment, which describes what's the situation at that point in time. The state can be activated by a player choice, may it be active or passive. Each story has a single **&#xf061; entry state** which describes the starting point of the story. The state may be available based on the state's [**&#xf0cb; Availability Expression**](#availability-expression). The [**&#xf0cb; Availability Expression**](#availability-expression) describes what needs to have happened in the story for the state to become a choice for the one who interacts. For example, one can drive a car if he had previously at some point bought a car. This is a relationship specified in the state's [**&#xf0cb; Availability Expression**](#availability-expression). When a state becomes active (a player makes a choice) it can change a property value using the [**&#xf069; change expressions**](#change-expression).  
 ## &#xf02d; Properties
-A **&#xf02d; property** is a named numeric value which can be used inside expressions. For example, a property may hold a character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, and so on. &#xf013; States may use &#xf02d; property values inside **&#xf0cb; availabilty expressions** to determine whether they are available (for example, a &#xf013; state in which a character dies if his health is equal to 0), or inside the **&#xf069; change expressions** (for example, a character swings his sword and inflicts 20 damage to another character's health). 
+A **&#xf02d; property** is a named numeric value which can be used inside expressions. For example, a **&#xf02d; property** may hold a character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, and so on. **&#xf013; States** may use **&#xf02d; property** values inside [**&#xf0cb; Availability Expression**](#availability-expression) to determine whether they are available (for example, a **&#xf013; state** in which a character dies if his health is equal to 0), or inside the [**&#xf069; change expressions**](#change-expression) (for example, a character swings his sword and inflicts 20 damage to another character's health). 
 ## &#xf06c; Branches
 A **&#xf06c; branch** is a special type of component in a system which tracks what has already happened (the order of activation of states). This allows authors to rewind the time or advance it forwards. Branches can also be saved and reloaded later.
 
 # NST Editor
 
-The NST Editor is the place where stories are edited and debugged. In the current version, it requires a working internet connection and an active &#xf1b7; Steam connection. Anonymous data is sent back to us only when the editor crashes, containing information related to the crash.
+The NST Editor is the place where stories are edited and debugged. In the current version, it requires a working internet connection and an active **&#xf1b7; Steam** connection.
 
 # Quick Start Guide
-In this guide we will create a simple branching story to demonstrate capabilities of the NST Editor. This story is called Spook's Adventures, and is also available on the &#xf1b7; Steam Workshop and is also showcased in some of the trailer videos. The main character (Spook) finds himself in a New York alley, chased by cops. He will have 3 choices. His choices will be: to charge the cops, to run for it eastwards, or to take the stairs inside an apartment. 2 of the choices will lead to him being arrested in 2 different ways, and the third one will give Spook 2 additional choices. We will implement this mini story using the NST Editor.
+In this guide we will create a simple branching story to demonstrate capabilities of the NST Editor. This story is called Spook's Adventures, and is also available on the **&#xf1b7; Steam Workshop** and is also showcased in some of the trailer videos. The main character (Spook) finds himself in a New York alley, chased by cops. He will have 3 choices. His choices will be: to charge the cops, to run for it eastwards, or to take the stairs inside an apartment. 2 of the choices will lead to him being arrested in 2 different ways, and the third one will give Spook 2 additional choices. We will implement this mini story using the NST Editor.
+
 ## Creating Stories
 When starting NST Editor for the first time, a new story is automatically created. You can also create a new story by going to **&#xf15b; File > &#xf067; New**. To give a name to the story you have to save it first. To save a story with a new name go to the menu **Story[Name] > &#xf0c7; Save As > [Enter a Name] > &#xf00c; Confirm**. This will save the story inside the **[Root Folder]/stories** folder. 
+
 >[!TIP]
 To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the availabile stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
+
 ## Using States
-To create a new &#xf013; state in the story you can use the **&#xf009; States Browser** window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The &#xf009; States Browser in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
+To create a new [**&#xf013; state**](#xf013-states) in the story you can use the [**&#xf009; States Browser**](#xf009-states-browser) window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The [**&#xf009; States Browser**](#xf009-states-browser) in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
 ![Empty States Browser window](StatesBrowserEmpty.png)
 Clicking on the **&#xf055;&#xf013;** button on the far left will create a new state. 
 
 >[!TIP]
 Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
 
-Each &#xf013; state in the &#xf009; States Browser window is represented by a clickable button. To edit a &#xf013; state you have to right-click it and select **&#xf044; Edit** which will automatically open the **&#xf044; State Editor** window. The image below shows the &#xf044; State Editor and the &#xf009; States Browser side by side.
+Each [**&#xf013; state**](#xf013-states) in the [**&#xf009; States Browser**](#xf009-states-browser)  window is represented by a [clickable button](#xf013-state-button). To edit a [**&#xf013; state**](#xf013-states) you have to right-click it and select **&#xf044; Edit** which will automatically open the [**&#xf044; State Editor**](#xf14b-state-editor) window. The image below shows the [**&#xf044; State Editor**](#xf14b-state-editor) and the [**&#xf009; States Browser**](#xf009-states-browser) side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 
-You can edit all internal state properties in the &#xf044; State Editor. All edits are propagated inside the system by hitting the **&#xf093; Update** button.
+You can edit all internal state properties in the [**&#xf044; State Editor**](#xf14b-state-editor). All edits are propagated inside the system by hitting the **&#xf093; Update** button.
 >[!WARNING]
 Selecting another state will **not** automatically update the changes on the current state. You must hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
 
-&#xf02b; Rename the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
+**&#xf02b; Rename** the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
 
 >[!NOTE]
 Updating the same state with a different name will effectively trigger a rename. A state rename will warn the user if a name exists or if the name contains an illegal word or character.
 
 >[!TIP]
-You can view warnings and errors inside the **&#xf1c9; Log** window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
+You can view warnings and errors inside the [**&#xf1c9; Log**](#xf1c9-log) window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
 
-The state **&#xf000; Situation** describes what is happening in the current moment in time. You can right-click on the **&#xf000; Situation** and choose **&#xf044; Edit With > &#xf15b; Notepad**. A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
+The state [**&#xf000; Situation**](#situation) describes what is happening in the current moment in time. You can right-click on the [**&#xf000; Situation**](#situation) and [choose **&#xf044; Edit With > &#xf15b; Notepad**](#text-input). A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
 
-In the **&#xf000; Situation** field for the *SpookEntersAlley* state enter the following text:
+In the [**&#xf000; Situation**](#situation) field for the *SpookEntersAlley* state enter the following text:
 
 >You steer into a dark New York alley. Northwards, you see police officers coming towards you. They have police dogs with them in an attempt to track you down. Eastwards you see another alley, and with it comes a chance to run for it. Westwards you have a fire escape which you may attempt to climb. What is your next step?
 
@@ -75,67 +78,69 @@ Save the **&#xf15b; Notepad** file and close the **&#xf15b; Notepad** window. Th
 
 To create a new simple choice after Spook has entered the Alley, click on the **&#xf055; Create Choice** button. Clicking this button will create a new state which will be automatically linked to the *SpookEntersAlley* state. The newly created state will be automatically selected.
 
-&#xf02b; Rename the state to *SpookChargesCops* and hit **&#xf093; Update**. Right-click on the **&#xf000; Situation** for the *SpookChargesCops* state, hit **&#xf044; Edit With > &#xf15b; Notepad**, and enter the following in the **&#xf15b; Notepad** window:
+**&#xf02b; Rename** the state to *SpookChargesCops* and hit **&#xf093; Update**. Right-click on the **&#xf000; Situation** for the *SpookChargesCops* state, [hit **&#xf044; Edit With > &#xf15b; Notepad**](#text-input), and enter the following in the **&#xf15b; Notepad** window:
 
 >You charge the police officers and their dogs bare-handed. You quickly realize that you don't stand a chance alone. They put you to the ground and swiftly arrest you.
 
-Save the file in **&#xf15b; Notepad** and close the window. As you may notice, this time the **&#xf044; State Editor** looks a bit different than *SpookEntersAlley*'s view:
+Save the file in **&#xf15b; Notepad** and close the window. As you may notice, this time the [**&#xf044; State Editor**](#xf14b-state-editor) looks a bit different than *SpookEntersAlley*'s view:
 
 ![State Editor for SpookChargesCops](SpookChargesCopsStateEditor.png)
 
-There is a field for the **&#xf0cb; Availability Expression** which has the value:
+There is a field for the [**&#xf0cb; Availability Expression**](#availability-expression) which has the value:
 	
 	IS_HAPPENING SpookEntersAlley
 	
 This means that when the state *SpookEntersAlley* is the current moment in time (i.e., active state), the state *SpookChargesCops* will be an available choice for the reader. 
 
-In this case, clicking the **&#xf055; Create Choice** button fills the **&#xf0cb; Availability Expression** automagically, but it is fully editable nontheless.
+In this case, clicking the **&#xf055; Create Choice** button fills the [**&#xf0cb; Availability Expression**](#availability-expression) automagically, but it is fully editable nontheless.
 
 Click **&#xf093; Update** to propagate the state changes.
 
-You can now see the changes in action inside the **&#xf0e7; Read in Editor** window. You can open this window by clicking on **&#xf2d0; Window > Read in Editor**. This window shows the story in the current moment in time. To restart the story you can hit the **&#xf11c; F5** button on the keyboard. The **&#xf0e7; Read in Editor** should look like the image below:
+You can now see the changes in action inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) window. You can open this window by clicking on **&#xf2d0; Window > &#xf0e7; Read in Editor**. This window shows the story in the current moment in time. To restart the story you can hit the [**&#xf11c; F5** button](#keyboard-shortcuts) on the keyboard. The [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should look like the image below:
 
 ![Read in Editor](ReadInEditor_2.png)
 
-Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you must specify the **&#xf075; Dialog Statement** for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the **&#xf009; States Browser**. Scroll down to **&#xf075; Dialog Statements** inside the **&#xf044; State Editor**. From the dropdown select *SpookEntersAlley* and hit the &#xf055; button. In the **&#xf075; Dialog Statement** field enter "*Charge the cops!*". Hit **&#xf093; Update** on the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* is the active state.
+Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you must specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). From the dropdown select *SpookEntersAlley* and hit the &#xf055; button. In the [**&#xf075; Dialog Statement**](#dialog-statements) field enter "*Charge the cops!*". Hit **&#xf093; Update** on the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* is the active state.
 
 >[!TIP]
-Selecting *__ALL* in the **&#xf075; Dialog Statement** dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional **&#xf075; Dialog Statements** for specific states will simply override the label for the specified states, but will leave the *__ALL* be valid for the rest.
+Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, but will leave the *__ALL* be valid for the rest.
 
-Next, create a new state and rename it to *SpookRunsEastwards*. Set the **&#xf000; Situation** to:
+Next, create a new state and rename it to *SpookRunsEastwards*. Set the [**&#xf000; Situation**](#situation) to:
 
 >You make a run for it eastwards. The police dogs are faster than you. They catch you before you can make it over the fence on the other side. You are arrested and taken into custody.
 
-Set the **&#xf0cb; Availability Expression** to:
+Set the [**&#xf0cb; Availability Expression**](#availability-expression) to:
 
 	IS_HAPPENING SpookEntersAlley
 	
-Set the **&#xf075; Dialog Statement** for the state *SpookEntersAlley* to "*Run for it!*".
+Set the [**&#xf075; Dialog Statement**](#dialog-statements) for the state *SpookEntersAlley* to "*Run for it!*".
 
 Click **&#xf093; Update** to propagate the state changes.
 
 And finally, create the last state in the same manner. 
 
-It should be named *SpookTakesTheStairs*. Set the **&#xf000; Situation** to:
+It should be named *SpookTakesTheStairs*. Set the [**&#xf000; Situation**](#situation) to:
 
 >You climb the fire escape stairs and go inside an apartment through the window. It's a lavish apartment like you never would've expected in this part of town. It's dark, but there is a strange light coming from behind the bookshelves. What will you do?
 
-Again, set the **&#xf0cb; Availability Expression** to:
+Again, set the [**&#xf0cb; Availability Expression**](#availability-expression) to:
 
 	IS_HAPPENING SpookEntersAlley
 	
-Set the **&#xf075; Dialog Statement** for the state *SpookEntersAlley* to "*Take the stairs!*".
+Set the [**&#xf075; Dialog Statement**](#dialog-statements) for the state *SpookEntersAlley* to "*Take the stairs!*".
 
 Hit **&#xf093; Update** to propagate the state changes.
 
-After you complete the steps above, the view inside the **&#xf2d0; Window > Read in Editor** should look like the image below:
+After you complete the steps above, the view inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should look like the image below:
 
 ![Read in Editor](ReadInEditor_3.png)
 
-Clicking on any of the buttons inside the **&#xf0e7; Read in Editor** should lead you to the correct state specified on the button label.
+Clicking on any of the buttons inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should lead you to the correct state specified on the button label.
 
 >[!NOTE]
 **&#xf188; BUG:** When creating new states you should hit F5 to propagate the changes, just in case. This is not the intended behavior and will be fixed in future versions.
+
+>[!NOTE] Anonymous data is sent back to us only when the editor crashes, containing information related to the crash.
 
 # Reference
 
@@ -158,133 +163,110 @@ The name of the editor, animates when actions on the story file are performed.
 
 ![Main Menu -> Story Name](MainMenuStoryName.png)
 
-**Reload** - If there is a file for the story present on disk, it will reload the story from that file.
-
-**Target Folder** - Opens the folder where the story is located or would be located on disk.
-
-**Save** - Saves the current story in the target folder in binary **.nts** format. The target folder is located in **[exe folder]/stories**.
-
-**Save As** - Saves the current story in the target folder with a new name which the user can specify before clicking **Confirm**. The format is **.nts** binary.
-
-**Compile As** - Compiles the current story in binary **.nts** format, effectively making the file contents read-only. Use with caution.
-
-**Export** - Saves the current story in the exports folder in plain text **.xml** format. The target folder is located in **[exe folder]/exports**.
-
-**Export As** - Saves the current story in the exports folder in plain text **.xml** format with a new name. The target folder is located in **[exe folder]/exports**.
-
-**Discard Changes** - Undo-s everything up until the last save. This action can be redo-ed later.
-
----
+| |  |
+|----------------------|-------------|
+| **&#xf079; Reload** | If there is a file for the story present on disk, it will reload the story from that file. |
+| **&#xf07c; Target Folder** | Opens the folder where the story is located or would be located on disk. |
+| **&#xf0c7; Save** | Saves the current story in the target folder in binary [**.nts**](#nts) format. The target folder is located in **[exe folder]/stories**. |
+| **&#xf0c7; Save As** | Saves the current story in the target folder with a new name which the user can specify before clicking **Confirm**. The format is [**.nts**](#nts) binary. |
+| **&#xf0c7; Compile As** | Compiles the current story in binary [**.nts**](#nts) format, effectively making the file contents read-only. Use with caution. |
+| **&#xf0c7; Export** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format. The target folder is located in **[exe folder]/exports**. |
+| **&#xf0c7; Export As** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format with a new name. The target folder is located in **[exe folder]/exports**. |
+| **&#xf057; Discard Changes** | [Undoes](#xf1da-command-history) everything up until the last save. This action can be [redone](#xf1da-command-history) later. |
 
 ### File
 This menu holds all file-related functions of the NST Editor.
 
 ![Main Menu -> File](MainMenuFile.png)
 
-**New** - Will create a new story with a randomly generated name.
-
-**Load File...** - Will open a load file dialog in which you can select a **.nst** file to load. 
-
-**Load** - Will list all **.nst** files available inside the **[exe folder]/stories** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.
-
-**Open Recent** - Lists all recently opened files, with the topmost being the most recent. Clicking on an item will load it.
-
-**Import File...** - Will open an import file dialog in which you can select a **.xml** file to load.
-
-**Import** - Will list all **.xml** files available inside the **[exe folder]/exports** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.
-
-**Load Last Backup** - Will load the last available backup. This might not match the current story, depending on when it was saved. The last saved time will show up when the item is hovered.
-
-**Stories Folder** - Will open the **[exe folder]/stories** folder in Windows Explorer.
-
-**Exports Folder** - Will open the **[exe folder]/exports** folder in Windows Explorer.
-
-**Exit** - Will gracefully close the editor.
-
----
+| | |
+|-|-|
+|**&#xf067; New** | Will create a new story with a randomly generated name. |
+|**&#xf07c; Load File...** | Will open a load file dialog in which you can select a [**.nts**](#nts) file to load. |
+|**&#xf07c; Load** | Will list all [**.nts**](#nts) files available inside the **[exe folder]/stories** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.|
+|**&#xf017; Open Recent** | Lists all recently opened files, with the topmost being the most recent. Clicking on an item will load it.|
+|**&#xf07c; Import File...** | Will open an import file dialog in which you can select a [**.xml**](#xml) or a [**.ntx**](#ntx) file to load.|
+|**&#xf07c; Import** | Will list all [**.xml**](#xml) and [**.ntx**](#ntx) files available inside the **[exe folder]/exports** folder. Clicking on an item will load it. You can filter the items by using the text box located at the top of the list.|
+|**&#xf1c0; Load Last Backup** | Will load the last available backup. This might not match the current story, depending on when it was saved. The last saved time will show up when the item is hovered.|
+|**&#xf07c; Stories Folder** | Will open the **[exe folder]/stories** folder in Windows Explorer.|
+|**&#xf07c; Exports Folder** | Will open the **[exe folder]/exports** folder in Windows Explorer.|
+|**&#xf00d; Exit** | Will gracefully close the editor.|
 
 ### Edit
-This menu holds the undo / redo commands.
+This menu holds the undo / redo commands. Also check the [Command History](#xf1da-command-history).
 
-**Undo** - Undo-s the last command.
-
-**Redo** - Executes the next command again.
-
----
+| | |
+|-|-|
+|**&#xf0e2; Undo** | If available, undoes the last command. |
+|**&#xf01e; Redo** | If available, executes the next command again. |
 
 ### System 
 This menu holds all commands related to the system.
 
 ![Main Menu -> System](MainMenuSystem.png)
 
-**Run Reader** - If the NST Reader exists in the same working directory, it can be started by clicking on this item. If a story is loaded inside the editor, this reader instance will also load it.
-
-**Sync with Reader** - Enabled if applicable. Can be true or false. If it's true than the previously started instance of the NST Reader will sync to the actions inside the NST Editor.
+| | |
+|-|-|
+|**&#xf04b; Run Reader** | If the [NST Reader](#NST-Reader) exists in the same working directory, it can be started by clicking on this item. If a story is loaded inside the editor, this reader instance will also load it. |
+|**&#xf021; Sync with Reader** | Enabled if applicable. Can be true or false. If it's true than the previously started instance of the [NST Reader](#NST-Reader) will sync to the actions inside the [NST Editor](#NST-Editor). |
 
 >[!WARNING]
-Sync with Reader is still in BETA. It doesn't work well with huge story files. Use it sparingly.
+Sync with Reader is still in BETA. It doesn't work well with huge story files. Use it sparingly. 
 
-**Create** - Lists the system components. You can create both states and properties from this menu.
-
-**Reset** - Resets the complete system and assigns a new seed value. This means that random events will have new values.
-
-**Reset Branch** - Resets only the branch you are currently on, keeping the seed value. Random events will happen in the same way each time you reset the branch.
-
-**Pause Tick** - Will pause the system updates. This will not stop the editor execution, but will stop the evaluation of all internal state and system properties.
-
----
+| | |
+|-|-|
+|**&#xf055; Create** | Lists the system components. You can create both [states](#xf013-states) and [properties](#xf02d-properties) from this menu.|
+|**&#xf079; Reset** | Resets the complete system and assigns a new seed value. This means that random events will have new values.|
+|**&#xf079; Reset Branch** | Resets only the branch you are currently on, keeping the seed value. Random events will happen in the same way each time you reset the branch.|
+|**&#xf28b; Pause Tick** | Will pause the system updates. This will not stop the editor execution, but will stop the evaluation of all internal state and system properties.|
 
 ### Window
 Holds list of all available windows in the NST Editor. This does not include external editors or the NST Reader. This list includes:
 
-Editor Utilities: Log, Profiler, Command History
-
-State Editor
-
-Property Editor
-
-States Browser
-
-Read in Editor
-
-Content Browser
-
-Time Controller
-
-Note Editor
-
-Steam Workshop
-
----
+* Editor Utilities: 
+	* [**&#xf1c9; Log**](#xf1c9-log)
+	* [**&#xf0ae; Profiler**](#xf0ae-profiler)
+	* [**&#xf1da; Command History**](#xf1da-command-history)
+  
+* [**&#xf044; State Editor**](#xf14b-state-editor)
+  
+* [**&#xf02d; Property Editor**](#xf02d-property-editor)
+  
+* [**&#xf009; States Browser**](#xf009-states-browser)
+  
+* [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor)
+  
+* [**&#xf1b2; Content Browser**](#xf1b2-content-browser)
+  
+* [**&#xf017; Time Controller**](#xf017-time-controller)
+  
+* [**&#xf249; Note Editor**](#xf249-note-editor)
+  
+* [**&#xf1b7; Steam Workshop**](#xf1b7-steam-workshop)
 
 ### Settings
 Lists all the available editor options. A click selects only one option.
 
-Available languages: English (Default) and Macedonian
-
-Available themes: Aegean Nights (desturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue)
-
-Backup frequencies: No backups, Rare (backup every 30 actions), Frequent (backup every 5 actions), Always (backup on every action).
-
----
+| | |
+|-|-|
+|**&#xf1ab; Language** | English (Default) or Macedonian |
+|**&#xf1fc; Theme** | Aegean Nights (desturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue) |
+|**&#xf1c0; Backup Frequency** | No backups, Rare (backup every 30 actions), Frequent (backup every 5 actions), Always (backup on every action). |
 
 ### Notification area
-Displays short message for a few seconds. This message is also available in the Log window.
+Located on the right part of the main menu, to the left of the window controls. Short messages are shown in the notification area for a few seconds. This message is also available in the [**&#xf1c9; Log**](#xf1c9-log) window.
 
----
 
 ## Text Input
 All text components inside NST Editor can be edited with the right-click context menu. NST Editor doesn't ship with an integrated text editor, but allows the author to choose a preffered external text editor. Currently there are 4 available editors: Notepad (ships with Windows), [Notepad++](https://notepad-plus-plus.org/), [Sublime Text 4](https://www.sublimetext.com/) and [Microsoft Word](https://www.office.com/). The text editor will be launched inside the NST Editor and behaves as any other NST Editor window does. It can be moved, docked, undocked and closed. Saving the file inside the preffered text editor will automagically propagate the changes made to the text inside the NST Editor. The standard items found in the right-click context menu include:
 
-**&#xf044; Edit With > [Preffered Editor]** - Edits the text contents. After selecting a text editor, a new window of your preffered editor will pop-up. You may drag and dock this window as you do with other windows. After you are satisfied with your changes you need to hit save in your preffered editor and with that the changes you made will be automagically propagated inside the NST Editor. At this point you may close the text editor window.
-
-**&#xf0c5; Copy** - Copy the text contents to clipboard.
-
-**&#xf0c4; Cut** - Cut the text contents to clipboard.
-
-**&#xf0ea; Paste** - Paste from clipboard to text contents. This action will overwrite the existing content.
-
-**&#xf057; Clear** - Clear the text contents.
+| | |
+|-|-|
+|**&#xf044; Edit With > [Preffered Editor]** | Edits the text contents. After selecting a text editor, a new window of your preffered editor will pop-up. You may drag and dock this window as you do with other windows. After you are satisfied with your changes you need to hit save in your preffered editor and with that the changes you made will be automagically propagated inside the NST Editor. At this point you may close the text editor window.|
+|**&#xf0c5; Copy** | Copy the text contents to clipboard.|
+|**&#xf0c4; Cut** | Cut the text contents to clipboard.|
+|**&#xf0ea; Paste** | Paste from clipboard to text contents. This action will overwrite the existing content.|
+|**&#xf057; Clear** | Clear the text contents.|
 
 ## &#xf013; State Button
 Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the **&#xf044; State Editor**. Holding ctrl and clicking on state buttons will select multiple states. Selected states have a golden border around the button.
@@ -294,31 +276,21 @@ The active state's button is red, if the state is available the button is green 
 Right-clicking a state's button will open up a context menu containing additional actions. 
 ![State's context menu](StateContextMenu.png)
 
-**&#xf044; Edit** - Will select the state and open the **&#xf044; State Editor**.
-
-**&#xf079; Reset** - Will reset all passive properties of a state. It will clear the *activated* flag as if this state never happened.
-
-**&#xf04b; Try Activate** - The state will be activated only if it's available.
-
-**&#xf144; Force Activate** - The state will be forcefully activated.
-
-**&#xf0a8; Set Entry State** - The state will become the entry state to the story. The entry state becomes the active state when the story is started / restarted.
-
-**&#xf24d; Duplicate** - Creates a perfect copy of the state with a new name.
-
-**&#xf0c5; Copy** - Copies the specified state property to clipboard.
-
-**&#xf1f8; Delete** - Deletes the state. The entry state cannot be deleted - specify a new entry state before deleting it.
-
-**&#xf055; Create Choice** - Creates a new state, selects it and links the contexted state to it with `IS_HAPPENING [ContextedStateName]`.
- 
-**&#xf060; Depends** - If applicable, lists all the states on which this state depends (i.e. what needs to happen for this state to become available). 
-
-**&#xf061; Dependent** - If applicable, lists all the states that depend on this state (i.e. the contexted state needs to happen for these states to become available).
-
-**&#xf061; Changing Properties** - If applicable, lists all the properties that are changed by this state.
-
-**&#xf249; Notes** - Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this state.
+| | |
+|-|-|
+|**&#xf044; Edit** | Will select the state and open the **&#xf044; State Editor**.|
+|**&#xf079; Reset** | Will reset all passive properties of a state. It will clear the *activated* flag as if this state never happened.|
+|**&#xf04b; Try Activate** | The state will be activated only if it's available.|
+|**&#xf144; Force Activate** | The state will be forcefully activated.|
+|**&#xf0a8; Set Entry State** | The state will become the entry state to the story. The entry state becomes the active state when the story is started / restarted.|
+|**&#xf24d; Duplicate** | Creates a perfect copy of the state with a new name.|
+|**&#xf0c5; Copy** | Copies the specified state property to clipboard.|
+|**&#xf1f8; Delete** | Deletes the state. The entry state cannot be deleted - specify a new entry state before deleting it.|
+|**&#xf055; Create Choice** | Creates a new state, selects it and links the contexted state to it with `IS_HAPPENING [ContextedStateName]`.|
+|**&#xf060; Depends** | If applicable, lists all the states on which this state depends (i.e. what needs to happen for this state to become available). |
+|**&#xf061; Dependent** | If applicable, lists all the states that depend on this state (i.e. the contexted state needs to happen for these states to become available).|
+|**&#xf061; Changing Properties** | If applicable, lists all the properties that are changed by this state.|
+|**&#xf249; Notes** | Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this state.|
 
 If multiple states are selected the context menu offers limited options which include: **&#xf079; Reset**, **&#xf24d; Duplicate** and **&#xf1f8; Delete**.
 
@@ -328,29 +300,20 @@ Each **&#xf02d; property** in the NST Editor is represented by a single button l
 Right-clicking a property's button will open up a context menu containing additional actions.
 ![Property's context menu](PropertyContextMenu.png)
  
- **Name** - The name of the property. It must be unique, not contain special characters or blank spaces. Updating the same property with a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.
- 
- **Value** - The current value of the property.
- 
- **Initial Value** - The initial value of the property. The property value will be set to this value when the story is started or restarted.
- 
- **Value Min** - If the current value is less than this value it will be set to this value.
- 
- **Value Max** - If the current value exceeds this value it will be set to this value.
- 
- **Randomize on Reset** - Each time the story restarts, the current value will get a random value in a specified range. The value will depend on the story or branch seed.
- 
- **Randomize Min** - The lower bound for the random number.
- 
- **Randomize Max** - The upper bound for the random number.
- 
- **&#xf093; Update** - Updates the property with the new values.
- 
- **&#xf1f8; Delete** - Deletes the property.
- 
- **Dependent States** - Lists all dependent states. These states will be highlighted by clicking on the property button. 
- 
- **&#xf249; Notes** - Lists all the notes attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.
+| | |
+|-|-|
+|**Name** | The name of the property. It must be unique, not contain special characters or blank spaces. Updating the same property with a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.|
+|**Value** | The current value of the property.| 
+|**Initial Value** | The initial value of the property. The property value will be set to this value when the story is started or restarted.|
+|**Value Min** | If the current value is less than this value it will be set to this value.|
+|**Value Max** | If the current value exceeds this value it will be set to this value.|
+|**Randomize on Reset** | Each time the story restarts, the current value will get a random value in a specified range. The value will depend on the story or branch seed.|
+|**Randomize Min** | The lower bound for the random number.|
+|**Randomize Max** | The upper bound for the random number.|
+|**&#xf093; Update** | Updates the property with the new values.|
+|**&#xf1f8; Delete** | Deletes the property.|
+|**Dependent States** | Lists all dependent states. These states will be highlighted by clicking on the property button. |
+|**&#xf249; Notes** | Lists all the notes attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.|
 
 ## &#xf06c; Branch Expander
 Each **&#xf06c; branch** is represented by an expander inside the **&#xf017; Time Controller** window. A branch can be active (loaded) inside the story to which it belongs. The branch that is active can be time-manipulated by the user. Each branch may be saved and loaded (activated).
@@ -361,23 +324,22 @@ The expander displays the name of the branch. It will show **&#xf0e7; Active** i
 
 Right-clicking on the expander title will open a context menu. 
 
-**&#xf253; Load** - Will load the branch (make it active). Loading the branch will activate a state which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may **&#xf017; control the time** on it by rewinding or advancing the state activation.
-
-**&#xf246; Rename** - Renames the branch.
-
-**&#xf1f8; Delete** - Deletes the branch.
+| | |
+|-|-|
+|**&#xf253; Load** | Will load the branch (make it active). Loading the branch will activate a state which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may **&#xf017; control the time** on it by rewinding or advancing the state activation. |
+|**&#xf246; Rename** | Renames the branch.|
+|**&#xf1f8; Delete** | Deletes the branch.|
 
 ## &#xf249; Note Display
 
 Notes may be displayed on various places inside the NST Editor. They have a frame with a **&#xf249; Note** caption. Notes are a [standard text input component](#text-input) and can be edited by right-clicking on the content. There are additional items in the context menu specific to notes:
 
-**&#xf08d; Pin** - Pins the note to the top.
-
-**&#xf12a; Important** - Colors the note red.
-
-**&#xf0c1; Detach** - Detaches the note from the item. This does not delete the note, it will still be available through the **&#xf249; Note Editor**.
-
-**&#xf1f8; Delete** - Detaches the note from all items and deletes it.
+| | |
+|-|-|
+|**&#xf08d; Pin** | Pins the note to the top.|
+|**&#xf12a; Important** | Colors the note red.|
+|**&#xf0c1; Detach** | Detaches the note from the item. This does not delete the note, it will still be available through the **&#xf249; Note Editor**.|
+|**&#xf1f8; Delete** | Detaches the note from all items and deletes it.|
 
 ## &#xf14b; State Editor
 
@@ -386,14 +348,14 @@ Notes may be displayed on various places inside the NST Editor. They have a fram
 ### Action Buttons
 The topmost element is the [State Button](#xf013-state-button) for the currently selected state.
 
-**&#xf144; Activate** - The state will be forcefully activated.
-
-**&#xf093; Update** - All changes to the state inside the editor will be propagated inside the system.
+| | |
+|-|-|
+|**&#xf144; Activate** | The state will be forcefully activated.|
+|**&#xf093; Update** | All changes to the state inside the editor will be propagated inside the system.|
+|**&#xf1f8; Delete** | Deletes the state.|
 
 >[!WARNING]
 Hit the **&#xf093; Update** button as often as possible when making changes. If another state is selected without first updating the current state all changes will be lost. This behavior is still under development and will change in future releases.
-
-**&#xf1f8; Delete** - Deletes the state.
 
 ### &#xf02b; State Name
 All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
@@ -409,7 +371,7 @@ Writing a property name between [ and ] will render the value of the property in
 
 ### Create Choice button
 
-Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's availability expression. The newly created state will then be automatically selected.
+Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#availability-expression). The newly created state will then be automatically selected.
 
 ### Change Expression
 
@@ -425,37 +387,36 @@ Setting the expression value to a number will change the expression by that valu
 
 #### Change Operators
 
-**DELTA x** - Will add *exp* to the property value. Same as writing just *x* in the expression.
-
-**DELTANEG x** - Will subtract *exp* from the property value. 
-
-**SET x** - Will set the property value to *exp*.
+| | |
+|-|-|
+|**DELTA exp** | Will add *exp* to the property value. Same as writing just *x* in the expression.|
+|**DELTANEG exp** | Will subtract *exp* from the property value. |
+|**SET exp** | Will set the property value to *exp*.|
 
 #### Type Operators
 
-**VALUE** - Will change the current value of the property. This is the default type operator, expression will use it if not explicitly stated.
-
-**INITIAL** - Will change the initial value of the property.
-
-**MIN** - Will change the minimum value of the property.
-
-**MAX** - Will change the maximum value of the property.
+| | |
+|-|-|
+|**VALUE** | Will change the current value of the property. This is the default type operator, expression will use it if not explicitly stated.|
+|**INITIAL** | Will change the initial value of the property.|
+|**MIN** | Will change the minimum value of the property.|
+|**MAX** | Will change the maximum value of the property.|
 
 #### Get Operators
 
-**GETVALUE propertyName** - Get the current value of a property. This is the default get operator. It's use is implied when writing only a property name inside an expression.
-
-**GETMIN propertyName** - Get the minimum value of a property.
-
-**GETMAX propertyName** - Get the maximum value of a property.
-
-**GETINIT propertyName** - Get the initial value of a property.
+| | |
+|-|-|
+|**GETVALUE propertyName** | Get the current value of a property. This is the default get operator. It's use is implied when writing only a property name inside an expression.|
+|**GETMIN propertyName** | Get the minimum value of a property.|
+|**GETMAX propertyName** | Get the maximum value of a property.|
+|**GETINIT propertyName** | Get the initial value of a property.|
 
 #### Special Operators
 
-**DICE rangeMin rangeMax** - Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures the system is deterministic.
-
-**DICEX rangeMin rangeMax customSeed** - Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It returns different numbers for different values of customSeed, and returns the same numbers for the same customSeed.
+| | |
+|-|-|
+|**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures the system is deterministic.|
+|**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It returns different numbers for different values of customSeed, and returns the same numbers for the same customSeed.|
 
 #### Examples
 
@@ -479,36 +440,27 @@ Right-clicking on the expression will bring up a context menu containing a searc
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
-The availability expression is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false). True if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
+The **&#xf0cb; Availability Expression** is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false). True if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
 
 #### Operators
 
-**( )** - It is recommended that you put each sub-expression in parenthesis. `(expression)`
-
-**OR** - Binary comparator. Returns true if either of the 2 sub-expressions is true. `(x) OR (x)`
-
-**AND** - Binary comparator. Returns true if both of the 2 sub-expressions are true. `(x) AND (x)`
-
-**NOT** - Unary operator. Returns the opposite of the 1 sub-expression it is applied to. `NOT (x)`
-
-**HAS_HAPPENED** - Unary operator. Returns true if a state has happened in the past. `(HAS_HAPPENED stateName)` 
-
-**CAN_HAPPEN** - Unary operator. Returns true if a state can happen at the moment. `(CAN_HAPPEN stateName)`
-
-**COULD_EVER_HAVE_HAPPENED** - Unary operator. Returns true if a state was ever available in the past. `(COULD_EVER_HAVE_HAPPENED stateName)`
-
-**IS_HAPPENING** - Unary operator. Returns true if a state is happening at the moment. `(IS_HAPPENING stateName)`
-
-**IS_MORE_THAN** - Binary operator. Returns true if the current property value is more than a numeric value or more than the current value of another property. `(PropertyName IS_MORE_THAN AnotherProperty)`
-
-**IS_LESS_THAN** - Binary operator. Returns true if current property value is less than a numeric value or less than the current value of another property. `(PropertyName IS_LESS_THAN 21)`
-
-**IS_EQUAL_TO** - Binary operator. Returns true if current property value is equal to a numeric value or equal to the current value of another property. `(PropertyName IS_EQUAL_TO AnotherProperty)`
-
-**DICE x y [z]** - Unary operator. Returns a random seeded number between x and y. An optional custom seed (z) can be supplied. The random number always depends on the global story seed and will return the same number for the same story seed making the system deterministic. You can use property values in all parameters. `(DICE 2 3 PropertyName)`
+| | |
+|-|-|
+|**( )** | It is recommended that you put each sub-expression in parenthesis. `(expression)`|
+|**OR** | Binary comparator. Returns true if either of the 2 sub-expressions is true. `(x) OR (x)`|
+|**AND** | Binary comparator. Returns true if both of the 2 sub-expressions are true. `(x) AND (x)`|
+|**NOT** | Unary operator. Returns the opposite of the 1 sub-expression it is applied to. `NOT (x)`|
+|**HAS_HAPPENED** | Unary operator. Returns true if a state has happened in the past. `(HAS_HAPPENED stateName)` |
+|**CAN_HAPPEN** | Unary operator. Returns true if a state can happen at the moment. `(CAN_HAPPEN stateName)`|
+|**COULD_EVER_HAVE_HAPPENED** | Unary operator. Returns true if a state was ever available in the past. `(COULD_EVER_HAVE_HAPPENED stateName)`|
+|**IS_HAPPENING** | Unary operator. Returns true if a state is happening at the moment. `(IS_HAPPENING stateName)`|
+|**IS_MORE_THAN** | Binary operator. Returns true if the current property value is more than a numeric value or more than the current value of another property. `(PropertyName IS_MORE_THAN AnotherProperty)`|
+|**IS_LESS_THAN** | Binary operator. Returns true if current property value is less than a numeric value or less than the current value of another property. `(PropertyName IS_LESS_THAN 21)`|
+|**IS_EQUAL_TO** | Binary operator. Returns true if current property value is equal to a numeric value or equal to the current value of another property. `(PropertyName IS_EQUAL_TO AnotherProperty)`|
+|**DICE x y [z]** | Unary operator. Returns a random seeded number between x and y. An optional custom seed (z) can be supplied. The random number always depends on the global story seed and will return the same number for the same story seed making the system deterministic. You can use property values in all parameters. `(DICE 2 3 PropertyName)`|
 
 #### Context Menu
-The context menu contains all items that can be used in the availability expression. Clicking on any item will insert it at the cursor. If an item inside the availability expression is selected it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
+The context menu contains all items that can be used in the **&#xf0cb; Availability Expression**. Clicking on any item will insert it at the cursor. If an item inside the availability expression is selected it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
 
 #### Examples
 
@@ -568,13 +520,12 @@ To create a dialog statement, you must select a state (or "__ALL") from the drop
 
 ### Options
 
-**Can Happen Again** - If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.
-
-**Is Exclusively Available** - If checked, when this state is available, it will be the only available state, regardless of the availability of other states.
-
-**Is Global** - If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).
-
-**Exclude Global States** - If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.
+| | |
+|-|-|
+|**Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
+|**Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
+|**Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
+|**Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
 
 ### State Head
 
@@ -605,21 +556,17 @@ This view is useful for creating a mental map of where in the story a state may 
 The purpose of the Paths View is to display a number of different ways in which a reader may get from one state to another. The Paths View displays a sequence of states called "a path". Generated paths are sorted by number of states, thus the first path is always the shortest path between two states (the quickest way for the reader to get into a state).
 
 >[!WARNING]
-For performance/memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
+For performance and memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
 
-**Source** - The source state for the path.
-
-**Destination** - The destination state for the path. 
-
-**Max Paths** - Maximum number of paths to generate. This needs to be set because some states may have infinite number of paths between them.
-
-**Search Available** - Search only states that are available at the moment. Useful when the source is the currently active state.
-
-**Search Everything** - Searches all states to generate paths.
-
-**Discovered Junctions** - Number of path junctions discovered.
-
-**Generated Paths** - Number of paths generated by the action.
+| | |
+|-|-|
+|**Source** | The source state for the path.|
+|**Destination** | The destination state for the path. |
+|**Max Paths** | Maximum number of paths to generate. This needs to be set because some states may have infinite number of paths between them.|
+|**Search Available** | Search only states that are available at the moment. Useful when the source is the currently active state.|
+|**Search Everything** | Searches all states to generate paths.|
+|**Discovered Junctions** | Number of path junctions discovered.|
+|**Generated Paths** | Number of paths generated by the action.|
 
 ## &#xf02d; Property Editor
 The Property Editor lists all properties as property buttons. Properties are searchable by name using the search bar inside the editor. You may quickly create a property using the &#xf055;&#xf02d; button in the left-most area of the Property Editor.
@@ -671,9 +618,10 @@ This is a list of all supported file formats that can be loaded via the Resource
 
 To embed an offline resource inside a state you need to reference it by its name using the `{resource=ResourceName}` syntax.
 
-Examples:
+**Examples:**
 
 `<img src="{resource=ResourceName}"/>`
+
 `<video controls src="{resource=20200510_171050}">`
 
 To rename a resource you enter a new name inside the appropriate textbox in the **Actions** column. After you enter the desired name, click on the **&#xf0c7; Save** button. 
@@ -706,19 +654,15 @@ The time controller window enables you to rewind or advance the history of event
 
 ### Time Controls
 
-**Reset** - Clicking on this button will reset the *whole story*, meaning the story will begin from the start with a new seed.
-
-**Rewind** - Will rewind the history of events by a single event.
-
-**Advance** - Will advance the history of events by a single event.
-
-**Time** - A slider that numbers all events that have happened inside the story. You can enter any number to go at that event in the story.
-
-**Reset Branch** - Clicking on this button will reset only the *current branch*, meaning the story will begin from the start with *the same seed*. All random events will happen in the same way.
-
-**Save** - Will save the active branch. All saved branches appear in the **Branches Browser**. You can load a branch at any point as long as the story hasn't changed in a way in which the branch can no longer execute (i.e., you have deleted a state that happened in a branch). 
-
-**Seed** - This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then hitting on the **&#xf0c7; Save** button. A seed can be reset after editing by clicking on the **Cancel** button.
+| | |
+|-|-|
+|**Reset** | Clicking on this button will reset the *whole story*, meaning the story will begin from the start with a new seed.|
+|**Rewind** | Will rewind the history of events by a single event.|
+|**Advance** | Will advance the history of events by a single event.|
+|**Time** | A slider that numbers all events that have happened inside the story. You can enter any number to go at that event in the story.|
+|**Reset Branch** | Clicking on this button will reset only the *current branch*, meaning the story will begin from the start with *the same seed*. All random events will happen in the same way.|
+|**Save** | Will save the active branch. All saved branches appear in the **Branches Browser**. You can load a branch at any point as long as the story hasn't changed in a way in which the branch can no longer execute (i.e., you have deleted a state that happened in a branch). |
+|**Seed** | This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then hitting on the **&#xf0c7; Save** button. A seed can be reset after editing by clicking on the **Cancel** button.|
 
 ### Branches Browser
 
@@ -732,59 +676,49 @@ The note editor displays all notes available inside the system in the [Note Disp
 
 The **&#xf1b7; Steam Workshop** window allows an integrated connection to the Steam Workshop. Requires an active internet connection and an active connection to Steam. 
 
-**Browse Workshop** - Will open the NST Steam Workshop in an Steam overlay.
-
-**[Story Name]** - If available, will open the Steam Workshop page for the current story in the Steam overlay.
-
-**Synchronize** - Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.
-
-**Delete** - If applicable, will delete the story from the Steam Workshop.
-
-This window by default lists all the Steam Workshop stories you are subscribed to. To download a story click on the **Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. 
-
-If a story is already available this button will be named **Update & Load** and clicking it will automatically load the story inside the Editor.
-
-Clicking on the **Open Workshop Page** button will open the Steam Workshop page of the selected story in an Steam overlay window.
-
-Clicking on **Unsubscribe** will remove the story from the list of stories you are subscribed to.
+| | |
+|-|-|
+|**Browse Workshop** | Will open the NST Steam Workshop in an Steam overlay.|
+|**[Story Name]** | If available, will open the Steam Workshop page for the current story in the Steam overlay.|
+|**Synchronize** | Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.|
+|**Delete** | If applicable, will delete the story from the Steam Workshop.|
+|**Download**|This window by default lists all the Steam Workshop stories you are subscribed to. To download a story click on the **Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
+|**Update & Load**|If a story is already available this button will be named **Update & Load** and clicking it will automatically load the story inside the Editor.|
+|**Open Workshop Page** | Will open the Steam Workshop page of the selected story in an Steam overlay window.|
+|**Unsubscribe** | Will remove the story from the list of stories you are subscribed to.|
 
 ### Publishing a Story
 To publish a story on the Steam Workshop you need to have the story you want to publish opened in the Editor. In the Steam Workshop window click on the **Publish Story** button. This will open a new view which will allow you to publish your story on the Steam Workshop.
 
-**Public** checkbox - If checked the story will be public after publishing, otherwise it will be unlisted.
-
-**Compiled** checkbox - If checked the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.
+| | |
+|-|-|
+|**Public** checkbox | If checked the story will be public after publishing, otherwise it will be unlisted.|
+|**Compiled** checkbox | If checked the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.|
 
 >[!WARNING]
 Compiled stories cannot be decompiled and decrypted.
 
-**Description** - The description which will appear on the Steam Workshop page.
-
-**Tags** - Tags for this story. Each tag should be separated by a comma.
-
-**Describe your changes** - This comment will appear in the list of changes on your private view of the Steam Workshop page.
-
-**Load Preview Image** - The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture you can clear it by clicking the **Clear** button to the right of the filepath.
-
-**Publish** - Will publish the story on the Steam Workshop with the given settings.
-
-**Cancel** - Will cancel the publishing and show the subscriptions view of the stories.
+| | |
+|-|-|
+|**Description** | The description which will appear on the Steam Workshop page.|
+|**Tags** | Tags for this story. Each tag should be separated by a comma.|
+|**Describe your changes** | This comment will appear in the list of changes on your private view of the Steam Workshop page.|
+|**Load Preview Image** | The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture you can clear it by clicking the **Clear** button to the right of the filepath.|
+|**Publish** | Will publish the story on the Steam Workshop with the given settings.|
+|**Cancel** | Will cancel the publishing and show the subscriptions view of the stories.|
 
 ## &#xf1c9; Log
 
 All messages that the Editor generates will pop up inside the **&#xf1c9; Log** window. These messages can be useful both to the author of the story and to the developers. There are 6 relevant columns for each message.
 
-**#** - The number of occurances.
-
-**Level** - The type of message and how it affects the system. STATEMENT and NOTICE messages provide a general information about an event, WARNING and ERROR are usually messages of concern that should be addressed.
-
-**Time** - The time at which the message occured.
-
-**Subsystem** - The internal subsystem in which the message occured.
-
-**Line** - The line in the subsystem at which the message was fired.
-
-**Message** - The message text.
+| | |
+|-|-|
+|**#** | The number of occurances.|
+|**Level** | The type of message and how it affects the system. STATEMENT and NOTICE messages provide a general information about an event, WARNING and ERROR are usually messages of concern that should be addressed.|
+|**Time** | The time at which the message occured.|
+|**Subsystem** | The internal subsystem in which the message occured.|
+|**Line** | The line in the subsystem at which the message was fired.|
+|**Message** | The message text.|
 
 ## &#xf0ae; Profiler
 
@@ -872,9 +806,9 @@ To define the state's connections you write:
 	---
 	[SomeOtherState]: Click here to go to SomeOtherState
 	
-To define a complex state **availabilty expression** write:
+To define a complex state [**&#xf0cb; Availability Expression**](#availability-expression) write:
 
->[!WARNING] Writing a custom availability expression will override the current connections you might have to this state.
+>[!WARNING] Writing a custom [**&#xf0cb; Availability Expression**](#availability-expression) will override the current connections you might have to this state.
 
 	===
 	[StateName]
