@@ -541,42 +541,6 @@ The context menu contains all items that can be used in the availability express
 		OR
 		(IS_HAPPENING sEqualFight )
 		OR
-		(IS_HAPPENING sBookmark15 )
-		OR
-		(IS_HAPPENING sBookmark18)
-		OR
-		(IS_HAPPENING sBookmark26)
-		OR
-		(IS_HAPPENING sBookmark29)
-		OR
-		(IS_HAPPENING sBookmark48)
-		OR
-		(IS_HAPPENING sBookmark82)
-		OR
-		(IS_HAPPENING sBookmark85)
-		OR
-		(IS_HAPPENING sBookmark92)
-		OR
-		(IS_HAPPENING sBookmark101)
-		OR
-		(IS_HAPPENING sBookmark102)
-		OR
-		(IS_HAPPENING sBookmark106)
-		OR
-		(IS_HAPPENING sBookmark113)
-		OR
-		(IS_HAPPENING sBookmark118)
-		OR
-		(IS_HAPPENING sBookmark124)
-		OR
-		(IS_HAPPENING sBookmark141)
-		OR
-		(IS_HAPPENING sBookmark154)
-		OR
-		(IS_HAPPENING sBookmark166)
-		OR
-		(IS_HAPPENING sBookmark172)
-		OR
 		(IS_HAPPENING sFightFirstBat30)
 		OR
 		(IS_HAPPENING sFightSecondBat30)
@@ -865,8 +829,25 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 
 
 # NST Reader
-## Loading Stories
-## Reading Stories
+
+The NST Reader displays the final form of stories written in the NST Editor by rendering the underlying HTML, loading all static resources and converting all tokens to values. All stories saved in a NTS format can be loaded inside the NST Reader, both compiled and uncompiled.
+
+To load a story select **File > Load...** inside the Reader. After selecting a story click **OK**, after which the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
+
+To progress a story, depending on the type, you may be required to click on buttons to make a choice. There may or may not be additional buttons present, depending on what the author of the story may have chosen to use.
+
+## Styling the Reader components
+
+You can use CSS or JS to modify the default components of the Reader. Available classes and ids:
+
+| Selector | Description |
+|-----------|------------|
+| **button**   | Selects all buttons |
+| **#nst-Situation** | Selects the situation text |
+| **#nst-labeledPropertiesTable** | Selects the labeled properties table |
+| **#nst-labeledPropertiesTable td** | Selects each element in the labeled properties table |
+| **#nst-MainMenuWrapper** | Selects the main menu |
+| **#nst-MainMenuWrapper button** | Selects the buttons in the main menu |
 
 # Files
 ## NTS
@@ -892,6 +873,8 @@ To define the state's connections you write:
 	[SomeOtherState]: Click here to go to SomeOtherState
 	
 To define a complex state **availabilty expression** write:
+
+>[!WARNING] Writing a custom availability expression will override the current connections you might have to this state.
 
 	===
 	[StateName]
