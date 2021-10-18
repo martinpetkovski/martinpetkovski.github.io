@@ -24,9 +24,9 @@ NST consists of an Editor and a Reader, which are separate standalone programs. 
 ## &#xf085; Systems
 A &#xf085; **system** or a **story** is a **project** created inside NST. Creating a new story in NST means creating a new project. Each system has only 2 components: **&#xf013; states** and &#xf02d; **properties**. Systems are completely deterministic.
 ## &#xf013; States
-A **&#xf013; state** is a single moment in time in a story. One story has only one active state at every moment, which describes what's the situation at that point in time. The state can be activated by a player choice, may it be active or passive. Each story has a single **&#xf061; entry state** which describes the starting point of the story. The state may be available based on the state's [**&#xf0cb; Availability Expression**](#availability-expression). The [**&#xf0cb; Availability Expression**](#availability-expression) describes what needs to have happened in the story for the state to become a choice for the one who interacts. For example, one can drive a car if he had previously at some point bought a car. This is a relationship specified in the state's [**&#xf0cb; Availability Expression**](#availability-expression). When a state becomes active (a player makes a choice) it can change a property value using the [**&#xf069; change expressions**](#change-expression).  
+A **&#xf013; state** is a single moment in time in a story. One story has only one active state at every moment, which describes what's the situation at that point in time. The state can be activated by a player choice, may it be active or passive. Each story has a single **&#xf061; entry state** which describes the starting point of the story. The state may be available based on the state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) describes what needs to have happened in the story for the state to become a choice for the one who interacts. For example, one can drive a car if he had previously at some point bought a car. This is a relationship specified in the state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). When a state becomes active (a player makes a choice) it can change a property value using the [**&#xf069; change expressions**](#xf069-change-expression).  
 ## &#xf02d; Properties
-A **&#xf02d; property** is a named numeric value which can be used inside expressions. For example, a **&#xf02d; property** may hold a character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, and so on. **&#xf013; States** may use **&#xf02d; property** values inside [**&#xf0cb; Availability Expression**](#availability-expression) to determine whether they are available (for example, a **&#xf013; state** in which a character dies if his health is equal to 0), or inside the [**&#xf069; change expressions**](#change-expression) (for example, a character swings his sword and inflicts 20 damage to another character's health). 
+A **&#xf02d; property** is a named numeric value which can be used inside expressions. For example, a **&#xf02d; property** may hold a character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, and so on. **&#xf013; States** may use **&#xf02d; property** values inside [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) to determine whether they are available (for example, a **&#xf013; state** in which a character dies if his health is equal to 0), or inside the [**&#xf069; change expressions**](#xf069-change-expression) (for example, a character swings his sword and inflicts 20 damage to another character's health). 
 ## &#xf06c; Branches
 A **&#xf06c; branch** is a special type of component in a system which tracks what has already happened (the order of activation of states). This allows authors to rewind the time or advance it forwards. Branches can also be saved and reloaded later.
 
@@ -66,9 +66,9 @@ Updating the same state with a different name will effectively trigger a rename.
 >[!TIP]
 You can view warnings and errors inside the [**&#xf1c9; Log**](#xf1c9-log) window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
 
-The state [**&#xf000; Situation**](#situation) describes what is happening in the current moment in time. You can right-click on the [**&#xf000; Situation**](#situation) and [choose **&#xf044; Edit With > &#xf15b; Notepad**](#text-input). A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
+The state [**&#xf000; Situation**](#xf000-situation) describes what is happening in the current moment in time. You can right-click on the [**&#xf000; Situation**](#xf000-situation) and [choose **&#xf044; Edit With > &#xf15b; Notepad**](#text-input). A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
 
-In the [**&#xf000; Situation**](#situation) field for the *SpookEntersAlley* state enter the following text:
+In the [**&#xf000; Situation**](#xf000-situation) field for the *SpookEntersAlley* state enter the following text:
 
 >You steer into a dark New York alley. Northwards, you see police officers coming towards you. They have police dogs with them in an attempt to track you down. Eastwards you see another alley, and with it comes a chance to run for it. Westwards you have a fire escape which you may attempt to climb. What is your next step?
 
@@ -86,13 +86,13 @@ Save the file in **&#xf15b; Notepad** and close the window. As you may notice, t
 
 ![State Editor for SpookChargesCops](SpookChargesCopsStateEditor.png)
 
-There is a field for the [**&#xf0cb; Availability Expression**](#availability-expression) which has the value:
+There is a field for the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) which has the value:
 	
 	IS_HAPPENING SpookEntersAlley
 	
 This means that when the state *SpookEntersAlley* is the current moment in time (i.e., active state), the state *SpookChargesCops* will be an available choice for the reader. 
 
-In this case, clicking the **&#xf055; Create Choice** button fills the [**&#xf0cb; Availability Expression**](#availability-expression) automagically, but it is fully editable nontheless.
+In this case, clicking the **&#xf055; Create Choice** button fills the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) automagically, but it is fully editable nontheless.
 
 Click **&#xf093; Update** to propagate the state changes.
 
@@ -105,11 +105,11 @@ Now, the button that leads to *SpookChargesCops* states only "*Continue*". To ch
 >[!TIP]
 Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, but will leave the *__ALL* be valid for the rest.
 
-Next, create a new state and rename it to *SpookRunsEastwards*. Set the [**&#xf000; Situation**](#situation) to:
+Next, create a new state and rename it to *SpookRunsEastwards*. Set the [**&#xf000; Situation**](#xf000-situation) to:
 
 >You make a run for it eastwards. The police dogs are faster than you. They catch you before you can make it over the fence on the other side. You are arrested and taken into custody.
 
-Set the [**&#xf0cb; Availability Expression**](#availability-expression) to:
+Set the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) to:
 
 	IS_HAPPENING SpookEntersAlley
 	
@@ -119,11 +119,11 @@ Click **&#xf093; Update** to propagate the state changes.
 
 And finally, create the last state in the same manner. 
 
-It should be named *SpookTakesTheStairs*. Set the [**&#xf000; Situation**](#situation) to:
+It should be named *SpookTakesTheStairs*. Set the [**&#xf000; Situation**](#xf000-situation) to:
 
 >You climb the fire escape stairs and go inside an apartment through the window. It's a lavish apartment like you never would've expected in this part of town. It's dark, but there is a strange light coming from behind the bookshelves. What will you do?
 
-Again, set the [**&#xf0cb; Availability Expression**](#availability-expression) to:
+Again, set the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) to:
 
 	IS_HAPPENING SpookEntersAlley
 	
@@ -269,7 +269,7 @@ All text components inside NST Editor can be edited with the right-click context
 |**&#xf057; Clear** | Clear the text contents.|
 
 ## &#xf013; State Button
-Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the **&#xf044; State Editor**. Holding ctrl and clicking on state buttons will select multiple states. Selected states have a golden border around the button.
+Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the [**&#xf044; State Editor**](#xf14b-state-editor). Holding ctrl and clicking on state buttons will select multiple states. Selected states have a highlighted border around the button.
 
 The active state's button is red, if the state is available the button is green and if the state has been activated the button is dark red. The entry state has the &#xf061; icon in front of the name.
 
@@ -278,24 +278,24 @@ Right-clicking a state's button will open up a context menu containing additiona
 
 | | |
 |-|-|
-|**&#xf044; Edit** | Will select the state and open the **&#xf044; State Editor**.|
-|**&#xf079; Reset** | Will reset all passive properties of a state. It will clear the *activated* flag as if this state never happened.|
+|**&#xf044; Edit** | Will select the state and open the [**&#xf044; State Editor**](#xf14b-state-editor).|
+|**&#xf079; Reset** | Will reset all passive internal properties of a state. It will clear the *activated* flag as if this state never happened.|
 |**&#xf04b; Try Activate** | The state will be activated only if it's available.|
 |**&#xf144; Force Activate** | The state will be forcefully activated.|
 |**&#xf0a8; Set Entry State** | The state will become the entry state to the story. The entry state becomes the active state when the story is started / restarted.|
-|**&#xf24d; Duplicate** | Creates a perfect copy of the state with a new name.|
-|**&#xf0c5; Copy** | Copies the specified state property to clipboard.|
+|**&#xf24d; Duplicate** | Creates a deep copy of the state with a new name.|
+|**&#xf0c5; Copy > [Internal Property]** | Copies the specified state property to clipboard.|
 |**&#xf1f8; Delete** | Deletes the state. The entry state cannot be deleted - specify a new entry state before deleting it.|
-|**&#xf055; Create Choice** | Creates a new state, selects it and links the contexted state to it with `IS_HAPPENING [ContextedStateName]`.|
+|**&#xf055; Create Choice** | Creates a new state, selects it and [links the contexted state](#xf0cb-availability-expression) to it with `IS_HAPPENING [ContextedStateName]`.|
 |**&#xf060; Depends** | If applicable, lists all the states on which this state depends (i.e. what needs to happen for this state to become available). |
 |**&#xf061; Dependent** | If applicable, lists all the states that depend on this state (i.e. the contexted state needs to happen for these states to become available).|
-|**&#xf061; Changing Properties** | If applicable, lists all the properties that are changed by this state.|
-|**&#xf249; Notes** | Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this state.|
+|**&#xf02d; Changing Properties** | If applicable, lists all the properties that [are changed](#xf069-change-expression) by this state.|
+|**&#xf249; Notes** | Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new [note](#xf249-note-display) and attach it to this state.|
 
 If multiple states are selected the context menu offers limited options which include: **&#xf079; Reset**, **&#xf24d; Duplicate** and **&#xf1f8; Delete**.
 
 ## &#xf02d; Property Button
-Each **&#xf02d; property** in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, sometimes besides states. You can distinguish between them by the icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
+Each [**&#xf02d; property**](#xf02d-properties) in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, sometimes besides states. You can distinguish between them by the &#xf02d; icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
 
 Right-clicking a property's button will open up a context menu containing additional actions.
 ![Property's context menu](PropertyContextMenu.png)
@@ -312,21 +312,21 @@ Right-clicking a property's button will open up a context menu containing additi
 |**Randomize Max** | The upper bound for the random number.|
 |**&#xf093; Update** | Updates the property with the new values.|
 |**&#xf1f8; Delete** | Deletes the property.|
-|**Dependent States** | Lists all dependent states. These states will be highlighted by clicking on the property button. |
-|**&#xf249; Notes** | Lists all the notes attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.|
+|**Dependent States** | Lists all dependent [states](#xf013-states). These states will be highlighted by clicking on the property button. |
+|**&#xf249; Notes** | Lists all the [notes](#xf249-note-display) attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.|
 
 ## &#xf06c; Branch Expander
-Each **&#xf06c; branch** is represented by an expander inside the **&#xf017; Time Controller** window. A branch can be active (loaded) inside the story to which it belongs. The branch that is active can be time-manipulated by the user. Each branch may be saved and loaded (activated).
+Each [**&#xf06c; branch**](#xf06c-branches) is represented by an expander throughout the NST Editor. A branch can be active (loaded) inside the story to which it belongs. The branch that is active can be [time-manipulated](#xf017-time-controller). Each branch may be saved and loaded (activated).
 
 ![Branches' Expander](BranchExpander.png)
 
-The expander displays the name of the branch. It will show **&#xf0e7; Active** in front of the name of the branch that is currently active. The expander can be expanded and collapsed. The content when it is expanded are the sequence of states representing the branch. There may be duplicate states in the sequence if the state has been activated multiple times.
+The expander displays the name of the branch. It will show **&#xf0e7; Active** in front of the name of the branch that is currently active. The expander can be expanded and collapsed. The content when it is expanded are the sequence of [states](#xf013-states) representing the branch. There may be duplicate states in the sequence if the state has been activated multiple times.
 
 Right-clicking on the expander title will open a context menu. 
 
 | | |
 |-|-|
-|**&#xf253; Load** | Will load the branch (make it active). Loading the branch will activate a state which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may **&#xf017; control the time** on it by rewinding or advancing the state activation. |
+|**&#xf253; Load** | Will load the branch (make it active). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
 |**&#xf246; Rename** | Renames the branch.|
 |**&#xf1f8; Delete** | Deletes the branch.|
 
@@ -338,7 +338,7 @@ Notes may be displayed on various places inside the NST Editor. They have a fram
 |-|-|
 |**&#xf08d; Pin** | Pins the note to the top.|
 |**&#xf12a; Important** | Colors the note red.|
-|**&#xf0c1; Detach** | Detaches the note from the item. This does not delete the note, it will still be available through the **&#xf249; Note Editor**.|
+|**&#xf0c1; Detach** | Detaches the note from the item. This does not delete the note, it will still be available through the [**&#xf249; Note Editor**](#xf249-note-editor).|
 |**&#xf1f8; Delete** | Detaches the note from all items and deletes it.|
 
 ## &#xf14b; State Editor
@@ -346,7 +346,7 @@ Notes may be displayed on various places inside the NST Editor. They have a fram
 >[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected the editor will show a message to indicate so.
 
 ### Action Buttons
-The topmost element is the [State Button](#xf013-state-button) for the currently selected state.
+The topmost element is the [State Button](#xf013-state-button) for the currently selected [state](#xf013-states).
 
 | | |
 |-|-|
@@ -360,26 +360,26 @@ Hit the **&#xf093; Update** button as often as possible when making changes. If 
 ### &#xf02b; State Name
 All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
 
-### Situation
-The situation is the description of what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
+### &#xf000; Situation
+The **&#xf000; situation** is the description of what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
 
 >[!TIP]
 The situation content may contain any HTML5 / JS / CSS code you may choose to enter. This code will be rendered inside the NST Reader, but not inside the Read in Editor window.
 
 >[!TIP]
-Writing a property name between [ and ] will render the value of the property instead of the property name. Example: `Strength: [Start_Strength]` will yeild `Strength: 10.0`
+Writing a [property](#xf02d-properties) name between [ and ] will render the value of the property instead of the property name. Example: `Strength: [Start_Strength]` will yeild `Strength: 10.0`
 
-### Create Choice button
+### &#xf055; Create Choice button
 
-Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#availability-expression). The newly created state will then be automatically selected.
+Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The newly created state will then be automatically selected.
 
-### Change Expression
+### &#xf069; Change Expression
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
-The change expression defines how a property changes when the state is activated. The result of a change expression is a floating-point precision number which changes a property value in some manner. The author may use other properties in the change expression.
+The **&#xf069; change expression** defines how a [**&#xf02d; property**](#xf02d-properties) changes when the [**&#xf013; state**](#xf013-states) is activated. The result of a change expression is a floating-point precision number which changes a property value in some manner. You may use other properties within the change expression.
 
- To create a change expression, the author must first select a property to be changed. This is done via the change exression dropdown menu. After the author selects a property, hitting the &#xf055; button will create the new change expression.
+ To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change exression panel. After the author selects a property, hitting the &#xf055; button will create the new change expression.
 
 Setting the expression value to a number will change the expression by that value. For example, if a property has a value of 4, and there exists a state which has a change expression of that property with value 2, when the state is activated the final property value will become 6 (4+2=6). This value can also be negative.
 
@@ -436,7 +436,7 @@ Adds a value to OtherProperty. The value is a non-seeded random number between t
 
 Right-clicking on the expression will bring up a context menu containing a searchable list of all properties and all the operators you may use. Selecting an item from the context menu will append that value to the end of the expression.
 
-### Availability Expression
+### &#xf0cb; Availability Expression
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
@@ -806,9 +806,9 @@ To define the state's connections you write:
 	---
 	[SomeOtherState]: Click here to go to SomeOtherState
 	
-To define a complex state [**&#xf0cb; Availability Expression**](#availability-expression) write:
+To define a complex state [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) write:
 
->[!WARNING] Writing a custom [**&#xf0cb; Availability Expression**](#availability-expression) will override the current connections you might have to this state.
+>[!WARNING] Writing a custom [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) will override the current connections you might have to this state.
 
 	===
 	[StateName]
