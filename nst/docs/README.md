@@ -508,17 +508,17 @@ The context menu contains all items that can be used in the **&#xf0cb; Availabil
 		(Creature_Strength IS_MORE_THAN 0) 
 	)
 
-### This state depends on
+### &#xf061; This state depends on
 
 Lists all the states and properties that this state depends on. The dependency might or might not be exclusive.
 
-### States dependent on this
+### &#xf060; States dependent on this
 
 Lists all states that depend on this state. The dependency might or might not be exclusive.
 
-### Dialog statements
+### &#xf075; Dialog statements
 
-Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
+Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, you need to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the **"__ALL"** token, or may use a specific state to define the dialog statement for that state.
 
 To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
 
@@ -526,18 +526,18 @@ To create a dialog statement, you must select a state (or "__ALL") from the drop
 
 | | |
 |-|-|
-|**Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
-|**Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
-|**Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
-|**Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
+|**&#xf0e2; Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
+|**&#xf055; Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
+|**&#xf0ac; Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
+|**&#xf005; Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
 
-### State Head
+### &#xf1fc; State Head
 
 When this state is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
 
 ### Notes
 
-Displays all the notes attached to this state.
+Displays all the [notes](#xf249-note-display) attached to this state.
 
 ## &#xf009; States Browser
 The States Browser window allows different views on all states present inside a story and allows the user to quickly create a new state. New states are created by clicking on the **&#xf055;&#xf013;** button, in the left-most part of the window. There are 4 main views the author may choose between.
