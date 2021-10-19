@@ -36,9 +36,13 @@ For instance, for one to be able to drive a car, one needs to buy the car first.
  
 ## &#xf02d; Properties
 
-A **&#xf02d; property** is a named numeric value which can be used inside expressions. For example, a **&#xf02d; property** may hold a character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, and so on. **&#xf013; States** may use **&#xf02d; property** values inside [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) to determine whether they are available (for example, a **&#xf013; state** in which a character dies if his health is equal to 0), or inside the [**&#xf069; change expressions**](#xf069-change-expression) (for example, a character swings his sword and inflicts 20 damage to another character's health). 
+A **&#xf02d; property** is a named numeric value which can be used inside expressions. To illustrate, a **&#xf02d; property** may be a certain character's health, whether a character has an item or not, an item's damage value, the relationship status between two characters, etc.
+
+**&#xf013; States** may use **&#xf02d; property** values inside the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) to determine whether they are available (ex. a **&#xf013; state** in which a character dies if his health is equal to 0) or inside the [**&#xf069; change expressions**](#xf069-change-expression) (ex. a character swings his sword and inflicts 20 damage to another character's health).
+
 ## &#xf06c; Branches
-A **&#xf06c; branch** is a special type of component in a system which tracks what has already happened (the order of activation of states). This allows authors to rewind the time or advance it forwards. Branches can also be saved and reloaded later.
+
+A **&#xf06c; branch** is a special type of component in a system which keeps track of what has already happened (the order of activation of states). This allows authors to rewind the time or advance it forwards. Branches can also be saved and reloaded later.
 
 # NST Editor
 
