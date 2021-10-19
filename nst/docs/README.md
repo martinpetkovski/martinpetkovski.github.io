@@ -46,47 +46,56 @@ A **&#xf06c; branch** is a special type of component in a system which keeps tra
 
 # NST Editor
 
-The NST Editor is the place where stories are edited and debugged. In the current version, it requires a working internet connection and an active **&#xf1b7; Steam** connection.
+The NST Editor is the place where stories are edited and debugged. The current version requires a working internet connection as well as an active **&#xf1b7; Steam** connection.
 
 # Quick Start Guide
-In this guide we will create a simple branching story to demonstrate capabilities of the NST Editor. This story is called Spook's Adventures, and is also available on the **&#xf1b7; Steam Workshop** and is also showcased in some of the trailer videos. The main character (Spook) finds himself in a New York alley, chased by cops. He will have 3 choices. His choices will be: to charge the cops, to run for it eastwards, or to take the stairs inside an apartment. 2 of the choices will lead to him being arrested in 2 different ways, and the third one will give Spook 2 additional choices. We will implement this mini story using the NST Editor.
+
+In this guide, we will create a simple branching story to demonstrate the capabilities of the NST Editor. The story is called Spook's Adventures, it is available on the **&#xf1b7; Steam Workshop** and it is also showcased in some of the trailer videos.
+
+The main character (Spook) finds himself chased by cops in a New York alley. He will have 3 choices: to charge the cops, to run for it eastwards, or to take the stairs inside an apartment. 2 of the choices will lead to him getting arrested in 2 different ways, whereas the third one will give Spook 2 additional choices. Let’s implement this mini-story into the NST Editor.
 
 ## Creating Stories
-When starting NST Editor for the first time, a new story is automatically created. You can also create a new story by going to **&#xf15b; File > &#xf067; New**. To give a name to the story you have to save it first. To save a story with a new name go to the menu **Story[Name] > &#xf0c7; Save As > [Enter a Name] > &#xf00c; Confirm**. This will save the story inside the **[Root Folder]/stories** folder. 
+As soon as you start the NST Editor for the first time, a new story is automatically created. You can also create a new story by going to **&#xf15b; File > &#xf067; New**. To name the story you have to save it first. To save a story under a new name, go to the menu **Story[Name] > &#xf0c7; Save As > [Enter a Name] > &#xf00c; Confirm**. This will save the story inside the **[Root Folder]/stories** folder. 
 
 >[!TIP]
-To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the availabile stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
+
+To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the available stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
 
 ## Using States
-To create a new [**&#xf013; state**](#xf013-states) in the story you can use the [**&#xf009; States Browser**](#xf009-states-browser) window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The [**&#xf009; States Browser**](#xf009-states-browser) in an empty story is shown on the image below. You can move and dock this window by clicking and dragging the title.
+
+To create a new [**&#xf013; state**](#xf013-states) in the story, you can use the [**&#xf009; States Browser**](#xf009-states-browser) window, which is located under **&#xf2d0; Window > &#xf009; States Browser**. The [**&#xf009; States Browser**](#xf009-states-browser) in an empty story is displayed in the image below. You can move and dock this window by clicking and dragging the title.
 ![Empty States Browser window](StatesBrowserEmpty.png)
-Clicking on the **&#xf055;&#xf013;** button on the far left will create a new state. 
+Clicking on the far left **&#xf055;&#xf013;** button will create a new state. 
 
 >[!TIP]
+
 Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
 
 Each [**&#xf013; state**](#xf013-states) in the [**&#xf009; States Browser**](#xf009-states-browser)  window is represented by a [clickable button](#xf013-state-button). To edit a [**&#xf013; state**](#xf013-states) you have to right-click it and select **&#xf044; Edit** which will automatically open the [**&#xf044; State Editor**](#xf14b-state-editor) window. The image below shows the [**&#xf044; State Editor**](#xf14b-state-editor) and the [**&#xf009; States Browser**](#xf009-states-browser) side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 
 You can edit all internal state properties in the [**&#xf044; State Editor**](#xf14b-state-editor). All edits are propagated inside the system by hitting the **&#xf093; Update** button.
+
 >[!WARNING]
-Selecting another state will **not** automatically update the changes on the current state. You must hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
+
+Selecting another state will **not** automatically update the changes to the current state. You need to hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
 
 **&#xf02b; Rename** the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
 
 >[!NOTE]
-Updating the same state with a different name will effectively trigger a rename. A state rename will warn the user if a name exists or if the name contains an illegal word or character.
+Updating the same state under a different name will effectively trigger a rename. A state rename will warn the user should a new name exist or if the name contains an illegal word or character.
 
 >[!TIP]
-You can view warnings and errors inside the [**&#xf1c9; Log**](#xf1c9-log) window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message is shown in the top right corner of the title bar for a couple of seconds after it happens.
+You can view warnings and errors inside the [**&#xf1c9; Log**](#xf1c9-log) window located under **&#xf2d0; Window > Editor Utilities > &#xf1c9; Log**. The last logged message will be displayed at the top right corner of the title bar for a couple of seconds after it ocurrs.
 
-The state [**&#xf000; Situation**](#xf000-situation) describes what is happening in the current moment in time. You can right-click on the [**&#xf000; Situation**](#xf000-situation) and [choose **&#xf044; Edit With > &#xf15b; Notepad**](#text-input). A new **&#xf15b; Notepad** window will open inside the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text you have written inside **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or ctrl+s). 
+The state [**&#xf000; Situation**](#xf000-situation) describes what is happening in the current moment in time. You can right-click on the [**&#xf000; Situation**](#xf000-situation) and [choose **&#xf044; Edit With > &#xf15b; Notepad**](#text-input). A new **&#xf15b; Notepad** window will open within the NST Editor. You can move and dock the Notepad window just as you move and dock all other windows. To propagate the text written in **&#xf15b; Notepad** to the NST Editor, just hit **&#xf0c7; Save** (or Ctrl+S). 
 
-In the [**&#xf000; Situation**](#xf000-situation) field for the *SpookEntersAlley* state enter the following text:
+Enter the following text in the [**&#xf000; Situation**](#xf000-situation) field for the *SpookEntersAlley* state:
 
 >You steer into a dark New York alley. Northwards, you see police officers coming towards you. They have police dogs with them in an attempt to track you down. Eastwards you see another alley, and with it comes a chance to run for it. Westwards you have a fire escape which you may attempt to climb. What is your next step?
 
-Save the **&#xf15b; Notepad** file and close the **&#xf15b; Notepad** window. The State Editor window should look like the image below. Hit the **&#xf093; Update** button once again.
+Save the **&#xf15b; Notepad** file and close the **&#xf15b; Notepad** window. The State Editor window should look like as displayed in the image below. Hit the **&#xf093; Update** button once again.
+
 
 ![State Editor for SpookEntersAlley](SpookEntersAlleyFull.png)
 
@@ -518,17 +527,17 @@ The context menu contains all items that can be used in the **&#xf0cb; Availabil
 		(Creature_Strength IS_MORE_THAN 0) 
 	)
 
-### &#xf061; This state depends on
+### This state depends on
 
 Lists all the states and properties that this state depends on. The dependency might or might not be exclusive.
 
-### &#xf060; States dependent on this
+### States dependent on this
 
 Lists all states that depend on this state. The dependency might or might not be exclusive.
 
-### &#xf075; Dialog statements
+### Dialog statements
 
-Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, you need to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the **"__ALL"** token, or may use a specific state to define the dialog statement for that state.
+Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
 
 To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
 
@@ -536,18 +545,18 @@ To create a dialog statement, you must select a state (or "__ALL") from the drop
 
 | | |
 |-|-|
-|**&#xf0e2; Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
-|**&#xf055; Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
-|**&#xf0ac; Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
-|**&#xf005; Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
+|**Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
+|**Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
+|**Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
+|**Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
 
-### &#xf1fc; State Head
+### State Head
 
 When this state is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
 
 ### Notes
 
-Displays all the [notes](#xf249-note-display) attached to this state.
+Displays all the notes attached to this state.
 
 ## &#xf009; States Browser
 The States Browser window allows different views on all states present inside a story and allows the user to quickly create a new state. New states are created by clicking on the **&#xf055;&#xf013;** button, in the left-most part of the window. There are 4 main views the author may choose between.
