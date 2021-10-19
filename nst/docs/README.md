@@ -16,7 +16,7 @@ Interactive stories allow readers to make choices which in turn determine the ou
 
 That’s where NST comes in, by bringing a full suite of tools to help you create, analyze and render both branching and nonlinear content, including stories, novels, poems, generic text, as well as music or films.
 
-When using **[Twine](https://twinery.org/)**, **[Ink](https://www.inklestudios.com/ink/)** or similar tools, the complexity of the branching process rises with every new branch created by the author, due to the nature of graphs and scripts, which make it a necessity for the author to drag lines on a graph or reference labels in a script. NST manages to overcome this particular issue by using innovative ways of connecting specific moments of time inside the story by taking away explicit connections and relying upon discrete conditions under which something can happen. 
+When using **[Twine](https://twinery.org/)**, **[Ink](https://www.inklestudios.com/ink/)** or similar tools, the complexity of the branching process rises with every new branch created by the author, due to the nature of graphs and scripts, which make it a necessity for the author to drag lines on a graph or reference labels in a script. NST manages to overcome this particular issue by using innovative ways of connecting specific moments of time inside the story by taking away explicit connections and relying upon discrete conditions under which something can happen.
 
 Ultimately, NST aims to provide authors with tools that obtain a linear complexity, regardless of the number of branching paths a story might contain
 
