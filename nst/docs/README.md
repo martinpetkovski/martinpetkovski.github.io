@@ -96,37 +96,37 @@ Enter the following text in the [**&#xf000; Situation**](#xf000-situation) field
 
 Save the **&#xf15b; Notepad** file and close the **&#xf15b; Notepad** window. The State Editor window should look like as displayed in the image below. Hit the **&#xf093; Update** button once again.
 
-
 ![State Editor for SpookEntersAlley](SpookEntersAlleyFull.png)
 
 To create a new simple choice after Spook has entered the Alley, click on the **&#xf055; Create Choice** button. Clicking this button will create a new state which will be automatically linked to the *SpookEntersAlley* state. The newly created state will be automatically selected.
 
-**&#xf02b; Rename** the state to *SpookChargesCops* and hit **&#xf093; Update**. Right-click on the **&#xf000; Situation** for the *SpookChargesCops* state, [hit **&#xf044; Edit With > &#xf15b; Notepad**](#text-input), and enter the following in the **&#xf15b; Notepad** window:
+**&#xf02b; Rename** the state to *SpookChargesCops* and hit **&#xf093; Update**. Right-click on the **&#xf000; Situation** for the *SpookChargesCops* state, [hit **&#xf044; Edit With > &#xf15b; Notepad**](#text-input), and enter the following text in the **&#xf15b; Notepad** window:
 
 >You charge the police officers and their dogs bare-handed. You quickly realize that you don't stand a chance alone. They put you to the ground and swiftly arrest you.
 
-Save the file in **&#xf15b; Notepad** and close the window. As you may notice, this time the [**&#xf044; State Editor**](#xf14b-state-editor) looks a bit different than *SpookEntersAlley*'s view:
+Save the file in **&#xf15b; Notepad** and close the window. As you may have noticed, this time the [**&#xf044; State Editor**](#xf14b-state-editor) looks a bit different than *SpookEntersAlley*'s view:
 
 ![State Editor for SpookChargesCops](SpookChargesCopsStateEditor.png)
 
-There is a field for the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) which has the value:
+There is a designated field for the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) containing the value:
 	
 	IS_HAPPENING SpookEntersAlley
 	
-This means that when the state *SpookEntersAlley* is the current moment in time (i.e., active state), the state *SpookChargesCops* will be an available choice for the reader. 
+This means that whenever the state *SpookEntersAlley* is the current moment in time (i.e., active state), the state *SpookChargesCops* will be an available choice for the reader. 
 
-In this case, clicking the **&#xf055; Create Choice** button fills the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) automagically, but it is fully editable nontheless.
+In this case, clicking the **&#xf055; Create Choice** button fills the [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression) automagically, but it is fully editable nonetheless.
 
 Click **&#xf093; Update** to propagate the state changes.
 
-You can now see the changes in action inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) window. You can open this window by clicking on **&#xf2d0; Window > &#xf0e7; Read in Editor**. This window shows the story in the current moment in time. To restart the story you can hit the [**&#xf11c; F5** button](#keyboard-shortcuts) on the keyboard. The [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should look like the image below:
+You can now see the changes in action inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) window. You can open this window by clicking on **&#xf2d0; Window > &#xf0e7; Read in Editor**. This window shows the story in the current moment in time. To restart the story, you can hit the [**&#xf11c; F5** button](#keyboard-shortcuts) on the keyboard. The [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should look like as displayed below:
 
 ![Read in Editor](ReadInEditor_2.png)
 
-Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you must specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). From the dropdown select *SpookEntersAlley* and hit the &#xf055; button. In the [**&#xf075; Dialog Statement**](#dialog-statements) field enter "*Charge the cops!*". Hit **&#xf093; Update** on the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* is the active state.
+Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you need to specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). Select *SpookEntersAlley* from the dropdown and hit the &#xf055; button. Enter "*Charge the cops!*" in the [**&#xf075; Dialog Statement**](#dialog-statements) field and **&#xf093; Update** the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* becomes the active state.
 
 >[!TIP]
-Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, but will leave the *__ALL* be valid for the rest.
+
+Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, leaving *__ALL* intact.
 
 Next, create a new state and rename it to *SpookRunsEastwards*. Set the [**&#xf000; Situation**](#xf000-situation) to:
 
@@ -140,7 +140,7 @@ Set the [**&#xf075; Dialog Statement**](#dialog-statements) for the state *Spook
 
 Click **&#xf093; Update** to propagate the state changes.
 
-And finally, create the last state in the same manner. 
+Finally, create the last state in the same manner. 
 
 It should be named *SpookTakesTheStairs*. Set the [**&#xf000; Situation**](#xf000-situation) to:
 
@@ -154,13 +154,14 @@ Set the [**&#xf075; Dialog Statement**](#dialog-statements) for the state *Spook
 
 Hit **&#xf093; Update** to propagate the state changes.
 
-After you complete the steps above, the view inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should look like the image below:
+Once you complete the steps above, the view inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should appear as displayed below:
 
 ![Read in Editor](ReadInEditor_3.png)
 
 Clicking on any of the buttons inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should lead you to the correct state specified on the button label.
 
 >[!NOTE]
+
 **&#xf188; BUG:** When creating new states you should hit F5 to propagate the changes, just in case. This is not the intended behavior and will be fixed in future versions.
 
 >[!NOTE] Anonymous data is sent back to us only when the editor crashes, containing information related to the crash.
@@ -169,7 +170,7 @@ Clicking on any of the buttons inside the [**&#xf0e7; Read in Editor**](#xf0e7-r
 
 ## Main Menu
 
-The main menu is shown at the top of the NST Editor. If you are not logged in to &#xf1b7; Steam, a message will appear instead of the main menu items. If another thread is currently doing some work (i.e., loading a story), a progress bar will appear instead of the items. The items will be shown again as soon as the thread finishes it's work. 
+The main menu is shown at the top of the NST Editor. If you are not logged into &#xf1b7; Steam, a notice will appear instead of the main menu items. On the condition that another thread is simultaneously doing some work (i.e. loading a story), a progress bar will appear instead of the items. The items will be displayed again as soon as the thread finishes its task. 
 
 The items on the main menu have various general-purpose functions which will be listed below.
 
@@ -182,7 +183,7 @@ The name of the editor, animates when actions on the story file are performed.
 
 ### [Story Name]
 
- Indicates the currently loaded story. This story may or may not be saved on disk. To view actions that can be performed on the story itself click on the story name.
+ Indicates the story loaded at the moment. This story may or may not be saved on disk. You can click on the story name to view actions that can be performed on the story itself.
 
 ![Main Menu -> Story Name](MainMenuStoryName.png)
 
@@ -191,10 +192,10 @@ The name of the editor, animates when actions on the story file are performed.
 | **&#xf079; Reload** | If there is a file for the story present on disk, it will reload the story from that file. |
 | **&#xf07c; Target Folder** | Opens the folder where the story is located or would be located on disk. |
 | **&#xf0c7; Save** | Saves the current story in the target folder in binary [**.nts**](#nts) format. The target folder is located in **[exe folder]/stories**. |
-| **&#xf0c7; Save As** | Saves the current story in the target folder with a new name which the user can specify before clicking **Confirm**. The format is [**.nts**](#nts) binary. |
+| **&#xf0c7; Save As** | Saves the current story in the target folder with a new name which can be specified by the user before clicking **Confirm**. The format is [**.nts**](#nts) binary. |
 | **&#xf0c7; Compile As** | Compiles the current story in binary [**.nts**](#nts) format, effectively making the file contents read-only. Use with caution. |
 | **&#xf0c7; Export** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format. The target folder is located in **[exe folder]/exports**. |
-| **&#xf0c7; Export As** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format with a new name. The target folder is located in **[exe folder]/exports**. |
+| **&#xf0c7; Export As** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format under a new name. The target folder is located in **[exe folder]/exports**. |
 | **&#xf057; Discard Changes** | [Undoes](#xf1da-command-history) everything up until the last save. This action can be [redone](#xf1da-command-history) later. |
 
 ### File
@@ -221,7 +222,7 @@ This menu holds the undo / redo commands. Also check the [Command History](#xf1d
 | | |
 |-|-|
 |**&#xf0e2; Undo** | If available, undoes the last command. |
-|**&#xf01e; Redo** | If available, executes the next command again. |
+|**&#xf01e; Redo** | If available, executes the following command again. |
 
 ### System 
 This menu holds all commands related to the system.
@@ -231,20 +232,20 @@ This menu holds all commands related to the system.
 | | |
 |-|-|
 |**&#xf04b; Run Reader** | If the [NST Reader](#NST-Reader) exists in the same working directory, it can be started by clicking on this item. If a story is loaded inside the editor, this reader instance will also load it. |
-|**&#xf021; Sync with Reader** | Enabled if applicable. Can be true or false. If it's true than the previously started instance of the [NST Reader](#NST-Reader) will sync to the actions inside the [NST Editor](#NST-Editor). |
+|**&#xf021; Sync with Reader** | Enabled if applicable. It can be either true or false. If it’s true, than the previously started instance of the [NST Reader](#NST-Reader) will sync to the actions inside the [NST Editor](#NST-Editor). |
 
 >[!WARNING]
 Sync with Reader is still in BETA. It doesn't work well with huge story files. Use it sparingly. 
 
 | | |
 |-|-|
-|**&#xf055; Create** | Lists the system components. You can create both [states](#xf013-states) and [properties](#xf02d-properties) from this menu.|
+|**&#xf055; Create** | Lists the system components. You can create both [states](#xf013-states) and [properties](#xf02d-properties) in this menu.|
 |**&#xf079; Reset** | Resets the complete system and assigns a new seed value. This means that random events will have new values.|
-|**&#xf079; Reset Branch** | Resets only the branch you are currently on, keeping the seed value. Random events will happen in the same way each time you reset the branch.|
+|**&#xf079; Reset Branch** | Resets only the branch you are currently on, keeping the seed value. Random events will happen in the same manner each time you reset the branch.|
 |**&#xf28b; Pause Tick** | Will pause the system updates. This will not stop the editor execution, but will stop the evaluation of all internal state and system properties.|
 
 ### Window
-Holds list of all available windows in the NST Editor. This does not include external editors or the NST Reader. This list includes:
+Holds a list of all available windows in the NST Editor. This does not include external editors or the NST Reader, but rather:
 
 * Editor Utilities: 
 	* [**&#xf1c9; Log**](#xf1c9-log)
@@ -268,35 +269,38 @@ Holds list of all available windows in the NST Editor. This does not include ext
 * [**&#xf1b7; Steam Workshop**](#xf1b7-steam-workshop)
 
 ### Settings
-Lists all the available editor options. A click selects only one option.
+Lists all of the available editor options. A click selects only one option.
 
 | | |
 |-|-|
 |**&#xf1ab; Language** | English (Default) or Macedonian |
-|**&#xf1fc; Theme** | Aegean Nights (desturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue) |
-|**&#xf1c0; Backup Frequency** | No backups, Rare (backup every 30 actions), Frequent (backup every 5 actions), Always (backup on every action). |
+|**&#xf1fc; Theme** | Aegean Nights (desaturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue) |
+|**&#xf1c0; Backup Frequency** | No backups, Rare (backup in every 30 actions), Frequent (backup in every 5 actions), Always (backup after each action). |
 
 ### Notification area
-Located on the right part of the main menu, to the left of the window controls. Short messages are shown in the notification area for a few seconds. This message is also available in the [**&#xf1c9; Log**](#xf1c9-log) window.
+Located on the right part of the main menu, left of the window controls. Short messages are shown in the notification area for a few seconds. This message is also available in the [**&#xf1c9; Log**](#xf1c9-log) window.
 
 
 ## Text Input
-All text components inside NST Editor can be edited with the right-click context menu. NST Editor doesn't ship with an integrated text editor, but allows the author to choose a preffered external text editor. Currently there are 4 available editors: Notepad (ships with Windows), [Notepad++](https://notepad-plus-plus.org/), [Sublime Text 4](https://www.sublimetext.com/) and [Microsoft Word](https://www.office.com/). The text editor will be launched inside the NST Editor and behaves as any other NST Editor window does. It can be moved, docked, undocked and closed. Saving the file inside the preffered text editor will automagically propagate the changes made to the text inside the NST Editor. The standard items found in the right-click context menu include:
+All text components inside the NST Editor can be edited using the right-click context menu. NST Editor doesn't ship with an integrated text editor, but allows the author to choose a preferred external text editor. There are currently 4 available editors: Notepad (ships with Windows), [Notepad++](https://notepad-plus-plus.org/), [Sublime Text 4](https://www.sublimetext.com/) and [Microsoft Word](https://www.office.com/).
+
+The text editor will be launched inside the NST Editor and will behave as any other NST Editor window does. It can be moved, docked, undocked and closed. Saving the file inside the preferred text editor will automatically propagate the changes made to the text inside the NST Editor. The standard items found in the right-click context menu include:
 
 | | |
 |-|-|
-|**&#xf044; Edit With > [Preffered Editor]** | Edits the text contents. After selecting a text editor, a new window of your preffered editor will pop-up. You may drag and dock this window as you do with other windows. After you are satisfied with your changes you need to hit save in your preffered editor and with that the changes you made will be automagically propagated inside the NST Editor. At this point you may close the text editor window.|
+|**&#xf044; Edit With > [Preferred Editor]** | Edits the text contents. After you select a text editor, it will pop-up in a new window. You may drag and dock this window as you do with other windows. Once satisfied, you need to hit save in your preferred editor and thus automatically propagate the recent changes within the NST Editor. At this point you may close the text editor window.|
 |**&#xf0c5; Copy** | Copy the text contents to clipboard.|
 |**&#xf0c4; Cut** | Cut the text contents to clipboard.|
 |**&#xf0ea; Paste** | Paste from clipboard to text contents. This action will overwrite the existing content.|
 |**&#xf057; Clear** | Clear the text contents.|
 
 ## &#xf013; State Button
-Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the [**&#xf044; State Editor**](#xf14b-state-editor). Holding ctrl and clicking on state buttons will select multiple states. Selected states have a highlighted border around the button.
+Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the [**&#xf044; State Editor**](#xf14b-state-editor). You can select multiple states by holding the Ctrl button on your keyboard while you click on them. You can differentiate selected states by the highlighted borders.
 
-The active state's button is red, if the state is available the button is green and if the state has been activated the button is dark red. The entry state has the &#xf061; icon in front of the name.
+An active state's button is red, whereas a green button implies availability. Once you activate the state, the button becomes dark red. The entry state has the &#xf061; icon in front of the name.
 
 Right-clicking a state's button will open up a context menu containing additional actions. 
+
 ![State's context menu](StateContextMenu.png)
 
 | | |
@@ -306,28 +310,29 @@ Right-clicking a state's button will open up a context menu containing additiona
 |**&#xf04b; Try Activate** | The state will be activated only if it's available.|
 |**&#xf144; Force Activate** | The state will be forcefully activated.|
 |**&#xf0a8; Set Entry State** | The state will become the entry state to the story. The entry state becomes the active state when the story is started / restarted.|
-|**&#xf24d; Duplicate** | Creates a deep copy of the state with a new name.|
+|**&#xf24d; Duplicate** | Creates a deep copy of the state under a new name.|
 |**&#xf0c5; Copy > [Internal Property]** | Copies the specified state property to clipboard.|
 |**&#xf1f8; Delete** | Deletes the state. The entry state cannot be deleted - specify a new entry state before deleting it.|
 |**&#xf055; Create Choice** | Creates a new state, selects it and [links the contexted state](#xf0cb-availability-expression) to it with `IS_HAPPENING [ContextedStateName]`.|
 |**&#xf060; Depends** | If applicable, lists all the states on which this state depends (i.e. what needs to happen for this state to become available). |
-|**&#xf061; Dependent** | If applicable, lists all the states that depend on this state (i.e. the contexted state needs to happen for these states to become available).|
-|**&#xf02d; Changing Properties** | If applicable, lists all the properties that [are changed](#xf069-change-expression) by this state.|
+|**&#xf061; Dependent** | If applicable, lists all of the states that depend on it(i.e. the contexted state needs to happen for these states to become available).|
+|**&#xf02d; Changing Properties** | If applicable, lists all of the properties that [are changed](#xf069-change-expression) by this state.|
 |**&#xf249; Notes** | Lists all the notes attached to the state. Clicking on **&#xf055; Attach a Note** will create a new [note](#xf249-note-display) and attach it to this state.|
 
 If multiple states are selected the context menu offers limited options which include: **&#xf079; Reset**, **&#xf24d; Duplicate** and **&#xf1f8; Delete**.
 
 ## &#xf02d; Property Button
-Each [**&#xf02d; property**](#xf02d-properties) in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, sometimes besides states. You can distinguish between them by the &#xf02d; icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
+Each [**&#xf02d; property**](#xf02d-properties) in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, often besides states. You can distinguish them by the &#xf02d; icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
 
 Right-clicking a property's button will open up a context menu containing additional actions.
+
 ![Property's context menu](PropertyContextMenu.png)
  
 | | |
 |-|-|
-|**Name** | The name of the property. It must be unique, not contain special characters or blank spaces. Updating the same property with a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.|
+|**Name** | The name of the property. It must be unique and cannot contain special characters or blank spaces. Updating the same property under a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.|
 |**Value** | The current value of the property.| 
-|**Initial Value** | The initial value of the property. The property value will be set to this value when the story is started or restarted.|
+|**Initial Value** | The initial value of the property. The property value will be set to this value once the story is started or restarted.|
 |**Value Min** | If the current value is less than this value it will be set to this value.|
 |**Value Max** | If the current value exceeds this value it will be set to this value.|
 |**Randomize on Reset** | Each time the story restarts, the current value will get a random value in a specified range. The value will depend on the story or branch seed.|
@@ -349,13 +354,13 @@ Right-clicking on the expander title will open a context menu.
 
 | | |
 |-|-|
-|**&#xf253; Load** | Will load the branch (make it active). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded a user may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
+|**&#xf253; Load** | Will load the branch (activate it). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded, a user may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
 |**&#xf246; Rename** | Renames the branch.|
 |**&#xf1f8; Delete** | Deletes the branch.|
 
 ## &#xf249; Note Display
 
-Notes may be displayed on various places inside the NST Editor. They have a frame with a **&#xf249; Note** caption. Notes are a [standard text input component](#text-input) and can be edited by right-clicking on the content. There are additional items in the context menu specific to notes:
+Notes may be displayed in various places inside the NST Editor. They consist of a frame and a **&#xf249; Note** caption. Notes come with a [standard text input component](#text-input) and can be edited by right-clicking on the content. Some additional features related to the notes are as follows:
 
 | | |
 |-|-|
@@ -366,7 +371,7 @@ Notes may be displayed on various places inside the NST Editor. They have a fram
 
 ## &#xf14b; State Editor
 
->[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected the editor will show a message to indicate so.
+>[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected, the editor will show a message to indicate so.
 
 ### Action Buttons
 The topmost element is the [State Button](#xf013-state-button) for the currently selected [state](#xf013-states).
@@ -378,13 +383,13 @@ The topmost element is the [State Button](#xf013-state-button) for the currently
 |**&#xf1f8; Delete** | Deletes the state.|
 
 >[!WARNING]
-Hit the **&#xf093; Update** button as often as possible when making changes. If another state is selected without first updating the current state all changes will be lost. This behavior is still under development and will change in future releases.
+Hit the **&#xf093; Update** button as often as possible when making changes. If you select another state without updating the current state first, all changes will be lost. This behavior is still under development and will change in future releases.
 
 ### &#xf02b; State Name
-All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist because names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
+All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist due to the fact that names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
 
 ### &#xf000; Situation
-The **&#xf000; situation** is the description of what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
+The **&#xf000; situation** tells us what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
 
 >[!TIP]
 The situation content may contain any HTML5 / JS / CSS code you may choose to enter. This code will be rendered inside the NST Reader, but not inside the Read in Editor window.
@@ -394,7 +399,7 @@ Writing a [property](#xf02d-properties) name between [ and ] will render the val
 
 ### &#xf055; Create Choice button
 
-Clicking this button will create a new state which will be automatically linked to this state. The link is created by automagically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The newly created state will then be automatically selected.
+Clicking this button will create a new state which will be automatically linked to this state. The link is created by automatically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The newly created state will then be automatically selected.
 
 ### &#xf069; Change Expression
 
@@ -402,9 +407,9 @@ Clicking this button will create a new state which will be automatically linked 
 
 The **&#xf069; change expression** defines how a [**&#xf02d; property**](#xf02d-properties) changes when the [**&#xf013; state**](#xf013-states) is activated. The result of a change expression is a floating-point precision number which changes a property value in some manner. You may use other properties within the change expression.
 
- To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change exression panel. After the author selects a property, hitting the &#xf055; button will create the new change expression.
+ To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change expression panel. Once the desired property is selected, hitting the &#xf055; button will create the new change expression.
 
-Setting the expression value to a number will change the expression by that value. For example, if a property has a value of 4, and there exists a state which has a change expression of that property with value 2, when the state is activated the final property value will become 6 (4+2=6). This value can also be negative.
+Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and there exists a state which has a change expression of that property with value 2, when the state is activated the final property value will become 6 (4+2=6). This value can also be negative.
 
 ![Change expression example](ChangeExpressionExample.png)
 
