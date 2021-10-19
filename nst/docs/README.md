@@ -12,11 +12,15 @@
 **Discord:** https://discord.com/invite/sxeD79nuBP 
 
 # Overview
-Interactive stories require the one who reads to make a choice.   Choices make the story take a turn for the better or for the worse. NST is a full suite of tools for creating, analyzing and rendering branching or nonlinear stories, novels, poems, generic text or even other media such as music or films.
+Interactive stories allow readers to make choices which in turn determine the outcome of the story. But, how do we produce such content?
 
-NST aims to provide authors with tools which keep a linear level of complexity, regardless of the number of branching paths the story might contain. When using **[Twine](https://twinery.org/)**, **[Ink](https://www.inklestudios.com/ink/)** or other similar tools, the branching gets more difficult with every new branch an author creates, just because of the nature of dragging lines on a graph or referencing labels in a script. NST manages to overcome this particular issue by using innovative ways of connecting specific moments of time inside the story by taking away explicit connections and relying on discrete conditions under which something can happen.
+That’s where NST comes in, by bringing a full suite of tools to help you create, analyze and render both branching and nonlinear content, including stories, novels, poems, generic text, as well as music or films.
 
-NST consists of an Editor and a Reader, which are separate standalone programs. The NST Editor helps authors in creating nonlinear or branching stories, which then can be read inside the NST Reader. 
+When using **[Twine](https://twinery.org/)**, **[Ink](https://www.inklestudios.com/ink/)** or similar tools, the complexity of the branching process rises with every new branch created by the author, due to the nature of graphs and scripts, which make it a necessity for the author to drag lines on a graph or reference labels in a script. NST manages to overcome this particular issue by using innovative ways of connecting specific moments of time inside the story by taking away explicit connections and relying upon discrete conditions under which something can happen. 
+
+Ultimately, NST aims to provide authors with tools that obtain a linear complexity, regardless of the number of branching paths a story might contain
+
+NST comes with an Editor and a Reader as two separate, standalone programs. The NST Editor helps authors in creating nonlinear or branching stories, which can afterwards be read inside the NST Reader.
 
 ![NST Editor](editorss.jpg)
 
