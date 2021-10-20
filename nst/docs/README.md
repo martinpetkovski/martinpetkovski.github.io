@@ -12,9 +12,7 @@
 **Discord:** https://discord.com/invite/sxeD79nuBP 
 
 # Overview
-Interactive stories allow readers to make choices which in turn determine the outcome of the story. But, how do we produce such content?
-
-That’s where NST comes in, by bringing a full suite of tools to help you create, analyze and render both branching and nonlinear content, including stories, novels, poems, generic text, as well as music or films.
+Interactive stories allow readers to make choices which in turn determine the outcome of the story. NST allows authors to produce such content by bringing a full suite of tools to help you create, analyze and render both branching and nonlinear content, including stories, novels, poems, generic text, as well as music or films.
 
 When using **[Twine](https://twinery.org/)**, **[Ink](https://www.inklestudios.com/ink/)** or similar tools, the complexity of the branching process rises with every new branch created by the author, due to the nature of graphs and scripts, which make it a necessity for the author to drag lines on a graph or reference labels in a script. NST manages to overcome this particular issue by using innovative ways of connecting specific moments of time inside the story by taking away explicit connections and relying upon discrete conditions under which something can happen.
 
@@ -405,11 +403,11 @@ Clicking this button will create a new state which will be automatically linked 
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
-The **&#xf069; change expression** defines how a [**&#xf02d; property**](#xf02d-properties) changes when the [**&#xf013; state**](#xf013-states) is activated. The result of a change expression is a floating-point precision number which changes a property value in some manner. You may use other properties within the change expression.
+The **&#xf069; change expression** defines how a [**&#xf02d; property**](#xf02d-properties) changes when the [**&#xf013; state**](#xf013-states) is activated. The result of a change expression is a floating-point precision number which changes a property value in a specific manner. You may use other properties within the change expression.
 
- To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change expression panel. Once the desired property is selected, hitting the &#xf055; button will create the new change expression.
+To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change expression panel. Once the desired property is selected, hitting the &#xf055; button will create the new change expression.
 
-Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and there exists a state which has a change expression of that property with value 2, when the state is activated the final property value will become 6 (4+2=6). This value can also be negative.
+Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and a state exists whose change expression of that property is with a value of 2, the final property value will become 6 (4+2=6) when the state is activated. This value can also be negative.
 
 ![Change expression example](ChangeExpressionExample.png)
 
@@ -417,7 +415,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**DELTA exp** | Will add *exp* to the property value. Same as writing just *x* in the expression.|
+|**DELTA exp** | Will add *exp* to the property value. Same as writing *x* in the expression.|
 |**DELTANEG exp** | Will subtract *exp* from the property value. |
 |**SET exp** | Will set the property value to *exp*.|
 
@@ -425,7 +423,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**VALUE** | Will change the current value of the property. This is the default type operator, expression will use it if not explicitly stated.|
+|**VALUE** | Will change the current value of the property. This is the default type operator, the expression will be evaluated with it, unless explicitly stated.|
 |**INITIAL** | Will change the initial value of the property.|
 |**MIN** | Will change the minimum value of the property.|
 |**MAX** | Will change the maximum value of the property.|
@@ -434,7 +432,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**GETVALUE propertyName** | Get the current value of a property. This is the default get operator. It's use is implied when writing only a property name inside an expression.|
+|**GETVALUE propertyName** | Get the current value of a property. This is the default get operator. Scripting this will get you the same results as simply typing propertyName.|
 |**GETMIN propertyName** | Get the minimum value of a property.|
 |**GETMAX propertyName** | Get the maximum value of a property.|
 |**GETINIT propertyName** | Get the initial value of a property.|
@@ -443,8 +441,8 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures the system is deterministic.|
-|**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It returns different numbers for different values of customSeed, and returns the same numbers for the same customSeed.|
+|**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures that the system is deterministic.|
+|**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It provides different numbers for different values of customSeed, as well as the same numbers for the same customSeed.|
 
 #### Examples
 
