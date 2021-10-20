@@ -442,7 +442,7 @@ Setting the expression value to a number will change the expression by that valu
 | | |
 |-|-|
 |**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures that the system is deterministic.|
-|**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It provides different numbers for different values of customSeed, as well as the same numbers for the same customSeed.|
+|**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It returns different numbers for different values of customSeed, as well as the same numbers for the same customSeed.|
 
 #### Examples
 
@@ -466,7 +466,7 @@ Right-clicking on the expression will bring up a context menu containing a searc
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
-The **&#xf0cb; Availability Expression** is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false). True if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
+The **&#xf0cb; Availability Expression** is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false), i.e. true if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
 
 #### Operators
 
@@ -483,10 +483,10 @@ The **&#xf0cb; Availability Expression** is an expression which defines how a st
 |**IS_MORE_THAN** | Binary operator. Returns true if the current property value is more than a numeric value or more than the current value of another property. `(PropertyName IS_MORE_THAN AnotherProperty)`|
 |**IS_LESS_THAN** | Binary operator. Returns true if current property value is less than a numeric value or less than the current value of another property. `(PropertyName IS_LESS_THAN 21)`|
 |**IS_EQUAL_TO** | Binary operator. Returns true if current property value is equal to a numeric value or equal to the current value of another property. `(PropertyName IS_EQUAL_TO AnotherProperty)`|
-|**DICE x y [z]** | Unary operator. Returns a random seeded number between x and y. An optional custom seed (z) can be supplied. The random number always depends on the global story seed and will return the same number for the same story seed making the system deterministic. You can use property values in all parameters. `(DICE 2 3 PropertyName)`|
+|**DICE x y [z]** | Unary operator. Returns a random, seeded number between x and y. An optional custom seed (z) can be supplied. The random number always depends on the global story seed and will return the same number for the same story seed, making the system deterministic. You can use property values in all parameters. `(DICE 2 3 PropertyName)`|
 
 #### Context Menu
-The context menu contains all items that can be used in the **&#xf0cb; Availability Expression**. Clicking on any item will insert it at the cursor. If an item inside the availability expression is selected it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
+The context menu contains all of items that can be used in the **&#xf0cb; Availability Expression**. Clicking on any item will display it after the cursor. If an item inside the availability expression is selected, it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
 
 #### Examples
 
@@ -532,15 +532,15 @@ The context menu contains all items that can be used in the **&#xf0cb; Availabil
 
 ### This state depends on
 
-Lists all the states and properties that this state depends on. The dependency might or might not be exclusive.
+Lists all of the states and properties that the selected state depends on. The dependency might or might not be exclusive.
 
 ### States dependent on this
 
-Lists all states that depend on this state. The dependency might or might not be exclusive.
+Lists all of states that depend on the selected state. The dependency might or might not be exclusive.
 
 ### Dialog statements
 
-Dialog statements are in essence the labels on the buttons which the reader clicks to make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
+Dialog statements are in essence the labels on the buttons that are clicked by the reader whenever they make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
 
 To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
 
@@ -548,14 +548,14 @@ To create a dialog statement, you must select a state (or "__ALL") from the drop
 
 | | |
 |-|-|
-|**Can Happen Again** | If checked, this state can happen indefinite number of times. Otherwise, once activated it will never be available again.|
-|**Is Exclusively Available** | If checked, when this state is available, it will be the only available state, regardless of the availability of other states.|
-|**Is Global** | If checked, the state can be available whenever. Check this when you want to have an option that can be always available (i.e. depends only on properties, not states).|
-|**Exclude Global States** | If checked, global states won't be available if this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
+|**Can Happen Again** | If checked, this state can happen an indefinite number of times. Otherwise, once activated, it will never be available again.|
+|**Is Exclusively Available** | If checked, whenever this state is available, it will be the only available state, regardless of the availability of other states.|
+|**Is Global** | If checked, the state can be available whenever. Check this when you want to have a choice that can be always available (i.e. depends only on properties, not states).|
+|**Exclude Global States** | If checked, global states won't be available when this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
 
 ### State Head
 
-When this state is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
+When this is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
 
 ### Notes
 
@@ -568,7 +568,7 @@ The States Browser window allows different views on all states present inside a 
 Pool View shows all states in the form of state buttons. The user may filter the states by name using the search bar. 
 
 ### Table View
-Table View shows all internal values of all states in multiple pages. You can search by internal value using the search bar. Each token separated by space in the search field is higlighted in a different color. States are sorted by relevance (i.e., number of tokens found inside the state's internal values based on the search query).
+Table View shows all internal values of all states in multiple pages. You can search by internal value using the search bar. Each token separated by space in the search field is highlighted in a different color. States are sorted by relevance (i.e., number of tokens found inside the state's internal values based on the search query).
 
 Advanced filtering is enabled in this view. Advanced filtering enables you to filter by internal properties such as: Active, Ever Activated, Selected, Available, Name, Situation, Availability Expression, Expression Tokens, States that depend on this, Change Expressions and/or Dialog Statements.
 
@@ -579,7 +579,7 @@ This view is useful for creating a mental map of where in the story a state may 
 
 ### Paths View
 
-The purpose of the Paths View is to display a number of different ways in which a reader may get from one state to another. The Paths View displays a sequence of states called "a path". Generated paths are sorted by number of states, thus the first path is always the shortest path between two states (the quickest way for the reader to get into a state).
+The purpose of the Paths View is to display a number of different ways in which a reader may get from one state to another. The Paths View displays a sequence of states called "a path". Generated paths are sorted by the number of states, thus, the first path is always the shortest path between two states (the quickest way for the reader to get into a state).
 
 >[!WARNING]
 For performance and memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
@@ -598,7 +598,7 @@ For performance and memory reasons, each path in the Paths View is generated onl
 The Property Editor lists all properties as property buttons. Properties are searchable by name using the search bar inside the editor. You may quickly create a property using the &#xf055;&#xf02d; button in the left-most area of the Property Editor.
 
 ## &#xf0e7; Read in Editor
-The story may be read inside the Read in Editor. This window reflects the current state of the story. It displays the Situation of the active story and displays buttons for each available state as a choice. The labels on the buttons reflects the dialog statements of the available states relating to the active state. If no dialog statement is specified for the currently active state, the reader will show the "Continue" button.
+The story may be read inside the Read in Editor. This window reflects the current state of the story. It displays the Situation of the active story and displays buttons for each available state as a choice. The labels on the buttons reflect the dialog statements of the available states relating to the active state. If no dialog statement is specified for the currently active state, the Reader will show the "Continue" button.
 
 ## &#xf1b2; Content Browser
 
@@ -608,7 +608,7 @@ The &#xf1b2; Content Browser is used to manage content inside stories.
 
 You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the person who reads it must have an active internet connection. An example of loading a resource from the internet, would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
 
- NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. 
+NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. 
 
 This is a list of all supported file formats that can be loaded via the Resource panel:
 
@@ -668,15 +668,15 @@ Labeled properties are properties that you might want to have visible inside the
 
 To add a new label, select a property from the properties dropdown, write a label and hit the left-most &#xf055; button.
 
-To change the label of a labeled property enter a new name in the textbox below the **Label** column. After you have entered the desired name click on the **&#xf0c7; Save** button to save your changes. The **&#xf0c7; Save** button will be disabled if the label has not been changed.
+To change the label of a labeled property enter a new name in the textbox below the **Label** column. After you have entered the desired name, click on the **&#xf0c7; Save** button to save your changes. The **&#xf0c7; Save** button will be disabled if the label has not been changed.
 
-The order of the list inside the Editor is also the order of the list inside the Reader. Each labeled property can be reordered by clicking on the **arrow buttons** right beside the label textbox. 
+The order of the list within the Editor is also the order of the list within the Reader. Each labeled property can be reordered by clicking on the **arrow buttons** right beside the label textbox. 
 
 To delete a labeled property click on the **&#xf1f8; Delete** button.
 
 ## &#xf017; Time Controller
 
-The time controller window enables you to rewind or advance the history of events inside the story. It has two tabs - the **Time Controls** and the **Branches Browser** tab.
+The time controller window enables you to rewind or advance the history of events in the story. It has two tabs - the **Time Controls** and the **Branches Browser** tab.
 
 ### Time Controls
 
@@ -685,8 +685,8 @@ The time controller window enables you to rewind or advance the history of event
 |**Reset** | Clicking on this button will reset the *whole story*, meaning the story will begin from the start with a new seed.|
 |**Rewind** | Will rewind the history of events by a single event.|
 |**Advance** | Will advance the history of events by a single event.|
-|**Time** | A slider that numbers all events that have happened inside the story. You can enter any number to go at that event in the story.|
-|**Reset Branch** | Clicking on this button will reset only the *current branch*, meaning the story will begin from the start with *the same seed*. All random events will happen in the same way.|
+|**Time** | A slider that numbers all events that have happened inside the story. You can enter any number to go at that particular event in the story.|
+|**Reset Branch** | Clicking on this button will reset only the *current branch*, meaning that the story will begin from the start with *the same seed*. All random events will happen in the same way.|
 |**Save** | Will save the active branch. All saved branches appear in the **Branches Browser**. You can load a branch at any point as long as the story hasn't changed in a way in which the branch can no longer execute (i.e., you have deleted a state that happened in a branch). |
 |**Seed** | This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then hitting on the **&#xf0c7; Save** button. A seed can be reset after editing by clicking on the **Cancel** button.|
 
@@ -696,30 +696,30 @@ The branches browser lists all saved branches in the [Branch Expander](#xf06c-br
 
 ## &#xf249; Note Editor
 
-The note editor displays all notes available inside the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
+The note editor displays all notes available within the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
 
 ## &#xf1b7; Steam Workshop
 
-The **&#xf1b7; Steam Workshop** window allows an integrated connection to the Steam Workshop. Requires an active internet connection and an active connection to Steam. 
+The **&#xf1b7; Steam Workshop** window allows an integrated connection to the Steam Workshop. It also requires an active internet connection as well as an active connection to Steam. 
 
 | | |
 |-|-|
-|**Browse Workshop** | Will open the NST Steam Workshop in an Steam overlay.|
+|**Browse Workshop** | Will open the NST Steam Workshop in a Steam overlay.|
 |**[Story Name]** | If available, will open the Steam Workshop page for the current story in the Steam overlay.|
 |**Synchronize** | Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.|
 |**Delete** | If applicable, will delete the story from the Steam Workshop.|
-|**Download**|This window by default lists all the Steam Workshop stories you are subscribed to. To download a story click on the **Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
-|**Update & Load**|If a story is already available this button will be named **Update & Load** and clicking it will automatically load the story inside the Editor.|
-|**Open Workshop Page** | Will open the Steam Workshop page of the selected story in an Steam overlay window.|
+|**Download**|This window lists all the Steam Workshop stories you are subscribed to by default. To download a story click on the **Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
+|**Update & Load**|If a story is already available, this button will be named **Update & Load** and clicking it will automatically load the story inside the Editor.|
+|**Open Workshop Page** | Will open the Steam Workshop page of the selected story in a Steam overlay window.|
 |**Unsubscribe** | Will remove the story from the list of stories you are subscribed to.|
 
 ### Publishing a Story
-To publish a story on the Steam Workshop you need to have the story you want to publish opened in the Editor. In the Steam Workshop window click on the **Publish Story** button. This will open a new view which will allow you to publish your story on the Steam Workshop.
+To publish a story on the Steam Workshop you need to have the story you want to publish opened in the Editor. Click on the **Publish Story** button in the Steam Workshop window. This will open a new view which will allow you to publish your story on the Steam Workshop.
 
 | | |
 |-|-|
-|**Public** checkbox | If checked the story will be public after publishing, otherwise it will be unlisted.|
-|**Compiled** checkbox | If checked the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.|
+|**Public** checkbox | If checked, the story will be public after publishing, otherwise it will be unlisted.|
+|**Compiled** checkbox | If checked, the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.|
 
 >[!WARNING]
 Compiled stories cannot be decompiled and decrypted.
@@ -729,26 +729,26 @@ Compiled stories cannot be decompiled and decrypted.
 |**Description** | The description which will appear on the Steam Workshop page.|
 |**Tags** | Tags for this story. Each tag should be separated by a comma.|
 |**Describe your changes** | This comment will appear in the list of changes on your private view of the Steam Workshop page.|
-|**Load Preview Image** | The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture you can clear it by clicking the **Clear** button to the right of the filepath.|
+|**Load Preview Image** | The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture, you can clear it by clicking the **Clear** button to the right of the file path.|
 |**Publish** | Will publish the story on the Steam Workshop with the given settings.|
 |**Cancel** | Will cancel the publishing and show the subscriptions view of the stories.|
 
 ## &#xf1c9; Log
 
-All messages that the Editor generates will pop up inside the **&#xf1c9; Log** window. These messages can be useful both to the author of the story and to the developers. There are 6 relevant columns for each message.
+All messages generated by the Editor will pop up inside the **&#xf1c9; Log** window. These messages can be useful to both the author of the story and the developers. There are 6 relevant columns for each message.
 
 | | |
 |-|-|
-|**#** | The number of occurances.|
-|**Level** | The type of message and how it affects the system. STATEMENT and NOTICE messages provide a general information about an event, WARNING and ERROR are usually messages of concern that should be addressed.|
-|**Time** | The time at which the message occured.|
-|**Subsystem** | The internal subsystem in which the message occured.|
+|**#** | The number of occurrences.|
+|**Level** | The type of message and how it affects the system. STATEMENT and NOTICE messages provide general information about an event, whereas WARNING and ERROR are usually messages of concern that should be addressed.|
+|**Time** | The time at which the message occurred.|
+|**Subsystem** | The internal subsystem in which the message occurred.|
 |**Line** | The line in the subsystem at which the message was fired.|
 |**Message** | The message text.|
 
 ## &#xf0ae; Profiler
 
->[!NOTE] The &#xf0ae; Profiler is an internal developer tool, you will probably rarely (if ever) need it. It's used to test the performance of the Editor when writing complex stories.
+>[!NOTE] The &#xf0ae; Profiler is an internal developer tool, you will probably rarely (if ever) need it. It is used to test the performance of the Editor when writing complex stories.
 
 ## &#xf1da; Command History
 
@@ -792,9 +792,9 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 
 The NST Reader displays the final form of stories written in the NST Editor by rendering the underlying HTML, loading all static resources and converting all tokens to values. All stories saved in a NTS format can be loaded inside the NST Reader, both compiled and uncompiled.
 
-To load a story select **File > Load...** inside the Reader. After selecting a story click **OK**, after which the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
+To load a story select **File > Load...** inside the Reader. Once you select a story, click **OK**, and the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
 
-To progress a story, depending on the type, you may be required to click on buttons to make a choice. There may or may not be additional buttons present, depending on what the author of the story may have chosen to use.
+To progress a story, you may be required to click on buttons to make a choice, depending on the type. There may or may not be additional buttons present, depending on what the author of the story may have chosen to use.
 
 ## Styling the Reader components
 
@@ -818,17 +818,17 @@ ASCII file that can be read in the Editor. This is a text format that contains a
 
 ### Syntax
 
-To define a state you need to write inside the NTX file:
+To define a state, you need to write inside the NTX file:
 
 	===
 	[StateName]
-	Here you describe the situation inside this state.
+	This is where you describe the situation inside this state.
 
 To define the state's connections you write:
 
 	===
 	[StateName]
-	Here you describe the situation inside this state.
+	This is where you describe the situation inside this state.
 	---
 	[SomeOtherState]: Click here to go to SomeOtherState
 	
@@ -838,7 +838,7 @@ To define a complex state [**&#xf0cb; Availability Expression**](#xf0cb-availabi
 
 	===
 	[StateName]
-	Here you describe the situation inside this state.
+	This is where you describe the situation inside this state.
 	---
 	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
 	
@@ -848,7 +848,7 @@ Properties are declared at the top of the file. The first parameter is the curre
 	[Property2]: 15 4 5
 	===
 	[StateName]
-	Here you describe the situation inside this state.
+	This is where you describe the situation inside this state.
 	---
 	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
 	
@@ -858,7 +858,7 @@ Properties can be used inside a state using the **change expressions**:
 	[Property2]: 15 4 5
 	===
 	[StateName]
-	Here you describe the situation inside this state.
+	This is where you describe the situation inside this state.
 	---
 	[#] (HAS_HAPPENED State1) AND (HAS_HAPPENED State3)
 	[Property1]: DELTANEG 3
