@@ -56,7 +56,6 @@ The main character (Spook) finds himself chased by cops in a New York alley. He 
 As soon as you start the NST Editor for the first time, a new story is automatically created. You can also create a new story by going to **&#xf15b; File > &#xf067; New**. To name the story you have to save it first. To save a story under a new name, go to the menu **Story[Name] > &#xf0c7; Save As > [Enter a Name] > &#xf00c; Confirm**. This will save the story inside the **[Root Folder]/stories** folder. 
 
 >[!TIP]
-
 To load a story go to the menu **&#xf15b; File > &#xf07c; Load**, which lists all the available stories inside the **[Root Folder]/stories** folder. You can quickly open the stories folder by clicking on **&#xf15b; File > &#xf07c; Stories Folder**. 
 
 ## Using States
@@ -66,7 +65,6 @@ To create a new [**&#xf013; state**](#xf013-states) in the story, you can use th
 Clicking on the far left **&#xf055;&#xf013;** button will create a new state. 
 
 >[!TIP]
-
 Another way of creating states is by going to the menu **&#xf085; System > &#xf055; Create > &#xf013; State**.
 
 Each [**&#xf013; state**](#xf013-states) in the [**&#xf009; States Browser**](#xf009-states-browser)  window is represented by a [clickable button](#xf013-state-button). To edit a [**&#xf013; state**](#xf013-states) you have to right-click it and select **&#xf044; Edit** which will automatically open the [**&#xf044; State Editor**](#xf14b-state-editor) window. The image below shows the [**&#xf044; State Editor**](#xf14b-state-editor) and the [**&#xf009; States Browser**](#xf009-states-browser) side by side.
@@ -75,7 +73,6 @@ Each [**&#xf013; state**](#xf013-states) in the [**&#xf009; States Browser**](#x
 You can edit all internal state properties in the [**&#xf044; State Editor**](#xf14b-state-editor). All edits are propagated inside the system by hitting the **&#xf093; Update** button.
 
 >[!WARNING]
-
 Selecting another state will **not** automatically update the changes to the current state. You need to hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
 
 **&#xf02b; Rename** the newly created state to *SpookEntersAlley* and **&#xf093; Update** the state.
@@ -123,7 +120,6 @@ You can now see the changes in action inside the [**&#xf0e7; Read in Editor**](#
 Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you need to specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). Select *SpookEntersAlley* from the dropdown and hit the &#xf055; button. Enter "*Charge the cops!*" in the [**&#xf075; Dialog Statement**](#dialog-statements) field and **&#xf093; Update** the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* becomes the active state.
 
 >[!TIP]
-
 Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, leaving *__ALL* intact.
 
 Next, create a new state and rename it to *SpookRunsEastwards*. Set the [**&#xf000; Situation**](#xf000-situation) to:
@@ -159,7 +155,6 @@ Once you complete the steps above, the view inside the [**&#xf0e7; Read in Edito
 Clicking on any of the buttons inside the [**&#xf0e7; Read in Editor**](#xf0e7-read-in-editor) should lead you to the correct state specified on the button label.
 
 >[!NOTE]
-
 **&#xf188; BUG:** When creating new states you should hit F5 to propagate the changes, just in case. This is not the intended behavior and will be fixed in future versions.
 
 >[!NOTE] Anonymous data is sent back to us only when the editor crashes, containing information related to the crash.
