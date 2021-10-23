@@ -70,7 +70,7 @@ Another way of creating states is by going to the menu **&#xf085; System > &#xf0
 Each [**&#xf013; state**](#xf013-states) in the [**&#xf009; States Browser**](#xf009-states-browser)  window is represented by a [clickable button](#xf013-state-button). To edit a [**&#xf013; state**](#xf013-states) you need to right-click it and select **&#xf044; Edit** which will automatically open the [**&#xf044; State Editor**](#xf14b-state-editor) window. The image below shows the [**&#xf044; State Editor**](#xf14b-state-editor) and the [**&#xf009; States Browser**](#xf009-states-browser) side by side.
 ![States Browser and States Editor side by side](StateEditorBrowserSbS.png)
 
-You can edit all internal state properties in the [**&#xf044; State Editor**](#xf14b-state-editor). All edits are propagated inside the system once you click the **&#xf093; Update** button.
+You can edit all internal state properties in the [**&#xf044; State Editor**](#xf14b-state-editor). All edits are propagated inside the system once you click on the **&#xf093; Update** button.
 
 >[!WARNING]
 Selecting another state will **not** automatically update the changes to the current state. You need to hit the **&#xf093; Update** button to propagate the changes. This will not be required in future versions of NST.
@@ -117,7 +117,7 @@ You can now see the changes in action inside the [**&#xf0e7; Read in Editor**](#
 
 ![Read in Editor](ReadInEditor_2.png)
 
-Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you need to specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). Select *SpookEntersAlley* from the dropdown and click the &#xf055; button. Enter "*Charge the cops!*" in the [**&#xf075; Dialog Statement**](#dialog-statements) field and **&#xf093; Update** the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* becomes the active state.
+Now, the button that leads to *SpookChargesCops* states only "*Continue*". To change this you need to specify the [**&#xf075; Dialog Statement**](#dialog-statements) for *SpookEntersAlley* from *SpookChargesCops*. Select the *SpookChargesCops* by clicking on the state inside the [**&#xf009; States Browser**](#xf009-states-browser). Scroll down to [**&#xf075; Dialog Statements**](#dialog-statements) inside the [**&#xf044; State Editor**](#xf14b-state-editor). Select *SpookEntersAlley* from the dropdown and click on the &#xf055; button. Enter "*Charge the cops!*" in the [**&#xf075; Dialog Statement**](#dialog-statements) field and **&#xf093; Update** the state. This will change the button label for the choice *SpookChargesCops* when the state *SpookEntersAlley* becomes the active state.
 
 >[!TIP]
 Selecting *__ALL* in the [**&#xf075; Dialog Statement**](#dialog-statements) dropdown will set the label for all buttons, regardless of the state they are connected to. Adding additional [**&#xf075; Dialog Statements**](#dialog-statements) for specific states will simply override the label for the specified states, leaving *__ALL* intact.
@@ -286,7 +286,7 @@ The text editor will be launched within the NST Editor and will behave as any ot
 
 | | |
 |-|-|
-|**&#xf044; Edit With > [Preferred Editor]** | Edits the text contents. After a text editor is selected, it will pop-up in a new window. You may drag and dock this window as you do with other windows. Once satisfied, you need to save it in your preferred editor and thus automatically propagate the recent changes within the NST Editor. At this point you may close the text editor window.|
+|**&#xf044; Edit With > [Preferred Editor]** | Edits the text contents. After a text editor is selected, it will pop up in a new window. You may drag and dock this window as you do with other windows. Once satisfied, you need to save it in your preferred editor and thus automatically propagate the recent changes within the NST Editor. At this point you may close the text editor window.|
 |**&#xf0c5; Copy** | Copy the text contents to clipboard.|
 |**&#xf0c4; Cut** | Cut the text contents to clipboard.|
 |**&#xf0ea; Paste** | Paste from clipboard to text contents. This action will overwrite the existing content.|
@@ -567,7 +567,7 @@ Dialog statements are in essence the labels on the buttons that are clicked by t
 
 ![Dialog Statements](DialogStatements.png)
 
-To create a dialog statement, you need to select a state (or "__ALL") from the dropdown menu and click the &#xf055; button.
+To create a dialog statement, you need to select a state (or "__ALL") from the dropdown menu and click on the &#xf055; button.
 
 ### Options
 
@@ -576,26 +576,26 @@ To create a dialog statement, you need to select a state (or "__ALL") from the d
 |**&#xf0e2; Can Happen Again** | If checked, this state can happen an indefinite number of times. Otherwise, once activated, it will never be available again.|
 |**&#xf055; Is Exclusively Available** | If checked, whenever this state is available, it will be the only available state, regardless of the availability of other states.|
 |**&#xf0ac; Is Global** | If checked, the state can be available whenever. Check this when you want to have a choice that can be always available (i.e. depends only on properties, not states).|
-|**&#xf005; Exclude Global States** | If checked, global states won't be available when this state is the active state. Use this if you have states that ignore the global states' availability. For example, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
+|**&#xf005; Exclude Global States** | If checked, global states will not be available when this state is the active state. Use this if you have states that ignore the global states' availability. For instance, if your character can eat a meal in any moment in time, this will be checked on states in which the character is dead and cannot eat a meal.|
 
 ### &#xf1fc; State Head
 
-When this is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
+Whenever this is the active state inside the NST Reader, the code entered here will be inserted in between the `<head></head>` tags. The state head is a [standard text input component](#text-input) and can be edited as such.
 
 ### &#xf249; Notes
 
-Displays all the [notes](#xf249-note-display) attached to this state.
+Displays all [notes](#xf249-note-display) attached to this state.
 
 ## &#xf009; States Browser
-The **&#xf009; States Browser** window allows different views on all [states](#xf013-states) present inside a story and allows the user to quickly create a new state. New states are created by clicking on the **&#xf055;&#xf013;** button, in the left-most part of the window. There are 4 main views the author may choose between.
+The **&#xf009; States Browser** window allows different views on all [states](#xf013-states) present inside a story and allows you to quickly create a new state. New states are created by clicking the **&#xf055;&#xf013;** button, in the left-most part of the window. You may choose between 4 main views.
 
 ### &#xf00a; Pool View
-Pool View shows all states in the form of [state buttons](#xf013-state-button) buttons. The user may filter the states by name using the search bar. 
+Pool View shows all states in the form of [state buttons](#xf013-state-button) buttons. You can filter the states by name using the search bar. 
 
 ![Pool view](PoolView.png)
 
 ### &#xf0ce; Table View
-Table View shows all internal values of all states in multiple pages. You can search by internal value using the search bar. Each token separated by space in the search field is highlighted in a different color. States are sorted by relevance (i.e., number of tokens found inside the state's internal values based on the search query).
+Table View shows all internal values of each state in multiple pages. You can search by internal value using the search bar. Each token separated by space in the search field is highlighted in a different color. States are sorted by relevance (i.e. number of tokens found inside the state's internal values based on the search query).
 
 ![Table view](TableView.png)
 
@@ -606,7 +606,7 @@ Advanced filtering is enabled in this view. Advanced filtering enables you to fi
 ### &#xf0e8; Graph View
 Graph View displays a graph of all [states](#xf013-states) and the connections between them. The graph is automatically generated based on the connections between the states. You cannot make connections directly on the graph because the connections may be complex. All [dependable tokens](#xf060-states-dependent-on-this) are taken into consideration when generating connections. This means that the connection may not reflect the relationship between the states, and may include both inclusive and exclusive connections.
 
-This view is useful for creating a mental map of where in the story a state may appear. 
+This can use it to create a mental map of where in the story a state may appear. 
 
 ![Graph View](GraphView.png)
 
@@ -617,20 +617,20 @@ The purpose of the Paths View is to display [a number of different ways](#xf060-
 ![Paths View](PathsView.png)
 
 >[!WARNING]
-For performance and memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
+For performance and memory reasons, each path in the Paths View is generated by only using state dependencies and not property dependencies. If a state depends on a property, it will be ignored when generating a path. This may be fixed in the future.
 
 | | |
 |-|-|
 |**Source** | The source state for the path.|
 |**Destination** | The destination state for the path. |
-|**Max Paths** | Maximum number of paths to generate. This needs to be set because some states may have infinite number of paths between them.|
-|**Search Available** | Search only states that are available at the moment. Useful when the source is the currently active state.|
+|**Max Paths** | Maximum number of paths to generate. This needs to be set, since some states may have infinite number of paths between them.|
+|**Search Available** | Only searches states that are available at the moment. Useful when the source is the currently active state.|
 |**Search Everything** | Searches all states to generate paths.|
 |**Discovered Junctions** | Number of path junctions discovered.|
 |**Generated Paths** | Number of paths generated by the action.|
 
 ## &#xf02d; Property Editor
-The Property Editor lists all [properties](#xf02d-properties) as [property buttons](#xf02d-property-button). Properties are searchable by name using the search bar inside the editor. You may quickly create a property using the **&#xf055;&#xf02d;** button in the left-most area of the Property Editor.
+The Property Editor lists all [properties](#xf02d-properties) as [property buttons](#xf02d-property-button). Properties are searchable by name using the search bar inside the Editor. You may quickly create a property using the **&#xf055;&#xf02d;** button in the left-most area of the Property Editor.
 
 ![Property Editor](PropertyEditor.png)
 
@@ -647,11 +647,11 @@ The **&#xf1b2; Content Browser** is used to manage content inside stories.
 
 ### &#xf03e; Resources
 
-You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the person who reads it must have an active internet connection. An example of loading a resource from the internet, would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
+You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the reader must have an active internet connection. To illustrate, to load a resource from the internet would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
 
-NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. When a resource is loaded it is immidiately converted to [base64](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html) enconding. Then, it is dynamically embeded whenever a state is activated inside the Reader.
+NST also offers you to include offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. When a resource is loaded it is immediately converted to [base64](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html) encoding. Then, it is dynamically embedded whenever a state is activated inside the Reader.
 
-This is a list of all supported file formats that can be loaded via the Resource panel:
+Below is a list of all supported file formats that can be loaded via the Resource panel:
 
 * apng
 * avif
@@ -683,7 +683,7 @@ This is a list of all supported file formats that can be loaded via the Resource
 * xml
 * mp4
 
-To embed an offline resource inside a state you need to reference it by its name using the `{resource=ResourceName}` syntax.
+To embed an offline resource inside a state, you need to reference it by its name using the `{resource=ResourceName}` syntax.
 
 **Examples:**
 
@@ -691,13 +691,13 @@ To embed an offline resource inside a state you need to reference it by its name
 
 `<video controls src="{resource=20200510_171050}">`
 
-To rename a resource you enter a new name inside the appropriate textbox in the **Actions** column. After you enter the desired name, click on the **&#xf0c7; Save** button. 
+To rename a resource, you enter a new name inside the appropriate textbox in the **Actions** column. After you enter the desired name, click the **&#xf0c7; Save** button. 
 
-To delete a resource click on the **&#xf1f8; Delete** button. 
+To delete a resource, click the **&#xf1f8; Delete** button. 
 
 Hitting the **&#xf0c5; Copy** button will copy the correct HTML snippet for the selected resource. The examples above are generated in such manner. 
 
-Clicking on the **&#xf07c; Load** button will allow you to load the same resource from another file.
+Clicking the **&#xf07c; Load** button will allow you to load the same resource from another file.
 
 ### &#xf1dc; Global Head
 
@@ -707,13 +707,13 @@ This is a code snippet that will be embedded between the `<head>...here...</head
 
 Labeled properties are [&#xf02d; properties](#xf02d-properties) that you might want to have visible inside the Reader all the time. They usually appear on the left of the story, but can be styled however using the [Global Head](#xf1dc-global-head) or [State Head](#xf1fc-state-head) styles. The list inside the Reader has the property label and the current value shown.
 
-To add a new label, select a property from the properties dropdown, write a label and hit the left-most &#xf055; button.
+To add a new label, select a property from the properties dropdown, write a label and click on the left-most &#xf055; button.
 
-To change the label of a labeled property enter a new name in the textbox below the **Label** column. After you have entered the desired name, click on the **&#xf0c7; Save** button to save your changes. The **&#xf0c7; Save** button will be disabled if the label has not been changed.
+To change the label of a labeled property, enter a new name in the textbox below the **Label** column. Once you have entered the desired name, click the **&#xf0c7; Save** button to save your changes. The **&#xf0c7; Save** button will be disabled if the label has not been changed.
 
-The order of the list within the Editor is also the order of the list within the Reader. Each labeled property can be reordered by clicking on the **&#xf062; or &#xf063;** buttons right beside the label textbox. 
+The order of the list within the Editor is also the order of the list within the Reader. Each labeled property can be reordered by clicking the **&#xf062; or &#xf063;** buttons right beside the label textbox. 
 
-To delete a labeled property click on the **&#xf1f8; Delete** button.
+To delete a labeled property, click the **&#xf1f8; Delete** button.
 
 ## &#xf017; Time Controller
 
@@ -725,13 +725,13 @@ The time controller window enables you to rewind or advance the history of event
 
 | | |
 |-|-|
-|**&#xf079; Reset** | Clicking on this button will reset the *whole story*, meaning the story will begin from the start with a new seed.|
+|**&#xf079; Reset** | Clicking this button will reset the *whole story*, meaning that the story will begin from the start with a new seed.|
 |**&#xf049; Rewind** | Will rewind the history of events by a single event.|
 |**&#xf050; Advance** | Will advance the history of events by a single event.|
 |**&#xf253; Time** | A slider that numbers all events that have happened inside the story. You can enter any number to go at that particular event in the story.|
-|**&#xf079; Reset Branch** | Clicking on this button will reset only the *current branch*, meaning that the story will begin from the start with *the same seed*. All random events will happen in the same way.|
-|**&#xf0c7; Save** | Will save the active branch. All saved branches appear in the **&#xf06c; Branches Browser**. You can load a branch at any point as long as the story hasn't changed in a way in which the branch can no longer execute (i.e., you have deleted a state that happened in a branch). |
-|**&#xf074; Seed** | This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then hitting on the **&#xf0c7; Save** button. A seed can be reset after editing by clicking on the **&#xf00d; Cancel** button.|
+|**&#xf079; Reset Branch** | Clicking this button will only reset the *current branch*, meaning that the story will begin from the start with *the same seed*. All random events will happen in the same way.|
+|**&#xf0c7; Save** | Will save the active branch. All saved branches appear in the **&#xf06c; Branches Browser**. You can load a branch at any point as long as the story has not changed in a way in which the branch can no longer execute (i.e. you have deleted a state that happened in a branch). |
+|**&#xf074; Seed** | This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then clicking the **&#xf0c7; Save** button. A seed can be reset after editing by clicking the **&#xf00d; Cancel** button.|
 
 ### &#xf06c; Branches Browser
 
@@ -739,13 +739,13 @@ The branches browser lists all saved branches in the [Branch Expander](#xf06c-br
 
 ## &#xf249; Note Editor
 
-The note editor displays all notes available within the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
+The note editor displays all notes available within the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
 
 ![Note Editor](NoteEditor.png)
 
-To attach a note click on the **&#xf055; Attach to Node** button in the **Attached to** column. This will open a list of available [states](#xf013-states), [properties](#xf02d-properties) or the [system as a whole](#xf085-systems) to which you may attach this note. 
+To attach a note, click on the **&#xf055; Attach to Node** button in the **Attached to** column. This will open a list of available [states](#xf013-states), [properties](#xf02d-properties) or the [system as a whole](#xf085-systems) to which you may attach this note. 
  
- To detach a note click on the **&#xf127; Detach** button for the appropriate node.
+ To detach a note, click on the **&#xf127; Detach** button for the appropriate node.
 
 ## &#xf1b7; Steam Workshop
 
@@ -759,7 +759,7 @@ The **&#xf1b7; Steam Workshop** window allows an integrated connection to the St
 |**[Story Name]** | If available, will open the Steam Workshop page for the current story in the Steam overlay.|
 |**&#xf1b6; Synchronize** | Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.|
 |**&#xf1f8; Delete** | If applicable, will delete the story from the Steam Workshop.|
-|**&#xf019; Download**|This window lists all the Steam Workshop stories you are subscribed to by default. To download a story click on the **&#xf019; Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
+|**&#xf019; Download**|This window lists Steam Workshop stories you are subscribed to by default. To download a story, click on the **&#xf019; Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
 |**&#xf021; Update & Load**|If a story is already available, this button will be named **&#xf021; Update & Load** and clicking it will automatically load the story inside the Editor.|
 |**&#xf1b7; Open Workshop Page** | Will open the Steam Workshop page of the selected story in a Steam overlay window.|
 |**&#xf056; Unsubscribe** | Will remove the story from the list of stories you are subscribed to.|
@@ -772,15 +772,15 @@ To publish a story on the Steam Workshop you need to have the story you want to 
 | | |
 |-|-|
 |**&#xf0ac; Public** checkbox | If checked, the story will be public after publishing, otherwise it will be unlisted.|
-|**&#xf023; Compiled** checkbox | If checked, the story will be compiled and encrypted, this means that it will be read-only and can be fully opened only in the NST Reader.|
+|**&#xf023; Compiled** checkbox | If checked, the story will be compiled and encrypted, meaning that it will be read-only and can be fully opened only in the NST Reader.|
 
 >[!WARNING]
 Compiled stories cannot be decompiled and decrypted.
 
 | | |
 |-|-|
-|**&#xf044; Description** | The description which will appear on the Steam Workshop page.|
-|**&#xf02c; Tags** | Tags for this story. Each tag should be separated by a comma.|
+|**&#xf044; Description** | The description that will appear on the Steam Workshop page.|
+|**&#xf02c; Tags** | Tags for the given story. Each tag should be separated by a comma.|
 |**&#xf044; Describe your changes** | This comment will appear in the list of changes on your private view of the Steam Workshop page.|
 |**&#xf03e; Load Preview Image** | The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture, you can clear it by clicking the **Clear** button to the right of the file path.|
 |**&#xf00c; Publish** | Will publish the story on the Steam Workshop with the given settings.|
@@ -788,24 +788,24 @@ Compiled stories cannot be decompiled and decrypted.
 
 ## &#xf1c9; Log
 
-All messages generated by the Editor will pop up inside the **&#xf1c9; Log** window. These messages can be useful to both the author of the story and the developers. There are 6 relevant columns for each message.
+All messages generated by the Editor will pop up inside the **&#xf1c9; Log** window. These messages can be useful to both you and the developers. There are 6 relevant columns for each message.
 
 | | |
 |-|-|
 |**#** | The number of occurrences.|
 |**Level** | The type of message and how it affects the system. **STATEMENT** and **NOTICE** messages provide general information about an event, whereas **WARNING** and **ERROR** are usually messages of concern that should be addressed.|
-|**Time** | The time at which the message occurred.|
+|**Time** | The time of which the message occurred.|
 |**Subsystem** | The internal subsystem in which the message occurred.|
 |**Line** | The line in the subsystem at which the message was fired.|
 |**Message** | The message text.|
 
 ## &#xf0ae; Profiler
 
->[!NOTE] The &#xf0ae; Profiler is an internal developer tool, you will probably rarely (if ever) need it. It is used to test the performance of the Editor when writing complex stories.
+>[!NOTE] The &#xf0ae; Profiler is an internal developer tool and you will probably need it rarely (if ever). It is used to test the performance of the Editor when writing complex stories.
 
 ## &#xf1da; Command History
 
-The history of all commands executed in the Editor is listed inside the **&#xf1da; Command History** window. This is the undo / redo stack. You can move anywhere in the history of commands by selecting any command. The current command is highlighted and has a **bolt** icon. All previous commands are colored with a lighter color, all commands that are after the current command are colored with a darker color. The point at which you saved the story has a **save** icon before the identifier and is also highlighted in orange. Discarding changes will set the history cursor to this point.
+The history of all commands executed in the Editor is listed inside the **&#xf1da; Command History** window. This is the undo / redo stack. You can move anywhere in the history of commands by selecting any command. The current command is highlighted and has a **bolt** icon. All previous commands are colored with a lighter color, while all commands that are after the current command are colored with a darker color. The point at which you saved the story has a **save** icon before the identifier and is also highlighted in orange. Discarding changes will set the history cursor to this point.
 
 ![Command History](CommandHistory.png)
 
@@ -849,7 +849,7 @@ The NST Reader displays the final form of stories written in the NST Editor by r
 
 ![Reader](Reader.png)
 
-To load a story select **File > Load...** inside the Reader. Once you select a story, click **OK**, and the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
+To load a story select **File > Load...** inside the Reader. Once you select a story, click **OK** and the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
 
 To progress a story, you may be required to click on buttons to make a choice, depending on the type. There may or may not be additional buttons present, depending on what the author of the story may have chosen to use.
 
