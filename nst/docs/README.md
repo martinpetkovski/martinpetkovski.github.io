@@ -20,7 +20,7 @@ Ultimately, NST aims to provide authors with tools that obtain a linear complexi
 
 NST comes with an Editor and a Reader as two separate, standalone programs. The NST Editor helps authors in creating nonlinear or branching stories, which can afterwards be read inside the NST Reader.
 
-![NST Editor](editorss.jpg)
+![NST Editor](FullView.png)
 
 # Concepts
 ## &#xf085; Systems
@@ -238,7 +238,9 @@ Sync with Reader is still in BETA. It doesn't work well with huge story files. U
 |**&#xf28b; Pause Tick** | Will pause the system updates. This will not stop the editor execution, but will stop the evaluation of all internal state and system properties.|
 
 ### Window
-Holds a list of all available windows in the NST Editor. This does not include external editors or the NST Reader, but rather:
+Holds a list of all available windows in the NST Editor.
+
+![Main Menu -> System](MainMenuWindows.png)
 
 * Editor Utilities: 
 	* [**&#xf1c9; Log**](#xf1c9-log)
@@ -271,6 +273,9 @@ Lists all of the available editor options. A click selects only one option.
 |**&#xf1c0; Backup Frequency** | No backups, Rare (backup in every 30 actions), Frequent (backup in every 5 actions), Always (backup after each action). |
 
 ### Notification area
+
+![Notification area](MainMenuNotifArea.png)
+
 Located on the right part of the main menu, left of the window controls. Short messages are shown in the notification area for a few seconds. This message is also available in the [**&#xf1c9; Log**](#xf1c9-log) window.
 
 
@@ -288,7 +293,11 @@ The text editor will be launched inside the NST Editor and will behave as any ot
 |**&#xf057; Clear** | Clear the text contents.|
 
 ## &#xf013; State Button
-Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the [**&#xf044; State Editor**](#xf14b-state-editor). You can select multiple states by holding the Ctrl button on your keyboard while you click on them. You can differentiate selected states by the highlighted borders.
+Each [**&#xf013; state**](#xf013-states) in the NST Editor is represented by a single button labeled with the state's **&#xf02b; name**. 
+
+![State Button](StateButton.png)
+
+States as buttons appear throughout the NST Editor. Clicking on the button will select the state and open it for edit inside the [**&#xf044; State Editor**](#xf14b-state-editor). You can select multiple states by holding the Ctrl button on your keyboard while you click on them. You can differentiate selected states by the highlighted borders.
 
 An active state's button is red, whereas a green button implies availability. Once you activate the state, the button becomes dark red. The entry state has the &#xf061; icon in front of the name.
 
@@ -315,7 +324,11 @@ Right-clicking a state's button will open up a context menu containing additiona
 If multiple states are selected the context menu offers limited options which include: **&#xf079; Reset**, **&#xf24d; Duplicate** and **&#xf1f8; Delete**.
 
 ## &#xf02d; Property Button
-Each [**&#xf02d; property**](#xf02d-properties) in the NST Editor is represented by a single button labeled with the property's name. Properties as buttons appear throughout the NST Editor, often besides states. You can distinguish them by the &#xf02d; icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
+Each [**&#xf02d; property**](#xf02d-properties) in the NST Editor is represented by a single button labeled with the property's name. 
+
+![Property Button](PropertyButton.png)
+
+Properties as buttons appear throughout the NST Editor, often besides states. You can distinguish them by the &#xf02d; icon that appears in front of the name. Clicking the button will highlight all states that depend on this property's value, regardless of which window they appear in.
 
 Right-clicking a property's button will open up a context menu containing additional actions.
 
@@ -345,6 +358,8 @@ The expander displays the name of the branch. It will show **&#xf0e7; Active** i
 
 Right-clicking on the expander title will open a context menu. 
 
+
+
 | | |
 |-|-|
 |**&#xf253; Load** | Will load the branch (activate it). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded, a user may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
@@ -353,13 +368,19 @@ Right-clicking on the expander title will open a context menu.
 
 ## &#xf249; Note Display
 
-Notes may be displayed in various places inside the NST Editor. They consist of a frame and a **&#xf249; Note** caption. Notes come with a [standard text input component](#text-input) and can be edited by right-clicking on the content. Some additional features related to the notes are as follows:
+![Note Display](NoteDisplay.png)
+
+Notes may be displayed in various places inside the NST Editor. They consist of a frame and a **&#xf249; Note** caption. Notes come with a [standard text input component](#text-input) and can be edited by right-clicking on the content. 
+
+Notes may be attached to [states](#xf013-states), [properties](#xf02d-properties) or the [system as a whole](#xf085-systems).
+
+Some additional features available in text context menu, depending on the attached context, are as follows:
 
 | | |
 |-|-|
-|**&#xf08d; Pin** | Pins the note to the top.|
-|**&#xf12a; Important** | Colors the note red.|
-|**&#xf0c1; Detach** | Detaches the note from the item. This does not delete the note, it will still be available through the [**&#xf249; Note Editor**](#xf249-note-editor).|
+|**&#xf08d; Pin** | Pins the note to the top. Only attached notes can be pinned.|
+|**&#xf12a; Important** | Colors the note red. Only attached notes can be marked as important.|
+|**&#xf0c1; Detach** | Detaches the note from the item. This does not delete the note, it will still be available through the [**&#xf249; Note Editor**](#xf249-note-editor). Only attached notes can be detached.|
 |**&#xf1f8; Delete** | Detaches the note from all items and deletes it.|
 
 ## &#xf14b; State Editor
@@ -367,7 +388,10 @@ Notes may be displayed in various places inside the NST Editor. They consist of 
 >[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected, the editor will show a message to indicate so.
 
 ### Action Buttons
-The topmost element is the [State Button](#xf013-state-button) for the currently selected [state](#xf013-states).
+
+![State Action Buttons](StateActionButtons.png)
+
+The topmost element is the [state button](#xf013-state-button) for the currently selected [state](#xf013-states).
 
 | | |
 |-|-|
@@ -404,7 +428,7 @@ To create a change expression, you must first select a property to be changed. T
 
 Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and a state exists whose change expression of that property is with a value of 2, the final property value will become 6 (4+2=6) when the state is activated. This value can also be negative.
 
-![Change expression example](ChangeExpressionExample.png)
+
 
 #### Change Operators
 
@@ -457,6 +481,8 @@ Adds a value to OtherProperty. The value is a non-seeded random number between t
 
 Right-clicking on the expression will bring up a context menu containing a searchable list of all properties and all the operators you may use. Selecting an item from the context menu will append that value to the end of the expression.
 
+![Change expression context menu](ContextMenuChangeExpression.png)
+
 ### &#xf0cb; Availability Expression
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
@@ -482,6 +508,8 @@ The **&#xf0cb; Availability Expression** is an expression which defines how a st
 
 #### Context Menu
 The context menu contains all of items that can be used in the **&#xf0cb; Availability Expression**. Clicking on any item will display it after the cursor. If an item inside the availability expression is selected, it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
+
+![Availability expression context menu](ContextMenuAvailabilityExpression.png)
 
 #### Examples
 
@@ -537,6 +565,8 @@ Lists all of states that depend on the selected state. The dependency might or m
 
 Dialog statements are in essence the labels on the buttons that are clicked by the reader whenever they make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
 
+![Dialog Statements](DialogStatements.png)
+
 To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
 
 ### Options
@@ -562,19 +592,29 @@ The **&#xf009; States Browser** window allows different views on all [states](#x
 ### &#xf00a; Pool View
 Pool View shows all states in the form of [state buttons](#xf013-state-button) buttons. The user may filter the states by name using the search bar. 
 
+![Pool view](PoolView.png)
+
 ### &#xf0ce; Table View
 Table View shows all internal values of all states in multiple pages. You can search by internal value using the search bar. Each token separated by space in the search field is highlighted in a different color. States are sorted by relevance (i.e., number of tokens found inside the state's internal values based on the search query).
 
+![Table view](TableView.png)
+
 Advanced filtering is enabled in this view. Advanced filtering enables you to filter by internal properties such as: Active, Ever Activated, Selected, Available, Name, [Situation](#xf000-situation), [Availability Expression](#xf0cb-availability-expression), Expression Tokens, [States that depend on this](#xf060-states-dependent-on-this), [Change Expressions](#xf069-change-expression) and/or [Dialog Statements](#xf075-dialog-statements).
+
+![Advanced Filtering](AdvancedFiltering.png)
 
 ### &#xf0e8; Graph View
 Graph View displays a graph of all [states](#xf013-states) and the connections between them. The graph is automatically generated based on the connections between the states. You cannot make connections directly on the graph because the connections may be complex. All [dependable tokens](#xf060-states-dependent-on-this) are taken into consideration when generating connections. This means that the connection may not reflect the relationship between the states, and may include both inclusive and exclusive connections.
 
 This view is useful for creating a mental map of where in the story a state may appear. 
 
+![Graph View](GraphView.png)
+
 ### &#xf018; Paths View
 
 The purpose of the Paths View is to display [a number of different ways](#xf060-states-dependent-on-this) in which a reader may get from one state to another. The Paths View displays a sequence of states called "a path". Generated paths are sorted by the number of states, thus, the first path is always the shortest path between two states (the quickest way for the reader to get into a state).
+
+![Paths View](PathsView.png)
 
 >[!WARNING]
 For performance and memory reasons, each path in the Paths View is generated only using state dependencies and not property dependencies. If some state depends on a property it will be ignored when generating a path. This may be fixed in the future.
@@ -592,18 +632,24 @@ For performance and memory reasons, each path in the Paths View is generated onl
 ## &#xf02d; Property Editor
 The Property Editor lists all [properties](#xf02d-properties) as [property buttons](#xf02d-property-button). Properties are searchable by name using the search bar inside the editor. You may quickly create a property using the **&#xf055;&#xf02d;** button in the left-most area of the Property Editor.
 
+![Property Editor](PropertyEditor.png)
+
 ## &#xf0e7; Read in Editor
 The story may be read inside the Read in Editor. This window reflects the current state of the story. It displays the [**&#xf000; Situation**](#xf000-situation) of the active story and displays buttons for each available state as a choice. The labels on the buttons reflect the dialog statements of the [available states](#xf0cb-availability-expression) relating to the [active state](#xf013-states). If no [dialog statement](#xf075-dialog-statements) is specified for the currently active state, the Reader will show the "Continue" button.
+
+![Read in Editor](ReadInEditor.png)
 
 ## &#xf1b2; Content Browser
 
 The **&#xf1b2; Content Browser** is used to manage content inside stories. 
 
+![Content Browser](ContentBrowser.png)
+
 ### &#xf03e; Resources
 
 You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the person who reads it must have an active internet connection. An example of loading a resource from the internet, would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
 
-NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. 
+NST offers a way to have offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. When a resource is loaded it is immidiately converted to [base64](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html) enconding. Then, it is dynamically embeded whenever a state is activated inside the Reader.
 
 This is a list of all supported file formats that can be loaded via the Resource panel:
 
@@ -673,6 +719,8 @@ To delete a labeled property click on the **&#xf1f8; Delete** button.
 
 The time controller window enables you to rewind or advance the history of events in the story. It has two tabs - the **&#xf017; Time Controls** and the **&#xf06c; Branches Browser** tab.
 
+![Time Controller](TimeController.png)
+
 ### &#xf017; Time Controls
 
 | | |
@@ -693,9 +741,17 @@ The branches browser lists all saved branches in the [Branch Expander](#xf06c-br
 
 The note editor displays all notes available within the system in the [Note Display](#xf249-note-display) format. You can create a new note by clicking on the **&#xf055; Create a Note** button. The newly-created note will not be attached to any system component yet.
 
+![Note Editor](NoteEditor.png)
+
+To attach a note click on the **&#xf055; Attach to Node** button in the **Attached to** column. This will open a list of available [states](#xf013-states), [properties](#xf02d-properties) or the [system as a whole](#xf085-systems) to which you may attach this note. 
+ 
+ To detach a note click on the **&#xf127; Detach** button for the appropriate node.
+
 ## &#xf1b7; Steam Workshop
 
 The **&#xf1b7; Steam Workshop** window allows an integrated connection to the Steam Workshop. It also requires an active internet connection as well as an active connection to Steam. 
+
+![Steam Workshop](SteamWorkshop.png)
 
 | | |
 |-|-|
@@ -710,6 +766,8 @@ The **&#xf1b7; Steam Workshop** window allows an integrated connection to the St
 
 ### &#xf093; Publishing a Story
 To publish a story on the Steam Workshop you need to have the story you want to publish [opened in the Editor](#file). Click on the **&#xf093; Publish Story** button in the Steam Workshop window. This will open a new view which will allow you to publish your story on the Steam Workshop.
+
+![Publish Story](SteamWorkshopPublishStory.png)
 
 | | |
 |-|-|
@@ -749,6 +807,8 @@ All messages generated by the Editor will pop up inside the **&#xf1c9; Log** win
 
 The history of all commands executed in the Editor is listed inside the **&#xf1da; Command History** window. This is the undo / redo stack. You can move anywhere in the history of commands by selecting any command. The current command is highlighted and has a **bolt** icon. All previous commands are colored with a lighter color, all commands that are after the current command are colored with a darker color. The point at which you saved the story has a **save** icon before the identifier and is also highlighted in orange. Discarding changes will set the history cursor to this point.
 
+![Command History](CommandHistory.png)
+
 ## Keyboard Shortcuts
 
 >[!NOTE] Keyboard shortcuts are Editor-wide, they do not conform to the context of the selected window.
@@ -786,6 +846,8 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 # NST Reader
 
 The NST Reader displays the final form of stories written in the NST Editor by rendering the underlying HTML, loading all static resources and converting all tokens to values. All stories saved in a NTS format can be loaded inside the NST Reader, both compiled and uncompiled.
+
+![Reader](Reader.png)
 
 To load a story select **File > Load...** inside the Reader. Once you select a story, click **OK**, and the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
 
