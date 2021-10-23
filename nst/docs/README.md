@@ -336,7 +336,7 @@ Right-clicking a property's button will open up a context menu containing additi
  
 | | |
 |-|-|
-|**Name** | The name of the property. It must be unique and cannot contain special characters or blank spaces. Updating the same property under a different name will effectively trigger a rename. A property rename will warn the user if a name exists or if the name contains an illegal word or character.|
+|**Name** | The name of the property. It must be unique and cannot contain special characters or blank spaces. Updating the same property under a different name will effectively trigger a rename. A property rename will warn the user if the name already exists or if the name contains an illegal word or character.|
 |**Value** | The current value of the property.| 
 |**Initial Value** | The initial value of the property. The property value will be set to this value once the story is started or restarted.|
 |**Value Min** | If the current value is less than this value it will be set to this value.|
@@ -347,14 +347,14 @@ Right-clicking a property's button will open up a context menu containing additi
 |**&#xf093; Update** | Updates the property with the new values.|
 |**&#xf1f8; Delete** | Deletes the property.|
 |**Dependent States** | Lists all dependent [states](#xf013-states). These states will be highlighted by clicking on the property button. |
-|**&#xf249; Notes** | Lists all the [notes](#xf249-note-display) attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.|
+|**&#xf249; Notes** | Lists all [notes](#xf249-note-display) attached to the property. Clicking on **&#xf055; Attach a Note** will create a new note and attach it to this property.|
 
 ## &#xf06c; Branch Expander
 Each [**&#xf06c; branch**](#xf06c-branches) is represented by an expander throughout the NST Editor. A branch can be active (loaded) inside the story to which it belongs. The branch that is active can be [time-manipulated](#xf017-time-controller). Each branch may be saved and loaded (activated).
 
 ![Branches' Expander](BranchExpander.png)
 
-The expander displays the name of the branch. It will show **&#xf0e7; Active** in front of the name of the branch that is currently active. The expander can be expanded and collapsed. The content when it is expanded are the sequence of [states](#xf013-states) representing the branch. There may be duplicate states in the sequence if the state has been activated multiple times.
+The expander displays the name of the branch. It will show **&#xf0e7; Active** in front of the name of the branch that is currently active. The expander can be expanded and collapsed. When expanded, it contains the sequence of [states](#xf013-states) representing the branch. There may be duplicate states in the sequence if the state has been activated multiple times.
 
 Right-clicking on the expander title will open a context menu. 
 
@@ -362,7 +362,7 @@ Right-clicking on the expander title will open a context menu.
 
 | | |
 |-|-|
-|**&#xf253; Load** | Will load the branch (activate it). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were at the time when the branch was saved. After the branch is loaded, a user may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
+|**&#xf253; Load** | Will load the branch (activate it). Loading the branch will activate a [states](#xf013-states) which was saved as active along with the branch. It will also set all internal properties of all states as they were when the branch was saved. After the branch is loaded, you may control the time on it by rewinding or advancing the state activation inside the [**&#xf017; Time Controller**](#xf017-time-controller) window. |
 |**&#xf246; Rename** | Renames the branch.|
 |**&#xf1f8; Delete** | Deletes the branch.|
 
@@ -385,7 +385,7 @@ Some additional features available in text context menu, depending on the attach
 
 ## &#xf14b; State Editor
 
->[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected, the editor will show a message to indicate so.
+>[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected, the Editor will display a message to indicate so.
 
 ### Action Buttons
 
@@ -400,13 +400,13 @@ The topmost element is the [state button](#xf013-state-button) for the currently
 |**&#xf1f8; Delete** | Deletes the state.|
 
 >[!WARNING]
-Hit the **&#xf093; Update** button as often as possible when making changes. If you select another state without updating the current state first, all changes will be lost. This behavior is still under development and will change in future releases.
+Click the **&#xf093; Update** button as often as possible when making changes. If you select another state without updating the current state first, all changes will be lost. This behavior is still under development and will change in future releases.
 
 ### &#xf02b; State Name
-All states are uniquely identified by their name. A state's name must be unique and must not contain any special characters, reserved words or empty spaces. These rules exist due to the fact that names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
+All states are uniquely identified by their name. A state's name must be unique and cannot contain any special characters, reserved words or empty spaces. These rules exist due to the fact that names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
 
 ### &#xf000; Situation
-The **&#xf000; situation** tells us what's going on at some point in time. It will show up in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking on it will bring up more options.
+The **&#xf000; situation** tells us what is happening at a given point in time. It will be displayed in the reading area when the state is active. The situation is a [standard text input component](#text-input) that can be edited with an external text editor. Right-clicking it will bring up more options.
 
 >[!TIP]
 The situation content may contain any HTML5 / JS / CSS code you may choose to enter. This code will be rendered inside the NST Reader, but not inside the Read in Editor window.
@@ -416,7 +416,7 @@ Writing a [property](#xf02d-properties) name between [ and ] will render the val
 
 ### &#xf055; Create Choice button
 
-Clicking this button will create a new state which will be automatically linked to this state. The link is created by automatically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The newly created state will then be automatically selected.
+Clicking this button will create a new state which will automatically be linked to this state. The link is created by automatically adding `IS_HAPPENING [ThisStateName]` in the new state's [**&#xf0cb; Availability Expression**](#xf0cb-availability-expression). The newly created state will then be automatically selected.
 
 ### &#xf069; Change Expression
 
@@ -424,9 +424,9 @@ Clicking this button will create a new state which will be automatically linked 
 
 The **&#xf069; change expression** defines how a [**&#xf02d; property**](#xf02d-properties) changes when the [**&#xf013; state**](#xf013-states) is activated. The result of a change expression is a floating-point precision number which changes a property value in a specific manner. You may use other properties within the change expression.
 
-To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change expression panel. Once the desired property is selected, hitting the &#xf055; button will create the new change expression.
+To create a change expression, you must first select a property to be changed. This is done via the dropdown menu at the top of the change expression panel. Once the desired property is selected, clicking the &#xf055; button will create the new change expression.
 
-Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and a state exists whose change expression of that property is with a value of 2, the final property value will become 6 (4+2=6) when the state is activated. This value can also be negative.
+Setting the expression value to a number will change the expression by that value. For instance, if a property has a value of 4, and a state exists whose change expression of that property has a value of 2, the final property value will become 6 (4+2=6) when the state is activated. This value can also be negative.
 
 
 
@@ -434,7 +434,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**DELTA exp** | Will add *exp* to the property value. Same as writing *x* in the expression.|
+|**DELTA exp** | Will add *exp* to the property value, similarly to writing *x* in the expression.|
 |**DELTANEG exp** | Will subtract *exp* from the property value. |
 |**SET exp** | Will set the property value to *exp*.|
 
@@ -442,7 +442,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**VALUE** | Will change the current value of the property. This is the default type operator, the expression will be evaluated with it, unless explicitly stated.|
+|**VALUE** | Will change the current value of the property. This is the default type operator. The expression will be evaluated with it, unless explicitly stated.|
 |**INITIAL** | Will change the initial value of the property.|
 |**MIN** | Will change the minimum value of the property.|
 |**MAX** | Will change the maximum value of the property.|
@@ -460,7 +460,7 @@ Setting the expression value to a number will change the expression by that valu
 
 | | |
 |-|-|
-|**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system, for the same system seed it will return the same value. This ensures that the system is deterministic.|
+|**DICE rangeMin rangeMax** | Generate a random number in the given range. This random number is seeded by the system and will return the same value for the same system seed. This ensures that the system is deterministic.|
 |**DICEX rangeMin rangeMax customSeed** | Generate a random number with a custom seed. This seed is added to the system seed, thus keeping the system deterministic. It returns different numbers for different values of customSeed, as well as the same numbers for the same customSeed.|
 
 #### Examples
@@ -475,11 +475,11 @@ Sets the minimum value of PropertyName to the maximum value of SomeOtherProperty
 	
 	OtherProperty => DICE GETMIN RandomProperty1 GETMIN RandomProperty2
 
-Adds a value to OtherProperty. The value is a non-seeded random number between the minimum value of RandomProperty1 and the minimum value of RandomProperty2
+Adds a value to OtherProperty. The value is a random, non-seeded number between the minimum value of RandomProperty1 and the minimum value of RandomProperty2
 
 #### Using the context menu
 
-Right-clicking on the expression will bring up a context menu containing a searchable list of all properties and all the operators you may use. Selecting an item from the context menu will append that value to the end of the expression.
+Right-clicking the expression will bring up a context menu containing a searchable list of all properties and the operators you may use. Selecting an item from the context menu will append that value to the end of the expression.
 
 ![Change expression context menu](ContextMenuChangeExpression.png)
 
@@ -487,7 +487,7 @@ Right-clicking on the expression will bring up a context menu containing a searc
 
 >[!NOTE] This component is still under development and may or may not change in future releases.
 
-The **&#xf0cb; Availability Expression** is an expression which defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false), i.e. true if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
+The **&#xf0cb; Availability Expression** defines how a state becomes available. The result of the evaluation of an availability expression is a boolean value (true or false), i.e. true if the state is available, false if the state is not available. The author may use both states and properties in the availability expression.
 
 #### Operators
 
@@ -507,7 +507,7 @@ The **&#xf0cb; Availability Expression** is an expression which defines how a st
 |**DICE x y [z]** | Unary operator. Returns a random, seeded number between x and y. An optional custom seed (z) can be supplied. The random number always depends on the global story seed and will return the same number for the same story seed, making the system deterministic. You can use property values in all parameters. `(DICE 2 3 PropertyName)`|
 
 #### Context Menu
-The context menu contains all of items that can be used in the **&#xf0cb; Availability Expression**. Clicking on any item will display it after the cursor. If an item inside the availability expression is selected, it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking on the **()** item will enclose the item inside parenthesis.
+The context menu contains all of the items that can be used in the **&#xf0cb; Availability Expression**. Clicking any item will display it after the cursor. If an item inside the availability expression is selected, it will be replaced by the selection in the context menu. Selecting a sub-expression and clicking the **()** item will enclose the item inside parenthesis.
 
 ![Availability expression context menu](ContextMenuAvailabilityExpression.png)
 
@@ -555,19 +555,19 @@ The context menu contains all of items that can be used in the **&#xf0cb; Availa
 
 ### &#xf061; This state depends on
 
-Lists all of the states and properties that the selected state depends on. The dependency might or might not be exclusive.
+Lists all states and properties that the selected state depends on. The dependency may or may not be exclusive.
 
 ### &#xf060; States dependent on this
 
-Lists all of states that depend on the selected state. The dependency might or might not be exclusive.
+Lists all states that depend on the selected state. The dependency may or may not be exclusive.
 
 ### &#xf075; Dialog statements
 
-Dialog statements are in essence the labels on the buttons that are clicked by the reader whenever they make a decision. To create a dialog statement, the author needs to choose a state to which that dialog statement refers to. There can be different ways to reach some state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
+Dialog statements are in essence the labels on the buttons that are clicked by the reader whenever they make a decision. To create a dialog statement, you need to choose a state to which dialog statement refers to. There can be different ways to reach a state in a story. Dialog statements can define labels for all states by using the "__ALL" token, or may use a specific state to define the dialog statement for that state.
 
 ![Dialog Statements](DialogStatements.png)
 
-To create a dialog statement, you must select a state (or "__ALL") from the dropdown menu, and then click on the &#xf055; button.
+To create a dialog statement, you need to select a state (or "__ALL") from the dropdown menu and click the &#xf055; button.
 
 ### Options
 
