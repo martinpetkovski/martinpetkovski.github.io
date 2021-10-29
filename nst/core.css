@@ -25,7 +25,7 @@ html { position: relative; min-height: 100%; }
 #header img { width: 96px; }
 #wrapper { margin: 0 auto; width: 40vw; min-width:700px; }
 .nst { font-family: 'Rektec', Arial, Verdana; margin-left:2vw; color: #fff; font-size:64px; }
-.title { font-family: 'UniSans', Arial, Verdana; display: inline-block; color:#fff; font-size:16px; margin-left:2vw;}
+.title { font-family: 'UniSans', Arial, Verdana; display: inline-block; color:#fff; font-size:16px; margin-left:2vw; min-width:200px;}
 .subtitle { width:100%; font-family: 'UniSans', FontAwesome5, FontAwesome5Brands, Arial, Verdana; display: inline-block; color:#fff; font-size:16px; background-color: #1116; text-align:right; }
 .section { 
 	position:relative; 
@@ -65,10 +65,16 @@ html { position: relative; min-height: 100%; }
 a, a:visited, a:active { text-decoration: none; color: #FFF; }
 b { text-shadow: 0px 0px 20px #000; }
 
+td#headerButtons {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 5px;
+	text-align:right;
+}
+
 #getOnSteam {
 	font-size: 32px;
-	position: relative;
-	left: 13vw;
+	text-align:right;
 }
 
 #landingSection {
