@@ -16,7 +16,7 @@
 ---
 
 # 09.11.2021 - Запознавање и вовед
- [&#xf1c4; PowerPoint презентација](https://www.najjak.com/spao/Resources/spao-vezhbi-01.pptx).
+ [&#xf1c4; PowerPoint презентација](https://www.najjak.com/spao/resources/spao-vezhbi-01.pptx).
 
 ---
 
@@ -37,9 +37,9 @@
 
 Конструирајте star schema од дадените податоци.
 
-[&#xf019; Workbench решение](https://www.najjak.com/spao/Resources/Vezhbi02_Zadacha01.mwb)
+[&#xf019; Workbench решение](https://www.najjak.com/spao/resources/Vezhbi02_Zadacha01.mwb)
 
-[&#xf03e; Слика од шемата](https://www.najjak.com/spao/Resources/Vezhbi02_Zadacha01.png)
+[&#xf03e; Слика од шемата](https://www.najjak.com/spao/resources/Vezhbi02_Zadacha01.png)
 
 #### 02
 Во онлајн продавницата на Steam можете да купите и играте видео игри. 
@@ -52,9 +52,9 @@ Steam чува податоци со различни компоненти за:
 
 Овие компоненти дополнително содржат податоци и за: **AchievementID, AchievementName, AchievementTime, AchievementImageUrl, PlayerDimID, PlayerID, Nickname, PlayerDescription, PlayerImageUrl, PlayerCreationDate, GameDimID, GameID, GameName, GameDescription, GameImageUrl, PartnerDimID, PartnerID, PartnerName, PartnerCreationDate, DateDimID, DateID, Date, Month, Year, IsSale.**
 
-[&#xf019; Workbench решение](https://www.najjak.com/spao/Resources/Vezhbi02_Zadacha02.mwb)
+[&#xf019; Workbench решение](https://www.najjak.com/spao/resources/Vezhbi02_Zadacha02.mwb)
 
-[&#xf03e; Слика од шемата](https://www.najjak.com/spao/Resources/Vezhbi02_Zadacha02.png)
+[&#xf03e; Слика од шемата](https://www.najjak.com/spao/resources/Vezhbi02_Zadacha02.png)
 
 ---
 
