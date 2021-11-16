@@ -6,6 +6,8 @@
 
 **Линк:**  https://meet.google.com/txh-ojfe-opi
 
+**&#xf392; Дискорд:** https://discord.gg/mrNnKgbSCQ
+
 ### Потребен софтвер
 
 [&#xf019; MySQL Server](https://dev.mysql.com/downloads/file/?id=508935) (GPL)
