@@ -1,7 +1,7 @@
 # Version
 **Version:** 0.2.211203
 
-**Last Updated:** 18 October 2021
+**Last Updated:** 17 November 2021
 
 **Caretakers:** Martin Petkovski, Isaja Karadakovska
 
@@ -717,7 +717,7 @@ To delete a labeled property, click the **&#xf1f8; Delete** button.
 
 ## &#xf017; Time Controller
 
-The time controller window enables you to rewind or advance the history of events in the story. It has two tabs - the **&#xf017; Time Controls** and the **&#xf06c; Branches Browser** tab.
+The time controller window enables you to rewind or advance the history of events in the story. It has three tabs - the **&#xf017; Time Controls** tab, the **&#xf0e7;Active Branch** tab and the **&#xf06c; Branches Browser** tab.
 
 ![Time Controller](TimeController.png)
 
@@ -725,12 +725,16 @@ The time controller window enables you to rewind or advance the history of event
 
 | | |
 |-|-|
-|**&#xf079; Reset** | Clicking this button will reset the *whole story*, meaning that the story will begin from the start with a new seed.|
 |**&#xf049; Rewind** | Will rewind the history of events by a single event.|
 |**&#xf050; Advance** | Will advance the history of events by a single event.|
 |**&#xf253; Time** | A slider that numbers all events that have happened inside the story. You can enter any number to go at that particular event in the story.|
+|**&#xf079; Reset** | Clicking this button will reset the *whole story*, meaning that the story will begin from the start with a new seed.|
+
+### &#xf0e7; Active Branch
+| | |
+|-|-|
 |**&#xf079; Reset Branch** | Clicking this button will only reset the *current branch*, meaning that the story will begin from the start with *the same seed*. All random events will happen in the same way.|
-|**&#xf0c7; Save** | Will save the active branch. All saved branches appear in the **&#xf06c; Branches Browser**. You can load a branch at any point as long as the story has not changed in a way in which the branch can no longer execute (i.e. you have deleted a state that happened in a branch). |
+|**&#xf0c7; Save Branch** | Will save the active branch. All saved branches appear in the **&#xf06c; Branches Browser**. You can load a branch at any point as long as the story has not changed in a way in which the branch can no longer execute (i.e. you have deleted a state that happened in a branch). |
 |**&#xf074; Seed** | This is the current seed of the active branch. You can change it by writing a new number inside the textbox and then clicking the **&#xf0c7; Save** button. A seed can be reset after editing by clicking the **&#xf00d; Cancel** button.|
 
 ### &#xf06c; Branches Browser
