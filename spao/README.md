@@ -2,9 +2,9 @@
 
 **Демонстратор:** [Мартин Петковски](https://www.najjak.com/spao/martin-petkovski-cv.pdf)  (petkovski.martin@uklo.edu.mk)
 
-**Термин:** Секој вторник од 17:00 до 18:30 
+**&#xf017; Термин:** Секој вторник од 17:00 до 18:30 
 
-**Линк:**  https://meet.google.com/txh-ojfe-opi
+**&#xf1a0; Линк:**  https://meet.google.com/txh-ojfe-opi
 
 **&#xf392; Дискорд:** https://discord.gg/mrNnKgbSCQ
 
@@ -65,3 +65,62 @@ Steam чува податоци со различни компоненти за:
 # 23.11.2021 - Колоквиумска Недела 🥳
 
 ---
+
+# 30.11.2021 - Snowflake Schema
+
+### Задачи
+
+#### 03
+
+Во една компанија за продажба на хартија можете да нарачате одредена количина на листови хартија.
+
+Компанијата чува податоци за:
+- Приход (**Revenue**)
+- Продукт (**Product**)
+- Филијала (**Branch**)
+- Муштерија (**Customer**)
+- Датум (**Date**)
+
+Овие компоненти дополнително содржат податоци за: **RevenueID, UnitsSold, RevenueAmount, CustomerID, CustomerName, CustomerPhoneNumber, LocationID, Region, CountryID, CountryName, BranchID, BranchName, BranchAddress, ProductID, ProductName, VariantID, VariantName, VariantTreeType, DateID, Year, Month, Quarter, Date**
+
+Конструирајте snowflake schema од дадените податоци.
+
+[&#xf019; Workbench решение](https://www.najjak.com/spao/resources/Vezhbi03_Zadacha03.mwb)
+
+[&#xf03e; Слика од шемата](https://www.najjak.com/spao/resources/Vezhbi03_Zadacha03.png)
+
+#### 04
+
+Една авиокомпанија управува со летови помеѓу различни градови во светот.
+
+Компанијата чува податоци за:
+- Приход (**Revenue**)
+- Летови (**Flights**)
+- Пилоти (**Pilots**)
+- Датум  (**Date**)
+
+Овие компоненти дополнително содржат податоци за: **RevenueID, FuelSpent, PassengersTransported, RevenueAmount, FlightID, FlightFromID, FlightToID, FlightTime, CityID, Country, CitySize, PilotID, PilotName, PilotNationality PilotTotalHoursFlight, DateID, Year, Month, Quarter, Date**
+
+Конструирајте snowflake schema од дадените податоци.
+
+### Решенија:
+
+++
+
+#### 05
+
+Во онлајн продавницата на Steam можете да купите и играте видео игри. 
+
+Steam чува податоци со различни компоненти за: 
+- достигнувања на играчите (**Achievements**)
+- играчи (**Players**)
+- игри (**Games**)
+- партнери (**Partners**)
+
+Овие компоненти дополнително содржат податоци и за: **AchievementID, AchievementName, AchievementTime, AchievementImageUrl, PlayerID, Nickname, PlayerDescription, PlayerImageUrl, PlayerCreationDate, CountryID, CountryName, CountryTimeZone, GameID, GameName, GameDescription, GameImageUrl, DeveloperID, DeveloperName, DeveloperLocation, PublisherID, PublisherName, PublisherCountry, PublisherCreationDate, DateID, Date, Month, Year, IsSale.**
+
+Конструирајте snowflake schema од дадените податоци.
+
+### Решенија:
+
+++
