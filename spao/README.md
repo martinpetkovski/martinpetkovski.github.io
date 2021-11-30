@@ -103,9 +103,12 @@ Steam чува податоци со различни компоненти за:
 
 Конструирајте snowflake schema од дадените податоци.
 
-### Решенија:
+#### Решенија:
 
-++
+| Студент | Workbench | Слика |
+|---------|-----------|-------|
+|**Владимир Павловски**|[&#xf019; Симни](https://www.najjak.com/spao/resources/VladimirPavlovski_Zadacha03.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/VladimirPavlovski_Vezhbi03_Zadacha03.png)|
+|**Антонио Ристевски**| [&#xf019; Симни](https://www.najjak.com/spao/resources/AntonioRistevski_Zadacha03.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/AntonioRistevski_Vezhbi03_Zadacha03.png)
 
 #### 05
 
