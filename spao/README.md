@@ -118,20 +118,64 @@ Steam чува податоци со различни компоненти за:
 - достигнувања на играчите (**Achievements**)
 - играчи (**Players**)
 - игри (**Games**)
-- партнери (**Partners**)
+- партнери (**Partner**)
+- издавачи (**Publisher**)
 
 Овие компоненти дополнително содржат податоци и за: **AchievementID, AchievementName, AchievementTime, AchievementImageUrl, PlayerID, Nickname, PlayerDescription, PlayerImageUrl, PlayerCreationDate, CountryID, CountryName, CountryTimeZone, GameID, GameName, GameDescription, GameImageUrl, DeveloperID, DeveloperName, DeveloperLocation, PublisherID, PublisherName, PublisherCountry, PublisherCreationDate, DateID, Date, Month, Year, IsSale.**
 
 Конструирајте snowflake schema од дадените податоци.
 
-### Решенија:
+#### Решенија:
 
 | Студент | Workbench | Слика |
 |---------|-----------|-------|
-|**Антонио Ристевски**| [&#xf019; Симни](https://www.najjak.com/spao/resources/AntonioRistevski_Zadaca05.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/AntonioRistevski_Vezhbi03_Zadacha04.png)
+|**Антонио Ристевски**| [&#xf019; Симни](https://www.najjak.com/spao/resources/AntonioRistevski_Zadaca05.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/AntonioRistevski_Vezhbi03_Zadacha05.png)
 
 ---
 
 **МАЛА ИСПРАВКА: Кликот на пипетата за креирање на релација во MySQL Workbench треба да биде од изворот кон дестинацијата, наместо обратно. Со ова се елиминира потребата од рачно креирање индекси. Ваквите релации од дестинација кон извор би создавале проблеми при имлементирањето на визуелизација. Сите фајлови и слики се исправени.**
 
 ---
+
+# 07.12.2021 - Constellation Schema
+
+#### 06
+
+Во светскиот завод за статистика се чуваат податоци корисни за државите кои се членки.
+
+Податоците кои се чуваат се поделени во компонентите:
+- држави (**Countries**)
+- датум (**Dates**)
+- извори (**Sources**)
+- демографија (**Demographics**)
+- време (**Weather**)
+
+Овие компоненти дополнително содржат податоци за: **CountryID, CountryName, CountryRegion, CountryCapital, DateID, DateYear, DateMonth, DateDay, SourceID, SourceName, SourceEmail, SourceTelNumber, DemographicID, NumPopulation, NumForeigners, NumElectricCars, NumNaturalLakes, WeatherID, WeatherNumValue, WeatherDescription**
+
+Конструирајте constellation schema од дадените податоци.
+
+[&#xf019; Workbench решение](https://www.najjak.com/spao/resources/Vezhbi04_Zadacha06.mwb)
+
+[&#xf03e; Слика од шемата](https://www.najjak.com/spao/resources/Vezhbi04_Zadacha06.png)
+
+#### 07
+
+Во онлајн продавницата на GOG можете да купите и играте видео игри. 
+
+GOG чува податоци со различни компоненти за: 
+- достигнувања на играчите (**Achievements**)
+- приход по играч (**RevenuePlayer**)
+- приход по издавачи (**RevenuePublisher**)
+- играчи (**Players**)
+- игри (**Games**)
+- издавачи (**Publishers**)
+
+Овие компоненти дополнително содржат податоци и за: **AchievementID, AchievementName, AchievementTime, AchievementImageUrl, PlayerRevenueID, PlayerRevenueAmount, PlayerGameID, PublisherRevenueID, PublisherRevenueAmount, PublisherCutAmount, PublisherGameID, PlayerID, Nickname, PlayerDescription, PlayerImageUrl, PlayerCreationDate, CountryID, CountryName, CountryTimeZone, GameID, GameName, GameDescription, GameImageUrl, PublisherID, PublisherName, PublisherCountry, PublisherCreationDate, DateID, Date, Month, Year, IsSale.**
+
+Конструирајте constellation schema од дадените податоци.
+
+#### Решенија:
+
+| Студент | Workbench | Слика |
+|---------|-----------|-------|
+++
