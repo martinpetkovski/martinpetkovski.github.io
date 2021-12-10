@@ -204,7 +204,8 @@ This menu holds all file-related functions of the NST Editor.
 |**&#xf017; Open Recent** | Lists all recently opened files, with the topmost being the most recent. Clicking an item will load it.|
 |**&#xf07c; Import File...** | Will open an import file dialog where you can select a [**.xml**](#xml) or a [**.ntx**](#ntx) file to load.|
 |**&#xf07c; Import** | Will list all [**.xml**](#xml) and [**.ntx**](#ntx) files available inside the **[exe folder]/exports** folder. Clicking an item will load it. You can filter the items by using the text box located at the top of the list.|
-|**&#xf1c0; Load Last Backup** | Will load the last available backup. This might not match the current story, depending on when it was saved. The last saved time will show up when the item is hovered.|
+|**&#xf1c0; Load Last Backup** | Will load the last available backup for the current project. This might not match the current story, depending on when it was saved. The last saved time will show up when the item is hovered.|
+|**&#xf1c0; Open Backups Folder** | Will open the folder where all the backups for the projects are stored.|
 |**&#xf07c; Stories Folder** | Will open the **[exe folder]/stories** folder in Windows Explorer.|
 |**&#xf07c; Exports Folder** | Will open the **[exe folder]/exports** folder in Windows Explorer.|
 |**&#xf00d; Exit** | Will gracefully close the editor.|
@@ -301,7 +302,9 @@ States appear in the form of buttons throughout the NST Editor. Clicking the but
 
 An active state's button is red, whereas a green button implies availability. Once you activate the state, the button becomes dark red. The entry state has the &#xf061; icon in front of the name.
 
-Right-clicking a state's button will open up a context menu containing additional actions. 
+Right-clicking a state's button will open up a context menu containing additional actions. Right-clicking on a state will also select the state.
+
+Selecting a state will automatically update the state that was previously selected. 
 
 ![State's context menu](StateContextMenu.png)
 
@@ -396,11 +399,8 @@ The topmost element is the [state button](#xf013-state-button) for the currently
 | | |
 |-|-|
 |**&#xf144; Activate** | The state will be forcefully activated.|
-|**&#xf093; Update** | All changes to the state inside the editor will be propagated inside the system.|
+|**&#xf093; Update** | All changes to the state inside the editor will be propagated inside the system. This is triggered when you either select another state or before saving the story on disk.|
 |**&#xf1f8; Delete** | Deletes the state.|
-
->[!WARNING]
-Click the **&#xf093; Update** button as often as possible when making changes. If you select another state without updating the current state first, all changes will be lost. This behavior is still under development and will change in future releases.
 
 ### &#xf02b; State Name
 All states are uniquely identified by their name. A state's name must be unique and cannot contain any special characters, reserved words or empty spaces. These rules exist due to the fact that names are used inside expressions to identify the states. Right-clicking on the name editing text box will bring up additional text options.
@@ -856,6 +856,8 @@ The NST Reader displays the final form of stories written in the NST Editor by r
 To load a story select **File > Load...** inside the Reader. Once you select a story, click **OK** and the story will be loaded and rendered inside the Reader. To reload a story click on **File > Reload**.
 
 To progress a story, you may be required to click on buttons to make a choice, depending on the type. There may or may not be additional buttons present, depending on what the author of the story may have chosen to use.
+
+You can also load stories from the **&#xf1b7; Steam Workshop** inside the Reader. To open a story from the **&#xf1b7; Steam Workshop**, go to **File > &#xf1b7; Steam Workshop**, select a story that you want to read and hit on the Read button located just under the name and the author of the story.
 
 ## Styling the Reader components
 
