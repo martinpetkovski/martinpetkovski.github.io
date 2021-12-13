@@ -178,4 +178,5 @@ GOG чува податоци со различни компоненти за:
 
 | Студент | Workbench | Слика |
 |---------|-----------|-------|
-++
+|**Владимир Павловски**|[&#xf019; Симни](https://www.najjak.com/spao/resources/VladimirPavlovski_Zadacha07.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/VladimirPavlovski_Vezhbi04_Zadacha07.png)|
+|**Антонио Ристевски**| [&#xf019; Симни](https://www.najjak.com/spao/resources/AntonioRistevski_Zadaca07.mwb)|[&#xf03e; Отвори](https://www.najjak.com/spao/resources/AntonioRistevski_Vezhbi04_Zadacha07.png)
