@@ -1,7 +1,7 @@
 # Version
-**Version:** 0.2.211203
+**Version:** 0.2.220101
 
-**Last Updated:** 17 November 2021
+**Last Updated:** 01 January 2022
 
 **Caretakers:** Martin Petkovski, Isaja Karadakovska
 
@@ -187,6 +187,7 @@ Indicates the story loaded at the moment. This story may or may not be saved on 
 | **&#xf0c7; Save** | Saves the current story in the target folder in binary [**.nts**](#nts) format. The target folder is located in **[exe folder]/stories**. |
 | **&#xf0c7; Save As** | Saves the current story in the target folder under a new name, which can be specified by the user before clicking **Confirm**. The format is [**.nts**](#nts) binary. |
 | **&#xf0c7; Compile As** | Compiles the current story in binary [**.nts**](#nts) format, effectively making the file contents read-only. Use with caution. |
+| **&#xf085; Create executable...** | Creates an executable for the currently loaded story. The executable is located under **[exe folder]/build/[story name]**. You must ship the exe along with the Data folder next to it. This feature is still in BETA. |
 | **&#xf0c7; Export** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format. The target folder is located in **[exe folder]/exports**. |
 | **&#xf0c7; Export As** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format under a new name. The target folder is located in **[exe folder]/exports**. |
 | **&#xf057; Discard Changes** | [Undoes](#xf1da-command-history) everything up until the last save. This action can be [redone](#xf1da-command-history) later. |
@@ -933,4 +934,4 @@ Every story can be exported to XML. Stories in XML format are not encrypted and 
 
 # Changelog
 
-Nothing to show. Initial release date is 3 December 2021.
+Please follow the change announcements on [Steam](https://store.steampowered.com/news/app/1772160)
