@@ -137,20 +137,34 @@
 		}
 	</script>
 	<style>
-	@font-face{
-	  font-family: "Pantera";
-	  src: url("pantera.ttf") format("truetype");
-	}
+	@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+	
+	@font-face {
+      font-family: 'FontAwesome5';
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf');
+    }
+	
 	* { margin:0; padding:0; text-align: center; background-color:#FAFAFA; }
-	.header {
-		margin-top:30px;
-		font-family:Pantera;
-		font-size:6vw;
+	
+	body {
+		margin:30px auto;
+		width: 700px;
+
 	}
-	.title { margin-left:20px; }
-	.title, .logo { display:inline-block; vertical-align: middle;}
-	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:2vw; padding: 20px; }
-	input, select, option { font-size:2vw; }
+	
+	.header {
+		font-family:Russo One;
+		font-size:4vw;
+	}
+	
+	table, tr { width: 100%; background-color:transparent; }
+	table td { border: none; background-color:transparent; }
+	
+	.mainContainer { background-color: #111; }
+	
+	.title, .logo { vertical-align: middle; }
+	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:1.8vw; padding: 20px; }
+	input, select, option { font-size:2vw; width: 100%; }
 	input[type='checkbox'] {
 	  vertical-align: middle;
 	  outline: none;
@@ -164,30 +178,50 @@
 	  position: relative;
 	}
 	
-	.mainContainer { border:1px #333 solid; background-color:#CCC; }
+	td:first-child { padding: 0px; }
+		
+	button { 
+		font-family: FontAwesome5, Arial;
+		padding:10px 20px; 
+		font-size:30px; 
+		width: 33.3333%; 
+		background-color: #09C; 
+		color: white; 
+		border: none;
+		display: inline-block;
+   }
 	
-	button { padding: 20px; font-size:30px; min-width:300px; background-color: red; color: white; }
+	button:hover {
+		background-color: #02F;
+		transition-duration: 0.2s;
+    }
 	
-	#result { font-size: 3vw; color: #F00; padding:40px; }
-	.footer { font-size:10px; }
+	button:active {
+		background-color: #C00;
+	}
+
+	#result { font-size: 2vw; color: #F00; padding:40px 0px; min-height: 200px; background-color: #111; vertical-align: middle; margin: auto 0px; }
+	.footer { font-size:10px; margin-top:20px; }	
 	</style>
+	
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
 	
 	<div class="header">
-		<div class="logo"><img src="sashe_ivanovski.png" height="300px" /></div>
-		<div class="title">SASHE IVANOVSKI SIMULATOR</div>
+		<table><tr>
+		<td class="logo"><img src="sashe_ivanovski.png" height="300px" /></td>
+		<td class="title">САШЕ ИВАНОВСКИ СИМУЛАТОР</td>
+		</tr></table>
 	</div>
-	<div class="mainContainer">
-		<div class="options"><span>Колку пати </span><input type="number" id="iteracii" min="1" max="5" value="1"/></div>
-		<div class="options"><span>Субјектот е </span><select id="rod"><option>тој</option><option>таа</option><option>тоа</option></select></div>
-		<div class="options"><span>Со дерење</span><input type="checkbox" id="capslock"/></div>
-		<div class="options"><span>Na latinica</span><input type="checkbox" id="latinica"/></div>
-		<button onclick="Render()">Дај</button>
-		<button onclick="Copy()" style="background:#09F;">Копирај</button>
-		<button onclick="GoToTemplate()" style="background:#09F;">Темплејт</button>
-	</div>
+	<table class="mainContainer">
+		<tr class="options"><td>Колку пати </td><td><input type="number" id="iteracii" min="1" max="5" value="1"/></td></tr>
+		<tr class="options"><td>Субјектот е </td><td><select id="rod" ><option>тој</option><option>таа</option><option>тоа</option></select></td></tr>
+		<tr class="options"><td>Со дерење</td><td><input type="checkbox" id="capslock"/></td></tr>
+		<tr class="options"><td>Na latinica</td><td><input type="checkbox" id="latinica"/></td></tr>
+		<tr><td colspan="2"><button onclick="Render()">&#xf04b;</button><button onclick="Copy()">&#xf0c5;</button><button onclick="GoToTemplate()">&#xf35d;</button></td></tr>
+	</table>
 	<div id="result"></div>
-	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=BiqDZlAZygU">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
+	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="sloboda-govor">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
 </body>
 </html>
