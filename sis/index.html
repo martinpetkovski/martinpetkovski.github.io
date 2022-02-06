@@ -1,28 +1,227 @@
 <!doctype html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>Саше Ивановски Симулатор</title>
-<script src=https://code.jquery.com/jquery-3.6.0.min.js integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=anonymous></script>
-<script>var imenki,epiteti;$(document).ready(function(){$.getJSON("https://www.najjak.com/sis/epiteti.json",function(a){epiteti=a;$.getJSON("https://www.najjak.com/sis/imenki.json",function(b){imenki=b})})});var chesticaEden=[{toj:"еден",taa:"една",toa:"едно"}];function getRandomInt(a){return Math.floor(Math.random()*Math.floor(a))}function GenerateRod(){return getRandomInt(3)}function Generate(c){var a="";var b="";while(a===""){var e=getRandomInt(imenki.length-1)+1;a=imenki[e][c]}while(b===""){var d=getRandomInt(epiteti.length-1)+1;b=epiteti[d][c]}return a+" "+chesticaEden[0][c]+" "+b}function GenerateN(a,b){var c="";for(i=0;i<a;i++){now=i-1;if(now!==a){c+=Generate(b)+", "}else{c+=Generate(b)}}c=c.substr(0,c.length-2);return c}function CyrlToLat(b){var a="";for(i=0;i<b.length;i++){if(b[i]==="а"){a+="a"}if(b[i]==="б"){a+="b"}if(b[i]==="в"){a+="v"}if(b[i]==="г"){a+="g"}if(b[i]==="д"){a+="d"}if(b[i]==="ѓ"){a+="gj"}if(b[i]==="е"){a+="e"}if(b[i]==="ж"){a+="z"}if(b[i]==="з"){a+="z"}if(b[i]==="ѕ"){a+="dz"}if(b[i]==="и"){a+="i"}if(b[i]==="ј"){a+="j"}if(b[i]==="к"){a+="k"}if(b[i]==="л"){a+="l"}if(b[i]==="љ"){a+="lj"}if(b[i]==="м"){a+="m"}if(b[i]==="н"){a+="n"}if(b[i]==="њ"){a+="nj"}if(b[i]==="о"){a+="o"}if(b[i]==="п"){a+="p"}if(b[i]==="р"){a+="r"}if(b[i]==="с"){a+="s"}if(b[i]==="т"){a+="t"}if(b[i]==="ќ"){a+="k"}if(b[i]==="у"){a+="u"}if(b[i]==="ф"){a+="f"}if(b[i]==="х"){a+="h"}if(b[i]==="ц"){a+="c"}if(b[i]==="ч"){a+="c"}if(b[i]==="џ"){a+="dj"}if(b[i]==="ш"){a+="s"}if(b[i]===" "){a+=" "}if(b[i]===","){a+=","}}return a}function Render(){var a=GenerateN($("#iteracii").val(),CyrlToLat($("#rod").val()));if($("#latinica").prop("checked")){a=CyrlToLat(a)}if($("#capslock").prop("checked")){a=a.toUpperCase()}$("#result").html(a)}function Copy(){var a=$("#result").html();navigator.clipboard.writeText(a)}function GoToTemplate(){window.location="https://www.najjak.com/sis/rnd.html?n="+$("#iteracii").val()+"&r="+CyrlToLat($("#rod").val())+"&l="+$("#latinica").prop("checked")+"&c="+$("#capslock").prop("checked")};</script>
-<style>@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');@font-face{font-family:'FontAwesome5';src:url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf')}*{margin:0;padding:0;text-align:center;background-color:#fafafa}body{margin:30px auto;width:700px}.header{font-family:Russo One;font-size:4vw}table,tr{width:100%;background-color:transparent}table td{border:0;background-color:transparent}.mainContainer{background-color:#111}.title,.logo{vertical-align:middle}.options,#result{font-family:Arial Black,Arial,Verdana;font-size:1.8vw;padding:20px}input,select,option{font-size:2vw;width:100%}input[type='checkbox']{vertical-align:middle;outline:0;font-size:inherit;cursor:pointer;width:1.0em;height:1.0em;background:white;border-radius:.25em;border:.125em solid #555;position:relative}td:first-child{padding:0}button{font-family:FontAwesome5,Arial;padding:10px 20px;font-size:30px;width:33.3333%;background-color:#09C;color:white;border:0;display:inline-block}button:hover{background-color:#02F;transition-duration:.2s}button:active{background-color:#C00}#result{font-size:2vw;color:#F00;padding:40px 0;min-height:200px;background-color:#111;vertical-align:middle;margin:auto 0}.footer{font-size:10px;margin-top:20px}</style>
-<link rel=icon type=image/x-icon href=favicon.ico>
+	<meta charset="utf-8" />
+	<title>Саше Ивановски Симулатор</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script>
+		var imenki, epiteti;
+
+		$(document).ready(function()
+		{
+			$.getJSON('https://www.najjak.com/sis/epiteti.json', function(data) {
+				epiteti = data;
+				$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) 
+				{
+					imenki = data;
+				});
+			});
+		});
+		
+		var chesticaEden = [{"toj":"еден","taa":"една","toa":"едно"}];
+
+		function getRandomInt(max) {
+		  return Math.floor(Math.random() * Math.floor(max));
+		}
+
+		function GenerateRod()
+		{
+			return getRandomInt(3);
+		}
+
+		function Generate(rod)
+		{
+			var imenkaTxt = "";
+			var epitetTxt = "";
+			
+			while(imenkaTxt === "")
+			{
+				var rndImenka = getRandomInt(imenki.length-1) + 1;
+				imenkaTxt = imenki[rndImenka][rod];
+			}
+			
+			while(epitetTxt === "")
+			{
+				var rndEpitet = getRandomInt(epiteti.length-1) + 1;
+				epitetTxt = epiteti[rndEpitet][rod];
+			}
+			return imenkaTxt + " " + chesticaEden[0][rod] + " " + epitetTxt;
+		}
+
+		function GenerateN(num, rod)
+		{
+			var retVal = "";
+			for(i=0;i<num;i++)
+			{
+				now = i-1;
+				if(now!==num)
+				{
+					retVal += Generate(rod) + ", ";
+				}
+				else
+				{
+					retVal += Generate(rod);
+				}
+			}
+			
+			retVal = retVal.substr(0, retVal.length-2);
+			
+			return retVal;
+		}
+		
+		function CyrlToLat(str)
+		{
+			var retVal = "";
+			for(i=0;i<str.length;i++)
+			{
+				if(str[i] === 'а') retVal += 'a'; 
+				if(str[i] === 'б') retVal += 'b'; 
+				if(str[i] === 'в') retVal += 'v'; 
+				if(str[i] === 'г') retVal += 'g'; 
+				if(str[i] === 'д') retVal += 'd'; 
+				if(str[i] === 'ѓ') retVal += 'gj'; 
+				if(str[i] === 'е') retVal += 'e'; 
+				if(str[i] === 'ж') retVal += 'z'; 
+				if(str[i] === 'з') retVal += 'z'; 
+				if(str[i] === 'ѕ') retVal += 'dz'; 
+				if(str[i] === 'и') retVal += 'i'; 
+				if(str[i] === 'ј') retVal += 'j'; 
+				if(str[i] === 'к') retVal += 'k'; 
+				if(str[i] === 'л') retVal += 'l'; 
+				if(str[i] === 'љ') retVal += 'lj'; 
+				if(str[i] === 'м') retVal += 'm'; 
+				if(str[i] === 'н') retVal += 'n'; 
+				if(str[i] === 'њ') retVal += 'nj'; 
+				if(str[i] === 'о') retVal += 'o'; 
+				if(str[i] === 'п') retVal += 'p'; 
+				if(str[i] === 'р') retVal += 'r'; 
+				if(str[i] === 'с') retVal += 's'; 
+				if(str[i] === 'т') retVal += 't'; 
+				if(str[i] === 'ќ') retVal += 'k'; 
+				if(str[i] === 'у') retVal += 'u'; 
+				if(str[i] === 'ф') retVal += 'f'; 
+				if(str[i] === 'х') retVal += 'h'; 
+				if(str[i] === 'ц') retVal += 'c'; 
+				if(str[i] === 'ч') retVal += 'c'; 
+				if(str[i] === 'џ') retVal += 'dj'; 
+				if(str[i] === 'ш') retVal += 's'; 
+				if(str[i] === ' ') retVal += ' ';
+				if(str[i] === ',') retVal += ',';
+			}
+			
+			return retVal;
+		}
+		
+		function Render()
+		{
+			var text = GenerateN($("#iteracii").val(), CyrlToLat($("#rod").val()));
+			
+			if($("#latinica").prop("checked"))
+				text = CyrlToLat(text);
+				
+			if($("#capslock").prop("checked"))
+				text = text.toUpperCase();
+
+			$("#result").html(text);
+		}
+		
+		function Copy() {
+		  var copyText = $("#result").html();
+
+		  navigator.clipboard.writeText(copyText);
+		} 
+		
+		function GoToTemplate()
+		{
+			window.location = "https:\/\/www.najjak.com\/sis\/rnd.html?n=" + $("#iteracii").val() + "&r=" + CyrlToLat($("#rod").val()) + "&l=" + $("#latinica").prop("checked") + "&c=" + $("#capslock").prop("checked");
+		}
+	</script>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+	
+	@font-face {
+      font-family: 'FontAwesome5';
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf');
+    }
+	
+	* { margin:0; padding:0; text-align: center; background-color:#FAFAFA; }
+	
+	body {
+		margin:30px auto;
+		width: 700px;
+
+	}
+	
+	.header {
+		font-family:Russo One;
+		font-size:4vw;
+	}
+	
+	table, tr { width: 100%; background-color:transparent; }
+	table td { border: none; background-color:transparent; }
+	
+	.mainContainer { background-color: #111; }
+	
+	.title, .logo { vertical-align: middle; }
+	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:1.8vw; padding: 20px; }
+	input, select, option { font-size:2vw; width: 100%; }
+	input[type='checkbox'] {
+	  vertical-align: middle;
+	  outline: none;
+	  font-size: inherit;
+	  cursor: pointer;
+	  width: 1.0em;
+	  height: 1.0em;
+	  background: white;
+	  border-radius: 0.25em;
+	  border: 0.125em solid #555;
+	  position: relative;
+	}
+	
+	td:first-child { padding: 0px; }
+		
+	button { 
+		font-family: FontAwesome5, Arial;
+		padding:10px 20px; 
+		font-size:30px; 
+		width: 33.3333%; 
+		background-color: #09C; 
+		color: white; 
+		border: none;
+		display: inline-block;
+   }
+	
+	button:hover {
+		background-color: #02F;
+		transition-duration: 0.2s;
+    }
+	
+	button:active {
+		background-color: #C00;
+	}
+
+	#result { font-size: 2vw; color: #F00; padding:40px 20px; min-height: 200px; background-color: #111; vertical-align: middle; margin: auto 0px; }
+	.footer { font-size:10px; margin-top:20px; }	
+	</style>
+	
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-<div class=header>
-<table><tr>
-<td class=logo><img src=sashe_ivanovski.png height=300px /></td>
-<td class=title>САШЕ ИВАНОВСКИ СИМУЛАТОР</td>
-</tr></table>
-</div>
-<table class=mainContainer>
-<tr class=options><td>Колку пати </td><td><input type=number id=iteracii min=1 max=5 value="1"/></td></tr>
-<tr class=options><td>Субјектот е </td><td><select id=rod><option>тој</option><option>таа</option><option>тоа</option></select></td></tr>
-<tr class=options><td>Со дерење</td><td><input type=checkbox id="capslock"/></td></tr>
-<tr class=options><td>Na latinica</td><td><input type=checkbox id="latinica"/></td></tr>
-<tr><td colspan=2><button onclick=Render()>&#xf04b;</button><button onclick=Copy()>&#xf0c5;</button><button onclick=GoToTemplate()>&#xf35d;</button></td></tr>
-</table>
-<div id=result></div>
-<div class=footer>Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href=sloboda-govor>овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
+	
+	<div class="header">
+		<table><tr>
+		<td class="logo"><img src="sashe_ivanovski.png" height="300px" /></td>
+		<td class="title">САШЕ ИВАНОВСКИ СИМУЛАТОР</td>
+		</tr></table>
+	</div>
+	<table class="mainContainer">
+		<tr class="options"><td>Колку пати </td><td><input type="number" id="iteracii" min="1" max="5" value="1"/></td></tr>
+		<tr class="options"><td>Субјектот е </td><td><select id="rod" ><option>тој</option><option>таа</option><option>тоа</option></select></td></tr>
+		<tr class="options"><td>Со дерење</td><td><input type="checkbox" id="capslock"/></td></tr>
+		<tr class="options"><td>Na latinica</td><td><input type="checkbox" id="latinica"/></td></tr>
+		<tr><td colspan="2"><button onclick="Render()">&#xf04b;</button><button onclick="Copy()">&#xf0c5;</button><button onclick="GoToTemplate()">&#xf35d;</button></td></tr>
+	</table>
+	<div id="result"></div>
+	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
 </body>
 </html>
