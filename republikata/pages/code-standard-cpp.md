@@ -110,12 +110,12 @@ This does not apply if only one branch of a conditional statement is a single st
 
 	if (condition) 
 	{
-			do_this();
-			do_that();
+		do_this();
+		do_that();
 	} 
 	else 
 	{
-			otherwise();
+		otherwise();
 	}
 
 ## Spaces
@@ -169,10 +169,10 @@ With that said, here are some exceptions:
 Macros that resemble functions are heresy.
 
 	#define FOO(x)               \
-	({                                      \
-			typeof(x) ret;            \
-			ret = calc_ret(x);       \
-			(ret);                          \
+	({                           \
+			typeof(x) ret;       \
+			ret = calc_ret(x);   \
+			(ret);               \
 	}) 
 	// WHY?
 
@@ -260,6 +260,8 @@ Ordering of access specifiers should be as follows:
 - protected
 - public
 
+Rationale: You're most likely to use private or protected members in public functions.
+
 Ordering of class members should be as follows:
 - `friend`
 - nested classes, enums, structs
@@ -267,6 +269,8 @@ Ordering of class members should be as follows:
 - const members
 - member variables
 - functions
+
+Rationale: You're most likely to: use a nested class to declare a member variable and then use it in a function.
 
 For non-compound types it's preferred to have getters and setters for member variables.
 
@@ -324,7 +328,7 @@ The ordering of the header files, from top to bottom, should be as follows:
 
 ## Casting
 
-C-style casts are discouraged. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons. Avoid using `reinterpret_cast` unless absolutely necessary.  
+C-style casts are discouraged. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons (simply getting rid of the const modifier is NOT a right reason). Avoid using `reinterpret_cast` unless absolutely necessary.  
 
 ## STD Exceptions
 
