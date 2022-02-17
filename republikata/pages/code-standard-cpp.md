@@ -1,7 +1,7 @@
 # Code Standard
 
 ## Naming
-(If you absolutely must) Global variables have the prefix "g" .
+Global variables have the prefix "g" .
 
 	float gGlobalFloat;
 
