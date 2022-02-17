@@ -56,13 +56,15 @@ Unscoped enum members should have the "k" prefix.
 		kFifthElement
 	}
 
-File names should be consistent within a single project. 
+File names should be consistent within a single project. They should contain a prefix.
+
+Rationale: They pop-out when searching for something solution-wide.
 
 ## Indentation
 
 Indent using tabs. Tabs are 4 characters.
 
-Rationale: It's enough to be clear and is the default in most good IDEs i.e. Visual Studio.
+Rationale: It's enough to be clear and is the default in most good IDEs (i.e. Visual Studio).
 
 If you are indenting more than 5 times, you should consider splitting the function.
 
