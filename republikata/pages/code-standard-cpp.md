@@ -227,7 +227,7 @@ Discouraged. Use pointers to functions instead.
 
 ## auto
 
-Discouraged. Lazy people coming from JavaScript use this, doesn't improve readibility at all.
+Discouraged. Lazy people coming from JavaScript use this, doesn't improve readability at all.
 
 ## inline
 
@@ -350,6 +350,6 @@ The code in source files should be self-explanatory.
 
 ## References
 
-- https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-philosophy
+- https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
 - https://www.kernel.org/doc/html/v4.10/process/coding-style.html
 - Myself
