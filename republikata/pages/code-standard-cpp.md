@@ -77,7 +77,7 @@ Don't put multiple assignments on a single line.
 
 ## Line length
 
-The preffered column limit is 120 characters.
+The preferred column limit is 120 characters.
 
 Rationale: A vertically oriented monitor (1080p) on 100% document zoom will fit all lines of 120 characters comfortably. 
 
@@ -145,9 +145,19 @@ but no space after (or before) unary operators:
 
 	&  *  +  -  ++ --  ~  !  sizeof  typeof 
 
+## Reference vs Pointer
+
+Heavily depends on the context. In general, references are preferred over pointers. A good rule of thumb is to use pointer wherever something can be invalid. Don't be afraid to check for validity.
+
+## Const-correctness
+
+All functions, their input arguments and output type must be const-correct, where applicable. Member variables must be const-correct. Local variables should be const-correct, but don't have to be.
+
 ## Macros
 
-Avoid using them.  Don't define constants using macros, instead use global constant variables. Use inline functions instead of macro functions where possible. 
+Avoid using them as much as possible.  Don't define constants using macros, instead use global constant variables. Use inline functions instead of macro functions where possible. 
+
+Rationale: Improves readability, can be debugged more easily and  because of consistency (all functions should be actual functions), among other things. 
 
 With that said, here are some exceptions:
 - When used in if-defs.
@@ -166,17 +176,15 @@ Macros that resemble functions are heresy.
 
 ## Namespaces
 
-Namespaces should be per-project. No more than 2 nested namespaces should be used.
+Namespaces should be per-project or context-based. A general rule of thumb is to put stuff in namespaces whenever you suspect that there might be a naming conflict. Such examples include functions that can easily be found unscoped in other projects: min(), max(), avg() and so on.
+
+No more than 2 nested namespaces should be used.
 
 Writing
 
 	using namespace Whatever;
 
 is forbidden.
-
-## Const-correctness
-
-All functions must be const-correct, where applicable. Member variables must be const-correct. Local variables should be const-correct, but don't have to be.
 
 ## Functions
 
@@ -192,7 +200,7 @@ Use helper functions with descriptive names.
 
 ## Returning from functions
 
-Single-exit functions are preferred which contain a single return statement. Use early-outs only if they are located immediately after the beginning of the function.
+Functions which contain a single return statement are preferred. Use early-outs only if they are located immediately after the beginning of the function.
 
 Example:
 
@@ -211,19 +219,15 @@ Example:
 		return retVal; 
 	}
 
-## Reference vs Pointer vs STLs
+## Lambda expressions
 
-Always depends on the context. In the general case references are preffered over pointers. Using STL weak_ptr, unique_ptr and shared_ptr is generally discouraged but not forbidden.
+Discouraged. Use pointers to functions instead.
 
-## Lambda functions
+## auto
 
-Forbidden. Use pointers to functions instead.
+Discouraged. Lazy people coming from JavaScript use this, doesn't improve readibility at all.
 
-## Auto
-
-Forbidden. Lazy people use this, doesn't improve readibility at all.
-
-## Inline
+## inline
 
 A reasonable rule of thumb is to not put inline at functions that have more than 3 lines of code in them.
 
@@ -262,7 +266,7 @@ Ordering of class members should be as follows:
 - member variables
 - functions
 
-For non-compound types it's preffered to have getters and setters for member variables.
+For non-compound types it's preferred to have getters and setters for member variables.
 
 Forward declare types wherever applicable.
 
@@ -307,18 +311,24 @@ Bad:
 
 Inline templates can be left inside header files but they should be physically separated from the definitions.
 
-Always include everything you need, don't rely on implicit includes.
+Always include everything you need, don't rely on implicit includes. Include as little as possible inside header files and as much as needed in source files.
 
 The ordering of the header files, from top to bottom, should be as follows: 
 
 - The mandatory precompiled header (if applicable)
-- The header file corresponding to the current CPP file.
+- The header file corresponding to the current source file.
 - Project header files (#include "") 
 - External header files (#include <>)
 
 ## Casting
 
-C-style casts are forbidden. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons. Avoid using `reinterpret_cast` unless absolutely necessary.  
+C-style casts are discouraged. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons. Avoid using `reinterpret_cast` unless absolutely necessary.  
+
+## STD Exceptions
+
+Discouraged when not writing a library.
+
+Rationale: You probably have a logger or something, use that instead.
 
 ## Commenting
 
@@ -331,3 +341,8 @@ The code in source files should be self-explanatory.
 	 * Description:  A column of asterisks on the left side,
 	 * with beginning and ending almost-blank lines.
 	 */
+
+## References
+
+- https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-philosophy
+- https://www.kernel.org/doc/html/v4.10/process/coding-style.html
