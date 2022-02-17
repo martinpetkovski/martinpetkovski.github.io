@@ -270,7 +270,7 @@ Ordering of class members should be as follows:
 - member variables
 - functions
 
-Rationale: You're most likely to: use a nested class to declare a member variable and then use it in a function.
+Rationale: You're most likely to use a nested class to declare a member variable and then use it in a function.
 
 For non-compound types it's preferred to have getters and setters for member variables.
 
@@ -299,7 +299,7 @@ as opposed to
 				mHorsepower = value;
 				mFuelConsumption = mHorsepower * 0.3f;
 			}
-	}
+	};
 
 Don't put code that can fail inside constructors.
 
