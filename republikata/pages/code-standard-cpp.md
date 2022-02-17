@@ -321,10 +321,10 @@ Always include everything you need, don't rely on implicit includes. Include as 
 
 The ordering of the header files, from top to bottom, should be as follows: 
 
-- The mandatory precompiled header (if applicable)
+- The mandatory precompiled header (if applicable).
 - The header file corresponding to the current source file.
-- Project header files (#include "") 
-- External header files (#include <>)
+- Project header files (#include "").
+- External header files (#include <>).
 
 ## Casting
 
@@ -352,3 +352,4 @@ The code in source files should be self-explanatory.
 
 - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-philosophy
 - https://www.kernel.org/doc/html/v4.10/process/coding-style.html
+- Myself
