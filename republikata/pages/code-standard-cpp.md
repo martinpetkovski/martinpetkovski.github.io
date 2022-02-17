@@ -21,7 +21,7 @@ Member variables should have the prefix "m".
 			float mSomethingElse = 0.0f;
 	};
 
-Functions, enums, classes and structs use PascalCase.
+Functions, enums, namespaces, classes and structs use PascalCase.
 
 	float FunctionName()
 	
@@ -55,6 +55,8 @@ Unscoped enum members should have the "k" prefix.
 		kSand,
 		kFifthElement
 	}
+
+File names should be consistent within a single project. 
 
 ## Indentation
 
@@ -162,9 +164,19 @@ Macros that resemble functions are heresy.
 	}) 
 	// WHY?
 
+## Namespaces
+
+Namespaces should be per-project. No more than 2 nested namespaces should be used.
+
+Writing
+
+	using namespace Whatever;
+
+is forbidden.
+
 ## Const-correctness
 
-All functions must be const-correct. Member variables must be const-correct Local variables should be const-correct, but don't have to be.
+All functions must be const-correct, where applicable. Member variables must be const-correct. Local variables should be const-correct, but don't have to be.
 
 ## Functions
 
@@ -180,7 +192,7 @@ Use helper functions with descriptive names.
 
 ## Returning from functions
 
-Single-exit functions are preferred. Use early-outs only if they are located immediately after the beginning of the function.
+Single-exit functions are preferred which contain a single return statement. Use early-outs only if they are located immediately after the beginning of the function.
 
 Example:
 
@@ -193,20 +205,27 @@ Example:
 
 		if(condition)
 		{
-			doSomethingElse();
-			retVal = 1;
+			retVal = doSomethingElse(someCar);
 		}
 		
 		return retVal; 
 	}
 
+## Reference vs Pointer vs STLs
+
+Always depends on the context. In the general case references are preffered over pointers. Using STL weak_ptr, unique_ptr and shared_ptr is generally discouraged but not forbidden.
+
 ## Lambda functions
 
 Forbidden. Use pointers to functions instead.
 
+## Auto
+
+Forbidden. Lazy people use this, doesn't improve readibility at all.
+
 ## Inline
 
-A reasonable rule of thumb is to not put inline at functions that have more than 3 lines of code in them. An exception to this rule are the cases where a parameter is known to be a compiletime constant, and as a result of this constantness you know the compiler will be able to optimize most of your function away at compile time.
+A reasonable rule of thumb is to not put inline at functions that have more than 3 lines of code in them.
 
 ## goto
 
@@ -228,6 +247,79 @@ Example when breaking out of a nested for loop:
 	SOME_LABEL:
 	doSomething();
 
+## Classes and structs
+
+Ordering of access specifiers should be as follows:
+- private
+- protected
+- public
+
+Ordering of class members should be as follows:
+- `friend`
+- nested classes, enums, structs
+- typedefs
+- const members
+- member variables
+- functions
+
+For non-compound types it's preffered to have getters and setters for member variables.
+
+Forward declare types wherever applicable.
+
+Structs should be used whenever the member variables are independently mutable. Examples:
+
+	struct Vehicle
+	{
+		public:
+			int mNumWheels;
+			float mHorsepower;
+	}
+
+as opposed to
+
+	class Vehicle
+	{
+		private: 
+			float mHorsepower
+			float mFuelConsumption
+			
+		public:
+			void SetHorsepower(float value)
+			{
+				mHorsepower = value;
+				mFuelConsumption = mHorsepower * 0.3f;
+			}
+	}
+
+Don't put code that can fail inside constructors.
+
+## Header files
+
+Header files should contain only function declarations. Exception to this rule are getters and setters which can be written in a single line.
+
+Good:
+
+	SomeType* GetSomething() { return mSomething; }
+
+Bad:
+
+	void SetSomething(const SomeType& something) { mSomething = something; TestSomething(mSomething); }
+
+Inline templates can be left inside header files but they should be physically separated from the definitions.
+
+Always include everything you need, don't rely on implicit includes.
+
+The ordering of the header files, from top to bottom, should be as follows: 
+
+- The mandatory precompiled header (if applicable)
+- The header file corresponding to the current CPP file.
+- Project header files (#include "") 
+- External header files (#include <>)
+
+## Casting
+
+C-style casts are forbidden. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons. Avoid using `reinterpret_cast` unless absolutely necessary.  
+
 ## Commenting
 
 Write comments in header files. Do not try to explain **how** a function works in the comments. Instead, write the purpose and intention of the function and what's the expected result. 
@@ -239,5 +331,3 @@ The code in source files should be self-explanatory.
 	 * Description:  A column of asterisks on the left side,
 	 * with beginning and ending almost-blank lines.
 	 */
-
-
