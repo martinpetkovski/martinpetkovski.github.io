@@ -102,16 +102,16 @@ Do not unnecessarily use braces where a single statement will do.
 and
 
 	if (condition)
-		do_this();
+		doThis();
 	else
-		do_that();
+		doThat();
 
 This does not apply if only one branch of a conditional statement is a single statement; in the latter case use braces in both branches:
 
 	if (condition) 
 	{
-		do_this();
-		do_that();
+		doThis();
+		doThat();
 	} 
 	else 
 	{
@@ -171,7 +171,7 @@ Macros that resemble functions are heresy.
 	#define FOO(x)               \
 	({                           \
 			typeof(x) ret;       \
-			ret = calc_ret(x);   \
+			ret = calcRet(x);   \
 			(ret);               \
 	}) 
 	// WHY?
