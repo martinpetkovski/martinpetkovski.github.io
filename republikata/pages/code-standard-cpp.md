@@ -1,4 +1,4 @@
-# Code Standard
+# C++ Code Standard
 
 ## Naming
 Global variables have the prefix "g" .
