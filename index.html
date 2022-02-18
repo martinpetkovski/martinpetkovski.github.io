@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&family=Roboto:wght@500&display=swap" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap" rel="stylesheet"> 
 		<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet"> 
 		
 		<style>
@@ -19,7 +19,7 @@
 			  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/webfonts/fa-brands-400.ttf');
 			}
 		
-			* { margin:0; padding:0; font-family:  FontAwesome5, FontAwesome5Brands, 'Audiowide', Roboto Condensed, Arial Black, Arial; }
+			* { margin:0; padding:0; font-family:  FontAwesome5, FontAwesome5Brands, 'Audiowide', Roboto, Arial Black, Arial; }
 			body {
 				
 				background-color:#111;
@@ -31,7 +31,7 @@
 			{
 				h1 
 				{ 
-					font-family: FontAwesome5, FontAwesome5Brands, Roboto Condensed, Arial Black, Arial;
+					font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
 					color: white; 
 					text-align: center;
 					font-size:40px;
@@ -73,7 +73,7 @@
 			{
 				h1 
 				{ 
-					font-family: FontAwesome5, FontAwesome5Brands, Roboto Condensed, Arial Black, Arial;
+					font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
 					color: white; 
 					text-align: center;
 					font-size:20px;
@@ -94,10 +94,11 @@
 				}
 				
 				#navigation {
+					box-shadow: 1px -1px 3px #000;
 					white-space: nowrap;
 					cursor:pointer;
 					background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.2) 50%, rgba(0,0,0,0) 100%);
-					opacity: 0.3;
+					opacity: 0.5;
 					margin: 0 auto;
 					width: 42%;
 					height: 44px;
@@ -110,6 +111,7 @@
 				
 				#navigation:hover 
 				{
+					box-shadow: 0px -0px 0px #000;
 					opacity: 1;
 					width: 80%;
 					border-bottom: 1px #56D9CD11 solid;
@@ -118,7 +120,6 @@
 			}
 		
 			.item {
-				
 				font-family: Roboto Condensed, Arial Black, Arial; 
 				display: inline-block;
 			}
@@ -159,7 +160,7 @@
 			
 			.text {
 			  fill: none;
-			  stroke-width: 1;
+			  stroke-width: 0.5;
 			  stroke-linejoin: round;
 			  stroke-dasharray: 100 300;
 			  stroke-dashoffset: 0;
