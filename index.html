@@ -23,7 +23,9 @@
 			body {
 				
 				background-color:#111;
-				padding:30px;
+				cursor: none;
+				height: 100vh;
+				padding: 0;
 			}
 
 
@@ -45,7 +47,6 @@
 				}
 			
 				#title {	
-					cursor: pointer;
 					font-size: 140px;
 					margin-bottom: 20px;
 					color:red;
@@ -53,7 +54,6 @@
 			
 				#navigation {
 					white-space: nowrap;
-					cursor:pointer;
 					background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.2) 50%, rgba(0,0,0,0) 100%);
 					margin: 0 auto;
 					width: 82%;
@@ -87,7 +87,6 @@
 				}
 			
 				#title {	
-					cursor: pointer;
 					font-size: 100px;
 					margin-bottom: 20px;
 					color:red;
@@ -95,7 +94,6 @@
 				
 				#navigation {
 					white-space: nowrap;
-					cursor:pointer;
 					background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.2) 50%, rgba(0,0,0,0) 100%);
 					opacity: 0.5;
 					margin: 0 auto;
@@ -132,6 +130,7 @@
 			}
 			
 			a:link, a:visited {
+				cursor: none;
 				color: #09F;
 				border: 1px solid transparent;
 				padding:5px;
@@ -158,7 +157,7 @@
 			
 			.text {
 			  fill: none;
-			  stroke-width: 0.5;
+			  stroke-width: 1.2;
 			  stroke-linejoin: round;
 			  stroke-dasharray: 100 300;
 			  stroke-dashoffset: 0;
@@ -206,35 +205,79 @@
 				stroke-dashoffset: -400;
 			  }
 			}
+			
+			#cursor {
+				position: absolute;
+				width: 5px;
+				height: 5px;
+				top: 50%;
+				left: 50%;
+				border-radius: 100%;
+				background: #FFF;
+				pointer-events: none;
+				mix-blend-mode: normal;
+				z-index: 9;
+				border: 1px solid #000;
+				transition: background .5s, border-radius .5s, border .5s, width .5s, height .5s;
+			}
+			
+			#cursor.hovered {
+				box-shadow: 1px 1px 10px #000;
+				background: radial-gradient(rgba(0,200,255,0.8) 0%, rgba(58,161,191,0.2) 20%, rgba(0,0,0,0.4) 100%);
+				border-radius:10%;
+				border: 1px solid #F5A503AA;
+				width: 40px;
+				height: 40px;
+				animation: rotate 2s linear infinite;
+			}
 
+			@keyframes rotate {
+				0% {
+					border-color: #F00;
+					transform: rotate(0deg);
+				}
+
+				50% {
+					border-color: #00F;
+					transform: rotate(180deg);
+				}
+				
+				100% {
+					border-color: #F00;
+					transform: rotate(360deg);
+				}
+			}
 		</style>
-		
+
 	</head>
 	<body>
+		<div id="cursor"></div>
+		<div id="circle"></div>
+	
 		<div id="title">
-		<svg viewBox="0 0 1000 120">
+			<svg viewBox="0 0 1000 120">
 
-		  <!-- Symbol -->
-		  <symbol id="s-text">
-			<text text-anchor="middle"
-				  x="50%" y="50%" dy=".35em">
-			  najjak.com
-			</text>
-		  </symbol>  
+			  <!-- Symbol -->
+			  <symbol id="s-text">
+				<text text-anchor="middle"
+					  x="50%" y="50%" dy=".35em">
+				  najjak.com
+				</text>
+			  </symbol>  
 
-		  <!-- Duplicate symbols -->
-		  <use xlink:href="#s-text" class="text"
-			   ></use>
-		  <use xlink:href="#s-text" class="text"
-			   ></use>
-		  <use xlink:href="#s-text" class="text"
-			   ></use>
-		  <use xlink:href="#s-text" class="text"
-			   ></use>
-		  <use xlink:href="#s-text" class="text"
-			   ></use>
+			  <!-- Duplicate symbols -->
+			  <use xlink:href="#s-text" class="text"
+				   ></use>
+			  <use xlink:href="#s-text" class="text"
+				   ></use>
+			  <use xlink:href="#s-text" class="text"
+				   ></use>
+			  <use xlink:href="#s-text" class="text"
+				   ></use>
+			  <use xlink:href="#s-text" class="text"
+				   ></use>
 
-		</svg>
+			</svg>
 		</div>
 		<div id="navigation">
 			<h1>Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </h1>
@@ -278,4 +321,35 @@
 			</div>
 		</div>
 	</body>
+	
+			
+	<script type="text/javascript">
+		var a_link = document.querySelectorAll('a');
+				
+		a_link.forEach(e => e.addEventListener('mouseenter', handleMouseEnter));
+		a_link.forEach(e => e.addEventListener('mouseleave', handleMouseLeave));
+		window.addEventListener('mousemove', handleMouseMove);
+		
+		function handleMouseMove(event) {
+			var cursor_top = event.pageY - (cursor.clientHeight / 2);
+			var cursor_left = event.pageX - (cursor.clientWidth / 2);
+			var circle_top = event.pageY - (circle.clientHeight / 2);
+			var circle_left = event.pageX - (circle.clientWidth / 2);
+			cursor.style.top = cursor_top + 'px';
+			cursor.style.left = cursor_left + 'px';
+			circle.style.top = circle_top + 'px';
+			circle.style.left = circle_left + 'px';
+		}
+		
+		function handleMouseEnter() {
+			cursor.classList.add('hovered');
+			circle.classList.add('hovered');
+		}
+		
+		function handleMouseLeave() {
+			cursor.classList.remove('hovered');
+			circle.classList.remove('hovered');
+		}
+	</script>
+		
 </html>
