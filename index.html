@@ -92,7 +92,7 @@
 
             #title {
                 font-size: 100px;
-                margin-bottom: 50px;
+                height:300px;
             }
 
             #navigation {
@@ -159,40 +159,40 @@
 
         .text {
             fill: none;
-            stroke-width: 1.2;
+            stroke-width: 1;
             stroke-linejoin: round;
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
-            -webkit-animation: stroke 6s infinite linear;
-            animation: stroke 6s infinite linear;
+            animation: stroke 10s infinite ease-in-out;
+            filter: url(#red-glow);
         }
 
             .text:nth-child(5n + 1) {
-                stroke: #F2385A;
+                stroke: #09F;
                 -webkit-animation-delay: -1.2s;
                 animation-delay: -1.2s;
             }
 
             .text:nth-child(5n + 2) {
-                stroke: #F5A503;
+                stroke: #FFF0;
                 -webkit-animation-delay: -2.4s;
                 animation-delay: -2.4s;
             }
 
             .text:nth-child(5n + 3) {
-                stroke: #E9F1DF;
+                stroke: #FFF0;
                 -webkit-animation-delay: -3.6s;
                 animation-delay: -3.6s;
             }
 
             .text:nth-child(5n + 4) {
-                stroke: #56D9CD;
+                stroke: #FFF0;
                 -webkit-animation-delay: -4.8s;
                 animation-delay: -4.8s;
             }
 
             .text:nth-child(5n + 5) {
-                stroke: #3AA1BF;
+                stroke: #09F;
                 -webkit-animation-delay: -6s;
                 animation-delay: -6s;
             }
@@ -302,6 +302,29 @@
 
     <div id="title">
         <svg viewBox="0 0 1000 120">
+            <defs>
+                <filter id="red-glow" filterUnits="userSpaceOnUse"
+                        x="-50%" y="-50%" width="200%" height="200%">
+                    <!-- blur the text at different levels-->
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5" />
+                    <!-- merge all the blurs except for the first one -->
+                    <feMerge result="blur-merged">
+                        <feMergeNode in="blur10" />
+                    </feMerge>
+                    <!-- recolour the merged blurs red-->
+                    <feColorMatrix result="red-blur" in="blur-merged" type="matrix"
+                                   values="1 1 1 1 1
+                             1 0 0 0 0
+                             1 0 0 0 0
+                             1 0 0 0 0" />
+                    <feMerge>
+                        <feMergeNode in="red-blur" />       <!-- largest blurs coloured red -->
+                        <feMergeNode in="blur5" />          <!-- smallest blur left white -->
+                        <feMergeNode in="SourceGraphic" />  <!-- original white text -->
+                    </feMerge>
+                </filter>
+            </defs>
+
 
             <!-- Symbol -->
             <symbol id="s-text">
@@ -317,6 +340,7 @@
             <use xlink:href="#s-text" class="text"></use>
             <use xlink:href="#s-text" class="text"></use>
             <use xlink:href="#s-text" class="text"></use>
+
 
         </svg>
     </div>
@@ -410,7 +434,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.querySelector("#canvas").appendChild(renderer.domElement);
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 20, 5000);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 20, 5000);
         camera.position.set(0, 0, 0);
         camera.lookAt(0, 0, 0);
 
@@ -443,7 +467,7 @@
             const modifier = 150;
 
             camera.position.set(-normalizedX * modifier, normalizedY * modifier, 0);
-            camera.rotation.set(normalizedY * 0.1, normalizedX * 0.1, 0);
+            camera.rotation.set(normalizedY * 0.3, normalizedX * 0.3, 0);
 
             mouseWorldSpace = new THREE.Vector3(e.clientX, e.clientY, 0.1);
             mouseWorldSpace.unproject(camera);
