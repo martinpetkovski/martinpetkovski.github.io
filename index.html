@@ -446,10 +446,7 @@
             const modifier = 150;
 
             camera.position.set(-normalizedX * modifier, normalizedY * modifier, 0);
-            camera.rotation.set(normalizedY * 0.3, normalizedX * 0.3, 0);
-
-            mouseWorldSpace = new THREE.Vector3(e.clientX, e.clientY, 0.1);
-            mouseWorldSpace.unproject(camera);
+            camera.rotation.set(normalizedY * 0.1, normalizedX * 0.1, 0);
         }
 
         function DrawLine(p1, p2) {

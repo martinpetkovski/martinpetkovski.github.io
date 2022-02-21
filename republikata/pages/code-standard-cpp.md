@@ -1,6 +1,9 @@
 # C++ Code Standard
 
 ## Naming
+
+Functions are verbs, variables are nouns.
+
 Global variables have the prefix "g" .
 
 	float gGlobalFloat;
@@ -57,8 +60,19 @@ Unscoped enum members should have the "k" prefix.
 	}
 
 File names should be consistent within a single project. They should contain a prefix.
-
 Rationale: They pop-out when searching for something solution-wide.
+
+Names of functions that return boolean should be formatted as questions, preferrably with the prefix *Is*. 
+
+Good examples: 
+
+	bool IsWalking();
+	bool IsRunning();
+
+Bad examples:
+
+	bool CheckWalking();
+
 
 ## Indentation
 
@@ -75,7 +89,7 @@ Don't put multiple statements on a single line unless you have something to hide
 
 Don't put multiple assignments on a single line.
 
-	dontDoThis = 6; please=7;
+	dontDoThis = 6; please = 7;
 
 ## Line length
 
@@ -97,25 +111,25 @@ All curly braces should be in their own line.
 Do not unnecessarily use braces where a single statement will do.
 
 	if (condition)
-		action();
+		Action();
 
 and
 
 	if (condition)
-		doThis();
+		DoThis();
 	else
-		doThat();
+		DoThat();
 
 This does not apply if only one branch of a conditional statement is a single statement; in the latter case use braces in both branches:
 
 	if (condition) 
 	{
-		doThis();
-		doThat();
+		DoThis();
+		DoThat();
 	} 
 	else 
 	{
-		otherwise();
+		Otherwise();
 	}
 
 ## Spaces
@@ -126,11 +140,11 @@ Use a space after these keywords:
 
 but not with sizeof, typeof
 
-	s = sizeof(struct file);
+	s = sizeof(a);
 
 Do not add spaces around (inside) parenthesized expressions. This example is **bad**:
 
-	s = sizeof( struct file );
+	s = sizeof( a );
 
 When declaring pointer data or a function that returns a pointer type, the preferred use of * is adjacent to the type name or function type and not adjacent to the variable or function name. Examples:
 
@@ -171,7 +185,7 @@ Macros that resemble functions are heresy.
 	#define FOO(x)               \
 	({                           \
 			typeof(x) ret;       \
-			ret = calcRet(x);   \
+			ret = CalcRet(x);   \
 			(ret);               \
 	}) 
 	// WHY?
@@ -215,7 +229,7 @@ Example:
 
 		if(condition)
 		{
-			retVal = doSomethingElse(someCar);
+			retVal = DoSomethingElse(someCar);
 		}
 		
 		return retVal; 
@@ -227,7 +241,9 @@ Discouraged. Use pointers to functions instead.
 
 ## auto
 
-Discouraged. Lazy people coming from JavaScript use this, doesn't improve readability at all.
+Discouraged. Lazy people coming from JavaScript use this, doesn't improve readability at all. Exception are iterators.
+
+	const auto& it = someMap.find(someValue);
 
 ## inline
 
@@ -251,7 +267,7 @@ Example when breaking out of a nested for loop:
 	}
 	
 	SOME_LABEL:
-	doSomething();
+	DoSomething();
 
 ## Classes and structs
 
@@ -330,6 +346,24 @@ The ordering of the header files, from top to bottom, should be as follows:
 
 C-style casts are discouraged. Most of the time you will be upcasting using `static_cast` and downcasting using `dynamic_cast`.  If you're tempted to use `const_cast` make sure you're using it for the right reasons (simply getting rid of the const modifier is NOT a right reason). Avoid using `reinterpret_cast` unless absolutely necessary.  
 
+## Patterns / Techniques
+
+### RAII
+
+Yes.
+
+### Dependency Injection
+
+Yes, but keep the initialization as close as possible to the usage location.
+
+### Static
+
+Discouraged. All classes will have to be instanced more than once at some point. Create global instances instead.
+
+### Singleton 
+
+Discouraged. Create global instances instead.
+
 ## STD Exceptions
 
 Discouraged when not writing a library.
@@ -338,9 +372,7 @@ Rationale: You probably have a logger or something, use that instead.
 
 ## Commenting
 
-Write comments in header files. Do not try to explain **how** a function works in the comments. Instead, write the purpose and intention of the function and what's the expected result. 
-
-The code in source files should be self-explanatory. 
+Write comments in header files. Do not try to explain **how** a function works in the comments. Instead, write the purpose and intention of the function and what's the expected result. The code in source files should be self-explanatory. 
 
 	/* The preferred comment style looks like this.
 	 *
@@ -348,8 +380,18 @@ The code in source files should be self-explanatory.
 	 * with beginning and ending almost-blank lines.
 	 */
 
+**todo** comments should follow the format:
+	
+	//#todo [perforce username]: Your comment goes here
+	//#todo martin: Fix this line
+	
+## Enforcement
+
+No one should enforce the code standard and have the power to block development because of minor incursions. Everyone should understand that following the code standard will make the code more readable, understandablea and maintainable. Others will benefit from it equally as much as as you in 2 weeks time.
+
 ## References
 
 - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
 - https://www.kernel.org/doc/html/v4.10/process/coding-style.html
+- https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/CodingStandard/
 - Myself
