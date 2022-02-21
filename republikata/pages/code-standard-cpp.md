@@ -62,7 +62,7 @@ Unscoped enum members should have the "k" prefix.
 File names should be consistent within a single project. They should contain a prefix.
 Rationale: They pop-out when searching for something solution-wide.
 
-Names of functions that return boolean should be formatted as questions, preferrably with the prefix *Is*. 
+Names of functions that return boolean should be formatted as questions, preferrably with the prefix **Is**. 
 
 Good examples: 
 
@@ -382,12 +382,12 @@ Write comments in header files. Do not try to explain **how** a function works i
 
 **todo** comments should follow the format:
 	
-	//#todo [perforce username]: Your comment goes here
+	//#todo [source control username]: Your comment goes here
 	//#todo martin: Fix this line
 	
 ## Enforcement
 
-No one should enforce the code standard and have the power to block development because of minor incursions. Everyone should understand that following the code standard will make the code more readable, understandablea and maintainable. Others will benefit from it equally as much as as you in 2 weeks time.
+No one should enforce the code standard and have the power to block development because of minor incursions. Everyone should understand that following the code standard will make the code more readable, understandable and maintainable. Others will benefit from it equally as much as yourself in 2 weeks time.
 
 ## References
 
