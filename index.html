@@ -18,6 +18,16 @@
             font-family: 'FontAwesome5Brands';
             src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/webfonts/fa-brands-400.ttf');
         }
+		
+		@font-face {
+            font-family: 'NoMansSky';
+            src: url('NMSGeoSans_Kerned.ttf');
+        }
+		
+		@font-face {
+            font-family: 'Cyberpunk';
+            src: url('Cyberpunk.ttf');
+        }
 
         * {
             margin: 0;
@@ -123,6 +133,10 @@
             font-family: Roboto Condensed, Arial Black, Arial;
             display: inline-block;
         }
+		
+		.item img {
+			vertical-align:middle;
+		}
 
         .items {
             white-space: nowrap;
@@ -330,6 +344,23 @@
             <a href="sis\index.html"><div class="item">Саше Ивановски Симулатор</div></a>
         </div>
     </div>
+	
+	<div id="navigation">
+		<h1>Reviews &nbsp; &#xf11b; &nbsp; Рецензии</h1>
+		<div class="items">
+			<a href="n/?cyberpunk"><div class="item"><img height="64px" src="logo_cyberpunk.png"/></div></a>
+			<a href="n/?nomanssky"><div class="item" style="font-family:'NoMansSky', Roboto; color:white; font-size:24px;">No Man's Sky</div></a>
+		</div>
+	</div>
+	
+	<div id="navigation">
+		<h1>The Best &nbsp; &#xf573; &nbsp; Најјак</h1>
+		<div class="items">
+		<a href="n/?code-standard-cpp"><div class="item">C++ Code Standard</div></a>
+		<a href="n/?zanaetchiski-raspored"><div class="item">Занаетчиски Распоред</div></a>
+		</div>
+    </div>
+	
     <div id="navigation">
         <h1> Archive &nbsp; &#xf017; &nbsp; Архива</h1>
         <div class="items">
@@ -340,20 +371,14 @@
             <a href="music"><div class="item">Музика</div></a>
         </div>
     </div>
+	
     <div id="navigation" style="display: none;">
         <h1>&#xf19c; Science</h1>
         <a href="asp"><div class="item">АСП (2015/2016)</div></a>
         <a href="sp"><div class="item">СП (2017)</div></a>
         <a href="spao"><div class="item">СПАО (2021)</div></a>
     </div>
-    <div id="navigation">
-
-        <h1>The Best &nbsp; &#xf573; &nbsp; Најјак</h1>
-        <div class="items">
-            <a href="n/?code-standard-cpp"><div class="item">C++ Code Standard</div></a>
-            <a href="n/?zanaetchiski-raspored"><div class="item">Занаетчиски Распоред</div></a>
-        </div>
-    </div>
+    
     <div id="navigation">
         <h1>Links &nbsp; &#xf2bd; &nbsp; Линкови</h1>
         <div class="items">
