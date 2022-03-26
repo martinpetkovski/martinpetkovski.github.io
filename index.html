@@ -42,25 +42,41 @@
         body {
             background: linear-gradient(0deg, rgba(58,161,191,0.05) 0%, rgba(58,161,191,0.01) 50%, rgba(58,161,191,0.05) 100%);
             cursor: none;
-            height: 100vh;
-            padding: 0;
-            overflow: hidden;
+			min-height: 100vh;
+			padding: 0;
+			overflow-x: hidden;
         }
+		
+		#title {
+			margin-bottom: 30px;
+		}
 
+		.ct:hover, .cthovered {
+			color: #FFFF !important;
+			background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(255,55,55,0.4) 50%, rgba(0,0,0,0) 100%) !important;
+			border-bottom: 10px #111A solid !important;
+			width: 99% !important;
+			transition: 0.6s, color 0.1s !important;
+		}
 
         @media only screen and (max-width: 1200px) {
-            h1 {
+			a:link, a:visited {
+				display: flex;
+			}
+			
+            .ct {
                 font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
                 color: white;
                 text-align: center;
-                font-size: 20px;
+                font-size: 30px;
                 padding: 10px;
                 transition-duration: 0.6s;
+				
+				background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(78,121,136,0.2) 50%, rgba(0,0,0,0) 100%);
+				border-bottom: #1114 10px solid;
+                margin: 0 auto;
+                width: 100%;
             }
-
-                h1:hover {
-                    transition-duration: 1s;
-                }
 
             #title {
                 padding: 20px 0px;
@@ -68,70 +84,53 @@
                 margin-bottom: 20px;
                 color: red;
             }
+			
+			.item {
+				font-size: 60px;
+			}
+			
+			#navigation img {
+				height: 140px;
+			}
 
-            #navigation {
-                white-space: nowrap;
-                background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.2) 50%, rgba(0,0,0,0) 100%);
-                margin: 0 auto;
-                width: 82%;
-                height: 44px;
-                margin-bottom: 100px;
-                text-align: center;
-                font-size: 30px;
-                transition-duration: 0.2s;
-            }
-
-                #navigation:hover {
-                    box-shadow: 0px 2px 0px 0px #0005;
-                    width: 100%;
-                }
         }
 
         @media only screen and (min-width: 1200px) {
-            h1 {
+			a:link, a:visited {
+				display: inline-block;
+			}
+		
+            .ct {
                 font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
                 text-align: center;
                 font-size: 20px;
                 padding: 10px 10px 10px 10px;
                 transition-duration: 0.6s;
+				
+				color: #FFF9;
+				background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(78,121,136,0.2) 50%, rgba(0,0,0,0) 100%);
+				border-bottom: #1114 10px solid;
+                margin: 0 auto;
+                width: 42%;
             }
-
-                h1:hover {
-                    transition-duration: 1s;
-                }
 
             #title {
                 font-size: 100px;
-                height:30%;
             }
-
-            #navigation {
-                color: #FFF9;
-                white-space: nowrap;
-                background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.2) 50%, rgba(0,0,0,0) 100%);
-                margin: 0 auto;
-                width: 42%;
-                height: 44px;
-                margin-bottom: 80px;
-                text-align: center;
-                font-size: 20px;
-                border-bottom: 0px solid #0000;
-                transition: 0.2s, color 0.1s;
-            }
-
-                #navigation:hover {
-                    color: #FFFF;
-                    background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(58,161,191,0.4) 50%, rgba(0,0,0,0) 100%);
-                    border-bottom: 10px solid #1118;
-                    margin-bottom: 70px;
-                    width: 80%;
-                    transition: 0.6s, color 0.1s;
-                }
+			
+			.item {
+				font-size: 20px;
+			}
+			
+			#navigation img {
+				height: 40px;
+			}
         }
 
         .item {
-            font-family: Roboto Condensed, Arial Black, Arial;
-            display: inline-block;
+			font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+			text-align:center;
+			margin: 0 auto;
         }
 		
 		.item img {
@@ -139,33 +138,29 @@
 		}
 
         .items {
-            white-space: nowrap;
+			text-align:center;
             margin: 0 auto;
             width: 100%;
-            height: 80px;
-            overflow-y: hidden;
-            overflow-x: auto;
+			margin: 20px 0px;
         }
 
         a:link, a:visited {
+		    background: linear-gradient(-90deg, rgba(0,102,170,0.0) 0%, rgba(0,102,170,0.0) 50%, rgba(0,102,170,0.0) 100%);
             cursor: none;
             color: #09F;
             border: 1px solid transparent;
-            padding: 5px;
+            padding: 10px 25px;
             margin-right: 10px;
             text-decoration: none;
-            transition-duration: 0.2s;
-            line-height: 60px;
-            position: relative;
-            top: 10px;
+            transition: 0.6s;
         }
 
         a:hover {
-            padding: 10px 30px;
+            
             color: #9EF;
             border: 1px solid #06A;
             background: linear-gradient(-90deg, rgba(0,102,170,0.3) 0%, rgba(0,102,170,0.8) 50%, rgba(0,102,170,0.3) 100%);
-            transition-duration: 0.2s;
+            transition: 0.6s;
         }
 
         a:active {
@@ -180,37 +175,37 @@
             stroke-linejoin: round;
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
-            animation: stroke 10s infinite ease-in-out;
+            animation: stroke 5s infinite linear;
         }
 
             .text:nth-child(5n + 1) {
                 stroke: #09F;
-                -webkit-animation-delay: -1.2s;
-                animation-delay: -1.2s;
+                -webkit-animation-delay: -1.0s;
+                animation-delay: -1.0s;
             }
 
             .text:nth-child(5n + 2) {
                 stroke: #F2385A;
-                -webkit-animation-delay: -3.6s;
-                animation-delay: -3.6s;
+                -webkit-animation-delay: -2.0s;
+                animation-delay: -2.0s;
             }
 
             .text:nth-child(5n + 3) {
                 stroke: #FFF0;
-                -webkit-animation-delay: -3.6s;
-                animation-delay: -3.6s;
+                -webkit-animation-delay: -3.0s;
+                animation-delay: -3.0s;
             }
 
             .text:nth-child(5n + 4) {
                 stroke: #FFF0;
-                -webkit-animation-delay: -4.8s;
-                animation-delay: -4.8s;
+                -webkit-animation-delay: -4.0s;
+                animation-delay: -4.0s;
             }
 
             .text:nth-child(5n + 5) {
                 stroke: #09F;
-                -webkit-animation-delay: -6s;
-                animation-delay: -6s;
+                -webkit-animation-delay: -5s;
+                animation-delay: -5s;
             }
 
         @-webkit-keyframes stroke {
@@ -263,13 +258,15 @@
             mix-blend-mode: normal;
             position: absolute;
             z-index: -1;
-            border: 1px dashed #222;
+            border: 1px dashed #444;
             border-radius: 50%;
             scale: 1;
             transform-origin: center;
             width: 100px;
             height: 100px;
-            transition: .09s, scale 1s;
+            transition: .1s, scale 1s;
+			overflow: hidden;
+			text-overflow: ellipsis; 
         }
 
             #circle.hovered {
@@ -302,7 +299,7 @@
         #canvas {
             width: 100vw;
             height: 100vh;
-            position: absolute;
+            position: fixed;
             background-color: transparent;
             z-index: -1;
             opacity: 1;
@@ -311,7 +308,8 @@
 
 </head>
 <body>
-    <div id="canvas"></div>
+    <div id="canvas" ></div>
+    <div id="canvas" ></div>
 
     <div id="cursor"></div>
     <div id="circle"></div>
@@ -338,7 +336,7 @@
         </svg>
     </div>
     <div id="navigation">
-        <h1>Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </h1>
+        <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
         <div class="items">
             <a href="nst"><div class="item">Nonlinear System Tools</div></a>
             <a href="sis\index.html"><div class="item">Саше Ивановски Симулатор</div></a>
@@ -346,23 +344,23 @@
     </div>
 	
 	<div id="navigation">
-		<h1>Reviews &nbsp; &#xf11b; &nbsp; Рецензии</h1>
+		<div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
 		<div class="items">
-			<a href="n/?cyberpunk"><div class="item"><img height="64px" src="logo_cyberpunk.png"/></div></a>
-			<a href="n/?nomanssky"><div class="item" style="font-family:'NoMansSky', Roboto; color:white; font-size:24px;">No Man's Sky</div></a>
+			<a href="n/?cyberpunk"><div class="item"><img src="logo_cyberpunk.png"/></div></a>
+			<a href="n/?nomanssky"><div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky</div></a>
 		</div>
 	</div>
 	
 	<div id="navigation">
-		<h1>The Best &nbsp; &#xf573; &nbsp; Најјак</h1>
+		<div class="ct">The Best &nbsp; &#xf573; &nbsp; Најјак</div>
 		<div class="items">
-		<a href="n/?code-standard-cpp"><div class="item">C++ Code Standard</div></a>
-		<a href="n/?zanaetchiski-raspored"><div class="item">Занаетчиски Распоред</div></a>
+			<a href="n/?code-standard-cpp"><div class="item">C++ Code Standard</div></a>
+			<a href="n/?zanaetchiski-raspored"><div class="item">Занаетчиски Распоред</div></a>
 		</div>
     </div>
 	
     <div id="navigation">
-        <h1> Archive &nbsp; &#xf017; &nbsp; Архива</h1>
+        <div class="ct"> Archive &nbsp; &#xf017; &nbsp; Архива</div>
         <div class="items">
             <a href="https://globalgamejam.org/users/petkovski"><div class="item">Global Game Jam</div></a>
             <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json"><div class="item">Корпус на Македонскиот јазик</div></a>
@@ -373,23 +371,23 @@
     </div>
 	
     <div id="navigation" style="display: none;">
-        <h1>&#xf19c; Science</h1>
+        <div class="ct">&#xf19c; Science</div>
         <a href="asp"><div class="item">АСП (2015/2016)</div></a>
         <a href="sp"><div class="item">СП (2017)</div></a>
         <a href="spao"><div class="item">СПАО (2021)</div></a>
     </div>
     
     <div id="navigation">
-        <h1>Links &nbsp; &#xf2bd; &nbsp; Линкови</h1>
+        <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
         <div class="items">
-            <a href="https://www.deezer.com/en/artist/58205502">&#xe077;</a>
-            <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8">&#xf1bc;</a>
-            <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">&#xf167;</a>
-            <a href="https://github.com/martinpetkovski">&#xf09b;</a>
-            <a href="https://www.linkedin.com/in/martin-petkovski/">&#xf08c;</a>
-            <a href="https://twitter.com/nayackom">&#xf099;</a>
-            <a href="https://twitter.com/OficialZaev">&#xf630;</a>
-            <a href="mailto:martin@najjak.com">&#xf0e0;</a>
+            <a href="https://www.deezer.com/en/artist/58205502"><div class="item">&#xe077;</div></a>
+            <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8"><div class="item">&#xf1bc;</div></a>
+            <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos"><div class="item">&#xf167;</div></a>
+            <a href="https://github.com/martinpetkovski"><div class="item">&#xf09b;</div></a>
+            <a href="https://www.linkedin.com/in/martin-petkovski/"><div class="item">&#xf08c;</div></a>
+            <a href="https://twitter.com/nayackom"><div class="item">&#xf099;</div></a>
+            <a href="https://twitter.com/OficialZaev"><div class="item">&#xf630;</div></a>
+            <a href="mailto:martin@najjak.com"><div class="item">&#xf0e0;</div></a>
         </div>
     </div>
 
@@ -413,14 +411,17 @@
             circle.style.left = circle_left + 'px';
         }
 
-        function handleMouseEnter() {
+        function handleMouseEnter(e) {
             cursor.classList.add('hovered');
             circle.classList.add('hovered');
+			e.target.parentNode.parentNode.querySelector(".ct").classList.add('cthovered');
         }
 
-        function handleMouseLeave() {
+        function handleMouseLeave(e) {
             cursor.classList.remove('hovered');
             circle.classList.remove('hovered');
+			e.target.parentNode.parentNode.querySelector(".ct").classList.remove('cthovered');
+			
             handleMouseUp();
         }
 
