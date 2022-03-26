@@ -1,6 +1,11 @@
 ![No Man's Sky](img/nomanssky_bg.jpg)
 
-# No Man's Sky
+# Galaxy Core Progress Update
+<i><p align="right">August 31, 2021</p></i>
+
+I reached the Galaxy Core for the first time after ~110 hours of gameplay. The actual passing through the galaxy core was underwhelming, but the journey was definitely worth it.
+
+# First Playthrough Review
 <i><p align="right">February 27, 2021</p></i>
 
 I played 55 hours of No Mans Sky in the past week or so and I absolutely love it. For those who don't know it, in simple terms, it's  a game about exploring the universe with a ship and everything in the game is computer-generated so there are infinite number of diverse planets/systems/galaxies that you can explore, each one with a diverse atmosphere and flora/fauna ecosystem. 
@@ -33,6 +38,104 @@ Another cool thing is that NMS is still in active development and all updates ar
 
 Would I recommend it to anyone no exceptions? Fuck yea. Best $17 I ever spent on a video game. I wish I could send a copy to 00s Martin who was very disappointed by Star Trek: Starfleet Command III.
 
-## [Spoiler] Story Time
+## [Spoilers] Story Time
 
 I landed in a system with the intention of only selling cobalt to crash the economy and then buying it back to acquire those precious units. I scanned the planets in the system to see if per chance there is something interesting. Then, I landed my ship on a random 'stormy' planet because it promised to be 'grassy' (which is kind of beautiful). As I was landing there was a violent heat storm happening which limited the visibility to ~10m. As soon as I landed the storm cleared and revealed a MASSIVE structure, just around the corner, which I haven't seen before. Most of these structures are guarded by sentinels (NPCs that attack you if you are behaving badly). I took the risk and climbed on the platform of the structure. Inside it, I found some kind of a terminal from which I extracted the navigational data for some ancient ruins. The ancient ruins were located on another neighboring planet, so I set my marker to visit the planet. The temperature on that planet was -100 degrees celsius, but that didn't put me off. At first, on the site of the ruins was a small structure peaking from the ground and I didn't know what to do with it. Then I realized that I had to use my terrain manipulator to 'dig up' the structure from the ground. So I dug up a whole town on the frosty planet to find a number of keys which enabled me to open a special burred cache containing a special artifact which was worth a fortune. This is just one of the thousand things that made me go 'oh man how cool is that'.
+
+# [Spoilers] Gallery
+
+## First bases
+
+![No Man's Sky](img/ssnms/20220326111342_1.jpg)
+*I spawned on a toxic planet at first, mined a lot of cobalt on this one*
+
+![No Man's Sky](img/ssnms/20220326111704_1.jpg)
+*Shortly afterwards I found a grassy planet so I moved my operations there*
+
+## Unnamed base 1
+
+![No Man's Sky](img/ssnms/20210829154252_1.jpg)
+*I learned how to auto-mine in my second iteration in August 2021*
+
+![No Man's Sky](img/ssnms/20210830204510_1.jpg)
+*The same base just expanded*
+
+![No Man's Sky](img/ssnms/20210830211116_1.jpg)
+*At night*
+
+![No Man's Sky](img/ssnms/20210830211413_1.jpg)
+*The interior of the base*
+
+## Tower Base
+
+![No Man's Sky](img/ssnms/20220326112651_1.jpg)
+*I started experimenting with tall structures and they had a lot of benefits*
+
+## Sandbox City
+
+![No Man's Sky](img/ssnms/20210911123712_1.jpg)
+*I started a new sandbox playthrough in late September 2021. My original save was bugged by the Frontiers release, so I had to cheat a bit.*
+
+![No Man's Sky](img/ssnms/20220326113413_1.jpg)
+![No Man's Sky](img/ssnms/20220326113438_1.jpg)
+*I tried making a garage or something*
+
+![No Man's Sky](img/ssnms/20220326113501_1.jpg)
+*The interior*
+
+![No Man's Sky](img/ssnms/20220326113507_1.jpg)
+![No Man's Sky](img/ssnms/20220326113518_1.jpg)
+![No Man's Sky](img/ssnms/20220326113527_1.jpg)
+![No Man's Sky](img/ssnms/20220326113542_1.jpg)
+![No Man's Sky](img/ssnms/20220326113611_1.jpg)
+![No Man's Sky](img/ssnms/20220326113615_1.jpg)
+![No Man's Sky](img/ssnms/20220326113623_1.jpg)
+![No Man's Sky](img/ssnms/20220326113634_1.jpg)
+![No Man's Sky](img/ssnms/20220326113642_1.jpg)
+![No Man's Sky](img/ssnms/20220326113658_1.jpg)
+![No Man's Sky](img/ssnms/20220326113708_1.jpg)
+*The pathway from the house to the settlement/city*
+
+![No Man's Sky](img/ssnms/20220326113733_1.jpg)
+![No Man's Sky](img/ssnms/20220326113907_1.jpg)
+![No Man's Sky](img/ssnms/20220326113921_1.jpg)
+*The City*
+
+![No Man's Sky](img/ssnms/20220326114100_1.jpg)
+![No Man's Sky](img/ssnms/20220326114133_1.jpg)
+![No Man's Sky](img/ssnms/20220326114217_1.jpg)
+![No Man's Sky](img/ssnms/20220326114318_1.jpg)
+![No Man's Sky](img/ssnms/20220326114418_1.jpg)
+*The view from the second house on the cliffs*
+
+![No Man's Sky](img/ssnms/20220326114450_1.jpg)
+*The pathway to the second house on the cliffs*
+
+![No Man's Sky](img/ssnms/20220326114514_1.jpg)
+*The house on the cliffs*
+
+## Nostalgia Run
+
+![No Man's Sky](img/ssnms/20220306191705_1.jpg)
+*I returned to my original save after the Frontiers bugs were fixed in February 2022*
+
+![No Man's Sky](img/ssnms/20220306191746_1.jpg)
+![No Man's Sky](img/ssnms/20220306191759_1.jpg)
+![No Man's Sky](img/ssnms/20220306191805_1.jpg)
+![No Man's Sky](img/ssnms/20220306191855_1.jpg)
+![No Man's Sky](img/ssnms/20220326110809_1.jpg)
+![No Man's Sky](img/ssnms/20220326110545_1.jpg)
+![No Man's Sky](img/ssnms/20220326110925_1.jpg)
+
+## Galactic Core
+
+![No Man's Sky](img/nms_galactic_core.png)
+
+## Stats
+
+![No Man's Sky](img/nms_ship.png)
+![No Man's Sky](img/nms_ship2.png)
+![No Man's Sky](img/nms_exosuit.png)
+![No Man's Sky](img/nms_exosuit2.png)
+![No Man's Sky](img/nms_multitool.png)
+![No Man's Sky](img/nms_milestones.png)
