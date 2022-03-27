@@ -1,11 +1,13 @@
 <!doctype html>
 <html>
+
 <head>
     <title>najjak.com</title>
     <meta charset="utf-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
     <style>
@@ -18,21 +20,21 @@
             font-family: 'FontAwesome5Brands';
             src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/webfonts/fa-brands-400.ttf');
         }
-		
-		@font-face {
+
+        @font-face {
             font-family: 'NoMansSky';
             src: url('NMSGeoSans_Kerned.ttf');
         }
-		
-		@font-face {
-            font-family: 'Cyberpunk';
-            src: url('Cyberpunk.ttf');
+
+        @font-face {
+            font-family: 'FP2025';
+            src: url('FP2025.ttf');
         }
 
         * {
             margin: 0;
             padding: 0;
-            font-family: FontAwesome5, FontAwesome5Brands, 'Audiowide', Roboto, Arial Black, Arial;
+            font-family: FontAwesome5, FontAwesome5Brands, 'FP2025', Roboto, Arial Black, Arial;
         }
 
         html {
@@ -40,30 +42,41 @@
         }
 
         body {
-            background: linear-gradient(0deg, rgba(58,161,191,0.05) 0%, rgba(58,161,191,0.01) 50%, rgba(58,161,191,0.05) 100%);
+            background: linear-gradient(0deg, rgba(58, 161, 191, 0.05) 0%, rgba(58, 161, 191, 0.01) 50%, rgba(58, 161, 191, 0.05) 100%);
             cursor: none;
-			min-height: 100vh;
-			padding: 0;
-			overflow-x: hidden;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
         }
-		
-		#title {
-			margin-bottom: 30px;
-		}
 
-		.ct:hover, .cthovered {
-			color: #FFFF !important;
-			background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(255,55,55,0.4) 50%, rgba(0,0,0,0) 100%) !important;
-			border-bottom: 10px #111A solid !important;
-			width: 99% !important;
-			transition: 0.6s, color 0.1s !important;
-		}
+        #title {
+            width: 110vw;
+            position: relative;
+            left: -5vw;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.1) 100%);
+            transform: skew(10deg);
+            box-shadow: 5px 5px 30px 0px #0005;
+        }
+
+        .ct:hover,
+        .cthovered {
+            transform: skew(12deg);
+            box-shadow: 5px 5px 30px 10px #0006;
+            color: #FFFF !important;
+            background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 55, 55, 0.4) 50%, rgba(0, 0, 0, 0) 100%) !important;
+            border-bottom: 10px #111A solid !important;
+            width: 99% !important;
+            transition: 0.6s, color 0.1s !important;
+        }
 
         @media only screen and (max-width: 1200px) {
-			a:link, a:visited {
-				display: flex;
-			}
-			
+
+            a:link,
+            a:visited {
+                display: flex;
+            }
+
             .ct {
                 font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
                 color: white;
@@ -71,9 +84,9 @@
                 font-size: 30px;
                 padding: 10px;
                 transition-duration: 0.6s;
-				
-				background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(78,121,136,0.2) 50%, rgba(0,0,0,0) 100%);
-				border-bottom: #1114 10px solid;
+
+                background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+                border-bottom: #1114 10px solid;
                 margin: 0 auto;
                 width: 100%;
             }
@@ -84,32 +97,34 @@
                 margin-bottom: 20px;
                 color: red;
             }
-			
-			.item {
-				font-size: 60px;
-			}
-			
-			#navigation img {
-				height: 140px;
-			}
+
+            .item {
+                font-size: 60px;
+            }
+
+            #navigation img {
+                height: 140px;
+            }
 
         }
 
         @media only screen and (min-width: 1200px) {
-			a:link, a:visited {
-				display: inline-block;
-			}
-		
+
+            a:link,
+            a:visited {
+                display: inline-block;
+            }
+
             .ct {
                 font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
                 text-align: center;
                 font-size: 20px;
                 padding: 10px 10px 10px 10px;
                 transition-duration: 0.6s;
-				
-				color: #FFF9;
-				background: linear-gradient(-90deg, rgba(0,0,0,0) 0%, rgba(78,121,136,0.2) 50%, rgba(0,0,0,0) 100%);
-				border-bottom: #1114 10px solid;
+
+                color: #FFF9;
+                background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+                border-bottom: #1114 10px solid;
                 margin: 0 auto;
                 width: 42%;
             }
@@ -117,35 +132,43 @@
             #title {
                 font-size: 100px;
             }
-			
-			.item {
-				font-size: 20px;
-			}
-			
-			#navigation img {
-				height: 40px;
-			}
+
+            .item {
+                font-size: 20px;
+            }
+
+            #navigation img {
+                height: 40px;
+            }
+        }
+
+        #navigation:hover {
+            border-bottom: 1px solid #0006;
+            box-shadow: 0px -5px 10px #0006 inset;
+            background-color: #0006;
+            transition: 1.0s;
         }
 
         .item {
-			font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-			text-align:center;
-			margin: 0 auto;
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            text-align: center;
+            margin: 0 auto;
         }
-		
-		.item img {
-			vertical-align:middle;
-		}
+
+        .item img {
+            vertical-align: middle;
+        }
 
         .items {
-			text-align:center;
+            text-align: center;
             margin: 0 auto;
             width: 100%;
-			margin: 20px 0px;
+            margin: 20px 0px;
         }
 
-        a:link, a:visited {
-		    background: linear-gradient(-90deg, rgba(0,102,170,0.0) 0%, rgba(0,102,170,0.0) 50%, rgba(0,102,170,0.0) 100%);
+        a:link,
+        a:visited {
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.0) 0%, rgba(0, 102, 170, 0.0) 50%, rgba(0, 102, 170, 0.0) 100%);
             cursor: none;
             color: #09F;
             border: 1px solid transparent;
@@ -156,17 +179,19 @@
         }
 
         a:hover {
-            
             color: #9EF;
+            text-shadow: 0px 0px 20px #FFFA;
             border: 1px solid #06A;
-            background: linear-gradient(-90deg, rgba(0,102,170,0.3) 0%, rgba(0,102,170,0.8) 50%, rgba(0,102,170,0.3) 100%);
-            transition: 0.6s;
+            box-shadow: 0px 0px 20px rgba(0, 102, 170, 0.8);
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.3) 0%, rgba(0, 102, 170, 0.8) 50%, rgba(0, 102, 170, 0.3) 100%);
+            transition: 0.3s;
         }
 
         a:active {
             color: #FFF;
             border: 1px solid #F00;
-            background: linear-gradient(-90deg, rgba(170,0,0,0.3) 0%, rgba(170,0,0,0.8) 50%, rgba(170,0,0,0.3) 100%);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8) inset;
+            background: linear-gradient(-90deg, rgba(170, 0, 0, 0.3) 0%, rgba(170, 0, 0, 0.8) 50%, rgba(170, 0, 0, 0.3) 100%);
         }
 
         .text {
@@ -175,38 +200,38 @@
             stroke-linejoin: round;
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
-            animation: stroke 5s infinite linear;
+            animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-            .text:nth-child(5n + 1) {
-                stroke: #09F;
-                -webkit-animation-delay: -1.0s;
-                animation-delay: -1.0s;
-            }
+        .text:nth-child(5n + 1) {
+            stroke: #06F;
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
 
-            .text:nth-child(5n + 2) {
-                stroke: #F2385A;
-                -webkit-animation-delay: -2.0s;
-                animation-delay: -2.0s;
-            }
+        .text:nth-child(5n + 2) {
+            stroke: #0000;
+            -webkit-animation-delay: -2.0s;
+            animation-delay: -2.0s;
+        }
 
-            .text:nth-child(5n + 3) {
-                stroke: #FFF0;
-                -webkit-animation-delay: -3.0s;
-                animation-delay: -3.0s;
-            }
+        .text:nth-child(5n + 3) {
+            stroke: #FF0;
+            -webkit-animation-delay: -3.0s;
+            animation-delay: -3.0s;
+        }
 
-            .text:nth-child(5n + 4) {
-                stroke: #FFF0;
-                -webkit-animation-delay: -4.0s;
-                animation-delay: -4.0s;
-            }
+        .text:nth-child(5n + 4) {
+            stroke: #0000;
+            -webkit-animation-delay: -4.0s;
+            animation-delay: -4.0s;
+        }
 
-            .text:nth-child(5n + 5) {
-                stroke: #09F;
-                -webkit-animation-delay: -5s;
-                animation-delay: -5s;
-            }
+        .text:nth-child(5n + 5) {
+            stroke: #F00;
+            -webkit-animation-delay: -5s;
+            animation-delay: -5s;
+        }
 
         @-webkit-keyframes stroke {
             100% {
@@ -235,24 +260,24 @@
             transition: background .5s, border-radius .5s, border .5s, width .5s, height .5s, box-shadow .5s;
         }
 
-            #cursor.hovered {
-                mix-blend-mode: hue;
-                background: radial-gradient(rgba(255,0,0,1) 0%, rgba(255,0,0,0.6) 100%);
-                border-radius: 15%;
-                border: 1px solid #F2385AAA;
-                width: 30px;
-                height: 30px;
-                transition: 0.1s;
-                animation: rotate 5s linear infinite;
-            }
+        #cursor.hovered {
+            mix-blend-mode: color;
+            background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
+            border-radius: 15%;
+            border: 1px solid #F2385AAA;
+            width: 30px;
+            height: 30px;
+            transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
+            animation: rotate 5s linear infinite;
+        }
 
-            #cursor.active {
-                background: radial-gradient(rgba(255,0,0,0.6) 0%, rgba(255,0,0,0.4) 20%, rgba(255,0,0,0.5) 100%);
-                border-radius: 10%;
-                border: 1px solid #F5A503AA;
-                width: 20px;
-                height: 20px;
-            }
+        #cursor.active {
+            background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
+            border-radius: 10%;
+            border: 1px solid #F5A503AA;
+            width: 20px;
+            height: 20px;
+        }
 
         #circle {
             mix-blend-mode: normal;
@@ -265,34 +290,31 @@
             width: 100px;
             height: 100px;
             transition: .1s, scale 1s;
-			overflow: hidden;
-			text-overflow: ellipsis; 
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-            #circle.hovered {
-                scale: 0;
-                transform: scale(0);
-                border: 1px dashed #F003;
-                transition: border 1s, scale 1s;
-            }
+        #circle.hovered {
+            scale: 0;
+            transform: scale(0);
+            border: 1px dashed #F003;
+            transition: border 1s, scale 1s;
+        }
 
         @keyframes rotate {
             0% {
                 scale: 1.0;
-                transform: scale(1.0);
-                transform: rotate(0deg);
+                transform: scale(1.0) rotate(0deg) skew(0deg);
             }
 
             50% {
                 scale: 0.8;
-                transform: scale(0.8);
-                transform: rotate(180deg);
+                transform: scale(0.8) rotate(180deg) skew(-20deg);
             }
 
             100% {
                 scale: 1.0;
-                transform: scale(1.0);
-                transform: rotate(360deg);
+                transform: scale(1.0) rotate(360deg) skew(0deg);
             }
         }
 
@@ -307,21 +329,21 @@
     </style>
 
 </head>
+
 <body>
-    <div id="canvas" ></div>
-    <div id="canvas" ></div>
+    <div id="canvas"></div>
+    <div id="canvas"></div>
 
     <div id="cursor"></div>
     <div id="circle"></div>
 
     <div id="title">
-        <svg viewBox="0 0 1000 120">
+        <svg viewBox="0 0 1800 120">
 
             <!-- Symbol -->
             <symbol id="s-text">
-                <text text-anchor="middle"
-                      x="50%" y="50%" dy=".35em">
-                    najjak.com
+                <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                    NAJJAK.COM
                 </text>
             </symbol>
 
@@ -338,64 +360,113 @@
     <div id="navigation">
         <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
         <div class="items">
-            <a href="nst"><div class="item">Nonlinear System Tools</div></a>
-            <a href="sis\index.html"><div class="item">Саше Ивановски Симулатор</div></a>
+            <a href="nst">
+                <div class="item">Nonlinear System Tools</div>
+            </a>
+            <a href="sis\index.html">
+                <div class="item">Саше Ивановски Симулатор</div>
+            </a>
         </div>
     </div>
-	
-	<div id="navigation">
-		<div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
-		<div class="items">
-			<a href="n/?cyberpunk"><div class="item"><img src="logo_cyberpunk.png"/></div></a>
-			<a href="n/?nomanssky"><div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky</div></a>
-		</div>
-	</div>
-	
-	<div id="navigation">
-		<div class="ct">The Best &nbsp; &#xf573; &nbsp; Најјак</div>
-		<div class="items">
-			<a href="n/?code-standard-cpp"><div class="item">C++ Code Standard</div></a>
-			<a href="n/?zanaetchiski-raspored"><div class="item">Занаетчиски Распоред</div></a>
-		</div>
+
+    <div id="navigation">
+        <div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
+        <div class="items">
+            <a href="n/?cyberpunk">
+                <div class="item"><img src="logo_cyberpunk.png" /></div>
+            </a>
+            <a href="n/?nomanssky">
+                <div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky</div>
+            </a>
+        </div>
     </div>
-	
+
+    <div id="navigation">
+        <div class="ct">The Best &nbsp; &#xf573; &nbsp; Најјак</div>
+        <div class="items">
+            <a href="n/?code-standard-cpp">
+                <div class="item">C++ Code Standard</div>
+            </a>
+            <a href="n/?zanaetchiski-raspored">
+                <div class="item">Занаетчиски Распоред</div>
+            </a>
+        </div>
+    </div>
+
     <div id="navigation">
         <div class="ct"> Archive &nbsp; &#xf017; &nbsp; Архива</div>
         <div class="items">
-            <a href="https://globalgamejam.org/users/petkovski"><div class="item">Global Game Jam</div></a>
-            <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json"><div class="item">Корпус на Македонскиот јазик</div></a>
-            <a href="checkmeg\index.html"><div class="item">Checkmeg</div></a>
-            <a href="xtoolkit\docs\index.html"><div class="item">XToolkit</div></a>
-            <a href="music"><div class="item">Музика</div></a>
+            <a href="https://globalgamejam.org/users/petkovski">
+                <div class="item">Global Game Jam</div>
+            </a>
+            <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
+                <div class="item">Корпус на Македонскиот јазик</div>
+            </a>
+            <a href="checkmeg\index.html">
+                <div class="item">Checkmeg</div>
+            </a>
+            <a href="xtoolkit\docs\index.html">
+                <div class="item">XToolkit</div>
+            </a>
+            <a href="music">
+                <div class="item">Музика</div>
+            </a>
         </div>
     </div>
-	
+
     <div id="navigation" style="display: none;">
         <div class="ct">&#xf19c; Science</div>
-        <a href="asp"><div class="item">АСП (2015/2016)</div></a>
-        <a href="sp"><div class="item">СП (2017)</div></a>
-        <a href="spao"><div class="item">СПАО (2021)</div></a>
+        <a href="asp">
+            <div class="item">АСП (2015/2016)</div>
+        </a>
+        <a href="sp">
+            <div class="item">СП (2017)</div>
+        </a>
+        <a href="spao">
+            <div class="item">СПАО (2021)</div>
+        </a>
     </div>
-    
+
     <div id="navigation">
         <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
         <div class="items">
-            <a href="https://www.deezer.com/en/artist/58205502"><div class="item">&#xe077;</div></a>
-            <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8"><div class="item">&#xf1bc;</div></a>
-            <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos"><div class="item">&#xf167;</div></a>
-            <a href="https://github.com/martinpetkovski"><div class="item">&#xf09b;</div></a>
-            <a href="https://www.linkedin.com/in/martin-petkovski/"><div class="item">&#xf08c;</div></a>
-            <a href="https://twitter.com/nayackom"><div class="item">&#xf099;</div></a>
-            <a href="https://twitter.com/OficialZaev"><div class="item">&#xf630;</div></a>
-            <a href="mailto:martin@najjak.com"><div class="item">&#xf0e0;</div></a>
+            <a href="https://www.deezer.com/en/artist/58205502">
+                <div class="item">&#xe077;</div>
+            </a>
+            <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8">
+                <div class="item">&#xf1bc;</div>
+            </a>
+            <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">
+                <div class="item">&#xf167;</div>
+            </a>
+            <a href="https://github.com/martinpetkovski">
+                <div class="item">&#xf09b;</div>
+            </a>
+            <a href="https://www.linkedin.com/in/martin-petkovski/">
+                <div class="item">&#xf08c;</div>
+            </a>
+            <a href="https://twitter.com/nayackom">
+                <div class="item">&#xf099;</div>
+            </a>
+            <a href="https://twitter.com/OficialZaev">
+                <div class="item">&#xf630;</div>
+            </a>
+            <a href="mailto:martin@najjak.com">
+                <div class="item">&#xf0e0;</div>
+            </a>
         </div>
     </div>
 
     <script type="text/javascript">
         var a_link = document.querySelectorAll('a');
+        var navigation = document.querySelectorAll('#navigation');
 
         a_link.forEach(e => e.addEventListener('mouseenter', handleMouseEnter));
         a_link.forEach(e => e.addEventListener('mouseleave', handleMouseLeave));
+
+        navigation.forEach(e => e.addEventListener('mouseenter', handle_navigationMouseEnter));
+        navigation.forEach(e => e.addEventListener('mouseleave', handle_navigationMouseLeave));
+
         a_link.forEach(e => e.addEventListener('mousedown', handleMouseDown));
         a_link.forEach(e => e.addEventListener('mouseup', handleMouseUp));
         window.addEventListener('mousemove', handleMouseMove);
@@ -414,15 +485,21 @@
         function handleMouseEnter(e) {
             cursor.classList.add('hovered');
             circle.classList.add('hovered');
-			e.target.parentNode.parentNode.querySelector(".ct").classList.add('cthovered');
         }
 
         function handleMouseLeave(e) {
             cursor.classList.remove('hovered');
             circle.classList.remove('hovered');
-			e.target.parentNode.parentNode.querySelector(".ct").classList.remove('cthovered');
-			
+
             handleMouseUp();
+        }
+
+        function handle_navigationMouseEnter(e) {
+            e.target.querySelector(".ct").classList.add('cthovered');
+        }
+
+        function handle_navigationMouseLeave(e) {
+            e.target.querySelector(".ct").classList.remove('cthovered');
         }
 
         function handleMouseDown() {
@@ -436,7 +513,9 @@
         }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -570,4 +649,5 @@
 
     </script>
 </body>
+
 </html>
