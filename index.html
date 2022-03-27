@@ -54,9 +54,7 @@
             position: relative;
             left: -5vw;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
             transform: skew(10deg);
-            box-shadow: 5px 5px 30px 0px #0005;
         }
 
         .ct:hover,
@@ -204,7 +202,7 @@
         }
 
         .text:nth-child(5n + 1) {
-            stroke: #06F;
+            stroke: #0AF;
             -webkit-animation-delay: -1.0s;
             animation-delay: -1.0s;
         }
@@ -337,13 +335,17 @@
     <div id="cursor"></div>
     <div id="circle"></div>
 
-    <div id="title">
-        <svg viewBox="0 0 1800 120">
-
+    <div id="title" style="z-index: 102; position: absolute; top: 0;">
+        <svg viewBox="0 0 1800 250">
+            <defs>
+                <filter id="red-glow" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur5" />
+                </filter>
+            </defs>
             <!-- Symbol -->
-            <symbol id="s-text">
+            <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 1.5;">
                 <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                    NAJJAK.COM
+                    [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
                 </text>
             </symbol>
 
@@ -357,7 +359,29 @@
 
         </svg>
     </div>
-    <div id="navigation">
+
+    <div id="title">
+        <svg viewBox="0 0 1800 250">
+            <!-- Symbol -->
+            <symbol id="s-text1">
+                <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                    [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                </text>
+            </symbol>
+
+            <!-- Duplicate symbols -->
+            <use xlink:href="#s-text1" class="text"></use>
+            <use xlink:href="#s-text1" class="text"></use>
+            <use xlink:href="#s-text1" class="text"></use>
+            <use xlink:href="#s-text1" class="text"></use>
+            <use xlink:href="#s-text1" class="text"></use>
+
+
+        </svg>
+    </div>
+
+
+    <div id="navigation" style="z-index: 10;">
         <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
         <div class="items">
             <a href="nst">
