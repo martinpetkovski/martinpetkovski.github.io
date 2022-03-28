@@ -227,7 +227,7 @@
             text-shadow: 0px 0px 20px #FFFF;
             border: 1px solid #06A;
             box-shadow: 0px 0px 20px rgba(0, 102, 170, 0.8);
-            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.3) 0%, rgba(0, 102, 170, 0.8) 50%, rgba(0, 102, 170, 0.3) 100%);
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.3) 0%, rgba(0, 102, 170, 0.8) 50%, rgba(0, 102, 170, 0.3) 100%) !important;
             transition: 0.3s;
         }
 
@@ -289,7 +289,7 @@
             position: relative;
             top: 50vh;
             border: 1px solid #09FF;
-            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.1) 0%, rgba(0, 102, 170, 0.4) 50%, rgba(0, 102, 170, 0.1) 100%);
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.1) 0%, rgba(0, 102, 170, 0.2) 50%, rgba(0, 102, 170, 0.1) 100%);
         }
 
         .text,
@@ -544,7 +544,7 @@
         </div>
 
         <div id="navigation">
-            <div class="ct"> Archive &nbsp; &#xf017; &nbsp; Архива</div>
+            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
             <div class="items">
                 <a href="https://globalgamejam.org/users/petkovski">
                     <div class="item">Global Game Jam</div>
@@ -627,8 +627,6 @@
                 loadingView.classList.add("loadingViewTransition");
                 mainView.classList.add("mainViewTransition");
 
-                console.log(mainView.classList);
-
                 var theme = document.getElementById("theme");
                 theme.volume = 0.2;
                 theme.play();
@@ -703,7 +701,7 @@
             var href = this.href;
             e.preventDefault();
 
-            if (!this.innerHTML.contains("Loading")) {
+            if (!this.textContent.toString().includes("Loading")) {
                 this.classList.add('leaveLink');
                 var audio = new Audio('exit.mp3');
                 audio.play();
