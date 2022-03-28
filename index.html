@@ -42,14 +42,15 @@
         }
 
         body {
-            background: linear-gradient(0deg, rgba(58, 161, 191, 0.05) 0%, rgba(58, 161, 191, 0.01) 50%, rgba(58, 161, 191, 0.05) 100%);
+            background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
             cursor: none;
             min-height: 100vh;
             padding: 0;
             overflow-x: hidden;
         }
 
-        #title {
+        #title,
+        #titleLoading {
             width: 120vw;
             position: relative;
             left: -10vw;
@@ -121,7 +122,8 @@
                 width: 100%;
             }
 
-            #title {
+            #title,
+            #titleLoading {
                 padding: 20px 0px;
                 font-size: 140px;
                 margin-bottom: 20px;
@@ -130,6 +132,10 @@
 
             .item {
                 font-size: 60px;
+            }
+
+            #loadingButton .item {
+                font-size: 100px !important;
             }
 
             #navigation img {
@@ -159,12 +165,19 @@
                 width: 42%;
             }
 
-            #title {
+            #title,
+            #titleLoading {
                 font-size: 100px;
             }
 
             .item {
                 font-size: 20px;
+            }
+
+
+            #loadingButton .item {
+                font-size: 70px !important;
+                padding: 0px 300px;
             }
 
             #navigation img {
@@ -173,7 +186,7 @@
         }
 
         #navigation:hover {
-            border-bottom: 1px solid #0006;
+            border-bottom: 1px solid #0000;
             box-shadow: 0px -5px 10px #0006 inset;
             background-color: #0006;
             transition: 1.0s;
@@ -211,7 +224,7 @@
 
         a:hover {
             color: #9EF;
-            text-shadow: 0px 0px 20px #FFFA;
+            text-shadow: 0px 0px 20px #FFFF;
             border: 1px solid #06A;
             box-shadow: 0px 0px 20px rgba(0, 102, 170, 0.8);
             background: linear-gradient(-90deg, rgba(0, 102, 170, 0.3) 0%, rgba(0, 102, 170, 0.8) 50%, rgba(0, 102, 170, 0.3) 100%);
@@ -240,13 +253,59 @@
             background: linear-gradient(-90deg, rgba(170, 0, 0, 0.3) 0%, rgba(170, 0, 0, 0.8) 50%, rgba(170, 0, 0, 0.3) 100%);
         }
 
-        .text {
+        .loadingView {
+            width: 100vw;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 1;
+        }
+
+        .loadingViewTransition {
+            opacity: 0 !important;
+            transition: opacity 1s;
+        }
+
+        .mainView {
+            display: none;
+        }
+
+        @keyframes mainVewAnim {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .mainViewTransition {
+            display: block;
+            animation-name: mainVewAnim;
+            animation-duration: 1s;
+        }
+
+        #loadingButton {
+            position: relative;
+            top: 50vh;
+            border: 1px solid #09FF;
+        }
+
+        .text,
+        .textLoading {
             fill: none;
             stroke-width: 1;
-            stroke-linejoin: round;
+            stroke-linejoin: bevel;
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
             animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        }
+
+        .textLoading {
+            stroke: #FF0;
+            stroke-dashoffset: 400;
+            animation: stroke 0.5s;
         }
 
         .text:nth-child(5n + 1) {
@@ -309,7 +368,7 @@
         #cursor.hovered {
             mix-blend-mode: color;
             background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
-            border-radius: 15%;
+            border-radius: 0%;
             border: 1px solid #F2385AAA;
             width: 30px;
             height: 30px;
@@ -319,7 +378,7 @@
 
         #cursor.active {
             background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
-            border-radius: 10%;
+            border-radius: 5%;
             border: 1px solid #F5A503AA;
             width: 20px;
             height: 20px;
@@ -378,163 +437,205 @@
 
 <body>
     <div id="canvas"></div>
-    <div id="canvas"></div>
 
     <div id="cursor"></div>
     <div id="circle"></div>
 
-    <div id="title" style="z-index: 102; position: absolute; top: 0;">
-        <svg viewBox="0 0 1800 250">
-            <defs>
-                <filter id="red-glow" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur5" />
-                </filter>
-            </defs>
-            <!-- Symbol -->
-            <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 1.5;">
-                <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                    [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
-                </text>
-            </symbol>
+    <div class="loadingView" style="position: absolute;">
+        <div id="titleLoading" style="position: absolute; top: 0;">
+            <svg viewBox="0 0 1800 280">
+                <symbol id="s-textLoading">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                    </text>
+                </symbol>
 
-            <!-- Duplicate symbols -->
-            <use xlink:href="#s-text" class="text"></use>
-            <use xlink:href="#s-text" class="text"></use>
-            <use xlink:href="#s-text" class="text"></use>
-            <use xlink:href="#s-text" class="text"></use>
-            <use xlink:href="#s-text" class="text"></use>
-
-
-        </svg>
-    </div>
-
-    <div id="title">
-        <svg viewBox="0 0 1800 250">
-            <!-- Symbol -->
-            <symbol id="s-text1">
-                <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                    [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
-                </text>
-            </symbol>
-
-            <!-- Duplicate symbols -->
-            <use xlink:href="#s-text1" class="text"></use>
-            <use xlink:href="#s-text1" class="text"></use>
-            <use xlink:href="#s-text1" class="text"></use>
-            <use xlink:href="#s-text1" class="text"></use>
-            <use xlink:href="#s-text1" class="text"></use>
-
-
-        </svg>
-    </div>
-
-
-    <div id="navigation" style="z-index: 10;">
-        <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
-        <div class="items">
-            <a href="nst">
-                <div class="item">Nonlinear System Tools</div>
-            </a>
-            <a href="sis\index.html">
-                <div class="item">Саше Ивановски Симулатор</div>
-            </a>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+            </svg>
         </div>
-    </div>
 
-    <div id="navigation">
-        <div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
-        <div class="items">
-            <a href="n/?cyberpunk">
-                <div class="item"><img src="logo_cyberpunk.png" /></div>
-            </a>
-            <a href="n/?nomanssky">
-                <div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky</div>
-            </a>
-        </div>
-    </div>
-
-    <div id="navigation">
-        <div class="ct">The Best &nbsp; &#xf573; &nbsp; Најјак</div>
-        <div class="items">
-            <a href="n/?code-standard-cpp">
-                <div class="item">C++ Code Standard</div>
-            </a>
-            <a href="n/?zanaetchiski-raspored">
-                <div class="item">Занаетчиски Распоред</div>
-            </a>
-        </div>
-    </div>
-
-    <div id="navigation">
-        <div class="ct"> Archive &nbsp; &#xf017; &nbsp; Архива</div>
-        <div class="items">
-            <a href="https://globalgamejam.org/users/petkovski">
-                <div class="item">Global Game Jam</div>
-            </a>
-            <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
-                <div class="item">Корпус на Македонскиот јазик</div>
-            </a>
-            <a href="checkmeg\index.html">
-                <div class="item">Checkmeg</div>
-            </a>
-            <a href="xtoolkit\docs\index.html">
-                <div class="item">XToolkit</div>
-            </a>
-            <a href="music">
-                <div class="item">Музика</div>
-            </a>
-        </div>
-    </div>
-
-    <div id="navigation" style="display: none;">
-        <div class="ct">&#xf19c; Science</div>
-        <a href="asp">
-            <div class="item">АСП (2015/2016)</div>
-        </a>
-        <a href="sp">
-            <div class="item">СП (2017)</div>
-        </a>
-        <a href="spao">
-            <div class="item">СПАО (2021)</div>
+        <a href="#" id="loadingButton">
+            <div class="item">Loading...</div>
         </a>
     </div>
 
-    <div id="navigation">
-        <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
-        <div class="items">
-            <a href="https://www.deezer.com/en/artist/58205502">
-                <div class="item">&#xe077;</div>
+    <div class="mainView">
+        <div id="title" style="position: absolute; top: 0;">
+            <svg viewBox="0 0 1800 280">
+                <defs>
+                    <filter id="red-glow" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur5" />
+                    </filter>
+                </defs>
+                <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 1.5;">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+
+
+            </svg>
+        </div>
+
+        <div id="title">
+            <svg viewBox="0 0 1800 280">
+                <symbol id="s-text1">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+
+
+            </svg>
+        </div>
+
+        <div id="navigation" style="z-index: 10;">
+            <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
+            <div class="items">
+                <a href="nst">
+                    <div class="item">Nonlinear System Tools</div>
+                </a>
+                <a href="sis\index.html">
+                    <div class="item">Саше Ивановски Симулатор</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
+            <div class="items">
+                <a href="n/?cyberpunk">
+                    <div class="item"><img src="logo_cyberpunk.png" /></div>
+                </a>
+                <a href="n/?nomanssky">
+                    <div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct">The Best &nbsp; &#xf573; &nbsp; Најјак</div>
+            <div class="items">
+                <a href="n/?code-standard-cpp">
+                    <div class="item">C++ Code Standard</div>
+                </a>
+                <a href="n/?zanaetchiski-raspored">
+                    <div class="item">Занаетчиски Распоред</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct"> Archive &nbsp; &#xf017; &nbsp; Архива</div>
+            <div class="items">
+                <a href="https://globalgamejam.org/users/petkovski">
+                    <div class="item">Global Game Jam</div>
+                </a>
+                <a
+                    href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
+                    <div class="item">Корпус на Македонскиот јазик</div>
+                </a>
+                <a href="checkmeg\index.html">
+                    <div class="item">Checkmeg</div>
+                </a>
+                <a href="xtoolkit\docs\index.html">
+                    <div class="item">XToolkit</div>
+                </a>
+                <a href="music">
+                    <div class="item">Музика</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation" style="display: none;">
+            <div class="ct">&#xf19c; Science</div>
+            <a href="asp">
+                <div class="item">АСП (2015/2016)</div>
             </a>
-            <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8">
-                <div class="item">&#xf1bc;</div>
+            <a href="sp">
+                <div class="item">СП (2017)</div>
             </a>
-            <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">
-                <div class="item">&#xf167;</div>
+            <a href="spao">
+                <div class="item">СПАО (2021)</div>
             </a>
-            <a href="https://github.com/martinpetkovski">
-                <div class="item">&#xf09b;</div>
-            </a>
-            <a href="https://www.linkedin.com/in/martin-petkovski/">
-                <div class="item">&#xf08c;</div>
-            </a>
-            <a href="https://twitter.com/nayackom">
-                <div class="item">&#xf099;</div>
-            </a>
-            <a href="https://twitter.com/OficialZaev">
-                <div class="item">&#xf630;</div>
-            </a>
-            <a href="mailto:martin@najjak.com">
-                <div class="item">&#xf0e0;</div>
-            </a>
+        </div>
+
+        <div id="navigation">
+            <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
+            <div class="items">
+                <a href="https://www.deezer.com/en/artist/58205502">
+                    <div class="item">&#xe077;</div>
+                </a>
+                <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8">
+                    <div class="item">&#xf1bc;</div>
+                </a>
+                <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">
+                    <div class="item">&#xf167;</div>
+                </a>
+                <a href="https://github.com/martinpetkovski">
+                    <div class="item">&#xf09b;</div>
+                </a>
+                <a href="https://www.linkedin.com/in/martin-petkovski/">
+                    <div class="item">&#xf08c;</div>
+                </a>
+                <a href="https://twitter.com/nayackom">
+                    <div class="item">&#xf099;</div>
+                </a>
+                <a href="https://twitter.com/OficialZaev">
+                    <div class="item">&#xf630;</div>
+                </a>
+                <a href="mailto:martin@najjak.com">
+                    <div class="item">&#xf0e0;</div>
+                </a>
+            </div>
         </div>
     </div>
 
     <audio id="theme" src="theme.mp3" preload="auto" loop />
 
     <script type="text/javascript">
-        var theme = document.getElementById("theme");
-        theme.volume = 0.2;
-        theme.play();
+        movementStatic = true;
+
+        window.onload = function () {
+            btnLoading = document.querySelector("#loadingButton");
+            btnLoading.innerHTML = "<div class=\"item\">Enter</div>";
+
+            btnLoading.onclick = function () {
+                btnLoading.style.display = "none";
+
+                mainView = document.querySelector(".mainView");
+                loadingView = document.querySelector(".loadingView");
+
+                loadingView.classList.add("loadingViewTransition");
+                mainView.classList.add("mainViewTransition");
+
+                console.log(mainView.classList);
+
+                var theme = document.getElementById("theme");
+                theme.volume = 0.2;
+                theme.play();
+
+                movementStatic = false;
+
+            };
+        };
 
         var a_link = document.querySelectorAll('a');
         var navigation = document.querySelectorAll('#navigation');
@@ -601,13 +702,15 @@
             var href = this.href;
             e.preventDefault();
 
-            this.classList.add('leaveLink');
-            var audio = new Audio('exit.mp3');
-            audio.play();
+            if (!this.innerHTML.contains("Loading")) {
+                this.classList.add('leaveLink');
+                var audio = new Audio('exit.mp3');
+                audio.play();
 
-            setTimeout(function () {
-                window.location = href;
-            }, 1000);
+                setTimeout(function () {
+                    window.location = href;
+                }, 1000);
+            }
         }
     </script>
 
@@ -707,29 +810,46 @@
             light = new THREE.PointLight(color, intensity)
             scene.add(light)
 
-            const totalSpheres = 128;
+            const totalSpheres = 256;
 
             for (i = 0; i < totalSpheres; i++) {
                 CreateSphere();
             }
         }
 
+        lerpToken = false;
+        startToken = false;
+        dateStart = Date.now();
+        dateOffset = 0;
+
         function LerpPositions() {
+
+            if (movementStatic && lerpToken)
+                return;
+
+            if (lerpToken && !movementStatic && !startToken) {
+                startToken = true;
+                dateOffset = Date.now() - dateStart;
+            }
+
             squareSize = Math.sqrt(meshes.length);
             const spread = 200;
             const offsetX = 0;
             const offsetY = -200;
-            const offsetZ = -50;
+            const offsetZ = -200;
 
             for (i = 0; i < meshes.length; i++) {
-                meshes[i].mesh.position.x = Math.sin((Date.now() + (i * squareSize) * meshes[i].velocity.x) * 0.00008) * meshes[i].velocity.x * 100 + offsetX;
-                meshes[i].mesh.position.y = Math.sin((Date.now() + (i * squareSize) * meshes[i].velocity.y) * 0.00003) * meshes[i].velocity.y * 50 + offsetY;
+                meshes[i].mesh.position.x = Math.sin(((Date.now() - dateOffset) + (i * squareSize) * meshes[i].velocity.x) * 0.00008) * meshes[i].velocity.x * 100 + offsetX;
+                meshes[i].mesh.position.y = Math.sin(((Date.now() - dateOffset) + (i * squareSize) * meshes[i].velocity.y) * 0.00003) * meshes[i].velocity.y * 50 + offsetY;
                 meshes[i].mesh.position.z = (i / squareSize) * -spread + offsetZ;
 
                 meshes[i].mesh.rotation.x += meshes[i].velocity.x * 0.005;
                 meshes[i].mesh.rotation.y += meshes[i].velocity.y * 0.005;
                 meshes[i].mesh.rotation.z += meshes[i].velocity.z * 0.005;
             }
+
+            lerpToken = true;
+            dateStart = Date.now();
         }
 
         Initialize();
