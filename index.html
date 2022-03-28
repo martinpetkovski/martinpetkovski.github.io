@@ -41,6 +41,12 @@
             background: #111;
         }
 
+        .fadeToBlack {
+            background-color: #111 !important;
+            opacity: 0;
+            transition: 0.8s;
+        }
+
         body {
             background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
             cursor: none;
@@ -134,10 +140,6 @@
                 font-size: 60px;
             }
 
-            #loadingButton .item {
-                font-size: 100px !important;
-            }
-
             #navigation img {
                 height: 140px;
             }
@@ -174,12 +176,6 @@
                 font-size: 20px;
             }
 
-
-            #loadingButton .item {
-                font-size: 70px !important;
-                padding: 0px 300px;
-            }
-
             #navigation img {
                 height: 40px;
             }
@@ -195,7 +191,6 @@
         .item {
             font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             text-align: center;
-            margin: 0 auto;
         }
 
         .item img {
@@ -250,11 +245,12 @@
             color: #FFF;
             border: 1px solid #F00;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8) inset;
-            background: linear-gradient(-90deg, rgba(170, 0, 0, 0.3) 0%, rgba(170, 0, 0, 0.8) 50%, rgba(170, 0, 0, 0.3) 100%);
+            background: linear-gradient(-90deg, rgba(170, 0, 0, 0.3) 0%, rgba(170, 0, 0, 0.8) 50%, rgba(170, 0, 0, 0.3) 100%) !important;
         }
 
         .loadingView {
             width: 100vw;
+            position: absolute;
             margin: 0 auto;
             text-align: center;
             opacity: 1;
@@ -285,11 +281,24 @@
             animation-duration: 1s;
         }
 
-        #loadingButton {
+        #loadingEntity {
+            position: absolute;
+            top: 40vh;
+            left: 49vw;
+        }
+
+        #insertCoinButton {
+            display: none;
             position: relative;
-            top: 50vh;
+            bottom: -200px;
+            width: 50vw;
+            margin: 0 auto;
             border: 1px solid #09FF;
             background: linear-gradient(-90deg, rgba(0, 102, 170, 0.1) 0%, rgba(0, 102, 170, 0.2) 50%, rgba(0, 102, 170, 0.1) 100%);
+        }
+
+        #insertCoinButton .item {
+            font-size: 100px !important;
         }
 
         .text,
@@ -432,6 +441,77 @@
             z-index: -1;
             opacity: 1;
         }
+
+        .loader,
+        .loader:before,
+        .loader:after {
+            background: #ff0;
+            -webkit-animation: load1 1s infinite ease-in-out;
+            animation: load1 1s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            width: 1em;
+            height: 4em;
+            text-shadow: 0px 0px 150px #FF0;
+        }
+
+        .loader {
+            color: #ff0;
+            text-indent: -9999em;
+            position: relative;
+            font-size: 46px;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+        }
+
+        .loader:before,
+        .loader:after {
+            position: absolute;
+            background-color: #ff0;
+            top: 0;
+            content: '';
+        }
+
+        .loader:before {
+            left: -1.5em;
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+        }
+
+        .loader:after {
+            left: 1.5em;
+        }
+
+        @-webkit-keyframes load1 {
+
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
+
+        @keyframes load1 {
+
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
     </style>
 
 </head>
@@ -442,8 +522,8 @@
     <div id="cursor"></div>
     <div id="circle"></div>
 
-    <div class="loadingView" style="position: absolute;">
-        <div id="titleLoading" style="position: absolute; top: 0;">
+    <div class="loadingView">
+        <div id="titleLoading">
             <svg viewBox="0 0 1800 280">
                 <symbol id="s-textLoading">
                     <text text-anchor="middle" x="50%" y="50%" dy=".50em">
@@ -459,8 +539,10 @@
             </svg>
         </div>
 
-        <a href="#" id="loadingButton">
-            <div class="item">Loading...</div>
+        <div class="loader" id="loadingEntity">Loading...</div>
+
+        <a href="#" id="insertCoinButton">
+            <div class="item">Insert Coin</div>
         </a>
     </div>
 
@@ -615,11 +697,14 @@
         movementStatic = true;
 
         window.onload = function () {
-            btnLoading = document.querySelector("#loadingButton");
-            btnLoading.innerHTML = "<div class=\"item\">Enter</div>";
+            entity = document.querySelector("#loadingEntity");
+            entity.style.display = "none";
+            btnInsertCoin = document.querySelector("#insertCoinButton");
+            btnInsertCoin.style.display = "block";
 
-            btnLoading.onclick = function () {
-                btnLoading.style.display = "none";
+            btnInsertCoin.onclick = function () {
+                entity.style.display = "none";
+                btnInsertCoin.style.display = "none";
 
                 mainView = document.querySelector(".mainView");
                 loadingView = document.querySelector(".loadingView");
@@ -701,14 +786,15 @@
             var href = this.href;
             e.preventDefault();
 
-            if (!this.textContent.toString().includes("Loading")) {
+            if (!this.textContent.toString().includes("Coin")) {
                 this.classList.add('leaveLink');
+                document.querySelector("body").classList.add("fadeToBlack");
                 var audio = new Audio('exit.mp3');
                 audio.play();
 
                 setTimeout(function () {
                     window.location = href;
-                }, 1000);
+                }, 1200);
             }
         }
     </script>
@@ -796,6 +882,10 @@
                     color: c
                 }));
 
+            mesh.scale.x = RandomFloat(0.1, 5.0);
+            mesh.scale.y = RandomFloat(0.1, 5.0);
+            mesh.scale.z = RandomFloat(0.1, 5.0);
+
             scene.add(mesh);
             meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-20, 20), RandomFloat(-20, 20), RandomFloat(-10, 10)) });
         }
@@ -809,7 +899,7 @@
             light = new THREE.PointLight(color, intensity)
             scene.add(light)
 
-            const totalSpheres = 256;
+            const totalSpheres = 5000;
 
             for (i = 0; i < totalSpheres; i++) {
                 CreateSphere();
@@ -832,10 +922,10 @@
             }
 
             squareSize = Math.sqrt(meshes.length);
-            const spread = 200;
+            const spread = 1500;
             const offsetX = 0;
-            const offsetY = -200;
-            const offsetZ = -200;
+            const offsetY = 0;
+            const offsetZ = -1000;
 
             for (i = 0; i < meshes.length; i++) {
                 meshes[i].mesh.position.x = Math.sin(((Date.now() - dateOffset) + (i * squareSize) * meshes[i].velocity.x) * 0.00008) * meshes[i].velocity.x * 100 + offsetX;
