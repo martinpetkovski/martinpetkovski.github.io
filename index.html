@@ -290,11 +290,42 @@
         #insertCoinButton {
             display: none;
             position: relative;
-            bottom: -200px;
-            width: 50vw;
-            margin: 0 auto;
+            bottom: 0px;
+            border-radius: 50%;
+            line-height: 400px;
+            width: 400px;
+            height: 400px;
+            margin: auto;
             border: 1px solid #09FF;
-            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.1) 0%, rgba(0, 102, 170, 0.2) 50%, rgba(0, 102, 170, 0.1) 100%);
+            background: #111;
+            background-size: cover;
+            text-shadow: 0px 0px 100px #09F;
+            box-shadow: 0px 0px 50px #09F6 inset;
+            transition: 1s;
+        }
+
+        #insertCoinButton:hover {
+            text-shadow: 0px 0px 100px #FFF;
+            box-shadow: 0px 0px 50px #09FF inset;
+            background: radial-gradient(rgba(0, 30, 60, 0.8) 0%, rgba(0, 30, 60, 1) 50%, rgba(0, 30, 60, 0.8) 100%) !important;
+        }
+
+        #insertCoinButton::before {
+            content: attr(data-text);
+            background: url(glitch.gif);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-size: 200%;
+            background-position: -60%;
+            mix-blend-mode: lighten;
+        }
+
+        #insertCoinButton::after {
+            border-radius: 50%;
         }
 
         #insertCoinButton .item {
@@ -542,7 +573,7 @@
         <div class="loader" id="loadingEntity">Loading...</div>
 
         <a href="#" id="insertCoinButton">
-            <div class="item">Insert Coin</div>
+            <div class="item">ENGAGE</div>
         </a>
     </div>
 
@@ -786,7 +817,7 @@
             var href = this.href;
             e.preventDefault();
 
-            if (!this.textContent.toString().includes("Coin")) {
+            if (!this.textContent.toString().includes("ENGAGE")) {
                 this.classList.add('leaveLink');
                 document.querySelector("body").classList.add("fadeToBlack");
                 var audio = new Audio('exit.mp3');
