@@ -25,7 +25,12 @@
             font-family: 'NoMansSky';
             src: url('NMSGeoSans_Kerned.ttf');
         }
-
+		
+		@font-face {
+            font-family: 'Movement';
+            src: url('Movement-Italic.ttf');
+        }
+		
         @font-face {
             font-family: 'FP2025';
             src: url('FP2025.ttf');
@@ -299,8 +304,6 @@
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
-            text-shadow: 0px 0px 100px #09F;
-            box-shadow: 0px 0px 50px #09F6 inset;
             transition: 1s;
         }
 
@@ -329,6 +332,8 @@
         }
 
         #insertCoinButton .item {
+			font-family: 'Movement', Roboto, Arial Black, Arial !important;
+			text-shadow: 0px 0px 5px #09F;
             font-size: 100px !important;
         }
 
