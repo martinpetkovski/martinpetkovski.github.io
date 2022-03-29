@@ -44,6 +44,7 @@
 
         html {
             background: #111;
+			width: 100vw;
         }
 
         .fadeToBlack {
@@ -55,10 +56,14 @@
         body {
             background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
             cursor: none;
-            min-height: 100vh;
             padding: 0;
+			width: 100vw;
             overflow-x: hidden;
         }
+		
+		canvas {
+			width: 100vw;
+		}
 
         #title,
         #titleLoading {
@@ -116,7 +121,7 @@
 
             a:link,
             a:visited {
-                display: flex;
+                display: inline-block;
             }
 
             .ct {
@@ -288,19 +293,21 @@
 
         #loadingEntity {
             position: absolute;
-            top: 40vh;
-            left: 49vw;
+            top: 60vh;
+			left: 50vw;
         }
 
         #insertCoinButton {
             display: none;
-            position: relative;
-            bottom: 0px;
+            position: absolute;
+            top: 70vh;
+			left: 50vw;
+			margin-top:-200px;
+			margin-left: -200px;
             border-radius: 50%;
             line-height: 400px;
             width: 400px;
             height: 400px;
-            margin: auto;
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
