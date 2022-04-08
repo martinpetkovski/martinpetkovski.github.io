@@ -25,7 +25,12 @@
             font-family: 'NoMansSky';
             src: url('NMSGeoSans_Kerned.ttf');
         }
-
+		
+		@font-face {
+            font-family: 'Movement';
+            src: url('Movement-Italic.ttf');
+        }
+		
         @font-face {
             font-family: 'FP2025';
             src: url('FP2025.ttf');
@@ -39,6 +44,7 @@
 
         html {
             background: #111;
+			width: 100vw;
         }
 
         .fadeToBlack {
@@ -50,10 +56,14 @@
         body {
             background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
             cursor: none;
-            min-height: 100vh;
             padding: 0;
+			width: 100vw;
             overflow-x: hidden;
         }
+		
+		canvas {
+			width: 100vw;
+		}
 
         #title,
         #titleLoading {
@@ -111,7 +121,7 @@
 
             a:link,
             a:visited {
-                display: flex;
+                display: inline-block;
             }
 
             .ct {
@@ -283,24 +293,24 @@
 
         #loadingEntity {
             position: absolute;
-            top: 40vh;
-            left: 49vw;
+            top: 60vh;
+			left: 50vw;
         }
 
         #insertCoinButton {
             display: none;
-            position: relative;
-            bottom: 0px;
+            position: absolute;
+            top: 70vh;
+			left: 50vw;
+			margin-top:-200px;
+			margin-left: -200px;
             border-radius: 50%;
             line-height: 400px;
             width: 400px;
             height: 400px;
-            margin: auto;
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
-            text-shadow: 0px 0px 100px #09F;
-            box-shadow: 0px 0px 50px #09F6 inset;
             transition: 1s;
         }
 
@@ -329,6 +339,8 @@
         }
 
         #insertCoinButton .item {
+			font-family: 'Movement', Roboto, Arial Black, Arial !important;
+			text-shadow: 0px 0px 5px #09F;
             font-size: 100px !important;
         }
 
