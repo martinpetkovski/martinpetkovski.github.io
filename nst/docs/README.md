@@ -1,7 +1,7 @@
 # Version
-**Version:** 0.2.220101
+**Version:** 0.3.220409
 
-**Last Updated:** 01 January 2022
+**Last Updated:** 09 April 2022
 
 **Caretakers:** Martin Petkovski, Isaja Karadakovska
 
@@ -184,10 +184,11 @@ Indicates the story loaded at the moment. This story may or may not be saved on 
 |----------------------|-------------|
 | **&#xf079; Reload** | If there is a file for the story present on disk, it will reload the story from the given file. |
 | **&#xf07c; Target Folder** | Opens the folder where the story is located or would be located on disk. |
-| **&#xf0c7; Save** | Saves the current story in the target folder in binary [**.nts**](#nts) format. The target folder is located in **[exe folder]/stories**. |
+| **&#xf0c7; Save** | Saves the current story in the target folder in the [**.nss**](#nss) format. The target folder is located in **[exe folder]/stories**. |
 | **&#xf0c7; Save As** | Saves the current story in the target folder under a new name, which can be specified by the user before clicking **Confirm**. The format is [**.nts**](#nts) binary. |
-| **&#xf0c7; Compile As** | Compiles the current story in binary [**.nts**](#nts) format, effectively making the file contents read-only. Use with caution. |
+| **&#xf0c7; Compile As** | Compiles the current story in the [**.nss**](#nss) format, effectively making the file contents read-only. Use with caution. |
 | **&#xf085; Create executable...** | Creates an executable for the currently loaded story. The executable is located under **[exe folder]/build/[story name]**. You must ship the exe along with the Data folder next to it. This feature is still in BETA. |
+| **&#xf07c; Build Folder...** | Opens the folder where the build is located when you create an executable. |
 | **&#xf0c7; Export** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format. The target folder is located in **[exe folder]/exports**. |
 | **&#xf0c7; Export As** | Saves the current story in the exports folder in plain text [**.xml**](#xml) format under a new name. The target folder is located in **[exe folder]/exports**. |
 | **&#xf057; Discard Changes** | [Undoes](#xf1da-command-history) everything up until the last save. This action can be [redone](#xf1da-command-history) later. |
@@ -200,8 +201,8 @@ This menu holds all file-related functions of the NST Editor.
 | | |
 |-|-|
 |**&#xf067; New** | Will create a new story with a randomly generated name. |
-|**&#xf07c; Load File...** | Will open a load file dialogue where you can select a [**.nts**](#nts) file to load. |
-|**&#xf07c; Load** | Will list all [**.nts**](#nts) files available inside the **[exe folder]/stories** folder. Clicking an item will load it. You can filter the items by using the text box located at the top of the list.|
+|**&#xf07c; Load File...** | Will open a load file dialogue where you can select either a [**.nss**](#nss) or a [**.nts**](#nts) file to load. |
+|**&#xf07c; Load** | Will list all [**.nss**](#nss) files available inside the **[exe folder]/stories** folder. Clicking an item will load it. You can filter the items by using the text box located at the top of the list.|
 |**&#xf017; Open Recent** | Lists all recently opened files, with the topmost being the most recent. Clicking an item will load it.|
 |**&#xf07c; Import File...** | Will open an import file dialog where you can select a [**.xml**](#xml) or a [**.ntx**](#ntx) file to load.|
 |**&#xf07c; Import** | Will list all [**.xml**](#xml) and [**.ntx**](#ntx) files available inside the **[exe folder]/exports** folder. Clicking an item will load it. You can filter the items by using the text box located at the top of the list.|
@@ -244,11 +245,7 @@ Holds a list of all available windows in the NST Editor.
 
 ![Main Menu -> System](MainMenuWindows.png)
 
-* Editor Utilities: 
-	* [**&#xf1c9; Log**](#xf1c9-log)
-	* [**&#xf0ae; Profiler**](#xf0ae-profiler)
-	* [**&#xf1da; Command History**](#xf1da-command-history)
-  
+
 * [**&#xf044; State Editor**](#xf14b-state-editor)
   
 * [**&#xf02d; Property Editor**](#xf02d-property-editor)
@@ -265,14 +262,13 @@ Holds a list of all available windows in the NST Editor.
   
 * [**&#xf1b7; Steam Workshop**](#xf1b7-steam-workshop)
 
-### Settings
-Lists all of the available editor options. A click selects only one option.
-
-| | |
-|-|-|
-|**&#xf1ab; Language** | English (Default) or Macedonian |
-|**&#xf1fc; Theme** | Aegean Nights (desaturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue) |
-|**&#xf1c0; Backup Frequency** | No backups, Rare (backup in every 30 actions), Frequent (backup in every 5 actions), Always (backup after each action). |
+* Editor Utilities: 
+	* [**&#xf1c9; Log**](#xf1c9-log)
+	* [**&#xf0ae; Profiler**](#xf0ae-profiler)
+	* [**&#xf1da; Command History**](#xf1da-command-history)
+  
+* Edit:
+	* [**&#xf0ad; Settings**](#xf0ad-settings)
 
 ### Notification area
 
@@ -388,6 +384,10 @@ Some additional features available in text context menu, depending on the attach
 |**&#xf1f8; Delete** | Detaches the note from all items and deletes it.|
 
 ## &#xf14b; State Editor
+
+The &#xf14b; State Editor window is where you edit the internal properties of the states.
+
+>[!NOTE] The simple editor only offers the following options: Name, Situation, Create Choice, Dialog Statements, Attach a Note. They are sufficient for creating branching storylines. To activate the advanced editor view check the **Advanced State Editor** option in the [**&#xf0ad; Settings**](#xf0ad-settings) window under the **Writing** category. In the following section all options, both simple and advanced, will be listed.
 
 >[!NOTE] Multiple states cannot be edited inside the state editor. If multiple states are selected, the Editor will display a message to indicate so.
 
@@ -650,7 +650,7 @@ The **&#xf1b2; Content Browser** is used to manage content inside stories.
 
 You can embed all kinds of media inside a story, including images, audio, video, basically anything that can be rendered inside a HTML5 document. You can choose any resource from the internet to embed. This would imply that the reader must have an active internet connection. To illustrate, to load a resource from the internet would be to reference it in the html as such: `<img src="https://www.example.com/some_image.jpg">`
 
-NST also offers you to include offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nts** file. When a resource is loaded it is immediately converted to [base64](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html) encoding. Then, it is dynamically embedded whenever a state is activated inside the Reader.
+NST also offers you to include offline content inside the story via the Resources panel. If you choose to load an offline resource than this resource would be embedded inside the **.nss** file. When a resource is loaded it is immediately converted to [base64](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html) encoding. Then, it is dynamically embedded whenever a state is activated inside the Reader.
 
 Below is a list of all supported file formats that can be loaded via the Resource panel:
 
@@ -762,12 +762,19 @@ The **&#xf1b7; Steam Workshop** window allows an integrated connection to the St
 |-|-|
 |**&#xf1b7; Browse Workshop** | Will open the NST Steam Workshop in a Steam overlay.|
 |**[Story Name]** | If available, will open the Steam Workshop page for the current story in the Steam overlay.|
-|**&#xf1b6; Synchronize** | Will synchronize all data that has been modified directly on the Steam Workshop while the Editor was open.|
 |**&#xf1f8; Delete** | If applicable, will delete the story from the Steam Workshop.|
 |**&#xf019; Download**|This window lists Steam Workshop stories you are subscribed to by default. To download a story, click on the **&#xf019; Download** button. This will download the story to the Steam Workshop default folder and also copy it to the root folder of the Editor, so that you can easily access it via the **&#xf15b; File > &#xf07c; Load** menu. |
 |**&#xf021; Update & Load**|If a story is already available, this button will be named **&#xf021; Update & Load** and clicking it will automatically load the story inside the Editor.|
+
+Right-clicking any workshop item will open a context menu.
+
+![Workshop Item Context Menu](WorkshopItemContextMenu.png)
+
+| | |
+|-|-|
 |**&#xf1b7; Open Workshop Page** | Will open the Steam Workshop page of the selected story in a Steam overlay window.|
 |**&#xf056; Unsubscribe** | Will remove the story from the list of stories you are subscribed to.|
+|**&#xf1f8; Delete Local Files** | Will remove all previously downloaded local files for the item.|
 
 ### &#xf093; Publishing a Story
 To publish a story on the Steam Workshop you need to have the story you want to publish [opened in the Editor](#file). Click on the **&#xf093; Publish Story** button in the Steam Workshop window. This will open a new view which will allow you to publish your story on the Steam Workshop.
@@ -790,6 +797,26 @@ Compiled stories cannot be decompiled and decrypted.
 |**&#xf03e; Load Preview Image** | The preview image of the story. Steam recommends a square resolution (for example, 1000px by 1000px). After you load a picture, you can clear it by clicking the **Clear** button to the right of the file path.|
 |**&#xf00c; Publish** | Will publish the story on the Steam Workshop with the given settings.|
 |**&#xf00d; Cancel** | Will cancel the publishing and show the subscriptions view of the stories.|
+
+## &#xf0ad; Settings
+Lists all of the available editor options.
+
+![Settings Window](SettingsWindow.png)
+
+| Editor | |
+|-|-|
+| **Language** | English (Default), Macedonian, Russian or Ukrainian |
+| **Theme** | Aegean Nights (desaturated blue), Pacific Dawn (dark purple), Talk Yawl (stronger blue) |
+
+| Writing | |
+|-|-|
+| **Backups** | No backups, Rare (backup in every 30 actions), Frequent (backup in every 5 actions), Always (backup after each action). |
+| **Advanced State Editor** | Adds additional (advanced) options to the State Editor. Check this if you want to use the scripting language instead of using simple choices for your story. |
+
+| External Editors | |
+|-|-|
+| **Special Option** | You can set any external editors you want to use here. The **name** is what will appear in the context menu, **Exe location** is the absolute path where the executable of the editor is located and **Arguments** are the arguments with which the editor will be launched. The pre-defined editors are: Notepad, Notepad++, Word, Sublime. To add a new one hit the **+** button. |
+
 
 ## &#xf1c9; Log
 
@@ -820,7 +847,7 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 
 | Key Combination | Action |
 |---------------|----------| 
-| **Ctrl + S**  | Save the currently open story as .nts|
+| **Ctrl + S**  | Save the currently open story as a .nss file|
 | **Ctrl + N**  | Create a new story|
 | **Ctrl + R**  | Reset the branch and keep the story seed|
 | **F5** | Reset the story with a new seed|
@@ -833,8 +860,8 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 | **Ctrl + Y** | Redo|
 | **F1** | Help|
 | **Ctrl + E** | Export the story to .xml|
-| **Ctrl + O** | Stream a story in from a .nts file|
-| **Ctrl + Shift + O** | Open target folder for saving .nts files|
+| **Ctrl + O** | Stream a story in from a .nss file|
+| **Ctrl + Shift + O** | Open target folder for saving .nss files|
 | **Ctrl + I** | Import a story from an .xml file|
 | **Ctrl + Shift + R** | Reload an already loaded story|
 | **Ctrl + C** | Copy|
@@ -850,7 +877,7 @@ The history of all commands executed in the Editor is listed inside the **&#xf1d
 
 # NST Reader
 
-The NST Reader displays the final form of stories written in the NST Editor by rendering the underlying HTML, loading all static resources and converting all tokens to values. All stories saved in a NTS format can be loaded inside the NST Reader, both compiled and uncompiled.
+The NST Reader displays the final form of stories written in the NST Editor by rendering the underlying HTML, loading all static resources and converting all tokens to values. All stories saved in a NSS format can be loaded inside the NST Reader, both compiled and uncompiled.
 
 ![Reader](Reader.png)
 
@@ -874,8 +901,15 @@ You can use CSS or JS to modify the default components of the Reader. Available 
 | **#nst-MainMenuWrapper button** | Selects the buttons in the main menu |
 
 # Files
-## NTS
-Encrypted binary file. Both the Editor and the Reader can open NTS files. NTS files are not backwards compatible. Can be compiled (read-only) or not compiled. Compiled NTS files can only be opened as read-only in the Editor or inside the Reader. There is no (official) way to decompile a NTS file.
+## NSS
+Main file format used accross the tools. Encrypted text file. Both the Editor and the Reader can open NSS files. NSS files are backwards compatible. Can be compiled (read-only) or not compiled. Compiled NSS files can only be opened as read-only in the Editor or inside the Reader. There is no (official) way to decompile a NSS file.
+
+## NTS (LEGACY)
+
+>[!WARNING] 
+The NTS file format is set for deprecation. Please load & save all your stories in the new NSS format. NTS will be supported in legacy versions of the editor.
+
+Encrypted binary file. Both the Editor and the Reader can open NTS files, but the editor only saves in NSS format. NTS files are not backwards compatible. Can be compiled (read-only) or not compiled. Compiled NTS files can only be opened as read-only in the Editor or inside the Reader. There is no (official) way to decompile a NTS file.
 
 ## NTX
 ASCII file that can be read in the Editor. This is a text format that contains a special syntax which is easier for non-technical people to write in, but it has limited capabilities. NTX files can be imported in the Editor using the [import pipeline](#file). A story cannot be exported to NTX because of the limited possibilities of NTX.
