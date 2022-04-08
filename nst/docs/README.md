@@ -966,6 +966,87 @@ Properties can be used inside a state using the **[&#xf069; change expressions](
 ## XML
 Every story can be exported to XML. Stories in XML format are not encrypted and cannot be compiled to XML. The XML format is backwards compatible, meaning that XML stories created using different versions of the Editor can be opened in any Editor version. Stories in XML format can only [be read inside the Editor](#file). If you are using a version control system, it is highly recommended that you keep the stories in XML format. 
 
+# API
+
+The NST API is available at this [link](NSTAPI.zip).
+
+### size_t NST_CreateNewWorld();
+Creates a new NST World. Remember to always call NST_DeleteWorld to avoid a memory leak.
+
+**returns** Either a 32-bit or a 64-bit handle (memory location) of the newly created World.
+
+### void NST_DeleteWorld(size_t handle);
+Deletes the provided NST World.
+
+**handle** The handle of the NST World to delete. This handle must be prevously created by NST_CreateNewWorld.
+
+### size_t NST_GetNumAvailableStates(size_t handle);
+Gets the number of currently available states.
+
+**handle** The handle of the NST World.
+
+**returns** The number of available states.
+
+### const char* NST_GetStateNameAtIndex(size_t handle, size_t index);
+Gets the name of the state at the given index. Usually used in combination with NST_GetNumAvailableStates.
+
+**handle** The handle of the NST World.
+
+**index** The index at which to get the state name.
+
+**returns** The name of the state at the given index, no whitespaces.
+
+### bool NST_IsStateAvailable(size_t handle, const char* stateName);
+Gets the availablilty of a state with a given state name.
+
+**handle** The handle of the NST World.
+
+**stateName** The name of the state which is the context of this check.
+
+**returns** True if the state is available, false if the state is not available or there is an error.
+
+### const char* NST_GetDialogStatementAtIndex(size_t handle, size_t index);
+Gets the dialog statement (named choice) at the given index.
+
+**handle** The handle of the NST World.
+
+**index** The index of the state for which to return the actual dialog statement.
+
+**returns** The dialog statement string.
+
+### const char* NST_GetActiveStateSituation(size_t handle);
+Gets the situation string in the currently active state.
+
+**handle** The handle of the NST World.
+
+**returns** The situation string of the active state.
+
+### void NST_ActivateStateByIndex(size_t handle, size_t index);
+Activate the state with the given index. If the state is not available the state will not be activated.
+
+**handle** The handle of the NST World.
+
+**index** The index of the state.
+
+### void NST_ActivateStateByName(size_t handle, const char* stateName);
+Activate the state with the given name. If the state is not available the state will not be activated.
+
+**handle** The handle of the NST World.
+
+**stateName** The name of the state.
+
+### void NST_ResetStory(size_t handle);
+Resets the story with a new seed.
+
+**handle** The handle of the NST World.
+
+### void NST_LoadFromString(size_t handle, const char* str);
+Attempts to load a story from the provided string.
+
+**handle** The handle of the NST World.
+
+**str** The string loaded from a .nss file or generated via some other method.
+
 # Changelog
 
 Please follow the change announcements on [Steam](https://store.steampowered.com/news/app/1772160)
