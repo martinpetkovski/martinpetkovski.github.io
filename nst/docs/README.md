@@ -968,7 +968,7 @@ Every story can be exported to XML. Stories in XML format are not encrypted and 
 
 # API
 
-The NST API is available at this [link](NSTAPI.zip).
+The NST API is available at this [link](https://www.najjak.com/nst/docs/NSTAPI-03220409.zip).
 
 ### size_t NST_CreateNewWorld();
 Creates a new NST World. Remember to always call NST_DeleteWorld to avoid a memory leak.
