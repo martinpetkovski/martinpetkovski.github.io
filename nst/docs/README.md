@@ -299,7 +299,7 @@ States appear in the form of buttons throughout the NST Editor. Clicking the but
 
 An active state's button is red, whereas a green button implies availability. Once you activate the state, the button becomes dark red. The entry state has the &#xf061; icon in front of the name.
 
-Right-clicking a state's button will open up a context menu containing additional actions. Right-clicking on a state will also select the state.
+Right-clicking a state's button will open up a context menu containing additional actions.
 
 Selecting a state will automatically update the state that was previously selected. 
 
