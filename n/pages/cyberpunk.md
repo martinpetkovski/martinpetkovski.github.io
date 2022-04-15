@@ -19,6 +19,18 @@ Is there something interesting in Night City after no quests are available anymo
 ![](img/cyberpunk_max3.png)
 *The completed map*
 
+![](img/cyberpunk_maxorange_main.png)
+*After I maxed out with orange stuff*
+
+![](img/cyberpunk_maxorange_stats.png)
+*Max orange stats*
+
+![](img/cyberpunk_maxorange_cyberhacks.png)
+*Max orange cyberhacks*
+
+![](img/cyberpunk_maxorange_perks.png)
+*Max orange perks*
+
 # Revisited
 <i><p align="right">March 13, 2022</p></i>
 
