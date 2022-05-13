@@ -25,12 +25,12 @@
             font-family: 'NoMansSky';
             src: url('NMSGeoSans_Kerned.ttf');
         }
-		
-		@font-face {
+
+        @font-face {
             font-family: 'Movement';
             src: url('Movement-Italic.ttf');
         }
-		
+
         @font-face {
             font-family: 'FP2025';
             src: url('FP2025.ttf');
@@ -44,7 +44,7 @@
 
         html {
             background: #111;
-			width: 100vw;
+            width: 100vw;
         }
 
         .fadeToBlack {
@@ -57,13 +57,18 @@
             background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
             cursor: none;
             padding: 0;
-			width: 100vw;
+            width: 100vw;
             overflow-x: hidden;
         }
-		
-		canvas {
-			width: 100vw;
-		}
+
+        canvas {
+            width: 100vw;
+        }
+
+        td {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            text-align: left;
+        }
 
         #title,
         #titleLoading {
@@ -294,20 +299,19 @@
         #loadingEntity {
             position: absolute;
             top: 60vh;
-			left: 50vw;
+            left: 50vw;
         }
 
         #insertCoinButton {
             display: none;
             position: absolute;
-            top: 70vh;
-			left: 50vw;
-			margin-top:-200px;
-			margin-left: -200px;
-            border-radius: 50%;
-            line-height: 400px;
-            width: 400px;
-            height: 400px;
+            top: 60vh;
+            left: 50vw;
+            margin-top: -300px;
+            margin-left: -300px;
+            line-height: 600px;
+            width: 600px;
+            height: 600px;
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
@@ -315,8 +319,8 @@
         }
 
         #insertCoinButton:hover {
-            text-shadow: 0px 0px 100px #FFF;
-            box-shadow: 0px 0px 50px #09FF inset;
+            text-shadow: 0px 0px 300px #FFF;
+            box-shadow: 0px 0px 100px #09FF inset;
             background: radial-gradient(rgba(0, 30, 60, 0.8) 0%, rgba(0, 30, 60, 1) 50%, rgba(0, 30, 60, 0.8) 100%) !important;
         }
 
@@ -328,19 +332,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             background-size: 200%;
             background-position: -60%;
             mix-blend-mode: lighten;
         }
 
-        #insertCoinButton::after {
-            border-radius: 50%;
-        }
+        #insertCoinButton::after {}
 
         #insertCoinButton .item {
-			font-family: 'Movement', Roboto, Arial Black, Arial !important;
-			text-shadow: 0px 0px 5px #09F;
+            font-family: 'Movement', Roboto, Arial Black, Arial !important;
+            text-shadow: 0px 0px 5px #09F;
             font-size: 100px !important;
         }
 
@@ -526,6 +527,13 @@
             left: 1.5em;
         }
 
+        .nowPlaying {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            font-size: 12px;
+            background: linear-gradient(180deg, rgba(255, 0, 0, 0.8) 0%, rgba(255, 0, 0, 0.3) 100%);
+            color: #FFF;
+        }
+
         @-webkit-keyframes load1 {
 
             0%,
@@ -635,10 +643,8 @@
             <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
             <div class="items">
                 <a href="nst">
-                    <div class="item">Nonlinear System Tools</div>
-                </a>
-                <a href="sis\index.html">
-                    <div class="item">Саше Ивановски Симулатор</div>
+                    <div class="item"><img src="nst/resources/icon2.ico" height="32" /> &nbsp; Nonlinear System Tools
+                    </div>
                 </a>
             </div>
         </div>
@@ -651,6 +657,12 @@
                 </a>
                 <a href="n/?nomanssky">
                     <div class="item" style="font-family:'NoMansSky', Roboto !important; color:white;">No Man's Sky
+                    </div>
+                </a>
+                <a href="">
+                    <div class="item">
+                        <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
+                        <img src="logo_rdr.png" />
                     </div>
                 </a>
             </div>
@@ -686,6 +698,43 @@
                 </a>
                 <a href="music">
                     <div class="item">Музика</div>
+                </a>
+                <a href="sis\index.html">
+                    <div class="item">Саше Ивановски Симулатор</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct">
+                <table style="display: inline;">
+                    <tr>
+                        <td style="text-align: right;">Code</td>
+                        <td rowspan="2" style="padding: 0px 20px;"><img src="logo_vs.png" height="32" /></td>
+                        <td>Код</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 12px; text-align: right;">My code has powered</td>
+                        <td style="font-size: 12px;">Мој код ги напојувал</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="items">
+                <a href="https://www.youtube.com/watch?v=3yn8o2sA6l0">
+                    <div class="item"><img src="logo_sonder.png" /></div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=nH9Gm36sJng">
+                    <div class="item"><img src="logo_hunt.png" /></div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=QAKt3woocoU">
+                    <div class="nowPlaying">&#xf013; ACTIVE</div>
+                    <div class="item"><img src="logo_angelic.png" /></div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=6aJCoWeDmlE">
+                    <div class="item"><img src="logo_sso.png" /></div>
+                </a>
+                <a href="https://www.youtube.com/watch?v=RahJZCrmUvg">
+                    <div class="item"><img src="logo_bdvr.png" /></div>
                 </a>
             </div>
         </div>
