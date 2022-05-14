@@ -22,18 +22,13 @@
         }
 
         @font-face {
-            font-family: 'NoMansSky';
-            src: url('NMSGeoSans_Kerned.ttf');
-        }
-
-        @font-face {
             font-family: 'Movement';
             src: url('Movement-Italic.ttf');
         }
 
         @font-face {
             font-family: 'FP2025';
-            src: url('FP2025.ttf');
+            src: url('KlingonTNG.ttf');
         }
 
         * {
@@ -534,6 +529,14 @@
             color: #FFF;
         }
 
+        #credits {
+            padding: 50px 0px 50px 0px;
+            text-align: center;
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial !important;
+            font-size: 10px;
+            color: #FFF4;
+        }
+
         @-webkit-keyframes load1 {
 
             0%,
@@ -575,10 +578,10 @@
 
     <div class="loadingView">
         <div id="titleLoading">
-            <svg viewBox="0 0 1800 280">
+            <svg viewBox="0 0 1800 180">
                 <symbol id="s-textLoading">
                     <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                        najjak
                     </text>
                 </symbol>
 
@@ -599,15 +602,15 @@
 
     <div class="mainView">
         <div id="title" style="position: absolute; top: 0;">
-            <svg viewBox="0 0 1800 280">
+            <svg viewBox="0 0 1800 180">
                 <defs>
                     <filter id="red-glow" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="40" result="blur5" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur5" />
                     </filter>
                 </defs>
-                <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 1.5;">
+                <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 3;">
                     <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                        najjak
                     </text>
                 </symbol>
 
@@ -622,10 +625,10 @@
         </div>
 
         <div id="title">
-            <svg viewBox="0 0 1800 280">
+            <svg viewBox="0 0 1800 180">
                 <symbol id="s-text1">
                     <text text-anchor="middle" x="50%" y="50%" dy=".50em">
-                        [[[ &nbsp;&nbsp;&nbsp; NAJJAK.COM &nbsp;&nbsp;&nbsp; ]]]
+                        najjak
                     </text>
                 </symbol>
 
@@ -781,6 +784,12 @@
                 </a>
             </div>
         </div>
+
+        <div id="credits">
+            Copyright© Martin Petkovski 2013-2022. <br>All logos belong to their respective owners. All fonts have a
+            public or personal use license.
+        </div>
+    </div>
     </div>
 
     <audio id="theme" src="theme.mp3" preload="auto" loop />
