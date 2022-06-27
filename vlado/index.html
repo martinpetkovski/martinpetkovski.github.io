@@ -28,20 +28,36 @@
             background-color: #EEE;
         }
 
-        .container {
-            margin: 0 auto;
-            width: 1000px;
+        @media only screen and (max-width: 1300px) {
+            .container {
+            }
+            .title {
+                background: url("Blueprint-background.png");
+                color: white;
+                text-align: right;
+                font-size: 40px;
+                padding: 200px;
+                background-color: #EFEFEF;
+                border-bottom: #AAA solid 1px;
+                box-shadow: inset #111 0px -10px 40px;
+            }
         }
 
-        .title {
-            background: url("Blueprint-background.png");
-            color: white;
-            text-align: right;
-            font-size: 120px;
-            padding: 200px;
-            background-color: #EFEFEF;
-            border-bottom: #AAA solid 1px;
-            box-shadow: inset #111 0px -10px 40px;
+        @media only screen and (min-width: 1300px) {
+            .container {
+                margin: 0 auto;
+                width: 1000px;
+            }
+            .title {
+                background: url("Blueprint-background.png");
+                color: white;
+                text-align: right;
+                font-size: 120px;
+                padding: 200px;
+                background-color: #EFEFEF;
+                border-bottom: #AAA solid 1px;
+                box-shadow: inset #111 0px -10px 40px;
+            }
         }
 
         .name {
@@ -74,7 +90,7 @@
             color: inherit;
         }
 
-        .links div { 
+        .links div {
             transition-duration: 0.3s;
             font-size: 60px;
             display: inline-block;
@@ -82,11 +98,11 @@
             text-shadow: 5px 5px 0px #111;
         }
 
-        .links div:hover {
-            font-size: 100px;
-            transition-duration: 0.3s;
-            color: #09F;
-        }
+            .links div:hover {
+                font-size: 100px;
+                transition-duration: 0.3s;
+                color: #09F;
+            }
     </style>
 </head>
 <body>
