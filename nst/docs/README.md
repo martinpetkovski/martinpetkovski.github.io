@@ -3,7 +3,7 @@
 
 **Last Updated:** 09 April 2022
 
-**Caretakers:** Martin Petkovski, Isaja Karadakovska
+**Caretakers:** Martin Petkovski
 
 # Contact
 
