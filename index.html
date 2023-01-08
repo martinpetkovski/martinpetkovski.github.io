@@ -832,7 +832,7 @@
     <audio id="theme" src="theme.mp3" preload="auto" loop />
 
     <script type="text/javascript">
-        fetch("http://ws.audioscrobbler.com/2.0/", {
+        fetch("https://ws.audioscrobbler.com/2.0/", {
             method: "POST",
             body: new URLSearchParams({
                 method: "user.getRecentTracks",
@@ -848,7 +848,7 @@
                 document.querySelector("#musicLink").href = mostRecentTrack.url;
             });
 
-        fetch("http://ws.audioscrobbler.com/2.0/", {
+        fetch("https://ws.audioscrobbler.com/2.0/", {
             method: "POST",
             body: new URLSearchParams({
                 method: "user.getTopAlbums",
