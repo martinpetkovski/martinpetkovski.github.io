@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
     <style>
@@ -78,33 +78,30 @@
             mix-blend-mode: lighten;
         }
 
-        .ct:hover,
-        .cthovered {
-            transform: skew(12deg);
-            box-shadow: 5px 5px 30px #0003;
-            color: #FFFF !important;
-            background: linear-gradient(-90deg, rgba(255, 0, 0, 0.01) 0%, rgba(255, 15, 15, 0.4) 50%, rgba(255, 0, 0, 0.01) 100%) !important;
-            text-shadow: 0px 0px 20px #FFF;
-            border-bottom: 10px #0009 solid !important;
-            width: 99% !important;
-            transition: 0.6s, color 0.1s !important;
-        }
+            .ct:hover,
+            .cthovered {
+                transform: skew(12deg);
+                box-shadow: 5px 5px 30px #0003;
+                color: #FFFF !important;
+                background: linear-gradient(-90deg, rgba(255, 0, 0, 0.01) 0%, rgba(255, 15, 15, 0.4) 50%, rgba(255, 0, 0, 0.01) 100%) !important;
+                text-shadow: 0px 0px 20px #FFF;
+                border-bottom: 10px #0009 solid !important;
+                width: 99% !important;
+                transition: 0.6s, color 0.1s !important;
+            }
 
-        .cthovered::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-
-            left: -2px;
-
-            background-color: white;
-            background: url(glitch.gif);
-            mix-blend-mode: lighten;
-            background-size: contain;
-
-        }
+                .cthovered::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    left: -2px;
+                    background-color: white;
+                    background: url(glitch.gif);
+                    mix-blend-mode: lighten;
+                    background-size: contain;
+                }
 
         .leaveLink {
             border-color: #000 !important;
@@ -113,8 +110,12 @@
             background-image: linear-gradient(45deg, rgba(255, 0, 0, 0.4) 50%, transparent 50%) !important;
             background-position: 100% !important;
             background-size: 400% !important;
-
             transition: 1.4s cubic-bezier(0.68, -1.55, 0.265, 2.55) !important;
+        }
+
+        .regularItem {
+            color: #FFF;
+            font-family: Roboto Condensed, Arial Black, Arial !important;
         }
 
         @media only screen and (max-width: 1200px) {
@@ -131,7 +132,6 @@
                 font-size: 30px;
                 padding: 10px;
                 transition-duration: 0.6s;
-
                 background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
                 border-bottom: #1114 10px solid;
                 margin: 0 auto;
@@ -153,7 +153,6 @@
             #navigation img {
                 height: 140px;
             }
-
         }
 
         @media only screen and (min-width: 1200px) {
@@ -169,7 +168,6 @@
                 font-size: 20px;
                 padding: 10px 10px 10px 10px;
                 transition-duration: 0.6s;
-
                 color: #FFF9;
                 background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
                 border-bottom: #1114 10px solid;
@@ -203,9 +201,9 @@
             text-align: center;
         }
 
-        .item img {
-            vertical-align: middle;
-        }
+            .item img {
+                vertical-align: middle;
+            }
 
         .items {
             text-align: center;
@@ -236,20 +234,18 @@
             transition: 0.3s;
         }
 
-        a:hover::after {
-            content: attr(data-text);
-            mix-blend-mode: soft-light;
-            background-image: url(lightning.gif);
-            background-size: cover;
-            opacity: 0.5;
-
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-
-        }
+            a:hover::after {
+                content: attr(data-text);
+                mix-blend-mode: soft-light;
+                background-image: url(lightning.gif);
+                background-size: cover;
+                opacity: 0.5;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
 
         a:active {
             color: #FFF;
@@ -304,41 +300,42 @@
             left: 50vw;
             margin-top: -300px;
             margin-left: -300px;
-            line-height: 600px;
+            line-height: 300px;
             width: 600px;
-            height: 600px;
+            height: 300px;
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
             transition: 1s;
         }
 
-        #insertCoinButton:hover {
-            text-shadow: 0px 0px 300px #FFF;
-            box-shadow: 0px 0px 100px #09FF inset;
-            background: radial-gradient(rgba(0, 30, 60, 0.8) 0%, rgba(0, 30, 60, 1) 50%, rgba(0, 30, 60, 0.8) 100%) !important;
-        }
+            #insertCoinButton:hover {
+                text-shadow: 0px 0px 300px #FFF;
+                box-shadow: 0px 0px 100px #09FF inset;
+                background: radial-gradient(rgba(0, 30, 60, 0.8) 0%, rgba(0, 30, 60, 1) 50%, rgba(0, 30, 60, 0.8) 100%) !important;
+            }
 
-        #insertCoinButton::before {
-            content: attr(data-text);
-            background: url(glitch.gif);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: 200%;
-            background-position: -60%;
-            mix-blend-mode: lighten;
-        }
+            #insertCoinButton::before {
+                content: attr(data-text);
+                background: url(glitch.gif);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-size: 200%;
+                background-position: -60%;
+                mix-blend-mode: lighten;
+            }
 
-        #insertCoinButton::after {}
+            #insertCoinButton::after {
+            }
 
-        #insertCoinButton .item {
-            font-family: 'Movement', Roboto, Arial Black, Arial !important;
-            text-shadow: 0px 0px 5px #09F;
-            font-size: 100px !important;
-        }
+            #insertCoinButton .item {
+                font-family: 'Movement', Roboto, Arial Black, Arial !important;
+                text-shadow: 0px 0px 5px #09F;
+                font-size: 100px !important;
+            }
 
         .text,
         .textLoading {
@@ -348,7 +345,6 @@
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
             animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
         }
 
         .textLoading {
@@ -414,24 +410,24 @@
             transition: background .5s, border-radius .5s, border .5s, width .5s, height .5s, box-shadow .5s;
         }
 
-        #cursor.hovered {
-            mix-blend-mode: color;
-            background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
-            border-radius: 0%;
-            border: 1px solid #F2385AAA;
-            width: 30px;
-            height: 30px;
-            transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
-            animation: rotate 5s linear infinite;
-        }
+            #cursor.hovered {
+                mix-blend-mode: color;
+                background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
+                border-radius: 0%;
+                border: 1px solid #F2385AAA;
+                width: 30px;
+                height: 30px;
+                transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
+                animation: rotate 5s linear infinite;
+            }
 
-        #cursor.active {
-            background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
-            border-radius: 5%;
-            border: 1px solid #F5A503AA;
-            width: 20px;
-            height: 20px;
-        }
+            #cursor.active {
+                background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
+                border-radius: 5%;
+                border: 1px solid #F5A503AA;
+                width: 20px;
+                height: 20px;
+            }
 
         #circle {
             mix-blend-mode: normal;
@@ -448,12 +444,12 @@
             text-overflow: ellipsis;
         }
 
-        #circle.hovered {
-            scale: 0;
-            transform: scale(0);
-            border: 1px dashed #F003;
-            transition: border 1s, scale 1s;
-        }
+            #circle.hovered {
+                scale: 0;
+                transform: scale(0);
+                border: 1px dashed #F003;
+                transition: border 1s, scale 1s;
+            }
 
         @keyframes rotate {
             0% {
@@ -481,6 +477,28 @@
             opacity: 1;
         }
 
+        #music-details {
+            display: inline-block;
+            text-align: left;
+            padding-top: 10px;
+            vertical-align: top;
+        }
+
+        #music-artist {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            font-size: 24px;
+        }
+
+        #music-track {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            font-size:14px;
+        }
+
+        .albumCover {
+            padding: 10px;
+            height: 48px !important;
+        }
+
         .loader,
         .loader:before,
         .loader:after {
@@ -504,23 +522,23 @@
             animation-delay: -0.16s;
         }
 
-        .loader:before,
-        .loader:after {
-            position: absolute;
-            background-color: #ff0;
-            top: 0;
-            content: '';
-        }
+            .loader:before,
+            .loader:after {
+                position: absolute;
+                background-color: #ff0;
+                top: 0;
+                content: '';
+            }
 
-        .loader:before {
-            left: -1.5em;
-            -webkit-animation-delay: -0.32s;
-            animation-delay: -0.32s;
-        }
+            .loader:before {
+                left: -1.5em;
+                -webkit-animation-delay: -0.32s;
+                animation-delay: -0.32s;
+            }
 
-        .loader:after {
-            left: 1.5em;
-        }
+            .loader:after {
+                left: 1.5em;
+            }
 
         .nowPlaying {
             font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
@@ -539,9 +557,7 @@
 
         @-webkit-keyframes load1 {
 
-            0%,
-            80%,
-            100% {
+            0%, 80%, 100% {
                 box-shadow: 0 0;
                 height: 4em;
             }
@@ -554,9 +570,7 @@
 
         @keyframes load1 {
 
-            0%,
-            80%,
-            100% {
+            0%, 80%, 100% {
                 box-shadow: 0 0;
                 height: 4em;
             }
@@ -646,64 +660,9 @@
             <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
             <div class="items">
                 <a href="nst">
-                    <div class="item" style="color:#FFF; font-family: Roboto Condensed, Arial Black, Arial;"><img
-                            src="nst/resources/icon2.ico" height="32" /> &nbsp; Nonlinear System Tools
+                    <div class="item regularItem">
+                        <img src="nst/resources/icon2.ico" height="32" /> &nbsp; Nonlinear System Tools
                     </div>
-                </a>
-            </div>
-        </div>
-
-        <div id="navigation">
-            <div class="ct">Reviews &nbsp; &#xf11b; &nbsp; Рецензии</div>
-            <div class="items">
-                <a href="n/?cyberpunk">
-                    <div class="item"><img src="logo_cyberpunk.png" /></div>
-                </a>
-                <a href="n/?nomanssky">
-                    <div class="item"><img src="logo_nms.png" /></div>
-                </a>
-                <a href="">
-                    <div class="item">
-                        <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
-                        <img src="logo_rdr.png" />
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <div id="navigation">
-            <div class="ct">Best &nbsp; &#xf573; &nbsp; Најјак</div>
-            <div class="items">
-                <a href="n/?code-standard-cpp">
-                    <div class="item">C++ Code Standard</div>
-                </a>
-                <a href="n/?zanaetchiski-raspored">
-                    <div class="item">Занаетчиски Распоред</div>
-                </a>
-            </div>
-        </div>
-
-        <div id="navigation">
-            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
-            <div class="items">
-                <a href="https://globalgamejam.org/users/petkovski">
-                    <div class="item">Global Game Jam</div>
-                </a>
-                <a
-                    href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
-                    <div class="item">Корпус на Македонскиот јазик</div>
-                </a>
-                <a href="checkmeg\index.html">
-                    <div class="item">Checkmeg</div>
-                </a>
-                <a href="xtoolkit\docs\index.html">
-                    <div class="item">XToolkit</div>
-                </a>
-                <a href="music">
-                    <div class="item">Музика</div>
-                </a>
-                <a href="sis\index.html">
-                    <div class="item">Саше Ивановски Симулатор</div>
                 </a>
             </div>
         </div>
@@ -742,6 +701,65 @@
             </div>
         </div>
 
+        <div id="navigation">
+            <div class="ct">Games &nbsp; &#xf11b; &nbsp; Игри</div>
+            <div class="items">
+                <a href="n/?cyberpunk">
+                    <div class="item"><img src="logo_cyberpunk.png" /></div>
+                </a>
+                <a href="n/?nomanssky">
+                    <div class="item"><img src="logo_nms.png" /></div>
+                </a>
+                <a href="">
+                    <div class="item">
+                        <img src="logo_rdr.png" />
+                    </div>
+                </a>
+                <a href="">
+                    <div class="item">
+                        <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
+                        <img src="logo_bd3.png">
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct">Best &nbsp; &#xf573; &nbsp; Најјак</div>
+            <div class="items">
+                <a href="n/?code-standard-cpp">
+                    <div class="item">C++ Code Standard</div>
+                </a>
+                <a href="n/?zanaetchiski-raspored">
+                    <div class="item">Занаетчиски Распоред</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
+            <div class="items">
+                <a href="https://globalgamejam.org/users/petkovski">
+                    <div class="item">Global Game Jam</div>
+                </a>
+                <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
+                    <div class="item">Корпус на Македонскиот јазик</div>
+                </a>
+                <a href="checkmeg\index.html">
+                    <div class="item">Checkmeg</div>
+                </a>
+                <a href="xtoolkit\docs\index.html">
+                    <div class="item">XToolkit</div>
+                </a>
+                <a href="music">
+                    <div class="item">Музика</div>
+                </a>
+                <a href="sis\index.html">
+                    <div class="item">Саше Ивановски Симулатор</div>
+                </a>
+            </div>
+        </div>
+
         <div id="navigation" style="display: none;">
             <div class="ct">&#xf19c; Science</div>
             <a href="asp">
@@ -755,6 +773,25 @@
             </a>
         </div>
 
+        <div id="navigation">
+            <div class="ct">Music &nbsp; &#xf001; &nbsp; Музика</div>
+            <div class="items">
+                <a id="musicLink" href="#">
+                    <div class="nowPlaying">&#xf04b; NOW LISTENING</div>
+                    <div id="music-listeningnow" class="regularItem">
+
+                    </div>
+                </a>
+
+                <a id="musicLinkHr" href="#">
+                    <div class="nowPlaying">&#xf2f9; HEAVY ROTATION</div>
+                    <div id="music-heavyrotation" class="regularItem">
+
+                    </div>
+                </a>
+            </div>
+        </div>
+        
         <div id="navigation">
             <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
             <div class="items">
@@ -786,13 +823,49 @@
         </div>
 
         <div id="credits">
-            Copyright© Martin Petkovski 2013-2022. <br>All logos belong to their respective owners. All fonts have a
+            Copyright© Martin Petkovski 2013-2023. <br>All logos belong to their respective owners. All fonts have a
             public or personal use license.
         </div>
     </div>
     </div>
 
     <audio id="theme" src="theme.mp3" preload="auto" loop />
+
+    <script type="text/javascript">
+        fetch("http://ws.audioscrobbler.com/2.0/", {
+            method: "POST",
+            body: new URLSearchParams({
+                method: "user.getRecentTracks",
+                user: "martinpetkovski",
+                api_key: "d186251f2ae019335f832db01d96c2f9",
+                format: "json"
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                mostRecentTrack = data.recenttracks.track[0];
+                document.querySelector("#music-listeningnow").innerHTML = '<img class="albumCover" src="' + mostRecentTrack.image[3]["#text"] + '"/><div id="music-details"><div id="music-artist">' + mostRecentTrack.artist["#text"] + '</div> <div id="music-track">' + mostRecentTrack.name + "</div></div>";
+                document.querySelector("#musicLink").href = mostRecentTrack.url;
+            });
+
+        fetch("http://ws.audioscrobbler.com/2.0/", {
+            method: "POST",
+            body: new URLSearchParams({
+                method: "user.getTopAlbums",
+                user: "martinpetkovski",
+                api_key: "d186251f2ae019335f832db01d96c2f9",
+                period: "1month",
+                format: "json"
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                most_listened_album = data.topalbums.album[0];
+                console.log(most_listened_album);
+                document.querySelector("#music-heavyrotation").innerHTML = '<img class="albumCover" src="' + most_listened_album.image[3]["#text"] + '"/><div id="music-details"><div id="music-artist">' + most_listened_album.artist["name"] + '</div> <div id="music-track">' + most_listened_album.name + "</div></div>";
+                document.querySelector("#musicLinkHr").href = mostRecentTrack.url;
+            });
+    </script>
 
     <script type="text/javascript">
         movementStatic = true;
@@ -901,8 +974,8 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
