@@ -1051,15 +1051,15 @@
             var c = colors[colorIndex];
 
             var mesh = new THREE.Mesh(
-                new THREE.PlaneGeometry(10, 10),
+                new THREE.BoxGeometry(1, 1, 1),
                 new THREE.MeshStandardMaterial({
                     color: c
                 }));
 
-            mesh.scale.x = RandomFloat(0.1, 5.0);
-            mesh.scale.y = RandomFloat(0.1, 5.0);
-            mesh.scale.z = RandomFloat(0.1, 5.0);
-
+            mesh.scale.x = RandomFloat(1.0, 5.0);
+            mesh.scale.y = RandomFloat(1.0, 5.0);
+            mesh.scale.z = RandomFloat(1.0, 5.0);
+            
             scene.add(mesh);
             meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-20, 20), RandomFloat(-20, 20), RandomFloat(-10, 10)) });
         }
