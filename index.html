@@ -1012,10 +1012,10 @@
         function CanvasMouseMove(e) {
             var normalizedX = MapRange(e.clientX, 0, window.innerWidth, -1, 1);
             var normalizedY = MapRange(e.clientY, 0, window.innerHeight, -1, 1);
-            const modifier = 150;
+            const modifier = 200;
 
             camera.position.set(-normalizedX * modifier, normalizedY * modifier, 0);
-            camera.rotation.set(normalizedY * 0.1, normalizedX * 0.1, 0);
+            camera.rotation.set(normalizedY * -0.3, normalizedX * -0.3, 0);
         }
 
         function DrawLine(p1, p2) {
@@ -1057,12 +1057,12 @@
                     color: c
                 }));
 
-            mesh.scale.x = RandomFloat(1.0, 5.0);
-            mesh.scale.y = RandomFloat(1.0, 5.0);
-            mesh.scale.z = RandomFloat(1.0, 5.0);
+            mesh.scale.x = RandomFloat(1.0, 10.0);
+            mesh.scale.y = RandomFloat(1.0, 10.0);
+            mesh.scale.z = RandomFloat(1.0, 10.0);
             
             scene.add(mesh);
-            meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-20, 20), RandomFloat(-20, 20), RandomFloat(-10, 10)) });
+            meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-40, 40), RandomFloat(-40, 40), RandomFloat(-40, 40)) });
         }
 
         function Initialize() {
@@ -1074,7 +1074,7 @@
             light = new THREE.PointLight(color, intensity)
             scene.add(light)
 
-            const totalSpheres = 5000;
+            const totalSpheres = 3000;
 
             for (i = 0; i < totalSpheres; i++) {
                 CreateSphere();
