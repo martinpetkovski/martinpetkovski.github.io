@@ -18,7 +18,10 @@
             margin: 0 auto;
             padding: 0;
             font-family: Garet, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            overflow-x: hidden;
+        }
+
+        body {
+            background-color: #000;
         }
 
         #song {
@@ -51,19 +54,43 @@
                     display: inline-block;
                 }
 
-                #song #player #currentTimeDisplay {
-                    color: #FFF;
-                }
+            #song #currentTimeDisplay {
+                display: table;
+                width: 200px;
+                position: relative;
+                top: -120px;
+                color: #000;
+                padding: 10px;
+                border: 4px #000 solid;
+                backdrop-filter: blur(10px);
+                background-color: #FFF3;
+            }
+
+            #song #num {
+                position: absolute;
+                z-index: -1;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+                top: -450px;
+                left: -200px;
+                font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                font-size: 500px;
+                opacity: 0.5;
+                color: #FFF;
+            }
 
             #song #title {
-                font-size: 10vw;
+                font-size: 150px;
                 font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             }
 
             #song #lyrics {
                 margin: 0 auto;
                 color: #FFF;
-                font-size: 1.5em;
+                font-size: 5vw;
             }
 
                 #song #lyrics p {
@@ -82,18 +109,38 @@
                     }
 
                 #song #lyrics #stanzaEnd {
-                    margin-bottom: 40px;
+                    margin-bottom: 60px;
                 }
+
+        .dot {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #666;
+            margin: 0 5px;
+            cursor: pointer;
+            box-shadow: 0px 0px 2px inset #000;
+        }
+
+            .dot.playing {
+                background-color: #FFF;
+            }
 
         /* COMPONENT STYLES */
         button {
-            width: 70px;
-            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             background: #EEE;
             background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             color: #000 !important;
             border: none;
             border-radius: 20px;
+            font-size: 5vw;
+            vertical-align: middle;
         }
 
             button:hover {
@@ -128,7 +175,7 @@
                 height: 10px;
                 background-color: #FFF;
                 cursor: pointer;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
                 border-radius: 20px;
                 cursor: pointer;
@@ -141,7 +188,7 @@
                 width: 50px;
                 height: 10px;
                 background-color: #FFF;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
                 border-radius: 20px;
                 cursor: pointer;
@@ -153,13 +200,38 @@
                 width: 50px;
                 height: 10px;
                 background-color: #FFF;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
                 border-radius: 20px;
                 cursor: pointer;
                 background: rgb(255,255,255);
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
+
+        @media screen and (min-width: 1024px) {
+            #song #lyrics {
+                font-size: 2vw;
+            }
+
+            button {
+                font-size: 1vw;
+                width: 100px;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes songAnimation {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fade-out {
+            animation: songAnimation 0.2s ease-in 2 alternate;
         }
     </style>
 
@@ -519,6 +591,7 @@
     </script>
 
     <script>
+        var currentSong = 1;
         function FormatTime(time) {
             var minutes = Math.floor(time / 60);
             var seconds = Math.floor(time % 60);
@@ -544,7 +617,7 @@
                     const isHovered = verse.style.cursor === 'pointer';
                     const isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
 
-                    if (isHovered || isWithinCurrentTime ) {
+                    if (isHovered || isWithinCurrentTime) {
                         verse.style.opacity = 1;
                         verse.style.backdropFilter = "blur(15px)";
                         verse.style.backgroundColor = "#0003";
@@ -556,7 +629,7 @@
                 }
 
                 var timeDisplay = document.getElementById('currentTimeDisplay');
-                timeDisplay.textContent = FormatTime(currentTime);
+                timeDisplay.textContent = FormatTime(currentTime) + " / " + FormatTime(audioPlayer.duration);
             });
 
             seeker.addEventListener('input', (event) => {
@@ -591,36 +664,72 @@
         }
 
         function PlaySong(songId) {
-            jsonData = sjData.siotojazz[songId];
+            var song = document.getElementById('song');
+            song.classList.add('fade-out');
+            song.addEventListener('animationend', function () {
+                song.classList.remove('fade-out');
+            });
 
-            var backgroundElement = document.getElementById('background');
-            backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
+            song.addEventListener('animationiteration', function (event) {
+                jsonData = sjData.siotojazz[songId];
 
-            var titleElement = document.getElementById('title');
-            titleElement.textContent = jsonData.title;
+                var backgroundElement = document.getElementById('background');
+                backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
 
-            var lyricsElement = document.getElementById('lyrics');
-            var lyricsHTML = '';
-            for (var i = 0; i < jsonData.lyrics.length; i++) {
-                var verse = jsonData.lyrics[i];
-                var stanzaEnd = "";
-                if (verse.stanzaEnd) {
-                    stanzaEnd = "stanzaEnd";
+                var numElement = document.getElementById('num');
+                numElement.textContent = songId;
+
+                var titleElement = document.getElementById('title');
+                titleElement.textContent = jsonData.title;
+
+                var lyricsElement = document.getElementById('lyrics');
+                var lyricsHTML = '';
+                for (var i = 0; i < jsonData.lyrics.length; i++) {
+                    var verse = jsonData.lyrics[i];
+                    var stanzaEnd = "";
+                    if (verse.stanzaEnd) {
+                        stanzaEnd = "stanzaEnd";
+                    }
+                    lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" id="' + stanzaEnd + '">' + verse.text + '</p>';
                 }
-                lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" id="' + stanzaEnd + '">' + verse.text + '</p>';
+                lyricsElement.innerHTML = lyricsHTML;
+
+                var audioPlayer = document.getElementById('audio-player');
+                var audioSource = audioPlayer.querySelector('source');
+                audioSource.setAttribute('src', jsonData.audio);
+                audioPlayer.load();
+
+                SetUpAudioPlayer();
+            });
+        }
+
+        function InitializeSongDots() {
+            var dots = document.getElementById('dots');
+
+            dots.innerHTML = '';
+            var numElements = Object.keys(sjData.siotojazz).length;
+            for (var i = 1; i < numElements + 1; i++) {
+                currentSongClassMod = "";
+                if (i == currentSong)
+                    currentSongClassMod = " playing";
+
+                dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '"></div>';
             }
-            lyricsElement.innerHTML = lyricsHTML;
 
-            var audioPlayer = document.getElementById('audio-player');
-            var audioSource = audioPlayer.querySelector('source');
-            audioSource.setAttribute('src', jsonData.audio);
-            audioPlayer.load();
+            const allDots = document.querySelectorAll(".dot");
 
-            SetUpAudioPlayer();
+            allDots.forEach((song) => {
+                song.addEventListener("click", () => {
+                    currentSong = song.getAttribute("song-id");
+                    InitializeSongDots();
+                    PlaySong(currentSong);
+                });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            PlaySong(1);
+            InitializeSongDots();
+            PlaySong(currentSong);
         });
     </script>
 </head>
@@ -628,12 +737,14 @@
     <div id="song">
         <div id="background"></div>
         <div id="content">
+            <div id="dots"></div>
+            <div id="num"></div>
             <div id="title"></div>
+            <div id="currentTimeDisplay">00:00 / 00:00</div>
             <div id="player">
                 <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
                 <button class="element" id="btn-play"><i class="fas fa-play"></i></button>
                 <input class="element" type="range" id="seeker" max="1000" value="0" />
-                <span id="currentTimeDisplay">00:00</span>
             </div>
             <div id="lyrics"></div>
         </div>
