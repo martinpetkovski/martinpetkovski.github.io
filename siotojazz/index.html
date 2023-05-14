@@ -27,7 +27,7 @@
         #song {
             position: relative;
             width: 100vw;
-            min-height: 1000px;
+            min-height: 100vh;
             text-align: center;
         }
 
@@ -46,7 +46,8 @@
             }
 
             #song #player {
-                margin-bottom: 50px;
+                position:relative;
+                top: -200px;
             }
 
                 #song #player .element {
@@ -56,14 +57,15 @@
 
             #song #currentTimeDisplay {
                 display: table;
-                width: 200px;
+                width: 300px;
                 position: relative;
-                top: -120px;
+                top: -280px;
                 color: #000;
                 padding: 10px;
                 border: 4px #000 solid;
                 backdrop-filter: blur(10px);
                 background-color: #FFF3;
+                font-size: 30px;
             }
 
             #song #num {
@@ -83,19 +85,29 @@
             }
 
             #song #title {
-                font-size: 150px;
+                z-index: -1;
+                position: relative;
+                top: -80px;
+                font-size: 200px;
                 font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             }
 
             #song #lyrics {
+                position: relative;
                 margin: 0 auto;
                 color: #FFF;
                 font-size: 5vw;
+                max-width: 60vw;
+                background: rgb(0,0,0);
+                background: linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 100%);
+                backdrop-filter: blur(65px);
+                padding: 60px;
+                top: -140px;
+                border: 20px #000 solid;
             }
 
                 #song #lyrics p {
-                    display: table;
-                    width: auto;
+                    display:table;
                     padding: 0px 10px;
                     transition: 0.5s;
                     border: 3px solid #FFF0;
@@ -156,7 +168,7 @@
             -webkit-appearance: none;
             appearance: none;
             width: 80%;
-            height: 10px;
+            height: 50px;
             background-color: #eee;
             outline: none;
             padding: 0;
@@ -171,8 +183,8 @@
             #seeker::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 30px;
-                height: 10px;
+                width: 120px;
+                height: 50px;
                 background-color: #FFF;
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -185,8 +197,8 @@
             }
 
             #seeker::-moz-range-thumb {
-                width: 50px;
-                height: 10px;
+                width: 120px;
+                height: 50px;
                 background-color: #FFF;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
@@ -197,8 +209,8 @@
             }
 
             #seeker::-ms-thumb {
-                width: 50px;
-                height: 10px;
+                width: 120px;
+                height: 50px;
                 background-color: #FFF;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
@@ -584,6 +596,83 @@
                                 "propertyIndex": 1
                             },
                         ]
+                },
+                3:
+                {
+                    "background": "language.jpg",
+                    "title": "Language",
+                    "audio": "language.mp3",
+                    "lyrics": []
+                },
+                4:
+                {
+                    "background": "fragile.jpg",
+                    "title": "Fragile",
+                    "audio": "fragile.mp3",
+                    "lyrics": []
+                },
+                5:
+                {
+                    "background": "sun.jpg",
+                    "title": "Sun",
+                    "audio": "sun.mp3",
+                    "lyrics": []
+                },
+                6:
+                {
+                    "background": "jetpacks.jpg",
+                    "title": "Jetpacks",
+                    "audio": "jetpacks.mp3",
+                    "lyrics": []
+                },
+                7:
+                {
+                    "background": "ma3ho.jpg",
+                    "title": "Ma3Ho",
+                    "audio": "ma3ho.mp3",
+                    "lyrics": []
+                },
+                8:
+                {
+                    "background": "rites.jpg",
+                    "title": "Rites",
+                    "audio": "rites.mp3",
+                    "lyrics": []
+                },
+                9:
+                {
+                    "background": "mad.jpg",
+                    "title": "Mad",
+                    "audio": "mad.mp3",
+                    "lyrics": []
+                },
+                10:
+                {
+                    "background": "ink.jpg",
+                    "title": "Ink",
+                    "audio": "ink.mp3",
+                    "lyrics": []
+                },
+                11:
+                {
+                    "background": "let_you_go.jpg",
+                    "title": "Let You Go",
+                    "audio": "let_you_go.mp3",
+                    "lyrics": []
+                },
+                12:
+                {
+                    "background": "left_and_leaving.jpg",
+                    "title": "Left and Leaving",
+                    "audio": "left_and_leaving.mp3",
+                    "lyrics": []
+                },
+                13:
+                {
+                    "background": "zaminuvanje.jpg",
+                    "title": "Zaminuvanje",
+                    "audio": "zaminuvanje.mp3",
+                    "lyrics": []
                 }
             }
         }
@@ -619,17 +708,21 @@
 
                     if (isHovered || isWithinCurrentTime) {
                         verse.style.opacity = 1;
-                        verse.style.backdropFilter = "blur(15px)";
-                        verse.style.backgroundColor = "#0003";
+                        verse.style.backdropFilter = "blur(50px)";
+                        verse.style.borderColor = '#FFFF';
                     } else {
-                        verse.style.opacity = 0.4;
+                        verse.style.opacity = 0.3;
                         verse.style.backdropFilter = "blur(0px)";
-                        verse.style.backgroundColor = "#0000";
+                        verse.style.borderColor = '#0000'
                     }
                 }
 
                 var timeDisplay = document.getElementById('currentTimeDisplay');
                 timeDisplay.textContent = FormatTime(currentTime) + " / " + FormatTime(audioPlayer.duration);
+            });
+
+            audioPlayer.addEventListener("ended", function () {
+                PlaySong(parseInt(currentSong) + 1);
             });
 
             seeker.addEventListener('input', (event) => {
@@ -664,6 +757,7 @@
         }
 
         function PlaySong(songId) {
+            currentSong = songId;
             var song = document.getElementById('song');
             song.classList.add('fade-out');
             song.addEventListener('animationend', function () {
