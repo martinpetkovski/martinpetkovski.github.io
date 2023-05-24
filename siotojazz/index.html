@@ -2456,6 +2456,18 @@
             return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
         }
 
+        function UpdatePlayIcon() {
+            var audioPlayer = document.getElementById('audio-player');
+            var playButton = document.getElementById('btn-play');
+
+            if (audioPlayer.paused) {
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                playButton.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+
+        }
+
         function SetUpAudioPlayer() {
             var audioPlayer = document.getElementById('audio-player');
             audioPlayer.play();
@@ -2484,8 +2496,8 @@
                     var startTime = parseInt(verse.getAttribute("start-time"));
                     var endTime = parseInt(verse.getAttribute("end-time"));
 
-                    const isHovered = verse.style.cursor === 'pointer';
-                    const isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
+                    var isHovered = verse.style.cursor === 'pointer';
+                    var isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
 
                     if (isHovered || isWithinCurrentTime) {
                         verse.style.opacity = 1;
@@ -2494,12 +2506,14 @@
                     } else {
                         verse.style.opacity = 0.3;
                         verse.style.backdropFilter = "blur(0px)";
-                        verse.style.borderColor = '#0000'
+                        verse.style.borderColor = '#0000';
                     }
                 }
 
                 var timeDisplay = document.getElementById('currentTimeDisplay');
                 timeDisplay.textContent = FormatTime(currentTime) + " / " + FormatTime(audioPlayer.duration);
+
+                UpdatePlayIcon();
             });
 
             audioPlayer.addEventListener("ended", function () {
@@ -2507,31 +2521,33 @@
             });
 
             seeker.addEventListener('input', (event) => {
-                const value = event.target.value;
-                const percentage = value / 1000;
-                const duration = audioPlayer.duration;
-                const seekTime = duration * percentage;
+                var value = event.target.value;
+                var percentage = value / 1000;
+                var duration = audioPlayer.duration;
+                var seekTime = duration * percentage;
 
                 audioPlayer.currentTime = seekTime;
             });
 
-            const playButton = document.getElementById('btn-play');
+            var playButton = document.getElementById('btn-play');
 
             playButton.addEventListener('click', () => {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
-                    playButton.innerHTML = '<i class="fas fa-pause"></i>';
                 } else {
                     audioPlayer.pause();
-                    playButton.innerHTML = '<i class="fas fa-play"></i>';
                 }
+
+                console.log("click");
+
+                UpdatePlayIcon();
             });
 
-            const lyricsParagraphs = document.querySelectorAll("#lyrics p");
+            var lyricsParagraphs = document.querySelectorAll("#lyrics p");
 
             lyricsParagraphs.forEach((verse) => {
                 verse.addEventListener("click", () => {
-                    const startTime = verse.getAttribute("start-time");
+                    var startTime = verse.getAttribute("start-time");
                     audioPlayer.currentTime = startTime;
                     if (audioPlayer.paused)
                         audioPlayer.play();
@@ -2593,7 +2609,7 @@
                 dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '"></div>';
             }
 
-            const allDots = document.querySelectorAll(".dot");
+            var allDots = document.querySelectorAll(".dot");
 
             allDots.forEach((song) => {
                 song.addEventListener("click", () => {
