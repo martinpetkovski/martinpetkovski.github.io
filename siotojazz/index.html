@@ -46,85 +46,125 @@
             }
 
             #song #player {
-                position: relative;
-                top: -200px;
             }
 
                 #song #player .element {
                     color: #FFF;
-                    display: inline-block;
                 }
 
-            #song #currentTimeDisplay {
-                display: table;
-                width: 300px;
+            #song #playerContainer {
+                width: 35vw;
                 position: relative;
                 top: -280px;
-                color: #FFF;
-                padding: 10px;
                 border: 4px #FFF solid;
                 backdrop-filter: blur(10px);
+            }
+
+            #song #currentTimeDisplay {
+                display: inline-block;
+                color: #FFF;
+                padding: 10px 0px;
                 background-color: #FFF3;
                 font-size: 30px;
-            }
-
-            #song #num {
-                position: absolute;
-                z-index: -1;
-                left: 0;
-                right: 0;
-                margin-left: auto;
-                margin-right: auto;
                 width: 100%;
-                top: -450px;
-                left: -200px;
-                font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-                font-size: 500px;
-                opacity: 0.5;
-                color: #FFF;
             }
 
-            #song #title {
-                color: #FFF;
-                z-index: -1;
-                position: relative;
-                top: -80px;
-                font-size: 200px;
-                font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-                text-shadow: 0px 0px 20px #000;
+        #commonButtons {
+            display: flex;
+            position: relative;
+            padding: 0;
+        }
+
+            #commonButtons button {
+                flex: 1;
+                border-radius: 0px;
+                line-height: 0px;
+                font-size: 40px;
+                color: #888 !important;
+                padding: 5px 0px;
             }
 
-            #song #lyrics {
-                position: relative;
+            #commonButtons .btnActive {
+                color: #F00 !important;
+            }
+
+        #song #num {
+            position: absolute;
+            z-index: -1;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            top: -450px;
+            left: -200px;
+            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 500px;
+            opacity: 0.5;
+            color: #FFF;
+        }
+
+        #song #title {
+            color: #FFF;
+            z-index: -1;
+            position: relative;
+            top: -80px;
+            font-size: 200px;
+            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            text-shadow: 0px 0px 20px #000;
+        }
+
+        #song #lyrics {
+            position: relative;
+            margin: 0 auto;
+            color: #FFF;
+            font-size: 5vw;
+            max-width: 60vw;
+            background: rgb(10,10,20);
+            background: linear-gradient(90deg, rgba(10,10,20,0.9) 0%, rgba(10,10,20,0.6) 100%);
+            backdrop-filter: blur(65px);
+            padding: 60px;
+            top: -200px;
+            border: 5px #000 solid;
+        }
+
+        #song .lyricsVerseOnly {
+            background: transparent !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            padding: 0px !important;
+            display: block !important;
+        }
+
+            #song .lyricsVerseOnly p {
+                position: absolute;
                 margin: 0 auto;
-                color: #FFF;
-                font-size: 5vw;
-                max-width: 60vw;
-                background: rgb(10,10,20);
-                background: linear-gradient(90deg, rgba(10,10,20,0.9) 0%, rgba(10,10,20,0.6) 100%);
-                backdrop-filter: blur(65px);
-                padding: 60px;
-                top: -140px;
-                border: 5px #FFF solid;
+                width: 100%;
+                top: 0px;
+                left: 0px;
+                text-shadow: 0px 0px 5px #000;
+                transition: 0.3s;
+                font-size: 8vw;
+                text-align: left;
             }
 
-                #song #lyrics p {
-                    display: table;
-                    padding: 0px 10px;
-                    transition: 0.5s;
-                    border: 3px solid #FFF0;
+            #song #lyrics p {
+                display: table;
+                padding: 0px 10px;
+                transition: 0.5s;
+                border: 3px solid #FFF0;
+            }
+
+                #song #lyrics p:hover {
+                    opacity: 1;
+                    border: 3px solid #FFF;
+                    cursor: pointer;
+                    transition: 0.1s;
                 }
 
-                    #song #lyrics p:hover {
-                        opacity: 1;
-                        border: 3px solid #FFF;
-                        cursor: pointer;
-                        transition: 0.1s;
-                    }
-
-                #song #lyrics #stanzaEnd {
-                    margin-bottom: 60px;
-                }
+            #song #lyrics #stanzaEnd {
+                margin-bottom: 60px;
+            }
 
         .dot {
             display: inline-block;
@@ -169,33 +209,28 @@
         #seeker {
             -webkit-appearance: none;
             appearance: none;
-            width: 80%;
-            height: 50px;
-            background-color: #eee;
             outline: none;
+            background-color: #eee0;
+            width: 100%;
+            height: 30px;
             padding: 0;
-            margin: 0;
-            background-color: #3333;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 0px 5px inset #333;
-            border-radius: 20px;
-            vertical-align: middle;
+            margin: 7px 0px 2px 0px;
         }
 
             #seeker::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 120px;
-                height: 50px;
+                width: 5vw;
+                height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
-                border-radius: 20px;
                 cursor: pointer;
                 vertical-align: middle;
                 background: rgb(255,255,255);
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                margin: 0;
             }
 
                 #seeker::-webkit-slider-thumb:active {
@@ -206,17 +241,17 @@
             #seeker::-moz-range-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 120px;
-                height: 50px;
+                width: 5vw;
+                height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
-                border-radius: 20px;
                 cursor: pointer;
                 vertical-align: middle;
                 background: rgb(255,255,255);
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                margin: 0;
             }
 
                 #seeker::-moz-range-thumb:active {
@@ -227,17 +262,17 @@
             #seeker::-ms-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 120px;
-                height: 50px;
+                width: 5vw;
+                height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
-                border-radius: 20px;
                 cursor: pointer;
                 vertical-align: middle;
                 background: rgb(255,255,255);
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                margin: 0;
             }
 
             #seeker::-ms-thumb {
@@ -2693,7 +2728,17 @@
     </script>
 
     <script>
-        var currentSong = 11;
+        var currentSong = 1;
+        var shuffle = false;
+
+        const lyricsIconMap = new Map();
+        lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
+        lyricsIconMap.set('VERSE', 'fa-minus');
+        lyricsIconMap.set('FULL', 'fa-quote-right');
+
+        let currentLyricsMode = 2;
+        const lyricsIconArray = Array.from(lyricsIconMap.keys());
+
         function FormatTime(time) {
             var minutes = Math.floor(time / 60);
             var seconds = Math.floor(time % 60);
@@ -2731,20 +2776,37 @@
         }
 
         function SetUpLyrics() {
+            var lyricsContainer = document.getElementById('lyrics');
             var lyrics = document.querySelectorAll('#lyrics p');
             var audioPlayer = document.getElementById('audio-player');
 
-            lyrics.forEach((verse) => {
-                verse.addEventListener("click", () => {
-                    var startTime = verse.getAttribute("start-time");
-                    audioPlayer.currentTime = startTime;
-                    if (audioPlayer.paused)
-                        audioPlayer.play();
+            if (currentLyricsMode == 2) // full
+            {
+                lyrics.forEach((verse) => {
+                    verse.addEventListener("click", () => {
+                        var startTime = verse.getAttribute("start-time");
+                        audioPlayer.currentTime = startTime;
+                        if (audioPlayer.paused)
+                            audioPlayer.play();
+                    });
                 });
-            });
+            }
 
             audioPlayer.addEventListener('timeupdate', function () {
+                if (currentLyricsMode == 0) { // no lyrics
+                    lyricsContainer.style.display = "none";
+                    return;
+                }
+                else {
+                    lyricsContainer.style.display = "block";
+                }
+
                 var currentTime = audioPlayer.currentTime;
+                if (currentLyricsMode == 1) // verse only
+                {
+                    currentTime += 0.25;
+                }
+
                 for (var i = 0; i < lyrics.length; i++) {
                     var verse = lyrics[i];
                     var startTime = parseInt(verse.getAttribute("start-time"));
@@ -2753,14 +2815,26 @@
                     var isHovered = verse.style.cursor === 'pointer';
                     var isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
 
-                    if (isHovered || isWithinCurrentTime) {
-                        verse.style.opacity = 1;
-                        verse.style.backdropFilter = "blur(50px)";
-                        verse.style.borderColor = '#FFFF';
-                    } else {
-                        verse.style.opacity = 0.3;
-                        verse.style.backdropFilter = "blur(0px)";
-                        verse.style.borderColor = '#0000';
+                    if (currentLyricsMode == 1) { // verse only
+                        lyricsContainer.className = "lyricsVerseOnly";
+                        if (isWithinCurrentTime) {
+                            verse.style.opacity = 1;
+                        }
+                        else {
+                            verse.style.opacity = 0;
+                        }
+                    }
+                    else if (currentLyricsMode == 2) { // full lyrics
+                        lyricsContainer.className = "lyricsFull";
+                        if (isHovered || isWithinCurrentTime) {
+                            verse.style.opacity = 1;
+                            verse.style.backdropFilter = "blur(50px)";
+                            verse.style.borderColor = '#FFFF';
+                        } else {
+                            verse.style.opacity = 0.3;
+                            verse.style.backdropFilter = "blur(0px)";
+                            verse.style.borderColor = '#0000';
+                        }
                     }
                 }
             });
@@ -2798,6 +2872,10 @@
                 var totalSongs = Object.keys(sjData.siotojazz).length;
                 if (nextSong > totalSongs)
                     nextSong = 1;
+
+                if (shuffle)
+                    nextSong = Math.floor(Math.random() * totalSongs) + 1;
+
                 PlaySong(nextSong);
             });
 
@@ -2891,8 +2969,34 @@
             });
         }
 
+        function SetUpCommonButtons() {
+            var shuffleBtn = document.getElementById('shuffleBtn');
+            var lyricsBtn = document.getElementById('lyricsBtn');
+            shuffleBtn.addEventListener('click', () => {
+                shuffle = !shuffle;
+                if (shuffle) {
+                    shuffleBtn.classList.add('btnActive');
+                }
+                else {
+                    shuffleBtn.classList.remove('btnActive');
+                }
+            });
+
+            lyricsBtn.addEventListener('click', () => {
+                var lyricsButtonIcon = document.querySelectorAll("#lyricsBtn i")[0];
+
+                currentLyricsMode = (currentLyricsMode + 1) % lyricsIconArray.length;
+                const currentMode = lyricsIconArray[currentLyricsMode];
+                const currentIcon = lyricsIconMap.get(currentMode);
+                lyricsButtonIcon.className = `fas ${currentIcon}`;
+                SetUpLyrics();
+
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             SetUpAudioPlayer();
+            SetUpCommonButtons();
             PlaySong(currentSong);
         });
     </script>
@@ -2904,11 +3008,17 @@
             <div id="dots"></div>
             <div id="num"></div>
             <div id="title"></div>
-            <div id="currentTimeDisplay">00:00 / 00:00</div>
-            <div id="player">
-                <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
-                <button class="element" id="btn-play"><i class="fas fa-play"></i></button>
-                <input class="element" type="range" id="seeker" max="1000" value="0" />
+            <div id="playerContainer">
+                <div id="currentTimeDisplay">00:00 / 00:00</div>
+                <div id="commonButtons">
+                    <button id="btn-play"><i class="fas fa-play"></i></button>
+                    <button id="shuffleBtn"><i class="fas fa-random"></i></button>
+                    <button id="lyricsBtn"><i class="fas fa-eye-slash"></i></button>
+                </div>
+                <div id="player">
+                    <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
+                    <input class="element" type="range" id="seeker" max="1000" value="0" />
+                </div>
             </div>
             <div id="lyrics"></div>
         </div>
