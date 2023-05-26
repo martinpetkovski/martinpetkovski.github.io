@@ -131,7 +131,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background-color: #666;
+            background-color: #333;
             margin: 0 5px;
             cursor: pointer;
             box-shadow: 0px 0px 2px inset #000;
@@ -177,7 +177,7 @@
             margin: 0;
             background-color: #3333;
             backdrop-filter: blur(10px);
-            box-shadow: 0px 0px 3px inset #555;
+            box-shadow: 0px 0px 5px inset #333;
             border-radius: 20px;
             vertical-align: middle;
         }
@@ -198,28 +198,51 @@
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
 
+                #seeker::-webkit-slider-thumb:active {
+                    background: rgb(150,150,150);
+                    background: linear-gradient(40deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                }
+
             #seeker::-moz-range-thumb {
+                -webkit-appearance: none;
+                appearance: none;
                 width: 120px;
                 height: 50px;
                 background-color: #FFF;
+                cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
                 border: none;
                 border-radius: 20px;
                 cursor: pointer;
+                vertical-align: middle;
+                background: rgb(255,255,255);
+                background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+            }
+
+                #seeker::-moz-range-thumb:active {
+                    background: rgb(150,150,150);
+                    background: linear-gradient(40deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                }
+
+            #seeker::-ms-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 120px;
+                height: 50px;
+                background-color: #FFF;
+                cursor: pointer;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+                border: none;
+                border-radius: 20px;
+                cursor: pointer;
+                vertical-align: middle;
                 background: rgb(255,255,255);
                 background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
 
             #seeker::-ms-thumb {
-                width: 120px;
-                height: 50px;
-                background-color: #FFF;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                border: none;
-                border-radius: 20px;
-                cursor: pointer;
-                background: rgb(255,255,255);
-                background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                background: rgb(150,150,150);
+                background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
 
         @media screen and (min-width: 1024px) {
@@ -232,7 +255,6 @@
                 width: 100px;
             }
         }
-
         /* ANIMATIONS */
         @keyframes songAnimation {
             0% {
@@ -2690,29 +2712,39 @@
 
         }
 
-        function SetUpAudioPlayer() {
-            var audioPlayer = document.getElementById('audio-player');
-            audioPlayer.play();
+        function IsAutoplayAllowed() {
+            var isAutoplayAllowed = false;
 
-            var lyrics = document.querySelectorAll('#lyrics p');
-            var seeker = document.getElementById('seeker');
+            if ('autoplay' in document.createElement('video') || 'autoplay' in document.createElement('audio')) {
 
-            document.addEventListener('keydown', function (event) {
-                if (event.keyCode === 32) {
-                    event.preventDefault();
-
-                    if (audioPlayer.paused) {
-                        audioPlayer.play();
-                    } else {
-                        audioPlayer.pause();
+                if (typeof window.matchMedia === 'function') {
+                    var mediaQuery = window.matchMedia('(prefers-reduced-motion: no-preference)');
+                    if (mediaQuery.matches) {
+                        isAutoplayAllowed = true;
                     }
+                } else {
+                    isAutoplayAllowed = true;
                 }
+            }
+
+            return isAutoplayAllowed;
+        }
+
+        function SetUpLyrics() {
+            var lyrics = document.querySelectorAll('#lyrics p');
+            var audioPlayer = document.getElementById('audio-player');
+
+            lyrics.forEach((verse) => {
+                verse.addEventListener("click", () => {
+                    var startTime = verse.getAttribute("start-time");
+                    audioPlayer.currentTime = startTime;
+                    if (audioPlayer.paused)
+                        audioPlayer.play();
+                });
             });
 
             audioPlayer.addEventListener('timeupdate', function () {
                 var currentTime = audioPlayer.currentTime;
-                seeker.value = (audioPlayer.currentTime / audioPlayer.duration) * 1000;
-
                 for (var i = 0; i < lyrics.length; i++) {
                     var verse = lyrics[i];
                     var startTime = parseInt(verse.getAttribute("start-time"));
@@ -2731,6 +2763,29 @@
                         verse.style.borderColor = '#0000';
                     }
                 }
+            });
+        }
+
+        function SetUpAudioPlayer() {
+            var audioPlayer = document.getElementById('audio-player');
+
+            var seeker = document.getElementById('seeker');
+            var playButton = document.getElementById('btn-play');
+
+            document.addEventListener('keydown', function (event) {
+                if (event.keyCode === 32) {
+                    event.preventDefault();
+                    if (audioPlayer.paused) {
+                        audioPlayer.play();
+                    } else {
+                        audioPlayer.pause();
+                    }
+                }
+            });
+
+            audioPlayer.addEventListener('timeupdate', function () {
+                var currentTime = audioPlayer.currentTime;
+                seeker.value = (audioPlayer.currentTime / audioPlayer.duration) * 1000;
 
                 var timeDisplay = document.getElementById('currentTimeDisplay');
                 timeDisplay.textContent = FormatTime(currentTime) + " / " + FormatTime(audioPlayer.duration);
@@ -2743,7 +2798,7 @@
                 var totalSongs = Object.keys(sjData.siotojazz).length;
                 if (nextSong > totalSongs)
                     nextSong = 1;
-                PlaySong(1);
+                PlaySong(nextSong);
             });
 
             seeker.addEventListener('input', (event) => {
@@ -2755,8 +2810,6 @@
                 audioPlayer.currentTime = seekTime;
             });
 
-            var playButton = document.getElementById('btn-play');
-
             playButton.addEventListener('click', () => {
                 if (audioPlayer.paused) {
                     audioPlayer.play();
@@ -2764,24 +2817,13 @@
                     audioPlayer.pause();
                 }
 
-                console.log("click");
-
                 UpdatePlayIcon();
-            });
-
-            var lyricsParagraphs = document.querySelectorAll("#lyrics p");
-
-            lyricsParagraphs.forEach((verse) => {
-                verse.addEventListener("click", () => {
-                    var startTime = verse.getAttribute("start-time");
-                    audioPlayer.currentTime = startTime;
-                    if (audioPlayer.paused)
-                        audioPlayer.play();
-                });
             });
         }
 
         function PlaySong(songId) {
+            var audioPlayer = document.getElementById('audio-player');
+
             currentSong = songId;
             var song = document.getElementById('song');
             song.classList.add('fade-out');
@@ -2813,17 +2855,20 @@
                 }
                 lyricsElement.innerHTML = lyricsHTML;
 
-                var audioPlayer = document.getElementById('audio-player');
                 var audioSource = audioPlayer.querySelector('source');
                 audioSource.setAttribute('src', jsonData.audio);
                 audioPlayer.load();
 
-                SetUpAudioPlayer();
-                InitializeSongDots();
+                SetUpLyrics();
+                SetUpSongDots();
+            });
+
+            audioPlayer.addEventListener('loadeddata', function (e) {
+                audioPlayer.play();
             });
         }
 
-        function InitializeSongDots() {
+        function SetUpSongDots() {
             var dots = document.getElementById('dots');
 
             dots.innerHTML = '';
@@ -2841,14 +2886,13 @@
             allDots.forEach((song) => {
                 song.addEventListener("click", () => {
                     currentSong = song.getAttribute("song-id");
-                    InitializeSongDots();
                     PlaySong(currentSong);
                 });
             });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            InitializeSongDots();
+            SetUpAudioPlayer();
             PlaySong(currentSong);
         });
     </script>
