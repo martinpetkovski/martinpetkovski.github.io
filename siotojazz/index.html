@@ -22,6 +22,7 @@
 
         body {
             background-color: #000;
+            overflow: hidden;
         }
 
         #song {
@@ -43,6 +44,9 @@
                 position: relative;
                 z-index: 1;
                 padding: 20px;
+                display: grid;
+                grid-template-rows: auto auto auto 1fr;
+                height: 100vh; /* Or any desired height */
             }
 
             #song #player {
@@ -53,7 +57,7 @@
                 }
 
             #song #playerContainer {
-                width: 35vw;
+                width: 500px;
                 position: relative;
                 top: -280px;
                 border: 4px #FFF solid;
@@ -115,17 +119,22 @@
         }
 
         #song #lyrics {
-            position: relative;
-            margin: 0 auto;
+            position: absolute;
+            overflow: scroll;
+            overflow-x: hidden;
             color: #FFF;
-            font-size: 5vw;
-            max-width: 60vw;
+            font-size: 2vw;
             background: rgb(10,10,20);
             background: linear-gradient(90deg, rgba(10,10,20,0.9) 0%, rgba(10,10,20,0.6) 100%);
             backdrop-filter: blur(65px);
-            padding: 60px;
-            top: -200px;
+            padding: 0px;
             border: 5px #000 solid;
+            width: 60vw;
+            margin: 0 auto;
+            top: 550px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            bottom: 50px;
         }
 
         #song .lyricsVerseOnly {
@@ -148,23 +157,24 @@
                 text-align: left;
             }
 
-            #song #lyrics p {
-                display: table;
-                padding: 0px 10px;
-                transition: 0.5s;
-                border: 3px solid #FFF0;
+        #song #lyrics p {
+            opacity: 0;
+            display: table;
+            padding: 0px 10px;
+            transition: 0.5s;
+            border: 3px solid #FFF0;
+        }
+
+            #song #lyrics p:hover {
+                opacity: 1;
+                border: 3px solid #FFF;
+                cursor: pointer;
+                transition: 0.1s;
             }
 
-                #song #lyrics p:hover {
-                    opacity: 1;
-                    border: 3px solid #FFF;
-                    cursor: pointer;
-                    transition: 0.1s;
-                }
-
-            #song #lyrics #stanzaEnd {
-                margin-bottom: 60px;
-            }
+        #song #lyrics #stanzaEnd {
+            margin-bottom: 60px;
+        }
 
         .dot {
             display: inline-block;
@@ -220,7 +230,7 @@
             #seeker::-webkit-slider-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 5vw;
+                width: 100px;
                 height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
@@ -241,7 +251,7 @@
             #seeker::-moz-range-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 5vw;
+                width: 100px;
                 height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
@@ -262,7 +272,7 @@
             #seeker::-ms-thumb {
                 -webkit-appearance: none;
                 appearance: none;
-                width: 5vw;
+                width: 100px;
                 height: 30px;
                 background-color: #FFF;
                 cursor: pointer;
@@ -280,16 +290,85 @@
                 background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
 
-        @media screen and (min-width: 1024px) {
-            #song #lyrics {
-                font-size: 2vw;
+        @media screen and (max-width: 1024px) {
+
+            #content {
+                vertical-align: top;
             }
 
-            button {
-                font-size: 1vw;
-                width: 100px;
+            #song {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%; /* Or any desired width */
+                height: 100vh; /* Or any desired height */
             }
+
+            #song #lyrics {
+                font-size: 5vw;
+                width: 90vw;
+            }
+
+            #song #dots {
+                position:relative;
+                z-index: 500;
+            }
+
+            #song #title {
+                position: initial;
+                font-size: 20vw;
+                text-align: center;
+                width: 100vw;
+                margin-top: -15vw;
+                margin-bottom: -15vw;
+                z-index: -1;
+            }
+
+            #song #num {
+                display: none;
+            }
+
+            #song #playerContainer {
+                position: initial;
+                top: 0;
+                margin: 0;
+                width: 90vw;
+                margin: 0 auto;
+            }
+
+            #song #lyrics {
+                top:80vw;
+            }
+
+            #song #playerContainer #currentTimeDisplay {
+                font-size: 8vw;
+            }
+
+            #song #playerContainer #commonButtons button {
+                font-size: 8vw !important;
+                padding: 25px !important;
+            }
+
+            #seeker {
+                height: 8vw;
+            }
+
+                #seeker::-webkit-slider-thumb {
+                    height: 8vw;
+                    width: 20vw;
+                }
+
+                #seeker::-moz-range-thumb {
+                    height: 8vw;
+                    width: 20vw;
+                }
+
+                #seeker::-ms-thumb {
+                    height: 8vw;
+                    width: 20vw;
+                }
         }
+
         /* ANIMATIONS */
         @keyframes songAnimation {
             0% {
@@ -2730,6 +2809,7 @@
     <script>
         var currentSong = 1;
         var shuffle = false;
+        var loop = false;
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -2876,6 +2956,9 @@
                 if (shuffle)
                     nextSong = Math.floor(Math.random() * totalSongs) + 1;
 
+                if (loop)
+                    nextSong = currentSong;
+
                 PlaySong(nextSong);
             });
 
@@ -2971,7 +3054,9 @@
 
         function SetUpCommonButtons() {
             var shuffleBtn = document.getElementById('shuffleBtn');
+            var loopBtn = document.getElementById('loopBtn');
             var lyricsBtn = document.getElementById('lyricsBtn');
+
             shuffleBtn.addEventListener('click', () => {
                 shuffle = !shuffle;
                 if (shuffle) {
@@ -2979,6 +3064,16 @@
                 }
                 else {
                     shuffleBtn.classList.remove('btnActive');
+                }
+            });
+
+            loopBtn.addEventListener('click', () => {
+                loop = !loop;
+                if (loop) {
+                    loopBtn.classList.add('btnActive');
+                }
+                else {
+                    loopBtn.classList.remove('btnActive');
                 }
             });
 
@@ -3012,7 +3107,8 @@
                 <div id="currentTimeDisplay">00:00 / 00:00</div>
                 <div id="commonButtons">
                     <button id="btn-play"><i class="fas fa-play"></i></button>
-                    <button id="shuffleBtn"><i class="fas fa-random"></i></button>
+                    <button id="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
+                    <button id="loopBtn"><i class="fas fa-redo"></i></button>
                     <button id="lyricsBtn"><i class="fas fa-eye-slash"></i></button>
                 </div>
                 <div id="player">
