@@ -6,27 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вечер на Камерна Музика</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@100&family=Zen+Kaku+Gothic+Antique:wght@500&display=swap" rel="stylesheet">
-    <style>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@200&family=Noto+Serif+Display:wght@500&display=swap" rel="stylesheet">    
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<style>
         * {
             margin: 0;
             padding: 0;
         }
 
         body {
-            font-family: 'Zen Kaku Gothic Antique', sans-serif;
+            font-family: 'Noto Sans Mono', monospace;
             background-color: transparent;
             color: white;
             background-color: #000;
         }
 
         h1, h2 {
-            font-family: 'Playfair Display', serif;
             margin: 0;
             padding: 0;
+			font-family: 'Noto Serif Display', serif;
         }
 
         .background {
@@ -58,7 +57,6 @@
 
         p {
             margin: 20px 0px;
-            text-align: justify;
             font-size: calc(2vw);
         }
 
@@ -116,6 +114,33 @@
             text-align: center;
             margin-top: 40px;
         }
+
+		@media (max-width: 767px) {
+			#main .performer-name {
+				font-size: 2.3em;
+			}
+
+			.performer-column p {
+				font-size: 1.5em;
+			}
+
+			.event-details p {
+				font-size: 1.5em;
+			}
+
+			h2 {
+				font-size: 2em;
+			}
+
+			.event-details h2 {
+				font-size: 3em;
+				color: #F60;
+			}
+
+			.container {
+				max-width: 100%;
+			}
+		}
     </style>
 </head>
 
@@ -160,8 +185,8 @@
         <h1 style="text-align:center">Програма</h1>
 
         <section class="event-details">
+			<h3>Арво Перт</h3>
             <h2>Fratres</h2>
-            <h3>Арво Перт</h3>
             <p>
                 Откако ги отфрлил сите елементи на модернизмот, а и долго време студирајќи Грегоријанско пеење и рана полифонија, вo 1976 Арво Перт го создал својот оригинален музички јазик.
                 Го нарекол “тинтинабули” (tintinnabuli) – од латинскиот “tintinnabulum” што значи ѕвонење; мало манастирскo ѕвонче.
@@ -175,8 +200,8 @@
         </section>
 
         <section class="event-details">
+			<h3>Бела Барток</h3>
             <h2>Рапсодија бр.1</h2>
-            <h3>Бела Барток</h3>
             <p>
                 Рапсодијата бр.1 е посветена на унгарскиот виолинист Јозеф Сигети.
                 Целта на Барток била да го приближи источно-европскиот фолклорниот стил на свирење до западната публика.
@@ -186,8 +211,8 @@
         </section>
 
         <section class="event-details">
+			<h3>Томислав Зографски</h3>
             <h2>Suita op.12</h2>
-            <h3>Томислав Зографски</h3>
             <p>
                 Ретко изведуваната “Суита оп. 12 за виолина и пијано” е производ од првата етапа од опусот на реномираниот македонски композитор Томислав Зографски.
                 Тука се насетува влијанието од композитори како Прокофјев и Стравински и како резултат на тоа, Зографски е првиот кој внел елементи од неокласицизмот во македонската музика.
@@ -196,8 +221,8 @@
         </section>
 
         <section class="event-details">
+			<h3>Урсула Мамлок</h3>
             <h2>Polyphony No.1: I. eight note = 48</h2>
-            <h3>Урсула Мамлок</h3>
             <h3 style="margin-top:15px;">Ментор: проф. Марјан Бакревски</h3>
             <p>
                 Апстрактниот стил на авангардната германско-американска композиторка може да се спореди со негативниот простор во цртањето.
@@ -208,10 +233,10 @@
         </section>
 
         <section class="event-details">
+			<h3>Игор Стравински</h3>
             <h2>
                 Duo concertant
             </h2>
-            <h3>Игор Стравински</h3>
 
             <ul>
                 <li>Cantilene</li>
@@ -228,14 +253,14 @@
         </section>
 
         <section class="event-details">
+			<h3>Роберт Дејвидсон</h3>
             <h2>Lost in light</h2>
-            <h3>Роберт Дејвидсон</h3>
             <p>Lost in light e музички одраз на поемата “I am not yours” на американската поетеса Сара Тисдејл (Sara Teasdale).  Со изборот на овие три инструменти австралиски композитор Роберт Дејвидсон  создава исклучително комплементарен звук. Слободно може да се класифицира како современ импресионизам. Со аура на “je ne sais quoi” елемент, ни дава потсетување на езотеричните својства на музиката.</p>
         </section>
 
         <section class="event-details">
+			<h3>Камиј Сен-Санс</h3>
             <h2>Danse macabre</h2>
-            <h3>Камиј Сен-Санс</h3>
             <p>
 
                 Danse мacabre или Танц на Смртта e средновековен алегориски концепт за непобијната моќ на Смртта  изразен преку различните видови на уметност- драма, поезија, музика..
