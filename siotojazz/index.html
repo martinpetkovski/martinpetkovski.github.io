@@ -14,6 +14,11 @@
             src: url('Garet.ttf') format('truetype');
         }
 
+        @font-face {
+            font-family: 'Garet-Heavy';
+            src: url('Garet-Heavy.ttf') format('truetype');
+        }
+
         * {
             margin: 0 auto;
             padding: 0;
@@ -25,6 +30,34 @@
             overflow-x: hidden;
         }
 
+        .hideMenu {
+            opacity: 0 !important;
+            z-index: -1 !important;
+            transform: scaleX(0) translate(100%);
+            transition: 0.4s;
+        }
+
+        .hideSongContent {
+            opacity: 0 !important;
+            transform: scaleX(0) translate(100%);
+            z-index: -5 !important;
+            transition: 0.4s;
+        }
+
+        #menuBtn {
+            position: fixed;
+            top: 50px;
+            left: 50px;
+            z-index: 10000;
+            font-size: 50px;
+            transition: 0.4s;
+        }
+
+        .activeMenuButton {
+            transform: scaleY(0.5);
+            transition: 0.4s;
+        }
+
         #song {
             position: relative;
             width: 100vw;
@@ -33,10 +66,10 @@
         }
 
             #song #background {
-	            position: fixed;
-	            width: 100vw;
-	            height: 0px;
-	            background-size: cover;
+                position: fixed;
+                width: 100vw;
+                height: 0px;
+                background-size: cover;
             }
 
             #song #content {
@@ -49,6 +82,8 @@
             }
 
             #song #player {
+                display: flex;
+                vertical-align: middle;
             }
 
                 #song #player .element {
@@ -56,41 +91,39 @@
                 }
 
             #song #playerContainer {
-                width: 500px;
-                position: relative;
-                top: -280px;
-                border: 4px #333 solid;
-                backdrop-filter: blur(10px);
-	            background-color: #0003;
+                background-color: #f4f3ea;
+                width: calc(100vw - 17px);
+                position: absolute;
+                text-align: center;
+                margin: 0 auto;
+                z-index: 100;
+                transition: 0.4s;
             }
 
-            #song #currentTimeDisplay {
-                display: inline-block;
-                color: #f4f3ea;
-                padding: 10px 0px;
+            #song #currentTimeDisplay, #song #totalTimeDisplay {
+                color: #000;
                 font-size: 30px;
                 width: 100%;
             }
 
-        #commonButtons {
-            display: flex;
-            position: relative;
-            padding: 0;
-            box-shadow: 0px 0px 5px #666;
+        #playerHeader {
+            margin: 100px;
         }
 
-            #commonButtons button {
-                flex: 1;
-                border-radius: 0px;
-                line-height: 0px;
-                font-size: 40px;
-                color: #444 !important;
-                padding: 5px 0px;
-            }
+        #playerTitle, #playerSubtitle {
+            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            line-height: 1em;
+        }
 
-            #commonButtons .btnActive {
-                color: #F00 !important;
-            }
+        #playerSubtitle {
+            font-family: Garet, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 3em;
+            margin:30px 0px 0px 0px;
+        }
+
+        #playerTitle {
+            font-size: 10em;
+        }
 
         #song #num {
             position: absolute;
@@ -122,9 +155,9 @@
             box-sizing: border-box;
             color: #111;
             font-size: 2.8vw;
-            padding: 100px;/*
+            padding: 100px; /*
             border: 5px #111 solid;*/
-            margin-top: -300px;
+            margin-top: -200px;
             width: 90vw;
         }
 
@@ -137,8 +170,8 @@
         }
 
             #song .lyricsVerseOnly p {
-	            position: absolute;
-	            top: 800px;
+                position: absolute;
+                top: 800px;
                 margin: 0 auto;
                 width: 80vw;
                 transition: 0.3s;
@@ -165,56 +198,83 @@
             margin-bottom: 80px;
         }
 
+        #song #dotsContainer {
+            display: flex;
+            z-index: 500;
+        }
+
+            #song #dotsContainer #dots {
+                width: 1000px;
+            }
+
         .dot {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #888;
-            margin: 0 5px;
+            width: 180px;
+            margin: 10px;
             cursor: pointer;
-            box-shadow: 0px 0px 2px inset #000;
+            border: 3px solid #111;
+            padding: 10px;
+            font-size: 20pt;
         }
 
             .dot.playing {
                 background-color: #111;
+                color: #FFF;
             }
 
-        /* COMPONENT STYLES */
-        button {
+        #commonButtons {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 200px;
-	        padding: 20px;
-            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            background: #EEE;
-            background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(220,220,220,1) 100%);
-            color: #000 !important;
-            border: none;
-            border-radius: 20px;
-            font-size: 5vw;
-            vertical-align: middle;
+            position: relative;
+            padding: 0;
+            width: 800px;
+            margin-top: 100px;
         }
 
-            button:hover {
-                background: #DDD;
-                cursor: pointer;
+            #commonButtons button {
+                flex: 1;
+                font-size: 40px;
+                padding: 5px 0px;
             }
 
-            button:active {
-                background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(220,220,220,1) 100%);
-                box-shadow: inset 0px 0px 2px #555 !important;
+            #commonButtons .btnActive {
+                background-color: #000;
+                color: #f4f3ea;
+            }
+
+        #albumCover img {
+            width: 50%;
+            margin-bottom: 80px;
+        }
+
+        /* COMPONENT STYLES */
+        button, .dot {
+            color: #000;
+            background-color: transparent;
+            border: 3px solid #111;
+            cursor: pointer;
+            margin: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+            button:hover, .dot:hover {
+                background: #000;
+                color: #FFF;
+                transition: 0.2s;
+            }
+
+            button:active, .dot:active {
+                background: #333;
+                color: #FFF;
             }
 
         #seeker {
+            width: 500%;
             -webkit-appearance: none;
             appearance: none;
             outline: none;
-            background-color: #eee0;
-            width: 100%;
-            height: 30px;
-            padding: 0;
+            background-color: #000;
+            backdrop-filter: blur(10px);
+            height: 36px;
             margin: 7px 0px 2px 0px;
         }
 
@@ -223,20 +283,16 @@
                 appearance: none;
                 width: 100px;
                 height: 30px;
-                background-color: #FFF;
+                background-color: #F00;
                 cursor: pointer;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                border: none;
+                border: 3px #000 solid;
                 cursor: pointer;
                 vertical-align: middle;
-                background: rgb(255,255,255);
-                background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
                 margin: 0;
             }
 
                 #seeker::-webkit-slider-thumb:active {
-                    background: rgb(150,150,150);
-                    background: linear-gradient(40deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                    background-color: #f4f3ea;
                 }
 
             #seeker::-moz-range-thumb {
@@ -244,20 +300,16 @@
                 appearance: none;
                 width: 100px;
                 height: 30px;
-                background-color: #FFF;
-                cursor: pointer;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-                border: none;
+                background-color: #f4f3ea;
+                border-radius: 0px;
+                border: 3px #000 solid;
                 cursor: pointer;
                 vertical-align: middle;
-                background: rgb(255,255,255);
-                background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
                 margin: 0;
             }
 
                 #seeker::-moz-range-thumb:active {
-                    background: rgb(150,150,150);
-                    background: linear-gradient(40deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
+                    background-color: #f4f3ea;
                 }
 
             #seeker::-ms-thumb {
@@ -281,84 +333,45 @@
                 background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%);
             }
 
+            #creditsContainer {
+                margin-top: 100px;
+            }
+
+        #creditsTitle {
+            margin: 60px 0px;
+            font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 2em;
+            line-height: 1em;
+        }
+
+            #creditsPerson {
+                font-size:2em;
+            }
+
+            #creditsSection {
+                margin-top: 20px;
+            }
+
         @media screen and (max-width: 1024px) {
 
-            #content {
-                vertical-align: top;
+            * {
+                font-family: Garet-Heavy, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             }
 
-            #song {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%; /* Or any desired width */
-                height: 100vh; /* Or any desired height */
+            #song #title {
+                font-size: 10vw;
+                margin-top: 10vw;
             }
 
-                #song #lyrics {
-                    font-size: 5vw;
-                    width: 90vw;
-	                margin-top: 0px;
-                }
-
-                #song #dots {
-                    position: relative;
-                    z-index: 500;
-                }
-
-                #song #title {
-                    position: initial;
-                    font-size: 20vw;
-                    text-align: center;
-                    width: 100vw;
-                    margin-top: -15vw;
-                    margin-bottom: -15vw;
-                    z-index: -1;
-                }
-
-                #song #num {
-                    display: none;
-                }
-
-                #song #playerContainer {
-                    position: initial;
-                    top: 0;
-                    margin: 0;
-                    width: 90vw;
-                    margin: 0 auto;
-                }
-
-                #song #lyrics {
-                    top: 80vw;
-                }
-
-                #song #playerContainer #currentTimeDisplay {
-                    font-size: 8vw;
-                }
-
-                #song #playerContainer #commonButtons button {
-                    font-size: 8vw !important;
-                    padding: 25px !important;
-                }
-
-            #seeker {
-                height: 8vw;
+            #song #num {
+                display:none;
             }
 
-                #seeker::-webkit-slider-thumb {
-                    height: 8vw;
-                    width: 20vw;
-                }
-
-                #seeker::-moz-range-thumb {
-                    height: 8vw;
-                    width: 20vw;
-                }
-
-                #seeker::-ms-thumb {
-                    height: 8vw;
-                    width: 20vw;
-                }
+            #song #lyrics {
+                font-size: 2em;
+                padding: 10px;
+                margin-top: -100px;
+            }
         }
 
         /* ANIMATIONS */
@@ -2683,6 +2696,7 @@
         var currentSong = 1;
         var shuffle = false;
         var loop = false;
+        var menuState = true;
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -2703,8 +2717,10 @@
             var playButton = document.getElementById('btn-play');
 
             if (audioPlayer.paused) {
+                playButton.classList.remove('btnActive');
                 playButton.innerHTML = '<i class="fas fa-play"></i>';
             } else {
+                playButton.classList.add('btnActive');
                 playButton.innerHTML = '<i class="fas fa-pause"></i>';
             }
 
@@ -2778,18 +2794,18 @@
                         }
                     }
                     else if (currentLyricsMode == 2) { // full lyrics
-	                    lyricsContainer.className = "lyricsFull";
-	                    if (isHovered || isWithinCurrentTime) {
-		                    verse.style.opacity = 1;
-		                    verse.style.backdropFilter = "blur(50px)";
-		                    verse.style.borderColor = '#000F';
-	                    } else {
-		                    verse.style.opacity = 0.3;
-		                    verse.style.backdropFilter = "blur(0px)";
-		                    verse.style.borderColor = '#0000';
-	                    }
+                        lyricsContainer.className = "lyricsFull";
+                        if (isHovered || isWithinCurrentTime) {
+                            verse.style.opacity = 1;
+                            verse.style.backdropFilter = "blur(50px)";
+                            verse.style.borderColor = '#000F';
+                        } else {
+                            verse.style.opacity = 0.3;
+                            verse.style.backdropFilter = "blur(0px)";
+                            verse.style.borderColor = '#0000';
+                        }
                     } else {
-	                    lyricsContainer.className = "lyricsBackground";
+                        lyricsContainer.className = "lyricsBackground";
                     }
                 }
             });
@@ -2817,7 +2833,9 @@
                 seeker.value = (audioPlayer.currentTime / audioPlayer.duration) * 1000;
 
                 var timeDisplay = document.getElementById('currentTimeDisplay');
-                timeDisplay.textContent = FormatTime(currentTime) + " / " + FormatTime(audioPlayer.duration);
+                var totalTimeDisplay = document.getElementById('totalTimeDisplay');
+                timeDisplay.textContent = FormatTime(currentTime);
+                totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
 
                 UpdatePlayIcon();
             });
@@ -2904,6 +2922,21 @@
             });
         }
 
+        function ToggleMenu(show) {
+            menuState = show;
+            var menuBtn = document.getElementById("menuBtn");
+            if (show) {
+                document.getElementById('playerContainer').classList.remove('hideMenu');
+                document.getElementById('songContent').classList.add('hideSongContent');
+                menuBtn.classList.remove('activeMenuButton');
+            }
+            else {
+                document.getElementById('playerContainer').classList.add('hideMenu');
+                document.getElementById('songContent').classList.remove('hideSongContent');
+                menuBtn.classList.add('activeMenuButton');
+            }
+        }
+
         function SetUpSongDots() {
             var dots = document.getElementById('dots');
 
@@ -2914,13 +2947,15 @@
                 if (i == currentSong)
                     currentSongClassMod = " playing";
 
-                dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '"></div>';
+                console.log(sjData.siotojazz);
+                dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '">' + i + '. ' + sjData.siotojazz[i].title + '</div> ';
             }
 
             var allDots = document.querySelectorAll(".dot");
 
             allDots.forEach((song) => {
                 song.addEventListener("click", () => {
+                    ToggleMenu(false);
                     currentSong = song.getAttribute("song-id");
                     PlaySong(currentSong);
                 });
@@ -2931,6 +2966,7 @@
             var shuffleBtn = document.getElementById('shuffleBtn');
             var loopBtn = document.getElementById('loopBtn');
             var lyricsBtn = document.getElementById('lyricsBtn');
+            var menuBtn = document.getElementById('menuBtn');
 
             shuffleBtn.addEventListener('click', () => {
                 shuffle = !shuffle;
@@ -2962,6 +2998,10 @@
                 SetUpLyrics();
 
             });
+
+            menuBtn.addEventListener('click', () => {
+                ToggleMenu(!menuState);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -2975,23 +3015,139 @@
     <div id="song">
         <div id="background"></div>
         <div id="content">
-            <div id="dots"></div>
-            <div id="num"></div>
-            <div id="title"></div>
+
             <div id="playerContainer">
-                <div id="currentTimeDisplay">00:00 / 00:00</div>
+
+                <div id="playerHeader">
+                    <div id="playerTitle">SIOTO JAZZ</div>
+                    <div id="playerSubtitle">POSTCARD FROM THE ISLAND OF ATLAS</div>
+                </div>
+
+                <div id="albumCover"><img src="sioto_jazz_cover.png" style="width:50%;" /></div>
+
+                <div id="dotsContainer">
+                    <div id="dots"></div>
+                </div>
+
                 <div id="commonButtons">
                     <button id="btn-play"><i class="fas fa-play"></i></button>
                     <button id="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
                     <button id="loopBtn"><i class="fas fa-redo"></i></button>
                     <button id="lyricsBtn"><i class="fas fa-eye-slash"></i></button>
                 </div>
+
                 <div id="player">
+                    <div id="currentTimeDisplay">00:00</div>
                     <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
                     <input class="element" type="range" id="seeker" max="1000" value="0" />
+                    <div id="totalTimeDisplay">00:00</div>
+                </div>
+
+                <div id="creditsContainer">
+                    <div id="creditsTitle">Sioto Jazz are</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Anastasija Trajkovska</div>
+                        <div id="creditsFor">Vocals, Guitar</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Eva Todorovska</div>
+                        <div id="creditsFor">Vocals, Backing Vocals, Guitar, Bass</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Martin Petkovski</div>
+                        <div id="creditsFor">Lyricist, Guitar, Piano, Bass, Vocals, Backing Vocals</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">-</div>
+                        <div id="creditsFor">Saxophone</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Walter Martin Eggotto</div>
+                        <div id="creditsFor">Drums, Percussion</div>
+                    </div>
+
+                    <div id="creditsTitle">Additional Personnel</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Målfrid Wigdahl</div>
+                        <div id="creditsFor">Synth, Double Bass, Percussion</div>
+                    </div>
+
+                    <div id="creditsSection">
+                        <div id="creditsPerson">-</div>
+                        <div id="creditsFor">Electronic Wind Instrument</div>
+                    </div>
+
+                    <div id="creditsSection">
+                        <div id="creditsPerson">-</div>
+                        <div id="creditsFor">Chimes</div>
+                    </div>
+
+                    <div id="creditsTitle">Producer</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Martin Petkovski</div>
+                        <div id="creditsFor"></div>
+                    </div>
+
+                    <div id="creditsTitle">Executive Producers</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Martin Petkovski</div>
+                        <div id="creditsFor"></div>
+                    </div>
+
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Andrej Bogatinoski</div>
+                        <div id="creditsFor"></div>
+                    </div>
+
+                    <div id="creditsTitle">Mixed and Mastered by</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Victor Saldaña</div>
+                        <div id="creditsFor"></div>
+                    </div>
+
+                    <div id="creditsTitle">Recorded at</div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Caymene Studios</div>
+                        <div id="creditsFor">Bitola, Macedonia</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Cickey Home Recordings</div>
+                        <div id="creditsFor">Oslo, Norway</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Kamai Sobata Dolu</div>
+                        <div id="creditsFor">Bitola, Macedonia</div>
+                    </div>
+                    <div id="creditsSection">
+                        <div id="creditsPerson">Mellivora Studio</div>
+                        <div id="creditsFor">Bitola, Macedonia</div>
+                    </div>
+
+                    <div id="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 1.5em;">For their musical contributions or continuous support we would like to thank the following people</div>
+                    <div style="font-size:0.5em;">
+                        <div id="creditsSection">
+                            <div id="creditsPerson" style="width: 50%;">
+                                Viktor Stojcheski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Shaklevska,
+                                Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Kiril Gagachev, Petar Kotevski,
+                                Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="creditsSection" style="margin: 100px 0px 50px 0px;">
+                        <div id="creditsPerson"></div>
+                        <div id="creditsFor">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.</div>
+                    </div>
                 </div>
             </div>
-            <div id="lyrics"></div>
+
+            <div id="menuBtn"><i class="fa fa-bars"></i></div>
+
+            <div id="songContent">
+                <div id="num"></div>
+                <div id="title"></div>
+                <div id="lyrics"></div>
+            </div>
         </div>
     </div>
 </body>
