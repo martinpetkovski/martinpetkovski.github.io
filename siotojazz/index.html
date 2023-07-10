@@ -52,6 +52,7 @@
             z-index: 10000;
             font-size: 50px;
             transition: 0.6s ease-in-out;
+            cursor: pointer;
         }
 
         .activeMenuButton {
@@ -2841,8 +2842,6 @@
             audioPlayer.addEventListener("ended", function () {
                 var nextSong = parseInt(currentSong) + 1;
                 var totalSongs = Object.keys(sjData.siotojazz).length;
-                if (nextSong > totalSongs)
-                    nextSong = 1;
 
                 if (shuffle)
                     nextSong = Math.floor(Math.random() * totalSongs) + 1;
@@ -2874,6 +2873,13 @@
         }
 
         function PlaySong(songId) {
+            var totalSongs = Object.keys(sjData.siotojazz).length;
+            if (songId > totalSongs)
+                songId = 1;
+
+            if (songId < 1)
+                songId = totalSongs;
+
             var audioPlayer = document.getElementById('audio-player');
 
             currentSong = songId;
@@ -2945,7 +2951,6 @@
                 if (i == currentSong)
                     currentSongClassMod = " playing";
 
-                console.log(sjData.siotojazz);
                 dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '">' + i + '. ' + sjData.siotojazz[i].title + '</div> ';
             }
 
@@ -2963,8 +2968,9 @@
         function SetUpCommonButtons() {
             var shuffleBtn = document.getElementById('shuffleBtn');
             var loopBtn = document.getElementById('loopBtn');
-            var lyricsBtn = document.getElementById('lyricsBtn');
             var menuBtn = document.getElementById('menuBtn');
+            var prevBtn = document.getElementById('prevBtn');
+            var nextBtn = document.getElementById('nextBtn');
 
             shuffleBtn.addEventListener('click', () => {
                 shuffle = !shuffle;
@@ -2986,15 +2992,12 @@
                 }
             });
 
-            lyricsBtn.addEventListener('click', () => {
-                var lyricsButtonIcon = document.querySelectorAll("#lyricsBtn i")[0];
+            prevBtn.addEventListener('click', () => {
+                PlaySong(currentSong - 1);
+            });
 
-                currentLyricsMode = (currentLyricsMode + 1) % lyricsIconArray.length;
-                const currentMode = lyricsIconArray[currentLyricsMode];
-                const currentIcon = lyricsIconMap.get(currentMode);
-                lyricsButtonIcon.className = `fas ${currentIcon}`;
-                SetUpLyrics();
-
+            nextBtn.addEventListener('click', () => {
+                PlaySong(currentSong + 1);
             });
 
             menuBtn.addEventListener('click', () => {
@@ -3028,10 +3031,12 @@
                 </div>
 
                 <div id="commonButtons">
+                    <button id="prevBtn"><i class="fas fa-step-backward"></i></button>
                     <button id="btn-play"><i class="fas fa-play"></i></button>
                     <button id="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
                     <button id="loopBtn"><i class="fas fa-redo"></i></button>
-                    <button id="lyricsBtn"><i class="fas fa-eye-slash"></i></button>
+                    <button id="nextBtn"><i class="fas fa-step-forward"></i></button>
+
                 </div>
 
                 <div id="player">
