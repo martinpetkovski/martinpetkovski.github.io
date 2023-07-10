@@ -3,7 +3,8 @@
 <head>
     <title>SIOTO JAZZ</title>
     <meta charset="iso-8859-1" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" integrity="sha512-9YHSK59/rjvhtDcY/b+4rdnl0V4LPDWdkKceBl8ZLF5TB6745ml1AfluEU6dFWqwDw9lPvnauxFgpKvJqp7jiQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         @font-face {
             font-family: 'Astrella';
@@ -32,17 +33,17 @@
         }
 
         .hideMenu {
+            transform: scale(0) translateY(-30%);
             opacity: 0 !important;
             z-index: -1 !important;
-            transform: scaleX(0) translate(100%);
-            transition: 0.6s ease-in-out;
+            transition: 0.4s ease-in-out;
         }
 
         .hideSongContent {
+            transform: scale(0) translateY(-30%);
             opacity: 0 !important;
-            transform: scaleX(0) translate(100%);
             z-index: -5 !important;
-            transition: 0.6s ease-in-out;
+            transition: 0.4s ease-in-out;
         }
 
         #menuBtn {
@@ -53,11 +54,18 @@
             font-size: 50px;
             transition: 0.6s ease-in-out;
             cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #000;
         }
 
         .activeMenuButton {
-            transform: scaleY(0.5);
+            transform: rotate(-120deg);
             transition: 0.6s ease-in-out;
+            color: #f4f3ea;
+            background-color: #000;
+            text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
         }
 
         #song {
@@ -70,8 +78,10 @@
             #song #background {
                 position: fixed;
                 width: 100vw;
-                height: 0px;
+                height: 100vh;
                 background-size: cover;
+                z-index: -1;
+                transition: 0.4s ease-in-out;
             }
 
             #song #content {
@@ -85,7 +95,7 @@
 
             #song #player {
                 display: flex;
-                vertical-align: middle;
+                width: 100%;
             }
 
                 #song #player .element {
@@ -99,14 +109,31 @@
                 text-align: center;
                 margin: 0 auto;
                 z-index: 100;
-                transition: 0.6s ease-in-out;
+                transition: 0.4s ease-in-out;
             }
 
-            #song #currentTimeDisplay, #song #totalTimeDisplay {
-                color: #000;
-                font-size: 30px;
-                width: 100%;
-            }
+        #mainContainer {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #song #currentTimeDisplay, #song #totalTimeDisplay {
+            color: #000;
+            font-size: 30px;
+            width: 100%;
+        }
+
+        #lyricsOptions {
+            position: fixed;
+            left: 25px;
+            top: 200px;
+            font-size: 50px;
+            z-index: 10;
+            background-color: #f4f3ea33;
+            backdrop-filter: blur(50px);
+            padding: 25px;
+        }
 
         #playerHeader {
             margin: 100px;
@@ -154,13 +181,17 @@
         }
 
         #song #lyrics {
+            position: relative;
+            left: -50px;
+            margin-left: 100px;
             box-sizing: border-box;
             color: #111;
             font-size: 2.8vw;
             padding: 100px; /*
             border: 5px #111 solid;*/
             margin-top: -200px;
-            width: 90vw;
+            width: calc(100vw - 200px);
+            transition: 0.2s ease-in-out;
         }
 
         #song .lyricsVerseOnly {
@@ -206,7 +237,7 @@
         }
 
             #song #dotsContainer #dots {
-                width: 1000px;
+                width: 70%;
             }
 
         .dot {
@@ -228,7 +259,7 @@
             display: flex;
             position: relative;
             padding: 0;
-            width: 800px;
+            width: 70%;
             margin-top: 100px;
         }
 
@@ -246,6 +277,38 @@
         #albumCover img {
             width: 50%;
             margin-bottom: 80px;
+        }
+
+        #lyricsOptions button {
+            display: block;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            margin: 0;
+            border: 0;
+            line-height: 0 !important;
+            border-radius: 50%;
+            transition: 0.2s ease-in-out;
+            margin-bottom: 10px;
+            color: #000;
+            font-size: 30px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+            #lyricsOptions button:hover {
+                background-color: #000;
+                color: #f4f3ea;
+                transition: 0.1s ease-in-out;
+            }
+
+            #lyricsOptions button:active {
+            }
+
+        #lyricsOptions .btnActive {
+            color: #f4f3ea;
+            background-color: #000 !important;
         }
 
         /* COMPONENT STYLES */
@@ -371,21 +434,6 @@
                 padding: 10px;
                 margin-top: -100px;
             }
-        }
-
-        /* ANIMATIONS */
-        @keyframes songAnimation {
-            0% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        .fade-out {
-            animation: songAnimation 0.2s ease-in 2 alternate;
         }
     </style>
 
@@ -2696,6 +2744,7 @@
         var shuffle = false;
         var loop = false;
         var menuState = true;
+        var lyricsViewMode = 0;
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -2713,15 +2762,17 @@
 
         function UpdatePlayIcon() {
             var audioPlayer = document.getElementById('audio-player');
-            var playButton = document.getElementById('btn-play');
+            var playButton = document.querySelectorAll('.playBtn');
 
-            if (audioPlayer.paused) {
-                playButton.classList.remove('btnActive');
-                playButton.innerHTML = '<i class="fas fa-play"></i>';
-            } else {
-                playButton.classList.add('btnActive');
-                playButton.innerHTML = '<i class="fas fa-pause"></i>';
-            }
+            playButton.forEach(function (e) {
+                if (audioPlayer.paused) {
+                    e.classList.remove('btnActive');
+                    e.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    e.classList.add('btnActive');
+                    e.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+            });
 
         }
 
@@ -2814,7 +2865,7 @@
             var audioPlayer = document.getElementById('audio-player');
 
             var seeker = document.getElementById('seeker');
-            var playButton = document.getElementById('btn-play');
+            var playButton = document.querySelectorAll('.playBtn');
 
             document.addEventListener('keydown', function (event) {
                 if (event.keyCode === 32) {
@@ -2861,14 +2912,16 @@
                 audioPlayer.currentTime = seekTime;
             });
 
-            playButton.addEventListener('click', () => {
-                if (audioPlayer.paused) {
-                    audioPlayer.play();
-                } else {
-                    audioPlayer.pause();
-                }
+            playButton.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    if (audioPlayer.paused) {
+                        audioPlayer.play();
+                    } else {
+                        audioPlayer.pause();
+                    }
 
-                UpdatePlayIcon();
+                    UpdatePlayIcon();
+                });
             });
         }
 
@@ -2884,42 +2937,36 @@
 
             currentSong = songId;
             var song = document.getElementById('song');
-            song.classList.add('fade-out');
-            song.addEventListener('animationend', function () {
-                song.classList.remove('fade-out');
-            });
 
-            song.addEventListener('animationiteration', function (event) {
-                jsonData = sjData.siotojazz[songId];
+            jsonData = sjData.siotojazz[songId];
 
-                var backgroundElement = document.getElementById('background');
-                backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
+            var backgroundElement = document.getElementById('background');
+            backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
 
-                var numElement = document.getElementById('num');
-                numElement.textContent = songId;
+            var numElement = document.getElementById('num');
+            numElement.textContent = songId;
 
-                var titleElement = document.getElementById('title');
-                titleElement.textContent = jsonData.title;
+            var titleElement = document.getElementById('title');
+            titleElement.textContent = jsonData.title;
 
-                var lyricsElement = document.getElementById('lyrics');
-                var lyricsHTML = '';
-                for (var i = 0; i < jsonData.lyrics.length; i++) {
-                    var verse = jsonData.lyrics[i];
-                    var stanzaEnd = "";
-                    if (verse.stanzaEnd) {
-                        stanzaEnd = "stanzaEnd";
-                    }
-                    lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" id="' + stanzaEnd + '">' + verse.text + '</p>';
+            var lyricsElement = document.getElementById('lyrics');
+            var lyricsHTML = '';
+            for (var i = 0; i < jsonData.lyrics.length; i++) {
+                var verse = jsonData.lyrics[i];
+                var stanzaEnd = "";
+                if (verse.stanzaEnd) {
+                    stanzaEnd = "stanzaEnd";
                 }
-                lyricsElement.innerHTML = lyricsHTML;
+                lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" id="' + stanzaEnd + '">' + verse.text + '</p>';
+            }
+            lyricsElement.innerHTML = lyricsHTML;
 
-                var audioSource = audioPlayer.querySelector('source');
-                audioSource.setAttribute('src', jsonData.audio);
-                audioPlayer.load();
+            var audioSource = audioPlayer.querySelector('source');
+            audioSource.setAttribute('src', jsonData.audio);
+            audioPlayer.load();
 
-                SetUpLyrics();
-                SetUpSongDots();
-            });
+            SetUpLyrics();
+            SetUpSongDots();
 
             audioPlayer.addEventListener('loadeddata', function (e) {
                 audioPlayer.play();
@@ -2958,48 +3005,121 @@
 
             allDots.forEach((song) => {
                 song.addEventListener("click", () => {
-                    ToggleMenu(false);
                     currentSong = song.getAttribute("song-id");
                     PlaySong(currentSong);
                 });
             });
         }
 
+        function UpdateLyricsView(mode) {
+            lyricsViewMode = mode;
+
+            var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
+            var showImageBtn = document.querySelectorAll('.showImageBtn');
+            var showChordsBtn = document.querySelectorAll('.showChordsBtn');
+
+            showLyricsBtn.forEach(function (e) {
+                e.classList.remove("btnActive");
+            });
+            showImageBtn.forEach(function (e) {
+                e.classList.remove("btnActive");
+            });
+            showChordsBtn.forEach(function (e) {
+                e.classList.remove("btnActive");
+            });
+
+            if (mode == 0) {
+                showLyricsBtn.forEach(function (e) {
+                    e.classList.add("btnActive");
+                });
+
+                document.getElementById("lyrics").style.opacity = "1";
+                document.getElementById("background").style.opacity = "0";
+                document.getElementById("lyricsChords").style.opacity = "0";
+
+            } else if (mode == 1) {
+                showImageBtn.forEach(function (e) {
+                    e.classList.add("btnActive");
+                });
+
+                document.getElementById("lyrics").style.opacity = "0";
+                document.getElementById("background").style.opacity = "1";
+                document.getElementById("lyricsChords").style.opacity = "0";
+            } else if (mode == 2) {
+                showChordsBtn.forEach(function (e) {
+                    e.classList.add("btnActive");
+                });
+
+                document.getElementById("lyrics").style.opacity = "0";
+                document.getElementById("background").style.opacity = "0";
+                document.getElementById("lyricsChords").style.opacity = "1";
+            }
+        }
+
         function SetUpCommonButtons() {
-            var shuffleBtn = document.getElementById('shuffleBtn');
-            var loopBtn = document.getElementById('loopBtn');
+            var shuffleBtn = document.querySelectorAll('.shuffleBtn');
+            var loopBtn = document.querySelectorAll('.loopBtn');
+            var prevBtn = document.querySelectorAll('.prevBtn');
+            var nextBtn = document.querySelectorAll('.nextBtn');
+            var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
+            var showImageBtn = document.querySelectorAll('.showImageBtn');
+            var showChordsBtn = document.querySelectorAll('.showChordsBtn');
+
+            shuffleBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    shuffle = !shuffle;
+                    if (shuffle) {
+                        e.classList.add('btnActive');
+                    }
+                    else {
+                        e.classList.remove('btnActive');
+                    }
+                });
+            });
+
+            loopBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    loop = !loop;
+                    if (loop) {
+                        e.classList.add('btnActive');
+                    }
+                    else {
+                        e.classList.remove('btnActive');
+                    }
+                });
+            });
+
+            prevBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    PlaySong(currentSong - 1);
+                });
+            });
+
+            nextBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    PlaySong(currentSong + 1);
+                });
+            });
+
+            showLyricsBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(0);
+                });
+            });
+
+            showImageBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(1);
+                });
+            });
+
+            showChordsBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(2);
+                });
+            });
+
             var menuBtn = document.getElementById('menuBtn');
-            var prevBtn = document.getElementById('prevBtn');
-            var nextBtn = document.getElementById('nextBtn');
-
-            shuffleBtn.addEventListener('click', () => {
-                shuffle = !shuffle;
-                if (shuffle) {
-                    shuffleBtn.classList.add('btnActive');
-                }
-                else {
-                    shuffleBtn.classList.remove('btnActive');
-                }
-            });
-
-            loopBtn.addEventListener('click', () => {
-                loop = !loop;
-                if (loop) {
-                    loopBtn.classList.add('btnActive');
-                }
-                else {
-                    loopBtn.classList.remove('btnActive');
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                PlaySong(currentSong - 1);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                PlaySong(currentSong + 1);
-            });
-
             menuBtn.addEventListener('click', () => {
                 ToggleMenu(!menuState);
             });
@@ -3008,6 +3128,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             SetUpAudioPlayer();
             SetUpCommonButtons();
+            UpdateLyricsView(0);
             PlaySong(currentSong);
         });
     </script>
@@ -3019,31 +3140,33 @@
 
             <div id="playerContainer">
 
-                <div id="playerHeader">
-                    <div id="playerTitle">SIOTO JAZZ</div>
-                    <div id="playerSubtitle">- ALBUM TITLE PLACEHOLDER -</div>
-                </div>
+                <div id="mainContainer">
+                    <div id="playerHeader">
+                        <div id="playerTitle">SIOTO JAZZ</div>
+                        <div id="playerSubtitle">- ALBUM TITLE PLACEHOLDER -</div>
+                    </div>
 
-                <div id="albumCover"><img src="sioto_jazz_cover.png" style="width:50%;" /></div>
+                    <div id="dotsContainer">
+                        <div id="dots"></div>
+                    </div>
 
-                <div id="dotsContainer">
-                    <div id="dots"></div>
-                </div>
+                    <div id="commonButtons">
+                        <button class="prevBtn"><i class="fas fa-step-backward"></i></button>
+                        <button class="playBtn"><i class="fas fa-play"></i></button>
+                        <button class="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
+                        <button class="loopBtn"><i class="fas fa-redo"></i></button>
+                        <button class="nextBtn"><i class="fas fa-step-forward"></i></button>
 
-                <div id="commonButtons">
-                    <button id="prevBtn"><i class="fas fa-step-backward"></i></button>
-                    <button id="btn-play"><i class="fas fa-play"></i></button>
-                    <button id="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
-                    <button id="loopBtn"><i class="fas fa-redo"></i></button>
-                    <button id="nextBtn"><i class="fas fa-step-forward"></i></button>
+                    </div>
 
-                </div>
+                    <div id="player">
+                        <div id="currentTimeDisplay">00:00</div>
+                        <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
+                        <input class="element" type="range" id="seeker" max="1000" value="0" />
+                        <div id="totalTimeDisplay">00:00</div>
+                    </div>
 
-                <div id="player">
-                    <div id="currentTimeDisplay">00:00</div>
-                    <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
-                    <input class="element" type="range" id="seeker" max="1000" value="0" />
-                    <div id="totalTimeDisplay">00:00</div>
+                    <div id="albumCover"><img src="sioto_jazz_cover.png" style="width:80%; margin-top: 100px;" /></div>
                 </div>
 
                 <div id="creditsContainer">
@@ -3149,12 +3272,24 @@
                 </div>
             </div>
 
-            <div id="menuBtn"><i class="fa fa-bars"></i></div>
+            <div id="menuBtn"><i class="fa fa-circle"></i></div>
 
-            <div id="songContent">
+            <div id="songContent" class="hideSongContent">
+                <div id="lyricsOptions">
+                    <button class="playBtn"><i class="fas fa-play"></i></button>
+                    <button class="prevBtn"><i class="fas fa-step-backward"></i></button>
+                    <button class="nextBtn"><i class="fas fa-step-forward"></i></button>
+                    <button class="loopBtn"><i class="fas fa-redo"></i></button>
+                    <button class="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
+                    <div id="verticalSeparator" style="margin-top: 100px;"></div>
+                    <button class="showLyricsBtn"><i class="fa fa-align-justify"></i></button>
+                    <button class="showImageBtn"><i class="fa fa-camera-retro"></i></button>
+                    <button class="showChordsBtn"><i class="fa fa-music"></i></button>
+                </div>
                 <div id="num"></div>
                 <div id="title"></div>
                 <div id="lyrics"></div>
+                <div id="lyricsChords"></div>
             </div>
         </div>
     </div>
