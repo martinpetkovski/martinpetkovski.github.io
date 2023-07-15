@@ -449,13 +449,6 @@
                     "audio": "patience.mp3",
                     "lyrics": [
                         {
-                            "text": "[Intro]",
-                            "startTime": "0",
-                            "endTime": "72",
-                            "propertyIndex": 1,
-                            "stanzaEnd": true
-                        },
-                        {
                             "text": "The warmest small town summers",
                             "startTime": "72",
                             "endTime": "76",
@@ -496,13 +489,6 @@
                             "text": "with a bit of change in my identity",
                             "startTime": "109",
                             "endTime": "114",
-                            "propertyIndex": 1,
-                            "stanzaEnd": true
-                        },
-                        {
-                            "text": "[Interlude]",
-                            "startTime": "114",
-                            "endTime": "134",
                             "propertyIndex": 1,
                             "stanzaEnd": true
                         },
@@ -614,13 +600,6 @@
                             "text": "with a bit of change in my identity",
                             "startTime": "235",
                             "endTime": "240",
-                            "propertyIndex": 1,
-                            "stanzaEnd": true
-                        },
-                        {
-                            "text": "[Outro]",
-                            "startTime": "240",
-                            "endTime": "500",
                             "propertyIndex": 1,
                             "stanzaEnd": true
                         }
@@ -2813,6 +2792,7 @@
         var shuffle = false;
         var loop = false;
         var menuState = true;
+        var startTime = 0;
         var lyricsViewMode = 0;
 
         const lyricsIconMap = new Map();
@@ -2872,8 +2852,9 @@
             {
                 lyrics.forEach((verse) => {
                     verse.addEventListener("click", () => {
-                        var startTime = verse.getAttribute("start-time");
+                        startTime = verse.getAttribute("start-time");
                         audioPlayer.currentTime = startTime;
+                        SetURLArguments(GetBaseURL(), currentSong, startTime, menuState);
                         if (audioPlayer.paused)
                             audioPlayer.play();
                     });
@@ -2930,6 +2911,12 @@
             });
         }
 
+        function AudioPlayerSeekTo(seekTime) {
+            var audioPlayer = document.getElementById('audio-player');
+            audioPlayer.currentTime = seekTime;
+            startTime = seekTime;
+        }
+
         function SetUpAudioPlayer() {
             var audioPlayer = document.getElementById('audio-player');
 
@@ -2970,6 +2957,7 @@
                     nextSong = currentSong;
 
                 PlaySong(nextSong);
+                SetURLArguments();
             });
 
             seeker.addEventListener('input', (event) => {
@@ -2978,7 +2966,8 @@
                 var duration = audioPlayer.duration;
                 var seekTime = duration * percentage;
 
-                audioPlayer.currentTime = seekTime;
+                AudioPlayerSeekTo(seekTime);
+                SetURLArguments();
             });
 
             playButton.forEach(function (e) {
@@ -2994,7 +2983,31 @@
             });
         }
 
+        function GetBaseURL() {
+            var protocol = window.location.protocol;
+            var host = window.location.host;
+            var pathname = window.location.pathname;
+
+            return protocol + '//' + host + pathname;
+        }
+
+        function SetURLArguments() {
+            var url = new URL(GetBaseURL());
+
+            var searchParams = new URLSearchParams(url.search);
+
+            searchParams.set('song', currentSong);
+            searchParams.set('time', startTime);
+            searchParams.set('menu', menuState);
+
+            url.search = searchParams.toString();
+
+            window.history.pushState(null, null, url.toString());
+        }
+
         function PlaySong(songId) {
+            startTime = 0;
+
             var totalSongs = Object.keys(sjData.siotojazz).length;
             if (songId > totalSongs)
                 songId = 1;
@@ -3042,10 +3055,12 @@
             });
         }
 
-        function ToggleMenu(show) {
+        function SetMenuState(show) {
             menuState = show;
+
             var menuBtn = document.getElementById("menuBtn");
-            if (show) {
+
+            if (menuState) {
                 document.getElementById('playerContainer').classList.remove('hideMenu');
                 document.getElementById('songContent').classList.add('hideSongContent');
                 menuBtn.classList.remove('activeMenuButton');
@@ -3076,6 +3091,7 @@
                 song.addEventListener("click", () => {
                     currentSong = song.getAttribute("song-id");
                     PlaySong(currentSong);
+                    SetURLArguments();
                 });
             });
         }
@@ -3161,12 +3177,14 @@
             prevBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     PlaySong(currentSong - 1);
+                    SetURLArguments();
                 });
             });
 
             nextBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     PlaySong(currentSong + 1);
+                    SetURLArguments();
                 });
             });
 
@@ -3190,15 +3208,27 @@
 
             var menuBtn = document.getElementById('menuBtn');
             menuBtn.addEventListener('click', () => {
-                ToggleMenu(!menuState);
+                SetMenuState(!menuState);
+                SetURLArguments();
             });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            var params = new URLSearchParams(window.location.search);
+
             SetUpAudioPlayer();
             SetUpCommonButtons();
             UpdateLyricsView(0);
+
+            currentSong = params.get('song');
             PlaySong(currentSong);
+
+            startTime = params.get('time');
+            AudioPlayerSeekTo(startTime);
+
+            menuState = params.get('menu') == "true";
+            SetMenuState(menuState);
+
         });
     </script>
 </head>
