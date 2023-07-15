@@ -3221,12 +3221,20 @@
             UpdateLyricsView(0);
 
             currentSong = params.get('song');
+            if (currentSong == '')
+                currentSong = 1;
             PlaySong(currentSong);
 
             startTime = params.get('time');
+            if (startTime == '')
+                startTime = 0;
             AudioPlayerSeekTo(startTime);
 
-            menuState = params.get('menu') == "true";
+            currentMenuState = params.get('menu');
+            if (currentMenuState == '')
+                menuState = true;
+            else
+                menuState = params.get('menu') == "true";
             SetMenuState(menuState);
 
         });
