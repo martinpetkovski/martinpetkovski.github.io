@@ -3221,17 +3221,17 @@
             UpdateLyricsView(0);
 
             currentSong = params.get('song');
-            if (currentSong == '')
+            if (currentSong == null)
                 currentSong = 1;
             PlaySong(currentSong);
 
             startTime = params.get('time');
-            if (startTime == '')
+            if (startTime == null)
                 startTime = 0;
             AudioPlayerSeekTo(startTime);
 
             currentMenuState = params.get('menu');
-            if (currentMenuState == '')
+            if (currentMenuState == null)
                 menuState = true;
             else
                 menuState = params.get('menu') == "true";
