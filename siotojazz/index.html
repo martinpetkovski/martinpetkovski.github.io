@@ -398,18 +398,18 @@
             margin-top: 100px;
         }
 
-        #creditsTitle {
-            margin: 60px 0px;
+        .creditsTitle {
+            margin: 100px 0px 0px 0px;
             font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             font-size: 2.8em;
             line-height: 1em;
         }
 
-        #creditsPerson {
+        .creditsPerson {
             font-size: 2em;
         }
 
-        #creditsSection {
+        .creditsSection {
             margin-top: 20px;
         }
 
@@ -430,9 +430,53 @@
             }
 
             #song #lyrics {
-                font-size: 2em;
+                font-size: 2.5em;
                 padding: 10px;
                 margin-top: -100px;
+                font-weight: 900 !important;
+            }
+
+                #song #lyrics p::after {
+                    content: '';
+                    display: block;
+                    height: 1px;
+                    border-bottom: 1px dashed #000;
+                    margin-top: 8px;
+                }
+
+                #song #lyrics #stanzaEnd::after {
+                    content: '';
+                    position:relative;
+                    top: 40px;
+                    display: block;
+                    height: 1px;
+                    border: 1px solid #000;
+                }
+
+            .creditsTitle {
+                font-size: 5em;
+            }
+
+            .creditsPerson {
+                font-size: 4em;
+                font-weight: 900;
+            }
+
+            .creditsFor {
+                font-size: 2em;
+            }
+
+            button {
+                font-size: 70px !important;
+                margin: 20px !important;
+                width: 90px !important;
+                height: 90px !important;
+            }
+
+            #song #lyrics {
+                left: -200px;
+                margin-left: 400px;
+                width: calc(100vw - 400px);
             }
         }
     </style>
@@ -3277,32 +3321,32 @@
                 </div>
 
                 <div id="creditsContainer">
-                    <div id="creditsTitle">Sioto Jazz are</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Anastasija Trajkovska</div>
-                        <div id="creditsFor">Vocals, Guitar</div>
+                    <div class="creditsTitle">Sioto Jazz are</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Anastasija Trajkovska</div>
+                        <div class="creditsFor">Vocals, Guitar</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Eva Todorovska</div>
-                        <div id="creditsFor">Vocals, Backing Vocals, Guitar, Bass</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Eva Todorovska</div>
+                        <div class="creditsFor">Vocals, Backing Vocals, Guitar, Bass</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Martin Petkovski</div>
-                        <div id="creditsFor">Lyricist, Guitar, Piano, Bass, Vocals, Backing Vocals</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
+                        <div class="creditsFor">Lyricist, Guitar, Piano, Bass, Vocals, Backing Vocals</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Ilija Volcheski</div>
-                        <div id="creditsFor">Saxophone</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Ilija Volcheski</div>
+                        <div class="creditsFor">Saxophone</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Walter Martin Eggotto</div>
-                        <div id="creditsFor">Drums, Percussions</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Walter Martin Eggotto</div>
+                        <div class="creditsFor">Drums, Percussions</div>
                     </div>
 
-                    <div id="creditsTitle">Additional Personnel</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Målfrid Wigdahl</div>
-                        <div id="creditsFor">Synth, Double Bass</div>
+                    <div class="creditsTitle">Additional Personnel</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Målfrid Wigdahl</div>
+                        <div class="creditsFor">Synth, Double Bass</div>
                     </div>
 
                     <!--<div id="creditsSection">
@@ -3310,61 +3354,61 @@
                         <div id="creditsFor">Percussions</div>
                     </div>-->
 
-                    <div id="creditsTitle">Producer</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Martin Petkovski</div>
-                        <div id="creditsFor"></div>
+                    <div class="creditsTitle">Producer</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
+                        <div class="creditsFor"></div>
                     </div>
 
-                    <div id="creditsTitle">Executive Producers</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Martin Petkovski</div>
-                        <div id="creditsFor"></div>
+                    <div class="creditsTitle">Executive Producers</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
+                        <div class="creditsFor"></div>
                     </div>
 
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Andrej Bogatinoski</div>
-                        <div id="creditsFor"></div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Andrej Bogatinoski</div>
+                        <div class="creditsFor"></div>
                     </div>
 
-                    <div id="creditsTitle">Mixed and Mastered by</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Victor Saldaña</div>
-                        <div id="creditsFor"></div>
+                    <div class="creditsTitle">Mixed and Mastered by</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Victor Saldaña</div>
+                        <div class="creditsFor"></div>
                     </div>
 
-                    <div id="creditsTitle">Recording Engineers</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Eva Todorovska</div>
-                        <div id="creditsFor"></div>
+                    <div class="creditsTitle">Recording Engineers</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Eva Todorovska</div>
+                        <div class="creditsFor"></div>
                     </div>
                     <!--<div id="creditsSection">
                         <div id="creditsPerson">Aleksandar Tomevski</div>
                         <div id="creditsFor"></div>
                     </div>-->
 
-                    <div id="creditsTitle">Recorded at</div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Caymene Studios</div>
-                        <div id="creditsFor">Bitola, Macedonia</div>
+                    <div class="creditsTitle">Recorded at</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Caymene Studios</div>
+                        <div class="creditsFor">Bitola, Macedonia</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Cickey Home Recordings</div>
-                        <div id="creditsFor">Oslo, Norway</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Cickey Home Recordings</div>
+                        <div class="creditsFor">Oslo, Norway</div>
                     </div>
-                    <div id="creditsSection">
-                        <div id="creditsPerson">Kamai Sobata Dolu</div>
-                        <div id="creditsFor">Bitola, Macedonia</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Kamai Sobata Dolu</div>
+                        <div class="creditsFor">Bitola, Macedonia</div>
                     </div>
                     <!--<div id="creditsSection">
                         <div id="creditsPerson">Mellivora Studio</div>
                         <div id="creditsFor">Bitola, Macedonia</div>
                     </div>-->
 
-                    <div id="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 1.5em;">For their musical contributions or continuous support we would like to thank the following people</div>
+                    <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions or continuous support we would like to thank the following people</div>
                     <div style="font-size:0.5em;">
-                        <div id="creditsSection">
-                            <div id="creditsPerson" style="width: 50%;">
+                        <div class="creditsSection">
+                            <div class="creditsPerson" style="font-size: 250%; width: 50%;">
                                 Viktor Stojcheski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Shaklevska, Armin Amedovski, Damjan Grujo,
                                 Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Kiril Gagachev, Petar Kotevski,
                                 Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski
@@ -3372,9 +3416,9 @@
                         </div>
                     </div>
 
-                    <div id="creditsSection" style="margin: 100px 0px 50px 0px;">
-                        <div id="creditsPerson"></div>
-                        <div id="creditsFor">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
+                    <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
+                        <div class="creditsPerson"></div>
+                        <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
                     </div>
                 </div>
             </div>
