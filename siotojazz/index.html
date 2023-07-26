@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>SIOTO JAZZ</title>
@@ -194,6 +194,11 @@
             transition: 0.2s ease-in-out;
         }
 
+        #song #lyricsChords {
+            color: #000;
+            font-size: 220px;
+        }
+
         #song .lyricsVerseOnly {
             background: transparent !important;
             border: none !important;
@@ -213,7 +218,7 @@
             }
 
         #song #lyrics p {
-            opacity: 0;
+            opacity: 1;
             display: table;
             padding: 0px 10px;
             transition: 0.5s;
@@ -224,6 +229,7 @@
                 opacity: 1;
                 border: 3px solid #111;
                 cursor: pointer;
+                box-shadow: 0px 0px 10px 0px #111 inset;
                 transition: 0.1s;
             }
 
@@ -470,6 +476,9 @@
                 font-size: 70px !important;
                 margin: 20px !important;
                 width: 90px !important;
+            }
+
+            #lyricsOptions button {
                 height: 90px !important;
             }
 
@@ -491,6 +500,8 @@
                     "background": "patience.jpg",
                     "title": "Patience",
                     "audio": "patience.mp3",
+                    "tempo": "184",
+                    "barStartTime": "0.0", // "19.89",
                     "lyrics": [
                         {
                             "text": "The warmest small town summers",
@@ -647,7 +658,30 @@
                             "propertyIndex": 1,
                             "stanzaEnd": true
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Intro": ["C", "C", "C", "C"],
+                        "IntroInterlude": ["C", "C", "Em", "G"],
+                        "Verse": ["C", "D", "Em", "G"],
+                        "Chorus": ["C", "G", "Em", "F"],
+                        "BridgeOne": ["D", "D", "G", "G"],
+                        "BridgeTwo": ["B5-C5", "B5-C5", "B5-C5", "B5-C5"],
+                        "Outro": ["[Tempo Going Down]", "[Tempo Going Down]", "[Tempo Going Down]", "[Tempo Going Down]"]
+                    },
+                    "structure": ["Intro", "Intro", "IntroInterlude", "IntroInterlude",
+                        "Verse", "Verse", "Verse", "Verse", "Verse", "Verse",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "BridgeOne", "BridgeTwo", "BridgeOne", "BridgeTwo",
+                        "BridgeOne", "BridgeTwo", "BridgeOne", "BridgeTwo",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Outro", "Outro", "Outro", "Outro",
+                        "Outro", "Outro", "Outro", "Outro"]
                 },
                 2:
                 {
@@ -2844,7 +2878,6 @@
         lyricsIconMap.set('VERSE', 'fa-minus');
         lyricsIconMap.set('FULL', 'fa-quote-right');
 
-        let currentLyricsMode = 2;
         const lyricsIconArray = Array.from(lyricsIconMap.keys());
 
         function FormatTime(time) {
@@ -2888,70 +2921,40 @@
         }
 
         function SetUpLyrics() {
-            var lyricsContainer = document.getElementById('lyrics');
             var lyrics = document.querySelectorAll('#lyrics p');
             var audioPlayer = document.getElementById('audio-player');
 
-            if (currentLyricsMode == 2) // full
-            {
-                lyrics.forEach((verse) => {
-                    verse.addEventListener("click", () => {
-                        startTime = verse.getAttribute("start-time");
-                        audioPlayer.currentTime = startTime;
-                        SetURLArguments(GetBaseURL(), currentSong, startTime, menuState);
-                        if (audioPlayer.paused)
-                            audioPlayer.play();
-                    });
+            lyrics.forEach((verse) => {
+                verse.addEventListener("click", () => {
+                    startTime = verse.getAttribute("start-time");
+                    audioPlayer.currentTime = startTime;
+                    SetURLArguments(GetBaseURL(), currentSong, startTime, menuState);
+                    if (audioPlayer.paused)
+                        audioPlayer.play();
                 });
-            }
+            });
 
             audioPlayer.addEventListener('timeupdate', function () {
-                if (currentLyricsMode == 0) { // no lyrics
-                    lyricsContainer.style.display = "none";
-                    return;
-                }
-                else {
-                    lyricsContainer.style.display = "block";
-                }
-
                 var currentTime = audioPlayer.currentTime;
-                if (currentLyricsMode == 1) // verse only
-                {
-                    currentTime += 0.25;
-                }
 
                 for (var i = 0; i < lyrics.length; i++) {
                     var verse = lyrics[i];
                     var startTime = parseInt(verse.getAttribute("start-time"));
                     var endTime = parseInt(verse.getAttribute("end-time"));
 
-                    var isHovered = verse.style.cursor === 'pointer';
                     var isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
 
-                    if (currentLyricsMode == 1) { // verse only
-                        lyricsContainer.className = "lyricsVerseOnly";
-                        if (isWithinCurrentTime) {
-                            verse.style.opacity = 1;
-                        }
-                        else {
-                            verse.style.opacity = 0;
-                        }
-                    }
-                    else if (currentLyricsMode == 2) { // full lyrics
-                        lyricsContainer.className = "lyricsFull";
-                        if (isHovered || isWithinCurrentTime) {
-                            verse.style.opacity = 1;
-                            verse.style.backdropFilter = "blur(50px)";
-                            verse.style.borderColor = '#000F';
-                        } else {
-                            verse.style.opacity = 0.3;
-                            verse.style.backdropFilter = "blur(0px)";
-                            verse.style.borderColor = '#0000';
-                        }
+                    if (isWithinCurrentTime) {
+                        verse.style.opacity = 1;
+                        verse.style.backdropFilter = "blur(50px)";
+                        verse.style.borderColor = '#000F';
                     } else {
-                        lyricsContainer.className = "lyricsBackground";
+                        verse.style.opacity = 0.3;
+                        verse.style.backdropFilter = "blur(0px)";
+                        verse.style.borderColor = '#0000';
                     }
                 }
+
             });
         }
 
@@ -2959,6 +2962,22 @@
             var audioPlayer = document.getElementById('audio-player');
             audioPlayer.currentTime = seekTime;
             startTime = seekTime;
+        }
+
+        function PrintCurrentChord() {
+            var audioPlayer = document.getElementById('audio-player');
+            var currentData = sjData.siotojazz[currentSong];
+            const beatTime = (60 / currentData.tempo);
+            const barTime = beatTime * 4;
+            const currentBar = Math.floor((audioPlayer.currentTime - currentData.barStartTime) / barTime);
+            const currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
+
+            const segmentName = currentData.structure[currentSegmentIndex];
+            const currentChords = currentData.chords[segmentName];
+            const currentChord = currentChords[Math.floor(currentBar) % 4];
+
+            const lyricsChordsElement = document.getElementById("lyricsChords");
+            lyricsChordsElement.innerHTML = '<div id="chord">' + currentChord + '</div>';
         }
 
         function SetUpAudioPlayer() {
@@ -2988,6 +3007,7 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
 
                 UpdatePlayIcon();
+                PrintCurrentChord();
             });
 
             audioPlayer.addEventListener("ended", function () {
@@ -3162,7 +3182,7 @@
                     e.classList.add("btnActive");
                 });
 
-                document.getElementById("lyrics").style.opacity = "1";
+                document.getElementById("lyrics").style.display = "block";
                 document.getElementById("background").style.opacity = "0";
                 document.getElementById("lyricsChords").style.opacity = "0";
 
@@ -3171,7 +3191,7 @@
                     e.classList.add("btnActive");
                 });
 
-                document.getElementById("lyrics").style.opacity = "0";
+                document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.opacity = "1";
                 document.getElementById("lyricsChords").style.opacity = "0";
             } else if (mode == 2) {
@@ -3179,7 +3199,7 @@
                     e.classList.add("btnActive");
                 });
 
-                document.getElementById("lyrics").style.opacity = "0";
+                document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.opacity = "0";
                 document.getElementById("lyricsChords").style.opacity = "1";
             }
@@ -3257,6 +3277,37 @@
             });
         }
 
+        let startX;
+        let startY;
+
+        function HandleTouchStart(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        }
+
+        function HandleTouchEnd(event) {
+            if (!startX || !startY) return;
+
+            const endX = event.changedTouches[0].clientX;
+            const endY = event.changedTouches[0].clientY;
+
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX > 0) {
+                    PlaySong(currentSong - 1);
+                    SetURLArguments();
+                } else {
+                    PlaySong(currentSong + 1);
+                    SetURLArguments();
+                }
+            }
+
+            startX = null;
+            startY = null;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             var params = new URLSearchParams(window.location.search);
 
@@ -3281,6 +3332,8 @@
                 menuState = params.get('menu') == "true";
             SetMenuState(menuState);
 
+            document.body.addEventListener('touchstart', HandleTouchStart, false);
+            document.body.addEventListener('touchend', HandleTouchEnd, false);
         });
     </script>
 </head>
@@ -3294,7 +3347,7 @@
                 <div id="mainContainer">
                     <div id="playerHeader">
                         <div id="playerTitle">SIOTO JAZZ</div>
-                        <div id="playerSubtitle">- ALBUM TITLE PLACEHOLDER -</div>
+                        <div id="playerSubtitle">THIS SHOULD'VE BEEN A LOVE ALBUM</div>
                     </div>
 
                     <div id="dotsContainer">
@@ -3335,7 +3388,7 @@
                         <div class="creditsFor">Lyricist, Guitar, Piano, Bass, Vocals, Backing Vocals</div>
                     </div>
                     <div class="creditsSection">
-                        <div class="creditsPerson">Ilija Volcheski</div>
+                        <div class="creditsPerson">Ilija Volčeski</div>
                         <div class="creditsFor">Saxophone</div>
                     </div>
                     <div class="creditsSection">
@@ -3345,7 +3398,7 @@
 
                     <div class="creditsTitle">Additional Personnel</div>
                     <div class="creditsSection">
-                        <div class="creditsPerson">M�lfrid Wigdahl</div>
+                        <div class="creditsPerson">Målfrid Wigdahl</div>
                         <div class="creditsFor">Synth, Double Bass</div>
                     </div>
 
@@ -3373,7 +3426,7 @@
 
                     <div class="creditsTitle">Mixed and Mastered by</div>
                     <div class="creditsSection">
-                        <div class="creditsPerson">Victor Salda�a</div>
+                        <div class="creditsPerson">Victor Saldaña</div>
                         <div class="creditsFor"></div>
                     </div>
 
@@ -3402,15 +3455,15 @@
                     </div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Mellivora Studio</div>
-                        <div class="creditsFor">Bitola, Macedonia</div>
+                        <div class="creditsFor">Nižepole, Macedonia</div>
                     </div>
 
                     <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions or continuous support we would like to thank the following people</div>
                     <div style="font-size:0.5em;">
                         <div class="creditsSection">
                             <div class="creditsPerson" style="font-size: 250%; width: 50%;">
-                                Viktor Stojcheski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Shaklevska, Armin Amedovski, Damjan Grujo,
-                                Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Kiril Gagachev, Petar Kotevski,
+                                Viktor Stojčeski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Šaklevska, Armin Amedovski, Damjan Grujo,
+                                Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Kiril Gagačev, Petar Kotevski,
                                 Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski, Filip Kunovski
                             </div>
                         </div>
@@ -3418,7 +3471,7 @@
 
                     <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
                         <div class="creditsPerson"></div>
-                        <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />� 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
+                        <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
                     </div>
                 </div>
             </div>
