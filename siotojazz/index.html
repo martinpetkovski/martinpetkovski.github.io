@@ -3295,11 +3295,11 @@
             const diffY = startY - endY;
 
             if (Math.abs(diffX) > Math.abs(diffY)) {
-                if (diffX > 0) {
-                    PlaySong(currentSong - 1);
-                    SetURLArguments();
-                } else {
+                if (diffX > 10) {
                     PlaySong(currentSong + 1);
+                    SetURLArguments();
+                } else if (diffX < -10) {
+                    PlaySong(currentSong - 1);
                     SetURLArguments();
                 }
             }
