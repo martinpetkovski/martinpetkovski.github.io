@@ -52,14 +52,20 @@
             top: 50px;
             left: 50px;
             z-index: 10000;
-            font-size: 50px;
+            font-size: 70px;
             transition: 0.6s ease-in-out;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: 2px solid #000;
         }
+
+            #menuBtn i {
+                position: relative;
+                top: 15px;
+                left: 15px;
+            }
 
         .activeMenuButton {
             transform: rotate(-120deg);
@@ -117,6 +123,19 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+
+            #mainContainer #message {
+                background-color: #222;
+                color: #FFF;
+                margin-bottom: 50px;
+                border: 10px solid #000;
+            }
+
+        #messageHeader {
+            background-color: #000;
+            padding: 10px;
+            margin-bottom: 20px;
         }
 
         #song #currentTimeDisplay, #song #totalTimeDisplay {
@@ -3351,6 +3370,11 @@
                         <div id="playerSubtitle">THESE COULD'VE BEEN LOVE SONGS</div>
                     </div>
 
+                    <div id="message">
+                        <div id="messageHeader">⚠️ CONFIDENTIAL ⚠️</div>
+                        THIS IS A DRAFT VERSION OF THE ALBUM.<br /> PLEASE SHARE ONLY WITH EXPLICIT PERMISSION.
+                    </div>
+
                     <div id="dotsContainer">
                         <div id="dots"></div>
                     </div>
@@ -3386,11 +3410,15 @@
                     </div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Martin Petkovski</div>
-                        <div class="creditsFor">Lyricist, Guitar, Piano, Bass, Vocals, Backing Vocals</div>
+                        <div class="creditsFor">Lyricist, Guitar, Piano, Vocals, Backing Vocals</div>
                     </div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Ilija Volčeski</div>
                         <div class="creditsFor">Saxophone</div>
+                    </div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Armin Amedovski</div>
+                        <div class="creditsFor">Bass</div>
                     </div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Walter Martin Eggotto</div>
@@ -3404,9 +3432,9 @@
                     </div>
 
                     <!--<div class="creditsSection">
-                        <div class="creditsPerson">Damjan Grujo</div>
-                        <div class="creditsFor">Percussions</div>
-                    </div>-->
+        <div class="creditsPerson">Damjan Grujo</div>
+        <div class="creditsFor">Percussions</div>
+    </div>-->
 
                     <div class="creditsTitle">Producer</div>
                     <div class="creditsSection">
@@ -3425,10 +3453,27 @@
                         <div class="creditsFor"></div>
                     </div>
 
-                    <div class="creditsTitle">Mixed and Mastered by</div>
+                    <div class="creditsTitle">Mixed by</div>
+
                     <div class="creditsSection">
-                        <div class="creditsPerson">Victor Saldaña</div>
+                        <div class="creditsPerson">Eva Todorovska</div>
                         <div class="creditsFor"></div>
+                    </div>
+
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Anastasija Trajkovska</div>
+                        <div class="creditsFor"></div>
+                    </div>
+
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
+                        <div class="creditsFor"></div>
+                    </div>
+
+                    <div class="creditsTitle">Mastered by</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
+                        <div class="creditsFor">Kamai Sobata Gore</div>
                     </div>
 
                     <div class="creditsTitle">Recording Engineers</div>
@@ -3459,13 +3504,29 @@
                         <div class="creditsFor">Nižepole, Macedonia</div>
                     </div>
 
+                    <div class="creditsTitle">Cover Photo</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Anastasija Trajkovska</div>
+                        <div class="creditsFor">Model</div>
+                    </div>
+
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Andrej Bogatinoski</div>
+                        <div class="creditsFor">Photographer</div>
+                    </div>
+
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Kiril Gagačev</div>
+                        <div class="creditsFor">Design Contribution</div>
+                    </div>
+
                     <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions or continuous support we would like to thank the following people</div>
                     <div style="font-size:0.5em;">
                         <div class="creditsSection">
                             <div class="creditsPerson" style="font-size: 250%; width: 50%;">
-                                Viktor Stojčeski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Šaklevska, Armin Amedovski, Damjan Grujo,
-                                Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Kiril Gagačev, Petar Kotevski,
-                                Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski, Filip Kunovski
+                                Viktor Stojčeski, Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Šaklevska, Damjan Grujo,
+                                Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Petar Kotevski,
+                                Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski, Filip Kunovski, Leonid Mavroski, Tomi Akimovski
                             </div>
                         </div>
                     </div>
@@ -3477,7 +3538,13 @@
                 </div>
             </div>
 
-            <div id="menuBtn"><i class="fa fa-circle"></i></div>
+            <div id="menuBtn">
+                <!--<i class="fa fa-circle"></i>-->
+                <i class="fa fa-circle" aria-hidden="true">
+                    <i class="fa fa-moon" aria-hidden="true" style="font-size: 40px; color: #f4ebdd; position: relative; top: -80px; left: 0px;">
+                    </i>
+                </i>
+            </div>
 
             <div id="songContent" class="hideSongContent">
                 <div id="lyricsOptions">
