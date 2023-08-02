@@ -291,6 +291,7 @@
         .polaroidImg img, .polaroidImg video, .polaroidImg iframe {
             width: 100%;
             height: 80%;
+            min-height: 400px;
             object-fit: cover;
         }
 
@@ -3293,11 +3294,14 @@
                 { filename: '000070.jpg', description: 'Mariovo' },
                 { filename: '000071.jpg', description: 'Mariovo' },
                 { filename: '000074.jpg', description: 'Mariovo' },
+                { filename: '000064.jpg', description: 'Mariovo' },
+                { filename: '000072.jpg', description: 'Mariovo' },
+                { filename: '000054.jpg', description: 'Zovich' },
                 { filename: '20230312_012631.mp4', description: 'Patience @ Home' },
                 { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
                 { filename: 'ss1.png', description: 'Germijan Six July Twentythreee' },
-                { filename: 'ss2.png', description: 'Bach' },
-                { filename: 'ss3.png', description: 'Germijan' },
+                { filename: 'ss2.png', description: 'Bach Fields' },
+                { filename: 'ss3.png', description: 'Germijan Trach' },
                 { filename: 'ss4.png', description: 'Strezhevo Bee Standoff' },
             ];
 
@@ -3322,8 +3326,8 @@
                     img.src = `gallery/${picture.filename}`;
                     img.alt = picture.filename;
 
-                    img.addEventListener('click', function () {
-                        ShowPopup(img.src);
+                    img.addEventListener('click', function (event) {
+                        ShowPopup(event.target.src);
                     });
                 } else if (mediaType === 'video') {
                     img = document.createElement('video');
