@@ -273,7 +273,6 @@
             }
 
         #gallery {
-            display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             grid-gap: 20px;
             position: relative;
@@ -283,6 +282,7 @@
         }
 
             #gallery .polaroidImg {
+                max-width:300px;
                 background-color: #FFF;
                 border: 20px #FFF solid;
                 box-shadow: 0px 0px 10px #1113;
@@ -3381,9 +3381,9 @@
                 });
 
                 document.getElementById("lyrics").style.display = "block";
-                document.getElementById("background").style.opacity = "0";
-                document.getElementById("lyricsChords").style.opacity = "0";
-                document.getElementById("gallery").style.opacity = "0";
+                document.getElementById("background").style.display = "none";
+                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("gallery").style.display = "none";
 
             } else if (mode == 1) {
                 showImageBtn.forEach(function (e) {
@@ -3391,27 +3391,27 @@
                 });
 
                 document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.opacity = "1";
-                document.getElementById("lyricsChords").style.opacity = "0";
-                document.getElementById("gallery").style.opacity = "0";
+                document.getElementById("background").style.display = "block";
+                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("gallery").style.display = "none";
             } else if (mode == 2) {
                 showChordsBtn.forEach(function (e) {
                     e.classList.add("btnActive");
                 });
 
                 document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.opacity = "0";
-                document.getElementById("lyricsChords").style.opacity = "1";
-                document.getElementById("gallery").style.opacity = "0";
+                document.getElementById("background").style.display = "none";
+                document.getElementById("lyricsChords").style.display = "block";
+                document.getElementById("gallery").style.display = "none";
             } else if (mode == 3) {
                 showGalleryBtn.forEach(function (e) {
                     e.classList.add("btnActive");
                 });
 
                 document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.opacity = "0";
-                document.getElementById("lyricsChords").style.opacity = "0";
-                document.getElementById("gallery").style.opacity = "1";
+                document.getElementById("background").style.display = "none";
+                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("gallery").style.display = "grid";
             }
         }
 
