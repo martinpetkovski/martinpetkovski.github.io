@@ -220,9 +220,14 @@
             transition: 0.2s ease-in-out;
         }
 
-        #song #lyricsChords {
+        #song #songStructureVisualiser {
             color: #000;
             font-size: 220px;
+            position: relative;
+            left: -50px;
+            margin-left: 100px;
+            box-sizing: border-box;
+            width: calc(100vw - 300px);
         }
 
         #song .lyricsVerseOnly {
@@ -282,7 +287,7 @@
         }
 
             #gallery .polaroidImg {
-                max-width:300px;
+                max-width: 300px;
                 background-color: #FFF;
                 border: 20px #FFF solid;
                 box-shadow: 0px 0px 10px #1113;
@@ -332,6 +337,35 @@
                 visibility: visible;
                 opacity: 1;
             }
+
+        #songStructure {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            border: 5px solid #000;
+            box-shadow: 0px 0px 10px #1116;
+            background-color: #000;
+        }
+
+        .songSection {
+            box-sizing: border-box;
+            display: inline-block;
+            vertical-align: middle;
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+            .songSection:hover {
+                filter: brightness(200%);
+            }
+
+        .songSectionTitle {
+            font-size: 20px;
+        }
+
+        .songSectionChords {
+            font-size: 10px;
+        }
 
         .dot {
             display: inline-block;
@@ -747,34 +781,37 @@
                         }
                     ],
                     "chords": {
-                        "Intro": ["C", "C", "C", "C"],
-                        "IntroInterlude": ["C", "C", "Em", "G"],
+                        "Entry": ["C", "C", "C", "C"],
+                        "Intro": ["C", "C", "Em", "G"],
                         "Verse": ["C", "D", "Em", "G"],
+                        "PreChorus": ["[Pause]", "[Pause]", "Em", "F"],
                         "Chorus": ["C", "G", "Em", "F"],
+                        "PostChorus": ["C", "D", "Em", "G"],
                         "BridgeOne": ["D", "D", "G", "G"],
                         "BridgeTwo": ["B5-C5", "B5-C5", "B5-C5", "B5-C5"],
-                        "Outro": ["[Tempo Going Down]", "[Tempo Going Down]", "[Tempo Going Down]", "[Tempo Going Down]"]
+                        "Coda": ["C", "D", "Em", "G"],
+                        "End": ["C", "C", "C", "C"]
                     },
-                    "structure": ["Intro", "Intro", "IntroInterlude", "IntroInterlude",
+                    "structure": ["Entry", "Entry", "Intro", "Intro",
                         "Verse", "Verse", "Verse", "Verse", "Verse", "Verse",
                         "Verse", "Verse", "Verse", "Verse",
                         "Chorus", "Chorus", "Chorus", "Chorus",
+                        "PostChorus", "PostChorus", "PostChorus", "PostChorus",
                         "Verse", "Verse", "Verse", "Verse",
-                        "Verse", "Verse", "Verse", "Verse",
-                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "PreChorus", "Chorus", "Chorus", "Chorus",
                         "BridgeOne", "BridgeTwo", "BridgeOne", "BridgeTwo",
                         "BridgeOne", "BridgeTwo", "BridgeOne", "BridgeTwo",
                         "Chorus", "Chorus", "Chorus", "Chorus",
-                        "Verse", "Verse", "Verse", "Verse",
-                        "Verse", "Verse", "Verse", "Verse",
-                        "Outro", "Outro", "Outro", "Outro",
-                        "Outro", "Outro", "Outro", "Outro"]
+                        "Coda", "Coda", "Coda", "Coda",
+                        "End"]
                 },
                 2:
                 {
                     "background": "language.jpg",
                     "title": "Language",
                     "audio": "language.mp3",
+                    "tempo": "140",
+                    "barStartTime": "-3.42",
                     "lyrics": [
                         {
                             "text": "I've been always late",
@@ -1020,13 +1057,31 @@
                             "endTime": "138",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Entry": ["E", "E", "E", "E"],
+                        "Intro": ["E", "C#m", "G#m", "A"],
+                        "Verse": ["E", "C#m", "G#m", "A"],
+                        "PreChorus": ["B5", "C#5", "A5", "A5"],
+                        "Chorus": ["B5", "C#5", "A5", "A5"],
+                        "Solo": ["B5", "C#5", "A5", "A5"],
+                        "Coda": ["E", "C#m", "G#m", "A"],
+                        "End": ["E", "C#m", "G#m", "n/a"]
+                    },
+                    "structure": ["Entry", "Intro", "Intro", "Intro", "Intro",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Chorus", "Chorus",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "PreChorus", "PreChorus", "Chorus", "Chorus",
+                        "Solo", "Solo", "Verse", "End"]
                 },
                 3:
                 {
                     "background": "sun.jpg",
                     "title": "Sun",
                     "audio": "sun.mp3",
+                    "tempo": "284",
+                    "barStartTime": "0.0",
                     "lyrics":
                         [
                             {
@@ -1276,7 +1331,30 @@
                                 "endTime": "233",
                                 "propertyIndex": 0
                             }
-                        ]
+                        ],
+                    "chords": {
+                        "IntroOne": ["D", "A/C#", "G", "G"],
+                        "IntroTwo": ["B", "B", "A", "A"],
+                        "VerseOne": ["D", "A/C#", "G", "G"],
+                        "VerseTwo": ["B", "B", "A", "A"],
+                        "PreChorus": ["G", "G", "G", "[Pause]"],
+                        "ChorusOne": ["D", "D", "Em", "Em"],
+                        "ChorusTwo": ["Bm", "Bm", "G", "G"],
+                        "ChorusEnd": ["Bm", "Bm", "A", "A"],
+                        "SoloOne": ["D", "A/C#", "G", "G"],
+                        "SoloTwo": ["B", "B", "A", "A"],
+                        "End": ["D", "D", "D", "D"]
+                    },
+                    "structure": ["IntroOne", "IntroOne", "IntroOne", "IntroTwo", "IntroOne", "IntroOne", "IntroOne", "IntroTwo",
+                        "VerseOne", "VerseOne", "VerseOne", "VerseTwo", "VerseOne", "VerseOne", "VerseOne", "VerseTwo",
+                        "PreChorus", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusEnd",
+                        "Hold", "Hold", "SoloOne", "SoloOne", "SoloOne", "SoloTwo", "SoloOne", "SoloOne", "SoloOne", "SoloTwo",
+                        "VerseOne", "VerseOne", "VerseOne", "VerseTwo", "VerseOne", "VerseOne", "VerseOne", "VerseTwo",
+                        "PreChorus", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusEnd",
+                        "Hold", "Hold",
+                        "SoloOne", "SoloOne", "SoloOne", "SoloTwo", "SoloOne", "SoloOne", "SoloOne", "SoloTwo",
+                        "PreChorus", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusEnd",
+                        "End"]
                 },
                 4:
                 {
@@ -3055,20 +3133,120 @@
             startTime = seekTime;
         }
 
+        function Lerp(start, end, alpha) {
+            return start * (1 - alpha) + end * alpha;
+        }
+
         function PrintCurrentChord() {
             var audioPlayer = document.getElementById('audio-player');
             var currentData = sjData.siotojazz[currentSong];
             const beatTime = (60 / currentData.tempo);
             const barTime = beatTime * 4;
-            const currentBar = Math.floor((audioPlayer.currentTime - currentData.barStartTime) / barTime);
-            const currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
+            //var currentBar = Math.floor((audioPlayer.currentTime - currentData.barStartTime) / barTime);
+            //var currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
 
-            const segmentName = currentData.structure[currentSegmentIndex];
-            const currentChords = currentData.chords[segmentName];
-            const currentChord = currentChords[Math.floor(currentBar) % 4];
+            //var segmentName = currentData.structure[currentSegmentIndex];
+            //if (segmentName == "Hold")
+            //    currentBar += beatTime;
 
-            const lyricsChordsElement = document.getElementById("lyricsChords");
-            lyricsChordsElement.innerHTML = '<div id="chord">' + currentChord + '</div>';
+            //currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
+
+            //var currentChord = "n/a";
+            //if (segmentName != null) {
+            //    const currentChords = currentData.chords[segmentName];
+            //    currentChord = currentChords[Math.floor(currentBar) % 4];
+            //}
+
+            //const chordsElement = document.getElementById("chords");
+            //chordsElement.innerHTML = '<div id="chord">' + currentChord + '</div>';
+
+            const segmentColors = {
+                Entry: "#f1c27b",
+                Intro: "#ffd89c",
+                IntroOne: "#ffd89c",
+                IntroTwo: "#cca85c",
+                Verse: "#a2cdb0",
+                VerseOne: "#a2cdb0",
+                VerseTwo: "#c2edd0",
+                PreChorus: "#faab78",
+                Chorus: "#ffd966",
+                ChorusOne: "#ffd966",
+                ChorusTwo: "#dda936",
+                ChorusEnd: "#ad8966",
+                PostChorus: "#ffd966",
+                Solo: "#95bdff",
+                SoloOne: "#95bdff",
+                SoloTwo: "#759ddf",
+                BridgeOne: "#967e76",
+                BridgeTwo: "#867070",
+                Coda: "#73a9ad",
+                End: "#737373"
+            }
+            var allSongSections = document.querySelectorAll(".songSection");
+            for (i = 0; i < allSongSections.length; i++) {
+                var backgroundColorString = "#FFF";
+                var currentStartTime = allSongSections[i].getAttribute("start-time");
+                var filterString = "filter: brightness(100%)";
+                var nextBarTime = 1000;
+                var currentSegmentIndex = allSongSections[i].getAttribute("segment-index");
+
+                if (i < allSongSections.length - 1) {
+                    nextBarTime = allSongSections[i + 1].getAttribute("start-time");
+                }
+
+                if (currentStartTime < audioPlayer.currentTime && nextBarTime > audioPlayer.currentTime) {
+                    const normalizedBarTime = (audioPlayer.currentTime % barTime) / barTime;
+                    backgroundColorString = 'rgb(' + Lerp(200, 255, normalizedBarTime) + ', 100, 100);'
+                } else if (nextBarTime <= audioPlayer.currentTime) {
+                    backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
+                    filterString = "filter: brightness(30%)";
+                } else {
+                    backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
+                }
+
+                allSongSections[i].style = "background-color: " + backgroundColorString + ";" + filterString;
+            }
+        }
+
+        function SetUpSongStructureVisualizer() {
+            var audioPlayer = document.getElementById('audio-player');
+            var currentData = sjData.siotojazz[currentSong];
+            const beatTime = (60 / currentData.tempo);
+            const barTime = beatTime * 4;
+
+            const songStructureElement = document.getElementById("songStructure");
+            songStructureElement.innerHTML = "";
+
+            var currentTimeHold = 0.0;
+            var currentValidIndex = 0;
+            for (var i = 0; i < currentData.structure.length; i++) {
+                if (currentData.structure[i] == "Hold") {
+                    currentTimeHold += barTime;
+                    continue;
+                }
+
+                if (currentData.structure[i] == "Cut") {
+                    currentTimeHold -= barTime;
+                    continue;
+                }
+
+                var currentSongSection = document.createElement('div');
+                currentSongSection.classList.add("songSection");
+                currentSongSection.innerHTML = '<div class="songSectionTitle">' + currentData.structure[i] + '</div><div class="songSectionChords">' + currentData.chords[currentData.structure[i]] + '</div>';
+
+                var time = ((currentValidIndex * (barTime * 4)) + parseFloat(currentData.barStartTime)) + currentTimeHold; // 4 bars per segment
+
+                currentSongSection.setAttribute('start-time', time);
+                currentSongSection.setAttribute('segment-index', i);
+                songStructureElement.appendChild(currentSongSection);
+
+                currentSongSection.addEventListener('click', function () {
+                    var startTime = this.getAttribute('start-time');
+                    audioPlayer.currentTime = startTime;
+                });
+
+                currentValidIndex++;
+            }
         }
 
         function SetUpAudioPlayer() {
@@ -3204,6 +3382,7 @@
 
             SetUpLyrics();
             SetUpSongDots();
+            SetUpSongStructureVisualizer();
 
             audioPlayer.addEventListener('loadeddata', function (e) {
                 audioPlayer.play();
@@ -3299,8 +3478,6 @@
                 { filename: '000054.jpg', description: 'Zovich' },
                 { filename: '20230312_012631.mp4', description: 'Patience @ Home' },
                 { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
-                { filename: 'ss1.png', description: 'Germijan Six July Twentythreee' },
-                { filename: 'ss2.png', description: 'Bach Fields' },
                 { filename: 'ss3.png', description: 'Germijan Trach' },
                 { filename: 'ss4.png', description: 'Strezhevo Bee Standoff' },
             ];
@@ -3382,7 +3559,7 @@
 
                 document.getElementById("lyrics").style.display = "block";
                 document.getElementById("background").style.display = "none";
-                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "none";
 
             } else if (mode == 1) {
@@ -3392,7 +3569,7 @@
 
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.display = "block";
-                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "none";
             } else if (mode == 2) {
                 showChordsBtn.forEach(function (e) {
@@ -3401,7 +3578,7 @@
 
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.display = "none";
-                document.getElementById("lyricsChords").style.display = "block";
+                document.getElementById("songStructureVisualiser").style.display = "block";
                 document.getElementById("gallery").style.display = "none";
             } else if (mode == 3) {
                 showGalleryBtn.forEach(function (e) {
@@ -3410,7 +3587,7 @@
 
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.display = "none";
-                document.getElementById("lyricsChords").style.display = "none";
+                document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "grid";
             }
         }
@@ -3529,6 +3706,7 @@
             var params = new URLSearchParams(window.location.search);
 
             SetUpAudioPlayer();
+            SetUpSongStructureVisualizer();
             SetUpGallery();
             SetUpCommonButtons();
             UpdateLyricsView(0);
@@ -3765,7 +3943,10 @@
                 <div id="num"></div>
                 <div id="title"></div>
                 <div id="lyrics"></div>
-                <div id="lyricsChords"></div>
+                <div id="songStructureVisualiser">
+                    <div id="chords" style="display:none;"></div>
+                    <div id="songStructure"></div>
+                </div>
                 <div id="gallery">
 
                 </div>
