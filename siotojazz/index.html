@@ -21,6 +21,11 @@
             src: url('Garet-Heavy.ttf') format('truetype');
         }
 
+        @font-face {
+            font-family: 'handwrited';
+            src: url('Marco_handwrite-Regular.otf') format('opentype');
+        }
+
         * {
             margin: 0 auto;
             padding: 0;
@@ -136,6 +141,7 @@
             background-color: #000;
             padding: 10px;
             margin-bottom: 20px;
+            font-size: 30px;
         }
 
         #song #currentTimeDisplay, #song #totalTimeDisplay {
@@ -264,6 +270,66 @@
 
             #song #dotsContainer #dots {
                 width: 70%;
+            }
+
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 20px;
+            position: relative;
+            left: -50px;
+            margin-left: 100px;
+            width: calc(100vw - 400px);
+        }
+
+            #gallery .polaroidImg {
+                background-color: #FFF;
+                border: 20px #FFF solid;
+                box-shadow: 0px 0px 10px #1113;
+            }
+
+        .polaroidImg img, .polaroidImg video, .polaroidImg iframe {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+        }
+
+        .polaroidImg .description {
+            font-size: 40px;
+            font-family: 'handwrited', cursive;
+        }
+
+        #gallery img:hover {
+            cursor: pointer;
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s;
+        }
+
+            .popup img {
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+                border: 10px solid #000;
+            }
+
+            .popup.active {
+                visibility: visible;
+                opacity: 1;
             }
 
         .dot {
@@ -521,7 +587,7 @@
                     "title": "Patience",
                     "audio": "patience.mp3",
                     "tempo": "184",
-                    "barStartTime": "0.0", // "19.89",
+                    "barStartTime": "19.89",
                     "lyrics": [
                         {
                             "text": "The warmest small town summers",
@@ -2900,6 +2966,10 @@
 
         const lyricsIconArray = Array.from(lyricsIconMap.keys());
 
+        function GetRandomNumberInRange(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
         function FormatTime(time) {
             var minutes = Math.floor(time / 60);
             var seconds = Math.floor(time % 60);
@@ -3180,12 +3250,113 @@
             });
         }
 
+        function ShowPopup(imageSrc) {
+            const popupImage = document.getElementById('popup-image');
+            popupImage.src = imageSrc;
+            popup.classList.add('active');
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function ClosePopup() {
+            popup.classList.remove('active');
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Escape') {
+                ClosePopup();
+            }
+        }
+
+        function GetMediaType(url) {
+            const extension = url.split('.').pop().toLowerCase();
+            if (extension === 'jpg' || extension === 'jpeg' || extension === 'png' || extension === 'gif') {
+                return 'image';
+            } else if (extension === 'mp4') {
+                return 'video';
+            } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                return 'youtube';
+            }
+            return null;
+        }
+
+        function GetYouTubeEmbedUrl(youtubeUrl) {
+            const videoId = youtubeUrl.split('v=')[1];
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        function SetUpGallery() {
+            const pictureData = [
+                { filename: '000067.jpg', description: 'Mariovo Micra Recording Sessions' },
+                { filename: '000068.jpg', description: 'Mariovo' },
+                { filename: '000069.jpg', description: 'Mariovo' },
+                { filename: '000070.jpg', description: 'Mariovo' },
+                { filename: '000071.jpg', description: 'Mariovo' },
+                { filename: '000074.jpg', description: 'Mariovo' },
+                { filename: '20230312_012631.mp4', description: 'Patience @ Home' },
+                { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
+                { filename: 'ss1.png', description: 'Germijan Six July Twentythreee' },
+                { filename: 'ss2.png', description: 'Bach' },
+                { filename: 'ss3.png', description: 'Germijan' },
+                { filename: 'ss4.png', description: 'Strezhevo Bee Standoff' },
+            ];
+
+            const galleryContainer = document.getElementById('gallery');
+            const popup = document.getElementById('popup');
+
+            popup.addEventListener('click', function (e) {
+                if (e.target === popup) {
+                    ClosePopup();
+                }
+            });
+
+            for (const picture of pictureData) {
+
+                const mediaType = GetMediaType(picture.filename);
+                const polaroid = document.createElement('div');
+                polaroid.classList.add("polaroidImg");
+                var img;
+
+                if (mediaType === 'image') {
+                    img = document.createElement('img');
+                    img.src = `gallery/${picture.filename}`;
+                    img.alt = picture.filename;
+
+                    img.addEventListener('click', function () {
+                        ShowPopup(img.src);
+                    });
+                } else if (mediaType === 'video') {
+                    img = document.createElement('video');
+                    img.src = "gallery/" + picture.filename;
+                    img.controls = true;
+                } else if (mediaType === 'youtube') {
+                    img = document.createElement('iframe');
+                    img.src = GetYouTubeEmbedUrl(picture.filename);
+                    img.setAttribute('allow', 'autoplay; encrypted-media');
+                    img.setAttribute('allowfullscreen', true);
+                }
+
+                const desc = document.createElement('div');
+                desc.classList.add("description");
+                desc.innerHTML = picture.description;
+
+                polaroid.appendChild(img);
+                polaroid.appendChild(desc);
+                galleryContainer.appendChild(polaroid);
+
+                const randomRotation = GetRandomNumberInRange(-20, 20);
+                polaroid.style.transform = `rotate(${randomRotation}deg)`;
+                polaroid.style.zIndex = GetRandomNumberInRange(0, 1000);
+            }
+        }
+
         function UpdateLyricsView(mode) {
             lyricsViewMode = mode;
 
             var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
+            var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
 
             showLyricsBtn.forEach(function (e) {
                 e.classList.remove("btnActive");
@@ -3194,6 +3365,9 @@
                 e.classList.remove("btnActive");
             });
             showChordsBtn.forEach(function (e) {
+                e.classList.remove("btnActive");
+            });
+            showGalleryBtn.forEach(function (e) {
                 e.classList.remove("btnActive");
             });
 
@@ -3205,6 +3379,7 @@
                 document.getElementById("lyrics").style.display = "block";
                 document.getElementById("background").style.opacity = "0";
                 document.getElementById("lyricsChords").style.opacity = "0";
+                document.getElementById("gallery").style.opacity = "0";
 
             } else if (mode == 1) {
                 showImageBtn.forEach(function (e) {
@@ -3214,6 +3389,7 @@
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.opacity = "1";
                 document.getElementById("lyricsChords").style.opacity = "0";
+                document.getElementById("gallery").style.opacity = "0";
             } else if (mode == 2) {
                 showChordsBtn.forEach(function (e) {
                     e.classList.add("btnActive");
@@ -3222,6 +3398,16 @@
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.opacity = "0";
                 document.getElementById("lyricsChords").style.opacity = "1";
+                document.getElementById("gallery").style.opacity = "0";
+            } else if (mode == 3) {
+                showGalleryBtn.forEach(function (e) {
+                    e.classList.add("btnActive");
+                });
+
+                document.getElementById("lyrics").style.display = "none";
+                document.getElementById("background").style.opacity = "0";
+                document.getElementById("lyricsChords").style.opacity = "0";
+                document.getElementById("gallery").style.opacity = "1";
             }
         }
 
@@ -3233,6 +3419,7 @@
             var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
+            var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
 
             shuffleBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
@@ -3290,6 +3477,12 @@
                 });
             });
 
+            showGalleryBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(3);
+                });
+            });
+
             var menuBtn = document.getElementById('menuBtn');
             menuBtn.addEventListener('click', () => {
                 SetMenuState(!menuState);
@@ -3332,6 +3525,7 @@
             var params = new URLSearchParams(window.location.search);
 
             SetUpAudioPlayer();
+            SetUpGallery();
             SetUpCommonButtons();
             UpdateLyricsView(0);
 
@@ -3358,6 +3552,10 @@
     </script>
 </head>
 <body>
+    <div class="popup" id="popup">
+        <img id="popup-image" src="" alt="Popup Image">
+    </div>
+
     <div id="song">
         <div id="background"></div>
         <div id="content">
@@ -3432,9 +3630,9 @@
                     </div>
 
                     <!--<div class="creditsSection">
-        <div class="creditsPerson">Damjan Grujo</div>
-        <div class="creditsFor">Percussions</div>
-    </div>-->
+                        <div class="creditsPerson">Damjan Grujo</div>
+                        <div class="creditsFor">Percussions</div>
+                    </div>-->
 
                     <div class="creditsTitle">Producer</div>
                     <div class="creditsSection">
@@ -3541,7 +3739,7 @@
             <div id="menuBtn">
                 <!--<i class="fa fa-circle"></i>-->
                 <i class="fa fa-circle" aria-hidden="true">
-                    <i class="fa fa-moon" aria-hidden="true" style="font-size: 40px; color: #f4ebdd; position: relative; top: -80px; left: 0px;">
+                    <i class="fa fa-book" aria-hidden="true" style="font-size: 40px; color: #f4ebdd; position: relative; top: -80px; left: 0px;">
                     </i>
                 </i>
             </div>
@@ -3557,11 +3755,16 @@
                     <button class="showLyricsBtn"><i class="fa fa-align-justify"></i></button>
                     <button class="showImageBtn"><i class="fa fa-camera-retro"></i></button>
                     <button class="showChordsBtn"><i class="fa fa-music"></i></button>
+                    <div id="verticalSeparator" style="margin-top: 100px;"></div>
+                    <button class="showGalleryBtn"><i class="fa fa-image"></i></button>
                 </div>
                 <div id="num"></div>
                 <div id="title"></div>
                 <div id="lyrics"></div>
                 <div id="lyricsChords"></div>
+                <div id="gallery">
+
+                </div>
             </div>
         </div>
     </div>
