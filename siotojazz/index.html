@@ -290,8 +290,16 @@
                 max-width: 300px;
                 background-color: #FFF;
                 border: 20px #FFF solid;
-                box-shadow: 0px 0px 10px #1113;
+                box-shadow: 0px 0px 10px #1114;
+                transition: 0.8s;
             }
+
+                #gallery .polaroidImg:hover {
+                    transform: rotate(0deg) translate(0, 0) !important;
+                    transition: 0.3s;
+                    box-shadow: 10px 10px 30px #1112;
+                    z-index: 1050 !important;
+                }
 
         .polaroidImg img, .polaroidImg video, .polaroidImg iframe {
             width: 100%;
@@ -340,7 +348,7 @@
 
         #songStructure {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             border: 5px solid #000;
             box-shadow: 0px 0px 10px #1116;
             background-color: #000;
@@ -360,11 +368,11 @@
             }
 
         .songSectionTitle {
-            font-size: 20px;
+            font-size: 30px;
         }
 
         .songSectionChords {
-            font-size: 10px;
+            font-size: 20px;
         }
 
         .dot {
@@ -1360,6 +1368,8 @@
                 {
                     "background": "jetpacks.jpg",
                     "title": "Jetpacks",
+                    "tempo": "122",
+                    "barStartTime": "0.0",
                     "audio": "jetpacks.mp3",
                     "lyrics": [
                         {
@@ -1612,7 +1622,24 @@
                             "endTime": "218",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Intro": ["E", "B/D#", "C#m", "B"],
+                        "Verse": ["E", "B/D#", "C#m", "B"],
+                        "ChorusOne": ["A", "E", "B", "C#m"],
+                        "ChorusTwo": ["A", "E", "B", "B"],
+                        "Solo": ["E", "B/D#", "C#m", "B"],
+                        "Coda": ["E", "E", "F#m", "A"],
+                        "End": ["E", "E", "E", "E"]
+                    },
+                    "structure": ["Intro", "Intro", "Verse", "Verse", "ChorusOne", "ChorusTwo",
+                        "Solo", "Solo", "Verse", "Verse", "Verse", "Verse", "ChorusOne", "ChorusTwo",
+                        "Solo", "Solo", "Solo", "Solo", "Verse", "Verse",
+                        "ChorusOne", "ChorusTwo", "ChorusOne", "ChorusTwo",
+                        "Coda", "Cut", "Cut", "Coda", "Cut", "Cut",
+                        "Coda", "Cut", "Cut", "Coda", "Cut", "Cut",
+                        "Coda", "Cut", "Cut", "Coda", "Cut", "Cut",
+                        "Coda", "Cut", "Cut", "Coda", "Cut", "Cut", "End"]
                 },
                 5:
                 {
@@ -3467,6 +3494,15 @@
 
         function SetUpGallery() {
             const pictureData = [
+                { filename: '001.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '002.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '003.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '004.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '005.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '006.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '007.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '008.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '009.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '000067.jpg', description: 'Mariovo Micra Recording Sessions' },
                 { filename: '000068.jpg', description: 'Mariovo' },
                 { filename: '000069.jpg', description: 'Mariovo' },
@@ -3476,6 +3512,10 @@
                 { filename: '000064.jpg', description: 'Mariovo' },
                 { filename: '000072.jpg', description: 'Mariovo' },
                 { filename: '000054.jpg', description: 'Zovich' },
+                { filename: '20230720_114819.jpg', description: 'Eva at Mellivora' },
+                { filename: '20230720_114822.jpg', description: 'Anastasija at Mellivora' },
+                { filename: '20230720_133704.jpg', description: 'Ilija at Mellivora' },
+                { filename: '20230720_142834.jpg', description: 'Alek at Mellivora' },
                 { filename: '20230312_012631.mp4', description: 'Patience @ Home' },
                 { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
                 { filename: 'ss3.png', description: 'Germijan Trach' },
@@ -3526,7 +3566,9 @@
                 galleryContainer.appendChild(polaroid);
 
                 const randomRotation = GetRandomNumberInRange(-20, 20);
-                polaroid.style.transform = `rotate(${randomRotation}deg)`;
+                const randomTranslationX = GetRandomNumberInRange(-50, 50);
+                const randomTranslationY = GetRandomNumberInRange(-50, 50);
+                polaroid.style.transform = `rotate(${randomRotation}deg) translate(${randomTranslationX}px, ${randomTranslationY}px)`;
                 polaroid.style.zIndex = GetRandomNumberInRange(0, 1000);
             }
         }
