@@ -348,7 +348,7 @@
 
         #songStructure {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             border: 5px solid #000;
             box-shadow: 0px 0px 10px #1116;
             background-color: #000;
@@ -798,7 +798,8 @@
                         "BridgeOne": ["D", "D", "G", "G"],
                         "BridgeTwo": ["B5-C5", "B5-C5", "B5-C5", "B5-C5"],
                         "Coda": ["C", "D", "Em", "G"],
-                        "End": ["C", "C", "C", "C"]
+                        "End": ["C", "C", "C", "C"],
+                        "Vienna": ["n/a", "n/a", "n/a", "n/a"]
                     },
                     "structure": ["Entry", "Entry", "Intro", "Intro",
                         "Verse", "Verse", "Verse", "Verse", "Verse", "Verse",
@@ -1645,6 +1646,8 @@
                 {
                     "background": "fragile.jpg",
                     "title": "Fragile",
+                    "tempo": "166",
+                    "barStartTime": "0.0",
                     "audio": "fragile.mp3",
                     "lyrics":
                         [
@@ -1823,12 +1826,29 @@
                                 "endTime": "162",
                                 "propertyIndex": 0
                             }
-                        ]
+                        ],
+                    "chords": {
+                        "Intro": ["G", "D", "A", "Bm"],
+                        "Verse": ["G", "D", "A", "Bm"],
+                        "Chorus": ["Em", "D", "A", "G"],
+                        "PostChorus": ["G", "D", "A", "Bm"],
+                        "Solo": ["G", "D", "A", "Bm"],
+                        "Coda": ["G", "D", "A", "Bm"]
+                    },
+                    "structure": ["Intro", "Intro", "Intro", "Intro", "Intro", "Intro",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "PostChorus", "PostChorus", "PostChorus", "PostChorus",
+                        "Verse", "Verse", "Verse", "Verse",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "PostChorus", "PostChorus", "Solo", "Solo", "Coda"]
                 },
                 6:
                 {
                     "background": "ghost.jpg",
                     "title": "Ghost",
+                    "tempo": "102",
+                    "barStartTime": "0.0",
                     "audio": "ghost.mp3",
                     "lyrics":
                         [
@@ -2100,12 +2120,53 @@
                                 "endTime": "242",
                                 "propertyIndex": 1
                             }
-                        ]
+                        ],
+                    "chords": {
+                        "Entry": ["Dm", "Dm", "Dm", "Dm"],
+                        "IntroOne": ["Dm", "Am", "Em", "Em"],
+                        "IntroTwo": ["Dm", "Am", "G", "F"],
+                        "VerseOne": ["Dm", "Am", "Em", "Em"],
+                        "VerseTwo": ["Dm", "Am", "G", "F"],
+                        "PostChorusOne": ["Dm", "Am", "Em", "Em"],
+                        "PostChorusTwo": ["Dm", "Am", "G", "F"],
+                        "Chorus": ["Em", "F#m", "A", "D"],
+                        "PreChorus": ["Em", "F#m", "A", "D"],
+                        "Break": ["n/a", "n/a", "n/a", "n/a"],
+                        "Bridge": ["Am", "C", "G", "G"],
+                        "Coda": ["Em", "F#m", "A", "D"]
+                    },
+                    "structure": ["Entry", "Cut", "Cut", "IntroOne", "IntroTwo", "IntroOne", "IntroTwo",
+                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial", "Hold",
+                        "PostChorusOne", "PostChorusTwo", "VerseOne", "VerseTwo",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Break", "Cut", "Cut",
+                        "Bridge", "Hold", "Bridge", "Hold",
+                        "PreChorus", "CutSpecial",
+                        "PreChorus", "CutSpecial",
+                        "PreChorus", "CutSpecial",
+                        "PreChorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Chorus", "CutSpecial",
+                        "Coda", "CutSpecial",
+                        "Coda", "CutSpecial",
+                        "Coda", "CutSpecial",
+                        "Coda", "CutSpecial"]
                 },
                 7:
                 {
                     "background": "rites.jpg",
                     "title": "Rites",
+                    "tempo": "172",
+                    "barStartTime": "0.0",
                     "audio": "rites.mp3",
                     "lyrics": [
                         {
@@ -2294,12 +2355,48 @@
                             "endTime": "182",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Entry": ["F", "G", "Dm", "Dm"],
+                        "IntroOne": ["F", "G", "Dm", "Dm"],
+                        "IntroTwo": ["C", "C", "Dm", "Dm"],
+                        "VerseOne": ["F", "G", "Dm", "Dm"],
+                        "VerseTwo": ["C", "C", "Dm", "Dm"],
+                        "PreChorus": ["A#", "C", "[Pause]", "[Pause]"],
+                        "ChorusOne": ["F", "G", "Dm", "Dm"],
+                        "ChorusTwo": ["C", "C", "Dm", "Dm"],
+                        "Break": ["n/a", "n/a", "n/a", "n/a"],
+                        "Coda": ["D", "A", "D", "A"]
+                    },
+                    "structure": ["Entry", "Hold",
+                        "IntroOne", "Cut", "Cut", "IntroOne", "Cut", "Cut",
+                        "IntroOne", "Cut", "Cut", "IntroTwo", "Cut", "Cut",
+                        "IntroOne", "Cut", "Cut", "IntroOne", "Cut", "Cut",
+                        "IntroOne", "Cut", "Cut", "IntroTwo", "Cut", "Cut", "IntroTwo", "Cut", "Cut",
+                        "VerseOne", "Cut", "Cut", "VerseOne", "Cut", "Cut",
+                        "VerseOne", "Cut", "Cut", "VerseTwo", "Cut", "Cut",
+                        "VerseOne", "Cut", "Cut", "VerseOne", "Cut", "Cut",
+                        "VerseOne", "Cut", "Cut", "VerseTwo", "Cut", "Cut", "VerseTwo", "Cut", "Cut",
+                        "PreChorus",
+                        "ChorusOne", "Cut", "Cut", "ChorusOne", "Cut", "Cut",
+                        "ChorusOne", "Cut", "Cut",
+                        "ChorusTwo", "Cut", "Cut", "ChorusTwo", "Cut", "Cut", "ChorusTwo", "Cut", "Cut", "ChorusTwo", "Cut", "Cut",
+                        "PreChorus", "Hold", "Hold", "Hold", "Hold", "Break", "Cut", "Cut",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold"]
                 },
                 8:
                 {
                     "background": "mad.jpg",
                     "title": "Mad",
+                    "tempo": "112",
+                    "barStartTime": "0.0",
                     "audio": "mad.mp3",
                     "lyrics": [
                         {
@@ -2533,12 +2630,30 @@
                             "endTime": "206",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Entry": ["Dsus2", "Dsus2", "Dsus2", "Dsus2"],
+                        "Verse": ["Dsus2", "Asus4", "G", "G"],
+                        "ChorusOne": ["Em", "Bm", "A", "G"],
+                        "ChorusTwo": ["D", "A", "n/a", "n/a"],
+                        "PostChorus": ["D", "A", "G", "G"],
+                    },
+                    "structure": ["Entry", "Entry",
+                        "Verse", "Hold", "Hold", "Hold", "Hold", "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "ChorusOne", "ChorusTwo", "Cut", "Cut", "ChorusOne", "ChorusTwo", "Cut", "Cut",
+                        "ChorusOne", "ChorusTwo", "Cut", "Cut", "ChorusOne", "ChorusTwo", "Cut", "Cut",
+                        "PostChorus", "PostChorus",
+                        "Verse", "Hold", "Hold", "Hold", "Hold", "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "ChorusOne", "ChorusTwo", "Cut", "Cut", "ChorusOne", "ChorusTwo", "Cut", "Cut",
+                        "ChorusOne", "ChorusTwo", "Cut", "Cut", "ChorusOne", "ChorusTwo", "Cut", "Cut",
+                        "PostChorus", "PostChorus"]
                 },
                 9:
                 {
                     "background": "ink.jpg",
                     "title": "Ink",
+                    "tempo": "93",
+                    "barStartTime": "0.0",
                     "audio": "ink.mp3",
                     "lyrics": [
                         {
@@ -2796,12 +2911,43 @@
                             "endTime": "452",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Entry": ["F", "C", "Em", "F"],
+                        "IntroOne": ["F", "C", "Em", "F"],
+                        "IntroTwo": ["Cm", "A#", "Gm", "Gm"],
+                        "VerseOne": ["F", "C", "Em", "F"],
+                        "VerseTwo": ["Cm", "A#", "Gm", "Gm"],
+                        "PostChorusOne": ["F", "C", "Em", "F"],
+                        "PostChorusTwo": ["Cm", "A#", "Gm", "Gm"],
+                        "Chorus": ["D", "C", "G", "G"],
+                        "BridgeOne": ["Em", "D", "Em", "D"],
+                        "BridgeTwo": ["C", "C", "C", "C"],
+                        "CodaOne": ["F", "C", "Em", "F"],
+                        "CodaTwo": ["Cm", "A#", "Gm", "Gm"],
+                        "End": ["Cm", "A#", "Gm", "Gm"]
+                    },
+                    "structure": ["Entry", "IntroTwo",
+                        "IntroOne", "IntroTwo",
+                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
+                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "PostChorusOne", "PostChorusTwo",
+                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
+                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
+                        "Chorus", "Chorus", "Chorus", "Chorus",
+                        "BridgeOne", "Hold", "CutSpecial", "BridgeTwo", "Cut", "Cut",
+                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
+                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
+                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
+                        "Chorus", "Chorus", "Chorus", "Chorus", "CodaOne", "CodaTwo", "CodaOne", "End"]
                 },
                 10:
                 {
                     "background": "dreams.jpg",
                     "title": "Dreams",
+                    "tempo": "156",
+                    "barStartTime": "0.0",
                     "audio": "dreams.mp3",
                     "lyrics": [
                         {
@@ -3050,7 +3196,36 @@
                             "endTime": "190",
                             "propertyIndex": 0
                         }
-                    ]
+                    ],
+                    "chords": {
+                        "Entry": ["C", "C", "C", "C"],
+                        "Intro": ["C", "Dm", "F", "C"],
+                        "Verse": ["C", "Dm", "F", "C"],
+                        "Break": ["n/a", "n/a", "n/a", "n/a"],
+                        "Chorus": ["C", "Dm", "F", "C"],
+                        "Solo": ["C", "Dm", "F", "C"],
+                        "Coda": ["C", "Dm", "F", "C"],
+                        "End": ["n/a", "n/a", "n/a", "n/a"],
+                        "Vienna": ["n/a", "n/a", "n/a", "n/a"]
+                    },
+                    "structure": ["Entry", "Cut", "Cut",
+                        "Intro", "Hold", "Hold", "Hold", "Hold",
+                        "Intro", "Hold", "Hold", "Hold", "Hold", "Break", "Cut", "Cut",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Chorus", "Hold", "Hold", "Hold", "Hold",
+                        "Chorus", "Hold", "Hold", "Hold", "Hold",
+                        "Solo", "Hold", "Hold", "Hold", "Hold",
+                        "Solo", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Verse", "Hold", "Hold", "Hold", "Hold",
+                        "Coda", "Hold", "Hold", "Hold", "Hold",
+                        "End", "Vienna"]
+
                 }
             }
         }
@@ -3200,14 +3375,21 @@
                 ChorusOne: "#ffd966",
                 ChorusTwo: "#dda936",
                 ChorusEnd: "#ad8966",
-                PostChorus: "#ffd966",
+                PostChorus: "#dfa996",
+                PostChorusOne: "#dfa996",
+                PostChorusTwo: "#cfd976",
                 Solo: "#95bdff",
                 SoloOne: "#95bdff",
                 SoloTwo: "#759ddf",
+                Bridge: "#967e76",
                 BridgeOne: "#967e76",
                 BridgeTwo: "#867070",
                 Coda: "#73a9ad",
-                End: "#737373"
+                CodaOne: "#73a9ad",
+                CodaTwo: "#93c9cd",
+                End: "#737373",
+                Break: "#939393",
+                Vienna: "#FFAA99"
             }
             var allSongSections = document.querySelectorAll(".songSection");
             for (i = 0; i < allSongSections.length; i++) {
@@ -3254,6 +3436,11 @@
 
                 if (currentData.structure[i] == "Cut") {
                     currentTimeHold -= barTime;
+                    continue;
+                }
+
+                if (currentData.structure[i] == "CutSpecial") {
+                    currentTimeHold -= barTime * 3 / 2;
                     continue;
                 }
 
@@ -3926,7 +4113,7 @@
                         <div class="creditsFor">Nižepole, Macedonia</div>
                     </div>
 
-                    <div class="creditsTitle">Cover Photo</div>
+                    <div class="creditsTitle">Album Cover</div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Anastasija Trajkovska</div>
                         <div class="creditsFor">Model</div>
@@ -3940,6 +4127,16 @@
                     <div class="creditsSection">
                         <div class="creditsPerson">Kiril Gagačev</div>
                         <div class="creditsFor">Additional Design Contributions</div>
+                    </div>
+
+                    <div class="creditsTitle">Photography</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Andrej Bogatinoski</div>
+                    </div>
+
+                    <div class="creditsTitle">Website Design</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Martin Petkovski</div>
                     </div>
 
                     <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions or continuous support we would like to thank the following people</div>
