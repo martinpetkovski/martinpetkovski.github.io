@@ -359,21 +359,61 @@
             display: inline-block;
             vertical-align: middle;
             width: 100%;
-            padding: 10px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
             .songSection:hover {
-                filter: brightness(200%);
+                filter: brightness(150%) !important;
+                transition: 0.3s;
             }
 
         .songSectionTitle {
             font-size: 30px;
+            padding: 10px;
         }
 
         .songSectionChords {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             font-size: 20px;
+            padding: 10px;
+            background-color: #0003 !important;
         }
+
+        .sectionProgressbar {
+            width: 100%;
+            height: 10px;
+            position: relative;
+            overflow: hidden;
+            background-color: #FFF2;
+        }
+
+        .actualProgressbar {
+            position: absolute;
+            height: 100%;
+            background-color: #000A;
+            transition: 0.1s;
+        }
+
+        .activeSongSection {
+            animation: blinking-animation 1s infinite ease-in-out;
+        }
+
+        @keyframes blinking-animation {
+            0% {
+                background-color: #ff6b6b;
+            }
+
+            50% {
+                background-color: #fd3a3a;
+            }
+
+            100% {
+                background-color: #ff6b6b;
+            }
+        }
+
 
         .dot {
             display: inline-block;
@@ -820,7 +860,7 @@
                     "title": "Language",
                     "audio": "language.mp3",
                     "tempo": "140",
-                    "barStartTime": "-3.42",
+                    "barStartTime": "0.0",
                     "lyrics": [
                         {
                             "text": "I've been always late",
@@ -1077,7 +1117,7 @@
                         "Coda": ["E", "C#m", "G#m", "A"],
                         "End": ["E", "C#m", "G#m", "n/a"]
                     },
-                    "structure": ["Entry", "Intro", "Intro", "Intro", "Intro",
+                    "structure": ["Entry", "Cut", "Cut", "Intro", "Intro", "Intro", "Intro",
                         "Verse", "Verse", "Verse", "Verse",
                         "Chorus", "Chorus",
                         "Verse", "Verse", "Verse", "Verse",
@@ -3239,6 +3279,7 @@
         var menuState = true;
         var startTime = 0;
         var lyricsViewMode = 0;
+        var currentAudioFrameTimer = 0;
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3339,28 +3380,13 @@
             return start * (1 - alpha) + end * alpha;
         }
 
-        function PrintCurrentChord() {
+        Math.clamp = function (value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        };
+
+        function PrintCurrentChord(preciseAudioTime) {
             var audioPlayer = document.getElementById('audio-player');
             var currentData = sjData.siotojazz[currentSong];
-            const beatTime = (60 / currentData.tempo);
-            const barTime = beatTime * 4;
-            //var currentBar = Math.floor((audioPlayer.currentTime - currentData.barStartTime) / barTime);
-            //var currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
-
-            //var segmentName = currentData.structure[currentSegmentIndex];
-            //if (segmentName == "Hold")
-            //    currentBar += beatTime;
-
-            //currentSegmentIndex = Math.floor(currentBar / 4); // 4 beats per bar
-
-            //var currentChord = "n/a";
-            //if (segmentName != null) {
-            //    const currentChords = currentData.chords[segmentName];
-            //    currentChord = currentChords[Math.floor(currentBar) % 4];
-            //}
-
-            //const chordsElement = document.getElementById("chords");
-            //chordsElement.innerHTML = '<div id="chord">' + currentChord + '</div>';
 
             const segmentColors = {
                 Entry: "#f1c27b",
@@ -3396,25 +3422,55 @@
                 var backgroundColorString = "#FFF";
                 var currentStartTime = allSongSections[i].getAttribute("start-time");
                 var filterString = "filter: brightness(100%)";
-                var nextBarTime = 1000;
+                var nextBarTime = audioPlayer.endTime;
                 var currentSegmentIndex = allSongSections[i].getAttribute("segment-index");
+
 
                 if (i < allSongSections.length - 1) {
                     nextBarTime = allSongSections[i + 1].getAttribute("start-time");
                 }
 
-                if (currentStartTime < audioPlayer.currentTime && nextBarTime > audioPlayer.currentTime) {
-                    const normalizedBarTime = (audioPlayer.currentTime % barTime) / barTime;
-                    backgroundColorString = 'rgb(' + Lerp(200, 255, normalizedBarTime) + ', 100, 100);'
-                } else if (nextBarTime <= audioPlayer.currentTime) {
+                var currentProgressbar = document.getElementById("pbContainer" + currentSegmentIndex);
+                var currentBarLength = nextBarTime - currentStartTime;
+                var currentTimeFromStart = preciseAudioTime - currentStartTime;
+                var sectionProgress = Math.clamp(currentTimeFromStart / currentBarLength, 0.0, 1.0) * 100;
+                var actualProgressbar = currentProgressbar.childNodes[0];
+                actualProgressbar.style.width = sectionProgress + "%";
+
+                if (currentStartTime < preciseAudioTime && nextBarTime > preciseAudioTime) {
+                    allSongSections[i].classList.add("activeSongSection");
+                } else if (nextBarTime <= preciseAudioTime) {
                     backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
                     filterString = "filter: brightness(30%)";
+                    allSongSections[i].classList.remove("activeSongSection");
                 } else {
                     backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
+                    allSongSections[i].classList.remove("activeSongSection");
                 }
 
                 allSongSections[i].style = "background-color: " + backgroundColorString + ";" + filterString;
             }
+        }
+
+        function InsertSpacesInCamelCase(inputString) {
+            return inputString
+                .replace(/PreChorus/g, 'Pre-Chorus')
+                .replace(/PostChorus/g, 'Post-Chorus')
+                .replace(/([a-z])([A-Z])/g, '$1 $2') // Insert spaces between CamelCase words
+                .replace(/\b(One|Two|Three|Four|Five|Six|Seven|Eight|Nine)\b/gi, match => {
+                    const numbers = {
+                        one: 1,
+                        two: 2,
+                        three: 3,
+                        four: 4,
+                        five: 5,
+                        six: 6,
+                        seven: 7,
+                        eight: 8,
+                        nine: 9,
+                    };
+                    return numbers[match.toLowerCase()]; // Convert word numbers to numerical values
+                });
         }
 
         function SetUpSongStructureVisualizer() {
@@ -3446,7 +3502,23 @@
 
                 var currentSongSection = document.createElement('div');
                 currentSongSection.classList.add("songSection");
-                currentSongSection.innerHTML = '<div class="songSectionTitle">' + currentData.structure[i] + '</div><div class="songSectionChords">' + currentData.chords[currentData.structure[i]] + '</div>';
+
+                var sectionTitle = InsertSpacesInCamelCase(currentData.structure[i]);
+
+                currentSongSection.innerHTML = '<div class="songSectionTitle">' + sectionTitle + '</div>';
+
+                var sectionProgressbar = '<div class="sectionProgressbar" id="pbContainer' + i + '"><div class="actualProgressbar"></div></div>';
+                currentSongSection.innerHTML += sectionProgressbar;
+
+                var chords = currentData.chords[currentData.structure[i]];
+                var chordsString = "";
+                for (var j = 0; j < chords.length; j++) {
+                    if (chords[j] == 'n/a')
+                        continue;
+                    chordsString += '<div class="sectionChord">' + chords[j] + '</div>';
+                }
+                var chordsSection = '<div class="songSectionChords">' + chordsString + '</div>';
+                currentSongSection.innerHTML += chordsSection;
 
                 var time = ((currentValidIndex * (barTime * 4)) + parseFloat(currentData.barStartTime)) + currentTimeHold; // 4 bars per segment
 
@@ -3461,6 +3533,12 @@
 
                 currentValidIndex++;
             }
+        }
+
+        function AudioAnimationsTick() {
+            var audioPlayer = document.getElementById('audio-player');
+            var currentAudioTimePrecise = audioPlayer.currentTime;
+            PrintCurrentChord(currentAudioTimePrecise);
         }
 
         function SetUpAudioPlayer() {
@@ -3490,7 +3568,6 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
 
                 UpdatePlayIcon();
-                PrintCurrentChord();
             });
 
             audioPlayer.addEventListener("ended", function () {
@@ -3939,6 +4016,7 @@
             SetUpGallery();
             SetUpCommonButtons();
             UpdateLyricsView(0);
+            setInterval(AudioAnimationsTick, 1);
 
             currentSong = params.get('song');
             if (currentSong == null)
