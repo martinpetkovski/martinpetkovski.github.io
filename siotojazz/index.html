@@ -3528,8 +3528,9 @@
                 songStructureElement.appendChild(currentSongSection);
 
                 currentSongSection.addEventListener('click', function () {
-                    var startTime = this.getAttribute('start-time');
+                    startTime = this.getAttribute('start-time');
                     audioPlayer.currentTime = startTime;
+                    SetURLArguments();
                 });
 
                 currentValidIndex++;
@@ -3624,6 +3625,7 @@
             searchParams.set('song', currentSong);
             searchParams.set('time', startTime);
             searchParams.set('menu', menuState);
+            searchParams.set('view', lyricsViewMode);
 
             url.search = searchParams.toString();
 
@@ -3950,24 +3952,28 @@
             showLyricsBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(0);
+                    SetURLArguments();
                 });
             });
 
             showImageBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(1);
+                    SetURLArguments();
                 });
             });
 
             showChordsBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(2);
+                    SetURLArguments();
                 });
             });
 
             showGalleryBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(3);
+                    SetURLArguments();
                 });
             });
 
@@ -4035,6 +4041,13 @@
             else
                 menuState = params.get('menu') == "true";
             SetMenuState(menuState);
+
+            lyricsViewMode = params.get('view');
+            if (lyricsViewMode == null)
+                lyricsViewMode = 0;
+            else
+                lyricsViewMode = params.get('view');
+            UpdateLyricsView(lyricsViewMode);
 
             document.body.addEventListener('touchstart', HandleTouchStart, false);
             document.body.addEventListener('touchend', HandleTouchEnd, false);
