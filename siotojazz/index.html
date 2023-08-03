@@ -38,6 +38,23 @@
             overflow-x: hidden;
         }
 
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background-color: #555;
+            }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #000 #f4ebdd;
+        }
+
         .hideMenu {
             transform: scale(0) translateY(-30%);
             opacity: 0 !important;
@@ -134,12 +151,13 @@
                 background-color: #222;
                 color: #FFF;
                 margin-bottom: 50px;
+                padding: 0px 0px 30px 0px;
                 border: 10px solid #000;
             }
 
         #messageHeader {
             background-color: #000;
-            padding: 10px;
+            padding: 10px 100px;
             margin-bottom: 20px;
             font-size: 30px;
         }
@@ -155,10 +173,12 @@
             left: 25px;
             top: 200px;
             font-size: 50px;
-            z-index: 10;
+            z-index: 1500;
             background-color: #f4ebdd33;
             backdrop-filter: blur(50px);
             padding: 25px;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
         }
 
         #playerHeader {
@@ -264,7 +284,7 @@
                 transition: 0.1s;
             }
 
-        #song #lyrics #stanzaEnd {
+        #song #lyrics .stanzaEnd {
             margin-bottom: 80px;
         }
 
@@ -397,7 +417,7 @@
             transition: 0.1s;
         }
 
-        .activeSongSection {
+        #activeSongSection {
             animation: blinking-animation 1s infinite ease-in-out;
         }
 
@@ -620,7 +640,7 @@
                     margin-top: 8px;
                 }
 
-                #song #lyrics #stanzaEnd::after {
+                #song #lyrics .stanzaEnd::after {
                     content: '';
                     position: relative;
                     top: 40px;
@@ -3358,10 +3378,12 @@
                     var isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
 
                     if (isWithinCurrentTime) {
+                        verse.id = "activeVerse";
                         verse.style.opacity = 1;
                         verse.style.backdropFilter = "blur(50px)";
                         verse.style.borderColor = '#000F';
                     } else {
+                        verse.id = "";
                         verse.style.opacity = 0.3;
                         verse.style.backdropFilter = "blur(0px)";
                         verse.style.borderColor = '#0000';
@@ -3439,14 +3461,14 @@
                 actualProgressbar.style.width = sectionProgress + "%";
 
                 if (currentStartTime < preciseAudioTime && nextBarTime > preciseAudioTime) {
-                    allSongSections[i].classList.add("activeSongSection");
+                    allSongSections[i].id = "activeSongSection";
                 } else if (nextBarTime <= preciseAudioTime) {
                     backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
                     filterString = "filter: brightness(30%)";
-                    allSongSections[i].classList.remove("activeSongSection");
+                    allSongSections[i].id = "";
                 } else {
                     backgroundColorString = segmentColors[currentData.structure[currentSegmentIndex]];
-                    allSongSections[i].classList.remove("activeSongSection");
+                    allSongSections[i].id = "";
                 }
 
                 allSongSections[i].style = "background-color: " + backgroundColorString + ";" + filterString;
@@ -3666,7 +3688,7 @@
                 if (verse.stanzaEnd) {
                     stanzaEnd = "stanzaEnd";
                 }
-                lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" id="' + stanzaEnd + '">' + verse.text + '</p>';
+                lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" class="' + stanzaEnd + '">' + verse.text + '</p>';
             }
             lyricsElement.innerHTML = lyricsHTML;
 
@@ -3906,6 +3928,7 @@
             var loopBtn = document.querySelectorAll('.loopBtn');
             var prevBtn = document.querySelectorAll('.prevBtn');
             var nextBtn = document.querySelectorAll('.nextBtn');
+            var focusBtn = document.querySelectorAll('.focusBtn');
             var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
@@ -3946,6 +3969,28 @@
                 e.addEventListener('click', () => {
                     PlaySong(currentSong + 1);
                     SetURLArguments();
+                });
+            });
+
+            focusBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    if (menuState) {
+                        SetMenuState(false);
+                    }
+
+                    if (lyricsViewMode != 0 && lyricsViewMode != 2) {
+                        UpdateLyricsView(0);
+                    }
+
+                    if (lyricsViewMode == 0) {
+                        const targetElement = document.getElementById("activeVerse");
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+
+                    if (lyricsViewMode == 2) {
+                        const targetElement = document.getElementById("activeSongSection");
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
             });
 
@@ -4133,9 +4178,9 @@
                     </div>
 
                     <!--<div class="creditsSection">
-                        <div class="creditsPerson">Damjan Grujo</div>
-                        <div class="creditsFor">Percussions</div>
-                    </div>-->
+        <div class="creditsPerson">Damjan Grujo</div>
+        <div class="creditsFor">Percussions</div>
+    </div>-->
 
                     <div class="creditsTitle">Producer</div>
                     <div class="creditsSection">
@@ -4242,6 +4287,8 @@
                         </div>
                     </div>
 
+                    <button style="margin-top: 100px; font-size: 60px; padding: 20px;"><i class="fa-solid fa-download"></i>Download Album</button>
+
                     <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
                         <div class="creditsPerson"></div>
                         <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
@@ -4263,7 +4310,7 @@
                     <button class="prevBtn"><i class="fas fa-step-backward"></i></button>
                     <button class="nextBtn"><i class="fas fa-step-forward"></i></button>
                     <button class="loopBtn"><i class="fas fa-redo"></i></button>
-                    <button class="shuffleBtn" style="display:none;"><i class="fas fa-random"></i></button>
+                    <button class="focusBtn"><i class="fas fa-bullseye"></i></button>
                     <div id="verticalSeparator" style="margin-top: 100px;"></div>
                     <button class="showLyricsBtn"><i class="fa fa-align-justify"></i></button>
                     <button class="showImageBtn"><i class="fa fa-camera-retro"></i></button>
