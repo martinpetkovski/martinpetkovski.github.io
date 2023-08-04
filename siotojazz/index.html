@@ -306,6 +306,19 @@
             width: calc(100vw - 400px);
         }
 
+        #about {
+            position: relative;
+            left: -0px;
+            margin-left: 130px;
+            width: calc(100vw - 400px);
+            font-size: 30px;
+            text-align:justify;
+        }
+
+        #about p {
+            margin-bottom: 50px;
+        }
+
             #gallery .polaroidImg {
                 max-width: 300px;
                 background-color: #FFF;
@@ -375,6 +388,12 @@
             user-select: none;
         }
 
+        #songMetadata {
+            margin-bottom: 30px;
+            font-size: 25px;
+            text-align: left;
+        }
+
         .songSection {
             box-sizing: border-box;
             display: inline-block;
@@ -386,7 +405,7 @@
 
             .songSection:hover {
                 filter: brightness(150%) !important;
-                transform: scale(110%);
+                transform: scale(105%);
                 transition: 0.3s;
                 z-index: 500;
                 box-shadow: 5px 5px 10px #0003;
@@ -394,7 +413,7 @@
 
             .songSection:active {
                 filter: brightness(50%) !important;
-                transform: scale(90%);
+                transform: scale(95%);
                 transition: 0.1s;
             }
 
@@ -721,6 +740,7 @@
                     "title": "Patience",
                     "audio": "patience.mp3",
                     "tempo": "184",
+                    "timeSig": "4/4",
                     "barStartTime": "19.89",
                     "lyrics": [
                         {
@@ -911,6 +931,7 @@
                     "title": "Language",
                     "audio": "language.mp3",
                     "tempo": "140",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "lyrics": [
                         {
@@ -1128,33 +1149,33 @@
                         },
                         {
                             "text": "Indifference",
-                            "startTime": "127.5",
-                            "endTime": "129",
+                            "startTime": "141",
+                            "endTime": "143",
                             "propertyIndex": 0
                         },
                         {
                             "text": "to the place",
-                            "startTime": "129",
-                            "endTime": "130",
+                            "startTime": "143",
+                            "endTime": "144.5",
                             "propertyIndex": 0
                         },
                         {
                             "text": "where we were raised.",
-                            "startTime": "130.5",
-                            "endTime": "132.5",
+                            "startTime": "144.5",
+                            "endTime": "146.5",
                             "propertyIndex": 0,
                             "stanzaEnd": true
                         },
                         {
                             "text": "You won't delay",
-                            "startTime": "134",
-                            "endTime": "136",
+                            "startTime": "147.5",
+                            "endTime": "150",
                             "propertyIndex": 0
                         },
                         {
                             "text": "you will say you're leaving",
-                            "startTime": "136",
-                            "endTime": "138",
+                            "startTime": "150",
+                            "endTime": "152",
                             "propertyIndex": 0
                         }
                     ],
@@ -1181,6 +1202,7 @@
                     "title": "Sun",
                     "audio": "sun.mp3",
                     "tempo": "284",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "lyrics":
                         [
@@ -1461,6 +1483,7 @@
                     "background": "jetpacks.jpg",
                     "title": "Jetpacks",
                     "tempo": "122",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "audio": "jetpacks.mp3",
                     "lyrics": [
@@ -1738,6 +1761,7 @@
                     "background": "fragile.jpg",
                     "title": "Fragile",
                     "tempo": "166",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "audio": "fragile.mp3",
                     "lyrics":
@@ -1939,6 +1963,7 @@
                     "background": "ghost.jpg",
                     "title": "Ghost",
                     "tempo": "102",
+                    "timeSig": "4/4; 10/4; 21/4",
                     "barStartTime": "0.0",
                     "audio": "ghost.mp3",
                     "lyrics":
@@ -2258,6 +2283,7 @@
                     "title": "Rites",
                     "tempo": "172",
                     "barStartTime": "0.0",
+                    "timeSig": "3/4; 5/4; 4/4",
                     "audio": "rites.mp3",
                     "lyrics": [
                         {
@@ -2487,6 +2513,7 @@
                     "background": "mad.jpg",
                     "title": "Mad",
                     "tempo": "112",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "audio": "mad.mp3",
                     "lyrics": [
@@ -2743,8 +2770,9 @@
                 {
                     "background": "ink.jpg",
                     "title": "Ink",
-                    "tempo": "93",
+                    "tempo": "70",
                     "barStartTime": "0.0",
+                    "timeSig": "6/8",
                     "audio": "ink.mp3",
                     "lyrics": [
                         {
@@ -3018,26 +3046,29 @@
                         "CodaTwo": ["Cm", "A#", "Gm", "Gm"],
                         "End": ["Cm", "A#", "Gm", "Gm"]
                     },
-                    "structure": ["Entry", "IntroTwo",
-                        "IntroOne", "IntroTwo",
-                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
-                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
-                        "Chorus", "Chorus", "Chorus", "Chorus",
-                        "PostChorusOne", "PostChorusTwo",
-                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
-                        "VerseOne", "VerseTwo", "VerseOne", "VerseTwo",
-                        "Chorus", "Chorus", "Chorus", "Chorus",
-                        "BridgeOne", "Hold", "CutSpecial", "BridgeTwo", "Cut", "Cut",
-                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
-                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
-                        "BridgeOne", "Hold", "Cut", "BridgeTwo", "Cut", "Cut",
-                        "Chorus", "Chorus", "Chorus", "Chorus", "CodaOne", "CodaTwo", "CodaOne", "End"]
+                    // 6/8 gotta cut them all by two bars :D
+                    "structure": ["Entry", "Cut", "IntroTwo", "Cut",
+                        "IntroOne", "Cut", "IntroTwo", "Cut",
+                        "VerseOne", "Cut", "VerseTwo", "Cut", "VerseOne", "Cut", "VerseTwo", "Cut",
+                        "VerseOne", "Cut", "VerseTwo", "Cut", "VerseOne", "Cut", "VerseTwo", "Cut",
+                        "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut",
+                        "PostChorusOne", "Cut", "PostChorusTwo", "Cut",
+                        "VerseOne", "Cut", "VerseTwo", "Cut", "VerseOne", "Cut", "VerseTwo", "Cut",
+                        "VerseOne", "Cut", "VerseTwo", "Cut", "VerseOne", "Cut", "VerseTwo", "Cut",
+                        "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut",
+                        "BridgeOne", "Cut", "BridgeTwo", "Cut", "CutSpecial",
+                        "BridgeOne", "Cut", "BridgeTwo", "Cut", "CutSpecial",
+                        "BridgeOne", "Cut", "BridgeTwo", "Cut", "CutSpecial",
+                        "BridgeOne", "Cut", "BridgeTwo", "Cut", "CutSpecial",
+                        "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut", "Chorus", "Cut",
+                        "CodaOne", "Cut", "CodaTwo", "Cut", "CodaOne", "Cut", "End"]
                 },
                 10:
                 {
                     "background": "dreams.jpg",
                     "title": "Dreams",
                     "tempo": "156",
+                    "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "audio": "dreams.mp3",
                     "lyrics": [
@@ -3509,7 +3540,7 @@
                     allSongSections[i].classList.remove("earthquake");
                 }
 
-                allSongSections[i].style = "background-color: " + backgroundColorString + ";" + filterString;
+                allSongSections[i].style = "background-color: " + backgroundColorString + ";" + filterString + "; animation-duration: " + (currentBarLength / 8) + "s !important";
             }
         }
 
@@ -3539,6 +3570,10 @@
             var currentData = sjData.siotojazz[currentSong];
             const beatTime = (60 / currentData.tempo);
             const barTime = beatTime * 4;
+
+            var songMetadataHTML = '<div id="tempo"><i class="fa fa-clock"></i> ' + currentData.tempo + '</div><div id="tempo"><i class="fa-solid fa-bars"></i> ' + currentData.timeSig + '</div>';
+            const songMetadataElement = document.getElementById("songMetadata");
+            songMetadataElement.innerHTML = songMetadataHTML;
 
             const songStructureElement = document.getElementById("songStructure");
             songStructureElement.innerHTML = "";
@@ -3911,6 +3946,7 @@
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
             var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
+            var showAboutBtn = document.querySelectorAll('.showAboutBtn');
 
             showLyricsBtn.forEach(function (e) {
                 e.classList.remove("btnActive");
@@ -3924,6 +3960,9 @@
             showGalleryBtn.forEach(function (e) {
                 e.classList.remove("btnActive");
             });
+            showAboutBtn.forEach(function (e) {
+                e.classList.remove("btnActive");
+            });
 
             if (mode == 0) {
                 showLyricsBtn.forEach(function (e) {
@@ -3934,6 +3973,7 @@
                 document.getElementById("background").style.display = "none";
                 document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "none";
+                document.getElementById("about").style.display = "none";
 
             } else if (mode == 1) {
                 showImageBtn.forEach(function (e) {
@@ -3944,6 +3984,7 @@
                 document.getElementById("background").style.display = "block";
                 document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "none";
+                document.getElementById("about").style.display = "none";
             } else if (mode == 2) {
                 showChordsBtn.forEach(function (e) {
                     e.classList.add("btnActive");
@@ -3953,6 +3994,7 @@
                 document.getElementById("background").style.display = "none";
                 document.getElementById("songStructureVisualiser").style.display = "block";
                 document.getElementById("gallery").style.display = "none";
+                document.getElementById("about").style.display = "none";
             } else if (mode == 3) {
                 showGalleryBtn.forEach(function (e) {
                     e.classList.add("btnActive");
@@ -3963,6 +4005,17 @@
                 document.getElementById("background").style.display = "none";
                 document.getElementById("songStructureVisualiser").style.display = "none";
                 document.getElementById("gallery").style.display = "grid";
+                document.getElementById("about").style.display = "none";
+            } else if (mode == 4) {
+                showAboutBtn.forEach(function (e) {
+                    e.classList.add("btnActive");
+                });
+
+                document.getElementById("lyrics").style.display = "none";
+                document.getElementById("background").style.display = "none";
+                document.getElementById("songStructureVisualiser").style.display = "none";
+                document.getElementById("gallery").style.display = "none";
+                document.getElementById("about").style.display = "block";
             }
         }
 
@@ -3976,6 +4029,7 @@
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
             var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
+            var showAboutBtn = document.querySelectorAll('.showAboutBtn');
 
             shuffleBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
@@ -4061,6 +4115,13 @@
             showGalleryBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(3);
+                    SetURLArguments();
+                });
+            });
+
+            showAboutBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(4);
                     SetURLArguments();
                 });
             });
@@ -4356,7 +4417,7 @@
             <div id="menuBtn">
                 <!--<i class="fa fa-circle"></i>-->
                 <i class="fa fa-circle" aria-hidden="true">
-                    <i class="fa fa-book" aria-hidden="true" style="font-size: 40px; color: #f4ebdd; position: relative; top: -80px; left: 0px;">
+                    <i class="fa fa-font" aria-hidden="true" style="font-size: 40px; color: #f4ebdd; position: relative; top: -80px; left: 0px;">
                     </i>
                 </i>
             </div>
@@ -4369,21 +4430,28 @@
                     <button class="loopBtn"><i class="fas fa-redo"></i></button>
                     <button class="focusBtn"><i class="fas fa-bullseye"></i></button>
                     <div id="verticalSeparator" style="margin-top: 100px;"></div>
-                    <button class="showLyricsBtn"><i class="fa fa-align-justify"></i></button>
+                    <button class="showLyricsBtn"><i class="fa-solid fa-font"></i></button>
                     <button class="showImageBtn"><i class="fa fa-camera-retro"></i></button>
                     <button class="showChordsBtn"><i class="fa fa-music"></i></button>
                     <div id="verticalSeparator" style="margin-top: 100px;"></div>
                     <button class="showGalleryBtn"><i class="fa fa-image"></i></button>
+                    <button class="showAboutBtn"><i class="fa-regular fa-address-card"></i></button>
                 </div>
                 <div id="num"></div>
                 <div id="title"></div>
                 <div id="lyrics"></div>
                 <div id="songStructureVisualiser">
-                    <div id="chords" style="display:none;"></div>
+                    <div id="songMetadata"></div>
                     <div id="songStructure"></div>
                 </div>
                 <div id="gallery">
 
+                </div>
+                <div id="about">
+                    <p><b>Sioto Jazz</b> are a Macedonian pop rock indie jazz metal supergroup from Bitola formed in 2022 as a spiritual successor to several local acts.</p>
+                    <p> Their influences draw from a wide range of artists, from the wildest years of Herbie Hancock and Nick Cave through the Smashing Pumpkins and The National to Man I Trust, Grimes and Spasen Siljanoski.</p>
+                    <p>The themes that run through the songs of their first album are drawn from the immediate environment: the extinction of small places, the loss of their own identity of those who chose to stay and the way a red-blooded individual can deal with it all. To create something where there is nothing. To preserve what he identifies with and dig out of himself respect for those who decide otherwise.</p>
+                    <p>The irony of the loss of identity is amplified by the songs' use of English, which the people the music is aimed at certainly understand.</p>
                 </div>
             </div>
         </div>
