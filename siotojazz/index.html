@@ -3917,6 +3917,7 @@
                     e.classList.add("btnActive");
                 });
 
+                SetUpGallery();
                 document.getElementById("lyrics").style.display = "none";
                 document.getElementById("background").style.display = "none";
                 document.getElementById("songStructureVisualiser").style.display = "none";
@@ -4066,7 +4067,6 @@
 
             SetUpAudioPlayer();
             SetUpSongStructureVisualizer();
-            SetUpGallery();
             SetUpCommonButtons();
             UpdateLyricsView(0);
             setInterval(AudioAnimationsTick, 1);
