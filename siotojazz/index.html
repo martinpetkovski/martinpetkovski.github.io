@@ -321,7 +321,7 @@
             border: 4px solid #000;
             z-index: 50000;
             user-select: none;
-            width: 300px;
+            width: 400px;
             background-color: #FFF4;
             backdrop-filter: blur(5px);
             box-shadow: 3px 3px 3px #999;
@@ -331,8 +331,10 @@
 
             #lyricsContextMenu div {
                 cursor: pointer;
-                padding: 5px;
                 transition: 0.1s;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                vertical-align: middle;
             }
 
                 #lyricsContextMenu div:hover {
@@ -341,10 +343,21 @@
                     transition: 0.05s;
                 }
 
-        #song #dotsContainer {
-            display: flex;
-            z-index: 500;
-        }
+            #lyricsContextMenu .fa-solid {
+                background-color: #000;
+                color: #FFF;
+                padding: 10px;
+                width: 40px;
+            }
+
+            #lyricsContextMenu div div {
+                padding: 5px;
+            }
+
+            #song #dotsContainer {
+                display: flex;
+                z-index: 500;
+            }
 
             #song #dotsContainer #dots {
                 width: 70%;
@@ -4416,16 +4429,16 @@
     </div>
 
     <div id="lyricsContextMenu">
-        <div class="versePlayBtn"><i class="fa-solid fa-play"></i> Play Verse</div>
-        <div class="versePlayFromStartBtn"><i class="fa-solid fa-play"></i> Play From Start</div>
+        <div class="versePlayBtn"><i class="fa-solid fa-play"></i> <div>Play Verse</div></div>
+        <div class="versePlayFromStartBtn"><i class="fa-solid fa-redo"></i></i> <div>Play From Start</div></div>
         <hr />
-        <div class="verseCopySongLink"><i class="fa-solid fa-copy"></i> Copy Song Link</div>
-        <div class="verseCopyLyrics"><i class="fa-solid fa-copy"></i> Copy Lyrics</div>
+        <div class="verseCopySongLink"><i class="fa-solid fa-copy"></i> <div>Copy Song Link</div></div>
+        <div class="verseCopyLyrics"><i class="fa-solid fa-copy"></i> <div>Copy Lyrics</div></div>
         <hr />
-        <div class="verseCopyLinkBtn"><i class="fa-solid fa-copy"></i> Copy Verse Link</div>
-        <div class="verseCopyVerseBtn"><i class="fa-solid fa-copy"></i> Copy Verse</div>
+        <div class="verseCopyLinkBtn"><i class="fa-solid fa-copy"></i> <div>Copy Verse Link</div></div>
+        <div class="verseCopyVerseBtn"><i class="fa-solid fa-copy"></i> <div>Copy Verse</div></div>
         <hr />
-        <div class="verseCopyStanzaBtn"><i class="fa-solid fa-copy"></i> Copy Stanza</div>
+        <div class="verseCopyStanzaBtn"><i class="fa-solid fa-copy"></i> <div>Copy Stanza</div></div>
     </div>
 
     <div id="song">
