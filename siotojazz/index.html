@@ -121,7 +121,7 @@
                 display: grid;
                 grid-template-rows: auto auto auto 1fr;
                 height: 100vh; /* Or any desired height */
-                margin:0;
+                margin: 0;
                 padding: 0;
             }
 
@@ -170,10 +170,10 @@
                     user-select: none;
                 }
 
-                #mainContainer #message button:hover {
-                    background-color: #EEE;
-                    color: black;
-                }
+                    #mainContainer #message button:hover {
+                        background-color: #EEE;
+                        color: black;
+                    }
 
         #messageHeader {
             background-color: #000;
@@ -311,6 +311,36 @@
             margin-bottom: 80px;
         }
 
+        hr {
+            border: 1px solid #000;
+        }
+
+        #lyricsContextMenu {
+            opacity: 0;
+            position: absolute;
+            border: 4px solid #000;
+            z-index: 50000;
+            user-select: none;
+            width: 300px;
+            background-color: #FFF4;
+            backdrop-filter: blur(5px);
+            box-shadow: 3px 3px 3px #999;
+            font-size: 30px;
+            transition: opacity 0.2s;
+        }
+
+            #lyricsContextMenu div {
+                cursor: pointer;
+                padding: 5px;
+                transition: 0.1s;
+            }
+
+                #lyricsContextMenu div:hover {
+                    background-color: #111;
+                    color: #FFF;
+                    transition: 0.05s;
+                }
+
         #song #dotsContainer {
             display: flex;
             z-index: 500;
@@ -335,27 +365,27 @@
             margin-left: 130px;
             width: calc(100vw - 400px);
             font-size: 30px;
-            text-align:justify;
+            text-align: justify;
         }
 
-        #about p {
-            margin-bottom: 50px;
-        }
-
-            #gallery .polaroidImg {
-                max-width: 300px;
-                background-color: #FFF;
-                border: 20px #FFF solid;
-                box-shadow: 0px 0px 10px #1114;
-                transition: 0.8s;
+            #about p {
+                margin-bottom: 50px;
             }
 
-                #gallery .polaroidImg:hover {
-                    transform: rotate(0deg) translate(0, 0) !important;
-                    transition: 0.3s;
-                    box-shadow: 10px 10px 30px #1112;
-                    z-index: 1050 !important;
-                }
+        #gallery .polaroidImg {
+            max-width: 300px;
+            background-color: #FFF;
+            border: 20px #FFF solid;
+            box-shadow: 0px 0px 10px #1114;
+            transition: 0.8s;
+        }
+
+            #gallery .polaroidImg:hover {
+                transform: rotate(0deg) translate(0, 0) !important;
+                transition: 0.3s;
+                box-shadow: 10px 10px 30px #1112;
+                z-index: 1050 !important;
+            }
 
         .polaroidImg img, .polaroidImg video, .polaroidImg iframe {
             width: 100%;
@@ -3391,6 +3421,7 @@
         var startTime = 0;
         var lyricsViewMode = 0;
         var currentAudioFrameTimer = 0;
+        var contextVerse = null;
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3398,6 +3429,16 @@
         lyricsIconMap.set('FULL', 'fa-quote-right');
 
         const lyricsIconArray = Array.from(lyricsIconMap.keys());
+
+        function CopyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    console.log("Text copied to clipboard:", text);
+                })
+                .catch((err) => {
+                    console.error("Failed to copy text:", err);
+                });
+        }
 
         function GetRandomNumberInRange(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -3456,6 +3497,8 @@
                         audioPlayer.play();
                 });
             });
+
+            SetupContextMenus();
 
             audioPlayer.addEventListener('timeupdate', function () {
                 if (lyricsViewMode != 0)
@@ -4048,6 +4091,51 @@
             }
         }
 
+        function GetStanza(startingElement) {
+            var currentVerse = startingElement;
+            var lastValidElement = null;
+
+            while (currentVerse && !currentVerse.classList.contains("stanzaEnd")) {
+                lastValidElement = currentVerse;
+                currentVerse = currentVerse.previousElementSibling;
+            }
+
+            const elementsInBetween = [];
+            if (!currentVerse) {
+                currentVerse = lastValidElement; // index 0
+            }
+            else {
+                currentVerse = currentVerse.nextElementSibling;
+            }
+
+            while (currentVerse && !currentVerse.classList.contains("stanzaEnd")) {
+                elementsInBetween.push(currentVerse);
+                currentVerse = currentVerse.nextElementSibling;
+            }
+
+            if (currentVerse) {
+                elementsInBetween.push(currentVerse);
+            }
+
+            const concatenatedInnerHTML = elementsInBetween.map(element => element.innerHTML).join("\n");
+            return concatenatedInnerHTML;
+        }
+
+        function GetLyrics() {
+
+            var lyricsElements = document.getElementById('lyrics').children;
+            var concatenatedInnerHTML = "";
+            for (i = 0; i < lyricsElements.length; i++) {
+                var currentVerse = lyricsElements[i];
+                concatenatedInnerHTML += currentVerse.innerHTML + '\n';
+                if (currentVerse.classList.contains("stanzaEnd")) {
+                    concatenatedInnerHTML += "\n";
+                }
+            }
+
+            return concatenatedInnerHTML;
+        }
+
         function SetUpCommonButtons() {
             var shuffleBtn = document.querySelectorAll('.shuffleBtn');
             var loopBtn = document.querySelectorAll('.loopBtn');
@@ -4160,6 +4248,69 @@
                 SetMenuState(!menuState);
                 SetURLArguments();
             });
+
+            var verse = document.querySelectorAll('.versePlayBtn');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    const clickEvent = new MouseEvent("click", {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window
+                    });
+
+                    contextVerse.dispatchEvent(clickEvent);
+                });
+            });
+
+            var verse = document.querySelectorAll('.verseCopyLinkBtn');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    var params = new URLSearchParams(window.location.search);
+                    const urlString = window.location.href;
+                    const url = new URL(urlString);
+                    url.search = "";
+                    const strippedURL = url.toString();
+
+                    params.set('time', contextVerse.getAttribute("start-time"));
+                    CopyToClipboard(strippedURL + "?" + params.toString());
+                });
+            });
+
+            var verse = document.querySelectorAll('.verseCopyVerseBtn');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    CopyToClipboard(contextVerse.innerHTML.toString());
+                });
+            });
+
+            var verse = document.querySelectorAll('.verseCopyStanzaBtn');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    var stanza = GetStanza(contextVerse);
+                    CopyToClipboard(stanza);
+                });
+            });
+
+            var verse = document.querySelectorAll('.verseCopySongLink');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    CopyToClipboard(window.location.href);
+                });
+            });
+
+            var verse = document.querySelectorAll('.verseCopyLyrics');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    CopyToClipboard(GetLyrics());
+                });
+            });
+
+            var verse = document.querySelectorAll('.versePlayFromStartBtn');
+            verse.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    PlaySong(currentSong);
+                });
+            });
         }
 
         let startX;
@@ -4191,6 +4342,34 @@
 
             startX = null;
             startY = null;
+        }
+
+        function SetupContextMenus() {
+            const lyricsContextMenu = document.getElementById('lyricsContextMenu');
+            const lyricsContainer = document.getElementById("lyrics");
+            const children = lyricsContainer.children;
+
+            console.log(children.length);
+
+            for (i = 0; i < children.length; i++) {
+                children[i].addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    const x = e.pageX;
+                    const y = e.pageY;
+                    lyricsContextMenu.style.left = `${x}px`;
+                    lyricsContextMenu.style.top = `${y}px`;
+                    lyricsContextMenu.style.opacity = 1;
+                    lyricsContextMenu.style.zIndex = 30000;
+                    contextVerse = e.target;
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (e.target !== lyricsContextMenu) {
+                    lyricsContextMenu.style.opacity = 0;
+                    lyricsContextMenu.style.zIndex = -1;
+                }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -4234,6 +4413,19 @@
 <body>
     <div class="popup" id="popup">
         <img id="popup-image" src="" alt="Popup Image">
+    </div>
+
+    <div id="lyricsContextMenu">
+        <div class="versePlayBtn"><i class="fa-solid fa-play"></i> Play Verse</div>
+        <div class="versePlayFromStartBtn"><i class="fa-solid fa-play"></i> Play From Start</div>
+        <hr />
+        <div class="verseCopySongLink"><i class="fa-solid fa-copy"></i> Copy Song Link</div>
+        <div class="verseCopyLyrics"><i class="fa-solid fa-copy"></i> Copy Lyrics</div>
+        <hr />
+        <div class="verseCopyLinkBtn"><i class="fa-solid fa-copy"></i> Copy Verse Link</div>
+        <div class="verseCopyVerseBtn"><i class="fa-solid fa-copy"></i> Copy Verse</div>
+        <hr />
+        <div class="verseCopyStanzaBtn"><i class="fa-solid fa-copy"></i> Copy Stanza</div>
     </div>
 
     <div id="song">
@@ -4440,7 +4632,7 @@
                     <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
                         <div class="creditsPerson"></div>
                         <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -4483,7 +4675,7 @@
                     <p> Their influences draw from a wide range of artists, from the wildest years of Herbie Hancock and Nick Cave through the Smashing Pumpkins and The National to Man I Trust, Grimes and Spasen Siljanoski.</p>
                     <p>The themes that run through the songs of their first album are drawn from the immediate environment: the extinction of small places, the loss of their own identity of those who chose to stay and the way a red-blooded individual can deal with it all. To create something where there is nothing. To preserve what he identifies with and dig out of himself respect for those who decide otherwise.</p>
                     <p>The irony of the loss of identity is amplified by the songs' use of English, which the people the music is aimed at certainly understand.</p>
-                    <p>Contact us at<br/><b>siotojazz@gmail.com</b></p>
+                    <p>Contact us at<br /><b>siotojazz@gmail.com</b></p>
                 </div>
             </div>
         </div>
