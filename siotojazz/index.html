@@ -95,6 +95,7 @@
             color: #f4ebdd;
             background-color: #000;
             text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+            user-select: none;
         }
 
         #song {
@@ -120,6 +121,8 @@
                 display: grid;
                 grid-template-rows: auto auto auto 1fr;
                 height: 100vh; /* Or any desired height */
+                margin:0;
+                padding: 0;
             }
 
             #song #player {
@@ -164,6 +167,7 @@
                     border-color: #FFF;
                     text-align: center;
                     width: 50%;
+                    user-select: none;
                 }
 
                 #mainContainer #message button:hover {
@@ -230,6 +234,7 @@
             font-size: 500px;
             opacity: 0.5;
             color: #888;
+            user-select: none;
         }
 
         #song #title {
@@ -240,6 +245,7 @@
             font-size: 200px;
             font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             /*text-shadow: 0px 0px 20px #000;*/
+            user-select: none;
         }
 
         #song #lyrics {
@@ -254,6 +260,7 @@
             margin-top: -200px;
             width: calc(100vw - 200px);
             transition: 0.2s ease-in-out;
+            user-select: none;
         }
 
         #song #songStructureVisualiser {
@@ -515,17 +522,20 @@
             padding: 0;
             width: 70%;
             margin-top: 100px;
+            user-select: none;
         }
 
             #commonButtons button {
                 flex: 1;
                 font-size: 40px;
                 padding: 5px 0px;
+                user-select: none;
             }
 
             #commonButtons .btnActive {
                 background-color: #000;
                 color: #f4ebdd;
+                user-select: none;
             }
 
         #albumCover img {
@@ -549,6 +559,7 @@
             font-size: 30px;
             text-align: center;
             vertical-align: middle;
+            user-select: none;
         }
 
             #lyricsOptions button:hover {
@@ -573,6 +584,7 @@
             cursor: pointer;
             margin: 10px;
             backdrop-filter: blur(10px);
+            user-select: none;
         }
 
             button:hover, .dot:hover {
@@ -731,6 +743,7 @@
                 font-size: 70px !important;
                 margin: 20px !important;
                 width: 90px !important;
+                user-select: none;
             }
 
             #lyricsOptions button {
