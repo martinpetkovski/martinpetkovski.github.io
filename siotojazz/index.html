@@ -155,6 +155,22 @@
                 border: 10px solid #000;
             }
 
+                #mainContainer #message button {
+                    margin: 0 auto;
+                    margin-top: 10px;
+                    display: block;
+                    padding: 10px;
+                    color: #FFF;
+                    border-color: #FFF;
+                    text-align: center;
+                    width: 50%;
+                }
+
+                #mainContainer #message button:hover {
+                    background-color: #EEE;
+                    color: black;
+                }
+
         #messageHeader {
             background-color: #000;
             padding: 10px 100px;
@@ -4057,14 +4073,14 @@
 
             prevBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
-                    PlaySong(currentSong - 1);
+                    PlaySong(parseInt(currentSong) - 1);
                     SetURLArguments();
                 });
             });
 
             nextBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
-                    PlaySong(currentSong + 1);
+                    PlaySong(parseInt(currentSong) + 1);
                     SetURLArguments();
                 });
             });
@@ -4197,8 +4213,8 @@
                 lyricsViewMode = params.get('view');
             UpdateLyricsView(lyricsViewMode);
 
-            document.body.addEventListener('touchstart', HandleTouchStart, false);
-            document.body.addEventListener('touchend', HandleTouchEnd, false);
+            //document.body.addEventListener('touchstart', HandleTouchStart, false);
+            //document.body.addEventListener('touchend', HandleTouchEnd, false);
         });
     </script>
 </head>
@@ -4222,6 +4238,7 @@
                     <div id="message">
                         <div id="messageHeader">⚠️ CONFIDENTIAL ⚠️</div>
                         THIS IS A DRAFT VERSION OF THE ALBUM.<br /> PLEASE SHARE ONLY WITH EXPLICIT PERMISSION.
+                        <button onclick="document.getElementById('message').style.display = 'none'">Alright!</button>
                     </div>
 
                     <div id="dotsContainer">
@@ -4410,6 +4427,7 @@
                     <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
                         <div class="creditsPerson"></div>
                         <div class="creditsFor" style="font-size: 16px;">Recorded March - August 2023<br />© 2023 Sioto Jazz. All rights reserved.<br />Proudly created in Republic of Macedonia</div>
+                        
                     </div>
                 </div>
             </div>
@@ -4452,6 +4470,7 @@
                     <p> Their influences draw from a wide range of artists, from the wildest years of Herbie Hancock and Nick Cave through the Smashing Pumpkins and The National to Man I Trust, Grimes and Spasen Siljanoski.</p>
                     <p>The themes that run through the songs of their first album are drawn from the immediate environment: the extinction of small places, the loss of their own identity of those who chose to stay and the way a red-blooded individual can deal with it all. To create something where there is nothing. To preserve what he identifies with and dig out of himself respect for those who decide otherwise.</p>
                     <p>The irony of the loss of identity is amplified by the songs' use of English, which the people the music is aimed at certainly understand.</p>
+                    <p>Contact us at<br/><b>siotojazz@gmail.com</b></p>
                 </div>
             </div>
         </div>
