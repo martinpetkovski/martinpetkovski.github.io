@@ -98,21 +98,23 @@
             user-select: none;
         }
 
+        #background {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            z-index: -1;
+            transition: 0.4s ease-in-out;
+        }
+
         #song {
             position: relative;
             width: 100vw;
             min-height: 100vh;
             text-align: center;
         }
-
-            #song #background {
-                position: fixed;
-                width: 100vw;
-                height: 100vh;
-                background-size: cover;
-                z-index: -1;
-                transition: 0.4s ease-in-out;
-            }
 
             #song #content {
                 position: relative;
@@ -3509,6 +3511,21 @@
         }
 
         function SetUpLyrics() {
+            var jsonData = sjData.siotojazz[currentSong];
+            var lyricsElement = document.getElementById('lyrics');
+            if (lyricsElement) {
+                var lyricsHTML = '';
+                for (var i = 0; i < jsonData.lyrics.length; i++) {
+                    var verse = jsonData.lyrics[i];
+                    var stanzaEnd = "";
+                    if (verse.stanzaEnd) {
+                        stanzaEnd = "stanzaEnd";
+                    }
+                    lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" class="' + stanzaEnd + '">' + verse.text + '</p>';
+                }
+                lyricsElement.innerHTML = lyricsHTML;
+            }
+
             var lyrics = document.querySelectorAll('#lyrics p');
             var audioPlayer = document.getElementById('audio-player');
 
@@ -3826,6 +3843,30 @@
             window.history.pushState(null, null, url.toString());
         }
 
+        function SetUpBackground() {
+            var jsonData = sjData.siotojazz[currentSong];
+            var backgroundElement = document.getElementById('background');
+            backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
+        }
+
+        function LoadAudioSource() {
+
+            var audioPlayer = document.getElementById('audio-player');
+
+            var audioSource = audioPlayer.querySelector('source');
+            audioSource.setAttribute('src', jsonData.audio);
+            audioPlayer.load();
+
+            audioPlayer.addEventListener('loadeddata', function (e) {
+                var currentTime = audioPlayer.currentTime;
+                var timeDisplay = document.getElementById('currentTimeDisplay');
+                var totalTimeDisplay = document.getElementById('totalTimeDisplay');
+                timeDisplay.textContent = FormatTime(currentTime);
+                totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
+                audioPlayer.play();
+            });
+        }
+
         function PlaySong(songId) {
             startTime = 0;
 
@@ -3836,45 +3877,29 @@
             if (songId < 1)
                 songId = totalSongs;
 
-            var audioPlayer = document.getElementById('audio-player');
-
             currentSong = songId;
-            var song = document.getElementById('song');
+            jsonData = sjData.siotojazz[currentSong];
 
-            jsonData = sjData.siotojazz[songId];
-
-            var backgroundElement = document.getElementById('background');
-            backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
-
+            if (lyricsViewMode == 1) {
+                SetUpBackground();
+            }
             var numElement = document.getElementById('num');
             numElement.textContent = songId;
 
             var titleElement = document.getElementById('title');
             titleElement.textContent = jsonData.title;
 
-            var lyricsElement = document.getElementById('lyrics');
-            var lyricsHTML = '';
-            for (var i = 0; i < jsonData.lyrics.length; i++) {
-                var verse = jsonData.lyrics[i];
-                var stanzaEnd = "";
-                if (verse.stanzaEnd) {
-                    stanzaEnd = "stanzaEnd";
-                }
-                lyricsHTML += '<p start-time="' + verse.startTime + '" end-time="' + verse.endTime + '" class="' + stanzaEnd + '">' + verse.text + '</p>';
+            if (lyricsViewMode == 0) {
+                SetUpLyrics();
             }
-            lyricsElement.innerHTML = lyricsHTML;
+            if (menuState) {
+                SetUpSongDots();
+            }
+            if (lyricsViewMode == 2) {
+                SetUpSongStructureVisualizer();
+            }
 
-            var audioSource = audioPlayer.querySelector('source');
-            audioSource.setAttribute('src', jsonData.audio);
-            audioPlayer.load();
-
-            SetUpLyrics();
-            SetUpSongDots();
-            SetUpSongStructureVisualizer();
-
-            audioPlayer.addEventListener('loadeddata', function (e) {
-                audioPlayer.play();
-            });
+            LoadAudioSource();
         }
 
         function SetMenuState(show) {
@@ -3891,6 +3916,10 @@
                 document.getElementById('playerContainer').classList.add('hideMenu');
                 document.getElementById('songContent').classList.remove('hideSongContent');
                 menuBtn.classList.add('activeMenuButton');
+            }
+
+            if (menuState) {
+                SetUpSongDots();
             }
         }
 
@@ -4035,83 +4064,96 @@
             }
         }
 
+        function SetUpAbout() {
+
+        }
+
+        var cacheDom = [];
+
+        function CacheDOM() {
+            cacheDom.push(document.getElementById("lyrics"));
+            cacheDom.push(document.getElementById("background"));
+            cacheDom.push(document.getElementById("songStructureVisualiser"));
+            cacheDom.push(document.getElementById("gallery"));
+            cacheDom.push(document.getElementById("about"));
+        }
+
+        var lyricsViewData = [
+            {
+                modeId: 0,
+                buttonClass: 'showLyricsBtn',
+                contentDomId: 'lyrics',
+                fn: 'SetUpLyrics'
+            },
+            {
+                modeId: 1,
+                buttonClass: 'showImageBtn',
+                contentDomId: 'background',
+                fn: 'SetUpBackground'
+            },
+            {
+                modeId: 2,
+                buttonClass: 'showChordsBtn',
+                contentDomId: 'songStructureVisualiser',
+                fn: 'SetUpSongStructureVisualizer'
+            },
+            {
+                modeId: 3,
+                buttonClass: 'showGalleryBtn',
+                contentDomId: 'gallery',
+                fn: 'SetUpGallery'
+            },
+            {
+                modeId: 4,
+                buttonClass: 'showAboutBtn',
+                contentDomId: 'about',
+                fn: 'SetUpAbout'
+            }
+        ];
+
         function UpdateLyricsView(mode) {
             lyricsViewMode = mode;
+            var songContent = document.getElementById("songContent");
 
-            var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
-            var showImageBtn = document.querySelectorAll('.showImageBtn');
-            var showChordsBtn = document.querySelectorAll('.showChordsBtn');
-            var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
-            var showAboutBtn = document.querySelectorAll('.showAboutBtn');
+            for (i = 0; i < lyricsViewData.length; i++) {
+                var currentItem = lyricsViewData[i];
+                var currentButton = document.querySelectorAll("." + currentItem.buttonClass);
+                var currentContentId = document.getElementById(currentItem.contentDomId);
 
-            showLyricsBtn.forEach(function (e) {
-                e.classList.remove("btnActive");
-            });
-            showImageBtn.forEach(function (e) {
-                e.classList.remove("btnActive");
-            });
-            showChordsBtn.forEach(function (e) {
-                e.classList.remove("btnActive");
-            });
-            showGalleryBtn.forEach(function (e) {
-                e.classList.remove("btnActive");
-            });
-            showAboutBtn.forEach(function (e) {
-                e.classList.remove("btnActive");
-            });
+                if (lyricsViewMode == currentItem.modeId) {
+                    currentButton.forEach(function (e) {
+                        if (!e.classList.contains("btnActive")) {
+                            e.classList.add("btnActive");
+                        }
+                    });
 
-            if (mode == 0) {
-                showLyricsBtn.forEach(function (e) {
-                    e.classList.add("btnActive");
-                });
+                    songContent.appendChild(cacheDom[lyricsViewMode])
+                }
+                else {
+                    currentButton.forEach(function (e) {
+                        e.classList.remove("btnActive");
+                    });
 
-                document.getElementById("lyrics").style.display = "block";
-                document.getElementById("background").style.display = "none";
-                document.getElementById("songStructureVisualiser").style.display = "none";
-                document.getElementById("gallery").style.display = "none";
-                document.getElementById("about").style.display = "none";
+                    if (currentContentId) {
+                        songContent.removeChild(currentContentId);
+                    }
+                }
+            }
 
-            } else if (mode == 1) {
-                showImageBtn.forEach(function (e) {
-                    e.classList.add("btnActive");
-                });
+            if (lyricsViewMode == 0 && !menuState) {
+                SetUpLyrics();
+            }
 
-                document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.display = "block";
-                document.getElementById("songStructureVisualiser").style.display = "none";
-                document.getElementById("gallery").style.display = "none";
-                document.getElementById("about").style.display = "none";
-            } else if (mode == 2) {
-                showChordsBtn.forEach(function (e) {
-                    e.classList.add("btnActive");
-                });
+            if (lyricsViewMode == 1 && !menuState) {
+                SetUpBackground();
+            }
 
-                document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.display = "none";
-                document.getElementById("songStructureVisualiser").style.display = "block";
-                document.getElementById("gallery").style.display = "none";
-                document.getElementById("about").style.display = "none";
-            } else if (mode == 3) {
-                showGalleryBtn.forEach(function (e) {
-                    e.classList.add("btnActive");
-                });
+            if (lyricsViewMode == 2 && !menuState) {
+                SetUpSongStructureVisualizer();
+            }
 
+            if (lyricsViewMode == 3 && !menuState) {
                 SetUpGallery();
-                document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.display = "none";
-                document.getElementById("songStructureVisualiser").style.display = "none";
-                document.getElementById("gallery").style.display = "grid";
-                document.getElementById("about").style.display = "none";
-            } else if (mode == 4) {
-                showAboutBtn.forEach(function (e) {
-                    e.classList.add("btnActive");
-                });
-
-                document.getElementById("lyrics").style.display = "none";
-                document.getElementById("background").style.display = "none";
-                document.getElementById("songStructureVisualiser").style.display = "none";
-                document.getElementById("gallery").style.display = "none";
-                document.getElementById("about").style.display = "block";
             }
         }
 
@@ -4373,8 +4415,6 @@
             const lyricsContainer = document.getElementById("lyrics");
             const children = lyricsContainer.children;
 
-            console.log(children.length);
-
             for (i = 0; i < children.length; i++) {
                 children[i].addEventListener('contextmenu', (e) => {
                     e.preventDefault();
@@ -4397,6 +4437,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            CacheDOM();
             var params = new URLSearchParams(window.location.search);
 
             SetUpAudioPlayer();
@@ -4429,6 +4470,7 @@
                 lyricsViewMode = params.get('view');
             UpdateLyricsView(lyricsViewMode);
 
+
             //document.body.addEventListener('touchstart', HandleTouchStart, false);
             //document.body.addEventListener('touchend', HandleTouchEnd, false);
         });
@@ -4453,7 +4495,6 @@
     </div>
 
     <div id="song">
-        <div id="background"></div>
         <div id="content">
 
             <div id="playerContainer">
@@ -4521,12 +4562,12 @@
                     </div>
 
                     <div class="creditsTitle">Additional Personnel</div>
-					
-					<div class="creditsSection">
+
+                    <div class="creditsSection">
                         <div class="creditsPerson">Santiago Vasquez</div>
                         <div class="creditsFor"><b>Colombia</b><br>Classical Guitar</div>
                     </div>
-					
+
                     <div class="creditsSection">
                         <div class="creditsPerson">Målfrid Wigdahl</div>
                         <div class="creditsFor"><b>Norway</b><br>Synthesizers, Double Bass</div>
@@ -4687,6 +4728,7 @@
             </div>
 
             <div id="songContent" class="hideSongContent">
+                <div id="background"></div>
                 <div id="lyricsOptions">
                     <button class="playBtn"><i class="fas fa-play"></i></button>
                     <button class="prevBtn"><i class="fas fa-step-backward"></i></button>
