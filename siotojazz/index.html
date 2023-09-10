@@ -3906,7 +3906,7 @@
             return songId;
         }
 
-        var audioBlobCache = new Array(12);
+        var audioBlobCache = new Array(13);
 
         function LoadAudioAsBlob(filename) {
             var xhr = new XMLHttpRequest();
@@ -3915,7 +3915,7 @@
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    audioBlobCache[currentSong] = xhr.response;
+                    audioBlobCache[GetValidSongId(currentSong - 1)] = xhr.response;
                     console.log(audioBlobCache[currentSong]);
 
                 } else {
