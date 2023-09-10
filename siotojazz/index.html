@@ -3908,14 +3908,15 @@
 
         var audioBlobCache = [];
 
-        function LoadAudioAsBlob(filename) {
+        function LoadAudioAsBlob(index) {
+            var filename = sjData.siotojazz[GetValidSongId(index)];
             var xhr = new XMLHttpRequest();
             xhr.open("GET", filename, true);
             xhr.responseType = "blob";
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    audioBlobCache[GetValidSongId(currentSong + 1)] = xhr.response;
+                    audioBlobCache[GetValidSongId(index)] = xhr.response;
                     console.log(audioBlobCache[currentSong]);
 
                 } else {
@@ -3956,7 +3957,7 @@
             });
             for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
                 if (audioBlobCache[i].length == 0) {
-                    LoadAudioAsBlob(sjData.siotojazz[GetValidSongId(i + 1)].audio);
+                    LoadAudioAsBlob(GetValidSongId(i + 1));
                 }
             }
         }
