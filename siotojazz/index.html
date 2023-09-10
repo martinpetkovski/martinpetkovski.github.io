@@ -3895,12 +3895,45 @@
             backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
         }
 
+        function GetValidSongId(songId) {
+            var totalSongs = Object.keys(sjData.siotojazz).length;
+            if (songId > totalSongs)
+                songId = 1;
+
+            if (songId < 1)
+                songId = totalSongs;
+
+            return songId;
+        }
+
+        var audioBlobCache = new Array(12);
+
+        function LoadAudioAsBlob(filename) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", filename, true);
+            xhr.responseType = "blob";
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    audioBlobCache[currentSong] = xhr.response;
+                } else {
+                    console.error("Error loading audio data. Status code:", xhr.status);
+                }
+            };
+
+            xhr.send();
+        }
+
         function LoadAudioSource() {
 
             var audioPlayer = document.getElementById('audio-player');
 
-            var audioSource = audioPlayer.querySelector('source');
-            audioSource.setAttribute('src', jsonData.audio);
+            if (audioBlobCache[currentSong] && audioBlobCache[currentSong].size > 0) {
+                audioPlayer.src = audioBlobCache[currentSong];
+            }
+            else {
+                audioPlayer.src = jsonData.audio;
+            }
             audioPlayer.load();
 
             audioPlayer.addEventListener('loadeddata', function (e) {
@@ -3911,19 +3944,16 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
                 audioPlayer.play();
             });
+
+            var nextSongId = parseInt(currentSong) + 1;
+
+            LoadAudioAsBlob(sjData.siotojazz[GetValidSongId(nextSongId)].audio);
         }
 
         function PlaySong(songId) {
             startTime = 0;
 
-            var totalSongs = Object.keys(sjData.siotojazz).length;
-            if (songId > totalSongs)
-                songId = 1;
-
-            if (songId < 1)
-                songId = totalSongs;
-
-            currentSong = songId;
+            currentSong = GetValidSongId(songId);
             jsonData = sjData.siotojazz[currentSong];
 
             if (lyricsViewMode == 1) {
