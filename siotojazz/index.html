@@ -3906,7 +3906,7 @@
             return songId;
         }
 
-        var audioBlobCache = new Array(13);
+        var audioBlobCache = new Array(12);
 
         function LoadAudioAsBlob(filename) {
             var xhr = new XMLHttpRequest();
@@ -3915,7 +3915,7 @@
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    audioBlobCache[GetValidSongId(currentSong - 1)] = xhr.response;
+                    audioBlobCache[GetValidSongId(currentSong + 1)] = xhr.response;
                     console.log(audioBlobCache[currentSong]);
 
                 } else {
@@ -3947,10 +3947,11 @@
                 audioPlayer.play();
             });
 
-            var nextSongId = parseInt(currentSong) + 1;
-
-            console.log(sjData.siotojazz[GetValidSongId(nextSongId)].audio);
-            LoadAudioAsBlob(sjData.siotojazz[GetValidSongId(nextSongId)].audio);
+            for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
+                if (audioBlobCache[i].size == 0) {
+                    LoadAudioAsBlob(sjData.siotojazz[GetValidSongId(i+1)].audio);
+                }
+            }
         }
 
         function PlaySong(songId) {
