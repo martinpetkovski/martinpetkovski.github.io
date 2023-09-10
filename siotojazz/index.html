@@ -3909,7 +3909,7 @@
         var audioBlobCache = [];
 
         function LoadAudioAsBlob(index) {
-            var filename = sjData.siotojazz[GetValidSongId(index)];
+            var filename = sjData.siotojazz[GetValidSongId(index)].audio;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", filename, true);
             xhr.responseType = "blob";
