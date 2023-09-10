@@ -1,0 +1,159 @@
+@font-face {
+    font-family: 'Quicksand Light';
+    src: url('path/to/Quicksand_Light.ttf') format('truetype');
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: Quicksand Light, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #72cbcd;
+}
+
+p {
+    margin: 20px 0px;
+}
+
+#content {
+    width: 100vw;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #ffdd4f;
+    min-height: 80px;
+}
+
+#headerContent {
+    position: relative;
+}
+
+#headerMenu {
+    position: absolute;
+    right: 20%;
+    font-size: 30px;
+    top: 20px;
+}
+
+    #headerMenu .item {
+        display: inline-block;
+        margin-top: -30px;
+    }
+
+.siteLogo {
+    position: absolute;
+    left: 20%;
+    font-size: 30px;
+    display: inline-block;
+    border: solid 3px #000;
+    padding: 10px;
+    margin: 10px;
+}
+
+img {
+    width: 100%;
+}
+
+h1 {
+    font-size: 80px;
+}
+
+button {
+    padding: 20px;
+    background: none;
+    border: solid #000 2px;
+    margin-top: 50px;
+    transition: 0.1s;
+}
+
+button:hover {
+    background-color: #000;
+    color: #FFF;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#innerContent {
+    margin: 50px;
+    margin-top: 100px;
+}
+
+    #innerContent h2 {
+        text-align: center;
+        margin: 60px;
+        font-size: 60px;
+    }
+
+    #innerContent .contentRow {
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+
+    #innerContent .contentRow h2 {
+        text-align: left;
+        margin: 0px;
+        font-size:24px;
+    }
+
+.contentRow img {
+}
+
+.contentRow .textContent {
+    padding: 80px;
+    text-align: center;
+}
+
+.contentRow .projectContent {
+    padding: 80px;
+}
+
+.numeral {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+footer {
+    padding: 50px;
+    background-color: #ffdd4f;
+    min-height: 200px;
+}
+
+#footerContent {
+    width: 50%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+#footerContent input, #footerContent textarea {
+    width: 80%;
+    padding: 6px;
+}
+
+#footerContent h1 {
+    font-size: 24px;
+    padding: 20px 0px;
+}
+
+a:link, a:hover, a:visited {
+    text-decoration:none;
+    color: inherit;
+}
+
+a div {
+    padding: 30px;
+    transition: 0.3s;
+}
+
+a:hover {
+    background-color: #000;
+    color: #FFF;
+    transition: 0.3s;
+}
