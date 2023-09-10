@@ -3931,7 +3931,7 @@
             var audioPlayer = document.getElementById('audio-player');
 
             if (audioBlobCache[currentSong] && audioBlobCache[currentSong].size > 0) {
-                audioPlayer.setAttribute("src", audioBlobCache[currentSong]);
+                audioPlayer.setAttribute("src", URL.createObjectURL(audioBlobCache[currentSong]));
             }
             else {
                 audioPlayer.src = jsonData.audio;
