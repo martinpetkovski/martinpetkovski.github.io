@@ -3917,8 +3917,6 @@
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     audioBlobCache[GetValidSongId(index)] = xhr.response;
-                    console.log(audioBlobCache[currentSong]);
-
                 } else {
                     console.error("Error loading audio data. Status code:", xhr.status);
                 }
