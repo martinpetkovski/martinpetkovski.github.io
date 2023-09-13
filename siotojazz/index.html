@@ -3895,12 +3895,54 @@
             backgroundElement.style.backgroundImage = 'url(' + jsonData.background + ')';
         }
 
+        function GetValidSongId(songId) {
+            var totalSongs = Object.keys(sjData.siotojazz).length;
+            if (songId > totalSongs)
+                songId = 1;
+
+            if (songId < 1)
+                songId = totalSongs;
+
+            return songId;
+        }
+
+        var audioBlobCache = [];
+
+        function LoadAudioAsBlob(index) {
+            var filename = sjData.siotojazz[GetValidSongId(index)].audio;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", filename, true);
+            xhr.responseType = "blob";
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    audioBlobCache[GetValidSongId(index)] = xhr.response;
+                } else {
+                    console.error("Error loading audio data. Status code:", xhr.status);
+                }
+            };
+
+            xhr.send();
+        }
+
         function LoadAudioSource() {
+
+            if (audioBlobCache.length == 0) {
+                const numBlobs = 12;
+
+                for (let i = 0; i < numBlobs; i++) {
+                    audioBlobCache.push(new Uint8Array(0));
+                }
+            }
 
             var audioPlayer = document.getElementById('audio-player');
 
-            var audioSource = audioPlayer.querySelector('source');
-            audioSource.setAttribute('src', jsonData.audio);
+            if (audioBlobCache[currentSong] && audioBlobCache[currentSong].size > 0) {
+                audioPlayer.setAttribute("src", URL.createObjectURL(audioBlobCache[currentSong]));
+            }
+            else {
+                audioPlayer.src = jsonData.audio;
+            }
             audioPlayer.load();
 
             audioPlayer.addEventListener('loadeddata', function (e) {
@@ -3911,19 +3953,17 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
                 audioPlayer.play();
             });
+            for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
+                if (audioBlobCache[i].length == 0) {
+                    LoadAudioAsBlob(GetValidSongId(i + 1));
+                }
+            }
         }
 
         function PlaySong(songId) {
             startTime = 0;
 
-            var totalSongs = Object.keys(sjData.siotojazz).length;
-            if (songId > totalSongs)
-                songId = 1;
-
-            if (songId < 1)
-                songId = totalSongs;
-
-            currentSong = songId;
+            currentSong = GetValidSongId(songId);
             jsonData = sjData.siotojazz[currentSong];
 
             if (lyricsViewMode == 1) {
