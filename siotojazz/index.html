@@ -109,6 +109,10 @@
             transition: 0.4s ease-in-out;
         }
 
+        .loading {
+            opacity: 0.2;
+        }
+
         #song {
             position: relative;
             width: 100vw;
@@ -296,8 +300,8 @@
         #song #lyrics p {
             opacity: 1;
             display: table;
-            padding: 0px 10px;
-            transition: 0.5s;
+            padding: 0px 30px;
+            transition: 0.3s;
             border: 3px solid #111;
         }
 
@@ -3488,6 +3492,7 @@
         var lyricsViewMode = 0;
         var currentAudioFrameTimer = 0;
         var contextVerse = null;
+        var audioBlobCache = [];
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3912,8 +3917,6 @@
             return songId;
         }
 
-        var audioBlobCache = [];
-
         function LoadAudioAsBlob(index) {
             var filename = sjData.siotojazz[GetValidSongId(index)].audio;
             var xhr = new XMLHttpRequest();
@@ -3923,6 +3926,11 @@
             xhr.onload = function () {
                 if (xhr.status === 200) {
                     audioBlobCache[GetValidSongId(index)] = xhr.response;
+
+                    var currentSong = document.querySelectorAll('[song-id="' + index + '"]');
+                    for (i = 0; i < currentSong.length; i++) {
+                        currentSong[i].classList.remove("loading");
+                    }
                 } else {
                     console.error("Error loading audio data. Status code:", xhr.status);
                 }
@@ -4015,6 +4023,16 @@
             }
         }
 
+        function IsSongAudioLoaded(index) {
+            if (!audioBlobCache)
+                return;
+
+            if (audioBlobCache.length <= index)
+                return false;
+
+            return audioBlobCache[index].size > 0;
+        }
+
         function SetUpSongDots() {
             var dots = document.getElementById('dots');
 
@@ -4024,6 +4042,10 @@
                 currentSongClassMod = "";
                 if (i == currentSong)
                     currentSongClassMod = " playing";
+
+                if (!IsSongAudioLoaded(i)) {
+                    currentSongClassMod += " loading";
+                }
 
                 dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '">' + i + '. ' + sjData.siotojazz[i].title + '</div> ';
             }
