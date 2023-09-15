@@ -3593,17 +3593,29 @@
                     var endTime = parseInt(verse.getAttribute("end-time"));
 
                     var isWithinCurrentTime = currentTime >= startTime && currentTime < endTime;
+                    var isBeforeCurrentTime = currentTime < startTime;
 
                     if (isWithinCurrentTime) {
                         verse.id = "activeVerse";
                         verse.style.opacity = 1;
                         verse.style.backdropFilter = "blur(50px)";
                         verse.style.borderColor = '#000F';
-                    } else {
-                        verse.id = "";
-                        verse.style.opacity = 0.3;
+                        verse.style.backgroundColor = '#222';
+                        verse.style.color = "#FFF";
+                    } else if (isBeforeCurrentTime) {
+                        verse.id = "passedVerse";
+                        verse.style.opacity = 1;
                         verse.style.backdropFilter = "blur(0px)";
                         verse.style.borderColor = '#0000';
+                        verse.style.backgroundColor = 'transparent';
+                        verse.style.color = "#000";
+                    } else {
+                        verse.id = "";
+                        verse.style.opacity = 0.2;
+                        verse.style.backdropFilter = "blur(0px)";
+                        verse.style.borderColor = '#0000';
+                        verse.style.backgroundColor = 'transparent';
+                        verse.style.color = "#000";
                     }
                 }
 
