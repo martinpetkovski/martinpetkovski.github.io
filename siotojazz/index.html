@@ -113,6 +113,26 @@
             opacity: 0.2;
         }
 
+        .loadingBar {
+            margin: 0 auto;
+            width: 80%;
+            height: 20px;
+            background-color: transparent;
+            position: relative;
+            border: 2px solid #000;
+        }
+
+        #loadingProgressBar {
+            color: #f4ebdd;
+            width: 0;
+            height: 100%;
+            background-color: #000;
+            position: absolute;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+
         #song {
             position: relative;
             width: 100vw;
@@ -3493,6 +3513,7 @@
         var currentAudioFrameTimer = 0;
         var contextVerse = null;
         var audioBlobCache = [];
+        var blobLoadingProgress = []
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3917,15 +3938,41 @@
             return songId;
         }
 
+        function UpdateLoadingProgressBar() {
+            var progressBar = document.getElementById("loadingProgressBar");
+            var totalProgress = 0.0;
+
+            for (i = 0; i < blobLoadingProgress.length; i++) {
+                totalProgress += blobLoadingProgress[i];
+            }
+
+            progressBar.style.width = (totalProgress / blobLoadingProgress.length) + '%';
+        }
+
         function LoadAudioAsBlob(index) {
-            var filename = sjData.siotojazz[GetValidSongId(index)].audio;
+            var validSongIndex = GetValidSongId(index);
+
+            if (audioBlobCache) {
+                if (validSongIndex < audioBlobCache.length && audioBlobCache[validSongIndex].length > 0)
+                    return; // already loaded
+            }
+
+            var filename = sjData.siotojazz[validSongIndex].audio;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", filename, true);
             xhr.responseType = "blob";
 
+            xhr.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    var percentComplete = (event.loaded / event.total) * 100;
+                    blobLoadingProgress[validSongIndex] = percentComplete;
+                    UpdateLoadingProgressBar();
+                }
+            };
+
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    audioBlobCache[GetValidSongId(index)] = xhr.response;
+                    audioBlobCache[validSongIndex] = xhr.response;
 
                     var currentSong = document.querySelectorAll('[song-id="' + index + '"]');
                     for (i = 0; i < currentSong.length; i++) {
@@ -3946,6 +3993,7 @@
 
                 for (let i = 0; i < numBlobs; i++) {
                     audioBlobCache.push(new Uint8Array(0));
+                    blobLoadingProgress.push(0);
                 }
             }
 
@@ -3967,6 +4015,7 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
                 audioPlayer.play();
             });
+
             for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
                 if (audioBlobCache[i].length == 0) {
                     LoadAudioAsBlob(GetValidSongId(i + 1));
@@ -3975,6 +4024,7 @@
         }
 
         function PlaySong(songId) {
+            LoadAudioAsBlob(songId);
             startTime = 0;
 
             currentSong = GetValidSongId(songId);
@@ -4623,6 +4673,10 @@
                         <div id="messageHeader">⚠️ CONFIDENTIAL ⚠️</div>
                         THIS IS A DRAFT VERSION OF THE ALBUM.<br /> PLEASE SHARE ONLY WITH EXPLICIT PERMISSION.
                         <button onclick="document.getElementById('message').style.display = 'none'">Alright!</button>
+                    </div>
+
+                    <div class="loadingBar">
+                        <div id="loadingProgressBar">Loading...</div>
                     </div>
 
                     <div id="dotsContainer">
