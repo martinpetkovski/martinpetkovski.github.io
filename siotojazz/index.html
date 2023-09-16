@@ -55,6 +55,11 @@
             scrollbar-color: #000 #f4ebdd;
         }
 
+        a, a:visited, a:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
         .hideMenu {
             transform: scale(0) translateY(-30%);
             opacity: 0 !important;
@@ -131,7 +136,7 @@
             text-align: center;
             font-size: 14px;
         }
-        
+
 
         #song {
             position: relative;
@@ -3515,7 +3520,7 @@
         var audioBlobCache = [];
         var blobLoadingProgress = [];
         var isReadyToCacheAudio = false;
-      
+
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -4726,7 +4731,7 @@
                     <div class="creditsTitle">Sioto Jazz are</div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Anastasija Trajkovska</div>
-                        <div class="creditsFor">Vocals, Guitar</div>
+                        <div class="creditsFor">Vocals</div>
                     </div>
                     <div class="creditsSection">
                         <div class="creditsPerson">Eva Todorovska</div>
@@ -4791,11 +4796,6 @@
                     </div>
 
                     <div class="creditsSection">
-                        <div class="creditsPerson">Anastasija Trajkovska</div>
-                        <div class="creditsFor"></div>
-                    </div>
-
-                    <div class="creditsSection">
                         <div class="creditsPerson">Martin Petkovski</div>
                         <div class="creditsFor"></div>
                     </div>
@@ -4822,10 +4822,14 @@
                         <div class="creditsFor">Drums</div>
                     </div>
 
-
                     <div class="creditsSection">
                         <div class="creditsPerson">Damjan Grujo</div>
                         <div class="creditsFor">Drums, Percussion</div>
+                    </div>
+
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Blagojče Aceski</div>
+                        <div class="creditsFor">Drums</div>
                     </div>
 
                     <div class="creditsTitle">Recorded at</div>
@@ -4882,13 +4886,16 @@
                             <div class="creditsPerson" style="font-size: 250%; width: 50%;">
                                 Isaja Karadakovska, Viktor Jovevski, Marijana Nikolovska, Teodora Šaklevska,
                                 Olga Petkovska, Jasmina Hristovska, Marko Markovski, Ivana Endekovska, Petar Kotevski,
-                                Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski, Filip Kunovski, Leonid Mavroski, Tomi Akimovski
+                                Zlatko Stojanoski, Marija Dimova, Nikola Trajkovski, Filip Kunovski, Leonid Mavroski
                             </div>
                         </div>
                     </div>
 
-                    <button style="margin-top: 100px; font-size: 3vw !important; padding: 20px; min-width: 200px;"><i class="fa-solid fa-download"></i>Download Album</button>
-                    <div>Download is not yet available.</div>
+
+                    <button style="margin-top: 100px; font-size: 3vw !important; padding: 20px; min-width: 200px;">
+                        <a href="https://drive.google.com/u/1/uc?id=1ubCsEdzDY1qt0HI7Y-TM2ZnRdKv2N0Tz&export=download" target="_blank"><i class="fa-solid fa-download"></i>Download Album</a>
+                    </button>
+                    <br>
 
                     <div id="externalLinks">
                         <i class="fa-brands fa-spotify"></i>
@@ -4902,7 +4909,7 @@
                         <i class="fa-brands fa-deezer"></i>
                         <i class="fa-brands fa-snapchat"></i>
                     </div>
-                    <div>Streaming is not yet available.</div>
+                    <div>Streaming will be available on September 29, 2023.</div>
 
                     <div class="creditsSection" style="margin: 100px 0px 50px 0px;">
                         <div class="creditsPerson"></div>
