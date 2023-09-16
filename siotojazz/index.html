@@ -109,6 +109,30 @@
             transition: 0.4s ease-in-out;
         }
 
+        .loading {
+            opacity: 0.2;
+        }
+
+        #loadingBar {
+            margin: 0 auto;
+            width: 80%;
+            height: 20px;
+            background-color: transparent;
+            position: relative;
+            border: 2px solid #000;
+        }
+
+        #loadingProgressBar {
+            color: #f4ebdd;
+            width: 0;
+            height: 100%;
+            background-color: #000;
+            position: absolute;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+
         #song {
             position: relative;
             width: 100vw;
@@ -296,8 +320,8 @@
         #song #lyrics p {
             opacity: 1;
             display: table;
-            padding: 0px 10px;
-            transition: 0.5s;
+            padding: 0px 30px;
+            transition: 0.3s;
             border: 3px solid #111;
         }
 
@@ -3488,6 +3512,10 @@
         var lyricsViewMode = 0;
         var currentAudioFrameTimer = 0;
         var contextVerse = null;
+        var audioBlobCache = [];
+        var blobLoadingProgress = [];
+        var isReadyToCacheAudio = false;
+      
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3912,17 +3940,59 @@
             return songId;
         }
 
-        var audioBlobCache = [];
+        function UpdateLoadingProgressBar() {
+            var loadingBar = document.getElementById("loadingBar");
+            var progressBar = document.getElementById("loadingProgressBar");
+            var totalProgress = 0.0;
+
+            for (i = 0; i < blobLoadingProgress.length; i++) {
+                totalProgress += blobLoadingProgress[i];
+            }
+
+            var totalProgress = (totalProgress / (blobLoadingProgress.length - 1));
+            progressBar.style.width = totalProgress + '%';
+            progressBar.innerHTML = Math.round(totalProgress) + '%';
+
+            if (totalProgress > 99.9) {
+                loadingBar.style.display = "none";
+            }
+        }
 
         function LoadAudioAsBlob(index) {
-            var filename = sjData.siotojazz[GetValidSongId(index)].audio;
+            var validSongIndex = GetValidSongId(index);
+
+            if (audioBlobCache) {
+                if (validSongIndex < audioBlobCache.length && audioBlobCache[validSongIndex].length > 0)
+                    return; // already loaded
+            }
+
+            var filename = sjData.siotojazz[validSongIndex].audio;
             var xhr = new XMLHttpRequest();
             xhr.open("GET", filename, true);
             xhr.responseType = "blob";
 
+            xhr.onprogress = function (event) {
+                if (event.lengthComputable) {
+                    var percentComplete = (event.loaded / event.total) * 100;
+                    blobLoadingProgress[validSongIndex] = percentComplete;
+                    UpdateLoadingProgressBar();
+                }
+            };
+
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    audioBlobCache[GetValidSongId(index)] = xhr.response;
+                    audioBlobCache[validSongIndex] = xhr.response;
+
+                    var currentSong = document.querySelectorAll('[song-id="' + index + '"]');
+                    for (i = 0; i < currentSong.length; i++) {
+                        currentSong[i].classList.remove("loading");
+                    }
+
+                    if (isReadyToCacheAudio) {
+                        LoadAudioSource();
+                        isReadyToCacheAudio = false;
+                    }
+
                 } else {
                     console.error("Error loading audio data. Status code:", xhr.status);
                 }
@@ -3932,22 +4002,13 @@
         }
 
         function LoadAudioSource() {
-
-            if (audioBlobCache.length == 0) {
-                const numBlobs = 12;
-
-                for (let i = 0; i < numBlobs; i++) {
-                    audioBlobCache.push(new Uint8Array(0));
-                }
-            }
-
             var audioPlayer = document.getElementById('audio-player');
 
             if (audioBlobCache[currentSong] && audioBlobCache[currentSong].size > 0) {
                 audioPlayer.setAttribute("src", URL.createObjectURL(audioBlobCache[currentSong]));
             }
             else {
-                audioPlayer.src = jsonData.audio;
+                audioPlayer.src = jsonData.audio; // fallback
             }
             audioPlayer.load();
 
@@ -3959,14 +4020,18 @@
                 totalTimeDisplay.textContent = FormatTime(audioPlayer.duration);
                 audioPlayer.play();
             });
+
             for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
                 if (audioBlobCache[i].length == 0) {
-                    LoadAudioAsBlob(GetValidSongId(i + 1));
+                    LoadAudioAsBlob(i);
                 }
             }
         }
 
         function PlaySong(songId) {
+            LoadAudioAsBlob(songId);
+            isReadyToCacheAudio = true;
+
             startTime = 0;
 
             currentSong = GetValidSongId(songId);
@@ -3991,7 +4056,6 @@
                 SetUpSongStructureVisualizer();
             }
 
-            LoadAudioSource();
         }
 
         function SetMenuState(show) {
@@ -4015,6 +4079,16 @@
             }
         }
 
+        function IsSongAudioLoaded(index) {
+            if (!audioBlobCache)
+                return;
+
+            if (audioBlobCache.length <= index)
+                return false;
+
+            return audioBlobCache[index].size > 0;
+        }
+
         function SetUpSongDots() {
             var dots = document.getElementById('dots');
 
@@ -4024,6 +4098,10 @@
                 currentSongClassMod = "";
                 if (i == currentSong)
                     currentSongClassMod = " playing";
+
+                if (!IsSongAudioLoaded(i)) {
+                    currentSongClassMod += " loading";
+                }
 
                 dots.innerHTML += '<div class="dot' + currentSongClassMod + '" song-id="' + i + '">' + i + '. ' + sjData.siotojazz[i].title + '</div> ';
             }
@@ -4528,7 +4606,21 @@
             });
         }
 
+        function SetUpBlobCache() {
+            if (audioBlobCache.length == 0) {
+                const numBlobs = 13; // hmmmmmmmmmmmm
+
+                for (i = 0; i < numBlobs; i++) {
+                    audioBlobCache.push(new Uint8Array(0));
+                    blobLoadingProgress.push(0);
+                }
+            } else {
+                console.error("audioBlobCache is not zero");
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            SetUpBlobCache();
             CacheDOM();
             var params = new URLSearchParams(window.location.search);
 
@@ -4603,6 +4695,10 @@
                         <button onclick="document.getElementById('message').style.display = 'none'">Alright!</button>
                     </div>
 
+                    <div id="loadingBar">
+                        <div id="loadingProgressBar">Loading...</div>
+                    </div>
+
                     <div id="dotsContainer">
                         <div id="dots"></div>
                     </div>
@@ -4618,7 +4714,7 @@
 
                     <div id="player">
                         <div id="currentTimeDisplay">00:00</div>
-                        <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
+                        <audio id="audio-player"><source src="forever.mp3" type="audio/mpeg"></audio>
                         <input class="element" type="range" id="seeker" max="1000" value="0" />
                         <div id="totalTimeDisplay">00:00</div>
                     </div>
