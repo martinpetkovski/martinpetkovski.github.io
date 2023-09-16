@@ -113,7 +113,7 @@
             opacity: 0.2;
         }
 
-        .loadingBar {
+        #loadingBar {
             margin: 0 auto;
             width: 80%;
             height: 20px;
@@ -3939,6 +3939,7 @@
         }
 
         function UpdateLoadingProgressBar() {
+            var loadingBar = document.getElementById("loadingBar");
             var progressBar = document.getElementById("loadingProgressBar");
             var totalProgress = 0.0;
 
@@ -3946,7 +3947,13 @@
                 totalProgress += blobLoadingProgress[i];
             }
 
-            progressBar.style.width = (totalProgress / blobLoadingProgress.length) + '%';
+            var totalProgress = (totalProgress / (blobLoadingProgress.length - 1));
+            progressBar.style.width = totalProgress + '%';
+            progressBar.innerHTML = Math.round(totalProgress) + '%';
+
+            if (totalProgress > 99.9) {
+                loadingBar.style.display = "none";
+            }
         }
 
         function LoadAudioAsBlob(index) {
@@ -4675,7 +4682,7 @@
                         <button onclick="document.getElementById('message').style.display = 'none'">Alright!</button>
                     </div>
 
-                    <div class="loadingBar">
+                    <div id="loadingBar">
                         <div id="loadingProgressBar">Loading...</div>
                     </div>
 
