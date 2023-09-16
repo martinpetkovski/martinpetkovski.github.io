@@ -3513,7 +3513,9 @@
         var currentAudioFrameTimer = 0;
         var contextVerse = null;
         var audioBlobCache = [];
-        var blobLoadingProgress = []
+        var blobLoadingProgress = [];
+        var isReadyToCacheAudio = false;
+      
 
         const lyricsIconMap = new Map();
         lyricsIconMap.set('HIDDEN', 'fa-eye-slash');
@@ -3985,6 +3987,12 @@
                     for (i = 0; i < currentSong.length; i++) {
                         currentSong[i].classList.remove("loading");
                     }
+
+                    if (isReadyToCacheAudio) {
+                        LoadAudioSource();
+                        isReadyToCacheAudio = false;
+                    }
+
                 } else {
                     console.error("Error loading audio data. Status code:", xhr.status);
                 }
@@ -3994,23 +4002,13 @@
         }
 
         function LoadAudioSource() {
-
-            if (audioBlobCache.length == 0) {
-                const numBlobs = 12;
-
-                for (let i = 0; i < numBlobs; i++) {
-                    audioBlobCache.push(new Uint8Array(0));
-                    blobLoadingProgress.push(0);
-                }
-            }
-
             var audioPlayer = document.getElementById('audio-player');
 
             if (audioBlobCache[currentSong] && audioBlobCache[currentSong].size > 0) {
                 audioPlayer.setAttribute("src", URL.createObjectURL(audioBlobCache[currentSong]));
             }
             else {
-                audioPlayer.src = jsonData.audio;
+                audioPlayer.src = jsonData.audio; // fallback
             }
             audioPlayer.load();
 
@@ -4025,13 +4023,15 @@
 
             for (i = 0; i < audioBlobCache.length; i++) { //cache all songs after the first one has been loaded
                 if (audioBlobCache[i].length == 0) {
-                    LoadAudioAsBlob(GetValidSongId(i + 1));
+                    LoadAudioAsBlob(i);
                 }
             }
         }
 
         function PlaySong(songId) {
             LoadAudioAsBlob(songId);
+            isReadyToCacheAudio = true;
+
             startTime = 0;
 
             currentSong = GetValidSongId(songId);
@@ -4056,7 +4056,6 @@
                 SetUpSongStructureVisualizer();
             }
 
-            LoadAudioSource();
         }
 
         function SetMenuState(show) {
@@ -4607,7 +4606,21 @@
             });
         }
 
+        function SetUpBlobCache() {
+            if (audioBlobCache.length == 0) {
+                const numBlobs = 13; // hmmmmmmmmmmmm
+
+                for (i = 0; i < numBlobs; i++) {
+                    audioBlobCache.push(new Uint8Array(0));
+                    blobLoadingProgress.push(0);
+                }
+            } else {
+                console.error("audioBlobCache is not zero");
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            SetUpBlobCache();
             CacheDOM();
             var params = new URLSearchParams(window.location.search);
 
@@ -4701,7 +4714,7 @@
 
                     <div id="player">
                         <div id="currentTimeDisplay">00:00</div>
-                        <audio id="audio-player"><source src="promise.mp3" type="audio/mpeg"></audio>
+                        <audio id="audio-player"><source src="forever.mp3" type="audio/mpeg"></audio>
                         <input class="element" type="range" id="seeker" max="1000" value="0" />
                         <div id="totalTimeDisplay">00:00</div>
                     </div>
