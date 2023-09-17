@@ -273,11 +273,13 @@
             color: #111;
             z-index: -1;
             position: relative;
-            top: -80px;
+            top: 150px;
             font-size: 200px;
             font-family: Astrella, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             /*text-shadow: 0px 0px 20px #000;*/
             user-select: none;
+            max-width: 70%;
+            line-height: 200px;
         }
 
         #song #lyrics {
@@ -289,7 +291,7 @@
             font-size: 2.8vw;
             padding: 100px; /*
             border: 5px #111 solid;*/
-            margin-top: -200px;
+            margin-top: 230px;
             width: calc(100vw - 200px);
             transition: 0.2s ease-in-out;
             user-select: none;
@@ -579,7 +581,7 @@
 
         .dot {
             display: inline-block;
-            width: 280px;
+            width: 300px;
             margin: 10px;
             cursor: pointer;
             border: 3px solid #111;
@@ -782,7 +784,6 @@
 
             #song #title {
                 font-size: 10vw;
-                margin-top: 10vw;
             }
 
             #song #num {
@@ -792,7 +793,7 @@
             #song #lyrics {
                 font-size: 2.5em;
                 padding: 10px;
-                margin-top: -100px;
+                /*margin-top: -100px;*/
                 font-weight: 900 !important;
             }
 
@@ -800,7 +801,7 @@
                     content: '';
                     display: block;
                     height: 1px;
-                    border-bottom: 1px dashed #000;
+                    border-bottom: 1px solid #000;
                     margin-top: 8px;
                 }
 
@@ -810,7 +811,7 @@
                     top: 40px;
                     display: block;
                     height: 1px;
-                    border: 1px solid #000;
+                    border-top: 3px solid #000;
                 }
 
             .creditsTitle {
@@ -3485,7 +3486,7 @@
                 12:
                 {
                     "background": "always_and.jpg",
-                    "title": "Alwaysand",
+                    "title": "Always and",
                     "audio": "always_and.mp3",
                     "tempo": "149",
                     "timeSig": "3/4",
