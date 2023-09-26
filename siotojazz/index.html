@@ -10,7 +10,7 @@
     <meta property="og:description" content="Music Album">
     <meta property="og:image" content="sioto_jazz_album_cover.png">
     <meta property="og:url" content="https://www.najjak.com/siotojazz">
-<style>
+    <style>
         @font-face {
             font-family: 'Astrella';
             src: url('Astrella.ttf') format('truetype');
@@ -115,6 +115,7 @@
             width: 100vw;
             height: 100vh;
             background-size: cover;
+            background-position-y: 60%;
             z-index: -1;
             transition: 0.4s ease-in-out;
         }
@@ -413,7 +414,7 @@
             top: 300px;
         }
 
-        #about {
+        #about, #video {
             position: relative;
             left: -0px;
             margin-left: 130px;
@@ -423,9 +424,13 @@
             top: 300px;
         }
 
-            #about p {
-                margin-bottom: 50px;
-            }
+        #video {
+            text-align: center;
+        }
+
+        #about p {
+            margin-bottom: 50px;
+        }
 
         #gallery .polaroidImg {
             max-width: 300px;
@@ -441,6 +446,10 @@
                 box-shadow: 10px 10px 30px #1112;
                 z-index: 1050 !important;
             }
+
+        iframe {
+            background-color: transparent;
+        }
 
         .polaroidImg img, .polaroidImg video, .polaroidImg iframe {
             width: 100%;
@@ -556,6 +565,10 @@
 
         #activeSongSection {
             animation: blinking-animation 1s infinite ease-in-out;
+        }
+
+        .hiddenElement {
+            display: none !important;
         }
 
         @keyframes blinking-animation {
@@ -888,6 +901,7 @@
                     "title": "Patience",
                     "audio": "patience.mp3",
                     "tempo": "184",
+                    "releaseDate": "14 October 2023",
                     "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "lyrics": [
@@ -1078,6 +1092,7 @@
                     "background": "language.jpg",
                     "title": "Language",
                     "audio": "language.mp3",
+                    "releaseDate": "28 October 2023",
                     "tempo": "140",
                     "timeSig": "4/4",
                     "barStartTime": "0.0",
@@ -2915,6 +2930,7 @@
                     "barStartTime": "0.0",
                     "timeSig": "6/8",
                     "audio": "ink.mp3",
+                    "releaseDate": "11 November 2023",
                     "lyrics": [
                         {
                             "text": "My heart's river has ran it's course",
@@ -3212,6 +3228,7 @@
                     "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "audio": "dreams.mp3",
+                    "videoURL": "https://www.youtube.com/watch?v=NPcyTyilmYY",
                     "lyrics": [
                         {
                             "text": "I will see you in my dreams",
@@ -4054,6 +4071,11 @@
             if (lyricsViewMode == 1) {
                 SetUpBackground();
             }
+
+            if (lyricsViewMode == 5) {
+                SetUpVideo();
+            }
+
             var numElement = document.getElementById('num');
             numElement.textContent = songId;
 
@@ -4070,6 +4092,19 @@
                 SetUpSongStructureVisualizer();
             }
 
+            var showVideoBtn = document.querySelectorAll('.showVideoBtn');
+            showVideoBtn.forEach(function (e) {
+                var jsonData = sjData.siotojazz[currentSong];
+                if (!jsonData.videoURL && !jsonData.releaseDate) {
+                    e.classList.add('hiddenElement');
+                    if (lyricsViewMode == 5) {
+                        UpdateLyricsView(0);
+                    }
+                }
+                else {
+                    e.classList.remove('hiddenElement');
+                }
+            });
         }
 
         function SetMenuState(show) {
@@ -4166,6 +4201,21 @@
             return `https://www.youtube.com/embed/${videoId}`;
         }
 
+        function SetUpVideo() {
+            console.log('ok');
+
+            var jsonData = sjData.siotojazz[currentSong];
+            const videoContainer = document.getElementById('video');
+            if (videoContainer) {
+                if (!jsonData.releaseDate) {
+                    videoContainer.innerHTML = '<iframe width="100%" height="800px" src="' + jsonData.videoURL + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
+                }
+                else {
+                    videoContainer.innerHTML = 'The video for ' + jsonData.title + ' will be released on ' + jsonData.releaseDate;
+                }
+            }
+        }
+
         function SetUpGallery() {
             const pictureData = [
                 { filename: '001.jpg', description: 'Vakyym Jammin Club' },
@@ -4260,6 +4310,7 @@
             cacheDom.push(document.getElementById("songStructureVisualiser"));
             cacheDom.push(document.getElementById("gallery"));
             cacheDom.push(document.getElementById("about"));
+            cacheDom.push(document.getElementById("video"));
         }
 
         var lyricsViewData = [
@@ -4292,6 +4343,12 @@
                 buttonClass: 'showAboutBtn',
                 contentDomId: 'about',
                 fn: 'SetUpAbout'
+            },
+            {
+                modeId: 5,
+                buttonClass: 'showVideoBtn',
+                contentDomId: 'video',
+                fn: 'SetUpVideo'
             }
         ];
 
@@ -4338,6 +4395,10 @@
 
             if (lyricsViewMode == 3 && !menuState) {
                 SetUpGallery();
+            }
+
+            if (lyricsViewMode == 5 && !menuState) {
+                SetUpVideo();
             }
         }
 
@@ -4395,6 +4456,7 @@
             var showLyricsBtn = document.querySelectorAll('.showLyricsBtn');
             var showImageBtn = document.querySelectorAll('.showImageBtn');
             var showChordsBtn = document.querySelectorAll('.showChordsBtn');
+            var showVideoBtn = document.querySelectorAll('.showVideoBtn');
             var showGalleryBtn = document.querySelectorAll('.showGalleryBtn');
             var showAboutBtn = document.querySelectorAll('.showAboutBtn');
 
@@ -4475,6 +4537,13 @@
             showChordsBtn.forEach(function (e) {
                 e.addEventListener('click', () => {
                     UpdateLyricsView(2);
+                    SetURLArguments();
+                });
+            });
+
+            showVideoBtn.forEach(function (e) {
+                e.addEventListener('click', () => {
+                    UpdateLyricsView(5);
                     SetURLArguments();
                 });
             });
@@ -4881,7 +4950,25 @@
                         <div class="creditsPerson">Anastasija Kutlešovska</div>
                     </div>
 
-                    <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions or continuous support we would like to thank the following people</div>
+                    <div class="creditsTitle" style="display: none;">Additional Photography</div>
+
+                    <div style="font-size:0.5em; display:none;">
+                        <div class="creditsSection">
+                            <div class="creditsPerson" style="font-size: 250%; width: 50%;">
+                                Daniel Kist, Ilya Isaev, Erik Mclean, David Gari, Guilherme Rossi,
+                                James Wheeler, Movoyagee, Kaique Rocha, Stefan Stefancik, Taryn Elliott,
+                                Feyza Nur Demirci, Denner Trindade
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="creditsTitle">Video</div>
+                    <div class="creditsSection">
+                        <div class="creditsPerson">Sioto Jazz</div>
+                        <div class="creditsFor">Recording, Editing and Production</div>
+                    </div>
+
+                    <div class="creditsTitle" style="width: 50%; margin: 80px auto 0px auto; font-size: 200%;">For their musical contributions<br />or continuous support we would like to thank</div>
                     <div style="font-size:0.5em;">
                         <div class="creditsSection">
                             <div class="creditsPerson" style="font-size: 250%; width: 50%;">
@@ -4930,6 +5017,7 @@
 
             <div id="songContent" class="hideSongContent">
                 <div id="background"></div>
+                <div id="video"></div>
                 <div id="lyricsOptions">
                     <button class="playBtn"><i class="fas fa-play"></i></button>
                     <button class="prevBtn"><i class="fas fa-step-backward"></i></button>
@@ -4940,6 +5028,7 @@
                     <button class="showLyricsBtn"><i class="fa-solid fa-font"></i></button>
                     <button class="showImageBtn"><i class="fa fa-camera-retro"></i></button>
                     <button class="showChordsBtn"><i class="fa fa-music"></i></button>
+                    <button class="showVideoBtn"><i class="fa fa-video"></i></button>
                     <div id="verticalSeparator" style="margin-top: 100px;"></div>
                     <button class="showGalleryBtn"><i class="fa fa-image"></i></button>
                     <button class="showAboutBtn"><i class="fa-regular fa-address-card"></i></button>
