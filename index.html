@@ -58,7 +58,7 @@
             cursor: none;
             padding: 0;
             width: 100vw;
-	        min-height: 100vh;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
@@ -125,27 +125,27 @@
         }
 
         #navigation {
-	        text-align: center;
+            text-align: center;
         }
 
             #navigation input {
-	            position: fixed;
-	            top: 34px;
-	            right: 50px;
+                position: fixed;
+                top: 34px;
+                right: 50px;
                 font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
                 padding: 10px;
                 margin: 24px auto;
                 width: 50vw;
                 font-size: 44px;
                 color: #AAA;
-	            background: linear-gradient(0deg, rgba(78, 121, 136, 0.1) 0%, rgba(78, 121, 136, 0.01) 100%);
-	            border: 1px solid rgba(78, 121, 136, 0.15);
+                background: linear-gradient(0deg, rgba(78, 121, 136, 0.1) 0%, rgba(78, 121, 136, 0.01) 100%);
+                border: 1px solid rgba(78, 121, 136, 0.15);
                 border-bottom: solid 10px rgba(78, 121, 136, 0.15);
                 transition: 0.3s;
-	            text-align: center;
-	            width: 64px;
-	            border-radius: 100%;
-	            z-index: 1000;
+                text-align: center;
+                width: 64px;
+                border-radius: 100%;
+                z-index: 1000;
             }
 
                 #navigation input:focus {
@@ -161,8 +161,8 @@
                 }
 
         input:focus::placeholder {
-	        color: transparent;
-	        transition: 1s;
+            color: transparent;
+            transition: 1s;
         }
 
         @media only screen and (max-width: 1200px) {
@@ -264,7 +264,7 @@
             position: relative;
             background: linear-gradient(-90deg, rgba(0, 102, 170, 0.0) 0%, rgba(0, 102, 170, 0.0) 50%, rgba(0, 102, 170, 0.0) 100%);
             cursor: none;
-            color: #09F;
+            color: #9CF;
             border: 1px solid transparent;
             padding: 10px 25px;
             margin-right: 10px;
@@ -538,7 +538,7 @@
 
         #music-track {
             font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-            font-size:14px;
+            font-size: 14px;
         }
 
         .albumCover {
@@ -590,8 +590,22 @@
         .nowPlaying {
             font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             font-size: 12px;
-            background: linear-gradient(180deg, rgba(255, 0, 0, 0.8) 0%, rgba(255, 0, 0, 0.3) 100%);
+            background: #900;
             color: #FFF;
+            padding: 2px 10px;
+            border-bottom: 6px solid #700;
+            font-style: italic;
+        }
+
+        .activeProject {
+            background-image: repeating-linear-gradient( -45deg, #6003, #6003 10px, #9003 10px, #9003 20px ), linear-gradient(to bottom, rgba(255, 0, 0, 0.3), rgba(0, 0, 0, 0));
+            border: 1px solid #500;
+            border-top: none;
+            padding: 0px 30px;
+        }
+
+        .noLinkPadding {
+            padding: 0 !important;
         }
 
         #credits {
@@ -603,7 +617,7 @@
         }
 
         .hiddenText {
-	        display: none;
+            display: none;
         }
 
         @-webkit-keyframes load1 {
@@ -706,15 +720,22 @@
 
             </svg>
         </div>
-	    <div id="navigation">
-	        <input type="text" id="search-input" placeholder="&#xf002;"/>
-	    </div>
+        <div id="navigation">
+            <input type="text" id="search-input" placeholder="&#xf002;" />
+        </div>
         <div id="navigation" style="z-index: 10;">
             <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
             <div class="items">
-                <a href="siotojazz" class="searchable" >
-                    <div class="item regularItem" style="font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;"> SIOTO JAZZ
+                <a href="siotojazz" class="searchable">
+                    <div class="item regularItem" style="font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
+                        SIOTO JAZZ
                         <span class="hiddenText">SIOTO JAZZ</span>
+                    </div>
+                </a>
+                <a href="nats" class="searchable">
+                    <div class="item">
+                        <img src="logo_eats.png" style="height: 256px;" />
+                        <span class="hiddenText">art trashing space</span>
                     </div>
                 </a>
             </div>
@@ -749,9 +770,9 @@
                     <div class="item"><img src="logo_hunt.png" /></div>
                     <span class="hiddenText">Hunt: Showdown</span>
                 </a>
-                <a href="https://www.youtube.com/watch?v=QAKt3woocoU" class="searchable">
+                <a href="https://www.youtube.com/watch?v=QAKt3woocoU" class="searchable noLinkPadding">
                     <div class="nowPlaying">&#xf0e7; CURRENTLY POWERING</div>
-                    <div class="item"><img src="logo_angelic.png" /></div>
+                    <div class="item activeProject"><img src="logo_angelic.png" /></div>
                     <span class="hiddenText">Angelic</span>
                 </a>
                 <a href="https://www.youtube.com/watch?v=6aJCoWeDmlE" class="searchable">
@@ -770,50 +791,57 @@
             <div class="items">
                 <a href="n/?cyberpunk" class="searchable">
                     <div class="item"><img src="logo_cyberpunk.png" /></div>
-	                <span class="hiddenText">Cyberpunk</span>
+                    <span class="hiddenText">Cyberpunk</span>
                 </a>
                 <a href="n/?nomanssky" class="searchable">
                     <div class="item"><img src="logo_nms.png" /></div>
-	                <span class="hiddenText">No Man's Sky</span>
+                    <span class="hiddenText">No Man's Sky</span>
                 </a>
                 <!-- <a href="" class="searchable"> -->
-                    <!-- <div class="item"> -->
-                        <!-- <img src="logo_rdr.png" /> -->
-                        <!-- <span class="hiddenText">Red Dead Redemption</span> -->
-                    <!-- </div> -->
+                <!-- <div class="item"> -->
+                <!-- <img src="logo_rdr.png" /> -->
+                <!-- <span class="hiddenText">Red Dead Redemption</span> -->
+                <!-- </div> -->
                 <!-- </a> -->
-	            <!-- <a href="" class="searchable"> -->
-		            <!-- <div class="item"> -->
-			            <!-- <img src="logo_bd3.png"> -->
-			            <!-- <span class="hiddenText">Borderlands 3</span> -->
-		            <!-- </div> -->
-	            <!-- </a> -->
-	            <a href="" class="searchable">
+                <!-- <a href="" class="searchable"> -->
+                <!-- <div class="item"> -->
+                <!-- <img src="logo_bd3.png"> -->
+                <!-- <span class="hiddenText">Borderlands 3</span> -->
+                <!-- </div> -->
+                <!-- </a> -->
+                <a href="" class="searchable noLinkPadding">
                     <div class="item">
-	                    <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
-	                    <img src="logo_fh.png" />
+                        <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
+                        <img class="item activeProject" style="height:64px;" src="logo_fh.png" />
                         <span class="hiddenText">Forza Horizon</span>
                     </div>
-	            </a>
+                </a>
             </div>
         </div>
 
-        <div id="navigation">
+        <!--<div id="navigation">
             <div class="ct">Best &nbsp; &#xf573; &nbsp; Најјак</div>
             <div class="items">
                 <a href="n/?code-standard-cpp" class="searchable">
-	                <div class="item">C++ Code Standard</div>
+                    <div class="item">C++ Code Standard</div>
                 </a>
                 <a href="n/?zanaetchiski-raspored" class="searchable">
                     <div class="item">Занаетчиски Распоред</div>
                 </a>
             </div>
-        </div>
+        </div>-->
 
         <div id="navigation">
             <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
             <div class="items">
-                <a href="https://globalgamejam.org/users/petkovski" class="searchable">
+                <a href="n/?code-standard-cpp" class="searchable">
+                    <div class="item">C++ Code Standard</div>
+                </a>
+                <a href="n/?zanaetchiski-raspored" class="searchable">
+                    <div class="item">Занаетчиски Распоред</div>
+                </a>
+
+                <a href="https://v3.globalgamejam.org/users/petkovski" class="searchable">
                     <div class="item">Global Game Jam</div>
                 </a>
                 <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json" class="searchable">
@@ -826,7 +854,7 @@
                     <div class="item">XToolkit</div>
                 </a>-->
                 <a href="music" class="searchable">
-                    <div class="item">Музика</div>
+                    <div class="item">Демо Музика</div>
                 </a>
                 <a href="sis\index.html" class="searchable">
                     <div class="item">Саше Ивановски Симулатор</div>
@@ -850,22 +878,22 @@
         <div id="navigation">
             <div class="ct">Music &nbsp; &#xf001; &nbsp; Музика</div>
             <div class="items">
-                <a id="musicLink" href="#" class="searchable">
+                <a id="musicLink" href="#" class="searchable noLinkPadding">
                     <div class="nowPlaying">&#xf04b; NOW LISTENING</div>
-                    <div id="music-listeningnow" class="regularItem">
+                    <div id="music-listeningnow" class="regularItem activeProject">
 
                     </div>
                 </a>
 
-                <a id="musicLinkHr" href="#" class="searchable">
+                <a id="musicLinkHr" href="#" class="searchable noLinkPadding">
                     <div class="nowPlaying">&#xf2f9; HEAVY ROTATION</div>
-                    <div id="music-heavyrotation" class="regularItem">
+                    <div id="music-heavyrotation" class="regularItem activeProject">
 
                     </div>
                 </a>
             </div>
         </div>
-        
+
         <div id="navigation">
             <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
             <div class="items">
@@ -897,7 +925,7 @@
         </div>
 
         <div id="credits">
-            Copyright© Martin Petkovski 2013-2023. <br>All logos belong to their respective owners. All fonts have a
+            Copyright© Martin Petkovski 2013-2024. <br>All logos belong to their respective owners. All fonts have a
             public or personal use license.
         </div>
     </div>
@@ -1132,7 +1160,7 @@
             mesh.scale.x = RandomFloat(1.0, 10.0);
             mesh.scale.y = RandomFloat(1.0, 10.0);
             mesh.scale.z = RandomFloat(1.0, 10.0);
-            
+
             scene.add(mesh);
             meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-40, 40), RandomFloat(-40, 40), RandomFloat(-40, 40)) });
         }
@@ -1202,10 +1230,10 @@
         const searchInput = document.getElementById('search-input');
         const container = document.getElementById('container');
 
-        searchInput.addEventListener('keyup', function() {
-	        const searchText = searchInput.value.toLowerCase().trim();
+        searchInput.addEventListener('keyup', function () {
+            const searchText = searchInput.value.toLowerCase().trim();
 
-	        Array.from(container.querySelectorAll('.searchable *')).forEach(function(child) {
+            Array.from(container.querySelectorAll('.searchable *')).forEach(function (child) {
                 const childText = child.textContent.toLowerCase().trim();
 
                 console.log(childText + ' == ' + searchText);
@@ -1215,7 +1243,7 @@
                 } else {
                     child.closest('.searchable').style.opacity = 0.05;
                 }
-	        });
+            });
         });
 
     </script>
