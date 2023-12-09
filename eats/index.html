@@ -1,6 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // fuck cors
+        var albums = [
+            {
+                "spotifyId": "2rT82YYlV9UoxBYLIezkRq",
+                "fullName": "Goodspeed You! Black Emperor - Lift Your Skinny Fists Like Antennas to Heaven",
+                "grade": "C-",
+                "gradeColorClass": "Cm",
+                "description": "",
+                "timestamp": 1702071022
+            },
+            {
+                "spotifyId": "0vVekV45lOaVKs6RZQQNob",
+                "fullName": "Neutral Milk Hotel - In the Aeroplane Over the Sea",
+                "grade": "B-",
+                "gradeColorClass": "Bm",
+                "description": "",
+                "timestamp": 1702071023
+            },
+            {
+                "spotifyId": "4L9qXAXmnMEIvnvG8xon3F",
+                "fullName": "James Blake - S/T",
+                "grade": "C",
+                "gradeColorClass": "C",
+                "description": "",
+                "timestamp": 1702071024
+            },
+            {
+                "spotifyId": "1mJFgPeuLhU1PzLNBURdJC",
+                "fullName": "The Flaming Lips - The Soft Bulletin",
+                "grade": "B",
+                "gradeColorClass": "B",
+                "description": "Race for the Prize",
+                "timestamp": 1702071025
+            },
+            {
+                "spotifyId": "0HHRIVjvBcnTepfeRVgS2f",
+                "fullName": "Kraftwerk - Trans-Europe Express",
+                "grade": "B",
+                "gradeColorClass": "B",
+                "description": "",
+                "timestamp": 1702071026
+            },
+            {
+                "spotifyId": "1Rj1daFzMlYzLv7lJl14hz",
+                "fullName": "Public Enemy - It Takes A Nation Of Millions To Hold Us Back",
+                "grade": "B-",
+                "gradeColorClass": "Bm",
+                "description": "",
+                "timestamp": 1702071027
+            },
+            {
+                "spotifyId": "0bQglEvsHphrS19FGODEGo",
+                "fullName": "Smashing Pumpkins - Siamese Dream",
+                "grade": "A",
+                "gradeColorClass": "A",
+                "description": "",
+                "timestamp": 1702071028
+            },
+            {
+                "spotifyId": "5sFPchZQaQnu8LjD9Vg0PM",
+                "fullName": "Chicane - Behind The Sun",
+                "grade": "A+",
+                "gradeColorClass": "Ap",
+                "description": "",
+                "timestamp": 1702071029
+            },
+            {
+                "spotifyId": "70OkRXiiwdTCtZ9YiPBzPp",
+                "fullName": "American Football - LP1",
+                "grade": "A",
+                "gradeColorClass": "A",
+                "description": "",
+                "timestamp": 1702071030
+            },
+            {
+                "spotifyId": "5UKAhD2VmFAuThgq4OQyEe",
+                "fullName": "Death Cab for Cutie - Transatlanticism",
+                "grade": "A+",
+                "gradeColorClass": "Ap",
+                "description": "",
+                "timestamp": 1702082514
+            },
+            {
+                "spotifyId": "6lfjbwFGzQ6aSNP1N3JlT8",
+                "fullName": "Beastie Boys - Ill Communication",
+                "grade": "B",
+                "gradeColorClass": "B",
+                "description": "",
+                "timestamp": 1702082515
+            },
+            {
+                "spotifyId": "0C5NUkxwIcY5bQq9iDtLhM",
+                "fullName": "Zhiva - Preterujem",
+                "grade": "B+",
+                "gradeColorClass": "Bp",
+                "description": "",
+                "timestamp": 1702082516
+            },
+            {
+                "spotifyId": "4W4gNYa4tt3t8V6FmONWEK",
+                "fullName": "Men I Trust - Oncle Jazz",
+                "grade": "A-",
+                "gradeColorClass": "Am",
+                "description": "",
+                "timestamp": 1702082517
+            },
+            {
+                "spotifyId": "7sGYAV0xv7ZfAMzIpMl8m1",
+                "fullName": "Boa - Twilight",
+                "grade": "B",
+                "gradeColorClass": "B",
+                "description": "Duvet, Fool",
+                "timestamp": 1702082518
+            }, {
+                "spotifyId": "5yIpIqdGGoSPTflThiLDOx",
+                "fullName": "Mild Orange - Foreplay",
+                "grade": "B-",
+                "gradeColorClass": "Bm",
+                "description": "",
+                "timestamp": 1702082519
+            }, {
+                "spotifyId": "55RhFRyQFihIyGf61MgcfV",
+                "fullName": "Smashing Pumpkins - Mellon Collie And The Infinite Sadness",
+                "grade": "B",
+                "gradeColorClass": "B",
+                "description": "1979, Muzzle, Tonight Tonight",
+                "timestamp": 1702082520
+            },
+            {
+                "spotifyId": "7wJTn94PWzZ3zE0lg3qhld",
+                "fullName": "Smashing Pumpkins - Gish",
+                "grade": "A-",
+                "gradeColorClass": "Am",
+                "description": "Daydream",
+                "timestamp": 1702082521
+            },
+            {
+                "spotifyId": "7ysKTnHt4ve0MvIWm3vPdz",
+                "fullName": "Smashing Pumpkins - Adore",
+                "grade": "C",
+                "gradeColorClass": "C",
+                "description": "Perfect",
+                "timestamp": 1702082522
+            }, {
+                "spotifyId": "67mhcyDjMHNBXsH77mQsVV",
+                "fullName": "Smashing Pumpkins - CYR",
+                "grade": "D",
+                "gradeColorClass": "D",
+                "description": "",
+                "timestamp": 1702082523
+            },
+        ];
+
+    </script>
+
     <meta charset="UTF-8">
     <title>exquisite art trashing space curated by Martin Petkovski</title>
 
@@ -42,10 +198,21 @@
             padding: 30px;
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
-            font-size:40px;
-            background-color:black;
+            font-size: 40px;
+            background-color: black;
             color: white;
         }
+
+        .iframeWrapper {
+            box-shadow: inset 0px 0px 10px #0009;
+            border-radius: 16px;
+            padding: 10px;
+        }
+
+        iframe {
+            margin-bottom: -5px;
+        }
+
 
         form {
             text-align: center;
@@ -78,6 +245,9 @@
             margin: 0 auto;
             width: 100%;
             text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 8px solid black;
         }
 
         .curatedBy {
@@ -132,9 +302,11 @@
 
         .grade {
             position: absolute;
+            margin-left: 400px;
+            margin-top: -50px;
             color: #FFF;
             font-size: 50px;
-            display: inline-flex;
+            display: flex;
             justify-content: center;
             align-items: center;
             vertical-align: middle;
@@ -144,9 +316,7 @@
             font-weight: bold;
             border: 10px solid #900;
             border-radius: 100px;
-            margin-left: 30%;
-            margin-top: -70px;
-            box-shadow: 0px 0px 20px #0004;
+            box-shadow: inset 30px 0px 40px #0009;
         }
 
         .smallGrade {
@@ -163,27 +333,33 @@
         .content {
             display: flex;
             flex-wrap: wrap;
+            border: 2px outset #EEE;
         }
 
         .column {
-            flex: 1 0 calc(50% - 10px); /* Calculate 33.33% width for each item with gap adjustment */
-            max-width: calc(50% - 10px); /* Set maximum width for each item */
+            flex: 1 0 50%; /* Calculate 33.33% width for each item with gap adjustment */
+            max-width: 50%; /* Set maximum width for each item */
             box-sizing: border-box;
             padding: 20px;
-            text-align: center;
-            margin-top: 30px;
+            text-align: left;
+            background-color: #DEDEDE;
+            padding: 20px;
+            color: #000;
+            border: 2px outset #EEE;
         }
 
         .year {
-            color: #000;
-            display: inline-flex;
             font-family: VOGUE, sans-serif;
             font-size: 20px;
             position: relative;
-            left: 70px;
         }
 
         .description {
+            position: relative;
+            right: 0px;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: right;
         }
 
         .Ap {
@@ -283,114 +459,11 @@
             margin: 30px 0px;
             margin-top: -22px;
         }
+
         .footer {
             height: 100px;
         }
     </style>
-
-    <script>
-        // fuck cors
-        var albums = [
-            {
-                "spotifyId": "2rT82YYlV9UoxBYLIezkRq",
-                "fullName": "Goodspeed You! Black Emperor - Lift Your Skinny Fists Like Antennas to Heaven",
-                "grade": "C-",
-                "gradeColorClass": "Cm",
-                "description": "",
-                "timestamp": 1702071022
-            },
-            {
-                "spotifyId": "0vVekV45lOaVKs6RZQQNob",
-                "fullName": "Neutral Milk Hotel - In the Aeroplane Over the Sea",
-                "grade": "B-",
-                "gradeColorClass": "Bm",
-                "description": "",
-                "timestamp": 1702071023
-            },
-            {
-                "spotifyId": "4L9qXAXmnMEIvnvG8xon3F",
-                "fullName": "James Blake - S/T",
-                "grade": "C",
-                "gradeColorClass": "C",
-                "description": "",
-                "timestamp": 1702071024
-            },
-            {
-                "spotifyId": "1mJFgPeuLhU1PzLNBURdJC",
-                "fullName": "The Flaming Lips - The Soft Bulletin",
-                "grade": "B",
-                "gradeColorClass": "B",
-                "description": "✂️  Race for the Prize",
-                "timestamp": 1702071025
-            },
-            {
-                "spotifyId": "0HHRIVjvBcnTepfeRVgS2f",
-                "fullName": "Kraftwerk - Trans-Europe Express",
-                "grade": "B",
-                "gradeColorClass": "B",
-                "description": "",
-                "timestamp": 1702071026
-            },
-            {
-                "spotifyId": "1Rj1daFzMlYzLv7lJl14hz",
-                "fullName": "Public Enemy - It Takes A Nation Of Millions To Hold Us Back",
-                "grade": "B",
-                "gradeColorClass": "B",
-                "description": "",
-                "timestamp": 1702071027
-            },
-            {
-                "spotifyId": "0bQglEvsHphrS19FGODEGo",
-                "fullName": "Smashing Pumpkins - Siamese Dream",
-                "grade": "A",
-                "gradeColorClass": "A",
-                "description": "",
-                "timestamp": 1702071028
-            },
-            {
-                "spotifyId": "5sFPchZQaQnu8LjD9Vg0PM",
-                "fullName": "Chicane - Behind The Sun",
-                "grade": "A+",
-                "gradeColorClass": "Ap",
-                "description": "",
-                "timestamp": 1702071029
-            },
-            {
-                "spotifyId": "70OkRXiiwdTCtZ9YiPBzPp",
-                "fullName": "American Football - LP1",
-                "grade": "A",
-                "gradeColorClass": "A",
-                "description": "",
-                "timestamp": 1702071030
-            },
-            {
-                "spotifyId": "5UKAhD2VmFAuThgq4OQyEe",
-                "fullName": "Death Cab for Cutie - Transatlanticism",
-                "grade": "A+",
-                "gradeColorClass": "Ap",
-                "description": "",
-                "timestamp": 1702082514
-            },
-            {
-                "spotifyId": "6lfjbwFGzQ6aSNP1N3JlT8",
-                "fullName": "Beastie Boys - Ill Communication",
-                "grade": "A-",
-                "gradeColorClass": "Am",
-                "description": "",
-                "timestamp": 1702082514
-            },
-			{
-                "spotifyId": "0C5NUkxwIcY5bQq9iDtLhM",
-                "fullName": "Zhiva - Preterujem",
-                "grade": "B+",
-                "gradeColorClass": "Bp",
-                "description": "",
-                "timestamp": 1702082514
-            },
-        ];
-
-    </script>
-
     <script>
         function formatTimestamp(timestamp) {
             const months = [
@@ -487,6 +560,7 @@
             };
 
             var filtered = filterAlbums(criteria);
+            filtered.sort((a, b) => a.timestamp < b.timestamp);
 
             filtered.forEach(function (album) {
                 var columnDiv = document.createElement('div');
@@ -502,22 +576,26 @@
 
                 var descDiv = document.createElement('div');
                 descDiv.classList.add('description');
-                descDiv.textContent = album.description;
+                descDiv.textContent = album.description === '' ? '-' : ("⭐" + album.description);
+
+                var iframeWrapperDiv = document.createElement('div');
+                iframeWrapperDiv.classList.add('iframeWrapper');
 
                 var iframe = document.createElement('iframe');
                 iframe.src = 'https://open.spotify.com/embed/album/' + album.spotifyId + '?utm_source=generator';
                 iframe.style.borderRadius = '12px';
                 iframe.width = '100%';
-                iframe.height = '362';
+                iframe.height = '500';
                 iframe.frameBorder = '0';
                 iframe.allowFullscreen = true;
                 iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
                 iframe.loading = 'lazy';
 
-                columnDiv.appendChild(yearDiv);
-                columnDiv.appendChild(descDiv);
                 columnDiv.appendChild(gradeDiv);
-                columnDiv.appendChild(iframe);
+                iframeWrapperDiv.appendChild(iframe)
+                columnDiv.appendChild(iframeWrapperDiv);
+                columnDiv.appendChild(descDiv);
+                columnDiv.appendChild(yearDiv);
                 contentDiv.appendChild(columnDiv);
             });
         }
@@ -535,23 +613,22 @@
     <div class="criteriaTitle" id="criteriaButton" onclick="toggleCriteria()">Here's the criteria</div>
 
     <div id="criteriaContent">
-        <div class="criteriaParagraph">An <span class="grade smallGrade Ap">A+</span> record is an organically conceived masterpiece that repays prolonged listening with new excitement and insight. It is unlikely to be marred by more than one merely ordinary cut.                                                                                                                                                                                                                                                                                     </div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade A">A</span> is a great record offering enduring pleasure and surprise, a timeless record.                                                                                                                                                                                                                                                                                                                                                                         </div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade Am">A-</span> is a very good record but has insufficient "oomph" to become a timeless record.                                                                                                                                                                                                                                                                                                                               </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Bp">B+</span> is a good record but emotionally dull.                                                                                                                                                                                                                                                                                                                          </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade B">B </span>is an admirable effort that aficionados of the style or artist will probably find quite listenable.                                                                                                                                                                                                                                                                                                                                                                     </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Bm">B-</span> is a competent or mildly interesting record that will usually feature at least three worthwhile cuts.                                                                                                                                                                                                                                                                                                                                                                  </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Cp">C+</span> is a not disreputable performance, most likely a failed experiment or a pleasant piece of hackwork.                                                                                                                                                                                                                                                                                                                                                                    </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade C">C</span> is a record of clear professionalism or barely discernible inspiration, but not both.                                                                                                                                                                                                                                                                                                                                                                                   </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Cm">C-</span> is a regrettably successful exploitation or a basically honest but quite incompetent stab at something more.                                                                                                                                                                                                                                                                                                                                                           </div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Dp">D+</span> is an appalling piece of pimpwork or a thoroughly botched token of sincerity.                                                                                                                                                                                                                                                                                                                                                                                          </div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone would play a <span class="grade smallGrade D">D</span> record.                                                                                                                                                                                                                                                                                                                                                                                                             </div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone would release a <span class="grade smallGrade Dm">D-</span> record.                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone wouldn't trash an <span class="grade smallGrade Ep">E+</span> record.                                                                                                                                                                                                                                                                                                                                                                                                           </div>
-        <div class="criteriaParagraph"><span class="grade smallGrade E">E</span> records are frequently cited as proof that there is no God.                                                                                                                                                                                                                                                                                                                                                                                                               </div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade Em">E-</span> record is an organically conceived masterpiece that repays repeated listening with a sense of horror in the face of the void. It is unlikely to be marred by one listenable cut.                                                                                                                                                                                                                                                                                      </div>
-        <div class="criteriaParagraph">A Neither (😵‍) may impress once or twice with consistent craft or an arresting track or two. Then it won't.                                                                                                                                                                                                                                                                                                                                                             </div>
-        <div class="criteriaParagraph">A Choice Cut (✂️) is a good song on an album that isn't worth your time--sometimes a Neither, more often a Dud. Some (✂️)s are arbitrarily personal, others inescapably social. Sometimes one is so wondrous you'll be tempted to spring for the high-priced package anyway. More often it would fit sweetly onto a compilation you can only pray will include it.                                                                                               </div>
+        <div class="criteriaParagraph">An <span class="grade smallGrade Ap">A+</span> record is an organically conceived masterpiece that repays prolonged listening with new excitement and insight. It is unlikely to be marred by more than one merely ordinary cut.</div>
+        <div class="criteriaParagraph">An <span class="grade smallGrade A">A</span> is a great record offering enduring pleasure and surprise, a timeless record.</div>
+        <div class="criteriaParagraph">An <span class="grade smallGrade Am">A-</span> is a very good record but has insufficient "oomph" to become a timeless record.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade Bp">B+</span> is a good record but emotionally dull.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade B">B </span>is an admirable effort that aficionados of the style or artist will probably find quite listenable.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade Bm">B-</span> is a competent or mildly interesting record that will usually feature at least three worthwhile cuts.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade Cp">C+</span> is a not disreputable performance, most likely a failed experiment or a pleasant piece of hackwork.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade C">C</span> is a record of clear professionalism or barely discernible inspiration, but not both.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade Cm">C-</span> is a regrettably successful exploitation or a basically honest but quite incompetent stab at something more.</div>
+        <div class="criteriaParagraph">A <span class="grade smallGrade Dp">D+</span> is an appalling piece of pimpwork or a thoroughly botched token of sincerity.</div>
+        <div class="criteriaParagraph">It is impossible to understand why anyone would play a <span class="grade smallGrade D">D</span> record.</div>
+        <div class="criteriaParagraph">It is impossible to understand why anyone would release a <span class="grade smallGrade Dm">D-</span> record.</div>
+        <div class="criteriaParagraph">It is impossible to understand why anyone wouldn't trash an <span class="grade smallGrade Ep">E+</span> record.</div>
+        <div class="criteriaParagraph"><span class="grade smallGrade E">E</span> records are frequently cited as proof that there is no God.</div>
+        <div class="criteriaParagraph">An <span class="grade smallGrade Em">E-</span> record is an organically conceived masterpiece that repays repeated listening with a sense of horror in the face of the void. It is unlikely to be marred by one listenable cut.                                                                                                                                                                                                                                                                                                                                                        </div>
+        <div class="criteriaParagraph">A Choice Cut (⭐) is a good song on an album that isn't worth your time. Some (⭐)s are arbitrarily personal, others inescapably social.</div>
     </div>
 
     <form id="albumFilterForm">
@@ -601,8 +678,6 @@
 
     <div class="content">
     </div>
-
-    <hr />
 
     <div class="footer">
         <div class="curatedBy">CURATED BY MARTIN PETKOVSKI</div>
