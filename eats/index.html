@@ -65,7 +65,7 @@
                 "fullName": "Chicane - Behind The Sun",
                 "grade": "A+",
                 "gradeColorClass": "Ap",
-                "description": "",
+                "description": "No Ordinary Morning, Autumn Tactics",
                 "timestamp": 1702071029
             },
             {
@@ -196,6 +196,15 @@
                 "description": "Runaway, Without You, Tomorrow",
                 "timestamp": 1702082530
             }
+            ,
+            {
+                "spotifyId": "32sNMKvkx752PlKrT7KK4q",
+                "fullName": "Chicane - Giants",
+                "grade": "C-",
+                "gradeColorClass": "Cm",
+                "description": "",
+                "timestamp": 1702169631
+            }
         ];
 
     </script>
@@ -236,8 +245,8 @@
             src: url('b.otf') format('opentype');
         }
 
-        input, select {
-            width: 30%;
+        input[type="text"], select {
+            width: 40%;
             padding: 10px;
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
@@ -248,7 +257,7 @@
             box-shadow: inset 6px 0px 14px #0003;
         }
 
-        input {
+        input[type="text"] {
             margin-top: 30px;
             text-align: center;
         }
@@ -711,6 +720,8 @@
                 columnDiv.appendChild(yearDiv);
                 contentDiv.appendChild(columnDiv);
             });
+
+            InitializeHoverFunctionallity();
         }
 
         function InitializeHoverFunctionallity() {
@@ -777,7 +788,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             populateAlbums();
-            InitializeHoverFunctionallity();
         });
 
         window.addEventListener('scroll', function () {
@@ -797,7 +807,7 @@
     <div class="criteriaTitle" id="criteriaButton" onclick="toggleCriteria()">Here's the criteria</div>
 
     <form id="albumFilterForm">
-        <input type="text" id="nameInput" placeholder="Search for..." oninput="populateAlbums()">
+        <input type="text" id="nameInput" placeholder="What do you think about..." oninput="populateAlbums()">
         <br>
 
         <div class="selectRow">
