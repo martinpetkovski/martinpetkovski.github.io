@@ -213,6 +213,7 @@
             width: 80%;
             margin: 0 auto;
             font-family: 'Garet', sans-serif;
+            text-align: center;
         }
 
         @font-face {
@@ -236,7 +237,7 @@
         }
 
         input, select {
-            width: 100%;
+            width: 30%;
             padding: 10px;
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
@@ -245,6 +246,11 @@
             color: black;
             border: 4px outset #EEE;
             box-shadow: inset 6px 0px 14px #0003;
+        }
+
+        input {
+            margin-top: 30px;
+            text-align: center;
         }
 
         .iframeWrapper {
@@ -283,6 +289,7 @@
 
             .header img {
                 width: 100%;
+                max-width: 1000px;
             }
 
         .footer {
@@ -302,16 +309,17 @@
 
         .criteriaTitle {
             font-weight: bold;
-            font-size: 5vw;
+            font-size: 2vw;
             margin-top: 26px;
             font-family: Vogue, sans-serif;
             text-align: center;
             cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 150px;
+            display: inline-block;
             text-decoration: underline;
+            padding: 20px;
+            position: relative;
+            top: -100px;
+            display: none;
         }
 
             .criteriaTitle:hover {
@@ -336,12 +344,6 @@
             padding: 0px 50px;
         }
 
-        @media screen and (max-width: 1000px) {
-            .criteriaParagraph {
-                font-size: 5vw !important;
-            }
-        }
-
         .grade {
             position: absolute;
             margin-top: -502px;
@@ -362,6 +364,8 @@
             border-top-right-radius: 0px;
             border-top-left-radius: 0px;
             text-shadow: 0px 0px 15px #222E;
+            transition: 0.2s;
+            backdrop-filter: blur(5px);
         }
 
             .grade::before {
@@ -388,6 +392,11 @@
                 pointer-events: none;
             }
 
+            .grade:hover {
+                filter: brightness(140%);
+                cursor: help;
+            }
+
         .smallGrade {
             position: unset;
             margin: 0px;
@@ -399,6 +408,30 @@
             display: inline-flex;
         }
 
+            .smallGrade::before {
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                right: -0px;
+                bottom: -0px;
+                pointer-events: none;
+            }
+
+            .smallGrade::after {
+                content: '';
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                bottom: 0px;
+                box-shadow: none;
+                border-radius: 0px;
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;
+                pointer-events: none;
+            }
+
         .content {
             display: flex;
             flex-wrap: wrap;
@@ -406,8 +439,8 @@
         }
 
         .column {
-            flex: 1 0 50%;
-            max-width: 50%;
+            flex: 1 0 33.333%;
+            max-width: 33.333%;
             box-sizing: border-box;
             padding: 20px;
             text-align: left;
@@ -434,78 +467,102 @@
             margin-top: 20px;
         }
 
+        .tooltip {
+            position: fixed;
+            background-color: #FFF9;
+            backdrop-filter: blur(10px);
+            font-family: Garet, 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            max-width: 300px;
+            box-shadow: 0px 0px 10px #0009;
+            padding: 10px;
+
+        }
+
+        @media screen and (max-width: 1000px) {
+            .criteriaParagraph {
+                font-size: 5vw !important;
+            }
+        }
+
+        @media screen and (max-width: 1500px) {
+            .column {
+                flex: 1 0 50%;
+                max-width: 50%;
+            }
+        }
+
         .Ap {
-            background-color: #40FF40;
+            background-color: #40FF4099;
             border-color: #40CC40;
         }
 
         .A {
-            background-color: #40AA40;
+            background-color: #40AA4099;
             border-color: #40AA40;
         }
 
         .Am {
-            background-color: #406640;
+            background-color: #40664099;
             border-color: #406640;
         }
 
         .Bp {
-            background-color: #FFCC00;
+            background-color: #FFCC0099;
             border-color: #FFCC00;
         }
 
         .B {
-            background-color: #FF9900;
+            background-color: #FF990099;
             border-color: #FF9900;
         }
 
         .Bm {
-            background-color: #FF7700;
+            background-color: #FF770099;
             border-color: #FF7700;
         }
 
         .Cp {
-            background-color: #FF6347;
+            background-color: #FF634799;
             border-color: #D55D47;
         }
 
         .C {
-            background-color: #FF4500;
+            background-color: #FF450099;
             border-color: #E34600;
         }
 
         .Cm {
-            background-color: #FF0000;
+            background-color: #FF000099;
             border-color: #D50000;
         }
 
         .Dp {
-            background-color: #8B0000;
+            background-color: #8B000099;
             border-color: #660000;
         }
 
         .D {
-            background-color: #800000;
+            background-color: #80000099;
             border-color: #600000;
         }
 
         .Dm {
-            background-color: #8B4513;
+            background-color: #8B451399;
             border-color: #774212;
         }
 
         .Ep {
-            background-color: #708090;
+            background-color: #70809099;
             border-color: #4D636E;
         }
 
         .E {
-            background-color: #2F4F4F;
+            background-color: #2F4F4F99;
             border-color: #253E3E;
         }
 
         .Em {
-            background-color: #000000;
+            background-color: #00000099;
             border-color: #000000;
         }
 
@@ -644,8 +701,7 @@
                 iframe.width = '100%';
                 iframe.height = '500';
                 iframe.frameBorder = '0';
-                iframe.allowFullscreen = true;
-                iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+                iframe.allowFullscreen = true
                 iframe.loading = 'lazy';
 
                 columnDiv.appendChild(iframeWrapperDiv);
@@ -657,8 +713,79 @@
             });
         }
 
+        function InitializeHoverFunctionallity() {
+            const criteriaContent = new Map ([
+                ['Ap', "An <span class=\"grade smallGrade Ap\">A+</span> record is an organically conceived masterpiece that repays prolonged listening with new excitement and insight. It is unlikely to be marred by more than one merely ordinary cut."   ],
+                ['A', "An <span class=\"grade smallGrade A\">A</span> is a great record offering enduring pleasure and surprise, a timeless record."],
+                ['Am', "An <span class=\"grade smallGrade Am\">A-</span> is a very good record but has insufficient \"oomph\" to become a timeless record."],
+                ['Bp', "A <span class=\"grade smallGrade Bp\">B+</span> is a good record but emotionally dull."],
+                ['B', "A <span class=\"grade smallGrade B\">B</span> is an admirable effort that aficionados of the style or artist will probably find quite listenable."],
+                ['Bm', "A <span class=\"grade smallGrade Bm\">B-</span> is a competent or mildly interesting record that will usually feature at least three worthwhile cuts."],
+                ['Cp', "A <span class=\"grade smallGrade Cp\">C+</span> is a not disreputable performance, most likely a failed experiment or a pleasant piece of hackwork."],
+                ['C', "A <span class=\"grade smallGrade C\">C</span> is a record of clear professionalism or barely discernible inspiration, but not both."],
+                ['Cm', "A <span class=\"grade smallGrade Cm\">C-</span> is a regrettably successful exploitation or a basically honest but quite incompetent stab at something more."],
+                ['Dp', "A <span class=\"grade smallGrade Dp\">D+</span> is an appalling piece of pimpwork or a thoroughly botched token of sincerity."],
+                ['D', "It is impossible to understand why anyone would play a <span class=\"grade smallGrade D\">D</span> record."],
+                ['Dm', "It is impossible to understand why anyone would release a <span class=\"grade smallGrade Dm\">D-</span> record."],
+                ['Ep', "It is impossible to understand why anyone wouldn't trash an <span class=\"grade smallGrade Ep\">E+</span> record."],
+                ['E', "<span class=\"grade smallGrade E\">E</span> records are frequently cited as proof that there is no God."],
+                ['Em', "An <span class=\"grade smallGrade Em\">E-</span> record is an organically conceived masterpiece that repays repeated listening with a sense of horror in the face of the void. It is unlikely to be marred by one listenable cut."     ]
+            ]);
+
+
+            for (let key of criteriaContent.keys()) {
+                const elementWithApClass = document.getElementsByClassName(key);
+                for (i = 0; i < elementWithApClass.length; i++) {
+                    elementWithApClass[i].addEventListener('click', function (event) {
+                        const apContent = criteriaContent.get(key);
+
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'tooltip';
+                        tooltip.innerHTML = apContent;
+
+                        const rect = event.target.getBoundingClientRect();
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                        tooltip.style.left = (rect.left + rect.width) +'px';
+
+                        document.body.appendChild(tooltip);
+                    });
+
+                    elementWithApClass[i].addEventListener('mouseover', function (event) {
+
+                        const apContent = criteriaContent.get(key);
+
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'tooltip';
+                        tooltip.innerHTML = apContent;
+
+                        const rect = event.target.getBoundingClientRect();
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                        tooltip.style.left = `${rect.left + rect.width}px`;
+
+                        document.body.appendChild(tooltip);
+                    });
+
+                    elementWithApClass[i].addEventListener('mouseout', function (event) {
+                        const tooltip = document.querySelector('.tooltip');
+                        if (tooltip) {
+                            tooltip.remove();
+                        }
+                    });
+                }
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             populateAlbums();
+            InitializeHoverFunctionallity();
+        });
+
+        window.addEventListener('scroll', function () {
+            const tooltips = document.querySelectorAll('.tooltip');
+
+            tooltips.forEach(tooltip => {
+                tooltip.remove();
+            });
         });
     </script>
 </head>
@@ -668,25 +795,6 @@
     </div>
 
     <div class="criteriaTitle" id="criteriaButton" onclick="toggleCriteria()">Here's the criteria</div>
-
-    <div id="criteriaContent">
-        <div class="criteriaParagraph">An <span class="grade smallGrade Ap">A+</span> record is an organically conceived masterpiece that repays prolonged listening with new excitement and insight. It is unlikely to be marred by more than one merely ordinary cut.</div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade A">A</span> is a great record offering enduring pleasure and surprise, a timeless record.</div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade Am">A-</span> is a very good record but has insufficient "oomph" to become a timeless record.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Bp">B+</span> is a good record but emotionally dull.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade B">B </span>is an admirable effort that aficionados of the style or artist will probably find quite listenable.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Bm">B-</span> is a competent or mildly interesting record that will usually feature at least three worthwhile cuts.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Cp">C+</span> is a not disreputable performance, most likely a failed experiment or a pleasant piece of hackwork.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade C">C</span> is a record of clear professionalism or barely discernible inspiration, but not both.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Cm">C-</span> is a regrettably successful exploitation or a basically honest but quite incompetent stab at something more.</div>
-        <div class="criteriaParagraph">A <span class="grade smallGrade Dp">D+</span> is an appalling piece of pimpwork or a thoroughly botched token of sincerity.</div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone would play a <span class="grade smallGrade D">D</span> record.</div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone would release a <span class="grade smallGrade Dm">D-</span> record.</div>
-        <div class="criteriaParagraph">It is impossible to understand why anyone wouldn't trash an <span class="grade smallGrade Ep">E+</span> record.</div>
-        <div class="criteriaParagraph"><span class="grade smallGrade E">E</span> records are frequently cited as proof that there is no God.</div>
-        <div class="criteriaParagraph">An <span class="grade smallGrade Em">E-</span> record is an organically conceived masterpiece that repays repeated listening with a sense of horror in the face of the void. It is unlikely to be marred by one listenable cut.                                                                                                                                                                                                                                                                                                                                                        </div>
-        <div class="criteriaParagraph">A Choice Cut (⭐) is a good song on an album that isn't worth your time. Some (⭐)s are arbitrarily personal, others inescapably social.</div>
-    </div>
 
     <form id="albumFilterForm">
         <input type="text" id="nameInput" placeholder="Search for..." oninput="populateAlbums()">
@@ -730,7 +838,14 @@
                 <option value="E">E</option>
                 <option value="E-">E-</option>
             </select>
+
         </div>
+        <!--<div>
+            Sort by:
+            Newest<input type="radio" name="sortc" />
+            Top Rated<input type="radio" name="sortc" />
+            Alphabetical<input type="radio" name="sortc" />
+        </div>-->
     </form>
 
     <div class="content">
