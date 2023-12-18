@@ -677,7 +677,7 @@
                 "timestamp": 1702378016,
                 "badges": ["Special Talent", "Asking for Trouble"]
             }
-			,
+            ,
             {
                 "spotifyId": "6fFp2F91noBeodV88bRwTD",
                 "fullName": "The Antlers - Hospice",
@@ -714,7 +714,7 @@
                 "gradeColorClass": "Am",
                 "description": "Let It Happen, The Less I Know The Better, New Person, Same Old Mistakes",
                 "timestamp": 1702771122,
-                "badges": ["Fan", "Special Talent", "Mega Fan", "Did Butch Vig produce this?", "Sonic Platonic Connections", "Megadrive", "Night Gems", "Literal Poetry" ]
+                "badges": ["Fan", "Special Talent", "Mega Fan", "Did Butch Vig produce this?", "Sonic Platonic Connections", "Megadrive", "Night Gems", "Literal Poetry"]
             }
         ];
 
@@ -1224,17 +1224,17 @@
             border-color: #F41f38 !important;
         }
 
-        .nothing { 
+        .nothing {
             color: #FFF !important;
             border-color: #FFF !important;
         }
 
-            .badge:hover {
-                filter: brightness(140%);
-                transform: scale(135%);
-                transition: 0.3s;
-                cursor: help;
-            }
+        .badge:hover {
+            filter: brightness(140%);
+            transform: scale(135%);
+            transition: 0.3s;
+            cursor: help;
+        }
 
         .badgeSimple {
             color: #ffd700;
@@ -1270,6 +1270,28 @@
             .column {
                 flex: 1 0 100%;
                 max-width: 100%;
+            }
+
+
+            .badge {
+                font-size: 32px;
+                width: 48px;
+                height: 48px;
+            }
+
+            input {
+                display: block;
+            }
+
+            .starSong {
+                font-size: 26px;
+            }
+
+            .grade {
+                font-size: 60px;
+                width: 100px;
+                height: 100px;
+                margin-left: calc(100% - 160px);
             }
         }
 
@@ -1481,7 +1503,7 @@
                     }
 
                     return aValue < bValue;
-                }); 
+                });
             });
 
             badges.sort(function (a, b) {
@@ -1492,7 +1514,7 @@
                 }
 
                 return aValue < bValue;
-            }); 
+            });
         }
 
         function generateBadge(badgeName) {
@@ -1755,6 +1777,8 @@
             });
         });
     </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="header">
