@@ -733,6 +733,15 @@
                 "description": "シュリンプ・ダンス, ウォーク・トール",
                 "timestamp": 1702935524,
                 "badges": ["Fan", "Special Talent", "Did Butch Vig produce this?", "Concerto", "Background Music", "Megadrive", "Night Gems", "Asking for Trouble"]
+            },
+            {
+                "spotifyId": "2Mcs6yUdV7MkpQyCf8szkJ",
+                "fullName": "Adorable - Against Perfection",
+                "grade": "A",
+                "gradeColorClass": "A",
+                "description": "Glorious, Homeboy, Sistine Chapel Ceiling, Breathless",
+                "timestamp": 1703076777,
+                "badges": ["ULTIMATE", "Fan", "Special Talent", "Call the Police", "Concerto", "Background Music", "Nostalgia", "Puppy", "Sonic Platonic Connections", "Megadrive", "Asking for Trouble"]
             }
         ];
 
@@ -1406,7 +1415,6 @@
         }
     </style>
     <script>
-
         var activeBadgeFilters = new Array(0);
 
         function formatTimestamp(timestamp) {
@@ -1540,6 +1548,51 @@
             });
         }
 
+        function saveAsImage(id) {
+            const mainDiv = document.getElementById(id);
+
+            // Create a new DOMParser
+            const parser = new DOMParser();
+
+            // Serialize the content of the div as XML
+            const serializer = new XMLSerializer();
+            const divContent = serializer.serializeToString(mainDiv);
+
+            // Create a new document from the div content
+            const parsedDoc = parser.parseFromString(divContent, 'image/svg+xml');
+
+            // Create an SVG image element
+            const svg = new Blob([parsedDoc.documentElement.outerHTML], { type: 'image/svg+xml' });
+
+            // Create an image element
+            const img = new Image();
+            img.src = URL.createObjectURL(svg);
+
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Draw the image onto the canvas
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Convert canvas content to a data URL
+                const imageDataURL = canvas.toDataURL('image/png');
+
+                // Create a link element
+                const link = document.createElement('a');
+                link.href = imageDataURL;
+                link.download = 'div_image.png'; // Set the filename for the image
+
+                // Simulate a click to trigger the download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+        }
+
         function generateBadge(badgeName) {
             var badgeDiv = document.createElement('div');
             badgeDiv.classList.add('badge');
@@ -1620,9 +1673,11 @@
             var filtered = filterAlbums(criteria);
             filtered.sort((a, b) => a.timestamp < b.timestamp);
 
+            var albumid = 0;
             filtered.forEach(function (album) {
                 var columnDiv = document.createElement('div');
                 columnDiv.classList.add('column');
+                columnDiv.id = "album" + albumid;
 
                 var gradeDiv = document.createElement('div');
                 gradeDiv.classList.add('grade', album.gradeColorClass);
@@ -1630,7 +1685,7 @@
 
                 var yearDiv = document.createElement('div');
                 yearDiv.classList.add('year');
-                yearDiv.textContent = formatTimestamp(album.timestamp);
+                yearDiv.innerHTML = formatTimestamp(album.timestamp) + '&nbsp; <i class="fas fa-save" onclick="saveAsImage(\'album' + albumid + '\')"></i>';
 
                 var descDiv = document.createElement('div');
                 descDiv.classList.add('description');
@@ -1676,6 +1731,7 @@
                 columnDiv.appendChild(yearDiv);
 
                 contentDiv.appendChild(columnDiv);
+                albumid++;
             });
 
             InitializeHoverFunctionallity();
