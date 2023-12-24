@@ -898,6 +898,8 @@
             margin: 0 auto;
             font-family: 'Garet', Font-Awesome, sans-serif;
             text-align: center;
+            background-image: url(https://images.pexels.com/photos/17483809/pexels-photo-17483809/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-represents-how-ai-accountability-is-a-strong-foundation-in-a-world-of-unpredictability-it-was-created-by-champ-panupon.png);
+            background-size: contain;
         }
 
         @font-face {
@@ -925,10 +927,19 @@
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
             font-size: 34px;
-            background-color: #EEE;
-            color: black;
-            border: 4px outset #EEE;
-            box-shadow: inset 6px 0px 14px #0003;
+            background-color: #1116;
+            color: #FFF;
+            border: 1px outset #111A;
+            box-shadow: inset 0px 0px 14px #0009;
+            border-radius: 5px;
+        }
+
+        select {
+            background-color: #111;
+        }
+
+        option {
+            font-size: 12px;
         }
 
         input[type="text"] {
@@ -959,11 +970,18 @@
 
         form {
             text-align: center;
-            margin-bottom: 30px;
+            padding-bottom: 30px;
+            background-color: #0002;
+            backdrop-filter: blur(20px);
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            box-shadow: inset 50px 0px 100px #000C;
+            border: 3px solid #000;
+            border-bottom: none;
         }
 
         .selectRow {
-            color: #000;
+            color: #FFF;
             font-family: Vogue, sans-serif;
             font-size: 30px;
         }
@@ -975,39 +993,22 @@
 
         .header {
             text-align: center;
+            padding: 40px;
+            margin: 80px;
+            background-color: #fa2811;
+            color: #FFF;
+            border-radius: 200px;
+            backdrop-filter: blur(20px);
+            border: 3px solid #000;
+            box-shadow: inset 60px -30px 50px #0004;
+            font-family: Vogue, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 64pt;
         }
 
             .header img {
-                width: 100%;
-                max-width: 1000px;
-                filter: blur(0px);
-                margin-bottom: -800px;
-                z-index: -1;
-                animation: 4s ease-out hideHeader;
-                animation-iteration-count: 1;
+                top: 30px;
+                height: 200px;
             }
-
-        @keyframes hideHeader {
-            0% {
-                margin-bottom: 0px;
-                filter: blur(0px);
-            }
-
-            80% {
-                margin-bottom: 0px;
-                filter: blur(0px);
-            }
-
-            90% {
-                margin-bottom: 200px;
-                filter: blur(0px);
-            }
-
-            100% {
-                margin-bottom: -800px;
-                filter: blur(0px);
-            }
-        }
 
         .footer {
             margin: 0 auto;
@@ -1152,7 +1153,10 @@
         .content {
             display: flex;
             flex-wrap: wrap;
-            border: 2px outset #EEE;
+            border: 1px solid #000;
+            backdrop-filter: blur(30px);
+            background-color: #0001;
+            box-shadow: 0px 0px 50px #000;
         }
 
         .column {
@@ -1161,23 +1165,23 @@
             box-sizing: border-box;
             padding: 20px;
             text-align: left;
-            background-color: #EAEAEA99;
+            background-color: #0001;
             backdrop-filter: blur(30px);
             padding: 20px;
             padding-bottom: 50px;
             color: #000;
-            border: 2px outset #EEE;
+            border: 1px outset #4444;
             position: relative;
-            box-shadow: inset 0px 0px 50px #0003;
+            box-shadow: inset 100px 0px 150px #000E;
         }
 
         .year {
-            font-family: VOGUE, sans-serif;
-            font-size: 20px;
+            font-family: Garet;
+            font-size: 10px;
             position: absolute;
             bottom: 8px;
             right: 18px;
-            color: #999;
+            color: #FFF3;
         }
 
         .description {
@@ -1201,17 +1205,18 @@
         .starSong {
             display: inline-flex;
             color: #000;
-            background-color: #EEE;
+            background-color: #EEEA;
             padding: 10px;
+            margin: 2px;
             border-radius: 10px;
-            font-size: 18px;
-            box-shadow: inset 40px 0px 40px #6662;
+            font-size: 14px;
+            box-shadow: inset 50px 0px 70px #FFF9;
             border: outset 1px #FFF;
         }
 
             .starSong i {
                 margin-right: 10px;
-                color: #555;
+                color: #000;
             }
 
         .badges {
@@ -1223,12 +1228,13 @@
             margin-bottom: 10px;
             max-width: 300px;
             min-width: 20px;
-            background-color: #EEE;
+            background-color: #1116;
             backdrop-filter: blur(5px);
-            border-bottom-right-radius: 20px;
-            border-bottom-left-radius: 20px;
-            border: 1px outset #FFF;
-            box-shadow: inset -10px -5px 20px #CCC;
+            border-bottom-right-radius: 14px;
+            border-bottom-left-radius: 14px;
+            border: 2px solid #0002;
+            border-top: none;
+            box-shadow: inset -30px 0px 60px #000C;
             z-index: -1;
             text-align: center;
         }
@@ -1296,6 +1302,13 @@
 
         #badgeFilter {
             position: relative;
+            padding: 10px;
+            background-color:#0001;
+            box-shadow: 0px 0px 20px #000C;
+            backdrop-filter: blur(40px);
+            border: 1px solid #000;
+            border-left: 0px;
+            border-right: 0px;
         }
 
 
@@ -1835,13 +1848,14 @@
 </head>
 <body>
     <div class="header">
-        <img src="logo.png" />
+        <!--<img src="logo.png" />-->
+        EXQUISITE ART <span style="font-family:ASS, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">TRASHING SPACE</span>
     </div>
 
     <div class="criteriaTitle" id="criteriaButton" onclick="toggleCriteria()">Here's the criteria</div>
 
     <form id="albumFilterForm">
-        <input type="text" id="nameInput" placeholder="What do you think about..." oninput="populateAlbums()">
+        <input type="text" id="nameInput" placeholder="Find..." oninput="populateAlbums()">
         <br>
 
         <div class="selectRow">
