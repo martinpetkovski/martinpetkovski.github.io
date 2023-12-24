@@ -924,6 +924,7 @@
 
         input[type="text"], select {
             padding: 10px;
+            max-width: 80%;
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
             font-size: 34px;
@@ -943,8 +944,7 @@
         }
 
         input[type="text"] {
-            width: 40%;
-            min-width: 500px;
+            width: 100%;
             margin-top: 30px;
             text-align: center;
         }
@@ -1290,10 +1290,11 @@
 
         .badgeSimple {
             color: #ffd700;
-            width: auto;
+            width: 300px !important;
             border: none;
             background-color: transparent;
             box-shadow: none;
+            height: 300px;
         }
 
             .badgeSimple i {
@@ -1312,16 +1313,44 @@
         }
 
 
-        @media screen and (max-width: 1000px) {
-            .criteriaParagraph {
-                font-size: 5vw !important;
-            }
-        }
-
         @media screen and (max-width: 1500px) {
             .column {
                 flex: 1 0 50%;
                 max-width: 50%;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            .header {
+                display: none;
+            }
+
+            input {
+                max-width: 100% !important;
+                font-size: 30px;
+            }
+
+            .selectRow select {
+                font-size: 30px;
+                display: block;
+            }
+
+            .selectRow {
+                text-align: left;
+            }
+
+                .selectRow span {
+                    display: block;
+                    padding-left: 30px;
+                    margin: -20px 0px;
+                }
+
+            .badges {
+                max-width: 80%;
+            }
+
+            .criteriaParagraph {
+                font-size: 5vw !important;
             }
         }
 
@@ -1331,15 +1360,10 @@
                 max-width: 100%;
             }
 
-
             .badge {
                 font-size: 32px;
                 width: 48px;
                 height: 48px;
-            }
-
-            input {
-                display: block;
             }
 
             .starSong {
@@ -1595,11 +1619,17 @@
 
                     const tooltip = document.createElement('div');
                     tooltip.className = 'tooltip darkBg';
-                    tooltip.innerHTML = '<span class="badge badgeSimple ' + currentBadge.value + '" style="font-size: 24px; text-shadow: none;">' + currentBadge.badge + " " + currentBadge.name + '</span><br><br>' + currentBadge.desc;
+                    tooltip.innerHTML = '<div class="badge badgeSimple ' + currentBadge.value + '" style="font-size: 24px; text-shadow: none;">' + currentBadge.badge + " " + currentBadge.name + '</div><br><br>' + currentBadge.desc;
 
                     const rect = event.target.getBoundingClientRect();
-                    tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
-                    tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                    if (window.innerWidth > 800) {
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                        tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                    }
+                    else {
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight + 40}px`;
+                        tooltip.style.left = 20;
+                    }
 
                     document.body.appendChild(tooltip);
                 });
@@ -1613,11 +1643,17 @@
 
                     const tooltip = document.createElement('div');
                     tooltip.className = 'tooltip darkBg';
-                    tooltip.innerHTML = '<span class="badge badgeSimple ' + currentBadge.value + '" style="font-size: 24px; text-shadow: none;">' + currentBadge.badge + " " + currentBadge.name + '</span><br><br>' + currentBadge.desc;
+                    tooltip.innerHTML = '<div class="badge badgeSimple ' + currentBadge.value + '" style="font-size: 24px; text-shadow: none;">' + currentBadge.badge + " " + currentBadge.name + '</div><br><br>' + currentBadge.desc;
 
                     const rect = event.target.getBoundingClientRect();
-                    tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
-                    tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                    if (window.innerWidth > 800) {
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                        tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                    }
+                    else {
+                        tooltip.style.top = `${rect.top - tooltip.offsetHeight + 40}px`;
+                        tooltip.style.left = 20;
+                    }
 
                     document.body.appendChild(tooltip);
                 });
@@ -1755,8 +1791,14 @@
                         tooltip.innerHTML = apContent;
 
                         const rect = event.target.getBoundingClientRect();
-                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
-                        tooltip.style.left = (rect.left + rect.width) + 'px';
+                        if (window.innerWidth > 800) {
+                            tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                            tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                        }
+                        else {
+                            tooltip.style.top = `${rect.top - tooltip.offsetHeight + 40}px`;
+                            tooltip.style.left = 20;
+                        }
 
                         document.body.appendChild(tooltip);
                     });
@@ -1776,8 +1818,15 @@
                         tooltip.innerHTML = apContent;
 
                         const rect = event.target.getBoundingClientRect();
-                        tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
-                        tooltip.style.left = `${rect.left + rect.width}px`;
+
+                        if (window.innerWidth > 800) {
+                            tooltip.style.top = `${rect.top - tooltip.offsetHeight}px`;
+                            tooltip.style.left = (rect.left + rect.width + 16) + 'px';
+                        }
+                        else {
+                            tooltip.style.top = `${rect.top - tooltip.offsetHeight + 40}px`;
+                            tooltip.style.left = 20;
+                        }
 
                         document.body.appendChild(tooltip);
                     });
@@ -1856,7 +1905,6 @@
 
     <form id="albumFilterForm">
         <input type="text" id="nameInput" placeholder="Find..." oninput="populateAlbums()">
-        <br>
 
         <div class="selectRow">
             <select id="minGradeSelect" oninput="populateAlbums()">
@@ -1877,7 +1925,7 @@
                 <option value="E-" selected>E-</option>
             </select>
 
-            to
+            <span>to</span>
 
             <select id="maxGradeSelect" oninput="populateAlbums()">
                 <option value="A+" selected>A+</option>
