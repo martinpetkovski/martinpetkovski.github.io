@@ -902,7 +902,7 @@
                     "title": "Patience",
                     "audio": "patience.mp3",
                     "tempo": "184",
-                    "videoURL": "https://youtu.be/BKFfv3HxH2M",
+                    "videoURL": "https://www.youtube.com/embed/BKFfv3HxH2M",
                     "timeSig": "4/4",
                     "barStartTime": "0.0",
                     "lyrics": [
@@ -1093,7 +1093,7 @@
                     "background": "language.jpg",
                     "title": "Language",
                     "audio": "language.mp3",
-                    "releaseDate": "28 October 2023",
+                    "videoURL": "https://www.youtube.com/embed/kgXJ-pLYObI",
                     "tempo": "140",
                     "timeSig": "4/4",
                     "barStartTime": "0.0",
@@ -2931,7 +2931,7 @@
                     "barStartTime": "0.0",
                     "timeSig": "6/8",
                     "audio": "ink.mp3",
-                    "releaseDate": "11 November 2023",
+                    "videoURL": "https://www.youtube.com/embed/wKYgzbXHRr4",
                     "lyrics": [
                         {
                             "text": "My heart's river has ran it's course",
@@ -4219,33 +4219,50 @@
 
         function SetUpGallery() {
             const pictureData = [
+                { filename: 'https://www.youtube.com/watch?v=EfUrtsRinVs', description: 'XOTEL Live Session' },
+                { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
+                { filename: 'https://www.youtube.com/watch?v=BKFfv3HxH2M', description: 'Patience Official Video' },
+                { filename: 'https://www.youtube.com/watch?v=kgXJ-pLYObI', description: 'Language Official Video' },
+                { filename: 'https://www.youtube.com/watch?v=wKYgzbXHRr4', description: 'Ink Official Video' },
+                { filename: 'patiencedoma.mp4', description: 'Patience @ Home' },
+                { filename: 'patiencesite.mp4', description: 'Patience @ Home' },
+                { filename: '000074.jpg', description: 'Mariovo' },
+                { filename: '000054.jpg', description: 'Zovich' },
+                { filename: '20230720_114822.jpg', description: 'Anastasija at Mellivora' },
+                { filename: '20230929_192545.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_192618(0).jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_192655(0).jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_192948.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_193008.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_193055.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_200241.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_200759.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_200933.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_200936.jpg', description: 'Xotel Live Session' },
+                { filename: '20230929_201001.jpg', description: 'Xotel Live Session' },
                 { filename: '001.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '002.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '000069.jpg', description: 'Mariovo' },
                 { filename: '003.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '004.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '20230720_114819.jpg', description: 'Eva at Mellivora' },
+                { filename: '20230929_202151.jpg', description: 'Xotel Live Session' },
                 { filename: '005.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '006.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '20230720_133704.jpg', description: 'Ilija at Mellivora' },
                 { filename: '007.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '008.jpg', description: 'Vakyym Jammin Club' },
+                { filename: '20230929_200645.jpg', description: 'Xotel Live Session' },
                 { filename: '009.jpg', description: 'Vakyym Jammin Club' },
                 { filename: '000067.jpg', description: 'Mariovo Micra Recording Sessions' },
                 { filename: '000068.jpg', description: 'Mariovo' },
-                { filename: '000069.jpg', description: 'Mariovo' },
                 { filename: '000070.jpg', description: 'Mariovo' },
                 //{ filename: '000071.jpg', description: 'Mariovo' },
-                { filename: '000074.jpg', description: 'Mariovo' },
                 { filename: '000064.jpg', description: 'Mariovo' },
                 { filename: '000072.jpg', description: 'Mariovo' },
-                { filename: '000054.jpg', description: 'Zovich' },
-                { filename: '20230720_114819.jpg', description: 'Eva at Mellivora' },
-                { filename: '20230720_114822.jpg', description: 'Anastasija at Mellivora' },
-                { filename: '20230720_133704.jpg', description: 'Ilija at Mellivora' },
                 { filename: '20230720_142834.jpg', description: 'Alek at Mellivora' },
-                { filename: 'patiencedoma.mp4', description: 'Patience @ Home' },
-                { filename: 'patiencesite.mp4', description: 'Patience @ Home' },
-                { filename: 'https://www.youtube.com/watch?v=TMKPMLObkBA', description: 'Patience @ Vakyym Bitola' },
                 //{ filename: 'ss3.png', description: 'Germijan Trach' },
-                { filename: 'ss4.png', description: 'Strezhevo Bee Standoff' },
+                //{ filename: 'ss4.png', description: 'Strezhevo Bee Standoff' },
             ];
 
             const galleryContainer = document.getElementById('gallery');
@@ -4281,6 +4298,7 @@
                     img.src = GetYouTubeEmbedUrl(picture.filename);
                     img.setAttribute('allow', 'autoplay; encrypted-media');
                     img.setAttribute('allowfullscreen', true);
+                    img.setAttribute('origin', document.URL);
                 }
 
                 const desc = document.createElement('div');
@@ -4987,15 +5005,14 @@
                     <br>
 
                     <div id="externalLinks">
-                        <i class="fa-brands fa-spotify"></i>
-                        <i class="fa-brands fa-apple"></i>
-                        <i class="fa-brands fa-itunes"></i>
-                        <i class="fa-brands fa-instagram"></i>
+                        <a href="https://open.spotify.com/album/7k9cmsO0QbHOPROK0czcRP"><i class="fa-brands fa-spotify"></i></a>
+                        <a href="https://music.apple.com/ca/album/the-true-state-of-all-things/1707690780"><i class="fa-brands fa-apple"></i></a>
+                        <a href="https://www.instagram.com/siotojazz/"><i class="fa-brands fa-instagram"></i></a>
                         <i class="fa-brands fa-facebook"></i>
                         <i class="fa-brands fa-tiktok"></i>
-                        <i class="fa-brands fa-youtube"></i>
-                        <i class="fa-brands fa-amazon"></i>
-                        <i class="fa-brands fa-deezer"></i>
+                        <a href="https://www.youtube.com/watch?v=zgLUMoowmJ8&list=OLAK5uy_nv-PJRYVkf5dM1-8a3xaGlze2IK9gA418"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.amazon.com/Ink/dp/B0CJ79L3K2"><i class="fa-brands fa-amazon"></i></a>
+                        <a href="https://www.deezer.com/en/album/488647455"><i class="fa-brands fa-deezer"></i></a>
                         <i class="fa-brands fa-snapchat"></i>
                     </div>
                     
