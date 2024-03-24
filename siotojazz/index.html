@@ -4687,6 +4687,10 @@
             const lyricsContainer = document.getElementById("lyrics");
             const children = lyricsContainer.children;
 
+            lyricsContextMenu.style.opacity = 0;
+            lyricsContextMenu.style.zIndex = -1;
+            lyricsContextMenu.style.pointerEvents = 'none';
+
             for (i = 0; i < children.length; i++) {
                 children[i].addEventListener('contextmenu', (e) => {
                     e.preventDefault();
@@ -4696,6 +4700,7 @@
                     lyricsContextMenu.style.top = `${y}px`;
                     lyricsContextMenu.style.opacity = 1;
                     lyricsContextMenu.style.zIndex = 30000;
+                    lyricsContextMenu.style.pointerEvents = 'auto';
                     contextVerse = e.target;
                 });
             }
@@ -4704,6 +4709,7 @@
                 if (e.target !== lyricsContextMenu) {
                     lyricsContextMenu.style.opacity = 0;
                     lyricsContextMenu.style.zIndex = -1;
+                    lyricsContextMenu.style.pointerEvents = 'none';
                 }
             });
         }
