@@ -997,6 +997,10 @@
             font-size: 30px;
         }
 
+            .selectRow span {
+                color: #000 !important;
+            }
+
         .darkBg {
             background-color: #111C !important;
             color: #FFF;
@@ -1005,11 +1009,13 @@
         .header {
             text-align: center;
             padding: 40px;
-            background-color: #fa2811;
+            background-color: #fa2811EE;
             color: #FFF;
             backdrop-filter: blur(20px);
             font-family: Vogue, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 64pt;
+            text-shadow: 0px 0px 20px #FFF6;
+            box-shadow: 0px 0px 30px #1119;
         }
 
             .header img {
@@ -1084,6 +1090,7 @@
             border: 1px outset #900;
             text-shadow: 0px 0px 15px #CCC;
             transition: 0.2s;
+            box-shadow: 10px 5px 25px #1113;
         }
 
             /*.grade::before {
@@ -1257,6 +1264,7 @@
             align-items: center;
             width: 24px;
             height: 24px;
+            max-height: 60px;
             border: 3px outset #FFD700;
             border-radius: 100px;
             margin: 5px;
@@ -1340,13 +1348,14 @@
             }
 
             .selectRow {
-                text-align: left;
+                display: inline-flex;
+                padding: 0px !important;
+                justify-content: center;
+                align-items: center;
+                vertical-align: middle;
             }
 
                 .selectRow span {
-                    display: block;
-                    padding-left: 30px;
-                    margin: -20px 0px;
                 }
 
             .badges {
@@ -1360,13 +1369,45 @@
 
         @media screen and (max-width: 800px) {
             .column {
-                flex-wrap:wrap;
+                display: flex;
+                flex-direction: column;
+                padding-bottom: 20px;
+            }
+
+            .column > * {
+                padding: 0px;
+            }
+
+            .albumArt {
+            }
+
+            .albumArt img {
+                width: 100vw;
+            }
+
+            .albumName {
+                box-sizing: border-box;
+                font-size: 32px;
+                padding: 20px 20px;
+                background-color: #111;
+                width: 100vw;
+                color: #FFF;
+                text-align: center;
+            }
+
+            .badges {
+                padding: 50px;
             }
 
             .badge {
                 font-size: 32px;
                 width: 48px;
                 height: 48px;
+            }
+
+            .description {
+                padding: 20px;
+                text-align: center;
             }
 
             .starSong {
@@ -1377,9 +1418,8 @@
                 font-size: 60px;
             }
 
-            .column {
-                width: 100vw !important;
-                max-width: initial;
+            .smallGrade {
+                font-size: 20px;
             }
         }
 
