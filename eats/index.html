@@ -6,7 +6,7 @@
         var albums = [
             {
                 "spotifyId": "2rT82YYlV9UoxBYLIezkRq",
-                "fullName": "Goodspeed You! Black Emperor - Lift Your Skinny Fists Like Antennas to Heaven",
+                "fullName": " Godspeed You! Black Emperor - Lift Your Skinny Fists Like Antennas to Heaven",
                 "grade": "C-",
                 "gradeColorClass": "Cm",
                 "description": "",
@@ -770,6 +770,15 @@
                 "description": "Ja luzer?, Krivi smo mi",
                 "timestamp": 1704300000,
                 "badges": ["Special Talent", "Concerto", "Puppy", "Literal Poetry"]
+            },
+            {
+                "spotifyId": "0U7asaf4jS8EORTjHEWNcJ",
+                "fullName": "Helmet - Meantime",
+                "grade": "A-",
+                "gradeColorClass": "Am",
+                "description": "Unsung, In The Meantime, Iron Head, You Borrowed",
+                "timestamp": 1704300001,
+                "badges": ["Special Talent", "Call the Police", "Mega Fan", "Concerto", "Did Butch Vig produce this?", "Puppy", "Sonic Platonic Connections", "Asking for Trouble"]
             }
         ];
 
@@ -1173,13 +1182,19 @@
         }
 
         .albumArt {
-            padding: 0px;
+            padding: 0px !important;
+            margin: 0px !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
         }
 
-        .albumArt img {
-            width: 128px;
-            padding: 16px;
-        }
+            .albumArt img {
+                width: 150px;
+                padding: 0px !important;
+                margin: 0px !important;
+            }
 
         .year {
             font-family: Garet;
@@ -1749,10 +1764,10 @@
                 var albumArtDiv = document.createElement('div');
                 albumArtDiv.classList.add('albumArt');
 
-                currentArtist = album.fullName.split('-')[0].trim();
-                currentAlbum = album.fullName.split('-')[1].trim();
+                currentArtist = album.fullName.split(' - ')[0];
+                currentAlbum = album.fullName.split(' - ')[1];
 
-                fetchAlbumArtwork(currentArtist, currentAlbum)
+                fetchAlbumArtwork(encodeURIComponent(currentArtist), encodeURIComponent(currentAlbum))
                     .then(artworkUrl => {
                         // Display the artwork
                         const imgElement = document.createElement('img');
