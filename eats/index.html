@@ -919,6 +919,18 @@
             background-size: contain;
         }
 
+        a, a:visited, a:hover {
+            text-decoration: none;
+            color: #000;
+            padding: 10px;
+            transition: 0.2s;
+        }
+
+        a:hover {
+            color: #09F;
+            transition: 0.2s;
+        }
+
         @font-face {
             font-family: 'Vogue';
             src: url('Vogue.ttf') format('truetype');
@@ -1799,7 +1811,7 @@
 
                 var albumNameDiv = document.createElement('div');
                 albumNameDiv.classList.add('albumName');
-                albumNameDiv.innerHTML = album.fullName;
+                albumNameDiv.innerHTML = '<a href="spotify:album:' + album.spotifyId + '">' + album.fullName + '</a>';
 
                 var albumArtDiv = document.createElement('div');
                 albumArtDiv.classList.add('albumArt');
