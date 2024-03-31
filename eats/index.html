@@ -24,7 +24,7 @@
             },
             {
                 "spotifyId": "4L9qXAXmnMEIvnvG8xon3F",
-                "fullName": "James Blake - S/T",
+                "fullName": "James Blake - James Blake",
                 "grade": "C",
                 "gradeColorClass": "C",
                 "description": "",
@@ -277,7 +277,7 @@
             },
             {
                 "spotifyId": "1sEuCscztItlXhD1yLQ2fS",
-                "fullName": "Jas sum zemja - Noviot Pochetok",
+                "fullName": "Noviot Pochetok - Jas sum zemja",
                 "grade": "C",
                 "gradeColorClass": "C",
                 "description": "Rezervatot",
@@ -586,7 +586,7 @@
             ,
             {
                 "spotifyId": "7yD0JR99IqInvTj4NT4zaQ",
-                "fullName": "Xaxaxa - Sami Mazhi i Zheni",
+                "fullName": "Xaxaxa - Sami Maži i Ženi",
                 "grade": "B-",
                 "gradeColorClass": "Bm",
                 "description": "Knowledge, Take Warning, Unity, Bankshot, Artificial Life, Room Without a Window",
@@ -727,7 +727,7 @@
             },
             {
                 "spotifyId": "7DIXqjTX8IlgSKRR7DrhB9",
-                "fullName": "Hiroshi Suzuki - キャット",
+                "fullName": "Hiroshi Suzuki - Cat",
                 "grade": "A-",
                 "gradeColorClass": "Am",
                 "description": "シュリンプ・ダンス, ウォーク・トール",
@@ -764,7 +764,7 @@
             },
             {
                 "spotifyId": "3jSaxKmTKOy87gIO4loA3l",
-                "fullName": "Djordje Balasevic - Jedan od onih zivota",
+                "fullName": "Djordje Balasevic - Jedan od onih života...",
                 "grade": "B",
                 "gradeColorClass": "B",
                 "description": "Ja luzer?, Krivi smo mi",
@@ -903,11 +903,10 @@
         }
 
         body {
-            width: 80%;
+            width: 100%;
             margin: 0 auto;
             font-family: 'Garet', Font-Awesome, sans-serif;
             text-align: center;
-            background-image: url(https://images.pexels.com/photos/17483809/pexels-photo-17483809/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-represents-how-ai-accountability-is-a-strong-foundation-in-a-world-of-unpredictability-it-was-created-by-champ-panupon.png);
             background-size: contain;
         }
 
@@ -937,15 +936,14 @@
             box-sizing: border-box;
             font-family: Vogue, sans-serif;
             font-size: 34px;
-            background-color: #1116;
-            color: #FFF;
+            background-color: #EEE6;
+            color: #000;
             border: 1px outset #111A;
-            box-shadow: inset 0px 0px 14px #0009;
-            border-radius: 5px;
         }
 
         select {
             background-color: #111;
+            color: #FFF;
         }
 
         option {
@@ -968,7 +966,6 @@
 
         .iframeWrapper {
             box-shadow: inset 0px 0px 10px #0009;
-            border-radius: 16px;
             padding: 0px;
         }
 
@@ -979,13 +976,9 @@
 
         form {
             text-align: center;
-            padding-bottom: 30px;
             background-color: #0002;
             backdrop-filter: blur(20px);
-            border-top-left-radius: 40px;
-            border-top-right-radius: 40px;
-            box-shadow: inset 50px 0px 100px #000C;
-            border: 3px solid #000;
+            border: 1px solid #000;
             border-bottom: none;
         }
 
@@ -1003,13 +996,9 @@
         .header {
             text-align: center;
             padding: 40px;
-            margin: 80px;
             background-color: #fa2811;
             color: #FFF;
-            border-radius: 200px;
             backdrop-filter: blur(20px);
-            border: 3px solid #000;
-            box-shadow: inset 60px -30px 50px #0004;
             font-family: Vogue, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 64pt;
         }
@@ -1072,30 +1061,23 @@
         }
 
         .grade {
-            position: absolute;
-            margin-top: -373px;
-            margin-left: calc(100% - 130px);
+            height: 100%;
+            width: 100%;
+            text-align: center;
             color: #FFFE;
-            font-size: 35px;
+            font-size: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
             vertical-align: middle;
-            width: 70px;
-            height: 70px;
             font-family: TheBold, sans-serif;
             font-weight: bold;
             border: 1px outset #900;
-            box-shadow: inset 15px 0px 20px #0005;
-            border-radius: 100px;
-            border-top-right-radius: 0px;
-            border-top-left-radius: 0px;
-            text-shadow: 0px 0px 15px #222E;
+            text-shadow: 0px 0px 15px #CCC;
             transition: 0.2s;
-            backdrop-filter: blur(5px);
         }
 
-            .grade::before {
+            /*.grade::before {
                 content: '';
                 position: absolute;
                 top: 0px;
@@ -1112,12 +1094,8 @@
                 left: 0px;
                 right: 0px;
                 bottom: 0px;
-                box-shadow: 0px 3px 5px #0006;
-                border-radius: 100px;
-                border-top-right-radius: 0px;
-                border-top-left-radius: 0px;
                 pointer-events: none;
-            }
+            }*/
 
             .grade:hover {
                 filter: brightness(140%);
@@ -1152,7 +1130,6 @@
                 left: 0px;
                 right: 0px;
                 bottom: 0px;
-                box-shadow: none;
                 border-radius: 0px;
                 border-top-right-radius: 0px;
                 border-top-left-radius: 0px;
@@ -1165,23 +1142,43 @@
             border: 1px solid #000;
             backdrop-filter: blur(30px);
             background-color: #0001;
-            box-shadow: 0px 0px 50px #000;
         }
 
         .column {
-            flex: 1 0 33.333%;
-            max-width: 33.333%;
-            box-sizing: border-box;
-            padding: 20px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
             text-align: left;
+            width: 100%;
+            box-sizing: border-box;
             background-color: #0001;
             backdrop-filter: blur(30px);
-            padding: 20px;
-            padding-bottom: 50px;
             color: #000;
-            border: 1px outset #4444;
-            position: relative;
-            box-shadow: inset 100px 0px 150px #000E;
+            border-bottom: 1px outset #4444;
+            /*box-shadow: 0px 0px 20px #0006;*/
+        }
+
+            .column > * {
+                flex: 1;
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+
+        .albumName {
+            flex: 15;
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+            font-size: 25px;
+        }
+
+        .albumArt {
+            padding: 0px;
+        }
+
+        .albumArt img {
+            width: 128px;
+            padding: 16px;
         }
 
         .year {
@@ -1189,13 +1186,12 @@
             font-size: 10px;
             position: absolute;
             bottom: 8px;
-            right: 18px;
-            color: #FFF3;
+            right: 0px;
+            color: #AAA;
         }
 
         .description {
-            position: relative;
-            right: 0px;
+            flex: 10;
             font-weight: bold;
             font-size: 20px;
             text-align: left;
@@ -1229,21 +1225,7 @@
             }
 
         .badges {
-            display: inline-block;
-            position: relative;
-            top: -2px;
-            left: 30px;
-            min-height: 32px;
-            margin-bottom: 10px;
-            max-width: 300px;
-            min-width: 20px;
-            background-color: #1116;
-            backdrop-filter: blur(5px);
-            border-bottom-right-radius: 14px;
-            border-bottom-left-radius: 14px;
-            border: 2px solid #0002;
-            border-top: none;
-            box-shadow: inset -30px 0px 60px #000C;
+            flex: 5;
             z-index: -1;
             text-align: center;
         }
@@ -1314,9 +1296,9 @@
             position: relative;
             padding: 10px;
             background-color:#0001;
-            box-shadow: 0px 0px 20px #000C;
             backdrop-filter: blur(40px);
             border: 1px solid #000;
+            border-bottom: 0px;
             border-left: 0px;
             border-right: 0px;
         }
@@ -1324,8 +1306,6 @@
 
         @media screen and (max-width: 1500px) {
             .column {
-                flex: 1 0 50%;
-                max-width: 50%;
             }
         }
 
@@ -1365,8 +1345,7 @@
 
         @media screen and (max-width: 800px) {
             .column {
-                flex: 1 0 100%;
-                max-width: 100%;
+                flex-wrap:wrap;
             }
 
             .badge {
@@ -1381,9 +1360,6 @@
 
             .grade {
                 font-size: 60px;
-                width: 100px;
-                height: 100px;
-                margin-left: calc(100% - 160px);
             }
 
             .column {
@@ -1613,6 +1589,26 @@
             });
         }
 
+        function fetchAlbumArtwork(artist, album) {
+            const apiKey = 'd186251f2ae019335f832db01d96c2f9';
+            //const apiUrl = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(album)}&format=json`;
+            const apiUrl = `https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=${apiKey}&artist=` + artist + `&album=` + album + `&format=json`;
+
+            return fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the response contains album information
+                    if (data && data.album && data.album.image) {
+                        // Assuming the last image is the largest size
+                        const images = data.album.image;
+                        const artworkUrl = images[images.length - 1]['#text'];
+                        return artworkUrl;
+                    } else {
+                        throw new Error('Album information not found');
+                    }
+                });
+        }
+
         function generateBadge(badgeName) {
             var badgeDiv = document.createElement('div');
             badgeDiv.classList.add('badge');
@@ -1744,8 +1740,32 @@
                     });
                 }
 
-                columnDiv.appendChild(iframeWrapperDiv);
+                //columnDiv.appendChild(iframeWrapperDiv);
+
+                var albumNameDiv = document.createElement('div');
+                albumNameDiv.classList.add('albumName');
+                albumNameDiv.innerHTML = album.fullName;
+
+                var albumArtDiv = document.createElement('div');
+                albumArtDiv.classList.add('albumArt');
+
+                currentArtist = album.fullName.split('-')[0].trim();
+                currentAlbum = album.fullName.split('-')[1].trim();
+
+                fetchAlbumArtwork(currentArtist, currentAlbum)
+                    .then(artworkUrl => {
+                        // Display the artwork
+                        const imgElement = document.createElement('img');
+                        imgElement.src = artworkUrl;
+                        albumArtDiv.appendChild(imgElement);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching album artwork:', error);
+                    });
+
                 columnDiv.appendChild(gradeDiv);
+                columnDiv.appendChild(albumArtDiv);
+                columnDiv.appendChild(albumNameDiv);
                 iframeWrapperDiv.appendChild(iframe);
                 columnDiv.appendChild(badgesDiv);
 
