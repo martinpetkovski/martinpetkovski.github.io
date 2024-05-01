@@ -36,6 +36,11 @@
             src: url('siotojazz/Astrella.ttf');
         }
 
+        @font-face {
+            font-family: 'Engage';
+            src: url('ARCADE_I.TTF');
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -341,15 +346,16 @@
         }
 
         #insertCoinButton {
+            transform: skew(-20deg);
             display: none;
             position: absolute;
             top: 60vh;
             left: 50vw;
-            margin-top: -300px;
+            margin-top: -200px;
             margin-left: -300px;
             line-height: 300px;
-            width: 600px;
-            height: 300px;
+            width: 570px;
+            height: 100px;
             border: 1px solid #09FF;
             background: #111;
             background-size: cover;
@@ -379,8 +385,9 @@
             }
 
             #insertCoinButton .item {
-                font-family: 'Movement', Roboto, Arial Black, Arial !important;
+                font-family: Engage, Roboto, Arial Black, Arial !important;
                 text-shadow: 0px 0px 5px #09F;
+                margin-top: -100px;
                 font-size: 100px !important;
             }
 
@@ -395,7 +402,7 @@
         }
 
         .textLoading {
-            stroke: #FF0;
+            stroke: #0000;
             stroke-dashoffset: 400;
             animation: stroke 0.5s;
         }
@@ -545,47 +552,6 @@
             padding: 10px;
             height: 48px !important;
         }
-
-        .loader,
-        .loader:before,
-        .loader:after {
-            background: #ff0;
-            -webkit-animation: load1 1s infinite ease-in-out;
-            animation: load1 1s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            width: 1em;
-            height: 4em;
-            text-shadow: 0px 0px 150px #FF0;
-        }
-
-        .loader {
-            color: #ff0;
-            text-indent: -9999em;
-            position: relative;
-            font-size: 46px;
-            -webkit-transform: translateZ(0);
-            -ms-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-animation-delay: -0.16s;
-            animation-delay: -0.16s;
-        }
-
-            .loader:before,
-            .loader:after {
-                position: absolute;
-                background-color: #ff0;
-                top: 0;
-                content: '';
-            }
-
-            .loader:before {
-                left: -1.5em;
-                -webkit-animation-delay: -0.32s;
-                animation-delay: -0.32s;
-            }
-
-            .loader:after {
-                left: 1.5em;
-            }
 
         .nowPlaying {
             font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
