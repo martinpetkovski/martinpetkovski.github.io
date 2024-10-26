@@ -7,26 +7,36 @@
         summary:hover {
             cursor: pointer;
         }
+        td {
+            text-align:center;
+        }
+        details {
+            margin-top: 40px;
+            background-color: #0003;
+            color: #FFF;
+            padding: 10px 10px;
+        }
         .mendo {
             color: #FFF;
             text-decoration: none;
-            padding: 0px 100%;
-            background-color: #066;
+            padding: 5px 50px;
+            background-color: #056;
             transition: 0.1s;
         }
         .mendo:hover {
-            background-color: #077;
+            background-color: #067;
             transition: 0.1s;
         }
         a:hover {
             text-decoration:none;
-            color: inherit;
+            color: #FFF;
         }
     </style>
 </head>
 
 <<лого тука>> Алгоритамско програмирање - Училиште за Фини вештини
 ---
+
 # Здраво
 
 <a href="https://mendo.mk/Task.do?id=341" class="mendo">МЕНДО</a> 
@@ -121,3 +131,5 @@ int main()
 ```
 
 </details>
+
+---
