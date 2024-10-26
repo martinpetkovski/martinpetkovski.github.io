@@ -42,10 +42,6 @@
 
 ---
 
-<input type="text" id="search-input" placeholder="Пребарувај по име на задача..." oninput="filterHeaders()"></input>
-
----
-
 # Здраво
 
 <a href="https://mendo.mk/Task.do?id=341" class="mendo">МЕНДО</a> 
@@ -76,7 +72,7 @@
 <details>
 <summary>Решение</summary>
 
-```
+```cpp
 #include <iostream>
 using namespace std;
  
@@ -125,7 +121,7 @@ int main()
 <details>
 <summary>Решение</summary>
 
-```
+```cpp
 #include <iostream>
 using namespace std;
  
@@ -173,7 +169,7 @@ int main()
 <details>
 <summary>Решение</summary>
 
-```
+```cpp
 #include <iostream>
 using namespace std;
  
@@ -193,27 +189,3 @@ int main()
 ```
 
 </details>
-
-<script>
-function filterHeaders() {
-        const searchTerm = document.getElementById("search-input").value.toLowerCase();
-        const headers = document.querySelectorAll("h1");
-        headers.forEach(header => {
-            if (header.textContent.toLowerCase().includes(searchTerm)) {
-                header.classList.remove("hidden");
-                let sibling = header.nextElementSibling;
-                while (sibling && sibling.tagName !== "H1") {
-                    sibling.classList.remove("hidden");
-                    sibling = sibling.nextElementSibling;
-                }
-            } else {
-                header.classList.add("hidden");
-                let sibling = header.nextElementSibling;
-                while (sibling && sibling.tagName !== "H1") {
-                    sibling.classList.add("hidden");
-                    sibling = sibling.nextElementSibling;
-                }
-            }
-        });
-    }
-</script>
