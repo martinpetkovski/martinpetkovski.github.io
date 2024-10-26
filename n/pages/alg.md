@@ -1,68 +1,42 @@
-
-<head>
-    <style>
-        summary {
-            font-size: 20px;
-        }        
-        summary:hover {
-            cursor: pointer;
-        }
-        td {
-            text-align:center;
-        }
-        details {
-            margin-top: 40px;
-            background-color: #111;
-            color: #FFF;
-            padding: 10px 10px;
-        }
-        input {
-            font-size: 20px;
-            width: 100%;
-        }
-        .mendo {
-            color: #FFF;
-            text-decoration: none;
-            padding: 5px 50px;
-            background-color: #056;
-            transition: 0.1s;
-        }
-        .hidden {
-            display: none;
-        }
-        .mendo:hover {
-            background-color: #067;
-            transition: 0.1s;
-        }
-        a:hover {
-            text-decoration:none;
-            color: #FFF;
-        }
-    </style>
-    <script>
-    function filterHeaders() {
-            const searchTerm = document.getElementById("search-input").value.toLowerCase();
-            const headers = document.querySelectorAll("h1");
-            headers.forEach(header => {
-                if (header.textContent.toLowerCase().includes(searchTerm)) {
-                    header.classList.remove("hidden");
-                    let sibling = header.nextElementSibling;
-                    while (sibling && sibling.tagName !== "H1") {
-                        sibling.classList.remove("hidden");
-                        sibling = sibling.nextElementSibling;
-                    }
-                } else {
-                    header.classList.add("hidden");
-                    let sibling = header.nextElementSibling;
-                    while (sibling && sibling.tagName !== "H1") {
-                        sibling.classList.add("hidden");
-                        sibling = sibling.nextElementSibling;
-                    }
-                }
-            });
-        }
-    </script>
-</head>
+<style>
+    summary {
+        font-size: 20px;
+    }        
+    summary:hover {
+        cursor: pointer;
+    }
+    td {
+        text-align:center;
+    }
+    details {
+        margin-top: 40px;
+        background-color: #111;
+        color: #FFF;
+        padding: 10px 10px;
+    }
+    input {
+        font-size: 20px;
+        width: 100%;
+    }
+    .mendo {
+        color: #FFF;
+        text-decoration: none;
+        padding: 5px 50px;
+        background-color: #056;
+        transition: 0.1s;
+    }
+    .hidden {
+        display: none;
+    }
+    .mendo:hover {
+        background-color: #067;
+        transition: 0.1s;
+    }
+    a:hover {
+        text-decoration:none;
+        color: #FFF;
+    }
+</style>
 
 <<лого тука>> Алгоритамско програмирање - Училиште за Фини вештини
 
@@ -219,3 +193,27 @@ int main()
 ```
 
 </details>
+
+<script>
+function filterHeaders() {
+        const searchTerm = document.getElementById("search-input").value.toLowerCase();
+        const headers = document.querySelectorAll("h1");
+        headers.forEach(header => {
+            if (header.textContent.toLowerCase().includes(searchTerm)) {
+                header.classList.remove("hidden");
+                let sibling = header.nextElementSibling;
+                while (sibling && sibling.tagName !== "H1") {
+                    sibling.classList.remove("hidden");
+                    sibling = sibling.nextElementSibling;
+                }
+            } else {
+                header.classList.add("hidden");
+                let sibling = header.nextElementSibling;
+                while (sibling && sibling.tagName !== "H1") {
+                    sibling.classList.add("hidden");
+                    sibling = sibling.nextElementSibling;
+                }
+            }
+        });
+    }
+</script>
