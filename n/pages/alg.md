@@ -16,12 +16,19 @@
             color: #FFF;
             padding: 10px 10px;
         }
+        input {
+            font-size: 20px;
+            width: 100%;
+        }
         .mendo {
             color: #FFF;
             text-decoration: none;
             padding: 5px 50px;
             background-color: #056;
             transition: 0.1s;
+        }
+        .hidden {
+            display: none;
         }
         .mendo:hover {
             background-color: #067;
@@ -32,9 +39,36 @@
             color: #FFF;
         }
     </style>
+    <script>
+    function filterHeaders() {
+            const searchTerm = document.getElementById("search-input").value.toLowerCase();
+            const headers = document.querySelectorAll("h1");
+            headers.forEach(header => {
+                if (header.textContent.toLowerCase().includes(searchTerm)) {
+                    header.classList.remove("hidden");
+                    let sibling = header.nextElementSibling;
+                    while (sibling && sibling.tagName !== "H1") {
+                        sibling.classList.remove("hidden");
+                        sibling = sibling.nextElementSibling;
+                    }
+                } else {
+                    header.classList.add("hidden");
+                    let sibling = header.nextElementSibling;
+                    while (sibling && sibling.tagName !== "H1") {
+                        sibling.classList.add("hidden");
+                        sibling = sibling.nextElementSibling;
+                    }
+                }
+            });
+        }
+    </script>
 </head>
 
 <<лого тука>> Алгоритамско програмирање - Училиште за Фини вештини
+
+---
+
+<input type="text" id="search-input" placeholder="Пребарувај по име на задача..." oninput="filterHeaders()"></input>
 
 ---
 
