@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Решле - Решавач на зборлето</title>
+
+    <script>
+        var corpus = "";
+        var wordArray = [];
+        function RefreshView() {
+            var resultElement = document.querySelector("#result");
+            var result = "";
+            wordArray.forEach(element => {
+                result += element + "<br>";
+            });
+            resultElement.innerHTML = result;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const input = document.getElementById("input");
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    OnInputChange();
+                }
+            });
+
+            var nextWord = GetNextWord("", "*****");
+            wordArray.push(nextWord);
+            RefreshView();
+
+            fetch('korpus.json')
+                .then(response => response.json())
+                .then(data => {
+                    corpus = data;
+                })
+                .catch(error => {
+                    console.error('Error loading JSON:', error);
+                });
+
+        });
+
+        function GetNextWord(prevWord, config) {
+            if (config === "*****") {
+                return "аудио";
+            }
+            else {
+                var lastWord = wordArray[wordArray.length - 1].toLowerCase();
+                var candidateWord = "";
+                var candidateScore = 0;
+                var usedLetter = "";
+
+                corpus.forEach(el => {
+                    var skip = false;
+                    var wordScore = 0;
+                    var modElWord = el.word.toLowerCase();
+                    if (modElWord.length === 5) {
+                        for (i = 0; i < 5; i++) {
+                            // * nepogodeno, # pogoedno ama na drugo mesto, ! pogodeno
+                            if (config[i] === '!') {
+                                if (modElWord[i] !== lastWord[i]) {
+                                    skip = true;
+                                    break;
+                                }
+                            }
+                            else if (config[i] === "#") {
+                                for (j = 0; j < 5; j++) {
+                                    if (modElWord[j] === lastWord[i]) {
+                                        if (j == i) {
+                                            break;
+                                        }
+                                        wordScore++;
+                                    }
+                                }
+                            } else {
+                                if (!usedLetter.includes(modElWord[i])) {
+                                    wordScore++;
+                                }
+                            }
+                        }
+
+                        if (!skip) {
+                            if (wordScore > candidateScore) {
+                                if (!wordArray.includes(el.word)) {
+                                    candidateWord = el.word;
+                                    candidateScore = wordScore;
+                                }
+                            }
+                        }
+                    }
+
+                });
+                return candidateWord;
+            }
+        }
+
+        function OnInputChange() {
+            var input = document.querySelector("#input");
+            var nextWord = GetNextWord("", input.value);
+            wordArray.push(nextWord);
+            RefreshView();
+        }
+    </script>
+
+    <style>
+        * {
+            font-family: monospace;
+            background-color: #111;
+            color: #FFF;
+            text-align: center;
+        }
+        h1 {
+            font-size: 50px;
+        }
+        input {
+            border: none;
+            background-color: #222;
+        }
+        input:focus {
+            outline: none;
+            border: none;
+        }
+        #desc {
+            font-size: 10px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Решле</h1>
+    </header>
+
+    <main>
+        <div id="result"></div>
+        <input id="input" type="text" maxlength="5" minlength="5" />
+        <div id="desc">* нема таква буква<br> # има буква на грешно место<br> ! погодена</div>
+    </main>
+</body>
+
+</html>
