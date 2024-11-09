@@ -1,0 +1,210 @@
+@font-face {
+    font-family: 'ncm';
+    src: url('ncm.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'ncm', sans-serif;
+}
+
+code {
+    box-shadow: inset 0px 0px 20px #000;
+}
+
+br {
+    margin-bottom: 30px;
+}
+
+.copy-btn {
+    position: relative;
+    background-color: #068;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.copy-btn:hover {
+    background-color: #08A;
+}
+
+header {
+    padding: 60px 20px;
+    background-color: #EEE;
+    color: #000;
+    text-align: center;
+}
+
+h1 {
+    width: 100%;
+    font-size: 50px;
+}
+
+a:link,
+a:visited {
+    color: #06F;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #09F;
+}
+
+
+#title {
+    font-size: 50px;
+    font-weight: bold;
+    display: inline-flex;
+}
+
+#externalLink {
+    position: relative;
+    top: -5px;
+    left: 20px;
+    font-size: 12px;
+    padding: 5px 20px;
+    border: solid 2px #09F;
+    transition: 0.2s;
+    font-weight: normal;
+    margin-right: 50px;
+}
+
+#externalLink:hover {
+    background-color: #09F;
+    color: #FFF;
+    transition: 0.2s;
+}
+
+h2 {
+    border-left: solid #333 4px;
+    padding-left: 15px;
+}
+
+summary {
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+summary:hover,
+details[open] summary {
+    background-color: #000;
+    color: #FFF;
+    transition: 0.2s;
+    padding: 0px 20px;
+}
+
+.subtitle {
+    font-size: 20px;
+    ;
+}
+
+main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 700px;
+}
+
+section {
+    margin: 20px 0px;
+}
+
+section h1 {
+    padding: 10px 0px;
+}
+
+section .text {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+p {
+    margin: 20px 0px;
+}
+
+.examples {
+    margin: 20px 0px;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #EEE;
+}
+
+td {
+    padding: 5px 10px;
+    border: 1px solid #EEE;
+}
+
+#taskList table {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+#taskList tr:nth-child(even) {
+    background-color: #F8F8F8;
+    border-left: #555 solid 15px;
+}
+
+#taskList tr:nth-child(odd) {
+    background-color: #EFEFEF;
+    border-left: #222 solid 15px;
+}
+
+#taskList .task {
+    border: 1px solid #333;
+}
+
+#taskList td {
+    border: none;
+}
+
+#taskList h2 {
+    font-size: 30px;
+}
+
+#limitations i {
+    margin-left: 50px;
+}
+
+.progressBar {
+    width: 100px;
+    background-color: #444;
+    position: relative;
+    vertical-align: middle;
+    height: 5px;
+    float: right;
+}
+
+.progress {
+    width: 35%;
+    background-color: #F00;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: 0.2s;
+}
+
+#searchTasks {
+    width: 100%;
+    font-size: 16px;
+    margin: 20px 0px 0px 0px;
+    padding: 10px;
+}
