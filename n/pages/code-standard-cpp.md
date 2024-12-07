@@ -2,26 +2,28 @@
 
 ## Naming
 
+When using Naming Conventions, all code and comments should use U.S. English spelling and grammar.
+
 Functions are verbs, variables are nouns.
 
-Global variables have the prefix "g" .
+Global variables are prefixed by "g" .
 
 	float gGlobalFloat;
 
-Local variables and function arguments use camelCase.
+Local variables and function arguments use PascalCase.
 
-	void SomeFunction(float argumentName)
+	void SomeFunction(float ArgumentName)
 	{
-		float localVariable = 0.0f;
+		float LocalVariable = 0.0f;
 	}
 
-Member variables should have the prefix "m".
+Member variables also use PascalCase, without a prefix.
 
 	class Vehicle
 	{
 		private:
-			float mMemberVariable = 0.0f;
-			float mSomethingElse = 0.0f;
+			float MemberVariable = 0.0f;
+			float SomethingElse = 0.0f;
 	};
 
 Functions, enums, namespaces, classes and structs use PascalCase.
@@ -37,7 +39,7 @@ Macros and labels are UPPERCASE_UNDERSCORE.
 	#define USE_POINTER
 	SOME_LABEL:
 
-Enums should be scoped with enum class, enum members are named using PascalCase, each one in a new row.
+Enums should be scoped with enum class. Enum members are named using PascalCase, each one in a new row.
 
 	enum class Elements
 	{
@@ -60,7 +62,8 @@ Unscoped enum members should have the "k" prefix.
 	}
 
 File names should be consistent within a single project. They should contain a prefix.
-Rationale: They pop-out when searching for something solution-wide.
+
+> Rationale: They pop-out when searching for something solution-wide.
 
 Names of functions that return boolean should be formatted as questions, preferrably with the prefix **Is**. 
 
@@ -73,29 +76,92 @@ Bad examples:
 
 	bool CheckWalking();
 
+## Unreal Engine specifics
+
+Template classes are prefixed by T.
+
+	template <typename ObjectType>
+	class TAttribute
+
+Classes that inherit from UObject are prefixed by U.
+
+	class UActorComponent
+
+Classes that inherit from AActor are prefixed by A.
+
+	class AActor
+
+Classes that inherit from SWidget are prefixed by S.
+
+	class SCompoundWidget
+
+Classes that are abstract interfaces are prefixed by I.
+
+	class IAnalyticsProvider
+
+Epic's concept-alike struct types are prefixed by C.
+
+	struct CStaticClassProvider
+	{
+		template <typename T>
+		auto Requires(UClass*& ClassRef) -> decltype(
+			ClassRef = T::StaticClass()
+		);
+	};
+
+Enums are prefixed by E.
+
+	enum class EColorBits
+	{
+	    ECB_Red,
+	    ECB_Green,
+	    ECB_Blue
+	};
+
+Boolean variables must be prefixed by b.
+
+	bPendingDestruction
+	bHasFadedIn
+
+A typedef of a particular template instantiation is no longer a template and should be prefixed accordingly.
+
+	typedef TArray<FMytype> FArrayOfMyTypes;
+
+Disambiguate template parameters from aliases by using an In prefix:
+
+	template <typename InElementType>
+	class TContainer
+	{
+	public:
+	    using ElementType = InElementType;
+	};
+
+Macro names should be fully capitalized with words separated by underscores, and prefixed with UE_.
+
+	#define UE_AUDIT_SPRITER_IMPORT
 
 ## Indentation
 
 Indent using tabs. Tabs are 4 characters.
 
-Rationale: It's enough to be clear and is the default in most good IDEs (i.e. Visual Studio).
+> Rationale: It's enough to be clear and is the default in most good IDEs (i.e. Visual Studio).
 
 If you are indenting more than 5 times, you should consider splitting the function.
 
 Don't put multiple statements on a single line unless you have something to hide:
 
-	if (condition) DontDoThis();
+	if (Condition) DontDoThis();
 	DoSomethingEverytime();
 
 Don't put multiple assignments on a single line.
 
-	dontDoThis = 6; please = 7;
+	DontDoThis = 6; Please = 7;
 
 ## Line length
 
 The preferred column limit is 120 characters.
 
-Rationale: A vertically oriented monitor (1080p) on 100% document zoom will fit all lines of 120 characters comfortably. 
+> Rationale: A vertically oriented monitor (1080p) on 100% document zoom will fit all lines of 120 characters comfortably. 
 
 If you have to split the line because you've reached the character limit, consider simplifying the expression. An exception are lengthy strings which should be split in multiple lines.
 
@@ -103,26 +169,26 @@ If you have to split the line because you've reached the character limit, consid
 
 All curly braces should be in their own line. 
 
-	if (condition)
+	if (Condition)
 	{
 		DoSomething();
 	}
 
 Do not unnecessarily use braces where a single statement will do.
 
-	if (condition)
+	if (Condition)
 		Action();
 
 and
 
-	if (condition)
+	if (Condition)
 		DoThis();
 	else
 		DoThat();
 
 This does not apply if only one branch of a conditional statement is a single statement; in the latter case use braces in both branches:
 
-	if (condition) 
+	if (Condition) 
 	{
 		DoThis();
 		DoThat();
@@ -151,7 +217,7 @@ When declaring pointer data or a function that returns a pointer type, the prefe
 	 char* stringOfText;
 	 void* SomeFunction(const float* someArg);
 
-Rationale: The * is a modifier to the type, not to the name.
+> Rationale: The * is a modifier to the type, not to the name.
 
 Use one space around (on each side of) most binary and ternary operators, such as any of these:
 
@@ -171,9 +237,9 @@ All functions, their input arguments and output type must be const-correct, wher
 
 ## Macros
 
-Avoid using them as much as possible.  Don't define constants using macros, instead use global constant variables. Use inline functions instead of macro functions where possible. 
+Avoid using them as much as possible. Don't define constants using macros, instead use global constant variables. Use inline functions instead of macro functions where possible. 
 
-Rationale: Improves readability, can be debugged more easily and  because of consistency (all functions should be actual functions), among other things. 
+> Rationale: Improves readability, can be debugged more easily and  because of consistency (all functions should be actual functions), among other things. 
 
 With that said, here are some exceptions:
 - When used in if-defs.
@@ -206,7 +272,7 @@ is forbidden.
 
 Functions should be short and sweet, and do just one thing. They should fit on one screenful of text which is 50 lines.
 
-Rationale: 50 lines can fit comfortably on a horizontally oriented 1080p monitor with 100% zoom.
+> Rationale: 50 lines can fit comfortably on a horizontally oriented 1080p monitor with 100% zoom.
 
 The maximum length of a function is inversely proportional to the complexity and indentation level of that function. So, if you have a conceptually simple function that is just one long if-else statement, where you have to do lots of small things for a lot of different cases, it's OK to have a longer function.
 
@@ -214,25 +280,49 @@ Another measure of the function is the number of local variables. They shouldn't
 
 Use helper functions with descriptive names.
 
-## Returning from functions
+## Returning from functions and loops
 
 Functions which contain a single return statement are preferred. Use early-outs only if they are located immediately after the beginning of the function.
 
 Example:
 
-	int SomeFunction(Vehicle* someCar)
+	int SomeFunction(Vehicle* SomeCar)
 	{
-		if(!someCar)
+		if(!SomeCar)
 			return 0;
 		
-		int retVal = 0;
+		int RetVal = 0;
 
-		if(condition)
+		if(Condition)
 		{
-			retVal = DoSomethingElse(someCar);
+			RetVal = DoSomethingElse(SomeCar);
 		}
 		
-		return retVal; 
+		return RetVal; 
+	}
+
+The same rule of thumb goes for exiting loops.
+
+Example:
+
+	for(SomePointer* Pointer : ArrayOfPointers)
+	{
+		if(!Pointer)
+			continue;
+
+		DoWhatever();
+	}
+
+Bad example:
+
+	for(SomePointer* Pointer : ArrayOfPointers)
+	{
+		DoWhatever();
+
+		if(!Pointer)
+			continue;
+
+		DoSomethingElse();
 	}
 
 ## Lambda expressions
@@ -241,9 +331,9 @@ Discouraged. Use pointers to functions instead.
 
 ## auto
 
-Discouraged. Lazy people coming from JavaScript use this, doesn't improve readability at all. Exception are iterators.
+Discouraged. Lazy people coming from JavaScript use this, doesn't improve readability at all. Exception are iterators, but still avoid them.
 
-	const auto& it = someMap.find(someValue);
+	const auto& Iterator = SomeMap.find(SomeValue);
 
 ## inline
 
@@ -259,7 +349,7 @@ Example when breaking out of a nested for loop:
 	{
 		for(size_t j = 0; j < 10; j++)
 		{
-			if(condition)
+			if(Condition)
 			{
 				goto SOME_LABEL;
 			}
@@ -272,11 +362,11 @@ Example when breaking out of a nested for loop:
 ## Classes and structs
 
 Ordering of access specifiers should be as follows:
-- private
-- protected
 - public
+- protected
+- private
 
-Rationale: You're most likely to use private or protected members in public functions.
+> Rationale: You're most likely looking for a public function name, so it should be listed at the top.
 
 Ordering of class members should be as follows:
 - `friend`
@@ -286,19 +376,19 @@ Ordering of class members should be as follows:
 - member variables
 - functions
 
-Rationale: You're most likely to use a nested class to declare a member variable and then use it in a function.
+> Rationale: You're most likely to use a nested class to declare a member variable and then use it in a function.
 
 For non-compound types it's preferred to have getters and setters for member variables.
 
-Forward declare types wherever applicable.
+Forward declare types wherever applicable. Avoid mixing forward declarations with variable declarations.
 
 Structs should be used whenever the member variables are independently mutable. Examples:
 
 	struct Vehicle
 	{
 		public:
-			int mNumWheels;
-			float mHorsepower;
+			int NumWheels;
+			float Horsepower;
 	}
 
 as opposed to
@@ -306,14 +396,14 @@ as opposed to
 	class Vehicle
 	{
 		private: 
-			float mHorsepower
-			float mFuelConsumption
+			float Horsepower
+			float FuelConsumption
 			
 		public:
-			void SetHorsepower(float value)
+			void SetHorsepower(float Value)
 			{
-				mHorsepower = value;
-				mFuelConsumption = mHorsepower * 0.3f;
+				Horsepower = Value;
+				FuelConsumption = Horsepower * 0.3f;
 			}
 	};
 
@@ -325,11 +415,11 @@ Header files should contain only function declarations. Exception to this rule a
 
 Good:
 
-	SomeType* GetSomething() { return mSomething; }
+	SomeType* GetSomething() { return Something; }
 
 Bad:
 
-	void SetSomething(const SomeType& something) { mSomething = something; TestSomething(mSomething); }
+	void SetSomething(const SomeType& Something) { this.Something = Something; TestSomething(Something); }
 
 Inline templates can be left inside header files but they should be physically separated from the definitions.
 
@@ -368,7 +458,7 @@ Discouraged. Create global instances instead.
 
 Discouraged when not writing a library.
 
-Rationale: You probably have a logger or something, use that instead.
+> Rationale: You probably have a logger or something, use that instead.
 
 ## Commenting
 
