@@ -206,16 +206,16 @@ Use a space after these keywords:
 
 but not with sizeof, typeof
 
-	s = sizeof(a);
+	Size = sizeof(a);
 
 Do not add spaces around (inside) parenthesized expressions. This example is **bad**:
 
-	s = sizeof( a );
+	Size = sizeof( a );
 
 When declaring pointer data or a function that returns a pointer type, the preferred use of * is adjacent to the type name or function type and not adjacent to the variable or function name. Examples:
 
-	 char* stringOfText;
-	 void* SomeFunction(const float* someArg);
+	 char* StringOfText;
+	 void* SomeFunction(const float* SomeArg);
 
 > Rationale: The * is a modifier to the type, not to the name.
 
