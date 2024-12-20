@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
     <title>Resume - Martin Petkovski</title>
     <style>
         body {
@@ -18,25 +18,75 @@
         }
         .descSection:not(:last-child) {
             font-weight: bold;
-            border-left: 5px #000 solid;
+            border-left: 5px #900 solid;
             margin-right: 20px;
             padding-left: 10px;
             font-size: 18px;
         }
+        .item:after {
+            content: ', ';
+        }
+        .item:last-child:after {
+            content: '';
+            color: #000;
+        }
+        .job{
+            margin: 20px 0px;
+        }
+        .jobTitle {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .company {
+            font-size: 16px;
+            font-weight: bold;
+            color: #900;
+        }
+        .timespan {
+            font-size: 14px;
+            font-style: italic;
+        }
+        .jobDescription {
+            font-size: 14px;
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+        .jobSubtitle {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .subJob {
+            margin-top: 10px;
+        }
+        .subJobDescription {
+            margin-left: 20px;
+        }
+        .interest {
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            display: inline-flexbox;
+            margin: -6px 0px; 
+            padding: 5px 0px; 
+        }
+        .interest::before{
+            content: '• ';
+            color: #900;
+        }
         h1 {
-            font-size: 42px;
+            font-size: 60px;
             border: none !important;
+            margin-bottom: 0;
+            font-weight: 800;
         }
         h2 {
-            font-size: 20px;;
+            font-size: 20px;
         }
         h1, h2, h3 {
             margin-top: 40px;
             border-bottom: 2px solid #000;
             text-transform: uppercase;
-        }
-        ul {
-            padding-left: 20px;
         }
     </style>
 </head>
@@ -48,65 +98,126 @@
 
     <section>
         <h2>Summary</h2>
-        <p>Well-versed C++ engineer with specialized expertise in Unreal Engine, focusing on gameplay programming within 3D environments. Expertise spans across multiple game engines, including Unreal Engine and CryEngine and multiple disciplines including game mechanics and player interactions. Passionate about developing tools to aid in game development. Seeking to further contribute to exciting projects that challenge creativity and technical prowess.</p>
+        <p>Well-versed C++ engineer with specialized expertise in Unreal Engine, focusing on gameplay programming within 3D environments. Expertise spans across multiple game engines, including Unreal Engine, Unity and CryEngine and multiple disciplines including game mechanics and player interactions. Passionate about developing tools to aid in game development.</p>
     </section>
 
     <section>
         <h2>Skills</h2>
-        <ul>
-            <li><strong>Programming languages:</strong> C++, C#, C, JavaScript, Java, PHP, various scripting languages;</li> 
-            <li><strong>Technologies:</strong> Win32, Unreal Engine Blueprints, Dear ImGui, WPF, FMOD, Wwise, JUCE, HLSL, SQL, Firebase, MongoDB, Perforce, GIT, SVN;</li>
-            <li><strong>Game Engines:</strong> Unreal Engine, CryEngine, Unity, Game Maker, various propriatery engines;</li>
-            <li><strong>Software:</strong> Unreal Engine Editor, Visual Studio, FMOD Studio, FL Studio, P4V, Photoshop;</li>
-        </ul>
+        <div>
+            <div><strong>Programming languages:</strong> <span class="item">C++</span> <span class="item">C#</span> <span class="item">C</span> <span class="item">JavaScript</span> <span class="item">Java</span> <span class="item">PHP</span> <span class="item">various scripting languages</span></div> 
+            <div><strong>Technologies:</strong> <span class="item">Win32</span> <span class="item">Unreal Engine Blueprints</span> <span class="item">Dear ImGui</span> <span class="item">WPF</span> <span class="item">FMOD</span> <span class="item">Wwise</span> <span class="item">JUCE</span> <span class="item">HLSL</span> <span class="item">SQL</span> <span class="item">Firebase</span> <span class="item">MongoDB</span> <span class="item">Perforce</span> <span class="item">GIT</span> <span class="item">SVN</span> <span class="item">gtest</span></div>
+            <div><strong>Game Engines:</strong> <span class="item">Unreal Engine</span> <span class="item">CryEngine</span> <span class="item">Unity</span> <span class="item">Game Maker</span> <span class="item">various propriatery engines</span></div>
+            <div><strong>Software:</strong> <span class="item">Unreal Engine Editor</span> <span class="item">Visual Studio</span> <span class="item">FMOD Studio</span> <span class="item">FL Studio</span> <span class="item">P4V</span> <span class="item">Photoshop</span> <span class="item">Sentry</span></div>
+        </div>
     </section>
 
     <section>
         <h2>Experience</h2>
-        <ul>
-            <li>
-                <strong>Senior Programmer</strong> KAMAi MEDIA - 2017-present
-                <ul>
-                    <li>2015 - Internship: Published Episode 01 of the video game Sonder on Steam.</li>
-                    <li>2017-2018 - Crytek: Close cooperation with Crytek Frankfurt in developing designer tools for the needs of the game Hunt:Showdown in CryEngine and VBA.</li>
-                    <li>2018-2019 - Astek: Close cooperation with the company Astek from Istanbul on developing the Oculus Rift simulation game Black Diamond VR in CryEngine.</li>
-                    <li>2019-2020 - Airport Breifing: Worked on developing a functional demo for the Airport Breifing software in Unity.</li>
-                    <li>2020-2022 - Star Stable Entertainment: Technical assistance on developing core systems on the in-house engine of the company Star Stable Entertainment based in Sweden.</li>
-                    <li>2022-present - Angelic: Development of core gameplay features and the multiplayer loop on the game Angelic of the company Metaverse Game Studios.</li>
-                </ul>
-            </li>
-            <li>
-                <strong>Undergraduate Teaching Assistant - Faculty for Information and Communication Technologies - Bitola - 2015-2017;2021-2022</strong>
-                <ul>
-                    <li>Teached courses on Algorithms and Data Structures, Advanced Databases and Data Warehouses</li>
-                </ul>
-            </li>
-        </ul>
+        <div class="job">
+            <div class="jobTitle">Senior Programmer</div> 
+            <div class="company">KAMAi MEDIA</div>
+            <div class="timespan">2017 - present</div>
+            <div class="jobDescription">
+                <div class="subJob">
+                    <div class="jobSubtitle">Internship</div>
+                    <div class="timespan">2015</div>
+                    <div class="subJobDescription">
+                        Gained experience in working with DirectX on a custom engine. Published Episode 01 of the video game Sonder on Steam.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Crytek</div>
+                    <div class="timespan">2017 - 2018</div>
+                    <div class="subJobDescription">
+                        Close cooperation with Crytek Frankfurt in developing designer tools for the needs of the game Hunt: Showdown in CryEngine and VBA.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Astek</div>
+                    <div class="timespan">2018 - 2019</div>
+                    <div class="subJobDescription">
+                        Close cooperation with the company Astek from Istanbul on developing the Oculus Rift simulation game Black Diamond VR in CryEngine.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Airport Briefing</div>
+                    <div class="timespan">2019 - 2020</div>
+                    <div class="subJobDescription">
+                        Worked on developing a functional demo for the Airport Briefing software in Unity.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Star Stable Entertainment</div>
+                    <div class="timespan">2020 - 2022</div>
+                    <div class="subJobDescription">
+                        Technical assistance on developing core systems on the in-house engine of the company Star Stable Entertainment based in Sweden.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Intetic</div>
+                    <div class="timespan">2021 - 2023</div>
+                    <div class="subJobDescription">
+                        Assistance on developing the sound on the game The Strange Story of Brian Fisher: Chapter 2.
+                    </div>
+                </div>
+                <div class="subJob">
+                    <div class="jobSubtitle">Metaverse Game Studios</div>
+                    <div class="timespan">2022 - present</div>
+                    <div class="subJobDescription">
+                        Development of core gameplay features and the multiplayer loop on the game Angelic.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="job">
+            <div class="jobTitle">Undergraduate Teaching Assistant</div>
+            <div class="company">Faculty for Information and Communication Technologies - Bitola</div>
+            <div class="timespan">2015 - 2017; 2021 - 2022</div>
+            <div class="jobDescription">
+                Was a teaching assistant in multiple undergraduate courses on Algorithms and Data Structures, Advanced Databases and Data Warehouses.
+            </div>
+        </div>
     </section>
 
     <section>
         <h2>Education</h2>
-        <ul>
-            <li>
-                <strong>MSc in Computer Science and Engineering</strong> Faculty for Information and Communication Technologies - Bitola, 2013-2022
-            </li>
-        </ul>
+        <div>
+            <div class="jobTitle">MSc in Computer Science and Engineering</div>
+            <div class="company">Faculty for Information and Communication Technologies - Bitola</div>  
+            <div class="timespan">2022</div>
+            <div class="jobDescription">Thesis: Analysis and application of state machines in the design of branching systems in video games</div>
+        </div>
     </section>
 
     <section>
         <h2>Personal Projects</h2>
-        <ul>
-            <li>
-                <strong>Nonlinear System Tools</strong>
-                <ul>
-                    <li>Self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing.</li>
-                    <li>Implemented custom scripting language aimed at designers and artists.</li>
-                    <li>Split into libraries that can be integrated into external engines.</li>
-                    <li>Integration of Steamworks, Sentry, Catch Tests, Chromium Renderer and much more.</li>
-                </ul>
-            </li>
-        </ul>
+        <div>
+            <div>
+                <div class="jobTitle">Nonlinear System Tools</div>
+                <div>
+                    <div class="jobDescription">
+                        NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of Steamworks, Sentry, Catch Tests, Chromium Renderer and much more.
+                    </div>
+            </div>
+        </div>
     </section>
 
+    <section>
+        <h2>Interests</h2>
+        <div class="interest">Video Game Design</div>
+        <div class="interest">Linear Algebra</div>
+        <div class="interest">High-Concept Video Games</div>
+        <div class="interest">Interactive Narratives</div>
+        <div class="interest">Audio Design</div>
+        <div class="interest">Audio DSP</div>
+    </section> 
+
+    <section>
+        <h2>Languages</h2>
+        <div class="interest">English - Excellent</div>
+        <div class="interest">Macedonian - Native</div>
+        <div class="interest">Serbian - Excellent</div>
+        <div class="interest">French - Essentials</div>
+    </section> 
 </body>
 </html>
