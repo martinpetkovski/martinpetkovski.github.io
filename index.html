@@ -4,6 +4,7 @@
 <head>
     <title>najjak.com</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap"
@@ -33,13 +34,15 @@
 
         @font-face {
             font-family: 'Astrella';
-            src: url('siotojazz/Astrella.ttf');
+            src: url('siotojazz/truestate/Astrella.ttf');
         }
 
+        @font-face { font-family: Quicksand; src: url('checkmeg/Quicksand.ttf'); }
+
         @font-face {
-            font-family: 'Engage';
-            src: url('ARCADE_I.TTF');
-        }
+    font-family: 'Rektec';
+    src: url('nst/resources/Rektec.otf');
+}
 
         * {
             margin: 0;
@@ -81,12 +84,14 @@
             width: 120vw;
             position: relative;
             left: -10vw;
-            margin-bottom: 20px;
             transform: skew(10deg);
         }
 
         .ct {
             mix-blend-mode: lighten;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
             .ct:hover,
@@ -131,6 +136,7 @@
 
         #navigation {
             text-align: center;
+            
         }
 
             #navigation input {
@@ -170,76 +176,44 @@
             transition: 1s;
         }
 
-        @media only screen and (max-width: 1200px) {
-
-            a:link,
-            a:visited {
-                display: inline-block;
-            }
-
-            .ct {
-                font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-                color: white;
-                text-align: center;
-                font-size: 30px;
-                padding: 10px;
-                transition-duration: 0.6s;
-                background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
-                border-bottom: #1114 10px solid;
-                margin: 0 auto;
-                width: 100%;
-            }
-
-            #title,
-            #titleLoading {
-                padding: 20px 0px;
-                font-size: 140px;
-                margin-bottom: 20px;
-                color: red;
-            }
-
-            .item {
-                font-size: 60px;
-            }
-
-            #navigation img {
-                height: 140px;
-            }
+        a:link,
+        a:visited {
+            display: inline-block;
         }
 
-        @media only screen and (min-width: 1200px) {
-
-            a:link,
-            a:visited {
-                display: inline-block;
-            }
-
-            .ct {
-                font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-                text-align: center;
-                font-size: 20px;
-                padding: 10px 10px 10px 10px;
-                transition-duration: 0.6s;
-                color: #FFF9;
-                background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
-                border-bottom: #1114 10px solid;
-                margin: 0 auto;
-                width: 42%;
-            }
-
-            #title,
-            #titleLoading {
-                font-size: 100px;
-            }
-
-            .item {
-                font-size: 20px;
-            }
-
-            #navigation img {
-                height: 40px;
-            }
+        .ct {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px 10px 10px 10px;
+            transition-duration: 0.6s;
+            color: #FFF9;
+            background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+            border-bottom: #1114 10px solid;
+            margin: 0 auto;
+            width: 42%;
         }
+
+        #title,
+        #titleLoading {
+            font-size: 100px;
+        }
+
+        .item {
+            font-size: 20px;
+        }
+
+        .description {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            font-size: 12px;
+            margin-top: 2px;
+            color: #FFF6;
+        }
+
+        #navigation img {
+            height: 40px;
+        }
+        
 
         #navigation:hover {
             border-bottom: 1px solid #0000;
@@ -261,13 +235,23 @@
         .items {
             text-align: center;
             margin: 0 auto;
+            padding: 30px;
             width: 100%;
-            margin: 20px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            max-width: 400px;
         }
 
+        .items.inline {
+            max-width: 1200px;
+        }
+        
+        .items a {
+            display: block !important;
+        }
+
+        .items.inline a {
+            display: inline-block !important;
+        }
+        
         a:link,
         a:visited {
             position: relative;
@@ -324,7 +308,8 @@
         }
 
         .mainView {
-            display: none;
+            display: block;
+            margin: 0 auto;
         }
 
         @keyframes mainVewAnim {
@@ -337,63 +322,11 @@
             }
         }
 
-        .mainViewTransition {
-            display: block;
-            animation-name: mainVewAnim;
-            animation-duration: 1s;
-        }
-
         #loadingEntity {
             position: absolute;
             top: 60vh;
             left: 50vw;
         }
-
-        #insertCoinButton {
-            transform: skew(-20deg);
-            display: none;
-            position: absolute;
-            top: 60vh;
-            left: 50vw;
-            margin-top: -200px;
-            margin-left: -320px;
-            line-height: 300px;
-            width: 590px;
-            height: 120px;
-            border: 1px solid #09FF;
-            background: #111;
-            background-size: cover;
-            transition: 1s;
-        }
-
-            #insertCoinButton:hover {
-                text-shadow: 0px 0px 300px #FFF;
-                box-shadow: 0px 0px 100px #09FF inset;
-                background: radial-gradient(rgba(0, 30, 60, 0.8) 0%, rgba(0, 30, 60, 1) 50%, rgba(0, 30, 60, 0.8) 100%) !important;
-            }
-
-            #insertCoinButton::before {
-                content: attr(data-text);
-                background: url(glitch.gif);
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-size: 200%;
-                background-position: -60%;
-                mix-blend-mode: lighten;
-            }
-
-            #insertCoinButton::after {
-            }
-
-            #insertCoinButton .item {
-                font-family: Engage, Roboto, Arial Black, Arial !important;
-                text-shadow: 0px 0px 5px #09F;
-                margin-top: -100px;
-                font-size: 100px !important;
-            }
 
         .text,
         .textLoading {
@@ -586,9 +519,32 @@
             color: #FFF4;
         }
 
+        #resume {
+            display: block;
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial !important;
+            text-align: center;
+            text-transform: uppercase;
+            color: #FFFA;
+            width: 300px;
+            margin: 50px auto;
+            letter-spacing: 2px;
+            padding: 10px;
+            background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+        }
+
         .hiddenText {
             display: none;
         }
+
+        #subtitle {
+                font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+                color: #FFF;
+                text-align: center;
+                font-size: 12px;
+                letter-spacing: 2px;
+                text-transform: lowercase;
+                opacity: 0.3;
+            }
 
         @-webkit-keyframes load1 {
 
@@ -643,10 +599,6 @@
         </div>
 
         <div class="loader" id="loadingEntity">Loading...</div>
-
-        <a href="#" id="insertCoinButton">
-            <div class="item">ENGAGE</div>
-        </a>
     </div>
 
     <div class="mainView" id="container">
@@ -690,117 +642,64 @@
 
             </svg>
         </div>
+        <div id="subtitle">Martin Petkovski's personal website <br> Личниот вебсајт на Мартин Петковски</div>
         <div id="navigation">
             <input type="text" id="search-input" placeholder="&#xf002;" />
         </div>
-        <div id="navigation" style="z-index: 10;">
-            <div class="ct">Active Projects &nbsp; &#xf0e7; &nbsp; Активни Проекти </div>
+        <a href="resume" id="resume">resume &nbsp; &#xf007; &nbsp; резиме</a>
+
+        <div id="navigation">
+            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
             <div class="items">
                 <a href="siotojazz" class="searchable">
-                    <div class="item regularItem" style="font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
+                    <div class="item regularItem" style="line-height: 1;  font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
                         SIOTO JAZZ
                         <span class="hiddenText">SIOTO JAZZ</span>
+                        <div class="description">Music band I'm playing in</div>
                     </div>
+                </a>
+                <a href="nst" class="searchable">
+                    <div class="item" style="font-family: Rektec, sans-serif; font-size: 60px; color: white;"><img src="nst/resources/icon2.ico" style="height: 64px;" /> NST</div>
+                    <span class="hiddenText">nonlinear system tools nst</span>
+                    <div class="description">Software for writing interactive novels</div>
+                </a>
+                <a href="checkmeg" class="searchable">
+                    <div class="item" style="font-family: Quicksand, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: white; font-size: 40px;"><img src="checkmeg/logo.png" style="height: 64px;" /> Checkmeg</div>
+                    <span class="hiddenText">checkmeg</span>
+                    <div class="description">Bookmarking software for Windows</div>
                 </a>
                 <a href="eats" class="searchable noLinkPadding">
                     <div class="item">
                         <img src="logo_eats.png" style="height: 86px;" />
                         <span class="hiddenText">exquisite art trashing space</span>
+                        <div class="description">Reviews for music I've listened to</div>
                     </div>
                 </a>
-            </div>
-        </div>
-
-        <div id="navigation">
-            <div class="ct">
-                <table style="display: inline;">
-                    <tr>
-                        <td style="text-align: right;">Code</td>
-                        <td rowspan="2" style="padding: 0px 20px;"><img src="logo_vs.png" height="32" /></td>
-                        <td>Код</td>
-                    </tr>
-                    <tr>
-                        <td style="font-size: 12px; text-align: right;">My code has powered</td>
-                        <td style="font-size: 12px;">Мој код ги напојувал</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="items">
-                <a href="nst" class="searchable">
-                    <div class="item regularItem">
-                        <img src="nst/resources/icon2.ico" height="32" /> &nbsp; Nonlinear System Tools
-                        <span class="hiddenText">Nonlinear System Tools</span>
-                    </div>
+                <a href="alg" class="searchable">
+                    <div class="item">Решени задачи по Алгоритамско Пограмирање</div>
+                    <div class="description">Algorithmic programming tasks for high school students</div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=3yn8o2sA6l0" class="searchable">
-                    <div class="item"><img src="logo_sonder.png" /></div>
-                    <span class="hiddenText">Sonder</span>
+                <a href="https://v3.globalgamejam.org/users/petkovski" class="searchable">
+                    <div class="item">Global Game Jam</div>
+                    <div class="description">I've been participating for a decade now (maybe more)</div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=nH9Gm36sJng" class="searchable">
-                    <div class="item"><img src="logo_hunt.png" /></div>
-                    <span class="hiddenText">Hunt: Showdown</span>
+                <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json" class="searchable">
+                    <div class="item">Корпус на Македонскиот јазик</div>
+                    <div class="description">All words in the Macedonian language in JSON format</div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=QAKt3woocoU" class="searchable noLinkPadding">
-                    <div class="nowPlaying">&#xf0e7; CURRENTLY POWERING</div>
-                    <div class="item activeProject"><img src="logo_angelic.png" /></div>
-                    <span class="hiddenText">Angelic</span>
+                <a href="music" class="searchable">
+                    <div class="item">Демо Музика</div>
+                    <div class="description">Some demo music I've done in the past</div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=6aJCoWeDmlE" class="searchable">
-                    <div class="item"><img src="logo_sso.png" /></div>
-                    <span class="hiddenText">Star Stable Online</span>
-                </a>
-                <a href="https://www.youtube.com/watch?v=RahJZCrmUvg" class="searchable">
-                    <div class="item"><img src="logo_bdvr.png" /></div>
-                    <span class="hiddenText">Black Diamond VR</span>
+                <a href="sis\index.html" class="searchable">
+                    <div class="item">Саше Ивановски Симулатор</div>
+                    <div class="description">Creative swearing in Macedonian, the simulator</div>
                 </a>
             </div>
         </div>
 
         <div id="navigation">
-            <div class="ct">Games &nbsp; &#xf11b; &nbsp; Игри</div>
-            <div class="items">
-                <a href="n/?cyberpunk" class="searchable">
-                    <div class="item"><img src="logo_cyberpunk.png" /></div>
-                    <span class="hiddenText">Cyberpunk</span>
-                </a>
-                <a href="n/?nomanssky" class="searchable">
-                    <div class="item"><img src="logo_nms.png" /></div>
-                    <span class="hiddenText">No Man's Sky</span>
-                </a>
-                <!-- <a href="" class="searchable"> -->
-                <!-- <div class="item"> -->
-                <!-- <img src="logo_rdr.png" /> -->
-                <!-- <span class="hiddenText">Red Dead Redemption</span> -->
-                <!-- </div> -->
-                <!-- </a> -->
-                <!-- <a href="" class="searchable"> -->
-                <!-- <div class="item"> -->
-                <!-- <img src="logo_bd3.png"> -->
-                <!-- <span class="hiddenText">Borderlands 3</span> -->
-                <!-- </div> -->
-                <!-- </a> -->
-                <a href="" class="searchable noLinkPadding">
-                    <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
-                    <img class="item activeProject" style="height:64px;" src="logo_fh.png" />
-                    <span class="hiddenText">Forza Horizon</span>
-                </a>
-            </div>
-        </div>
-
-        <!--<div id="navigation">
-            <div class="ct">Best &nbsp; &#xf573; &nbsp; Најјак</div>
-            <div class="items">
-                <a href="n/?code-standard-cpp" class="searchable">
-                    <div class="item">C++ Code Standard</div>
-                </a>
-                <a href="n/?zanaetchiski-raspored" class="searchable">
-                    <div class="item">Занаетчиски Распоред</div>
-                </a>
-            </div>
-        </div>-->
-
-        <div id="navigation">
-            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
+            <div class="ct">Opinions &nbsp; &#xf11b; &nbsp; Мислења</div>
             <div class="items">
                 <a href="n/?principles" class="searchable">
                     <div class="item">Принципи</div>
@@ -811,44 +710,25 @@
                 <a href="n/?zanaetchiski-raspored" class="searchable">
                     <div class="item">Занаетчиски Распоред</div>
                 </a>
-
-                <a href="https://v3.globalgamejam.org/users/petkovski" class="searchable">
-                    <div class="item">Global Game Jam</div>
+                <a href="n/?cyberpunk" class="searchable">
+                    <div class="item"><img src="logo_cyberpunk.png" /></div>
+                    <span class="hiddenText">Cyberpunk</span>
                 </a>
-                <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json" class="searchable">
-                    <div class="item">Корпус на Македонскиот јазик</div>
+                <a href="n/?nomanssky" class="searchable">
+                    <div class="item"><img src="logo_nms.png" /></div>
+                    <span class="hiddenText">No Man's Sky</span>
                 </a>
-                <!--<a href="checkmeg\index.html" class="searchable">
-        <div class="item">Checkmeg</div>
-    </a>
-    <a href="xtoolkit\docs\index.html" class="searchable">
-        <div class="item">XToolkit</div>
-    </a>-->
-                <a href="music" class="searchable">
-                    <div class="item">Демо Музика</div>
-                </a>
-                <a href="sis\index.html" class="searchable">
-                    <div class="item">Саше Ивановски Симулатор</div>
-                </a>
+                <!-- <a href="" class="searchable noLinkPadding">
+                    <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
+                    <img class="item activeProject" style="height:64px;" src="logo_fh.png" />
+                    <span class="hiddenText">Forza Horizon</span>
+                </a> -->
             </div>
-        </div>
-
-        <div id="navigation" style="display: none;">
-            <div class="ct">&#xf19c; Science</div>
-            <a href="asp" class="searchable">
-                <div class="item">АСП (2015/2016)</div>
-            </a>
-            <a href="sp" class="searchable">
-                <div class="item">СП (2017)</div>
-            </a>
-            <a href="spao" class="searchable">
-                <div class="item">СПАО (2021)</div>
-            </a>
         </div>
 
         <div id="navigation">
             <div class="ct">Music &nbsp; &#xf001; &nbsp; Музика</div>
-            <div class="items">
+            <div class="items inline">
                 <a id="musicLink" href="#" class="searchable noLinkPadding">
                     <div class="nowPlaying">&#xf04b; NOW LISTENING</div>
                     <div id="music-listeningnow" class="regularItem activeProject">
@@ -867,7 +747,7 @@
 
         <div id="navigation">
             <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
-            <div class="items">
+            <div class="items inline">
                 <a href="https://www.deezer.com/en/artist/58205502">
                     <div class="item">&#xe077;</div>
                 </a>
@@ -945,26 +825,6 @@
         window.onload = function () {
             entity = document.querySelector("#loadingEntity");
             entity.style.display = "none";
-            btnInsertCoin = document.querySelector("#insertCoinButton");
-            btnInsertCoin.style.display = "block";
-
-            btnInsertCoin.onclick = function () {
-                entity.style.display = "none";
-                btnInsertCoin.style.display = "none";
-
-                mainView = document.querySelector(".mainView");
-                loadingView = document.querySelector(".loadingView");
-
-                loadingView.classList.add("loadingViewTransition");
-                mainView.classList.add("mainViewTransition");
-
-                var theme = document.getElementById("theme");
-                theme.volume = 0.2;
-                theme.play();
-
-                movementStatic = false;
-
-            };
         };
 
         var a_link = document.querySelectorAll('a');
@@ -1196,6 +1056,8 @@
 
             renderer.render(scene, camera);
         }
+
+        movementStatic = false;
         Animate();
 
         const searchInput = document.getElementById('search-input');
