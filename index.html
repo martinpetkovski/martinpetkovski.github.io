@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
     <style>
@@ -37,17 +37,20 @@
             src: url('siotojazz/truestate/Astrella.ttf');
         }
 
-        @font-face { font-family: Quicksand; src: url('checkmeg/Quicksand.ttf'); }
+        @font-face {
+            font-family: Quicksand;
+            src: url('checkmeg/Quicksand.ttf');
+        }
 
         @font-face {
-    font-family: 'Rektec';
-    src: url('nst/resources/Rektec.otf');
-}
+            font-family: 'Rektec';
+            src: url('nst/resources/Rektec.otf');
+        }
 
         * {
             margin: 0;
             padding: 0;
-            font-family: FontAwesome5, FontAwesome5Brands, 'FP2025', Roboto, Arial Black, Arial;
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
         }
 
         html {
@@ -79,6 +82,10 @@
             text-align: left;
         }
 
+        text {
+            font-family: 'FP2025', Roboto, Arial Black, Arial !important;
+        }
+
         #title,
         #titleLoading {
             width: 120vw;
@@ -94,30 +101,30 @@
             letter-spacing: 2px;
         }
 
-            .ct:hover,
-            .cthovered {
-                transform: skew(12deg);
-                box-shadow: 5px 5px 30px #0003;
-                color: #FFFF !important;
-                background: linear-gradient(-90deg, rgba(255, 0, 0, 0.01) 0%, rgba(255, 15, 15, 0.4) 50%, rgba(255, 0, 0, 0.01) 100%) !important;
-                text-shadow: 0px 0px 20px #FFF;
-                border-bottom: 10px #0009 solid !important;
-                width: 99% !important;
-                transition: 0.6s, color 0.1s !important;
-            }
+        .ct:hover,
+        .cthovered {
+            transform: skew(12deg);
+            box-shadow: 5px 5px 30px #0003;
+            color: #FFFF !important;
+            background: linear-gradient(-90deg, rgba(255, 0, 0, 0.01) 0%, rgba(255, 15, 15, 0.4) 50%, rgba(255, 0, 0, 0.01) 100%) !important;
+            text-shadow: 0px 0px 20px #FFF;
+            border-bottom: 10px #0009 solid !important;
+            width: 99% !important;
+            transition: 0.6s, color 0.1s !important;
+        }
 
-                .cthovered::after {
-                    content: attr(data-text);
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-                    height: 100%;
-                    left: -2px;
-                    background-color: white;
-                    background: url(glitch.gif);
-                    mix-blend-mode: lighten;
-                    background-size: contain;
-                }
+        .cthovered::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            left: -2px;
+            background-color: white;
+            background: url(glitch.gif);
+            mix-blend-mode: lighten;
+            background-size: contain;
+        }
 
         .leaveLink {
             border-color: #000 !important;
@@ -136,40 +143,39 @@
 
         #navigation {
             text-align: center;
-            
+
         }
 
-            #navigation input {
-                position: fixed;
-                top: 34px;
-                right: 50px;
-                font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-                padding: 10px;
-                margin: 24px auto;
-                width: 50vw;
-                font-size: 44px;
-                color: #AAA;
-                background: linear-gradient(0deg, rgba(78, 121, 136, 0.1) 0%, rgba(78, 121, 136, 0.01) 100%);
-                border: 1px solid rgba(78, 121, 136, 0.15);
-                border-bottom: solid 10px rgba(78, 121, 136, 0.15);
-                transition: 0.3s;
-                text-align: center;
-                width: 64px;
-                border-radius: 100%;
-                z-index: 1000;
-            }
+        #navigation input {
+            position: fixed;
+            top: 34px;
+            right: 50px;
+            padding: 10px;
+            margin: 24px auto;
+            width: 50vw;
+            font-size: 44px;
+            color: #AAA;
+            background: linear-gradient(0deg, rgba(78, 121, 136, 0.1) 0%, rgba(78, 121, 136, 0.01) 100%);
+            border: 1px solid rgba(78, 121, 136, 0.15);
+            border-bottom: solid 10px rgba(78, 121, 136, 0.15);
+            transition: 0.3s;
+            text-align: center;
+            width: 64px;
+            border-radius: 100%;
+            z-index: 1000;
+        }
 
-                #navigation input:focus {
-                    background: linear-gradient(0deg, rgba(250, 195, 1, 0.8) 0%, rgba(250, 195, 1, 0.5) 100%);
-                    border-bottom-color: #fac301;
-                    color: #000;
-                    outline: none;
-                    transition: 0.3s;
-                    width: 400px;
-                    border-radius: 0px;
-                    background-color: #000000 !important;
-                    text-align: left;
-                }
+        #navigation input:focus {
+            background: linear-gradient(0deg, rgba(250, 195, 1, 0.8) 0%, rgba(250, 195, 1, 0.5) 100%);
+            border-bottom-color: #fac301;
+            color: #000;
+            outline: none;
+            transition: 0.3s;
+            width: 400px;
+            border-radius: 0px;
+            background-color: #000000 !important;
+            text-align: left;
+        }
 
         input:focus::placeholder {
             color: transparent;
@@ -182,7 +188,6 @@
         }
 
         .ct {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             text-align: center;
             font-size: 20px;
             padding: 10px 10px 10px 10px;
@@ -201,10 +206,11 @@
 
         .item {
             font-size: 20px;
+            display: inline-block;
+            vertical-align: top;
         }
 
         .description {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             font-size: 12px;
             margin-top: 2px;
             color: #FFF6;
@@ -213,7 +219,7 @@
         #navigation img {
             height: 40px;
         }
-        
+
 
         #navigation:hover {
             border-bottom: 1px solid #0000;
@@ -223,35 +229,34 @@
         }
 
         .item {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             text-align: center;
             padding: 10px;
         }
 
-            .item img {
-                vertical-align: middle;
-            }
+        .item img {
+            vertical-align: middle;
+        }
 
         .items {
             text-align: center;
             margin: 0 auto;
-            padding: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
 
         .items.inline {
             max-width: 1200px;
         }
-        
+
         .items a {
             display: block !important;
+            margin: 20px 0px;
         }
 
         .items.inline a {
             display: inline-block !important;
         }
-        
+
         a:link,
         a:visited {
             position: relative;
@@ -274,18 +279,18 @@
             transition: 0.3s;
         }
 
-            a:hover::after {
-                content: attr(data-text);
-                mix-blend-mode: soft-light;
-                background-image: url(lightning.gif);
-                background-size: cover;
-                opacity: 0.5;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
+        a:hover::after {
+            content: attr(data-text);
+            mix-blend-mode: soft-light;
+            background-image: url(lightning.gif);
+            background-size: cover;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
         a:active {
             color: #FFF;
@@ -401,24 +406,24 @@
             transition: background .5s, border-radius .5s, border .5s, width .5s, height .5s, box-shadow .5s;
         }
 
-            #cursor.hovered {
-                mix-blend-mode: color;
-                background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
-                border-radius: 0%;
-                border: 1px solid #F2385AAA;
-                width: 30px;
-                height: 30px;
-                transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
-                animation: rotate 5s linear infinite;
-            }
+        #cursor.hovered {
+            mix-blend-mode: color;
+            background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
+            border-radius: 0%;
+            border: 1px solid #F2385AAA;
+            width: 30px;
+            height: 30px;
+            transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
+            animation: rotate 5s linear infinite;
+        }
 
-            #cursor.active {
-                background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
-                border-radius: 5%;
-                border: 1px solid #F5A503AA;
-                width: 20px;
-                height: 20px;
-            }
+        #cursor.active {
+            background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
+            border-radius: 5%;
+            border: 1px solid #F5A503AA;
+            width: 20px;
+            height: 20px;
+        }
 
         #circle {
             mix-blend-mode: normal;
@@ -435,12 +440,12 @@
             text-overflow: ellipsis;
         }
 
-            #circle.hovered {
-                scale: 0;
-                transform: scale(0);
-                border: 1px dashed #F003;
-                transition: border 1s, scale 1s;
-            }
+        #circle.hovered {
+            scale: 0;
+            transform: scale(0);
+            border: 1px dashed #F003;
+            transition: border 1s, scale 1s;
+        }
 
         @keyframes rotate {
             0% {
@@ -476,12 +481,10 @@
         }
 
         #music-artist {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             font-size: 24px;
         }
 
         #music-track {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             font-size: 14px;
         }
 
@@ -491,7 +494,6 @@
         }
 
         .nowPlaying {
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
             font-size: 12px;
             background: #900;
             color: #FFF;
@@ -501,7 +503,7 @@
         }
 
         .activeProject {
-            background-image: repeating-linear-gradient( -45deg, #6003, #6003 10px, #9003 10px, #9003 20px ), linear-gradient(to bottom, rgba(255, 0, 0, 0.3), rgba(0, 0, 0, 0));
+            background-image: repeating-linear-gradient(-45deg, #6003, #6003 10px, #9003 10px, #9003 20px), linear-gradient(to bottom, rgba(255, 0, 0, 0.3), rgba(0, 0, 0, 0));
             border: 1px solid #500;
             border-top: none;
             padding: 0px 30px;
@@ -514,14 +516,12 @@
         #credits {
             padding: 50px 0px 50px 0px;
             text-align: center;
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial !important;
             font-size: 10px;
             color: #FFF4;
         }
 
         #resume {
             display: block;
-            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial !important;
             text-align: center;
             text-transform: uppercase;
             color: #FFFA;
@@ -536,19 +536,38 @@
             display: none;
         }
 
+        .languageContainer {
+            position: relative;
+            z-index: 500;
+        }
+
         #subtitle {
-                font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
-                color: #FFF;
-                text-align: center;
-                font-size: 12px;
-                letter-spacing: 2px;
-                text-transform: lowercase;
-                opacity: 0.3;
-            }
+            color: #FFF;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: lowercase;
+            opacity: 0.3;
+        }
+
+        .mk,
+        .en {
+            opacity: 0;
+            transition: 0.2s;
+            display: none;
+        }
+
+        .currentLang {
+            opacity: 1;
+            display: block;
+            transition: 0.2s;
+        }
 
         @-webkit-keyframes load1 {
 
-            0%, 80%, 100% {
+            0%,
+            80%,
+            100% {
                 box-shadow: 0 0;
                 height: 4em;
             }
@@ -561,7 +580,9 @@
 
         @keyframes load1 {
 
-            0%, 80%, 100% {
+            0%,
+            80%,
+            100% {
                 box-shadow: 0 0;
                 height: 4em;
             }
@@ -642,80 +663,105 @@
 
             </svg>
         </div>
-        <div id="subtitle">Martin Petkovski's personal website <br> Личниот вебсајт на Мартин Петковски</div>
+        <div id="subtitle" class="languageContainer"><span class="en currentLang">Martin Petkovski's personal
+                website</span><span class="mk">Личниот вебсајт на Мартин Петковски</span></div>
         <div id="navigation">
             <input type="text" id="search-input" placeholder="&#xf002;" />
         </div>
-        <a href="resume" id="resume">resume &nbsp; &#xf007; &nbsp; резиме</a>
+        <a href="resume" id="resume" class="languageContainer">
+            <span class="en currentLang searchable">&#xf007; professional resume</span>
+            <span class="mk">&#xf007; професионално резиме</span>
+        </a>
 
         <div id="navigation">
-            <div class="ct"> The Vault &nbsp; &#xf017; &nbsp; Трезорот</div>
+            <div class="ct languageContainer"><span class="en currentLang">&#xf023; The Vault</span> <span
+                    class="mk">&#xf023; Трезорот</span></div>
             <div class="items">
-                <a href="siotojazz" class="searchable">
-                    <div class="item regularItem" style="line-height: 1;  font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
+                <a href="siotojazz">
+                    <div class="item regularItem"
+                        style="line-height: 1;  font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
                         SIOTO JAZZ
-                        <span class="hiddenText">SIOTO JAZZ</span>
-                        <div class="description">Music band I'm playing in</div>
+                        <span class="hiddenText searchable">SIOTO JAZZ</span>
+                        <div class="description languageContainer"><span class="en currentLang">Music band I'm playing
+                                in</span><span class="mk">Музичка група во која моментално свирам</span></div>
                     </div>
                 </a>
-                <a href="nst" class="searchable">
-                    <div class="item" style="font-family: Rektec, sans-serif; font-size: 60px; color: white;"><img src="nst/resources/icon2.ico" style="height: 64px;" /> NST</div>
-                    <span class="hiddenText">nonlinear system tools nst</span>
-                    <div class="description">Software for writing interactive novels</div>
+                <a href="nst">
+                    <img src="nst/resources/icon2.ico" style="height: 64px;" />
+                    <div class="item" style="font-family: Rektec, sans-serif; font-size: 60px; color: white;">NST</div>
+                    <span class="hiddenText searchable">nonlinear system tools nst</span>
+                    <div class="description languageContainer"><span class="en currentLang">Software for writing
+                            interactive novels</span><span class="mk">Софтвер за пишување на интерактивни романи</span>
+                    </div>
                 </a>
-                <a href="checkmeg" class="searchable">
-                    <div class="item" style="font-family: Quicksand, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: white; font-size: 40px;"><img src="checkmeg/logo.png" style="height: 64px;" /> Checkmeg</div>
-                    <span class="hiddenText">checkmeg</span>
-                    <div class="description">Bookmarking software for Windows</div>
+                <a href="checkmeg">
+                    <img src="checkmeg/logo.png" style="height: 64px;" />
+                    <div class="item searchable"
+                        style="font-family: Quicksand, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: white; font-size: 40px;">
+                        Checkmeg</div>
+                    <div class="description languageContainer"><span class="en currentLang">Bookmarking software for
+                            Windows</span><span class="mk">Софтвер за фаќање белешки во Windows</span></div>
                 </a>
-                <a href="eats" class="searchable noLinkPadding">
+                <a href="eats">
                     <div class="item">
                         <img src="logo_eats.png" style="height: 86px;" />
-                        <span class="hiddenText">exquisite art trashing space</span>
-                        <div class="description">Reviews for music I've listened to</div>
+                        <span class="hiddenText searchable">exquisite art trashing space</span>
+                        <div class="description languageContainer"><span class="en currentLang">Reviews for music I've
+                                listened to</span><span class="mk">Рецензии за музика што ја слушам</span></div>
                     </div>
                 </a>
-                <a href="alg" class="searchable">
-                    <div class="item">Решени задачи по Алгоритамско Пограмирање</div>
-                    <div class="description">Algorithmic programming tasks for high school students</div>
+                <a href="alg">
+                    <div class="item searchable">Алгоритамско Пограмирање</div>
+                    <div class="description languageContainer"><span class="en currentLang">Algorithmic programming
+                            tasks for high school students</span><span class="mk">Задачи од алгоритамско програмирање за
+                            ученици од средно</span></div>
                 </a>
-                <a href="https://v3.globalgamejam.org/users/petkovski" class="searchable">
-                    <div class="item">Global Game Jam</div>
-                    <div class="description">I've been participating for a decade now (maybe more)</div>
+                <a href="https://v3.globalgamejam.org/users/petkovski">
+                    <div class="item searchable">Global Game Jam</div>
+                    <div class="description languageContainer"><span class="en currentLang">I've been participating for
+                            a decade now (maybe more)</span><span class="mk">Учествувам повеќе од деценија (можеби и
+                            повеќе)</span></div>
                 </a>
-                <a href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json" class="searchable">
-                    <div class="item">Корпус на Македонскиот јазик</div>
-                    <div class="description">All words in the Macedonian language in JSON format</div>
+                <a
+                    href="https://raw.githubusercontent.com/martinpetkovski/martinpetkovski.github.io/master/korpus.json">
+                    <div class="item searchable">Корпус на Македонскиот јазик</div>
+                    <div class="description languageContainer"><span class="en currentLang">All words in the Macedonian
+                            language in JSON format</span><span class="mk">Сите зборови во Македонскиот јазик во JSON
+                            формат</span></div>
                 </a>
-                <a href="music" class="searchable">
-                    <div class="item">Демо Музика</div>
-                    <div class="description">Some demo music I've done in the past</div>
+                <a href="music">
+                    <div class="item searchable">Демо Музика</div>
+                    <div class="description languageContainer"><span class="en currentLang">Some demo music I've done in
+                            the past</span><span class="mk">Демо музика што ја имам работено во минатото</span></div>
                 </a>
-                <a href="sis\index.html" class="searchable">
-                    <div class="item">Саше Ивановски Симулатор</div>
-                    <div class="description">Creative swearing in Macedonian, the simulator</div>
+                <a href="sis\index.html">
+                    <div class="item searchable">Саше Ивановски Симулатор</div>
+                    <div class="description languageContainer"><span class="en currentLang">Creative swearing in
+                            Macedonian, the simulator</span><span class="mk">Креативно пцуење на Македонски,
+                            симулатор</span></div>
                 </a>
             </div>
         </div>
 
         <div id="navigation">
-            <div class="ct">Opinions &nbsp; &#xf11b; &nbsp; Мислења</div>
+            <div class="ct languageContainer"><span class="en currentLang">&#xf075; Opinions</span> <span
+                    class="mk">&#xf075; Мислења</span></div>
             <div class="items">
-                <a href="n/?principles" class="searchable">
-                    <div class="item">Принципи</div>
+                <a href="n/?principles">
+                    <div class="item searchable">Принципи</div>
                 </a>
-                <a href="n/?code-standard-cpp" class="searchable">
-                    <div class="item">C++ Code Standard</div>
+                <a href="n/?code-standard-cpp">
+                    <div class="item searchable">C++ Code Standard</div>
                 </a>
-                <a href="n/?zanaetchiski-raspored" class="searchable">
-                    <div class="item">Занаетчиски Распоред</div>
+                <a href="n/?zanaetchiski-raspored">
+                    <div class="item searchable">Занаетчиски Распоред</div>
                 </a>
-                <a href="n/?cyberpunk" class="searchable">
-                    <div class="item"><img src="logo_cyberpunk.png" /></div>
+                <a href="n/?cyberpunk">
+                    <div class="item searchable"><img src="logo_cyberpunk.png" /></div>
                     <span class="hiddenText">Cyberpunk</span>
                 </a>
-                <a href="n/?nomanssky" class="searchable">
-                    <div class="item"><img src="logo_nms.png" /></div>
+                <a href="n/?nomanssky">
+                    <div class="item searchable"><img src="logo_nms.png" /></div>
                     <span class="hiddenText">No Man's Sky</span>
                 </a>
                 <!-- <a href="" class="searchable noLinkPadding">
@@ -727,7 +773,8 @@
         </div>
 
         <div id="navigation">
-            <div class="ct">Music &nbsp; &#xf001; &nbsp; Музика</div>
+            <div class="ct languageContainer"><span class="en currentLang">&#xf001; Music</span> <span
+                    class="mk">&#xf001; Музика</span></div>
             <div class="items inline">
                 <a id="musicLink" href="#" class="searchable noLinkPadding">
                     <div class="nowPlaying">&#xf04b; NOW LISTENING</div>
@@ -746,7 +793,8 @@
         </div>
 
         <div id="navigation">
-            <div class="ct">Links &nbsp; &#xf2bd; &nbsp; Линкови</div>
+            <div class="ct languageContainer"><span class="en currentLang">&#xf2bd; Links</span> <span
+                    class="mk">&#xf2bd; Врски</span></div>
             <div class="items inline">
                 <a href="https://www.deezer.com/en/artist/58205502">
                     <div class="item">&#xe077;</div>
@@ -775,9 +823,15 @@
             </div>
         </div>
 
-        <div id="credits">
-            Copyright© Martin Petkovski 2013-2024. <br>All logos belong to their respective owners. All fonts have a
-            public or personal use license.
+        <div id="credits" class="languageContainer">
+            <span class="mk">
+                Авторски права© Мартин Петковски 2013-2025.<br>Сите логоа се во сопственост на нивните соодветни
+                сопственици. Сите фонтови имаат лиценца за јавна или лична употреба.
+            </span>
+            <span class="en currentLang">
+                Copyright© Martin Petkovski 2013-2025. <br>All logos belong to their respective owners. All fonts have a
+                public or personal use license.
+            </span>
         </div>
     </div>
     </div>
@@ -906,8 +960,8 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-            integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         const renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1057,26 +1111,57 @@
             renderer.render(scene, camera);
         }
 
+        // dynamic cubes
         movementStatic = false;
         Animate();
 
+        // search
         const searchInput = document.getElementById('search-input');
         const container = document.getElementById('container');
 
         searchInput.addEventListener('keyup', function () {
             const searchText = searchInput.value.toLowerCase().trim();
 
-            Array.from(container.querySelectorAll('.searchable *')).forEach(function (child) {
+            Array.from(container.querySelectorAll('.searchable')).forEach(function (child) {
                 const childText = child.textContent.toLowerCase().trim();
 
                 console.log(childText + ' == ' + searchText);
 
                 if (childText.includes(searchText)) {
-                    child.closest('.searchable').style.opacity = 1;
+                    child.closest('a').style.opacity = 1;
                 } else {
-                    child.closest('.searchable').style.opacity = 0.05;
+                    child.closest('a').style.opacity = 0.05;
                 }
             });
+        });
+
+        // change language
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.addEventListener('mouseenter', function (event) {
+                const container = event.target.closest('.languageContainer');
+                if (container && container.querySelector('.mk') && container.querySelector('.en')) {
+                    const mkDiv = container.querySelector('.mk');
+                    const enDiv = container.querySelector('.en');
+
+                    if (mkDiv && enDiv) {
+                        mkDiv.classList.add('currentLang');
+                        enDiv.classList.remove('currentLang');
+                    }
+                }
+            }, true);
+
+            document.body.addEventListener('mouseleave', function (event) {
+                const container = event.target.closest('.languageContainer');
+                if (container && container.querySelector('.mk') && container.querySelector('.en')) {
+                    const mkDiv = container.querySelector('.mk');
+                    const enDiv = container.querySelector('.en');
+
+                    if (mkDiv && enDiv) {
+                        enDiv.classList.add('currentLang');
+                        mkDiv.classList.remove('currentLang');
+                    }
+                }
+            }, true);
         });
 
     </script>
