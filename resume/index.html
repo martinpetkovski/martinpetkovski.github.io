@@ -12,7 +12,7 @@
             font-family: Montserrat, Arial, sans-serif;
             line-height: 1.6;
             margin: 0 auto;
-            max-width: 800px;
+            max-width: 720px;
             padding: 20px;
             text-align: justify;
         }
@@ -35,13 +35,14 @@
         }
         .jobTitle {
             font-size: 20px;
-            font-weight: bold;
+            font-weight: 800;
             text-transform: uppercase;
+            color: #000;
+            text-align: left;
         }
-        .company {
-            font-size: 16px;
+        .company, .company a:link, .company a:visited {
+            font-size: 18px;
             font-weight: bold;
-            color: #900;
         }
         .timespan {
             font-size: 14px;
@@ -88,12 +89,25 @@
             border-bottom: 2px solid #000;
             text-transform: uppercase;
         }
+
+        a:link, a:visited {
+            color: #003688;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        a:hover {
+            background-color: #003688;
+            color: #FFF !important;
+            padding: 0px 20px;
+            transition: 0.2s;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>MARTIN PETKOVSKI</h1>
-        <div id="info" ><span class="descSection">Republic of Macedonia</span> <span class="descSection">+389 78 306 501</span> <span class="descSection">martin@najjak.com</span></p>
+        <div id="info" ><span class="descSection">Republic of Macedonia</span> <span class="descSection"><a href="tel:+38978306501">+389 78 306 501</a></span> <span class="descSection"><a href="mailto:martin@najjak.com">martin@najjak.com</a></span></p>
     </header>
 
     <section>
@@ -105,7 +119,7 @@
         <h2>Skills</h2>
         <div>
             <div><strong>Programming languages:</strong> <span class="item">C++</span> <span class="item">C#</span> <span class="item">C</span> <span class="item">JavaScript</span> <span class="item">Java</span> <span class="item">PHP</span> <span class="item">various scripting languages</span></div> 
-            <div><strong>Technologies:</strong> <span class="item">Win32</span> <span class="item">Unreal Engine Blueprints</span> <span class="item">Dear ImGui</span> <span class="item">WPF</span> <span class="item">FMOD</span> <span class="item">Wwise</span> <span class="item">JUCE</span> <span class="item">HLSL</span> <span class="item">SQL</span> <span class="item">Firebase</span> <span class="item">MongoDB</span> <span class="item">Perforce</span> <span class="item">GIT</span> <span class="item">SVN</span> <span class="item">gtest</span></div>
+            <div><strong>Technologies:</strong> <span class="item">Win32</span> <span class="item">Unreal Engine Blueprints</span> <span class="item">Dear ImGui</span> <span class="item">Qt</span> <span class="item">WPF</span> <span class="item">FMOD</span> <span class="item">Wwise</span> <span class="item">JUCE</span> <span class="item">HLSL</span> <span class="item">SQL</span> <span class="item">Firebase</span> <span class="item">MongoDB</span> <span class="item">Perforce</span> <span class="item">GIT</span> <span class="item">SVN</span> <span class="item">gtest</span></div>
             <div><strong>Game Engines:</strong> <span class="item">Unreal Engine</span> <span class="item">CryEngine</span> <span class="item">Unity</span> <span class="item">Game Maker</span> <span class="item">various propriatery engines</span></div>
             <div><strong>Software:</strong> <span class="item">Unreal Engine Editor</span> <span class="item">Visual Studio</span> <span class="item">FMOD Studio</span> <span class="item">FL Studio</span> <span class="item">P4V</span> <span class="item">Photoshop</span> <span class="item">Sentry</span></div>
         </div>
@@ -115,66 +129,66 @@
         <h2>Experience</h2>
         <div class="job">
             <div class="jobTitle">Senior Programmer</div> 
-            <div class="company">KAMAi MEDIA</div>
+            <div class="company"><a href="https://kamaikamai.com/">KAMAi MEDIA</a></div>
             <div class="timespan">2017 - present</div>
             <div class="jobDescription">
                 <div class="subJob">
                     <div class="jobSubtitle">Internship</div>
                     <div class="timespan">2015</div>
                     <div class="subJobDescription">
-                        Gained experience in working with DirectX on a custom engine. Published Episode 01 of the video game Sonder on Steam.
+                        Gained experience in working with DirectX on a custom engine. Developed and implemented DirectX-based classes for managing 3D billboards and 2D sprites and modified the renderer loop to support them. Published Episode 01 of the video game Sonder on Steam.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Crytek</div>
+                    <div class="jobSubtitle"><a href="https://www.crytek.com/">Crytek</a></div>
                     <div class="timespan">2017 - 2018</div>
                     <div class="subJobDescription">
-                        Close cooperation with Crytek Frankfurt in developing designer tools for the needs of the game Hunt: Showdown in CryEngine and VBA.
-                    </div>
+                        Collaborated closely with Crytek Frankfurt to develop game-balancing tools tailored for Hunt: Showdown using CryEngine and VBA. Implemnted a CryEngine extention which automatically parses and imports game design data from Excel files.</div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Astek</div>
+                    <div class="jobSubtitle"><a href="https://www.youtube.com/@akstekistanbul9371/videos">Astek</a></div>
                     <div class="timespan">2018 - 2019</div>
                     <div class="subJobDescription">
-                        Close cooperation with the company Astek from Istanbul on developing the Oculus Rift simulation game Black Diamond VR in CryEngine.
+                        Engaged in close collaboration with Astek in Istanbul for the development of the Oculus Rift mining simulation game, Black Diamond VR, utilizing CryEngine. Contributed comprehensively to the immersive VR experience, including resolving low-level rendering issues, developing a virtual assistant, and designing gameplay procedures.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Airport Briefing</div>
+                    <div class="jobSubtitle"><a href="https://airportbriefing.aero/">Airport Briefing</a></div>
                     <div class="timespan">2019 - 2020</div>
                     <div class="subJobDescription">
-                        Worked on developing a functional demo for the Airport Briefing software in Unity.
+                        Worked on developing a functional demo and editing tools for the Airport Briefing software in Unity. 
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Star Stable Entertainment</div>
+                    <div class="jobSubtitle"><a href="https://www.starstable.com/">Star Stable Entertainment</a></div>
                     <div class="timespan">2020 - 2022</div>
                     <div class="subJobDescription">
-                        Technical assistance on developing core systems on the in-house engine of the company Star Stable Entertainment based in Sweden.
+                        Technical assistance on developing core systems on the in-house engine of the company Star Stable Entertainment based in Sweden. Worked on creating tools for the custom animation system, developing a custom tools for the build versioning system in Qt, optimization of the version control system in the propriatery engine, etc. 
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Intetic</div>
+                    <div class="jobSubtitle"><a href="https://www.intetic.com/">Intetic</a></div>
                     <div class="timespan">2021 - 2023</div>
                     <div class="subJobDescription">
-                        Assistance on developing the sound on the game The Strange Story of Brian Fisher: Chapter 2.
+                        Assistance on developing the sound on the game The Strange Story of Brian Fisher: Chapter 2, both on the engineering side and on the creative side.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle">Metaverse Game Studios</div>
+                    <div class="jobSubtitle"><a href="https://www.angelicthegame.com/">Metaverse Game Studios</a></div>
                     <div class="timespan">2022 - present</div>
                     <div class="subJobDescription">
-                        Development of core gameplay features and the multiplayer loop on the game Angelic.
+                        Worked on Angelic: The Chaos Theatre. Developed core gameplay systems including heroes, abilities and damage mechanics. Enhanced multiplayer functionality by developing key components of the multiplayer loop. Engineered an automated build pipeline for efficient distribution of game builds.
+                        Created foundational elements of the main menu, ensuring user-friendly navigation. Maintained game compatibility with the latest Unreal Engine updates and integrated third-party plugins, resolving related issues.
                     </div>
                 </div>
             </div>
         </div>
         <div class="job">
             <div class="jobTitle">Undergraduate Teaching Assistant</div>
-            <div class="company">Faculty for Information and Communication Technologies - Bitola</div>
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies - Bitola</a></div>
             <div class="timespan">2015 - 2017; 2021 - 2022</div>
             <div class="jobDescription">
-                Was a teaching assistant in multiple undergraduate courses on Algorithms and Data Structures, Advanced Databases and Data Warehouses.
+                Supported multiple undergraduate courses including Algorithms and Data Structures, and Advanced Databases and Data Warehouses. Facilitated learning by conducting lab sessions and providing one-on-one tutoring to enhance students' understanding of complex concepts. Developed supplementary materials and exercises to reinforce theoretical knowledge with practical applications, improving student engagement and comprehension.
             </div>
         </div>
     </section>
@@ -183,7 +197,7 @@
         <h2>Education</h2>
         <div>
             <div class="jobTitle">MSc in Computer Science and Engineering</div>
-            <div class="company">Faculty for Information and Communication Technologies - Bitola</div>  
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies - Bitola</a></div>  
             <div class="timespan">2022</div>
             <div class="jobDescription">Thesis: Analysis and application of state machines in the design of branching systems in video games</div>
         </div>
@@ -194,6 +208,7 @@
         <div>
             <div>
                 <div class="jobTitle">Nonlinear System Tools</div>
+                <div class="company"><a href="https://www.najjak.com/nst/">Website</a> • <a href="https://store.steampowered.com/app/1772160/NST/">Steam</a></div>
                 <div>
                     <div class="jobDescription">
                         NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of Steamworks, Sentry, Catch Tests, Chromium Renderer and much more.
