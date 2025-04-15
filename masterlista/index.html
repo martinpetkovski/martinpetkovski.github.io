@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музичка Мастер Листа - Музичка Врска</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Montserrat and Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="title-group">
+                <h1>Музичка Мастер Листа</h1>
+                <p>powered by <a href="https://discord.gg/fj6dJGhM" class="xotel-link">XOTEL</a></p>
+            </div>
+            <a href="https://discord.gg/fj6dJGhM" class="add-band-btn">Побарај промена на листата</a>
+        </div>
+    </header>
+    <main>
+        <section id="band-list">
+            <div class="controls">
+                <input type="text" id="search-name" placeholder="Пребарај по име...">
+                <select id="filter-city">
+                    <option value="">Сите градови</option>
+                    <!-- Populated dynamically -->
+                </select>
+                <select id="filter-genre">
+                    <option value="">Сите жанрови</option>
+                    <!-- Populated dynamically -->
+                </select>
+                <select id="filter-status">
+                    <option value="">Сите статуси</option>
+                    <option value="active">АКТИВЕН</option>
+                    <option value="inactive">НЕАКТИВЕН</option>
+                </select>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Слика</th>
+                        <th>Име</th>
+                        <th>Град</th>
+                        <th>Жанр</th>
+                        <th>Звучи како</th>
+                        <th>Линкови</th>
+                        <th>Контакт</th>
+                        <th>Активен</th>
+                    </tr>
+                </thead>
+                <tbody id="band-table-body">
+                    <!-- Bands will be loaded here dynamically -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <!-- jQuery and Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

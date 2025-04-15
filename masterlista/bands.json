@@ -1,0 +1,43 @@
+{
+    "muzickaMasterLista": [
+        {
+            "name": "Sioto Jazz",
+            "city": "Битола, Прилеп",
+            "genre": "Алтернативна, Инди, Фолк",
+            "soundsLike": "The Smashing Pumpkins, The National, Death Cab For Cutie",
+            "image": "https://siotojazz.com/extra/siotojazz-logo.png",
+            "links": {
+                "youtube": "https://www.youtube.com/@SiotoJazz",
+                "instagram": "https://instagram.com/siotojazz"
+            },
+            "contact": "siotojazz@gmail.com",
+            "isActive": true
+        },
+        {
+            "name": "Lufthansa",
+            "city": "Скопје",
+            "genre": "Експериментален рок, Пост-панк, Пост-рок ",
+            "soundsLike": "",
+            "image": "https://ugc.production.linktr.ee/b8030f7a-21e9-4272-ae24-64fa2c3043fa_20100901-PICT0010.jpeg",
+            "links": {
+                "youtube": "https://www.youtube.com/channel/UCMJEaxjbIAxWAiDz6qI7-jQ",
+                "instagram": "https://www.instagram.com/thelufthansaconspirators/"
+            },
+            "contact": "",
+            "isActive": true
+        },
+        {
+            "name": "Moira",
+            "city": "Скопје, Битола",
+            "genre": "",
+            "soundsLike": "",
+            "image": "https://yt3.googleusercontent.com/MTOK7vu52M_wT8n6_inLE9mlXf00Gq6bNLYx5qOY3t6kQVpU1JZwB3kymqSiYcpXld4FPwHj_Q=s160-c-k-c0x00ffffff-no-rj",
+            "links": {
+                "youtube": "https://www.youtube.com/channel/UC4Jwx4pciaWHRdvhCQLBfvw",
+                "instagram": "https://www.instagram.com/moira.threads/"
+            },
+            "contact": "",
+            "isActive": true
+        }
+    ]
+}
