@@ -290,7 +290,7 @@ body, th, td {
 }
 
 .missing-data {
-    color: #999;
+    color: #0003;
 }
 
 @media (max-width: 800px) {

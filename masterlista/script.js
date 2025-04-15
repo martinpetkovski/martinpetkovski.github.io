@@ -149,6 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     .join('');
             }
 
+            // Handle genre display, don't split by comma
+            const genreHtml = band.genre === 'недостигаат податоци' 
+                ? '<span class="missing-data">недостигаат податоци</span>' 
+                : band.genre.split(',').map(g => `<span class="genre">${g.trim()}</span>`).join(', ');
+
             // Handle contact display
             const contactHtml = band.contact === 'недостигаат податоци' 
                 ? '<span class="missing-data">недостигаат податоци</span>' 
@@ -163,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td data-label="Слика" class="band-image"><img src="${band.image}" alt="${band.name}"></td>
                 <td data-label="Име" class="name">${band.name}</td>
                 <td data-label="Град">${band.city}</td>
-                <td data-label="Жанр">${band.genre}</td>
+                <td data-label="Жанр">${genreHtml}</td>
                 <td data-label="Звучи као">${soundsLikeHtml}</td>
                 <td data-label="Линкови" class="links">${linksHtml}</td>
                 <td data-label="Контакт" class="contact">${contactHtml}</td>
