@@ -411,7 +411,7 @@ td[data-label="Статус"] {
     width: 100%;
     height: 100%;
     min-width: 0; /* Allow it to shrink */
-    position: relative; /* For tooltip positioning */
+    position: relative; /* For positioning the tooltip div */
 }
 
 td[data-label="Статус"] > span.status-content {
@@ -424,32 +424,12 @@ td[data-label="Статус"] > span.status-content {
     text-indent: -9999px; /* Hide the text */
     overflow: hidden;
     position: relative;
+    cursor: pointer; /* Indicate it's interactive */
 }
 
-/* Tooltip for status text on hover */
+/* Remove the CSS-based tooltip since we'll handle it with JavaScript */
 td[data-label="Статус"] > span.status-content::after {
-    content: attr(data-status-text); /* Use the data attribute for tooltip text */
-    position: absolute;
-    top: -30px; /* Position above the circle */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-    z-index: 10;
-}
-
-td[data-label="Статус"] > span.status-content:hover::after {
-    opacity: 1;
-    visibility: visible;
+    display: none;
 }
 
 /* Status colors */
@@ -471,6 +451,23 @@ td[data-label="Статус"][data-status="Непознато"] > span.status-co
 
 td[data-label="Статус"].missing-data > span.status-content {
     background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%);
+}
+
+/* Style for the dynamically created status label div */
+.status-tooltip {
+    position: absolute;
+    top: -30px; /* Position above the circle */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 footer {
@@ -545,60 +542,60 @@ footer p {
 }
 
 @media (max-width: 600px) {
+    main {
+        padding: 0.5rem 0; /* Remove horizontal padding to allow full width */
+    }
+    .table-wrapper {
+        padding: 0 0.5rem; /* Add minimal padding to the table wrapper */
+    }
     .toggle-filters-btn {
         display: block;
         font-size: 0.9rem;
         padding: 0.2rem 0.4rem;
         margin-bottom: 0.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
     .controls {
         display: none;
         gap: 0.2rem;
         margin-bottom: 0.2rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
     }
-    /* Card-like layout for each row */
+    /* Card-like layout for each row, single column, full screen width */
     tr { 
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
+        display: block; /* Stack all elements vertically */
         margin-bottom: 0.5rem;
         border: 1px solid #ddd; 
         border-radius: 8px;
         background: white;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 0.3rem;
-        position: relative; /* For floating image */
+        width: 100%; /* Full screen width */
     }
     thead { 
         display: none; 
     }
-    /* Left column: Image (floating) */
+    /* Stack all td elements as separate rows, full width */
+    td {
+        display: block;
+        padding: 0.1rem 0.5rem; /* Add horizontal padding for content */
+        border: none;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 1.1rem;
+        width: 100%; /* Ensure content spans full width */
+    }
     td.band-image {
-        flex: 0 0 auto;
-        width: 68px; /* 60px image + 8px padding */
-        padding: 0 8px 0 0;
+        padding: 0.1rem 0;
         display: flex;
-        align-items: flex-start; /* Align image to the top */
-        justify-content: center;
-        position: absolute; /* Float the image */
-        top: 0.3rem; /* Match card padding */
-        left: 0.3rem;
+        justify-content: center; /* Center the image horizontally */
     }
     .band-image img { 
         width: 60px;
         height: 60px;
         border-radius: 4px;
-    }
-    /* Right column: All other data in separate rows */
-    td:not(.band-image) {
-        flex: 1;
-        display: block;
-        padding: 0.1rem 0;
-        margin-left: 76px; /* Space for the floating image (60px + 8px + 8px buffer) */
-        border: none;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        font-size: 1.1rem;
     }
     td::before { 
         display: none;
@@ -608,7 +605,7 @@ footer p {
         display: none;
     }
     .name { 
-        font-size: 1.4rem;
+        font-size: 1.8rem; /* Larger font size for mobile screens */
         font-weight: 700;
     }
     .links a {
