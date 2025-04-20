@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let linksHtml = '';
             if (band.links.none === 'недостигаат податоци') {
-                linksHtml = '<span class="missing-data">недостигаат податоци</span>';
+                linksHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
             } else {
                 const sortedPlatforms = Object.keys(band.links).sort((a, b) => {
                     const indexA = linkPopularityOrder.indexOf(a);
@@ -454,15 +454,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const genreHtml = band.genre === 'недостигаат податоци' 
-                ? '<span class="missing-data">недостигаат податоци</span>' 
+                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>' 
                 : band.genre.split(',').map(g => `<span class="genre">${g.trim()}</span>`).join(', ');
 
             const contactHtml = band.contact === 'недостигаат податоци' 
-                ? '<span class="missing-data">недостигаат податоци</span>' 
+                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>' 
                 : `<a href="mailto:${band.contact}">${band.contact}</a>`;
 
             const soundsLikeHtml = band.soundsLike === 'недостигаат податоци' 
-                ? '<span class="missing-data">недостигаат податоци</span>' 
+                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>' 
                 : band.soundsLike;
 
             const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
@@ -475,7 +475,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td data-label="Звучи како">${soundsLikeHtml}</td>
                 <td data-label="Линкови" class="links">${linksHtml}</td>
                 <td data-label="Контакт" class="contact">${contactHtml}</td>
-                <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}"><span class="status-content">${band.isActive}</span></td>
+                <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">
+                    <span class="status-content" data-status-text="${band.isActive}">${band.isActive}</span>
+                </td>
             `;
 
             bandTableBody.appendChild(bandRow);

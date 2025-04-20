@@ -309,7 +309,7 @@ td:nth-child(2) {
 
 th:nth-child(8),
 td:nth-child(8) {
-    width: 10%;
+    width: 40px; /* Reduced width for status column (circle + padding) */
 }
 
 th, td {
@@ -401,56 +401,76 @@ body, th, td {
     color: #0003;
 }
 
-/* Status column styling */
+/* Status column styling (All screen sizes) */
 td[data-label="Статус"] {
-    display: table-cell !important; /* Revert to table-cell for natural table layout */
-    vertical-align: middle; /* Center content vertically */
-    padding: 0; /* Remove padding to fill cell */
-    border: none; /* Remove any borders */
-    border-bottom: none !important; /* Override table cell border */
-    width: 100%; /* Fill the cell width */
-    height: 100%; /* Fill the cell height */
-    min-width: 80px; /* Maintain minimum width */
+    display: table-cell !important;
+    vertical-align: middle;
+    padding: 0;
+    border: none;
+    border-bottom: none !important;
+    width: 100%;
+    height: 100%;
+    min-width: 0; /* Allow it to shrink */
+    position: relative; /* For tooltip positioning */
 }
 
-/* Wrap the status text in a span for precise centering */
 td[data-label="Статус"] > span.status-content {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.8rem; /* ~12.8px at 16px base */
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Softer shadow, no inset */
-    width: calc(100% - 8px); /* Account for 4px margin on left and right */
-    height: 20px; /* Fixed height */
-    margin: 4px; /* Add margin around the status element */
-    text-align: center;
-    line-height: normal;
+    display: inline-block;
+    width: 18px; /* Circle size */
+    height: 18px;
+    border-radius: 50%; /* Make it a circle */
+    margin: 0 auto; /* Center the circle */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    text-indent: -9999px; /* Hide the text */
+    overflow: hidden;
+    position: relative;
 }
 
+/* Tooltip for status text on hover */
+td[data-label="Статус"] > span.status-content::after {
+    content: attr(data-status-text); /* Use the data attribute for tooltip text */
+    position: absolute;
+    top: -30px; /* Position above the circle */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 10;
+}
+
+td[data-label="Статус"] > span.status-content:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Status colors */
 td[data-label="Статус"][data-status="Активен"] > span.status-content {
-    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%); /* More saturated green gradient */
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #4caf50 100%);
 }
 
 td[data-label="Статус"][data-status="Неактивен"] > span.status-content {
-    background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 50%, #f44336 100%); /* More saturated red gradient */
+    background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 50%, #f44336 100%);
 }
 
 td[data-label="Статус"][data-status="Можеби"] > span.status-content {
-    background: linear-gradient(135deg, #f57c00 0%, #ff9800 50%, #ffb300 100%); /* More saturated orange-yellow gradient */
+    background: linear-gradient(135deg, #f57c00 0%, #ff9800 50%, #ffb300 100%);
 }
 
 td[data-label="Статус"][data-status="Непознато"] > span.status-content {
-    background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%); /* More saturated gray gradient */
+    background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%);
 }
 
 td[data-label="Статус"].missing-data > span.status-content {
-    background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%); /* More saturated gray gradient for Непознато */
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%);
 }
 
 footer {
@@ -501,7 +521,7 @@ footer p {
         max-height: calc(100vh - 9.5rem);
     }
     th, td { padding: 0.3rem; font-size: 0.8rem; }
-    th { padding: 0.5rem 0.3rem; } /* Adjusted padding for header in tablet view */
+    th { padding: 0.5rem 0.3rem; }
     header { padding: 0.4rem; }
     header h1 { font-size: 1.3rem; }
     header p { font-size: 0.7rem; }
@@ -527,103 +547,103 @@ footer p {
 @media (max-width: 600px) {
     .toggle-filters-btn {
         display: block;
-        font-size: 1rem; /* Larger font for button */
-        padding: 0.3rem 0.6rem; /* Reduced padding */
-        margin-bottom: 0.3rem; /* Reduced margin */
+        font-size: 0.9rem;
+        padding: 0.2rem 0.4rem;
+        margin-bottom: 0.2rem;
     }
     .controls {
         display: none;
-        gap: 0.3rem; /* Reduced gap between filter elements */
-        margin-bottom: 0.3rem; /* Reduced margin */
+        gap: 0.2rem;
+        margin-bottom: 0.2rem;
     }
-    table, thead, tbody, th, td, tr { display: block; }
-    thead { display: none; }
+    /* Card-like layout for each row */
     tr { 
-        margin-bottom: 0.3rem; /* Reduced margin between rows */
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        margin-bottom: 0.5rem;
         border: 1px solid #ddd; 
-        padding: 0.3rem; /* Reduced padding */
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 0.3rem;
+        position: relative; /* For floating image */
     }
-    td { 
-        display: block; 
-        padding: 0.3rem 0; /* Reduced padding */
-        border: none; 
-        word-wrap: break-word; 
-        overflow-wrap: break-word; 
-        font-size: 1.2rem; /* Larger font size for table content */
+    thead { 
+        display: none; 
+    }
+    /* Left column: Image (floating) */
+    td.band-image {
+        flex: 0 0 auto;
+        width: 68px; /* 60px image + 8px padding */
+        padding: 0 8px 0 0;
+        display: flex;
+        align-items: flex-start; /* Align image to the top */
+        justify-content: center;
+        position: absolute; /* Float the image */
+        top: 0.3rem; /* Match card padding */
+        left: 0.3rem;
+    }
+    .band-image img { 
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+    }
+    /* Right column: All other data in separate rows */
+    td:not(.band-image) {
+        flex: 1;
+        display: block;
+        padding: 0.1rem 0;
+        margin-left: 76px; /* Space for the floating image (60px + 8px + 8px buffer) */
+        border: none;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 1.1rem;
     }
     td::before { 
         display: none;
     }
-    td.band-image {
-        white-space: nowrap;
-        text-align: center;
-        width: 88px; /* 80px image + 8px right padding */
-        padding: 0 8px 0 0;
-    }
-    td:nth-child(1),
-    td:nth-child(2) {
-        padding: 0.3rem 0; /* Reduced padding */
-    }
-    td:nth-child(2) {
-        width: auto;
-    }
-    td[data-label="Статус"] {
-        display: block !important;
-        padding: 0.2rem 0.6rem; /* Reduced padding */
-        width: auto;
-        height: auto;
-        min-width: 80px;
-    }
-    td[data-label="Статус"] > span.status-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: calc(100% - 8px);
-        height: 20px; /* Reduced height to match condensed layout */
-        min-height: unset;
-        margin: 4px;
-        font-size: 1rem; /* Larger font size */
-    }
-    .band-image img { 
-        width: 80px; /* Reduced image size */
-        height: 80px;
+    /* Hide missing data on mobile */
+    .missing-data {
+        display: none;
     }
     .name { 
-        font-size: 1.6rem; /* Larger font size for band name */
+        font-size: 1.4rem;
         font-weight: 700;
     }
     .links a {
-        font-size: 1.2rem; /* Larger font size for links */
+        font-size: 1rem;
+        margin-right: 0.3rem;
     }
     .contact a {
-        font-size: 1.2rem; /* Larger font size for contact */
+        font-size: 1rem;
     }
     .header-content { 
         flex-direction: column; 
         align-items: stretch; 
-        gap: 0.3rem; /* Reduced gap */
+        gap: 0.2rem;
     }
     .logo-title-group { 
         flex-direction: column; 
         align-items: center; 
-        gap: 3px; /* Reduced gap */
+        gap: 2px;
     }
     .title-group { 
         align-items: center; 
         text-align: center; 
     }
     header h1 { 
-        font-size: 1.6rem; /* Larger font size */
+        font-size: 1.4rem;
     }
     header p { 
-        font-size: 1rem; /* Larger font size */
+        font-size: 0.9rem;
     }
     header { 
-        padding: 0.3rem; /* Reduced padding */
+        padding: 0.2rem;
     }
     .add-band-btn { 
-        font-size: 1rem; /* Larger font size */
-        padding: 0.3rem 0.6rem; /* Reduced padding */
+        font-size: 0.9rem;
+        padding: 0.2rem 0.4rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2); 
         text-align: center; 
     }
@@ -632,39 +652,39 @@ footer p {
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3); 
     }
     .site-logo-text {
-        font-size: 2.2rem; /* Slightly larger logo text */
+        font-size: 2rem;
     }
     #search-name { 
-        font-size: 1.2rem; /* Larger font size */
-        padding: 0.4rem; /* Reduced padding */
-        min-height: 40px; /* Slightly reduced height */
+        font-size: 1.1rem;
+        padding: 0.3rem;
+        min-height: 36px;
     }
     .select2-container { 
         width: 100% !important; 
     }
     .select2-selection--single { 
-        min-height: 40px; /* Reduced height */
-        padding: 0.4rem; /* Reduced padding */
+        min-height: 36px;
+        padding: 0.3rem;
     }
     .select2-selection__rendered { 
-        font-size: 1.2rem; /* Larger font size */
+        font-size: 1.1rem;
     }
     .select2-selection__arrow { 
-        height: 38px !important; /* Adjusted for reduced height */
+        height: 34px !important;
     }
     .select2-search__field { 
-        font-size: 1.2rem; /* Larger font size */
-        padding: 0.4rem; /* Reduced padding */
+        font-size: 1.1rem;
+        padding: 0.3rem;
     }
     .select2-results__option { 
-        font-size: 1.2rem; /* Larger font size */
-        padding: 0.4rem; /* Reduced padding */
+        font-size: 1.1rem;
+        padding: 0.3rem;
     }
     .clear-filters-btn { 
-        font-size: 1.2rem; /* Larger font size */
-        padding: 0.4rem; /* Reduced padding */
-        width: 40px; /* Slightly reduced size */
-        height: 40px; 
+        font-size: 1.1rem;
+        padding: 0.3rem;
+        width: 36px;
+        height: 36px; 
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2); 
     }
     .clear-filters-btn:hover { 
@@ -672,9 +692,9 @@ footer p {
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3); 
     }
     footer { 
-        padding: 0.3rem; /* Reduced padding */
+        padding: 0.2rem;
     }
     footer p { 
-        font-size: 1rem; /* Larger font size */
+        font-size: 0.9rem;
     }
 }
