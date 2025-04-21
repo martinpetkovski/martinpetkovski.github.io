@@ -15,15 +15,8 @@ body {
 }
 
 /* Mode-specific classes */
-body.compact .band-image,
-body.compact .extra-genres,
-body.compact .extra-sounds-like {
-    display: none !important; /* Hide image and extra genres/sounds-like in compact mode */
-}
-
-body.expanded .single-genre,
-body.expanded .single-sounds-like {
-    display: none !important; /* Hide single genre/sounds-like in expanded mode */
+body.compact .image-column {
+    display: none !important; /* Hide image column in compact mode */
 }
 
 header {
@@ -57,8 +50,8 @@ header::before {
     width: 100%;
     max-width: none;
     padding: 0;
-    flex-wrap: wrap; /* Allow wrapping for new button */
-    gap: 0.3rem; /* Space for multiple buttons */
+    flex-wrap: wrap;
+    gap: 0.3rem;
 }
 
 .logo-title-group {
@@ -129,28 +122,6 @@ header p {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
-/* New toggle mode button */
-.toggle-mode-btn {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: white;
-    background: linear-gradient(135deg, #d81b60 0%, #f06292 100%);
-    padding: 0.3rem 0.6rem;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    transform: translateY(0);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-radius: 0;
-}
-
-.toggle-mode-btn:hover {
-    background: linear-gradient(135deg, #f06292 0%, #d81b60 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-}
-
 main {
     margin: 0 auto;
     padding: 0.5rem 1rem;
@@ -183,7 +154,7 @@ main {
 }
 
 .toggle-filters-btn i {
-    margin-right: 0.2rem;
+    font-size: 0.8rem;
 }
 
 .controls {
@@ -336,6 +307,22 @@ main {
     background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.mode-toggle {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.8rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+}
+
+.mode-toggle input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
 }
 
 .table-wrapper {
@@ -512,6 +499,29 @@ body, th, td {
     background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
 }
 
+body.compact td {
+    font-size: 0.7rem;
+}
+
+body.compact .name {
+    font-size: 0.9rem;
+}
+
+body.compact .genre-item,
+body.compact .sounds-like-item {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+}
+
+body.compact .links a {
+    font-size: 0.7rem;
+}
+
+body.compact .links a.contact-link {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.3rem;
+}
+
 .status-content {
     display: inline-block;
     width: 16px;
@@ -650,15 +660,6 @@ footer p {
         transform: translateY(-1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
-    .toggle-mode-btn {
-        font-size: 0.6rem;
-        padding: 0.2rem 0.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    .toggle-mode-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
     .controls {
         flex-direction: column;
         gap: 0.2rem;
@@ -758,6 +759,10 @@ footer p {
         flex-direction: column;
         gap: 0.1rem;
         margin: 0.1rem 0.3rem;
+    }
+
+    .desktop-only {
+        display: none; /* Hide mode toggle on mobile */
     }
 
     #search-name {
@@ -946,7 +951,7 @@ footer p {
     td[data-label="Статус"] {
         position: absolute;
         top: 50%;
-        right: 0.5rem;
+        right: 10px;
         transform: translateY(-50%);
         padding: 0;
         z-index: 1;
@@ -1010,16 +1015,6 @@ footer p {
     }
 
     .add-band-btn:hover {
-        transform: translateY(-1px);
-    }
-
-    .toggle-mode-btn {
-        font-size: 0.6rem;
-        padding: 0.15rem 0.4rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-    }
-
-    .toggle-mode-btn:hover {
         transform: translateY(-1px);
     }
 

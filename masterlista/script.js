@@ -229,8 +229,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isHidden = controls.style.display === 'none' || controls.style.display === '';
                 controls.style.display = isHidden ? 'flex' : 'none';
                 document.getElementById('toggle-filters').innerHTML = isHidden 
-                    ? '<i class="fas fa-filter"></i> Сокриј филтри' 
-                    : '<i class="fas fa-filter"></i> Филтри';
+                    ? '<i class="fas fa-filter"></i>' 
+                    : '<i class="fas fa-times"></i>';
+            });
+
+            // Mode toggle checkbox
+            document.getElementById('mode-toggle-checkbox').addEventListener('change', (e) => {
+                document.body.classList.toggle('compact', !e.target.checked);
+                document.body.classList.toggle('expanded', e.target.checked);
+                renderBands(bandsData); // Re-render to update display
             });
         } catch (error) {
             console.error('Error loading bands:', error);
@@ -248,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const soundsLikeSelect = document.getElementById('filter-sounds-like');
         const statusSelect = document.getElementById('filter-status');
 
-        // Only populate if dropdowns are empty (initial load Hekler, 1);
+        // Only populate if dropdowns are empty (initial load)
         if (citySelect.innerHTML === '') {
             // Count cities
             const cityCounts = {};
@@ -454,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Add contact email as a link if available
                 if (band.contact !== 'недостигаат податоци') {
-                    linksHtml += `<a href="mailto:${band.contact}" class="contact-link">${band.contact}</a>`;
+                    linksHtml += `<a href="mailto:${band.contact}" class="contact-link"><i class="fa-solid fa-envelope"></i></a>`;
                 }
             }
 
@@ -479,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
 
             bandRow.innerHTML = `
-                <td data-label="Слика" class="band-image"><img src="${band.image}" alt="${band.name}"></td>
+                <td data-label="Слика" class="band-image image-column"><img src="${band.image}" alt="${band.name}"></td>
                 <td data-label="Име" class="name">${band.name}</td>
                 <td data-label="Град">${band.city}</td>
                 <td data-label="Жанр">${genreHtml}</td>

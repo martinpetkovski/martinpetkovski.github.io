@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="compact">
     <header>
         <div class="header-content">
             <div class="logo-title-group">
@@ -24,7 +24,7 @@
     </header>
     <main>
         <button id="toggle-filters" class="toggle-filters-btn" title="Прикажи/Сокриј филтри">
-            <i class="fas fa-filter"></i> Филтри
+            <i class="fas fa-filter"></i>
         </button>
         <div class="controls">
             <input type="text" id="search-name" placeholder="Пребарај по име...">
@@ -32,13 +32,17 @@
             <select id="filter-genre"></select>
             <select id="filter-sounds-like"></select>
             <select id="filter-status"></select>
+            <label class="mode-toggle desktop-only">
+                <input type="checkbox" id="mode-toggle-checkbox" title="Промени во проширен приказ">
+                Проширен приказ
+            </label>
             <button id="clear-filters" class="clear-filters-btn" title="Исчисти филтри"><i class="fas fa-times"></i></button>
         </div>
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th class="image-column"></th>
                         <th>Име</th>
                         <th>Град</th>
                         <th>Жанр</th>
