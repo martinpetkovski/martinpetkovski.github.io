@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (band.isActive === false) {
                         status = 'Неактивен';
                     } else {
-                        status = band.isActive || 'Непознато'; // Handle string values or missing
+                        status = band.isActive || 'Непознато';
                     }
                     return {
                         name: band.name || 'недостигаат податоци',
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update footer with total bands and last modified date
             document.getElementById('total-bands').textContent = bandsData.length;
-            const lastModified = new Date('2025-04-20T14:30:00'); // Hardcoded date and time
+            const lastModified = new Date('2025-04-20T14:30:00');
             const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
             const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
             const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
@@ -228,16 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const controls = document.querySelector('.controls');
                 const isHidden = controls.style.display === 'none' || controls.style.display === '';
                 controls.style.display = isHidden ? 'flex' : 'none';
-                document.getElementById('toggle-filters').innerHTML = isHidden 
-                    ? '<i class="fas fa-filter"></i>' 
-                    : '<i class="fas fa-times"></i>';
+                document.getElementById('toggle-filters').innerHTML = '<i class="fas fa-filter"></i>';
             });
 
             // Mode toggle checkbox
             document.getElementById('mode-toggle-checkbox').addEventListener('change', (e) => {
                 document.body.classList.toggle('compact', !e.target.checked);
                 document.body.classList.toggle('expanded', e.target.checked);
-                renderBands(bandsData); // Re-render to update display
+                renderBands(bandsData);
             });
         } catch (error) {
             console.error('Error loading bands:', error);
