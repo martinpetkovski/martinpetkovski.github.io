@@ -12,7 +12,8 @@
                 "instagram": "https://www.instagram.com/weare100ren/"
             },
             "contact": "",
-            "isActive": "Активен"
+            "isActive": "Активен",
+            "label": "Ново"
         },
         {
             "name": "21 Век",
@@ -193,6 +194,7 @@
                 "linktree": "https://linktr.ee/lufthansaconspirators"
             },
             "contact": "",
+            "label": "Ново Издание",
             "isActive": "Активен"
         },
         {
@@ -258,6 +260,7 @@
                 "instagram": "https://www.instagram.com/siotojazz"
             },
             "contact": "siotojazz@gmail.com",
+            "label":"Ново Издание",
             "isActive": "Активен"
         },
         {
@@ -359,6 +362,7 @@
                 "bandcamp": "https://tsarvontime.bandcamp.com/"
             },
             "contact": "",
+            "label": "Ново",
             "isActive": "Активен"
         },
         {
@@ -581,6 +585,7 @@
             },
             "lastfmName": "Korka",
             "contact": "",
+            "label": "Ново",
             "isActive": "Активен"
         },
         {
