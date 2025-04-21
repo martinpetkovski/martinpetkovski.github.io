@@ -455,7 +455,7 @@ function renderBands(bands) {
 
         const genreHtml = band.genre === 'недостигаат податоци' 
             ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>' 
-            : band.genre.split(',').map(g => `<span class="genre">${g.trim()}</span>`).join(', ');
+            : band.genre.split(',').map(g => `<div class="genre-item">${g.trim()}</div>`).join('');
 
         const contactHtml = band.contact === 'недостигаат податоци' 
             ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>' 
@@ -468,6 +468,7 @@ function renderBands(bands) {
         const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
 
         bandRow.innerHTML = `
+            <input type="checkbox" class="details-toggle" id="details-${band.name.replace(/\s/g, '-')}" style="display: none;">
             <td data-label="Слика" class="band-image"><img src="${band.image}" alt="${band.name}"></td>
             <td data-label="Име" class="name">${band.name}</td>
             <td data-label="Град">${band.city}</td>
