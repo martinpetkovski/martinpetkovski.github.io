@@ -1,119 +1,15 @@
 {
     "muzickaMasterLista": [
         {
-            "name": "Sioto Jazz",
-            "city": "Битола, Прилеп",
-            "genre": "Поп, Алтернативен Рок, Инди, Фолк",
-            "soundsLike": "The Smashing Pumpkins, The National, Death Cab For Cutie",
-            "links": {
-                "youtube": "https://www.youtube.com/@SiotoJazz",
-                "spotify": "https://open.spotify.com/artist/36K91fF4LvLQQQ2V7MBK6f",
-                "website": "https://siotojazz.com/",
-                "instagram": "https://instagram.com/siotojazz"
-            },
-            "contact": "siotojazz@gmail.com",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Lufthansa",
-            "city": "Скопје",
-            "genre": "Експериментален рок, Пост-панк, Пост-рок ",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/channel/UCMJEaxjbIAxWAiDz6qI7-jQ",
-                "instagram": "https://www.instagram.com/thelufthansaconspirators/",
-                "linktree": "https://linktr.ee/lufthansaconspirators"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Moira",
-            "city": "Скопје, Битола",
-            "genre": "Џез, Инди, Фолк",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/channel/UC4Jwx4pciaWHRdvhCQLBfvw",
-                "instagram": "https://www.instagram.com/moira.threads/"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Дупер",
-            "city": "Скопје",
-            "genre": "Поп, Фанк, Рок",
-            "soundsLike": "Parcels, Red Hot Chili Peppers",
-            "links": {
-                "youtube": "https://www.youtube.com/channel/UCPryzPhv7vnFn8y34AdAQjQ",
-                "instagram": "https://www.instagram.com/duperishka/"
-            },
-            "contact": "",
-            "lastfmName": "duper",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Funk Shui",
-            "city": "Скопје",
-            "genre": "Фанк, Алтернативен Рок",
-            "soundsLike": "Red Hot Chili Peppers",
-            "links": {
-                "website": "https://www.funkshui.mk/",
-                "spotify": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww",
-                "youtube": "https://www.youtube.com/channel/UC6TQjWbVsf4p90YxJBP6zhA",
-                "instagram": "https://www.instagram.com/funkshui_/"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Young Dadi",
-            "city": "Скопје",
-            "genre": "Трап, Хип Хоп",
-            "soundsLike": "",
-            "links": {
-                "spotify": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq",
-                "youtube": "https://www.youtube.com/@YoungDadi",
-                "instagram": "https://www.instagram.com/youngdadii"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Дина Јашари",
-            "city": "Скопје, Битола",
-            "genre": "Поп",
-            "soundsLike": "",
-            "links": {
-                "spotify": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM",
-                "youtube": "https://www.youtube.com/channel/UCW30ljS2EXlcjYl0i1pl5Uw",
-                "instagram": "https://www.instagram.com/dinqee/"
-            },
-            "lastfmName": "Dina Jashari",
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Pluto's Doubts",
-            "city": "Скопје",
-            "genre": "Алтернативен Рок",
-            "soundsLike": "",
-            "links": {
-                "spotify": "https://open.spotify.com/artist/10CYYR1v05zP9JlAJp7aiP",
-                "youtube": "https://www.youtube.com/channel/UCujtsWy1CyT9MGLvBZWxI5A",
-                "instagram": "https://www.instagram.com/plutosdoubts/"
-            },
-            "contact": "",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "Prince$$ Donatsu",
+            "name": "100REN",
             "city": "Битола",
-            "genre": "Поп, Хип Хоп",
+            "genre": "Алтернативен Рок, Хардкор",
             "soundsLike": "",
             "links": {
-                "youtube": "https://www.youtube.com/@MVRSVR",
-                "instagram": "https://www.instagram.com/kika_ch00"
+                "spotify": "https://open.spotify.com/artist/7yF730QGHicGpE3PccTJ0u",
+                "youtube": "https://www.youtube.com/channel/UCE6quJM-4pAb6Bl0OZtctMg",
+                "linktree": "https://linktr.ee/100renhardcore",
+                "instagram": "https://www.instagram.com/weare100ren/"
             },
             "contact": "",
             "isActive": "Активен"
@@ -131,102 +27,16 @@
             "isActive": "Активен"
         },
         {
-            "name": "Xajka",
-            "city": "Скопје",
-            "genre": "Панк, Панк Рок",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/@xajka7045",
-                "spotify": "https://open.spotify.com/artist/4LyzF6Dp7nTJnh1TSsT1uG",
-                "instagram": "https://www.instagram.com/xajka",
-                "linktree": "https://linktr.ee/xajka"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Фолтин",
+            "name": "Amaneth",
             "city": "Битола",
-            "genre": "Етно, Џез",
+            "genre": "Стонер Рок, Метал",
             "soundsLike": "",
             "links": {
-                "facebook": "https://www.facebook.com/foltin.band/",
-                "spotify": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7",
-                "instagram": "https://www.instagram.com/foltin_band",
-                "bandcamp": "https://foltin.bandcamp.com/"
+                "instagram": "https://www.instagram.com/amaneth.band/"
             },
-            "lastfmName": "Foltin",
+            "lastfmName": "Amaneth",
             "contact": "",
             "isActive": "Активен"
-        },
-        {
-            "name": "Donplaya",
-            "city": "Битола",
-            "genre": "Рап, Трап, Хип Хоп",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/@MVRSVR",
-                "instagram": "https://www.instagram.com/sinkatasin/",
-                "spotify": "https://open.spotify.com/artist/3ch8xMEWLNzIwFGlvjQ8EN"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Bon Praskiza",
-            "city": "Битола",
-            "genre": "Рап, Трап, Хип Хоп",
-            "soundsLike": "Chief Keef",
-            "links": {
-                "youtube": "https://www.youtube.com/@MVRSVR",
-                "instagram": "https://www.instagram.com/047chiefkico/",
-                "spotify": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Vagina Corporation",
-            "city": "Скопје",
-            "genre": "Психоделичен Рок, Гараж, Рок, Пост-вејв",
-            "soundsLike": "",
-            "links": {
-                "bandcamp": "https://x3maragorn.bandcamp.com/",
-                "instagram": "https://www.instagram.com/vagina_corporation",
-                "spotify": "https://open.spotify.com/artist/5k8NIR12dySVeJnteRqkVz"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Новиот Почеток",
-            "city": "Скопје",
-            "genre": "Панк Рок, Панк",
-            "soundsLike": "",
-            "links": {
-                "website": "https://thebeginnings.band/",
-                "youtube": "https://www.youtube.com/user/noviotpochetok",
-                "bandcamp": "https://thebeginnings.bandcamp.com/",
-                "facebook": "https://www.facebook.com/noviotpochetok/",
-                "spotify": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb",
-                "instagram": "https://www.instagram.com/noviotpochetok/"
-            },
-            "lastfmName": "Noviot Pochetok",
-            "contact": "",
-            "isActive": "Непознато"
-        },
-        {
-            "name": "The John",
-            "city": "Скопје",
-            "genre": "Пост-панк, Инди Рок",
-            "soundsLike": "",
-            "links": {
-                "soundcloud": "https://soundcloud.com/the-john-of-skopje",
-                "facebook": "https://www.facebook.com/p/The-John-official-100046240842709/",
-                "spotify": "https://open.spotify.com/artist/0weNyr4C5tEpxfHDq5UTKS"
-            },
-            "contact": "",
-            "isActive": "Неактивен"
         },
         {
             "name": "Basement Cult",
@@ -257,18 +67,400 @@
             "isActive": "Неактивен"
         },
         {
-            "name": "Корка",
-            "city": "Кочани",
-            "genre": "Нојз Рок, Алтернативен Рок",
-            "soundsLike": "",
+            "name": "Bon Praskiza",
+            "city": "Битола",
+            "genre": "Рап, Трап, Хип Хоп",
+            "soundsLike": "Chief Keef",
             "links": {
-                "instagram": "https://www.instagram.com/korka.56/",
-                "youtube": "https://www.youtube.com/@korka56",
-                "linktree": "https://linktr.ee/korka56"
+                "youtube": "https://www.youtube.com/@MVRSVR",
+                "instagram": "https://www.instagram.com/047chiefkico/",
+                "spotify": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
             },
-            "lastfmName": "Korka",
             "contact": "",
             "isActive": "Активен"
+        },
+        {
+            "name": "Code 369",
+            "city": "Битола",
+            "genre": "Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=lZRONpYuaNU",
+                "instagram": "https://www.instagram.com/code369.official/",
+                "spotify": "https://open.spotify.com/artist/7JCCgN8X4L6rAJoc15RvYl"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Conquering Lion",
+            "city": "Тетово",
+            "genre": "Реге, Даб, Њу Рутс, Кросовер",
+            "soundsLike": "Bob Marley",
+            "links": {
+                "spotify": "https://open.spotify.com/artist/66mXT8eViET9W5YZdvnifb",
+                "youtube": "https://www.youtube.com/@conqueringlionmk",
+                "facebook": "https://www.facebook.com/ConqueringLionMusic",
+                "instagram": "https://www.instagram.com/conqueringlion1mk"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Contact 59",
+            "city": "Скопје",
+            "genre": "Инди",
+            "soundsLike": "",
+            "links": {
+                "instagram": "https://www.instagram.com/cntct59/",
+                "spotify": "https://open.spotify.com/artist/2kFwdMquUHliq8u97ldfWv"
+            },
+            "contact": "",
+            "isActive": "Непознато"
+        },
+        {
+            "name": "Cut Your Nipple",
+            "city": "Тетово",
+            "genre": "Пост-панк",
+            "soundsLike": "",
+            "links": {
+                "instagram": "https://www.instagram.com/cut_your_nipple/",
+                "spotify": "https://open.spotify.com/artist/4J2qho3BqrgJEOs25B8ajZ"
+            },
+            "contact": "cutyournipple@gmail.com",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Donplaya",
+            "city": "Битола",
+            "genre": "Рап, Трап, Хип Хоп",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@MVRSVR",
+                "instagram": "https://www.instagram.com/sinkatasin/",
+                "spotify": "https://open.spotify.com/artist/3ch8xMEWLNzIwFGlvjQ8EN"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Funk Shui",
+            "city": "Скопје",
+            "genre": "Фанк, Алтернативен Рок",
+            "soundsLike": "Red Hot Chili Peppers",
+            "links": {
+                "website": "https://www.funkshui.mk/",
+                "spotify": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww",
+                "youtube": "https://www.youtube.com/channel/UC6TQjWbVsf4p90YxJBP6zhA",
+                "instagram": "https://www.instagram.com/funkshui_/"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Jeff Bahami",
+            "city": "Битола",
+            "genre": "Синтвејв",
+            "soundsLike": "Carpenter Brut, Gunship",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=bG6zhoTLdKs",
+                "instagram": "https://www.instagram.com/jeffbahami/"
+            },
+            "contact": "martin@najjak.com",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Lucent",
+            "city": "Битола",
+            "genre": "Дум Метал",
+            "soundsLike": "",
+            "links": {
+                "facebook": "https://www.facebook.com/Lucentbandofficial/",
+                "bandcamp": "https://lucent1.bandcamp.com/album/lucent",
+                "instagram": "https://www.instagram.com/lucent_band"
+            },
+            "contact": "bandlucent@gmail.com",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Lufthansa",
+            "city": "Скопје",
+            "genre": "Експериментален рок, Пост-панк, Пост-рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/channel/UCMJEaxjbIAxWAiDz6qI7-jQ",
+                "instagram": "https://www.instagram.com/thelufthansaconspirators/",
+                "linktree": "https://linktr.ee/lufthansaconspirators"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Moira",
+            "city": "Скопје, Битола",
+            "genre": "Џез, Инди, Фолк",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/channel/UC4Jwx4pciaWHRdvhCQLBfvw",
+                "instagram": "https://www.instagram.com/moira.threads/"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Molokai",
+            "city": "Битола",
+            "genre": "Сурф, Панк",
+            "soundsLike": "Slacktone, Dick Dale, The Ventures",
+            "links": {
+                "youtube": "https://www.youtube.com/@molokaiau",
+                "facebook": "https://www.facebook.com/molokaiau",
+                "bandcamp": "https://molokaiau.bandcamp.com"
+            },
+            "lastfmName": "Molokai",
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Pluto's Doubts",
+            "city": "Скопје",
+            "genre": "Алтернативен Рок",
+            "soundsLike": "",
+            "links": {
+                "spotify": "https://open.spotify.com/artist/10CYYR1v05zP9JlAJp7aiP",
+                "youtube": "https://www.youtube.com/channel/UCujtsWy1CyT9MGLvBZWxI5A",
+                "instagram": "https://www.instagram.com/plutosdoubts/"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Prince$$ Donatsu",
+            "city": "Битола",
+            "genre": "Поп, Хип Хоп",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@MVRSVR",
+                "instagram": "https://www.instagram.com/kika_ch00"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Sioto Jazz",
+            "city": "Битола, Прилеп",
+            "genre": "Поп, Алтернативен Рок, Инди, Фолк",
+            "soundsLike": "The Smashing Pumpkins, The National, Death Cab For Cutie",
+            "links": {
+                "youtube": "https://www.youtube.com/@SiotoJazz",
+                "spotify": "https://open.spotify.com/artist/36K91fF4LvLQQQ2V7MBK6f",
+                "website": "https://siotojazz.com/",
+                "instagram": "https://www.instagram.com/siotojazz"
+            },
+            "contact": "siotojazz@gmail.com",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Sound Waves",
+            "city": "Битола",
+            "genre": "Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@soundwavesofficial407",
+                "instagram": "https://www.instagram.com/soundwavesofficial__/"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "String Forces",
+            "city": "Скопје",
+            "genre": "Поп, Експериментален Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/user/djloopool1",
+                "facebook": "https://www.facebook.com/StringForces/",
+                "bandcamp": "https://stringforces.bandcamp.com/"
+            },
+            "contact": "",
+            "isActive": "Можеби"
+        },
+        {
+            "name": "Sunset Cruise",
+            "city": "Битола",
+            "genre": "Вејпорвејв, Синтвејв",
+            "soundsLike": "The Midnight",
+            "links": {
+                "youtube": "https://www.youtube.com/@sunsetcruise2160"
+            },
+            "lastfmName": "Sunset Cruise",
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Sweet Rapscalions",
+            "city": "Битола",
+            "genre": "Поп, Експериментална",
+            "soundsLike": "Grimes",
+            "links": {
+                "facebook": "https://www.facebook.com/sweetrapscallions/",
+                "deezer": "https://www.deezer.com/us/artist/266014612",
+                "youtube": "https://www.youtube.com/user/SweetRapscallions"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "The Government",
+            "city": "Битола",
+            "genre": "Пост-панк, Брит Рок",
+            "soundsLike": "Franz Ferdinand, The Cure, The Killers",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=P5cbzBCO-B0",
+                "spotify": "https://open.spotify.com/artist/6b6B5gaszXchnqZVjPfzqa",
+                "itunes": "https://music.apple.com/dk/album/razbudi-me/1673392750"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "The John",
+            "city": "Скопје",
+            "genre": "Пост-панк, Инди Рок",
+            "soundsLike": "",
+            "links": {
+                "soundcloud": "https://soundcloud.com/the-john-of-skopje",
+                "facebook": "https://www.facebook.com/p/The-John-official-100046240842709/",
+                "spotify": "https://open.spotify.com/artist/0weNyr4C5tEpxfHDq5UTKS"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Three Minutes in the Rain",
+            "city": "Битола",
+            "genre": "Пост-панк, Брит Рок",
+            "soundsLike": "Franz Ferdinand, The Cure, The Killers",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=JxkODICp2-0"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Tsar Von Time",
+            "city": "Битола",
+            "genre": "Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@tsarvontime",
+                "instagram": "https://www.instagram.com/tsarvontime/",
+                "linktree": "https://linktr.ee/tsarvontime",
+                "bandcamp": "https://tsarvontime.bandcamp.com/"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Vagina Corporation",
+            "city": "Скопје",
+            "genre": "Психоделичен Рок, Гараж, Рок, Пост-вејв",
+            "soundsLike": "",
+            "links": {
+                "bandcamp": "https://x3maragorn.bandcamp.com/",
+                "instagram": "https://www.instagram.com/vagina_corporation",
+                "spotify": "https://open.spotify.com/artist/5k8NIR12dySVeJnteRqkVz"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Xajka",
+            "city": "Скопје",
+            "genre": "Панк, Панк Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@xajka7045",
+                "spotify": "https://open.spotify.com/artist/4LyzF6Dp7nTJnh1TSsT1uG",
+                "instagram": "https://www.instagram.com/xajka",
+                "linktree": "https://linktr.ee/xajka"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "XARAKIRI",
+            "city": "Скопје",
+            "genre": "Пост-панк",
+            "soundsLike": "",
+            "links": {
+                "instagram": "https://www.instagram.com/_xaraxiri_/",
+                "bandcamp": "https://harakiri6.bandcamp.com/album/-",
+                "youtube": "https://www.youtube.com/@XARAKIRI36",
+                "spotify": "https://open.spotify.com/artist/4hOkAoNwdWueD5nwRxBUnZ",
+                "facebook": "https://www.facebook.com/p/Xarakiri-100087986001927/"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Young Dadi",
+            "city": "Скопје",
+            "genre": "Трап, Хип Хоп",
+            "soundsLike": "",
+            "links": {
+                "spotify": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq",
+                "youtube": "https://www.youtube.com/@YoungDadi",
+                "instagram": "https://www.instagram.com/youngdadii"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Абракадабра",
+            "city": "Битола",
+            "genre": "Метал",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=BYgDJUu7dNg"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Александар Гулевски",
+            "city": "Битола",
+            "genre": "Рок, Дарк Вејв, Готик Рок",
+            "soundsLike": "Мизар",
+            "links": {
+                "facebook": "https://www.facebook.com/profile.php?id=100070404142092",
+                "youtube": "https://www.youtube.com/@AleksandarGulevskiOfficial",
+                "instagram": "https://www.instagram.com/aleksandar.gulevski.official/",
+                "soundcloud": "https://soundcloud.com/gulevski-aleksandar"
+            },
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Анастасија",
+            "city": "Скопје",
+            "genre": "Етно, Фолк, Електронска",
+            "soundsLike": "Dead Can Dance, Lisa Gerrard",
+            "links": {},
+            "lastfmName": "Anastasia",
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Апансас",
+            "city": "Битола, Скопје",
+            "genre": "Шугејз, Емо",
+            "soundsLike": "American Football, My Bloody Valentine, Slowdive",
+            "links": {
+                "youtube": "https://www.youtube.com/watch?v=KIgLtXz8zqA"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
         },
         {
             "name": "Архангел",
@@ -283,21 +475,44 @@
             "isActive": "Непознато"
         },
         {
-            "name": "Фонија",
+            "name": "Бадмингтонс",
             "city": "Скопје",
-            "genre": "Панк, Панк Рок",
-            "soundsLike": "",
-            "links": {
-                "spotify": "https://open.spotify.com/artist/3RxYraLPxsr7icrpYd6r2T",
-                "bandcamp": "https://fonija.bandcamp.com/",
-                "youtube": "https://www.youtube.com/channel/UCOZJPglGoC0D9fQkeWGfkvA",
-                "facebook": "https://www.facebook.com/fonija.skp",
-                "soundcloud": "https://soundcloud.com/fonija",
-                "instagram": "https://www.instagram.com/fonijamk/"
-            },
-            "lastfmName": "Fonija",
+            "genre": "Панк Рок, Алтернативен Рок",
+            "soundsLike": "Green Day, Blink-182",
+            "links": {},
+            "lastfmName": "Badmintons",
             "contact": "",
             "isActive": "Неактивен"
+        },
+        {
+            "name": "ВЕЛ",
+            "city": "Битола",
+            "genre": "Алтернативен Рок, Инди Рок",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@vel2021",
+                "facebook": "https://www.facebook.com/velbend",
+                "instagram": "https://www.instagram.com/vel.band.official/",
+                "spotify": "https://open.spotify.com/artist/5ALjKixAf4cJM6yYsRcVgF",
+                "bandcamp": "https://vel2020.bandcamp.com/album/-"
+            },
+            "lastfmName": "В Е Л",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Дивоградба",
+            "city": "Скопје",
+            "genre": "Пост-панк",
+            "soundsLike": "",
+            "links": {
+                "instagram": "https://www.instagram.com/divogradba/",
+                "bandcamp": "https://divogradba.bandcamp.com/album/--2",
+                "spotify": "https://open.spotify.com/album/2RwQuJQXLMFCuWKQaQ33mc"
+            },
+            "lastfmName": "Divogradba",
+            "contact": "",
+            "isActive": "Непознато"
         },
         {
             "name": "Димиш",
@@ -318,32 +533,209 @@
             "isActive": "Активен"
         },
         {
-            "name": "Телемама",
-            "city": "Скопје",
-            "genre": "Инди, Експериментална",
+            "name": "Дина Јашари",
+            "city": "Скопје, Битола",
+            "genre": "Поп",
             "soundsLike": "",
             "links": {
-                "facebook": "https://www.facebook.com/telemamamusic/",
-                "bandcamp": "https://telemama.bandcamp.com/",
-                "spotify": "https://open.spotify.com/artist/0QLCb3xH4ocCKluNbDvtO9"
+                "spotify": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM",
+                "youtube": "https://www.youtube.com/channel/UCW30ljS2EXlcjYl0i1pl5Uw",
+                "instagram": "https://www.instagram.com/dinqee/"
             },
-            "lastfmName": "Telemama",
+            "lastfmName": "Dina Jashari",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Дупер",
+            "city": "Скопје",
+            "genre": "Поп, Фанк, Рок",
+            "soundsLike": "Parcels, Red Hot Chili Peppers",
+            "links": {
+                "youtube": "https://www.youtube.com/channel/UCPryzPhv7vnFn8y34AdAQjQ",
+                "instagram": "https://www.instagram.com/duperishka/"
+            },
+            "lastfmName": "duper",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Калиопи",
+            "city": "Скопје",
+            "genre": "Поп, Рок",
+            "soundsLike": "Annie Lennox, Kate Bush",
+            "links": {},
+            "lastfmName": "Kaliopi",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Корка",
+            "city": "Кочани",
+            "genre": "Нојз Рок, Алтернативен Рок",
+            "soundsLike": "",
+            "links": {
+                "instagram": "https://www.instagram.com/korka.56/",
+                "youtube": "https://www.youtube.com/@korka56",
+                "linktree": "https://linktr.ee/korka56"
+            },
+            "lastfmName": "Korka",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Крсто Роџевски",
+            "city": "Битола",
+            "genre": "Боса Нова",
+            "soundsLike": "Antonio Carlos Jobim",
+            "links": {
+                "spotify": "https://open.spotify.com/artist/3qapldQpIcvfsV5ow1rrTc"
+            },
+            "lastfmName": "Kristo Rodzevski",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Леб и Сол",
+            "city": "Скопје",
+            "genre": "Прогресивен Рок, Џез Рок, Етно",
+            "soundsLike": "Weather Report, Mahavishnu Orchestra",
+            "links": {},
+            "lastfmName": "Leb i Sol",
+            "contact": "",
+            "isActive": "Можеби"
+        },
+        {
+            "name": "МаЗНо, аМа Не е",
+            "city": "Битола",
+            "genre": "Шугејз, Пост-панк, Пост-рок",
+            "soundsLike": "The XX, The Cure, The Smiths",
+            "links": {
+                "youtube": "https://www.youtube.com/@ma3hoamahee551",
+                "bandcamp": "https://dajtedrugoime.bandcamp.com/album/fkraj",
+                "facebook": "https://www.facebook.com/ma3Ho/"
+            },
+            "lastfmName": "Ma3Ho, aMa He e",
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Мизар",
+            "city": "Скопје",
+            "genre": "Готик Рок, Дарк Вејв, Пост-панк",
+            "soundsLike": "The Sisters of Mercy, Bauhaus",
+            "links": {},
+            "lastfmName": "Mizar",
+            "contact": "",
+            "isActive": "Можеби"
+        },
+        {
+            "name": "Новиот Почеток",
+            "city": "Скопје",
+            "genre": "Панк Рок, Панк",
+            "soundsLike": "",
+            "links": {
+                "website": "https://thebeginnings.band/",
+                "youtube": "https://www.youtube.com/user/noviotpochetok",
+                "bandcamp": "https://thebeginnings.bandcamp.com/",
+                "facebook": "https://www.facebook.com/noviotpochetok/",
+                "spotify": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb",
+                "instagram": "https://www.instagram.com/noviotpochetok/"
+            },
+            "lastfmName": "Noviot Pochetok",
             "contact": "",
             "isActive": "Непознато"
         },
         {
-            "name": "Дивоградба",
+            "name": "Нокаут",
             "city": "Скопје",
-            "genre": "Пост-панк",
+            "genre": "Поп Рок, Алтернативен Рок",
+            "soundsLike": "Coldplay, The Killers",
+            "links": {},
+            "lastfmName": "Nokaut",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Огнен Здравковски",
+            "city": "Скопје",
+            "genre": "Поп, Фолк",
+            "soundsLike": "",
+            "links": {},
+            "lastfmName": "Ognen Zdravkovski",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Паркети",
+            "city": "Битола",
+            "genre": "Панк, Панк Рок",
+            "soundsLike": "The Ramones, Dick Dale",
+            "links": {
+                "youtube": "https://www.youtube.com/@SashoParket108"
+            },
+            "lastfmName": "Parketi",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Пијан Славеј",
+            "city": "Битола",
+            "genre": "Фолк, Инди",
             "soundsLike": "",
             "links": {
-                "instagram": "https://www.instagram.com/divogradba/",
-                "bandcamp": "https://divogradba.bandcamp.com/album/--2",
-                "spotify": "https://open.spotify.com/album/2RwQuJQXLMFCuWKQaQ33mc"
+                "instagram": "https://www.instagram.com/pijan_slavej/",
+                "spotify": "https://open.spotify.com/artist/4srixwi6VyzBHiyLPnRGtl",
+                "youtube": "https://www.youtube.com/@pijanslavej"
             },
-            "lastfmName": "Divogradba",
+            "lastfmName": "Pijan Slavej",
             "contact": "",
-            "isActive": "Непознато"
+            "isActive": "Активен"
+        },
+        {
+            "name": "ПМГ Колектив",
+            "city": "Скопје",
+            "genre": "Хип Хоп, Електронска",
+            "soundsLike": "The Roots, OutKast",
+            "links": {},
+            "lastfmName": "PMG Kolektiv",
+            "contact": "",
+            "isActive": "Можеби"
+        },
+        {
+            "name": "Пресен Зрак",
+            "city": "Битола",
+            "genre": "Панк, Метал, Реге",
+            "soundsLike": "",
+            "links": {
+                "youtube": "https://www.youtube.com/@PresenZrak",
+                "bandcamp": "https://presenzrak.bandcamp.com"
+            },
+            "lastfmName": "Presen Zrak",
+            "contact": "",
+            "isActive": "Можеби"
+        },
+        {
+            "name": "Промашена Инвестиција",
+            "city": "Битола",
+            "genre": "Ска, Панк, Панк Рок",
+            "soundsLike": "",
+            "links": {
+                "facebook": "https://www.facebook.com/promasenaPI",
+                "youtube": "https://www.youtube.com/playlist?list=PLcpZxiUrR-iJkV1mbIcRQ1navmX06J_em"
+            },
+            "contact": "",
+            "isActive": "Неактивен"
+        },
+        {
+            "name": "Синтезис",
+            "city": "Скопје",
+            "genre": "Фолк, Етно, Џез",
+            "soundsLike": "Goran Bregović, The Gipsy Kings",
+            "links": {},
+            "lastfmName": "Sintezis",
+            "contact": "",
+            "isActive": "Активен"
         },
         {
             "name": "Стој, После!",
@@ -362,106 +754,98 @@
             "isActive": "Активен"
         },
         {
-            "name": "XARAKIRI",
+            "name": "Суперхикс",
             "city": "Скопје",
-            "genre": "Пост-панк",
-            "soundsLike": "",
+            "genre": "Ска, Панк, Рок",
+            "soundsLike": "The Toasters, The Specials, Madness",
             "links": {
-                "instagram": "https://www.instagram.com/_xaraxiri_/",
-                "bandcamp": "https://harakiri6.bandcamp.com/album/-",
-                "youtube": "https://www.youtube.com/@XARAKIRI36",
-                "spotify": "https://open.spotify.com/artist/4hOkAoNwdWueD5nwRxBUnZ",
-                "facebook": "https://www.facebook.com/p/Xarakiri-100087986001927/"
+                "youtube": "https://www.youtube.com/@SuperhiksMK",
+                "instagram": "https://www.instagram.com/superhiksofficial/",
+                "spotify": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo",
+                "bandcamp": "https://superhiks.bandcamp.com/"
             },
+            "lastfmName": "Superhiks",
             "contact": "",
             "isActive": "Активен"
         },
         {
-            "name": "Cut Your Nipple",
-            "city": "Тетово",
-            "genre": "Пост-панк",
+            "name": "Тамара Тодевска",
+            "city": "Скопје",
+            "genre": "Поп",
+            "soundsLike": "Celine Dion, Adele",
+            "links": {},
+            "lastfmName": "Tamara Todevska",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Телемама",
+            "city": "Скопје",
+            "genre": "Инди, Експериментална",
             "soundsLike": "",
             "links": {
-                "instagram": "https://www.instagram.com/cut_your_nipple/",
-                "spotify": "https://open.spotify.com/artist/4J2qho3BqrgJEOs25B8ajZ"
+                "facebook": "https://www.facebook.com/telemamamusic/",
+                "bandcamp": "https://telemama.bandcamp.com/",
+                "spotify": "https://open.spotify.com/artist/0QLCb3xH4ocCKluNbDvtO9"
             },
-            "contact": "cutyournipple@gmail.com",
+            "lastfmName": "Telemama",
+            "contact": "",
+            "isActive": "Непознато"
+        },
+        {
+            "name": "Тони Зен",
+            "city": "Скопје",
+            "genre": "Хип Хоп, Рап",
+            "soundsLike": "Eminem, Jay-Z",
+            "links": {},
+            "lastfmName": "Toni Zen",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Фолтин",
+            "city": "Битола",
+            "genre": "Етно, Џез",
+            "soundsLike": "",
+            "links": {
+                "facebook": "https://www.facebook.com/foltin.band/",
+                "spotify": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7",
+                "instagram": "https://www.instagram.com/foltin_band",
+                "bandcamp": "https://foltin.bandcamp.com/"
+            },
+            "lastfmName": "Foltin",
+            "contact": "",
+            "isActive": "Активен"
+        },
+        {
+            "name": "Фонија",
+            "city": "Скопје",
+            "genre": "Панк, Панк Рок",
+            "soundsLike": "",
+            "links": {
+                "spotify": "https://open.spotify.com/artist/3RxYraLPxsr7icrpYd6r2T",
+                "bandcamp": "https://fonija.bandcamp.com/",
+                "youtube": "https://www.youtube.com/channel/UCOZJPglGoC0D9fQkeWGfkvA",
+                "facebook": "https://www.facebook.com/fonija.skp",
+                "soundcloud": "https://soundcloud.com/fonija",
+                "instagram": "https://www.instagram.com/fonijamk/"
+            },
+            "lastfmName": "Fonija",
+            "contact": "",
             "isActive": "Неактивен"
         },
         {
-            "name": "String Forces",
-            "city": "Скопје",
-            "genre": "Поп, Експериментален Рок",
-            "soundsLike": "",
+            "name": "Фосфен",
+            "city": "Битола",
+            "genre": "Алтернативен Рок, Пост-рок, Пост-панк",
+            "soundsLike": "Мазно, The Smashing Pumpkins",
             "links": {
-                "youtube": "https://www.youtube.com/user/djloopool1",
-                "facebook": "https://www.facebook.com/StringForces/",
-                "bandcamp": "https://stringforces.bandcamp.com/"
+                "facebook": "https://www.facebook.com/fosfenband/",
+                "youtube": "https://www.youtube.com/@fosfen3093"
             },
+            "lastfmName": "Fosfen",
             "contact": "",
             "isActive": "Можеби"
-        },
-        {
-            "name": "Промашена Инвестиција",
-            "city": "Битола",
-            "genre": "Ска, Панк, Панк Рок",
-            "soundsLike": "",
-            "links": {
-                "facebook": "https://www.facebook.com/promasenaPI",
-                "youtube": "https://www.youtube.com/playlist?list=PLcpZxiUrR-iJkV1mbIcRQ1navmX06J_em"
-            },
-            "contact": "",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "Three Minutes in the Rain",
-            "city": "Битола",
-            "genre": "Пост-панк, Брит Рок",
-            "soundsLike": "Franz Ferdinand, The Cure, The Killers",
-            "links": {
-                "youtube": "https://www.youtube.com/watch?v=JxkODICp2-0"
-            },
-            "contact": "",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "The Government",
-            "city": "Битола",
-            "genre": "Пост-панк, Брит Рок",
-            "soundsLike": "Franz Ferdinand, The Cure, The Killers",
-            "links": {
-                "youtube": "https://www.youtube.com/watch?v=P5cbzBCO-B0",
-                "spotify": "https://open.spotify.com/artist/6b6B5gaszXchnqZVjPfzqa",
-                "itunes": "https://music.apple.com/dk/album/razbudi-me/1673392750"
-            },
-            "contact": "",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "МаЗНо, аМа Не е",
-            "city": "Битола",
-            "genre": "Шугејз, Пост-панк, Пост-рок",
-            "soundsLike": "The XX, The Cure, The Smiths",
-            "links": {
-                "youtube": "https://www.youtube.com/@ma3hoamahee551",
-                "bandcamp": "https://dajtedrugoime.bandcamp.com/album/fkraj",
-                "facebook": "https://www.facebook.com/ma3Ho/"
-            },
-            "lastfmName": "Ma3Ho, aMa He e",
-            "contact": "",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "Паркети",
-            "city": "Битола",
-            "genre": "Панк, Панк Рок",
-            "soundsLike": "The Ramones, Dick Dale",
-            "links": {
-                "youtube": "https://www.youtube.com/@SashoParket108"
-            },
-            "lastfmName": "Parketi",
-            "contact": "",
-            "isActive": "Активен"
         },
         {
             "name": "Чоканче",
@@ -476,106 +860,591 @@
             "isActive": "Можеби"
         },
         {
-            "name": "Amaneth",
-            "city": "Битола",
-            "genre": "Стонер Рок, Метал",
-            "soundsLike": "",
-            "links": {
-                "instagram": "https://www.instagram.com/amaneth.band/"
-            },
-            "lastfmName": "Amaneth",
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Code 369",
-            "city": "Битола",
-            "genre": "Рок",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/watch?v=lZRONpYuaNU",
-                "instagram": "https://www.instagram.com/code369.official/",
-                "spotify": "https://open.spotify.com/artist/7JCCgN8X4L6rAJoc15RvYl"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "ВЕЛ",
-            "city": "Битола",
-            "genre": "Алтернативен Рок, Инди Рок",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/@vel2021",
-                "facebook": "https://www.facebook.com/velbend",
-                "instagram": "https://www.instagram.com/vel.band.official/",
-                "spotify": "https://open.spotify.com/artist/5ALjKixAf4cJM6yYsRcVgF",
-                "bandcamp": "https://vel2020.bandcamp.com/album/-"
-            },
-            "lastfmName": "В Е Л",
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Sound Waves",
-            "city": "Битола",
-            "genre": "Рок",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/@soundwavesofficial407",
-                "instagram": "https://www.instagram.com/soundwavesofficial__/"
-            },
-            "contact": "",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Lucent",
-            "city": "Битола",
-            "genre": "Дум Метал",
-            "soundsLike": "",
-            "links": {
-                "facebook": "https://www.facebook.com/Lucentbandofficial/",
-                "bandcamp": "https://lucent1.bandcamp.com/album/lucent",
-                "instagram": "https://www.instagram.com/lucent_band"
-            },
-            "contact": "bandlucent@gmail.com",
-            "isActive": "Активен"
-        },
-        {
-            "name": "Абракадабра",
-            "city": "Битола",
-            "genre": "Метал",
-            "soundsLike": "",
-            "links": {
-                "youtube": "https://www.youtube.com/watch?v=BYgDJUu7dNg"
-            },
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "Jeff Bahami",
-            "city": "Битола",
-            "genre": "Синтвејв",
-            "soundsLike": "Carpenter Brut, Gunship",
-            "links": {
-                "youtube": "https://www.youtube.com/watch?v=bG6zhoTLdKs",
-                "instagram": "https://www.instagram.com/jeffbahami/"
-            },
-            "contact": "martin@najjak.com",
-            "isActive": "Неактивен"
-        },
-        {
-            "name": "Суперхикс",
+            "name": "Влатко Стефановски",
             "city": "Скопје",
-            "genre": "Ска, Панк, Рок",
-            "soundsLike": "The Toasters, The Specials, Madness",
-            "links": {
-                "youtube": "https://www.youtube.com/@SuperhiksMK",
-                "instagram": "https://www.instagram.com/superhiksofficial/",
-                "spotify": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo",
-                "bandcamp": "https://superhiks.bandcamp.com/"
-            },
-            "lastfmName": "Superhiks",
+            "genre": "Џез Рок, Блуз, Етно",
+            "soundsLike": "Pat Metheny, Eric Clapton",
+            "links": {},
+            "lastfmName": "Vlatko Stefanovski",
+            "contact": "",
             "isActive": "Активен"
-        }
+        },
+            {
+                "name": "Abduction",
+                "city": "Скопје",
+                "genre": "Дет Метал",
+                "soundsLike": "Cannibal Corpse, Morbid Angel",
+                "links": {
+                    "source": "https://www.last.fm/music/Abduction"
+                },
+                "lastfmName": "Abduction",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Against Them All",
+                "city": "Скопје",
+                "genre": "Панк Рок, Хардкор",
+                "soundsLike": "Anti-Flag, Strike Anywhere",
+                "links": {
+                    "source": "https://www.last.fm/music/Against+Them+All"
+                },
+                "lastfmName": "Against Them All",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Aleksandar Makedonski",
+                "city": "Скопје",
+                "genre": "Рок, Панк Рок",
+                "soundsLike": "The Clash, Sex Pistols",
+                "links": {
+                    "source": "https://www.last.fm/music/Aleksandar+Makedonski"
+                },
+                "lastfmName": "Aleksandar Makedonski",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Antonia Gigovska",
+                "city": "Скопје",
+                "genre": "Поп",
+                "soundsLike": "Dua Lipa, Ariana Grande",
+                "links": {
+                    "source": "https://www.last.fm/music/Antonia+Gigovska"
+                },
+                "lastfmName": "Antonia Gigovska",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Arrested Army",
+                "city": "Скопје",
+                "genre": "Треш Метал, Панк",
+                "soundsLike": "Slayer, Bad Religion",
+                "links": {
+                    "source": "https://www.last.fm/music/Arrested+Army"
+                },
+                "lastfmName": "Arrested Army",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Bis-Bez",
+                "city": "Скопје",
+                "genre": "Рок",
+                "soundsLike": "The Beatles, The Kinks",
+                "links": {
+                    "source": "https://www.last.fm/music/Bis-Bez"
+                },
+                "lastfmName": "Bis-Bez",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Born For Slaughter",
+                "city": "Скопје",
+                "genre": "Хардкор, Метал",
+                "soundsLike": "Converge, Tragedy",
+                "links": {
+                    "source": "https://www.last.fm/music/Born+For+Slaughter"
+                },
+                "lastfmName": "Born For Slaughter",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Chromatic Point",
+                "city": "Скопје",
+                "genre": "Прогресивен Метал",
+                "soundsLike": "Dream Theater, Opeth",
+                "links": {
+                    "source": "https://www.last.fm/music/Chromatic+Point"
+                },
+                "lastfmName": "Chromatic Point",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Culture Development",
+                "city": "Скопје",
+                "genre": "Пост-Хардкор",
+                "soundsLike": "At The Drive-In, Thrice",
+                "links": {
+                    "source": "https://www.last.fm/music/Culture+Development"
+                },
+                "lastfmName": "Culture Development",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Da Dzaka Nakot",
+                "city": "Скопје",
+                "genre": "Хип Хоп, Рап",
+                "soundsLike": "Wu-Tang Clan, Nas",
+                "links": {
+                    "source": "https://www.last.fm/music/Da+Dzaka+Nakot"
+                },
+                "lastfmName": "Da Dzaka Nakot",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "D’ Daltons",
+                "city": "Скопје",
+                "genre": "Рокабили, Рок",
+                "soundsLike": "Stray Cats, Elvis Presley",
+                "links": {
+                    "source": "https://www.last.fm/music/D%27+Daltons"
+                },
+                "lastfmName": "D' Daltons",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Deadshot",
+                "city": "Битола",
+                "genre": "Трешкор, Треш Метал",
+                "soundsLike": "Municipal Waste, Suicidal Tendencies",
+                "links": {
+                    "source": "https://www.last.fm/music/Deadshot"
+                },
+                "lastfmName": "Deadshot",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Decadence",
+                "city": "Скопје",
+                "genre": "Прогресивен Метал",
+                "soundsLike": "Tool, Porcupine Tree",
+                "links": {
+                    "source": "https://www.last.fm/music/Decadence"
+                },
+                "lastfmName": "Decadence",
+                "contact": "",
+                "isActive": "Непознато"
+            },
+            {
+                "name": "Denny Te Chuva",
+                "city": "Скопје",
+                "genre": "Панк Рок, Хардкор",
+                "soundsLike": "Rancid, Minor Threat",
+                "links": {
+                    "source": "https://www.last.fm/music/Denny+Te+Chuva"
+                },
+                "lastfmName": "Denny Te Chuva",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Elena Risteska",
+                "city": "Скопје",
+                "genre": "Поп, Р’н’Б",
+                "soundsLike": "Beyoncé, Rihanna",
+                "links": {
+                    "source": "https://www.last.fm/music/Elena+Risteska"
+                },
+                "lastfmName": "Elena Risteska",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Furion",
+                "city": "Скопје",
+                "genre": "Треш Метал",
+                "soundsLike": "Kreator, Exodus",
+                "links": {
+                    "source": "https://www.last.fm/music/Furion"
+                },
+                "lastfmName": "Furion",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Galoski",
+                "city": "Скопје",
+                "genre": "Електронска, Хаус",
+                "soundsLike": "Martin Garrix, David Guetta",
+                "links": {
+                    "source": "https://www.last.fm/music/Galoski"
+                },
+                "lastfmName": "Galoski",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Gargoyles",
+                "city": "Скопје",
+                "genre": "Метал",
+                "soundsLike": "Pantera, Sepultura",
+                "links": {
+                    "source": "https://www.last.fm/music/Gargoyles"
+                },
+                "lastfmName": "Gargoyles",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Green Out",
+                "city": "Скопје",
+                "genre": "Хип Хоп",
+                "soundsLike": "Cypress Hill, Public Enemy",
+                "links": {
+                    "source": "https://www.last.fm/music/Green+Out"
+                },
+                "lastfmName": "Green Out",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Iron Fang",
+                "city": "Кичево",
+                "genre": "Пауер Метал, Спид Метал",
+                "soundsLike": "Iron Maiden, Helloween",
+                "links": {
+                    "source": "https://www.last.fm/music/Iron+Fang"
+                },
+                "lastfmName": "Iron Fang",
+                "contact": "",
+                "isActive": "Непознато"
+            },
+            {
+                "name": "Jana Burčeska",
+                "city": "Скопје",
+                "genre": "Поп",
+                "soundsLike": "Ellie Goulding, Sia",
+                "links": {
+                    "source": "https://www.last.fm/music/Jana+Bur%C4%8Deska"
+                },
+                "lastfmName": "Jana Burčeska",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Културно Уметнички Работници",
+                "city": "Скопје",
+                "genre": "Гаражен Панк, Панк Рок",
+                "soundsLike": "The Stooges, MC5",
+                "links": {
+                    "source": "https://www.last.fm/music/Kulturno+Umetnicki+Rabotnici"
+                },
+                "lastfmName": "Kulturno Umetnicki Rabotnici",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Last Expedition",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "R.E.M., The Smiths",
+                "links": {
+                    "source": "https://www.last.fm/music/Last+Expedition"
+                },
+                "lastfmName": "Last Expedition",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Last Act Of Defiance",
+                "city": "Скопје",
+                "genre": "Кросовер Треш, Метал",
+                "soundsLike": "Anthrax, D.R.I.",
+                "links": {
+                    "source": "https://www.last.fm/music/Last+Act+Of+Defiance"
+                },
+                "lastfmName": "Last Act Of Defiance",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "Legijata",
+                "city": "Скопје",
+                "genre": "Хип Хоп, Рап",
+                "soundsLike": "Onyx, Mobb Deep",
+                "links": {
+                    "source": "https://www.last.fm/music/Legijata"
+                },
+                "lastfmName": "Legijata",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Memorija",
+                "city": "Скопје",
+                "genre": "Поп-Рок",
+                "soundsLike": "The Police, U2",
+                "links": {
+                    "source": "https://www.last.fm/music/Memorija"
+                },
+                "lastfmName": "Memorija",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Mindless Violence",
+                "city": "Скопје",
+                "genre": "Хардкор, Панк",
+                "soundsLike": "Black Flag, Agnostic Front",
+                "links": {
+                    "source": "https://www.last.fm/music/Mindless+Violence"
+                },
+                "lastfmName": "Mindless Violence",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Mosaique",
+                "city": "Скопје",
+                "genre": "Хип Хоп, Џез Фјужн",
+                "soundsLike": "The Roots, A Tribe Called Quest",
+                "links": {
+                    "source": "https://www.last.fm/music/Mosaique"
+                },
+                "lastfmName": "Mosaique",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Next Time",
+                "city": "Скопје",
+                "genre": "Рок, Поп-Рок",
+                "soundsLike": "Foo Fighters, Nickelback",
+                "links": {
+                    "source": "https://www.last.fm/music/Next+Time"
+                },
+                "lastfmName": "Next Time",
+                "contact": "",
+                "isActive": "Активен"
+            },
+            {
+                "name": "No Name Nation",
+                "city": "Скопје",
+                "genre": "Панк Рок",
+                "soundsLike": "Dead Kennedys, The Exploited",
+                "links": {
+                    "source": "https://www.last.fm/music/No+Name+Nation"
+                },
+                "lastfmName": "No Name Nation",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Nulta Pozitiv",
+                "city": "Скопје",
+                "genre": "Поп-Рап",
+                "soundsLike": "Beastie Boys, Run-D.M.C.",
+                "links": {
+                    "source": "https://www.last.fm/music/Nulta+Pozitiv"
+                },
+                "lastfmName": "Nulta Pozitiv",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Project Zlust",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "Radiohead, Arcade Fire",
+                "links": {
+                    "source": "https://www.last.fm/music/Project+Zlust"
+                },
+                "lastfmName": "Project Zlust",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Raven",
+                "city": "Кичево",
+                "genre": "Треш Метал, Дет Метал",
+                "soundsLike": "Megadeth, Death",
+                "links": {
+                    "source": "https://www.last.fm/music/Raven"
+                },
+                "lastfmName": "Raven",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Risto Bombata",
+                "city": "Прилеп",
+                "genre": "Поп-Рап, Поп-Рок",
+                "soundsLike": "Afrika Bambaataa, Red Hot Chili Peppers",
+                "links": {
+                    "source": "https://www.last.fm/music/Risto+Bombata"
+                },
+                "lastfmName": "Risto Bombata",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Royal Albert Hall",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "Radiohead, Muse",
+                "links": {
+                    "source": "https://www.last.fm/music/Royal+Albert+Hall"
+                },
+                "lastfmName": "Royal Albert Hall",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Sanatorium",
+                "city": "Скопје",
+                "genre": "Треш Метал",
+                "soundsLike": "Metallica, Testament",
+                "links": {
+                    "source": "https://www.last.fm/music/Sanatorium"
+                },
+                "lastfmName": "Sanatorium",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Serpentine Fire",
+                "city": "Скопје",
+                "genre": "Метал",
+                "soundsLike": "Judas Priest, Black Sabbath",
+                "links": {
+                    "source": "https://www.last.fm/music/Serpentine+Fire"
+                },
+                "lastfmName": "Serpentine Fire",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Siniac",
+                "city": "Скопје",
+                "genre": "Екстремен Метал",
+                "soundsLike": "Darkthrone, Mayhem",
+                "links": {
+                    "source": "https://www.last.fm/music/Siniac"
+                },
+                "lastfmName": "Siniac",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Smoke Shakers",
+                "city": "Скопје",
+                "genre": "Инди Рок",
+                "soundsLike": "Arctic Monkeys, The Strokes",
+                "links": {
+                    "source": "https://www.last.fm/music/Smoke+Shakers"
+                },
+                "lastfmName": "Smoke Shakers",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Smut",
+                "city": "Скопје",
+                "genre": "Металкор",
+                "soundsLike": "Killswitch Engage, As I Lay Dying",
+                "links": {
+                    "source": "https://www.last.fm/music/Smut"
+                },
+                "lastfmName": "Smut",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Steel Thunder",
+                "city": "Тетово",
+                "genre": "Хеви Метал",
+                "soundsLike": "Accept, Saxon",
+                "links": {
+                    "source": "https://www.last.fm/music/Steel+Thunder"
+                },
+                "lastfmName": "Steel Thunder",
+                "contact": "",
+                "isActive": "Непознато"
+            },
+            {
+                "name": "Suns",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "Nirvana, Pixies",
+                "links": {
+                    "source": "https://www.last.fm/music/Suns"
+                },
+                "lastfmName": "Suns",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Super Nova",
+                "city": "Скопје",
+                "genre": "Рок, Поп-Рап",
+                "soundsLike": "Red Hot Chili Peppers, Rage Against The Machine",
+                "links": {
+                    "source": "https://www.last.fm/music/Super+Nova"
+                },
+                "lastfmName": "Super Nova",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Tempera",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "Cold War Kids, Interpol",
+                "links": {
+                    "source": "https://www.last.fm/music/Tempera"
+                },
+                "lastfmName": "Tempera",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "This Home Is Prepared",
+                "city": "Скопје",
+                "genre": "Хардкор, Панк",
+                "soundsLike": "Have Heart, Verse",
+                "links": {
+                    "source": "https://www.last.fm/music/This+Home+Is+Prepared"
+                },
+                "lastfmName": "This Home Is Prepared",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Two Sides",
+                "city": "Скопје",
+                "genre": "Панк Рок, Хардкор",
+                "soundsLike": "NOFX, Pennywise",
+                "links": {
+                    "source": "https://www.last.fm/music/Two+Sides"
+                },
+                "lastfmName": "Two Sides",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Verka",
+                "city": "Скопје",
+                "genre": "Фолк Метал",
+                "soundsLike": "Eluveitie, Korpiklaani",
+                "links": {
+                    "source": "https://www.last.fm/music/Verka"
+                },
+                "lastfmName": "Verka",
+                "contact": "",
+                "isActive": "Можеби"
+            },
+            {
+                "name": "Vizija",
+                "city": "Скопје",
+                "genre": "Алтернативен Рок, Експериментален Рок",
+                "soundsLike": "Sonic Youth, The Mars Volta",
+                "links": {
+                    "source": "https://www.last.fm/music/Vizija"
+                },
+                "lastfmName": "Vizija",
+                "contact": "",
+                "isActive": "Активен"
+            }
+        
     ]
 }
