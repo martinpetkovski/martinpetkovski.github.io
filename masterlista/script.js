@@ -264,9 +264,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Toggle filters button
             document.getElementById('toggle-filters').addEventListener('click', () => {
                 const controls = document.querySelector('.controls');
-                const isHidden = controls.style.display === 'none' || controls.style.display === '';
-                controls.style.display = isHidden ? 'flex' : 'none';
-                document.getElementById('toggle-filters').innerHTML = '<i class="fas fa-filter"></i>';
+                controls.classList.toggle('active');
+                const isActive = controls.classList.contains('active');
+                document.getElementById('toggle-filters').innerHTML = `<i class="fas ${isActive ? 'fa-times' : 'fa-filter'}"></i>`;
             });
 
             // Mode toggle checkbox

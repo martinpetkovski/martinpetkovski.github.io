@@ -554,7 +554,7 @@ body.compact .city-item {
 }
 
 body.compact .links a {
-    font-size: 1.0rem;
+    font-size: 1.2rem;
 }
 
 body.compact .links a.contact-link {
@@ -904,7 +904,6 @@ footer p {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         padding: 1rem; /* Increased from 0.75rem */
         position: relative;
-        margin: 0.4rem 0.5rem; /* Increased margin */
         width: calc(100% - 1rem);
     }
 
@@ -915,9 +914,9 @@ footer p {
     td {
         display: flex;
         align-items: center;
-        padding: 0.4rem 0; /* Increased from 0.3rem */
+        padding: 0; /* Increased from 0.3rem */
         border: none;
-        font-size: 1.8rem; /* Increased from 1.6rem */
+        font-size: 2.0rem !important; /* Increased from 1.6rem */
         width: 100%;
         color: #333;
         line-height: 1.4; /* Adjusted for larger font */
@@ -932,8 +931,7 @@ footer p {
         font-size: 4.8rem; /* Tripled from 1.6rem */
         font-weight: 600;
         color: #2a1b4a;
-        padding: 0.5rem 0; /* Increased padding */
-        line-height: 1.2;
+        padding: 0.4rem 0; /* Increased padding */
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
@@ -963,13 +961,12 @@ footer p {
     .city-item {
         background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
         color: white;
-        padding: 0.4rem 0.6rem; /* Increased from 0.3rem 0.5rem */
-        font-size: 1.6rem; /* Increased from 1.4rem */
+        padding: 0rem; /* Increased from 0.3rem 0.5rem */
+        font-size: 1.0rem !important; /* Increased from 1.4rem */
         display: inline-block;
         white-space: nowrap;
         border-radius: 0;
-        margin: 0.3rem; /* Increased from 0.2rem */
-        line-height: 1.4;
+        margin: 0 0.2rem !important; /* Increased from 0.2rem */
         cursor: pointer; /* Indicate clickability */
     }
 
@@ -981,7 +978,7 @@ footer p {
         background: linear-gradient(135deg, #b71c1c 0%, #f44336 100%); /* Changed to red */
         color: white;
         padding: 0.4rem 0.6rem; /* Increased from 0.3rem 0.5rem */
-        font-size: 1.6rem; /* Increased from 1.4rem */
+        font-size: 1.0rem !important; /* Increased from 1.4rem */
         display: inline-block;
         border-radius: 0;
         margin: 0 0.5rem; /* Increased from 0 0.4rem */
@@ -997,7 +994,7 @@ footer p {
     }
 
     td[data-label="Линкови"] a {
-        font-size: 2.8rem; /* Increased from 2.4rem */
+        font-size: 1.8rem !important; /* Increased from 2.4rem */
         color: #4a2c6d;
         text-decoration: none;
         padding: 0.6rem; /* Increased from 0.5rem */
