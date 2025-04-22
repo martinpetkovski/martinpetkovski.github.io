@@ -500,6 +500,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 spotify: 'fa-brands fa-spotify',
                 itunes: 'fa-brands fa-itunes-note',
                 deezer: 'fa-brands fa-deezer',
+                lastfm: 'fa-brands fa-lastfm',
+                wikipedia: 'fa-brands fa-wikipedia-w',
                 website: 'fa-solid fa-globe',
                 linktree: 'fa-solid fa-tree'
             };
