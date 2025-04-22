@@ -1,227 +1,547 @@
 <!doctype html>
-<html>
+<html lang="mk">
 <head>
-	<meta charset="utf-8" />
-	<title>Саше Ивановски Симулатор</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-	<script>
-		var imenki, epiteti;
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Саше Ивановски Симулатор</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-		$(document).ready(function()
-		{
-			$.getJSON('https://www.najjak.com/sis/epiteti.json', function(data) {
-				epiteti = data;
-				$.getJSON('https://www.najjak.com/sis/imenki.json', function(data) 
-				{
-					imenki = data;
-				});
-			});
-		});
-		
-		var chesticaEden = [{"toj":"еден","taa":"една","toa":"едно"}];
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #e0e0e0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
 
-		function getRandomInt(max) {
-		  return Math.floor(Math.random() * Math.floor(max));
-		}
+        .container {
+            background: #fff;
+            padding: 25px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
 
-		function GenerateRod()
-		{
-			return getRandomInt(3);
-		}
+        .parent-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #3498db;
+            text-decoration: none;
+        }
 
-		function Generate(rod)
-		{
-			var imenkaTxt = "";
-			var epitetTxt = "";
-			
-			while(imenkaTxt === "")
-			{
-				var rndImenka = getRandomInt(imenki.length-1) + 1;
-				imenkaTxt = imenki[rndImenka][rod];
-			}
-			
-			while(epitetTxt === "")
-			{
-				var rndEpitet = getRandomInt(epiteti.length-1) + 1;
-				epitetTxt = epiteti[rndEpitet][rod];
-			}
-			return imenkaTxt + " " + chesticaEden[0][rod] + " " + epitetTxt;
-		}
+        .parent-link:hover {
+            text-decoration: underline;
+        }
 
-		function GenerateN(num, rod)
-		{
-			var retVal = "";
-			for(i=0;i<num;i++)
-			{
-				now = i-1;
-				if(now!==num)
-				{
-					retVal += Generate(rod) + ", ";
-				}
-				else
-				{
-					retVal += Generate(rod);
-				}
-			}
-			
-			retVal = retVal.substr(0, retVal.length-2);
-			
-			return retVal;
-		}
-		
-		function CyrlToLat(str)
-		{
-			var retVal = "";
-			for(i=0;i<str.length;i++)
-			{
-				if(str[i] === 'а') retVal += 'a'; 
-				if(str[i] === 'б') retVal += 'b'; 
-				if(str[i] === 'в') retVal += 'v'; 
-				if(str[i] === 'г') retVal += 'g'; 
-				if(str[i] === 'д') retVal += 'd'; 
-				if(str[i] === 'ѓ') retVal += 'gj'; 
-				if(str[i] === 'е') retVal += 'e'; 
-				if(str[i] === 'ж') retVal += 'z'; 
-				if(str[i] === 'з') retVal += 'z'; 
-				if(str[i] === 'ѕ') retVal += 'dz'; 
-				if(str[i] === 'и') retVal += 'i'; 
-				if(str[i] === 'ј') retVal += 'j'; 
-				if(str[i] === 'к') retVal += 'k'; 
-				if(str[i] === 'л') retVal += 'l'; 
-				if(str[i] === 'љ') retVal += 'lj'; 
-				if(str[i] === 'м') retVal += 'm'; 
-				if(str[i] === 'н') retVal += 'n'; 
-				if(str[i] === 'њ') retVal += 'nj'; 
-				if(str[i] === 'о') retVal += 'o'; 
-				if(str[i] === 'п') retVal += 'p'; 
-				if(str[i] === 'р') retVal += 'r'; 
-				if(str[i] === 'с') retVal += 's'; 
-				if(str[i] === 'т') retVal += 't'; 
-				if(str[i] === 'ќ') retVal += 'k'; 
-				if(str[i] === 'у') retVal += 'u'; 
-				if(str[i] === 'ф') retVal += 'f'; 
-				if(str[i] === 'х') retVal += 'h'; 
-				if(str[i] === 'ц') retVal += 'c'; 
-				if(str[i] === 'ч') retVal += 'c'; 
-				if(str[i] === 'џ') retVal += 'dj'; 
-				if(str[i] === 'ш') retVal += 's'; 
-				if(str[i] === ' ') retVal += ' ';
-				if(str[i] === ',') retVal += ',';
-			}
-			
-			return retVal;
-		}
-		
-		function Render()
-		{
-			var text = GenerateN($("#iteracii").val(), CyrlToLat($("#rod").val()));
-			
-			if($("#latinica").prop("checked"))
-				text = CyrlToLat(text);
-				
-			if($("#capslock").prop("checked"))
-				text = text.toUpperCase();
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-			$("#result").html(text);
-		}
-		
-		function Copy() {
-		  var copyText = $("#result").html();
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #34495e;
+        }
 
-		  navigator.clipboard.writeText(copyText);
-		} 
-		
-		function GoToTemplate()
-		{
-			window.location = "https:\/\/www.najjak.com\/sis\/rnd.html?n=" + $("#iteracii").val() + "&r=" + CyrlToLat($("#rod").val()) + "&l=" + $("#latinica").prop("checked") + "&c=" + $("#capslock").prop("checked");
-		}
-	</script>
-	<style>
-	@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
-	
-	@font-face {
-      font-family: 'FontAwesome5';
-      src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf');
-    }
-	
-	* { margin:0; padding:0; text-align: center; background-color:#FAFAFA; }
-	
-	body {
-		margin:30px auto;
-		width: 700px;
+        .header img {
+            width: 100px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
 
-	}
-	
-	.header {
-		font-family:Russo One;
-		font-size:4vw;
-	}
-	
-	table, tr { width: 100%; background-color:transparent; }
-	table td { border: none; background-color:transparent; }
-	
-	.mainContainer { background-color: #111; }
-	
-	.title, .logo { vertical-align: middle; }
-	.options, #result { font-family: Arial Black, Arial, Verdana; font-size:1.8vw; padding: 20px; }
-	input, select, option { font-size:2vw; width: 100%; }
-	input[type='checkbox'] {
-	  vertical-align: middle;
-	  outline: none;
-	  font-size: inherit;
-	  cursor: pointer;
-	  width: 1.0em;
-	  height: 1.0em;
-	  background: white;
-	  border-radius: 0.25em;
-	  border: 0.125em solid #555;
-	  position: relative;
-	}
-	
-	td:first-child { padding: 0px; }
-		
-	button { 
-		font-family: FontAwesome5, Arial;
-		padding:10px 20px; 
-		font-size:30px; 
-		width: 33.3333%; 
-		background-color: #09C; 
-		color: white; 
-		border: none;
-		display: inline-block;
-   }
-	
-	button:hover {
-		background-color: #02F;
-		transition-duration: 0.2s;
-    }
-	
-	button:active {
-		background-color: #C00;
-	}
+        .header img:hover {
+            transform: scale(1.05);
+        }
 
-	#result { font-size: 2vw; color: #F00; padding:40px 20px; min-height: 200px; background-color: #111; vertical-align: middle; margin: auto 0px; }
-	.footer { font-size:10px; margin-top:20px; }	
-	</style>
-	
-	<link rel="icon" type="image/x-icon" href="favicon.ico">
+        .options {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .options label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #34495e;
+            text-align: left;
+            align-self: center;
+        }
+
+        .options input, .options select {
+            padding: 10px 12px;
+            font-size: 1rem;
+            border: 2px solid #bdc3c7;
+            background: #f9f9f9;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .options input:hover, .options select:hover {
+            border-color: #3498db;
+            background: #fff;
+        }
+
+        .options input:focus, .options select:focus {
+            border-color: #3498db;
+            background: #fff;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        .options .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .options input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #bdc3c7;
+            background: #f9f9f9;
+            cursor: pointer;
+            appearance: none;
+            position: relative;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .options input[type="checkbox"]:hover {
+            border-color: #3498db;
+        }
+
+        .options input[type="checkbox"]:checked {
+            background: #3498db;
+            border-color: #3498db;
+        }
+
+        .options input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: #fff;
+            font-size: 14px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .buttons button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid #34495e;
+            background: #34495e;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            flex: 1;
+            min-width: 100px;
+            max-width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .buttons button:hover {
+            background: #3498db;
+            border-color: #3498db;
+        }
+
+        .buttons button:active {
+            background: #2980b9;
+            border-color: #2980b9;
+        }
+
+        #result {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #c0392b;
+            background: #f0f0f0;
+            padding: 15px;
+            min-height: 80px;
+            text-align: center;
+            border: 2px solid #bdc3c7;
+            animation: resultFade 0.5s ease-in-out;
+            word-wrap: break-word;
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes resultFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header img {
+                width: 80px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .options label {
+                font-size: 0.9rem;
+                text-align: center;
+            }
+
+            .options input, .options select {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+
+            .options .checkbox-container {
+                justify-content: center;
+            }
+
+            .options input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+            }
+
+            .options input[type="checkbox"]:checked::after {
+                font-size: 12px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .buttons button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                max-width: 100%;
+            }
+
+            #result {
+                font-size: 1.2rem;
+                padding: 12px;
+            }
+
+            .footer {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header img {
+                width: 60px;
+            }
+
+            .options label {
+                font-size: 0.85rem;
+            }
+
+            .options input, .options select {
+                padding: 7px 8px;
+                font-size: 0.85rem;
+            }
+
+            .options input[type="checkbox"] {
+                width: 16px;
+                height: 16px;
+            }
+
+            .options input[type="checkbox"]:checked::after {
+                font-size: 10px;
+            }
+
+            .buttons button {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
+            #result {
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .footer {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .header img {
+                width: 50px;
+            }
+
+            .options label {
+                font-size: 0.8rem;
+            }
+
+            .options input, .options select {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+
+            .buttons button {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            #result {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-	
-	<div class="header">
-		<table><tr>
-		<td class="logo"><img src="sashe_ivanovski.png" height="300px" /></td>
-		<td class="title">САШЕ ИВАНОВСКИ СИМУЛАТОР</td>
-		</tr></table>
-	</div>
-	<table class="mainContainer">
-		<tr class="options"><td>Колку пати </td><td><input type="number" id="iteracii" min="1" max="5" value="1"/></td></tr>
-		<tr class="options"><td>Субјектот е </td><td><select id="rod" ><option>тој</option><option>таа</option><option>тоа</option></select></td></tr>
-		<tr class="options"><td>Со дерење</td><td><input type="checkbox" id="capslock"/></td></tr>
-		<tr class="options"><td>Na latinica</td><td><input type="checkbox" id="latinica"/></td></tr>
-		<tr><td colspan="2"><button onclick="Render()">&#xf04b;</button><button onclick="Copy()">&#xf0c5;</button><button onclick="GoToTemplate()">&#xf35d;</button></td></tr>
-	</table>
-	<div id="result"></div>
-	<div class="footer">Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">овде</a>. <br>Имаш креативна навреда? Пиши ми на deeeeelay@gmail.com</div>
+    <div class="container">
+        <a href="https://www.najjak.com" class="parent-link">najjak.com</a>
+        <div class="header">
+            <img src="sashe_ivanovski.png" alt="Sashe Ivanovski" />
+            <h1>САШЕ ИВАНОВСКИ СИМУЛАТОР</h1>
+        </div>
+        <div class="options">
+            <label for="iteracii">Колку пати</label>
+            <input type="number" id="iteracii" min="1" max="5" value="1" />
+            <label for="rod">Субјектот е</label>
+            <select id="rod">
+                <option>тој</option>
+                <option>таа</option>
+                <option>тоа</option>
+            </select>
+            <label for="capslock">Со дерење</label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="capslock" />
+            </div>
+            <label for="latinica">Na latinica</label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="latinica" />
+            </div>
+        </div>
+        <div class="buttons">
+            <button onclick="renderInsult()"><i class="fas fa-play"></i> Генерирај</button>
+            <button onclick="copyInsult()"><i class="fas fa-copy"></i> Копирај</button>
+            <button onclick="shareInsult()"><i class="fas fa-share"></i> Сподели</button>
+        </div>
+        <div id="result"></div>
+        <div id="error" class="error-message"></div>
+        <div class="footer">
+            Политика на користење: Ако си од Хелсиншки комитет, Клуб на навредени граѓани или останати невладини организации кликни <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">овде</a>.<br>
+            Имаш креативна навреда? Пиши ми на <a href="mailto:deeeeelay@gmail.com">deeeeelay@gmail.com</a>
+        </div>
+    </div>
+    <script>
+        // Global variables
+        let imenki = null;
+        let epiteti = null;
+        const chesticaEden = [{ toj: "еден", taa: "една", toa: "едно" }];
+
+        // Initialize data
+        async function init() {
+            try {
+                const [epitetiResponse, imenkiResponse] = await Promise.all([
+                    fetch('https://www.najjak.com/sis/epiteti.json'),
+                    fetch('https://www.najjak.com/sis/imenki.json')
+                ]);
+
+                if (!epitetiResponse.ok || !imenkiResponse.ok) {
+                    throw new Error('Failed to load data');
+                }
+
+                epiteti = await epitetiResponse.json();
+                imenki = await imenkiResponse.json();
+            } catch (error) {
+                showError('Грешка при вчитување на податоците. Обидете се повторно.');
+                console.error('Initialization error:', error);
+            }
+        }
+
+        // Utility functions
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function generateInsult(rod) {
+            if (!imenki || !epiteti) {
+                showError('Податоците не се вчитани. Ве молиме почекајте.');
+                return '';
+            }
+
+            let imenkaTxt = '';
+            let epitetTxt = '';
+
+            // Generate valid imenka
+            while (!imenkaTxt) {
+                const rndImenka = getRandomInt(imenki.length);
+                imenkaTxt = imenki[rndImenka]?.[rod] || '';
+            }
+
+            // Generate valid epitet
+            while (!epitetTxt) {
+                const rndEpitet = getRandomInt(epiteti.length);
+                epitetTxt = epiteti[rndEpitet]?.[rod] || '';
+            }
+
+            return `${imenkaTxt} ${chesticaEden[0][rod]} ${epitetTxt}`;
+        }
+
+        function generateMultipleInsults(num, rod) {
+            if (num < 1 || num > 5) {
+                showError('Внесете број помеѓу 1 и 5.');
+                return '';
+            }
+
+            const insults = [];
+            for (let i = 0; i < num; i++) {
+                insults.push(generateInsult(rod));
+            }
+            return insults.join(', ');
+        }
+
+        function cyrillicToLatin(str) {
+            const translitMap = {
+                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'ѓ': 'gj', 'е': 'e',
+                'ж': 'z', 'з': 'z', 'ѕ': 'dz', 'и': 'i', 'ј': 'j', 'к': 'k', 'л': 'l',
+                'љ': 'lj', 'м': 'm', 'н': 'n', 'њ': 'nj', 'о': 'o', 'п': 'p', 'р': 'r',
+                'с': 's', 'т': 't', 'ќ': 'k', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c',
+                'ч': 'c', 'џ': 'dj', 'ш': 's', ' ': ' ', ',': ','
+            };
+            return str.split('').map(char => translitMap[char] || char).join('');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Main functions
+        function renderInsult() {
+            const iteracii = parseInt(document.getElementById('iteracii').value, 10);
+            const rod = cyrillicToLatin(document.getElementById('rod').value);
+            let text = generateMultipleInsults(iteracii, rod);
+
+            if (!text) return;
+
+            if (document.getElementById('latinica').checked) {
+                text = cyrillicToLatin(text);
+            }
+            if (document.getElementById('capslock').checked) {
+                text = text.toUpperCase();
+            }
+
+            document.getElementById('result').textContent = text;
+        }
+
+        async function copyInsult() {
+            const resultText = document.getElementById('result').textContent;
+            if (!resultText) {
+                showError('Нема генериран текст за копирање.');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(resultText);
+                showError('Текстот е копиран!');
+            } catch (error) {
+                showError('Грешка при копирање. Обидете се рачно.');
+                console.error('Copy error:', error);
+            }
+        }
+
+        function shareInsult() {
+            const iteracii = document.getElementById('iteracii').value;
+            const rod = cyrillicToLatin(document.getElementById('rod').value);
+            const latinica = document.getElementById('latinica').checked;
+            const capslock = document.getElementById('capslock').checked;
+
+            const url = `https://www.najjak.com/sis/rnd.html?n=${iteracii}&r=${rod}&l=${latinica}&c=${capslock}`;
+            window.location.href = url;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
