@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сè или нешто Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+        }
+        #input-form {
+            margin-bottom: 20px;
+        }
+        #results {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сè или нешто Simulation</h1>
+    <div id="input-form">
+        <label for="iterations">Number of Iterations: </label>
+        <input type="number" id="iterations" value="1000" min="1">
+        <button onclick="runSimulation()">Run Simulation</button>
+    </div>
+    <h2>Results</h2>
+    <div id="results">Click "Run Simulation" to see results.</div>
+
+    <script>
+        // Prize amounts in denar
+        const prizes = [
+            1, 10, 50, 100, 500, 1000, 2500, 5000, 7500, 10000, 15000,
+            20000, 25000, 50000, 75000, 100000, 150000, 200000, 250000, 500000, 750000, 1000000
+        ];
+
+        // Winnings brackets
+        const brackets = [
+            { min: 0, max: 1000, label: "0 - 1,000 denar" },
+            { min: 1001, max: 10000, label: "1,001 - 10,000 denar" },
+            { min: 10001, max: 100000, label: "10,001 - 100,000 denar" },
+            { min: 100001, max: 500000, label: "100,001 - 500,000 denar" },
+            { min: 500001, max: 1000000, label: "500,001 - 1,000,000 denar" }
+        ];
+
+        // Simulation parameters
+        const rounds = [5, 3, 3, 3, 2, 1]; // Boxes to open per round
+        const offerMultipliers = [0.5, 0.6, 0.7, 0.8, 0.85, 0.9]; // Banker's offer as % of expected value
+        const acceptThreshold = 0.8; // Accept offer if >= 80% of expected value
+        const rejectAcceptableOfferProbability = 0.2; // 20% chance to reject an acceptable offer
+
+        // Shuffle array (Fisher-Yates)
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Calculate expected value of remaining boxes
+        function calculateExpectedValue(boxes) {
+            const sum = boxes.reduce((acc, val) => acc + val, 0);
+            return sum / boxes.length;
+        }
+
+        // Simulate one game
+        function simulateGame() {
+            let boxes = shuffle([...prizes]);
+            const chosenBox = boxes[0]; // Contestant picks first box
+            let remainingBoxes = [...boxes];
+            let acceptedOffer = false;
+            let wentToEnd = false;
+            let finalWinnings = 0;
+
+            // Play rounds
+            for (let round = 0; round < rounds.length; round++) {
+                // Remove boxes for this round
+                for (let i = 0; i < rounds[round] && remainingBoxes.length > 2; i++) {
+                    remainingBoxes.splice(Math.floor(Math.random() * remainingBoxes.length), 1);
+                }
+
+                // Calculate Banker's offer
+                const expectedValue = calculateExpectedValue(remainingBoxes);
+                const offer = Math.round(expectedValue * offerMultipliers[round]);
+
+                // Decision: Accept offer if >= acceptThreshold * expected value, unless randomly rejected
+                if (offer >= acceptThreshold * expectedValue && Math.random() >= rejectAcceptableOfferProbability) {
+                    acceptedOffer = true;
+                    finalWinnings = offer;
+                    break;
+                }
+            }
+
+            // If no offer accepted, go to the end and take chosen box's value
+            if (!acceptedOffer) {
+                wentToEnd = true;
+                finalWinnings = chosenBox;
+            }
+
+            return {
+                winnings: finalWinnings,
+                acceptedOffer: acceptedOffer,
+                wentToEnd: wentToEnd,
+                chosenBox: chosenBox
+            };
+        }
+
+        // Run N simulations and collect statistics
+        function runSimulation() {
+            const iterations = parseInt(document.getElementById('iterations').value);
+            if (isNaN(iterations) || iterations < 1) {
+                alert('Please enter a valid number of iterations.');
+                return;
+            }
+
+            let totalWinningsAccept = 0;
+            let totalWinningsReject = 0;
+            let totalWinningsEnd = 0;
+            let acceptCount = 0;
+            let rejectCount = 0;
+            let endCount = 0;
+            const winningsDistribution = {};
+            const bracketCounts = brackets.map(() => 0);
+
+            // Run simulations
+            for (let i = 0; i < iterations; i++) {
+                const result = simulateGame();
+                if (result.acceptedOffer) {
+                    totalWinningsAccept += result.winnings;
+                    acceptCount++;
+                } else if (result.wentToEnd) {
+                    totalWinningsEnd += result.winnings;
+                    endCount++;
+                } else {
+                    totalWinningsReject += result.winnings;
+                    rejectCount++;
+                }
+                winningsDistribution[result.winnings] = (winningsDistribution[result.winnings] || 0) + 1;
+
+                // Assign winnings to brackets
+                for (let j = 0; j < brackets.length; j++) {
+                    if (result.winnings >= brackets[j].min && result.winnings <= brackets[j].max) {
+                        bracketCounts[j]++;
+                        break;
+                    }
+                }
+            }
+
+            // Calculate statistics
+            const avgWinningsAccept = acceptCount > 0 ? (totalWinningsAccept / acceptCount).toFixed(2) : 0;
+            const avgWinningsReject = rejectCount > 0 ? (totalWinningsReject / rejectCount).toFixed(2) : 0;
+            const avgWinningsEnd = endCount > 0 ? (totalWinningsEnd / endCount).toFixed(2) : 0;
+            const acceptPercentage = ((acceptCount / iterations) * 100).toFixed(2);
+            const rejectPercentage = ((rejectCount / iterations) * 100).toFixed(2);
+            const endPercentage = ((endCount / iterations) * 100).toFixed(2);
+
+            // Prepare results
+            let results = `Simulation Results (${iterations} iterations):\n\n`;
+            results += `Total Games: ${iterations}\n`;
+            results += `Games where offer was accepted: ${acceptCount} (${acceptPercentage}%)\n`;
+            results += `Games where offer was rejected but continued: ${rejectCount} (${rejectPercentage}%)\n`;
+            results += `Games where contestant went to the end: ${endCount} (${endPercentage}%)\n`;
+            results += `Average winnings (accepted offer): ${avgWinningsAccept} denar\n`;
+            results += `Average winnings (rejected offer, continued): ${avgWinningsReject} denar\n`;
+            results += `Average winnings (went to end): ${avgWinningsEnd} denar\n\n`;
+            results += `Winnings Distribution (Individual Amounts):\n`;
+            for (const prize in winningsDistribution) {
+                if (winningsDistribution[prize] > 0) {
+                    const percentage = ((winningsDistribution[prize] / iterations) * 100).toFixed(2);
+                    results += `${prize} denar: ${winningsDistribution[prize]} times (${percentage}%)\n`;
+                }
+            }
+            results += `\nWinnings by Bracket:\n`;
+            for (let i = 0; i < brackets.length; i++) {
+                const percentage = ((bracketCounts[i] / iterations) * 100).toFixed(2);
+                results += `${brackets[i].label}: ${bracketCounts[i]} times (${percentage}%)\n`;
+            }
+
+            // Display results
+            document.getElementById('results').textContent = results;
+        }
+    </script>
+</body>
+</html>
