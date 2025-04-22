@@ -89,8 +89,26 @@
             color: #6b4e9b;
             margin-bottom: 10px;
         }
-        .result-item {
-            margin: 5px 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #dcdcdc;
+        }
+        th {
+            background: #6b4e9b;
+            color: #ffffff;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+        tr:nth-child(even) {
+            background: #f0f0f0;
+        }
+        tr:nth-child(odd) {
+            background: #ffffff;
         }
     </style>
 </head>
@@ -162,7 +180,7 @@
             let reachedFinalRound = false;
             let finalTwoIsMillionVsOne = false;
 
-            const millionInChosenBox = chosenBox >= 1000000;
+            const millionInChosenBox = chosenBox === 1000000;
             const chosenBoxHighValue = chosenBox >= 100000;
             const chosenBoxLowValue = chosenBox <= 1000;
 
@@ -390,69 +408,83 @@
             const avgOfferMinusEV = acceptedOfferCountForEV > 0 ? (totalOfferMinusEV / acceptedOfferCountForEV).toFixed(2) : 0;
             const millionLostToOfferPercentage = ((millionLostToOfferCount / iterations) * 100).toFixed(2);
 
-            // Подготовка на резултати
+            // Подготовка на резултати со табели
             let results = `
                 <div class="result-section">
                     <h3>Општи статистики</h3>
-                    <p class="result-item">Вкупно симулации: ${iterations}</p>
-                    <p class="result-item">Симулации со веднаш прифатена понуда: ${acceptCount} (${acceptPercentage}%)</p>
-                    <p class="result-item">Симулации со одбиена, но подоцна прифатена понуда: ${rejectContinueCount} (${rejectContinuePercentage}%)</p>
-                    <p class="result-item">Симулации до крај на играта: ${endCount} (${endPercentage}%)</p>
-                    <p class="result-item">Просечна добивка (веднаш прифатена понуда): ${avgWinningsAccept} денари</p>
-                    <p class="result-item">Просечна добивка (одбиена, подоцна прифатена понуда): ${avgWinningsReject} денари</p>
-                    <p class="result-item">Просечна добивка (до крај на играта): ${avgWinningsEnd} денари</p>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Вкупно симулации</td><td>${iterations}</td></tr>
+                        <tr><td>Симулации со веднаш прифатена понуда</td><td>${acceptCount} (${acceptPercentage}%)</td></tr>
+                        <tr><td>Симулации со одбиена, но подоцна прифатена понуда</td><td>${rejectContinueCount} (${rejectContinuePercentage}%)</td></tr>
+                        <tr><td>Симулации до крај на играта</td><td>${endCount} (${endPercentage}%)</td></tr>
+                        <tr><td>Просечна добивка (веднаш прифатена понуда)</td><td>${avgWinningsAccept} денари</td></tr>
+                        <tr><td>Просечна добивка (одбиена, подоцна прифатена понуда)</td><td>${avgWinningsReject} денари</td></tr>
+                        <tr><td>Просечна добивка (до крај на играта)</td><td>${avgWinningsEnd} денари</td></tr>
+                    </table>
                 </div>
                 <div class="result-section">
                     <h3>Дополнителни статистики за стратегија</h3>
-                    <p class="result-item">Просечна рунда на прифаќање понуда: ${avgAcceptanceRound}</p>
-                    <p class="result-item">Процент на игри со прифатена прва понуда: ${firstOfferAcceptedPercentage}%</p>
-                    <p class="result-item">Просечна вредност на прифатена понуда: ${avgAcceptedOfferValue} денари</p>
-                    <p class="result-item">Просечна вредност на одбиена понуда: ${avgRejectedOfferValue} денари</p>
-                    <p class="result-item">Процент на прифатени понуди над очекуваната вредност: ${offersAboveEVAcceptedPercentage}%</p>
-                    <p class="result-item">Процент на игри со 1.000.000 денари преостанати по рунда 3: ${millionAfterRound3Percentage}%</p>
-                    <p class="result-item">Процент на игри со 1 денар преостанати по рунда 3: ${oneDenarAfterRound3Percentage}%</p>
-                    <p class="result-item">Просечен број на високи награди (≥ 100.000) по рунда 4: ${avgHighValueAfterRound4}</p>
-                    <p class="result-item">Процент на игри со висока вредност (≥ 100.000) во избраната кутија: ${chosenBoxHighValuePercentage}%</p>
-                    <p class="result-item">Процент на игри со ниска вредност (≤ 1.000) во избраната кутија: ${chosenBoxLowValuePercentage}%</p>
-                    <p class="result-item">Процент на игри што стигнале до финална рунда (рунда 6): ${reachedFinalRoundPercentage}%</p>
-                    <p class="result-item">Просечна добивка при стигнување до финална рунда: ${avgWinningsFinalRound} денари</p>
-                    <p class="result-item">Процент на финални рунди со 1.000.000 vs. 1 денар: ${finalTwoMillionVsOnePercentage}%</p>
-                    <p class="result-item">Процент на игри до крај со висока вредност (≥ 100.000): ${highValueEndPercentage}%</p>
-                    <p class="result-item">Процент на игри до крај со ниска вредност (≤ 1.000): ${lowValueEndPercentage}%</p>
-                    <p class="result-item">Просечна очекувана вредност при прифаќање понуда: ${avgEVWhenAccepting} денари</p>
-                    <p class="result-item">Просечна очекувана вредност при одење до крај: ${avgEVWhenGoingToEnd} денари</p>
-                    <p class="result-item">Процент на игри каде понудата ја надминува конечната добивка: ${offerExceedsWinningsPercentage}%</p>
-                    <p class="result-item">Просечна разлика помеѓу прифатена понуда и очекувана вредност: ${avgOfferMinusEV} денари</p>
-                    <p class="result-item">Процент на игри каде милионот е изгубен поради прифаќање понуда: ${millionLostToOfferPercentage}%</p>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Просечна рунда на прифаќање понуда</td><td>${avgAcceptanceRound}</td></tr>
+                        <tr><td>Процент на игри со прифатена прва понуда</td><td>${firstOfferAcceptedPercentage}%</td></tr>
+                        <tr><td>Просечна вредност на прифатена понуда</td><td>${avgAcceptedOfferValue} денари</td></tr>
+                        <tr><td>Просечна вредност на одбиена понуда</td><td>${avgRejectedOfferValue} денари</td></tr>
+                        <tr><td>Процент на прифатени понуди над очекуваната вредност</td><td>${offersAboveEVAcceptedPercentage}%</td></tr>
+                        <tr><td>Процент на игри со 1.000.000 денари преостанати по рунда 3</td><td>${millionAfterRound3Percentage}%</td></tr>
+                        <tr><td>Процент на игри со 1 денар преостанати по рунда 3</td><td>${oneDenarAfterRound3Percentage}%</td></tr>
+                        <tr><td>Просечен број на високи награди (≥ 100.000) по рунда 4</td><td>${avgHighValueAfterRound4}</td></tr>
+                        <tr><td>Процент на игри со висока вредност (≥ 100.000) во избраната кутија</td><td>${chosenBoxHighValuePercentage}%</td></tr>
+                        <tr><td>Процент на игри со ниска вредност (≤ 1.000) во избраната кутија</td><td>${chosenBoxLowValuePercentage}%</td></tr>
+                        <tr><td>Процент на игри што стигнале до финална рунда (рунда 6)</td><td>${reachedFinalRoundPercentage}%</td></tr>
+                        <tr><td>Просечна добивка при стигнување до финална рунда</td><td>${avgWinningsFinalRound} денари</td></tr>
+                        <tr><td>Процент на финални рунди со 1.000.000 vs. 1 денар</td><td>${finalTwoMillionVsOnePercentage}%</td></tr>
+                        <tr><td>Процент на игри до крај со висока вредност (≥ 100.000)</td><td>${highValueEndPercentage}%</td></tr>
+                        <tr><td>Процент на игри до крај со ниска вредност (≤ 1.000)</td><td>${lowValueEndPercentage}%</td></tr>
+                        <tr><td>Просечна очекувана вредност при прифаќање понуда</td><td>${avgEVWhenAccepting} денари</td></tr>
+                        <tr><td>Просечна очекувана вредност при одење до крај</td><td>${avgEVWhenGoingToEnd} денари</td></tr>
+                        <tr><td>Процент на игри каде понудата ја надминува конечната добивка</td><td>${offerExceedsWinningsPercentage}%</td></tr>
+                        <tr><td>Просечна разлика помеѓу прифатена понуда и очекувана вредност</td><td>${avgOfferMinusEV} денари</td></tr>
+                        <tr><td>Процент на игри каде милионот е изгубен поради прифаќање понуда</td><td>${millionLostToOfferPercentage}%</td></tr>
+                    </table>
                 </div>
                 <div class="result-section">
                     <h3>Статистики за 1.000.000 и 1 денар</h3>
-                    <p class="result-item">Освоен 1.000.000 денари: ${millionWonCount} пати (${millionWonPercentage}%)</p>
-                    <p class="result-item">1.000.000 денари во избраната кутија: ${millionInChosenBoxCount} пати (${millionInChosenBoxPercentage}%)</p>
-                    <p class="result-item">Успешност за освојување на 1.000.000 денари кога е во избраната кутија: ${millionSuccessRate}%</p>
-                    <p class="result-item">1.000.000 денари отворен за време на играта: ${millionOpenedCount} пати (${millionOpenedPercentage}%)</p>
-                    <p class="result-item">Освоен 1 денар: ${oneDenarWonCount} пати (${oneDenarWonPercentage}%)</p>
-                    <p class="result-item">1 денар отворен за време на играта: ${oneDenarOpenedCount} пати (${oneDenarOpenedPercentage}%)</p>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Освоен 1.000.000 денари</td><td>${millionWonCount} пати (${millionWonPercentage}%)</td></tr>
+                        <tr><td>1.000.000 денари во избраната кутија</td><td>${millionInChosenBoxCount} пати (${millionInChosenBoxPercentage}%)</td></tr>
+                        <tr><td>Успешност за освојување на 1.000.000 денари кога е во избраната кутија</td><td>${millionSuccessRate}%</td></tr>
+                        <tr><td>1.000.000 денари отворен за време на играта</td><td>${millionOpenedCount} пати (${millionOpenedPercentage}%)</td></tr>
+                        <tr><td>Освоен 1 денар</td><td>${oneDenarWonCount} пати (${oneDenarWonPercentage}%)</td></tr>
+                        <tr><td>1 денар отворен за време на играта</td><td>${oneDenarOpenedCount} пати (${oneDenarOpenedPercentage}%)</td></tr>
+                    </table>
                 </div>
                 <div class="result-section">
                     <h3>Добивки по опсези</h3>
+                    <table>
+                        <tr><th>Опсег</th><th>Вредност</th></tr>
             `;
             for (let i = 0; i < brackets.length; i++) {
                 const percentage = ((bracketCounts[i] / iterations) * 100).toFixed(2);
-                results += `<p class="result-item">${brackets[i].label}: ${bracketCounts[i]} пати (${percentage}%)</p>`;
+                results += `<tr><td>${brackets[i].label}</td><td>${bracketCounts[i]} пати (${percentage}%)</td></tr>`;
             }
             results += `
+                    </table>
                 </div>
                 <div class="result-section">
                     <h3>Распределба на добивките (поединечни износи)</h3>
+                    <table>
+                        <tr><th>Износ</th><th>Вредност</th></tr>
             `;
             for (const prize in winningsDistribution) {
                 if (winningsDistribution[prize] > 0) {
                     const percentage = ((winningsDistribution[prize] / iterations) * 100).toFixed(2);
-                    results += `<p class="result-item">${prize} денари: ${winningsDistribution[prize]} пати (${percentage}%)</p>`;
+                    results += `<tr><td>${prize} денари</td><td>${winningsDistribution[prize]} пати (${percentage}%)</td></tr>`;
                 }
             }
-            results += `</div>`;
+            results += `</table></div>`;
 
             // Прикажување на резултати
             document.getElementById('results').innerHTML = results;
