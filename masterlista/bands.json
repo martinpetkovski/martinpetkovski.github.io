@@ -1499,10 +1499,11 @@
                 "name": "Mark Purpose",
                 "city": "Битола",
                 "genre": "Амбиентална, Ло-фи, Хаус",
-                "soundsLike": "",
+                "soundsLike": "Brian Eno, Pat Metheny",
                 "links": {
                     "spotify": "https://open.spotify.com/artist/6GWM6CSXUZekRxOazOCOBs?si=D8444xv-S56VGyWFY8uugw"
                 },
+                "contact": "markpurpose79@gmail.com",
                 "isActive": "Активен"
             },
             {
@@ -1656,6 +1657,18 @@
                 "lastfmName": "Kenopsija",
                 "contact": "",
                 "isActive": "Можеби"
+            },
+            {
+                "name": "The Protagonist",
+                "city": "Гостивар",
+                "genre": "Пост-рок, Алтернативен Рок",
+                "soundsLike": "",
+                "links": {
+                    "youtube": "https://www.youtube.com/watch?v=mI9H__LILGM"
+                },
+                "lastfmName": "The Protagonist",
+                "contact": "",
+                "isActive": "Непознато"
             }
         ]
 }
