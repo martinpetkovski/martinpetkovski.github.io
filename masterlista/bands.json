@@ -1627,6 +1627,35 @@
                 "lastfmName": "Cilindar",
                 "contact": "",
                 "isActive": "Неактивен"
+            },
+            {
+                "name": "Corrosion",
+                "city": "Битола",
+                "genre": "Алтернативен Рок, Нојз Поп",
+                "soundsLike": "Ween, Duster",
+                "links": {
+                    "instagram": "https://www.instagram.com/corrosion.mk/",
+                    "linktree": "https://linktr.ee/corrosion.mk",
+                    "spotify": "https://open.spotify.com/artist/0FaXK45sVB78p09S5wVvgc",
+                    "youtube": "https://youtube.com/channel/UCcpmxNGou_Ka0UwZDA9ERiQ"
+                },
+                "lastfmName": "corrosion.",
+                "contact": "",
+                "isActive": "Неактивен"
+            },
+            {
+                "name": "Кенопсија",
+                "city": "Битола",
+                "genre": "Алтернативен Рок",
+                "soundsLike": "Radiohead, Arcade Fire",
+                "links": {
+                    "instagram": "https://www.instagram.com/kenopsija.mk/",
+                    "spotify": "https://open.spotify.com/artist/7GDHmoElz9t9QaGQ0T4MZD",
+                    "youtube": "https://www.youtube.com/channel/UCdNP_Dn21LDp9LnZPRwLznw"
+                },
+                "lastfmName": "Kenopsija",
+                "contact": "",
+                "isActive": "Можеби"
             }
         ]
 }
