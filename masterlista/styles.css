@@ -669,93 +669,6 @@ footer p {
     opacity: 0.9;
 }
 
-/* Modal Styles */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 1rem;
-    border-radius: 0;
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-content h2 {
-    font-family: 'Montserrat', sans-serif;
-    margin-bottom: 1rem;
-}
-
-.close {
-    float: right;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-#edit-form label {
-    display: block;
-    margin: 0.5rem 0;
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-#edit-form input,
-#edit-form select,
-#edit-form textarea {
-    width: 100%;
-    padding: 0.3rem;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    font-family: 'Source Sans Pro', sans-serif;
-}
-
-#edit-form textarea {
-    height: 100px;
-}
-
-#edit-form button {
-    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-    color: white;
-    padding: 0.5rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 0;
-    font-family: 'Montserrat', sans-serif;
-}
-
-#edit-form button:hover {
-    background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-}
-
-/* Edit Button Styles */
-.edit-btn {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
-    color: white;
-    background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
-    padding: 0.2rem 0.4rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 0;
-    margin-left: 0.5rem;
-}
-
-.edit-btn:hover {
-    background: linear-gradient(135deg, #03a9f4 0%, #0288d1 100%);
-}
-
 @media (max-width: 800px) {
     main {
         padding: 0.3rem 0.8rem;
@@ -1195,27 +1108,5 @@ footer p {
 
     footer p {
         font-size: 1rem;
-    }
-
-    /* Modal Responsive Styles */
-    .modal-content {
-        width: 95%;
-        padding: 0.5rem;
-    }
-
-    #edit-form input,
-    #edit-form select,
-    #edit-form textarea {
-        font-size: 1.6rem;
-    }
-
-    #edit-form button {
-        font-size: 1.6rem;
-        padding: 0.4rem;
-    }
-
-    .edit-btn {
-        font-size: 1.6rem;
-        padding: 0.3rem 0.5rem;
     }
 }

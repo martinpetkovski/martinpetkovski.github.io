@@ -52,23 +52,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to generate a color based on the ASCII sum of a string
     function generateCityColor(city) {
+        // Calculate ASCII sum
         const asciiSum = city.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+
+        // Updated palette focusing on blue, orange, red, teal (more saturated, no pink)
         const colorPalette = [
-            { start: '#4a2c6d', end: '#2a4d8f' },
-            { start: '#5e35b1', end: '#3949ab' },
-            { start: '#6b3e99', end: '#8e4ec6' },
-            { start: '#0288d1', end: '#03a9f4' },
-            { start: '#2e7d32', end: '#4caf50' },
-            { start: '#d32f2f', end: '#f44336' },
-            { start: '#f57c00', end: '#ff9800' },
-            { start: '#00695c', end: '#26a69a' },
-            { start: '#0277bd', end: '#4fc3f7' },
-            { start: '#b71c1c', end: '#d81b60' },
-            { start: '#ff5722', end: '#ff8a65' },
-            { start: '#00838f', end: '#4dd0e1' }
+            { start: '#4a2c6d', end: '#2a4d8f' }, // Header gradient (purple to blue)
+            { start: '#5e35b1', end: '#3949ab' }, // Table header gradient (purple to blue)
+            { start: '#6b3e99', end: '#8e4ec6' }, // Genre gradient (purple)
+            { start: '#0288d1', end: '#03a9f4' }, // Sounds-like gradient (bright blue)
+            { start: '#2e7d32', end: '#4caf50' }, // Add band button (green)
+            { start: '#d32f2f', end: '#f44336' }, // Red gradient (clear filters button)
+            { start: '#f57c00', end: '#ff9800' }, // Orange gradient (status "Можеби")
+            { start: '#00695c', end: '#26a69a' }, // Teal gradient
+            { start: '#0277bd', end: '#4fc3f7' }, // Bright blue gradient
+            { start: '#b71c1c', end: '#d81b60' }, // Deep red gradient
+            { start: '#ff5722', end: '#ff8a65' }, // Bright orange gradient
+            { start: '#00838f', end: '#4dd0e1' }  // Cyan-teal gradient
         ];
+
+        // Use modulo to map ASCII sum to a palette index
         const paletteIndex = asciiSum % colorPalette.length;
         const selectedGradient = colorPalette[paletteIndex];
+
+        // Return a linear gradient
         return `linear-gradient(135deg, ${selectedGradient.start} 0%, ${selectedGradient.end} 100%)`;
     }
 
@@ -149,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             bandsData = await Promise.all(
-                data.muzickaMasterLista.map(async (band, index) => {
+                data.muzickaMasterLista.map(async (band) => {
                     let image = band.image;
                     if (band.lastfmName || band.name) {
                         const lastfmImage = await getLastfmArtistImage(band.lastfmName, band.name);
@@ -162,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!image || image.trim() === '') {
                         image = defaultFallbackImage;
                     }
+                    // Map isActive values
                     let status;
                     if (band.isActive === true) {
                         status = 'Активен';
@@ -180,8 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         contact: band.contact || 'недостигаат податоци',
                         image,
                         lastfmName: band.lastfmName || null,
-                        label: band.label || null,
-                        index // Store index for editing
+                        label: band.label || null
                     };
                 })
             );
@@ -192,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return nameA.localeCompare(nameB, 'en');
             });
 
+            // Update footer with total bands and last modified date
             document.getElementById('total-bands').textContent = bandsData.length;
             const lastModified = new Date('2025-04-20T14:30:00');
             const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -203,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             populateFilters(bandsData);
             renderBands(bandsData);
 
+            // Initialize Select2 for city, genre, sounds like, status, and label with blank default
             $('#filter-city').select2({
                 placeholder: 'Сите градови',
                 allowClear: true,
@@ -233,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 width: '100%'
             }).val('').trigger('change');
 
+            // Search and filter event listeners
             document.getElementById('search-name').addEventListener('input', filterBands);
             $('#filter-city').on('change', filterBands);
             $('#filter-genre').on('change', filterBands);
@@ -240,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             $('#filter-status').on('change', filterBands);
             $('#filter-label').on('change', filterBands);
 
+            // Clear filters button
             document.getElementById('clear-filters').addEventListener('click', () => {
                 document.getElementById('search-name').value = '';
                 $('#filter-city').val('').trigger('change');
@@ -250,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 filterBands();
             });
 
+            // Toggle filters button
             document.getElementById('toggle-filters').addEventListener('click', () => {
                 const controls = document.querySelector('.controls');
                 controls.classList.toggle('active');
@@ -257,106 +269,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('toggle-filters').innerHTML = `<i class="fas ${isActive ? 'fa-times' : 'fa-filter'}"></i>`;
             });
 
+            // Mode toggle checkbox
             document.getElementById('mode-toggle-checkbox').addEventListener('change', (e) => {
                 document.body.classList.toggle('compact', !e.target.checked);
                 document.body.classList.toggle('expanded', e.target.checked);
                 renderBands(bandsData);
-            });
-
-            // Modal handling
-            const modal = document.getElementById('edit-modal');
-            const closeModal = document.getElementById('close-modal');
-            const editForm = document.getElementById('edit-form');
-            const modalTitle = document.getElementById('modal-title');
-
-            function openEditModal(band) {
-                modalTitle.textContent = 'Уреди Бенд';
-                editForm.dataset.type = 'edit';
-                editForm.dataset.bandId = band.index;
-                editForm.name.value = band.name;
-                editForm.city.value = band.city === 'недостигаат податоци' ? '' : band.city;
-                editForm.genre.value = band.genre === 'недостигаат податоци' ? '' : band.genre;
-                editForm.soundsLike.value = band.soundsLike === 'недостигаат податоци' ? '' : band.soundsLike;
-                editForm.isActive.value = band.isActive;
-                editForm.links.value = JSON.stringify(band.links, null, 2);
-                editForm.contact.value = band.contact === 'недостигаат податоци' ? '' : band.contact;
-                editForm.image.value = band.image === defaultFallbackImage ? '' : band.image;
-                editForm.lastfmName.value = band.lastfmName || '';
-                editForm.label.value = band.label || '';
-                modal.style.display = 'flex';
-                hcaptcha.reset(); // Reset CAPTCHA
-            }
-
-            function openAddModal() {
-                modalTitle.textContent = 'Додај Нов Бенд';
-                editForm.dataset.type = 'add';
-                editForm.dataset.bandId = '';
-                editForm.reset();
-                editForm.links.value = '{}';
-                modal.style.display = 'flex';
-                hcaptcha.reset(); // Reset CAPTCHA
-            }
-
-            closeModal.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-
-            editForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const captchaToken = hcaptcha.getResponse();
-                if (!captchaToken) {
-                    alert('Ве молиме потврдете дека не сте робот.');
-                    return;
-                }
-                const type = editForm.dataset.type;
-                const bandId = editForm.dataset.bandId;
-                let links;
-                try {
-                    links = JSON.parse(editForm.links.value || '{}');
-                } catch {
-                    alert('Линковите мора да бидат во валиден JSON формат.');
-                    return;
-                }
-                const data = {
-                    name: editForm.name.value,
-                    city: editForm.city.value || 'недостигаат податоци',
-                    genre: editForm.genre.value || 'недостигаат податоци',
-                    soundsLike: editForm.soundsLike.value || 'недостигаат податоци',
-                    isActive: editForm.isActive.value,
-                    links: Object.keys(links).length ? links : { none: 'недостигаат податоци' },
-                    contact: editForm.contact.value || 'недостигаат податоци',
-                    image: editForm.image.value || defaultFallbackImage,
-                    lastfmName: editForm.lastfmName.value || null,
-                    label: editForm.label.value || null
-                };
-
-                try {
-                    const response = await fetch('/.netlify/functions/submit-edit', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ data, type, bandId, captchaToken })
-                    });
-                    const result = await response.json();
-                    if (!response.ok) {
-                        throw new Error(result.error || 'Поднесувањето не успеа.');
-                    }
-                    alert(result.message);
-                    modal.style.display = 'none';
-                    editForm.reset();
-                } catch (error) {
-                    alert('Грешка: ' + error.message);
-                }
-            });
-
-            document.getElementById('add-band-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                openAddModal();
             });
         } catch (error) {
             console.error('Error loading bands:', error);
             document.getElementById('band-table-body').innerHTML = '<tr><td colspan="7">Извинете, нешто тргна наопаку.</td></tr>';
         }
     }
+
+    // Call the async function to load data
+    loadBandsData();
 
     // Populate city, genre, sounds like, status, and label dropdowns with counts
     function populateFilters(data) {
@@ -366,7 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusSelect = document.getElementById('filter-status');
         const labelSelect = document.getElementById('filter-label');
 
+        // Only populate if dropdowns are empty (initial load)
         if (citySelect.innerHTML === '') {
+            // Count cities
             const cityCounts = {};
             data.forEach(band => {
                 if (band.city !== 'недостигаат податоци') {
@@ -395,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (genreSelect.innerHTML === '') {
+            // Count genres
             const genreCounts = {};
             data.forEach(band => {
                 if (band.genre !== 'недостигаат податоци') {
@@ -423,6 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (soundsLikeSelect.innerHTML === '') {
+            // Count sounds like
             const soundsLikeCounts = {};
             data.forEach(band => {
                 if (band.soundsLike !== 'недостигаат податоци') {
@@ -451,6 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (statusSelect.innerHTML === '') {
+            // Count statuses
             const statusCounts = {};
             data.forEach(band => {
                 const status = band.isActive;
@@ -476,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (labelSelect.innerHTML === '') {
+            // Count labels
             const labelCounts = {};
             data.forEach(band => {
                 if (band.label && band.label !== 'недостигаат податоци' && band.label !== null) {
@@ -511,13 +443,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterStatus = $('#filter-status').val() || '';
         const filterLabel = $('#filter-label').val() || '';
 
+        // Transliterated versions of the search input
         const searchNameLatinFull = transliterateCyrillicToLatin(searchName).toLowerCase();
         const searchNameLatinShorthand = transliterateCyrillicToLatinShorthand(searchName).toLowerCase();
 
         const filteredBands = bandsData.filter(band => {
+            // Transliterated versions of the band name
             const bandNameLatinFull = transliterateCyrillicToLatin(band.name).toLowerCase();
             const bandNameLatinShorthand = transliterateCyrillicToLatinShorthand(band.name).toLowerCase();
 
+            // Check if the search matches either the original name (for non-Cyrillic searches),
+            // the full transliterated name, or the shorthand transliterated name
             const matchesName = (
                 band.name.toLowerCase().includes(searchName) ||
                 bandNameLatinFull.includes(searchNameLatinFull) ||
@@ -546,29 +482,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const bandTableBody = document.getElementById('band-table-body');
         bandTableBody.innerHTML = '';
 
-        const linkPopularityOrder = [
-            'youtube', 'spotify', 'itunes', 'deezer', 'instagram',
-            'facebook', 'twitter', 'soundcloud', 'bandcamp', 'website', 'linktree'
-        ];
-
-        const linkIcons = {
-            facebook: 'fa-brands fa-facebook',
-            instagram: 'fa-brands fa-instagram',
-            twitter: 'fa-brands fa-twitter',
-            bandcamp: 'fa-brands fa-bandcamp',
-            soundcloud: 'fa-brands fa-soundcloud',
-            youtube: 'fa-brands fa-youtube',
-            spotify: 'fa-brands fa-spotify',
-            itunes: 'fa-brands fa-itunes-note',
-            deezer: 'fa-brands fa-deezer',
-            lastfm: 'fa-brands fa-lastfm',
-            wikipedia: 'fa-brands fa-wikipedia-w',
-            website: 'fa-solid fa-globe',
-            linktree: 'fa-solid fa-tree'
-        };
-
         bands.forEach(band => {
             const bandRow = document.createElement('tr');
+
+            const linkPopularityOrder = [
+                'youtube', 'spotify', 'itunes', 'deezer', 'instagram',
+                'facebook', 'twitter', 'soundcloud', 'bandcamp', 'website', 'linktree'
+            ];
+
+            const linkIcons = {
+                facebook: 'fa-brands fa-facebook',
+                instagram: 'fa-brands fa-instagram',
+                twitter: 'fa-brands fa-twitter',
+                bandcamp: 'fa-brands fa-bandcamp',
+                soundcloud: 'fa-brands fa-soundcloud',
+                youtube: 'fa-brands fa-youtube',
+                spotify: 'fa-brands fa-spotify',
+                itunes: 'fa-brands fa-itunes-note',
+                deezer: 'fa-brands fa-deezer',
+                lastfm: 'fa-brands fa-lastfm',
+                wikipedia: 'fa-brands fa-wikipedia-w',
+                website: 'fa-solid fa-globe',
+                linktree: 'fa-solid fa-tree'
+            };
 
             let linksHtml = '';
             if (band.links.none === 'недостигаат податоци' && band.contact === 'недостигаат податоци') {
@@ -591,11 +527,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .join('');
 
+                // Add contact email as a link if available
                 if (band.contact !== 'недостигаат податоци') {
                     linksHtml += `<a href="mailto:${band.contact}" class="contact-link"><i class="fa-solid fa-envelope"></i></a>`;
                 }
             }
 
+            // Handle cities
             let cityHtml = '';
             if (band.city === 'недостигаат податоци') {
                 cityHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
@@ -604,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cityHtml = cities.map(c => `<span class="city-item" data-filter="city" data-value="${c}" style="background: ${generateCityColor(c)}">${c}</span>`).join('');
             }
 
+            // Handle genres
             let genreHtml = '';
             if (band.genre === 'недостигаат податоци') {
                 genreHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
@@ -612,6 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 genreHtml = genres.map(g => `<span class="genre-item" data-filter="genre" data-value="${g}">${g}</span>`).join('');
             }
 
+            // Handle sounds like
             let soundsLikeHtml = '';
             if (band.soundsLike === 'недостигаат податоци') {
                 soundsLikeHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
@@ -620,6 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 soundsLikeHtml = soundsLike.map(s => `<span class="sounds-like-item" data-filter="sounds-like" data-value="${s}">${s}</span>`).join('');
             }
 
+            // Handle band name with optional label
             let nameHtml = band.name;
             if (band.label && band.label !== 'недостигаат податоци') {
                 nameHtml += ` <span class="band-label" data-filter="label" data-value="${band.label}">${band.label}</span>`;
@@ -636,10 +577,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td data-label="Линкови" class="links">${linksHtml}</td>
                 <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">
                     <span class="status-content" data-status-text="${band.isActive}">${band.isActive}</span>
-                    <button class="edit-btn" data-index="${band.index}">Уреди</button>
                 </td>
             `;
 
+            // Add tooltip functionality to the status circle
             const statusSpan = bandRow.querySelector('.status-content');
             statusSpan.addEventListener('mouseover', (e) => {
                 const tooltip = document.createElement('div');
@@ -671,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Add click event listeners to filterable items
             bandRow.querySelectorAll('.city-item, .genre-item, .sounds-like-item, .band-label').forEach(item => {
                 item.addEventListener('click', () => {
                     const filterType = item.getAttribute('data-filter');
@@ -684,16 +626,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (filterType === 'label') {
                         $('#filter-label').val(filterValue).trigger('change');
                     }
+                    // Ensure filters are visible on mobile
                     document.querySelector('.controls').style.display = 'flex';
                 });
             });
 
-            bandRow.querySelector('.edit-btn').addEventListener('click', () => openEditModal(band));
-
             bandTableBody.appendChild(bandRow);
         });
     }
-
-    // Call the async function to load data
-    loadBandsData();
 });
