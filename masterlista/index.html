@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&family=Montserrat:wght@600&family=Bungee&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css">
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </head>
 <body class="compact">
     <header>
@@ -19,7 +20,7 @@
                     <p>напојувано од <a class="xotel-link" href="https://discord.gg/fj6dJGhM" target="_blank">Xotel</a></p>
                 </div>
             </div>
-            <a href="https://discord.gg/fj6dJGhM" class="add-band-btn">Побарај промена на листата</a>
+            <a href="#" class="add-band-btn" id="add-band-btn">Додај Нов Бенд</a>
         </div>
     </header>
     <main>
@@ -54,6 +55,35 @@
                 </thead>
                 <tbody id="band-table-body"></tbody>
             </table>
+        </div>
+        <div id="edit-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span id="close-modal" class="close">×</span>
+                <h2 id="modal-title">Уреди Бенд</h2>
+                <form id="edit-form">
+                    <label>Име: <input type="text" name="name" required></label>
+                    <label>Град: <input type="text" name="city"></label>
+                    <label>Жанр: <input type="text" name="genre"></label>
+                    <label>Звучи како: <input type="text" name="soundsLike"></label>
+                    <label>Статус:
+                        <select name="isActive">
+                            <option value="Активен">Активен</option>
+                            <option value="Неактивен">Неактивен</option>
+                            <option value="Можеби">Можеби</option>
+                            <option value="Непознато">Непознато</option>
+                        </select>
+                    </label>
+                    <label>Линкови (JSON формат, пример: {"youtube": "url"}):
+                        <textarea name="links"></textarea>
+                    </label>
+                    <label>Контакт (email): <input type="email" name="contact"></label>
+                    <label>Слика (URL): <input type="url" name="image"></label>
+                    <label>Last.fm Име: <input type="text" name="lastfmName"></label>
+                    <label>Ознака: <input type="text" name="label"></label>
+                    <div class="h-captcha" data-sitekey="8f1c09be-e39a-4698-9f2c-bc90bde8ce84"></div>
+                    <button type="submit">Поднеси</button>
+                </form>
+            </div>
         </div>
     </main>
     <footer>
