@@ -827,7 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
             bandRow.innerHTML = `
-                <td data-label="Слика" class="band-image image-column"><img src="${band.image}" alt="${band.name}"></td>
+                <td data-label="Слика" class="band-image image-column">${document.body.classList.contains('compact') ? '' : `<img src="${band.image}" alt="${band.name}">`}</td>
                 <td data-label="Име" class="name">${nameHtml}</td>
                 <td data-label="Град">${cityHtml}</td>
                 <td data-label="Жанр">${genreHtml}</td>

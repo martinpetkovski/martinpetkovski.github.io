@@ -11,7 +11,6 @@ body {
     background: #f9f9f9;
     margin: 0;
     height: 100vh;
-    overflow: hidden;
 }
 
 body.guide-page {
@@ -184,7 +183,7 @@ main {
 }
 
 body.guide-page main {
-    min-height: calc(100vh - 4rem); /* Ensure guide main is scrollable */
+    min-height: calc(100vh - 4rem);
     overflow-y: auto;
 }
 
@@ -386,9 +385,10 @@ body.guide-page main {
 }
 
 .table-wrapper {
-    flex-grow: 1; /* Take available space */
+    flex-grow: 1;
     width: 100%;
-    /* Removed max-height and overflow-y to prevent scrolling */
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
 }
 
 table {
@@ -400,7 +400,6 @@ table {
     table-layout: fixed;
     border-spacing: 0;
     border-radius: 0;
-    height: 100%; /* Fit available space */
 }
 
 th:nth-child(1), td:nth-child(1) {
@@ -417,7 +416,7 @@ th:nth-child(3), td:nth-child(3),
 th:nth-child(4), td:nth-child(4),
 th:nth-child(5), td:nth-child(5) {
     width: auto;
-    white-space: normal; /* Allow wrapping */
+    white-space: normal;
 }
 
 th:nth-child(6), td:nth-child(6) {
@@ -431,8 +430,8 @@ th:nth-child(7), td:nth-child(7) {
 }
 
 th:nth-child(8), td:nth-child(8) {
-    width: 80px;
-    min-width: 80px;
+    width: 70px;
+    min-width: 70px;
     padding: 0 4px;
     white-space: nowrap;
     text-align: center;
@@ -575,7 +574,7 @@ tr:hover .missing-data {
     border-radius: 0;
     font-size: 0.8rem;
     line-height: 1.1;
-    white-space: normal; /* Allow wrapping */
+    white-space: normal;
     cursor: pointer;
 }
 
@@ -864,24 +863,24 @@ footer p {
 }
 
 .action-buttons {
-    display: block; /* Changed to block for inline buttons */
+    display: block;
     text-align: center;
     line-height: 28px;
 }
 
 .action-btn {
-    display: inline; /* Changed to inline */
+    display: inline;
     font-size: 0.9rem;
     color: white;
     padding: 0;
-    margin: 0.2rem 0; /* Vertical spacing */
+    margin: 0.2rem 0;
     border: none;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     width: 28px;
     height: 28px;
-    line-height: 28px; /* Center icon */
+    line-height: 28px;
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
@@ -1107,7 +1106,8 @@ footer p {
         min-height: calc(100vh - 4.5rem);
     }
     .table-wrapper {
-        flex-grow: 1; /* Fit available space */
+        max-height: calc(100vh - 7.5rem);
+        overflow-y: auto;
     }
     th, td {
         padding: 0.15rem 0.4rem;
@@ -1209,7 +1209,7 @@ footer p {
         min-width: 60px;
     }
     th:nth-child(8), td:nth-child(8) {
-        width: 60px; /* Increased from 40px */
+        width: 60px;
         min-width: 60px;
         padding: 0 4px;
     }
@@ -1218,7 +1218,7 @@ footer p {
         height: 24px;
         font-size: 0.8rem;
         line-height: 24px;
-        margin: 0.15rem 0; /* Adjusted for smaller buttons */
+        margin: 0.15rem 0;
     }
     .action-buttons {
         line-height: 24px;
@@ -1284,7 +1284,8 @@ footer p {
     }
     .table-wrapper {
         padding: 0;
-        flex-grow: 1; /* Fit available space */
+        max-height: calc(100vh - 6.5rem);
+        overflow-y: auto;
         width: 100vw;
     }
     body.guide-page main {
@@ -1431,7 +1432,7 @@ footer p {
         display: flex;
         flex-wrap: wrap;
         gap: 0.2rem;
-        white-space: normal; /* Allow wrapping */
+        white-space: normal;
     }
     td[data-label="Жанр"], td[data-label="Звучи какo"] {
         display: flex;
@@ -1441,7 +1442,7 @@ footer p {
         font-size: 1.6rem;
         color: #555;
         padding: 0.2rem 0;
-        white-space: normal; /* Allow wrapping */
+        white-space: normal;
     }
     .genre-item, .sounds-like-item, .city-item {
         background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
@@ -1452,7 +1453,7 @@ footer p {
         border-radius: 0;
         margin: 0 0.1rem !important;
         cursor: pointer;
-        white-space: normal; /* Allow wrapping */
+        white-space: normal;
     }
     .sounds-like-item {
         background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
