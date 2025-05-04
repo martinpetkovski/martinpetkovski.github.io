@@ -515,15 +515,15 @@ document.addEventListener('DOMContentLoaded', () => {
             clearErrors();
             clearTags();
             if (mode === 'add') {
-                title.textContent = 'Додај бенд';
+                title.textContent = 'Додај артист'; // Changed from 'Додај бенд'
                 delete form.dataset.editIndex;
                 addLinkInput();
             } else {
-                title.textContent = 'Уреди бенд';
+                title.textContent = 'Уреди артист'; // Optional: also update edit mode for consistency
                 console.log('Pre-filling form with band data:', band);
                 if (!band) {
                     console.error('No band data provided for edit mode');
-                    alert('Грешка: нема податоци за бендот за уредување.');
+                    alert('Грешка: нема податоци за артистот за уредување.');
                     return;
                 }
                 document.getElementById('band-name').value = band.name !== 'недостигаат податоци' ? band.name : '';
