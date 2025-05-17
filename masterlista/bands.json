@@ -232,7 +232,7 @@
     {
       "name": "аТа",
       "city": "Битола, Скопје",
-      "genre": "Арт рок, Дрим поп",
+      "genre": "Арт Рок, Дрим Поп",
       "soundsLike": "Galaxie 500",
       "isActive": true,
       "links": {
@@ -262,7 +262,7 @@
     {
       "name": "Баклава",
       "city": "Скопје",
-      "genre": "Светска Музика, Акустичен",
+      "genre": "Светска Музика, Акустична",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
@@ -457,7 +457,7 @@
     {
       "name": "Conspiracy",
       "city": "Скопје",
-      "genre": "Треш, Хеви Метал",
+      "genre": "Треш Метал, Хеви Метал",
       "soundsLike": "Металика",
       "isActive": true,
       "links": {
@@ -686,7 +686,7 @@
     {
       "name": "Dobrila & Dorian Duo",
       "city": "Скопје",
-      "genre": "Фолк, Алтернативна, Арт рок",
+      "genre": "Фолк, Алтернативна, Арт Рок",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
@@ -959,6 +959,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/eb66d26811f24c45cc4914b70099bb5b.png"
     },
     {
+      "name": "GURUVOODOO",
+      "city": "Битола",
+      "genre": "Џез, Рап",
+      "soundsLike": "недостигаат податоци",
+      "isActive": "Можеби",
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=QAeALPUMKuY"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Iron Fang",
       "city": "Кичево",
       "genre": "Пауер Метал, Спид Метал",
@@ -997,6 +1011,22 @@
         "instagram": "https://www.instagram.com/jeffbahami/"
       },
       "contact": "martin@najjak.com",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Johnny Larry",
+      "city": "Битола",
+      "genre": "Рап, Фанк",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/@MVRSVR",
+        "spotify": "https://open.spotify.com/artist/79XvNtUxP1krMoZT9Pe0dm?si=kWebdH0CQN63ID86hD_Q9w",
+        "instagram": "https://www.instagram.com/jean_larri_claude/"
+      },
+      "contact": "недостигаат податоци",
       "lastfmName": null,
       "label": null,
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
@@ -1248,7 +1278,7 @@
     {
       "name": "Lufthansa",
       "city": "Скопје",
-      "genre": "Експериментален рок, Пост-панк, Пост-рок",
+      "genre": "Експериментален Рок, Пост-панк, Пост-рок",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
@@ -1339,7 +1369,7 @@
     {
       "name": "Mila and the Heartbreakers",
       "city": "Скопје",
-      "genre": "Панк-рок",
+      "genre": "Панк Рок",
       "soundsLike": "недостигаат податоци",
       "isActive": false,
       "links": {
@@ -1485,7 +1515,7 @@
     {
       "name": "Нокаут",
       "city": "Скопје",
-      "genre": "Поп Рок, Алтернативен Рок",
+      "genre": "Поп-Рок, Алтернативен Рок",
       "soundsLike": "Coldplay, The Killers",
       "isActive": true,
       "links": {
@@ -1698,7 +1728,7 @@
     {
       "name": "Red 18",
       "city": "Скопје, Охрид",
-      "genre": "Панк-рок, Алтернативен рок",
+      "genre": "Панк Рок, Алтернативен Рок",
       "soundsLike": "Paramore",
       "isActive": "Непознато",
       "links": {
