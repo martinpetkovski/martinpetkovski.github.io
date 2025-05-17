@@ -1002,6 +1002,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "Кактус",
+      "city": "Битола",
+      "genre": "Панк, Краст",
+      "soundsLike": "Minor Threat, Bad Religion",
+      "isActive": "Можеби",
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=l1SKBXmC6dk"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/10e0b667df5a4545c5915bbd63f57951.png"
+    },
+    {
       "name": "Калико",
       "city": "Скопје",
       "genre": "Инди, Алтернативен Рок, Психоделичен Рок",
@@ -1857,6 +1871,20 @@
       "links": {
         "youtube": "https://www.youtube.com/@soundwavesofficial407",
         "instagram": "https://www.instagram.com/soundwavesofficial__/"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Spank",
+      "city": "Битола",
+      "genre": "Ска, Панк",
+      "soundsLike": "NOFX",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/@spankMKchannel"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
