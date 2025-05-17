@@ -1,0 +1,217 @@
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1a1a1a, #121212);
+  color: #ffffff;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.tree-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
+}
+
+#treeCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#treeNodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.person-node {
+  position: absolute;
+  background: linear-gradient(145deg, #333333, #282828);
+  border: 2px solid #0288d1;
+  width: 300px;
+  z-index: 3;
+  color: #ffffff;
+  font-family: 'Roboto', Arial, sans-serif;
+  transition: transform 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.person-node:hover {
+  transform: scale(1.05);
+  border-color: #03a9f4;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.person-node .header {
+  background: linear-gradient(145deg, #0288d1, #01579b);
+  padding: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  border-bottom: 2px solid #01579b;
+  letter-spacing: 0.5px;
+}
+
+.person-node .content {
+  padding: 12px;
+  background: linear-gradient(145deg, #333333, #282828);
+}
+
+.person-node .content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.person-node .content tr {
+  border-bottom: 1px solid #444444;
+}
+
+.person-node .content td {
+  padding: 6px 8px;
+  color: #e0e0e0;
+  vertical-align: middle;
+}
+
+.person-node .content td.label {
+  font-weight: 600;
+  color: #03a9f4;
+  width: 100px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.person-node .content td.separator {
+  width: 20px;
+  text-align: center;
+  color: #03a9f4;
+  font-weight: bold;
+}
+
+.person-node .content td.value {
+  color: #e0e0e0;
+}
+
+.person-node.highlighted {
+  border-color: #d81b60;
+  box-shadow: 0 4px 8px rgba(216, 27, 96, 0.3);
+}
+
+.person-node.highlighted .header {
+  background: linear-gradient(145deg, #d81b60, #b0003a);
+  border-bottom: 2px solid #b0003a;
+}
+
+.person-node.highlighted td.label {
+  color: #f06292;
+}
+
+.person-node.highlighted td.separator {
+  color: #f06292;
+}
+
+.person-node.highlighted td.value {
+  color: #ffccbc;
+}
+
+.person-node.connected {
+  border-color: #ff5252;
+  box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3);
+}
+
+.person-node.connected .header {
+  background: linear-gradient(145deg, #ff5252, #d32f2f);
+  border-bottom: 2px solid #d32f2f;
+}
+
+.person-node.connected td.label {
+  color: #ff8a80;
+}
+
+.person-node.connected td.separator {
+  color: #ff8a80;
+}
+
+.person-node.connected td.value {
+  color: #ffebee;
+}
+
+.side-menu {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 250px;
+  background: linear-gradient(145deg, #2e2e2e, #1f1f1f);
+  border: 1px solid #444444;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.menu-item {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.menu-item input, .menu-item select, .menu-item button {
+  padding: 8px 12px;
+  background: linear-gradient(145deg, #0288d1, #01579b);
+  border: none;
+  color: #ffffff;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  flex: 1;
+}
+
+.menu-item input {
+  background: #333333;
+  color: #ffffff;
+  padding-right: 30px;
+}
+
+.menu-item input::placeholder {
+  color: #bbbbbb;
+}
+
+.menu-item select {
+  background: linear-gradient(145deg, #333333, #282828);
+  border: 1px solid #0288d1;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  appearance: none;
+  padding-right: 30px;
+}
+
+.menu-item button i {
+  margin-right: 5px;
+}
+
+.menu-item input:hover, .menu-item select:hover, .menu-item button:hover {
+  background: linear-gradient(145deg, #03a9f4, #0277bd);
+  transform: translateY(-1px);
+}
+
+.menu-item i {
+  position: absolute;
+  right: 10px;
+  color: #03a9f4;
+  font-size: 14px;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Tree</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="side-menu">
+      <h2>Family Tree</h2>
+      <label for="personSearch">Select a person:</label>
+      <input type="text" id="personSearch" list="personList" placeholder="Type to search...">
+      <datalist id="personList"></datalist>
+      <button onclick="resetView()">Reset View</button>
+    </div>
+    <div class="tree-container">
+      <canvas id="treeCanvas"></canvas>
+      <div id="treeNodes"></div>
+    </div>
+  </div>
+  <script src="flags.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
