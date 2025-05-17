@@ -1440,6 +1440,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "Небо",
+      "city": "Битола",
+      "genre": "Алтернативен Рок",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=WNw86INHr54"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/d8f6849ca16e9d98cbba8dd73d73c212.png"
+    },
+    {
       "name": "Next Time",
       "city": "Скопје",
       "genre": "Рок, Поп-Рок",
