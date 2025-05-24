@@ -950,7 +950,7 @@ footer p {
 /* Guide page content styling */
 .guide-content {
     background: white;
-    padding: 1.5rem;
+    padding: 0rem 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 0;
     margin-bottom: 3rem;
@@ -960,6 +960,7 @@ footer p {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     color: #2a1b4a;
+    margin-top: 2.5rem;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -1639,5 +1640,81 @@ footer p {
     .status-indicator {
         width: 12px;
         height: 12px;
+    }
+}
+
+/* Loading bar styles */
+.loading-bar {
+    display: none; /* Hidden by default */
+    width: 100%;
+    max-width: 1000px;
+    height: 10px; /* Slightly thicker for better visibility */
+    background: #e8ecef; /* Light gray background for contrast */
+    margin: 0.5rem auto;
+    overflow: hidden;
+    border-radius: 5px; /* Rounded edges for a modern look */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    position: relative;
+}
+
+.loading-bar.active {
+    display: block; /* Shown when loading */
+}
+
+.loading-progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #5e35b1 0%, #3949ab 50%, #03a9f4 100%); /* Vibrant gradient */
+    border-radius: 5px; /* Match container's rounded edges */
+    box-shadow: 0 0 8px rgba(94, 53, 177, 0.5); /* Glow effect */
+    animation: loadingAnimation 1.5s ease-in-out infinite; /* Smooth, faster animation */
+    transition: width 0.1s ease; /* Smooth width changes */
+}
+
+@keyframes loadingAnimation {
+    0% {
+        width: 0;
+    }
+    70% {
+        width: 100%; /* Fully fill the bar */
+    }
+    100% {
+        width: 100%; /* Hold briefly at 100% */
+    }
+}
+
+/* Optional: Add a subtle overlay for depth */
+.loading-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
+/* Media queries for responsive loading bar */
+@media (max-width: 800px) {
+    .loading-bar {
+        height: 8px;
+        margin: 0.3rem auto;
+        border-radius: 4px;
+    }
+    .loading-progress {
+        border-radius: 4px;
+    }
+}
+
+@media (max-width: 600px) {
+    .loading-bar {
+        width: calc(100% - 0.4rem);
+        margin: 0.2rem;
+        height: 6px;
+        border-radius: 3px;
+    }
+    .loading-progress {
+        border-radius: 3px;
     }
 }

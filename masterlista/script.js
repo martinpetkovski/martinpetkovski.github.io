@@ -150,71 +150,81 @@ document.addEventListener('DOMContentLoaded', () => {
         return { valid: true };
     }
 
-    async function loadBandsData() {
-        try {
-            console.log('Loading bands data...');
-            const response = await fetch('bands.json');
-            const data = await response.json();
-            bandsData = await Promise.all(
-                data.muzickaMasterLista.map(async (band) => {
-                    let image = band.image;
-                    if (band.lastfmName || band.name) {
-                        const lastfmImage = await getLastfmArtistImage(band.lastfmName, band.name);
-                        if (lastfmImage) {
-                            image = lastfmImage;
-                        } else {
-                            console.warn(`No Last.fm image found for ${band.name}, using JSON image: ${image}`);
+        async function loadBandsData() {
+            const loadingBar = document.getElementById('loading-bar');
+            const controls = document.querySelector('.controls');
+            try {
+                console.log('Loading bands data...');
+                // Show loading bar and hide controls
+                loadingBar.classList.add('active');
+                controls.style.display = 'none';
+
+                const response = await fetch('bands.json');
+                const data = await response.json();
+                bandsData = await Promise.all(
+                    data.muzickaMasterLista.map(async (band) => {
+                        let image = band.image;
+                        if (band.lastfmName || band.name) {
+                            const lastfmImage = await getLastfmArtistImage(band.lastfmName, band.name);
+                            if (lastfmImage) {
+                                image = lastfmImage;
+                            } else {
+                                console.warn(`No Last.fm image found for ${band.name}, using JSON image: ${image}`);
+                            }
                         }
-                    }
-                    if (!image || image.trim() === '') {
-                        image = defaultFallbackImage;
-                    }
-                    let status;
-                    if (band.isActive === true) {
-                        status = 'Активен';
-                    } else if (band.isActive === false) {
-                        status = 'Неактивен';
-                    } else {
-                        status = band.isActive || 'Непознато';
-                    }
-                    return {
-                        name: band.name || 'недостигаат податоци',
-                        city: band.city || 'недостигаат податоци',
-                        genre: band.genre || 'недостигаат податоци',
-                        soundsLike: band.soundsLike || 'недостигаат податоци',
-                        isActive: status,
-                        links: Object.keys(band.links).length ? band.links : { none: 'недостигаат податоци' },
-                        contact: band.contact || 'недостигаат податоци',
-                        image,
-                        lastfmName: band.lastfmName || null,
-                        label: band.label || null
-                    };
-                })
-            );
-            bandsData.sort((a, b) => {
-                const nameA = transliterateCyrillicToLatin(a.name);
-                const nameB = transliterateCyrillicToLatin(b.name);
-                return nameA.localeCompare(nameB, 'en');
-            });
-            document.getElementById('total-bands').textContent = bandsData.length;
-            const lastModified = new Date('2025-05-24T00:00:00');
-            const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
-            const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
-            const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
-            document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
-            console.log(`Loaded ${bandsData.length} bands`);
-            populateFilters(bandsData);
-            renderBands(bandsData);
-            initializeFilters();
-            initializeModal();
-            initializeCopyData();
-            initializeMasterEdit();
-        } catch (error) {
-            console.error('Error loading bands:', error);
-            document.getElementById('band-table-body').innerHTML = '<tr><td colspan="8">Извинете, нешто тргна наопаку.</td></tr>';
+                        if (!image || image.trim() === '') {
+                            image = defaultFallbackImage;
+                        }
+                        let status;
+                        if (band.isActive === true) {
+                            status = 'Активен';
+                        } else if (band.isActive === false) {
+                            status = 'Неактивен';
+                        } else {
+                            status = band.isActive || 'Непознато';
+                        }
+                        return {
+                            name: band.name || 'недостигаат податоци',
+                            city: band.city || 'недостигаат податоци',
+                            genre: band.genre || 'недостигаат податоци',
+                            soundsLike: band.soundsLike || 'недостигаат податоци',
+                            isActive: status,
+                            links: Object.keys(band.links).length ? band.links : { none: 'недостигаат податоци' },
+                            contact: band.contact || 'недостигаат податоци',
+                            image,
+                            lastfmName: band.lastfmName || null,
+                            label: band.label || null
+                        };
+                    })
+                );
+                bandsData.sort((a, b) => {
+                    const nameA = transliterateCyrillicToLatin(a.name);
+                    const nameB = transliterateCyrillicToLatin(b.name);
+                    return nameA.localeCompare(nameB, 'en');
+                });
+                document.getElementById('total-bands').textContent = bandsData.length;
+                const lastModified = new Date('2025-05-24T00:00:00');
+                const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+                const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
+                const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
+                document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
+                console.log(`Loaded ${bandsData.length} bands`);
+                populateFilters(bandsData);
+                renderBands(bandsData);
+                initializeFilters();
+                initializeModal();
+                initializeCopyData();
+                initializeMasterEdit();
+            } catch (error) {
+                console.error('Error loading bands:', error);
+                document.getElementById('band-table-body').innerHTML = '<tr><td colspan="8">Извинете, нешто тргна наопаку.</td></tr>';
+            } finally {
+                // Hide loading bar and show controls
+                loadingBar.classList.remove('active');
+                controls.style.display = ''; // Reset to default (flex or none based on screen size)
+            }
         }
-    }
 
     function initializeFilters() {
         console.log('Initializing filters');
