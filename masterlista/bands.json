@@ -14,7 +14,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": "Ново",
+      "label": "Ново Издание",
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
@@ -72,6 +72,21 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Against Them All",
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Agni Kai",
+      "city": "Куманово",
+      "genre": "Метал",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "lastfm": "https://www.last.fm/music/Agni+Kai",
+        "youtube": "https://www.youtube.com/@agnikai2550"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
       "label": null,
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
@@ -208,7 +223,8 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "spotify": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF"
+        "spotify": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF",
+        "youtube": "https://www.youtube.com/channel/UCjD_bzNYOwUMzyFOWW8WgEA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Arhangel",
@@ -252,7 +268,8 @@
       "soundsLike": "Green Day, Blink-182",
       "isActive": false,
       "links": {
-        "wikipedia": "https://en.wikipedia.org/wiki/Badmingtons"
+        "wikipedia": "https://en.wikipedia.org/wiki/Badmingtons",
+        "youtube": "https://www.youtube.com/watch?v=Mm8EWSOie44"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Badmintons",
@@ -266,7 +283,9 @@
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "wikipedia": "https://en.wikipedia.org/wiki/Baklava_(band)"
+        "wikipedia": "https://en.wikipedia.org/wiki/Baklava_(band)",
+        "youtube": "https://www.youtube.com/@thebucklover",
+        "spotify": "https://open.spotify.com/artist/7FgEbEcPNHSHUSWUB3Jfn0?si=lvtOvMJbQ9-JkJxYZ43CXA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Baklava",
@@ -298,7 +317,8 @@
       "soundsLike": "недостигаат податоци",
       "isActive": false,
       "links": {
-        "wikipedia": "https://en.wikipedia.org/wiki/Bastion_(band)"
+        "wikipedia": "https://en.wikipedia.org/wiki/Bastion_(band)",
+        "youtube": "https://www.youtube.com/watch?v=aIbuN__WOYQ"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Bastion",
@@ -322,13 +342,29 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/030fa556be1446e08482bb145be356f1.png"
     },
     {
+      "name": "Beyond The Horizon",
+      "city": "Скопје",
+      "genre": "Пауер Метал",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "lastfm": "https://www.last.fm/music/Beyond+The+Horizon",
+        "youtube": "https://www.youtube.com/@BeyondTheHorizonMK3"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Бис-Без",
       "city": "Скопје",
       "genre": "Рок",
       "soundsLike": "The Beatles, The Kinks",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Bis-Bez"
+        "lastfm": "https://www.last.fm/music/Bis-Bez",
+        "youtube": "https://www.youtube.com/watch?v=TJhml9JE5Z4&list=PL7xZvoeDFE5sPNOZ-uJD5-hqGsF27f5Qi"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Bis-Bez",
@@ -342,11 +378,27 @@
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "wikipedia": "https://en.wikipedia.org/wiki/Blla_Blla_Blla"
+        "wikipedia": "https://en.wikipedia.org/wiki/Blla_Blla_Blla",
+        "youtube": "https://www.youtube.com/@idrizameti6394"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
       "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Бојана Арсовска",
+      "city": "Скопје",
+      "genre": "Поп, Фанк",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=1RkZY-f_Q4k",
+        "spotify": "https://open.spotify.com/artist/3cWKMewpkUexzLRELL0JDK?si=7UGGrE94TWKXq9wTiZhAJw"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": "Ново Издание",
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
@@ -372,7 +424,9 @@
       "soundsLike": "Converge, Tragedy",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Born+For+Slaughter"
+        "lastfm": "https://www.last.fm/music/Born+For+Slaughter",
+        "youtube": "https://www.youtube.com/watch?v=XNHkmL5AJrE",
+        "spotify": "https://open.spotify.com/artist/0LlN8zlXP1UvXtGX3DE86E?si=Gma_jJpCTmas3BmduaeIRQ"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Born For Slaughter",
@@ -400,7 +454,10 @@
       "soundsLike": "Dream Theater, Opeth",
       "isActive": true,
       "links": {
-        "lastfm": "https://www.last.fm/music/Chromatic+Point"
+        "lastfm": "https://www.last.fm/music/Chromatic+Point",
+        "youtube": "https://www.youtube.com/@Chromaticpoint",
+        "instagram": "https://www.instagram.com/chromaticpoint/",
+        "spotify": "https://open.spotify.com/artist/0WRpxCiRLgGYUkEDBctfuK?si=qhHP26GQQ26W3tJV84DmHA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Chromatic Point",
@@ -414,7 +471,8 @@
       "soundsLike": "недостигаат податоци",
       "isActive": false,
       "links": {
-        "wikipedia": "https://en.wikipedia.org/wiki/Cilindar"
+        "wikipedia": "https://en.wikipedia.org/wiki/Cilindar",
+        "youtube": "https://www.youtube.com/watch?v=5k8DLd-Jh6U"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Cilindar",
@@ -434,7 +492,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
+      "label": "Ново Издание",
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
@@ -510,7 +568,10 @@
       "soundsLike": "At The Drive-In, Thrice",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Culture+Development"
+        "lastfm": "https://www.last.fm/music/Culture+Development",
+        "youtube": "https://www.youtube.com/@culturedevelopmentmk",
+        "facebook": "https://www.facebook.com/culturedevelopmentmk",
+        "bandcamp": "https://culturedevelopment.bandcamp.com/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Culture Development",
@@ -539,7 +600,8 @@
       "soundsLike": "Stray Cats, Elvis Presley",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/D%27+Daltons"
+        "lastfm": "https://www.last.fm/music/D%27+Daltons",
+        "youtube": "https://www.youtube.com/@davorkeskec2114/videos"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "D' Daltons",
@@ -553,7 +615,8 @@
       "soundsLike": "Wu-Tang Clan, Nas",
       "isActive": true,
       "links": {
-        "lastfm": "https://www.last.fm/music/Da+Dzaka+Nakot"
+        "lastfm": "https://www.last.fm/music/Da+Dzaka+Nakot",
+        "youtube": "https://www.youtube.com/watch?v=oRtbH3kkD0M"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Da Dzaka Nakot",
@@ -582,7 +645,8 @@
       "soundsLike": "Municipal Waste, Suicidal Tendencies",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Deadshot"
+        "lastfm": "https://www.last.fm/music/Deadshot",
+        "youtube": "https://www.youtube.com/@ko4emetal/videos"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Deadshot",
@@ -593,15 +657,16 @@
       "name": "Decadence",
       "city": "Скопје",
       "genre": "Прогресивен Метал",
-      "soundsLike": "Tool, Porcupine Tree",
-      "isActive": "Непознато",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Decadence"
+        "youtube": "https://www.youtube.com/watch?v=o6MgTiNID9g",
+        "lastfm": "https://www.last.fm/music/Decadence+(MK)"
       },
       "contact": "недостигаат податоци",
-      "lastfmName": "Decadence",
+      "lastfmName": "Decadence (MK)",
       "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/4d1479f8615b54a586106e5191f1d7ec.png"
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/82c31fdc23f05890b5a9386c84ef8bab.png"
     },
     {
       "name": "Дејание",
@@ -1353,6 +1418,21 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/579c800759f84cdccc13f5fdb9579c81.png"
     },
     {
+      "name": "Melissa",
+      "city": "Кичево",
+      "genre": "Метал, Гранџ, Стонер рок",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "lastfm": "https://www.last.fm/music/melissa+macedonia",
+        "youtube": "https://www.youtube.com/@melissamacedonia"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/32eddb194ade0c22d2362da68fe8f3ca.png"
+    },
+    {
       "name": "Меморија",
       "city": "Скопје",
       "genre": "Поп-Рок",
@@ -1782,6 +1862,22 @@
       "lastfmName": "Royal Albert Hall",
       "label": null,
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Ruststained",
+      "city": "Скопје",
+      "genre": "Метал",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "lastfm": "https://www.last.fm/music/Ruststained",
+        "youtube": "https://www.youtube.com/channel/UChOlAaX0NtJ16omH6l9AJiQ",
+        "spotify": "https://open.spotify.com/artist/2hwxp4c7lW1fsJQ3G26RSV?si=2dvXtctiTcGi2SoGcPKVVg"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/3c53fd00d276772353fe99df6459b4b4.png"
     },
     {
       "name": "Санаториум",

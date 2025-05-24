@@ -395,16 +395,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const contact = document.getElementById('band-contact').value.trim();
             let hasError = false;
 
+            // Validate name
             if (!validateName(name)) {
                 showError(document.getElementById('band-name'), 'Името мора да има барем 2 карактери.');
                 hasError = true;
             }
 
+            // Check for duplicate band name
+            const nameLatin = transliterateCyrillicToLatin(name).toLowerCase();
+            const editIndex = form.dataset.editIndex;
+            const isDuplicate = bandsData.some((band, index) => {
+                const bandNameLatin = transliterateCyrillicToLatin(band.name).toLowerCase();
+                // Allow the same name if editing the same band (same index)
+                return bandNameLatin === nameLatin && (editIndex === undefined || parseInt(editIndex) !== index);
+            });
+            if (isDuplicate) {
+                showError(document.getElementById('band-name'), 'Бенд со ова име веќе постои.');
+                hasError = true;
+            }
+
+            // Validate contact
             if (contact && !validateEmail(contact)) {
                 showError(document.getElementById('band-contact'), 'Внесете валидна е-пошта или оставете празно.');
                 hasError = true;
             }
 
+            // Validate links
             const linkValidation = validateLinks(linksContainer);
             if (!linkValidation.valid) {
                 const formGroup = linksContainer.closest('.form-group');
@@ -426,6 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Proceed with creating/updating band
             const band = {
                 name,
                 city: document.getElementById('band-city').value.trim() || 'недостигаат податоци',
@@ -451,7 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const image = await getLastfmArtistImage(band.lastfmName, band.name) || defaultFallbackImage;
             band.image = image;
-            const editIndex = form.dataset.editIndex;
             if (editIndex !== undefined && editIndex !== '') {
                 console.log(`Updating band at index ${editIndex}`);
                 bandsData[parseInt(editIndex)] = band;
