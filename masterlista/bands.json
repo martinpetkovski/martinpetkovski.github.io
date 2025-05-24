@@ -246,6 +246,35 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/0277a26b444e4356ae6fc001000bce8c.png"
     },
     {
+      "name": "Арсов и Неговиот Најјак Бенд",
+      "city": "Прилеп",
+      "genre": "Панк, Инди",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/channel/UCdufmHYiylNb9d-rqdtoKpw",
+        "spotify": "https://open.spotify.com/artist/59Gdmh5NqVfIjIeWYLtGdD?si=wj5vpuLtSiK-EvlXKKBeNw"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Астероид",
+      "city": "Скопје",
+      "genre": "Алтернативен Рок",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "youtube": "https://www.youtube.com/@asteroid4194"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "аТа",
       "city": "Битола, Скопје",
       "genre": "Арт Рок, Дрим Поп",
@@ -434,6 +463,23 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/4fffa4f9d87e925e217cd5f21ea21027.png"
     },
     {
+      "name": "Cassato",
+      "city": "Прилеп",
+      "genre": "Електронска",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/channel/UC4O2fBppJcVwzCd_V8v1SIw",
+        "instagram": "https://www.instagram.com/_cassato/",
+        "linktree": "https://linktr.ee/_cassato",
+        "spotify": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/b0d2e5b7adbe96cb7bf6a7ccd9aadfd6.png"
+    },
+    {
       "name": "Чоканче",
       "city": "Битола",
       "genre": "Рокенрол",
@@ -537,7 +583,8 @@
       "isActive": "Непознато",
       "links": {
         "instagram": "https://www.instagram.com/cntct59/",
-        "spotify": "https://open.spotify.com/artist/2kFwdMquUHliq8u97ldfWv"
+        "spotify": "https://open.spotify.com/artist/2kFwdMquUHliq8u97ldfWv",
+        "youtube": "https://www.youtube.com/@contact5965"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -907,6 +954,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/8394fdb27e79e009fd7a8c359d974802.png"
     },
     {
+      "name": "ФК Баскет",
+      "city": "Прилеп",
+      "genre": "Панк",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=r5PygaDi7VQ"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Фолтин",
       "city": "Битола",
       "genre": "Етно, Џез",
@@ -1261,6 +1322,23 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kenopsija",
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
+      "name": "Kepurdhat",
+      "city": "Тетово",
+      "genre": "Фанк, Рок",
+      "soundsLike": "недостигаат податоци",
+      "isActive": "Можеби",
+      "links": {
+        "youtube": "https://www.youtube.com/@kepurdhatofficial7183",
+        "spotify": "https://open.spotify.com/artist/5UpZrhqT40i8pBZqRucyxC?si=d077ZvdrQViXXUNrBGCTMg",
+        "instagram": "https://www.instagram.com/kepurdhatofficial/",
+        "facebook": "https://www.facebook.com/kepurdhat/"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
       "label": null,
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
@@ -1694,7 +1772,10 @@
       "isActive": true,
       "links": {
         "lastfm": "https://www.last.fm/music/Next+Time",
-        "wikipedia": "https://en.wikipedia.org/wiki/Next_Time"
+        "wikipedia": "https://en.wikipedia.org/wiki/Next_Time",
+        "youtube": "https://www.youtube.com/channel/UCeeNh0rQCSWPaYOQfzaHYwg",
+        "spotify": "https://open.spotify.com/artist/5SlsJR9zb4aUeT6F87tZ2t?si=CKKkWibFQr6_zZq0oet1cw",
+        "instagram": "https://www.instagram.com/nexttimeband/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Next Time",
@@ -1708,7 +1789,9 @@
       "soundsLike": "Dead Kennedys, The Exploited",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/No+Name+Nation"
+        "lastfm": "https://www.last.fm/music/No+Name+Nation",
+        "youtube": "https://www.youtube.com/@mk.nonamenation",
+        "spotify": "https://open.spotify.com/artist/2AfISlGBnn1wTWjo9dQtJN?si=HoSHgRsbRxCWiGNE6BGr4g"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "No Name Nation",
@@ -1757,7 +1840,9 @@
       "soundsLike": "Beastie Boys, Run-D.M.C.",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Nulta+Pozitiv"
+        "lastfm": "https://www.last.fm/music/Nulta+Pozitiv",
+        "youtube": "https://www.youtube.com/channel/UCX8yv63ZzlanF7N4dT5h59w",
+        "spotify": "https://open.spotify.com/artist/0vaNKaRjAzbDczBx5CtJjb?si=YaL17FiBSnOrvY1ShUQ0Og"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Nulta Pozitiv",
@@ -1786,7 +1871,8 @@
       "soundsLike": "The Ramones, Dick Dale",
       "isActive": true,
       "links": {
-        "youtube": "https://www.youtube.com/@SashoParket108"
+        "youtube": "https://www.youtube.com/@SashoParket108",
+        "instagram": "https://www.instagram.com/parketiofficial/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Parketi",
@@ -1863,7 +1949,9 @@
       "soundsLike": "The Roots, OutKast",
       "isActive": "Можеби",
       "links": {
-        "youtube": "https://www.youtube.com/@DMAMusicMK"
+        "youtube": "https://www.youtube.com/@DMAMusicMK",
+        "spotify": "https://open.spotify.com/artist/5ucBHw1wBCSAGNDL2GAtiZ?si=09HGUTwmTY6SVXBG09Jfvg",
+        "instagram": "https://www.instagram.com/pmgrecordingsskopje/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "PMG Kolektiv",
@@ -1907,7 +1995,10 @@
       "soundsLike": "Radiohead, Arcade Fire",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Project+Zlust"
+        "lastfm": "https://www.last.fm/music/Project+Zlust",
+        "youtube": "https://www.youtube.com/channel/UCTWUslG9dNBBeOvq4eAK8lw",
+        "spotify": "https://open.spotify.com/artist/5xpUCw2mduMmiVFkZad6gl?si=6pB2nMQXQJ2Jr5EbQbSk7A",
+        "instagram": "https://www.instagram.com/projectzlust/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Project Zlust",
@@ -1936,7 +2027,8 @@
       "soundsLike": "Megadeth, Death",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Raven"
+        "lastfm": "https://www.last.fm/music/Raven",
+        "youtube": "https://www.youtube.com/watch?v=1_wnPHbN_ZE"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Raven",
@@ -1980,7 +2072,8 @@
       "soundsLike": "Afrika Bambaataa, Red Hot Chili Peppers",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Risto+Bombata"
+        "lastfm": "https://www.last.fm/music/Risto+Bombata",
+        "youtube": "https://www.youtube.com/@ristobombata11"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Risto Bombata",
@@ -1994,7 +2087,8 @@
       "soundsLike": "Radiohead, Muse",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Royal+Albert+Hall"
+        "lastfm": "https://www.last.fm/music/Royal+Albert+Hall",
+        "generic": "https://www.discogs.com/artist/1106007-Royal-Albert-Hall"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Royal Albert Hall",
@@ -2024,7 +2118,9 @@
       "soundsLike": "Metallica, Testament",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Sanatorium"
+        "lastfm": "https://www.last.fm/music/Sanatorium",
+        "youtube": "https://www.youtube.com/@sanatorium2011",
+        "spotify": "https://open.spotify.com/artist/2WrTKj12WsA9LX5TvdPQlL?si=W1L1iDpsQGm_TC-UjBZSEQ"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Sanatorium",
@@ -2058,7 +2154,8 @@
       "soundsLike": "Judas Priest, Black Sabbath",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Serpentine+Fire"
+        "lastfm": "https://www.last.fm/music/Serpentine+Fire",
+        "youtube": "https://www.youtube.com/watch?v=KLB50J4cE_A"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Serpentine Fire",
@@ -2072,7 +2169,8 @@
       "soundsLike": "Darkthrone, Mayhem",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Siniac"
+        "lastfm": "https://www.last.fm/music/Siniac",
+        "youtube": "https://www.youtube.com/watch?v=dhQ17CKKAXc&list=PLA8tb3-q0HpvHg5MJo53kVZCXoxNne88K"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Siniac",
@@ -2119,7 +2217,10 @@
       "soundsLike": "Arctic Monkeys, The Strokes",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Smoke+Shakers"
+        "lastfm": "https://www.last.fm/music/Smoke+Shakers",
+        "youtube": "https://www.youtube.com/@smokeshakers",
+        "spotify": "https://open.spotify.com/artist/6z9tf5wj2Od0dp9IRhCKNI?si=fyVLBTRwSWq5B18Itg32_w",
+        "instagram": "https://www.instagram.com/smokeshakers/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Smoke Shakers",
@@ -2133,7 +2234,10 @@
       "soundsLike": "Killswitch Engage, As I Lay Dying",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Smut"
+        "lastfm": "https://www.last.fm/music/Smut",
+        "youtube": "https://www.youtube.com/channel/UCaFt4IVjMukR6sMK0TRLzVA",
+        "spotify": "https://open.spotify.com/artist/0M4zJ08W2SJWr8sgwq1lMX?si=J3V2G_fSRZmuVoBnWW6bXg",
+        "instagram": "https://www.instagram.com/smuthardcore/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Smut",
@@ -2162,7 +2266,8 @@
       "soundsLike": "NOFX",
       "isActive": true,
       "links": {
-        "youtube": "https://www.youtube.com/@spankMKchannel"
+        "youtube": "https://www.youtube.com/@spankMKchannel",
+        "instagram": "https://www.instagram.com/spank_music/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -2224,7 +2329,8 @@
       "soundsLike": "Nirvana, Pixies",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Suns"
+        "lastfm": "https://www.last.fm/music/Suns",
+        "youtube": "https://www.youtube.com/channel/UCxtp28YOrlswAlqB-b-VG3w"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Suns",
@@ -2252,7 +2358,8 @@
       "soundsLike": "Red Hot Chili Peppers, Rage Against The Machine",
       "isActive": false,
       "links": {
-        "lastfm": "https://www.last.fm/music/Super+Nova"
+        "lastfm": "https://www.last.fm/music/Super+Nova",
+        "youtube": "https://www.youtube.com/watch?v=0PFVFOytKMs"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Super Nova",
@@ -2361,7 +2468,8 @@
       "soundsLike": "Cold War Kids, Interpol",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Tempera"
+        "lastfm": "https://www.last.fm/music/Tempera",
+        "youtube": "https://www.youtube.com/@TemperaMKD"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Tempera",
@@ -2451,7 +2559,8 @@
       "soundsLike": "Have Heart, Verse",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/This+Home+Is+Prepared"
+        "lastfm": "https://www.last.fm/music/This+Home+Is+Prepared",
+        "youtube": "https://www.youtube.com/watch?v=W1AanaDeLHQ&list=PLCTIzozvnjFnQvwo7MmmvBhPzLkXyw-ar"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "This Home Is Prepared",
@@ -2524,7 +2633,8 @@
       "soundsLike": "NOFX, Pennywise",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Two+Sides"
+        "lastfm": "https://www.last.fm/music/Two+Sides",
+        "youtube": "https://www.youtube.com/@2TwoSides"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Two Sides",
@@ -2540,7 +2650,8 @@
       "links": {
         "bandcamp": "https://x3maragorn.bandcamp.com/",
         "instagram": "https://www.instagram.com/vagina_corporation",
-        "spotify": "https://open.spotify.com/artist/5k8NIR12dySVeJnteRqkVz"
+        "spotify": "https://open.spotify.com/artist/5k8NIR12dySVeJnteRqkVz",
+        "youtube": "https://www.youtube.com/@vaginacorporation"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -2572,7 +2683,9 @@
       "soundsLike": "Eluveitie, Korpiklaani",
       "isActive": "Можеби",
       "links": {
-        "lastfm": "https://www.last.fm/music/Verka"
+        "lastfm": "https://www.last.fm/music/Verka",
+        "youtube": "https://www.youtube.com/watch?v=OwEYb89ZUkU",
+        "spotify": "https://open.spotify.com/artist/36crZh6xhgEIrTDJjpdndI?si=wlC0s32pSJa6OYbUOaBHIw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Verka",
@@ -2586,7 +2699,10 @@
       "soundsLike": "Sonic Youth, The Mars Volta",
       "isActive": true,
       "links": {
-        "lastfm": "https://www.last.fm/music/Vizija"
+        "lastfm": "https://www.last.fm/music/Vizija",
+        "youtube": "https://www.youtube.com/watch?v=1ckkxb0p_Ic",
+        "spotify": "https://open.spotify.com/artist/4T9pxVN2hoJvGWH8L68zfp?si=4JHifw-lTQSg4tNP-Tg6-Q",
+        "instagram": "https://www.instagram.com/vizija.mk/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Vizija",
