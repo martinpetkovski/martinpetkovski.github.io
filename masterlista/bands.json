@@ -765,6 +765,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "DJ Stock Photo",
+      "city": "Битола",
+      "genre": "Вејпорвејв",
+      "soundsLike": "Macintosh Plus",
+      "isActive": false,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=zfNSbaaj21s"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Dobrila & Dorian Duo",
       "city": "Скопје",
       "genre": "Фолк, Алтернативна, Арт Рок",
@@ -1526,6 +1540,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/98451f4791117880fb35cf656edfaaf2.png"
     },
     {
+      "name": "Mnemonic45",
+      "city": "Битола",
+      "genre": "Амбиентална",
+      "soundsLike": "недостигаат податоци",
+      "isActive": "Можеби",
+      "links": {
+        "bandcamp": "https://mnemonic45.bandcamp.com"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/db44bbef134be60d14d91c77cd20d40d.png"
+    },
+    {
       "name": "Moira",
       "city": "Скопје, Битола",
       "genre": "Џез, Инди, Фолк",
@@ -1737,6 +1765,21 @@
       "lastfmName": "Pijan Slavej",
       "label": null,
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/0261b4ebe40d07d7dff835de92dacd0b.png"
+    },
+    {
+      "name": "Плава",
+      "city": "Битола",
+      "genre": "Инди",
+      "soundsLike": "недостигаат податоци",
+      "isActive": "Можеби",
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=4n10nCiehU4",
+        "spotify": "https://open.spotify.com/artist/5IPcHcx8v8IYWZsexjfSTj?si=MhlsAtQHTo63itxGQb3qig"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
       "name": "Pluto's Doubts",
