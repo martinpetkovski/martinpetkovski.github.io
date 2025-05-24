@@ -1,26 +1,998 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Family Tree</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Family Tree</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f2f5;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .family-tree {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .controls-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .search-container, .relationship-finder {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .language-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .context-container select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 100%;
+            background-color: #fff;
+        }
+        .language-container select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+            width: 150px;
+            background-color: #fff;
+        }
+        .relationship-finder select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 200px;
+            background-color: #fff;
+        }
+        .search-container input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            flex: 1;
+        }
+        .search-container button, .relationship-finder button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .search-container button:hover, .relationship-finder button:hover {
+            background: #2980b9;
+        }
+        .relationship-finder {
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .person {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .person.descendant {
+            margin-left: 20px; /* Indent descendants */
+        }
+        .person.context-person {
+            background-color: #e6f3ff; /* Light blue highlight for context person */
+            border: 2px solid #3498db;
+        }
+        .person:hover {
+            transform: translateY(-5px);
+        }
+        .person h3 {
+            margin: 0;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        .person p {
+            margin: 8px 0;
+            color: #555;
+            font-size: 14px;
+        }
+        .relationships {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .relationships a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .relationships a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin: 20px;
+            font-size: 16px;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            border-color: #f1c40f;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="side-menu">
-      <h2>Family Tree</h2>
-      <label for="personSearch">Select a person:</label>
-      <input type="text" id="personSearch" list="personList" placeholder="Type to search...">
-      <datalist id="personList"></datalist>
-      <button onclick="resetView()">Reset View</button>
+    <h1 id="title">Interactive Family Tree</h1>
+    <div class="controls-container">
+        <div class="language-container">
+            <select id="languageSelect" onchange="updateLanguage()">
+                <option value="en">🇬🇧 English</option>
+                <option value="sr">🇷🇸 Serbian</option>
+                <option value="mk">🇲🇰 Macedonian</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="es">🇪🇸 Spanish</option>
+            </select>
+        </div>
+        <div class="context-container">
+            <select id="contextPersonSelect" onchange="reloadFamilyTree()">
+                <option value="">Select Context Person</option>
+            </select>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by name or surname...">
+            <button onclick="searchFamily()"><i class="fas fa-search"></i> <span id="searchBtn">Search</span></button>
+        </div>
+        <div class="relationship-finder">
+            <select id="relatedPersonSelect">
+                <option value="">Select Related Person</option>
+            </select>
+            <button onclick="findRelationship()"><i class="fas fa-calculator"></i> <span id="calcBtn">Calculate</span></button>
+        </div>
+        <p id="relationshipResult"></p>
     </div>
-    <div class="tree-container">
-      <canvas id="treeCanvas"></canvas>
-      <div id="treeNodes"></div>
-    </div>
-  </div>
-  <script src="flags.js"></script>
-  <script src="script.js"></script>
+    <div class="family-tree" id="familyTree"></div>
+    <p id="error" class="error"></p>
+
+    <script>
+        // Sample flagMap (replace with flags.js content if available)
+        const flagMap = {
+            "serbia": "🇷🇸",
+            "macedonia": "🇲🇰",
+            "germany": "🇩🇪",
+            "spain": "🇪🇸",
+            "united kingdom": "🇬🇧",
+            // Add more mappings as needed
+        };
+
+        let familyMap = {};
+        let familyData = [];
+        let currentLang = 'en';
+
+        // Translations
+        const translations = {
+            en: {
+                title: "Interactive Family Tree",
+                searchPlaceholder: "Search by name or surname...",
+                searchBtn: "Search",
+                findRel: "Find Relationship",
+                calcBtn: "Calculate",
+                selectPerson: "Select Related Person",
+                contextPerson: "Select Context Person",
+                origin: "Origin",
+                born: "Born",
+                died: "Died",
+                originalSurname: "Original Surname",
+                parents: "Parents",
+                spouse: "Spouse",
+                children: "Children",
+                relation: "Relation",
+                age: "Age",
+                error: "Error",
+                noAncestor: "No common ancestor found.",
+                samePerson: "the same person",
+                deceasedAt: "Deceased at",
+                relationships: {
+                    is: "is",
+                    to: "to",
+                    self: "self",
+                    parent: "parent",
+                    child: "child",
+                    sibling: "sibling",
+                    grandparent: "grandparent",
+                    grandchild: "grandchild",
+                    great: "great-",
+                    greatGrandparent: "great-grandparent",
+                    greatGrandchild: "great-grandchild",
+                    cousin: "cousin",
+                    removed: "times removed",
+                    spouse: "spouse",
+                    inLaw: "-in-law",
+                    aunt: "aunt",
+                    uncle: "uncle",
+                    niece: "niece",
+                    nephew: "nephew",
+                    greatAunt: "great-aunt",
+                    greatUncle: "great-uncle",
+                    greatNiece: "great-niece",
+                    greatNephew: "great-nephew",
+                    parentInLaw: "parent-in-law",
+                    childInLaw: "child-in-law",
+                    siblingInLaw: "sibling-in-law",
+                    first: "first",
+                    second: "second",
+                    third: "third",
+                    nth: "th"
+                }
+            },
+            sr: {
+                title: "Interaktivno porodično stablo",
+                searchPlaceholder: "Pretraži po imenu ili prezimenu...",
+                searchBtn: "Pretraži",
+                findRel: "Pronađi srodstvo",
+                calcBtn: "Izračunaj",
+                selectPerson: "Izaberi povezanu osobu",
+                contextPerson: "Izaberi kontekst osobu",
+                origin: "Poreklo",
+                born: "Rođen",
+                died: "Umro",
+                originalSurname: "Izvorno prezime",
+                parents: "Roditelji",
+                spouse: "Supružnik",
+                children: "Deca",
+                relation: "Srodstvo",
+                age: "Godine",
+                error: "Greška",
+                noAncestor: "Nije pronađen zajednički predak.",
+                samePerson: "ista osoba",
+                deceasedAt: "Umro u godinama",
+                relationships: {
+                    is: "je",
+                    to: "u odnosu na",
+                    self: "ja",
+                    parent: "roditelj",
+                    child: "dete",
+                    sibling: "brat ili sestra",
+                    grandparent: "deda ili baka",
+                    grandchild: "unuk ili unuka",
+                    great: "pra-",
+                    greatGrandparent: "pra-deda ili pra-baka",
+                    greatGrandchild: "pra-unuk ili pra-unuka",
+                    cousin: "rođak",
+                    removed: "puta udaljen",
+                    spouse: "supružnik",
+                    inLaw: "-u-zakonu",
+                    aunt: "tetka",
+                    uncle: "ujak",
+                    niece: "nećaka",
+                    nephew: "nećak",
+                    greatAunt: "pra-tetka",
+                    greatUncle: "pra-ujak",
+                    greatNiece: "pra-nećaka",
+                    greatNephew: "pra-nećak",
+                    parentInLaw: "tast ili tašta",
+                    childInLaw: "zet ili snaha",
+                    siblingInLaw: "šurak ili svastika",
+                    first: "prvi",
+                    second: "drugi",
+                    third: "treći",
+                    nth: "-i"
+                }
+            },
+            mk: {
+                title: "Интерактивно семејно стебло",
+                searchPlaceholder: "Пребарај по име или презиме...",
+                searchBtn: "Пребарај",
+                findRel: "Пронајди сродство",
+                calcBtn: "Пресметај",
+                selectPerson: "Избери поврзана личност",
+                contextPerson: "Избери контекст личност",
+                origin: "Потекло",
+                born: "Роден",
+                died: "Починат",
+                originalSurname: "Оригинално презиме",
+                parents: "Родители",
+                spouse: "Сопружник",
+                children: "Деца",
+                relation: "Сродство",
+                age: "Возраст",
+                error: "Грешка",
+                noAncestor: "Не е пронајден заеднички предак.",
+                samePerson: "иста личност",
+                deceasedAt: "Починат на возраст",
+                relationships: {
+                    is: "е",
+                    to: "во однос на",
+                    self: "јас",
+                    parent: "родител",
+                    child: "дете",
+                    sibling: "брат или сестра",
+                    grandparent: "дедо или баба",
+                    grandchild: "внук или внука",
+                    great: "пра-",
+                    greatGrandparent: "пра-дедо или пра-баба",
+                    greatGrandchild: "пра-внук или пра-внука",
+                    cousin: "роднина",
+                    removed: "пати отстранет",
+                    spouse: "сопружник",
+                    inLaw: "-во-закон",
+                    aunt: "тетка",
+                    uncle: "чичко",
+                    niece: "племенница",
+                    nephew: "племенник",
+                    greatAunt: "пра-тетка",
+                    greatUncle: "пра-чичко",
+                    greatNiece: "пра-племенница",
+                    greatNephew: "пра-племенник",
+                    parentInLaw: "свекор или свекрва",
+                    childInLaw: "зет или снаа",
+                    siblingInLaw: "девер или золовка",
+                    first: "прв",
+                    second: "втор",
+                    third: "трет",
+                    nth: "-ти"
+                }
+            },
+            de: {
+                title: "Interaktiver Stammbaum",
+                searchPlaceholder: "Suche nach Name oder Nachname...",
+                searchBtn: "Suchen",
+                findRel: "Beziehung finden",
+                calcBtn: "Berechnen",
+                selectPerson: "Verwandte Person auswählen",
+                contextPerson: "Kontextperson auswählen",
+                origin: "Herkunft",
+                born: "Geboren",
+                died: "Gestorben",
+                originalSurname: "Ursprünglicher Nachname",
+                parents: "Eltern",
+                spouse: "Ehepartner",
+                children: "Kinder",
+                relation: "Beziehung",
+                age: "Alter",
+                error: "Fehler",
+                noAncestor: "Kein gemeinsamer Vorfahre gefunden.",
+                samePerson: "dieselbe Person",
+                deceasedAt: "Verstorben im Alter",
+                relationships: {
+                    is: "ist",
+                    to: "zu",
+                    self: "selbst",
+                    parent: "Elternteil",
+                    child: "Kind",
+                    sibling: "Geschwister",
+                    grandparent: "Großelternteil",
+                    grandchild: "Enkelkind",
+                    great: "Ur-",
+                    greatGrandparent: "Urgroßelternteil",
+                    greatGrandchild: "Urenkelkind",
+                    cousin: "Cousin/Cousine",
+                    removed: "mal entfernt",
+                    spouse: "Ehepartner",
+                    inLaw: "-Schwager/-Schwägerin",
+                    aunt: "Tante",
+                    uncle: "Onkel",
+                    niece: "Nichte",
+                    nephew: "Neffe",
+                    greatAunt: "Großtante",
+                    greatUncle: "Großonkel",
+                    greatNiece: "Großnichte",
+                    greatNephew: "Großneffe",
+                    parentInLaw: "Schwiegermutter/-vater",
+                    childInLaw: "Schwiegerkind",
+                    siblingInLaw: "Schwager/Schwägerin",
+                    first: "erster",
+                    second: "zweiter",
+                    third: "dritter",
+                    nth: "-ter"
+                }
+            },
+            es: {
+                title: "Árbol genealógico interactivo",
+                searchPlaceholder: "Buscar por nombre o apellido...",
+                searchBtn: "Buscar",
+                findRel: "Encontrar relación",
+                calcBtn: "Calcular",
+                selectPerson: "Seleccionar persona relacionada",
+                contextPerson: "Seleccionar persona de contexto",
+                origin: "Origen",
+                born: "Nacido",
+                died: "Fallecido",
+                originalSurname: "Apellido original",
+                parents: "Padres",
+                spouse: "Cónyuge",
+                children: "Hijos",
+                relation: "Relación",
+                age: "Edad",
+                error: "Error",
+                noAncestor: "No se encontró un antepasado común.",
+                samePerson: "la misma persona",
+                deceasedAt: "Fallecido a la edad",
+                relationships: {
+                    is: "es",
+                    to: "con respecto a",
+                    self: "yo",
+                    parent: "padre/madre",
+                    child: "hijo/hija",
+                    sibling: "hermano/hermana",
+                    grandparent: "abuelo/abuela",
+                    grandchild: "nieto/nieta",
+                    great: "bis-",
+                    greatGrandparent: "bisabuelo/bisabuela",
+                    greatGrandchild: "bisnieto/bisnieta",
+                    cousin: "primo/prima",
+                    removed: "veces removido",
+                    spouse: "cónyuge",
+                    inLaw: "-en-ley",
+                    aunt: "tía",
+                    uncle: "tío",
+                    niece: "sobrina",
+                    nephew: "sobrino",
+                    greatAunt: "tía abuela",
+                    greatUncle: "tío abuelo",
+                    greatNiece: "sobrina nieta",
+                    greatNephew: "sobrino nieto",
+                    parentInLaw: "suegro/suegra",
+                    childInLaw: "yerno/nuera",
+                    siblingInLaw: "cuñado/cuñada",
+                    first: "primero",
+                    second: "segundo",
+                    third: "tercero",
+                    nth: "-ésimo"
+                }
+            }
+        };
+
+        // Calculate age
+        function calculateAge(dateOfBirth, dateOfDeath) {
+            const t = translations[currentLang];
+            if (!dateOfBirth) return "N/A";
+            
+            const birthDate = new Date(dateOfBirth);
+            if (isNaN(birthDate)) return "N/A";
+            
+            const currentDate = new Date("2025-05-19"); // Today's date
+            let endDate = currentDate;
+            let deceased = false;
+            
+            if (dateOfDeath) {
+                endDate = new Date(dateOfDeath);
+                if (isNaN(endDate)) return "N/A";
+                deceased = true;
+            }
+            
+            let age = endDate.getFullYear() - birthDate.getFullYear();
+            const monthDiff = endDate.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && endDate.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            if (age < 0) return "N/A";
+            return deceased ? `${t.deceasedAt} ${age}` : age.toString();
+        }
+
+        // Update language
+        function updateLanguage() {
+            currentLang = document.getElementById('languageSelect').value;
+            const t = translations[currentLang];
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('searchBtn').textContent = t.searchBtn;
+            document.getElementById('calcBtn').textContent = t.calcBtn;
+            document.getElementById('contextPersonSelect').options[0].text = t.contextPerson;
+            document.getElementById('relatedPersonSelect').options[0].text = t.selectPerson;
+            reloadFamilyTree();
+        }
+
+        // Get country from origin
+        function getCountry(origin) {
+            if (!origin) return "";
+            const parts = origin.split(",");
+            const country = parts.length > 1 ? parts[1].trim().toLowerCase() : "";
+            // Normalize country names
+            const countryMap = {
+                "germany": "germany",
+                "serbia": "serbia",
+                "macedonia": "macedonia",
+                "spain": "spain",
+                "united kingdom": "united kingdom"
+            };
+            return countryMap[country] || country;
+        }
+
+        // Get flag emoji
+        function getFlag(country) {
+            return flagMap[country.toLowerCase()] || "";
+        }
+
+        // Get full name
+        function getFullName(person) {
+            if (!person) return "Unknown";
+            return person.name === "Unknown" ? `${person.surname} (${person.name})` : `${person.name} ${person.surname}`;
+        }
+
+        // Find relationship
+        function findRelationship() {
+            const contextPersonId = document.getElementById('contextPersonSelect').value;
+            const relatedPersonId = document.getElementById('relatedPersonSelect').value;
+            const resultDiv = document.getElementById('relationshipResult');
+            const t = translations[currentLang];
+
+            if (!contextPersonId || !relatedPersonId) {
+                resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${t.selectPerson}`;
+                return;
+            }
+
+            const contextPerson = familyMap[contextPersonId];
+            const relatedPerson = familyMap[relatedPersonId];
+
+            if (!contextPerson || !relatedPerson) {
+                resultDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${t.error}: Invalid person data.`;
+                return;
+            }
+
+            // Check direct relationships
+            const directRel = checkDirectRelationships(contextPerson, relatedPerson);
+            if (directRel) {
+                resultDiv.innerHTML = `<i class="fas fa-link"></i> ${getFullName(contextPerson)} ${t.relationships.is} ${directRel} ${t.relationships.to} ${getFullName(relatedPerson)}.`;
+                return;
+            }
+
+            // Find ancestors for both
+            const ancestors1 = findAncestors(contextPerson);
+            const ancestors2 = findAncestors(relatedPerson);
+
+            // Find common ancestor
+            let commonAncestor = null;
+            let distance1 = 0, distance2 = 0;
+            for (const [dist1, ids1] of Object.entries(ancestors1)) {
+                for (const [dist2, ids2] of Object.entries(ancestors2)) {
+                    for (const id1 of ids1) {
+                        if (ids2.includes(id1)) {
+                            commonAncestor = familyMap[id1];
+                            distance1 = parseInt(dist1);
+                            distance2 = parseInt(dist2);
+                            break;
+                        }
+                    }
+                    if (commonAncestor) break;
+                }
+                if (commonAncestor) break;
+            }
+
+            if (!commonAncestor) {
+                resultDiv.innerHTML = `<i class="fas fa-unlink"></i> ${t.noAncestor}`;
+                return;
+            }
+
+            // Calculate relationship
+            const relationship = calculateRelationship(distance1, distance2, contextPerson, relatedPerson);
+            resultDiv.innerHTML = `<i class="fas fa-link"></i> ${getFullName(contextPerson)} ${t.relationships.is} ${relationship} ${t.relationships.to} ${getFullName(relatedPerson)}.`;
+        }
+
+        // Check direct relationships
+        function checkDirectRelationships(person1, person2) {
+            const t = translations[currentLang].relationships;
+
+            // Same person
+            if (person1.id === person2.id) return t.self;
+
+            // Spouse
+            if (person1.spouseId === person2.id && person2.spouseId === person1.id) return t.spouse;
+
+            // Parent-child
+            if (person1.parent1Id === person2.id || person1.parent2Id === person2.id) return t.child; // person1 is child
+            if (person2.parent1Id === person1.id || person2.parent2Id === person1.id) return t.parent; // person1 is parent
+
+            // Siblings
+            const sharedParent = (person1.parent1Id && person1.parent1Id === person2.parent1Id) ||
+                                 (person1.parent2Id && person1.parent2Id === person2.parent2Id) ||
+                                 (person1.parent1Id && person1.parent1Id === person2.parent2Id) ||
+                                 (person1.parent2Id && person1.parent2Id === person2.parent1Id);
+            if (sharedParent) return t.sibling;
+
+            // Sibling-in-law (spouse of sibling)
+            const siblings = familyData.filter(p =>
+                p.id !== person1.id &&
+                ((p.parent1Id && (p.parent1Id === person1.parent1Id || p.parent1Id === person1.parent2Id)) ||
+                 (p.parent2Id && (p.parent2Id === person1.parent1Id || p.parent2Id === person1.parent2Id)))
+            );
+            if (siblings.some(sibling => sibling.spouseId === person2.id)) return t.siblingInLaw;
+
+            // In-laws
+            if (person1.spouseId && familyMap[person1.spouseId]) {
+                const spouse = familyMap[person1.spouseId];
+                if (spouse.parent1Id === person2.id || spouse.parent2Id === person2.id) return t.parentInLaw;
+                const spouseSharedParent = (spouse.parent1Id && spouse.parent1Id === person2.parent1Id) ||
+                                           (spouse.parent2Id && spouse.parent2Id === person2.parent2Id) ||
+                                           (spouse.parent1Id && spouse.parent1Id === person2.parent2Id) ||
+                                           (spouse.parent2Id && spouse.parent2Id === person2.parent1Id);
+                if (spouseSharedParent) return t.siblingInLaw;
+                const spouseChildren = familyData.filter(p => p.parent1Id === person1.id || p.parent2Id === person1.id);
+                if (spouseChildren.some(child => child.spouseId === person2.id)) return t.childInLaw;
+            }
+
+            return null;
+        }
+
+        // Find ancestors with distances
+        function findAncestors(person) {
+            const ancestors = {};
+            ancestors[0] = [person.id];
+            const queue = [{ person, distance: 0 }];
+            const visited = new Set([person.id]);
+
+            while (queue.length > 0) {
+                const { person, distance } = queue.shift();
+                const nextDistance = distance + 1;
+
+                for (const parentId of [person.parent1Id, person.parent2Id]) {
+                    if (parentId && familyMap[parentId] && !visited.has(parentId)) {
+                        visited.add(parentId);
+                        if (!ancestors[nextDistance]) ancestors[nextDistance] = [];
+                        ancestors[nextDistance].push(parentId);
+                        queue.push({ person: familyMap[parentId], distance: nextDistance });
+                    }
+                }
+            }
+
+            return ancestors;
+        }
+
+        // Calculate relationship
+        function calculateRelationship(distance1, distance2, person1, person2) {
+            const t = translations[currentLang].relationships;
+
+            // Direct ancestors/descendants
+            if (distance1 === 0 && distance2 > 0) {
+                if (distance2 === 1) return t.parent;
+                if (distance2 === 2) return t.grandparent;
+                return `${t.great.repeat(distance2 - 2)}${t.grandparent}`;
+            }
+            if (distance2 === 0 && distance1 > 0) {
+                if (distance1 === 1) return t.child;
+                if (distance1 === 2) return t.grandchild;
+                return `${t.great.repeat(distance1 - 2)}${t.grandchild}`;
+            }
+
+            // Aunts/Uncles and Nieces/Nephews
+            if (distance1 === 1 && distance2 > 1) {
+                if (distance2 === 2) return person2.gender === 'F' ? t.aunt : t.uncle;
+                return `${t.great.repeat(distance2 - 2)}${person2.gender === 'F' ? t.aunt : t.uncle}`;
+            }
+            if (distance2 === 1 && distance1 > 1) {
+                if (distance1 === 2) return person1.gender === 'F' ? t.niece : t.nephew;
+                return `${t.great.repeat(distance1 - 2)}${person1.gender === 'F' ? t.niece : t.nephew}`;
+            }
+
+            // Cousins
+            if (distance1 === distance2 && distance1 > 1) {
+                const cousinLevel = distance1 - 1;
+                return `${nthCousin(cousinLevel)} ${t.cousin}`;
+            }
+
+            // Cousins with removals
+            if (distance1 > 1 && distance2 > 1) {
+                const minDistance = Math.min(distance1, distance2);
+                const diff = Math.abs(distance1 - distance2);
+                const cousinLevel = minDistance - 1;
+                return `${nthCousin(cousinLevel)} ${t.cousin}${diff > 0 ? `, ${diff} ${t.removed}` : ''}`;
+            }
+
+            return t.cousin; // Fallback
+        }
+
+        // Get nth cousin string
+        function nthCousin(n) {
+            const t = translations[currentLang].relationships;
+            if (n === 0) return t.sibling;
+            if (n === 1) return t.first;
+            if (n === 2) return t.second;
+            if (n === 3) return t.third;
+            return `${n}${t.nth}`;
+        }
+
+        // Search functionality
+        function searchFamily() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const contextPersonSelect = document.getElementById('contextPersonSelect');
+            const t = translations[currentLang];
+            const currentContextId = contextPersonSelect.value;
+
+            // Highlight matching person cards
+            document.querySelectorAll('.person').forEach(personDiv => {
+                const name = personDiv.querySelector('h3').textContent.toLowerCase();
+                if (query && name.includes(query)) {
+                    personDiv.classList.add('highlight');
+                    personDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    personDiv.classList.remove('highlight');
+                }
+            });
+
+            // Filter context person combo box
+            const filteredPeople = familyData.filter(person => {
+                const fullName = getFullName(person).toLowerCase();
+                return !query || fullName.includes(query);
+            });
+
+            // Repopulate context person combo box
+            contextPersonSelect.innerHTML = `<option value="">${t.contextPerson}</option>`;
+            filteredPeople.forEach(person => {
+                const option = document.createElement('option');
+                option.value = person.id;
+                option.textContent = getFullName(person);
+                if (person.id === currentContextId) {
+                    option.selected = true;
+                }
+                contextPersonSelect.appendChild(option);
+            });
+        }
+
+        // Get relationship to context person
+        function getRelationToContext(contextPerson, person) {
+            const t = translations[currentLang].relationships;
+
+            // Check direct relationships
+            const directRel = checkDirectRelationships(contextPerson, person);
+            if (directRel) {
+                return t[directRel] || directRel; // Ensure translation exists
+            }
+
+            // Find ancestors for both
+            const ancestors1 = findAncestors(contextPerson);
+            const ancestors2 = findAncestors(person);
+
+            // Find common ancestor
+            let commonAncestor = null;
+            let distance1 = 0, distance2 = 0;
+            for (const [dist1, ids1] of Object.entries(ancestors1)) {
+                for (const [dist2, ids2] of Object.entries(ancestors2)) {
+                    for (const id1 of ids1) {
+                        if (ids2.includes(id1)) {
+                            commonAncestor = familyMap[id1];
+                            distance1 = parseInt(dist1);
+                            distance2 = parseInt(dist2);
+                            break;
+                        }
+                    }
+                    if (commonAncestor) break;
+                }
+                if (commonAncestor) break;
+            }
+
+            if (!commonAncestor) {
+                return t.noAncestor;
+            }
+
+            // Calculate relationship
+            const rel = calculateRelationship(distance1, distance2, contextPerson, person);
+            // Split and translate components
+            const parts = rel.split(', ').map(part => {
+                const subParts = part.split(' ');
+                return subParts.map(sub => t[sub] || sub).join(' ');
+            });
+            return parts.join(', ');
+        }
+
+        // Generate person HTML
+        function generatePersonHTML(person, isDescendant, isContextPerson, contextPerson) {
+            const t = translations[currentLang];
+            const country = getCountry(person.origin);
+            const flag = getFlag(country);
+            const relation = contextPerson ? getRelationToContext(contextPerson, person) : 'N/A';
+            const age = calculateAge(person.dateOfBirth, person.dateOfDeath);
+            let html = `
+                <div class="person${isDescendant ? ' descendant' : ''}${isContextPerson ? ' context-person' : ''}" id="person-${person.id}" onclick="highlightPerson(${person.id})">
+                    <h3><i class="fas fa-user"></i> ${getFullName(person)}</h3>
+                    <p><i class="fas fa-globe"></i> <strong>${t.origin}:</strong> ${person.origin || 'N/A'} ${flag}</p>
+                    <p><i class="fas fa-birthday-cake"></i> <strong>${t.born}:</strong> ${person.dateOfBirth || 'N/A'}</p>
+                    <p><i class="fas fa-cross"></i> <strong>${t.died}:</strong> ${person.dateOfDeath || 'N/A'}</p>
+                    <p><i class="fas fa-signature"></i> <strong>${t.originalSurname}:</strong> ${person.originalSurname || 'N/A'}</p>
+                    <p><i class="fas fa-clock"></i> <strong>${t.age}:</strong> ${age}</p>
+                    <p><i class="fas fa-link"></i> <strong>${t.relation}:</strong> ${relation}</p>
+                    <div class="relationships">
+            `;
+
+            // Add parents
+            if (person.parent1Id || person.parent2Id) {
+                html += `<p><i class="fas fa-users"></i> <strong>${t.parents}:</strong> `;
+                const parents = [];
+                if (person.parent1Id && familyMap[person.parent1Id]) {
+                    parents.push(`<a href="#person-${person.parent1Id}">${getFullName(familyMap[person.parent1Id])}</a>`);
+                }
+                if (person.parent2Id && familyMap[person.parent2Id]) {
+                    parents.push(`<a href="#person-${person.parent2Id}">${getFullName(familyMap[person.parent2Id])}</a>`);
+                }
+                html += parents.join(', ') || 'N/A';
+                html += '</p>';
+            }
+
+            // Add spouse
+            if (person.spouseId && familyMap[person.spouseId]) {
+                html += `<p><i class="fas fa-ring"></i> <strong>${t.spouse}:</strong> <a href="#person-${person.spouseId}">${getFullName(familyMap[person.spouseId])}</a></p>`;
+            }
+
+            // Add children
+            const children = familyData.filter(p => p.parent1Id === person.id || p.parent2Id === person.id);
+            if (children.length > 0) {
+                html += `<p><i class="fas fa-child"></i> <strong>${t.children}:</strong> `;
+                html += children.map(child => `<a href="#person-${child.id}">${getFullName(child)}</a>`).join(', ');
+                html += '</p>';
+            }
+
+            html += '</div></div>';
+            return html;
+        }
+
+        // Highlight person
+        function highlightPerson(id) {
+            document.querySelectorAll('.person').forEach(div => div.classList.remove('highlight'));
+            const personDiv = document.getElementById(`person-${id}`);
+            if (personDiv) {
+                personDiv.classList.add('highlight');
+                personDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Reload family tree
+        function reloadFamilyTree() {
+            const contextPersonId = document.getElementById('contextPersonSelect').value;
+            const t = translations[currentLang];
+            let html = '';
+
+            if (!contextPersonId) {
+                document.getElementById('familyTree').innerHTML = `<p>${t.contextPerson}</p>`;
+                return;
+            }
+
+            const contextPerson = familyMap[contextPersonId];
+            if (!contextPerson) {
+                document.getElementById('familyTree').innerHTML = `<p>${t.error}: Invalid context person.</p>`;
+                return;
+            }
+
+            // Collect connected individuals: ancestors, siblings, spouses, and descendants
+            const connectedIds = new Set();
+            const descendantIds = new Set();
+            const orderedIndividuals = [];
+
+            // Add context person
+            connectedIds.add(contextPerson.id);
+
+            // Add ancestors (collect in reverse order: oldest first)
+            const ancestors = [];
+            function collectAncestors(person, depth = 0) {
+                if (!person) return;
+                if (person.parent1Id && familyMap[person.parent1Id]) {
+                    connectedIds.add(person.parent1Id);
+                    ancestors.push({ person: familyMap[person.parent1Id], depth: depth + 1 });
+                    collectAncestors(familyMap[person.parent1Id], depth + 1);
+                }
+                if (person.parent2Id && familyMap[person.parent2Id]) {
+                    connectedIds.add(person.parent2Id);
+                    ancestors.push({ person: familyMap[person.parent2Id], depth: depth + 1 });
+                    collectAncestors(familyMap[person.parent2Id], depth + 1);
+                }
+            }
+            collectAncestors(contextPerson);
+            // Sort ancestors by depth (descending) and ID (ascending)
+            ancestors.sort((a, b) => b.depth - a.depth || a.person.id - b.person.id);
+            ancestors.forEach(a => orderedIndividuals.push(a.person));
+
+            // Add siblings, context person, and their spouses
+            const siblings = familyData.filter(p =>
+                p.id !== contextPerson.id &&
+                ((p.parent1Id && (p.parent1Id === contextPerson.parent1Id || p.parent1Id === contextPerson.parent2Id)) ||
+                 (p.parent2Id && (p.parent2Id === contextPerson.parent1Id || p.parent2Id === contextPerson.parent2Id)))
+            );
+            const siblingGroup = [contextPerson, ...siblings.sort((a, b) => a.id - b.id)];
+            const individualsWithSpouses = [];
+            siblingGroup.forEach(sibling => {
+                connectedIds.add(sibling.id);
+                individualsWithSpouses.push(sibling);
+                // Add spouse if exists
+                if (sibling.spouseId && familyMap[sibling.spouseId]) {
+                    connectedIds.add(sibling.spouseId);
+                    individualsWithSpouses.push(familyMap[sibling.spouseId]);
+                }
+            });
+            individualsWithSpouses.forEach(individual => orderedIndividuals.push(individual));
+
+            // Add descendants recursively (children, grandchildren, etc. below parents)
+            function addDescendants(person) {
+                if (!person) return;
+                const children = familyData
+                    .filter(p => p.parent1Id === person.id || p.parent2Id === person.id)
+                    .sort((a, b) => a.id - b.id); // Sort children by ID
+                children.forEach(child => {
+                    connectedIds.add(child.id); // Include all descendants
+                    orderedIndividuals.push(child);
+                    descendantIds.add(child.id);
+                    addDescendants(child); // Recursively add grandchildren, etc.
+                });
+            }
+            siblingGroup.forEach(sibling => addDescendants(sibling));
+
+            // Generate HTML for ordered individuals
+            orderedIndividuals.forEach(person => {
+                const isDescendant = descendantIds.has(person.id);
+                const isContextPerson = person.id === contextPerson.id;
+                html += generatePersonHTML(person, isDescendant, isContextPerson, contextPerson);
+            });
+
+            const familyTreeDiv = document.getElementById('familyTree');
+            familyTreeDiv.innerHTML = html;
+            familyTreeDiv.style.display = 'block';
+        }
+
+        // Load family tree
+        async function loadFamilyTree() {
+            try {
+                const response = await fetch('family.json');
+                if (!response.ok) throw new Error('Failed to load family.json');
+                familyData = await response.json();
+
+                // Fix invalid "faces" key
+                familyData = familyData.map(person => {
+                    if (person.faces) {
+                        return { ...person, id: 31, name: person.faces, faces: undefined };
+                    }
+                    return person;
+                });
+
+                // Create family map
+                familyMap = {};
+                familyData.forEach(person => {
+                    familyMap[person.id] = person;
+                });
+
+                // Populate select dropdowns
+                const contextPersonSelect = document.getElementById('contextPersonSelect');
+                const relatedPersonSelect = document.getElementById('relatedPersonSelect');
+                const t = translations[currentLang];
+                contextPersonSelect.innerHTML = `<option value="">${t.contextPerson}</option>`;
+                relatedPersonSelect.innerHTML = `<option value="">${t.selectPerson}</option>`;
+                familyData.forEach(person => {
+                    const option = `<option value="${person.id}">${getFullName(person)}</option>`;
+                    contextPersonSelect.innerHTML += option;
+                    relatedPersonSelect.innerHTML += option;
+                });
+
+                // Initial render
+                reloadFamilyTree();
+
+                // Add enter key support for search
+                document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') searchFamily();
+                });
+            } catch (error) {
+                const t = translations[currentLang];
+                document.getElementById('error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${t.error}: ${error.message}`;
+            }
+        }
+
+        window.onload = loadFamilyTree;
+    </script>
 </body>
 </html>
