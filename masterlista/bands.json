@@ -717,6 +717,22 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "Димитар Додовски",
+      "city": "Битола",
+      "genre": "Електро-амбиентал",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "bandcamp": "https://dodovskidimitar.bandcamp.com/",
+        "spotify": "https://open.spotify.com/artist/00kSxXDKGafeM1T8EktuFF?si=c3TLNCCuRoe_5WQiagy4bg",
+        "youtube": "https://www.youtube.com/@dimitardodovski9949"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Дина Јашари",
       "city": "Скопје, Битола",
       "genre": "Поп",
@@ -1038,6 +1054,25 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "Herzel",
+      "city": "Битола",
+      "genre": "Електронска",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/@agrozdanovski/videos",
+        "spotify": "https://open.spotify.com/artist/3qFAOZEpDjvuKgsVlIenZz?si=2h9HjwiwSDe5Rb5HH6hUFA",
+        "soundcloud": "https://soundcloud.com/herzel",
+        "instagram": "https://www.instagram.com/aleksandargrozdanovski/",
+        "facebook": "https://www.facebook.com/HerzelMUSiK/",
+        "bandcamp": "https://herzel.bandcamp.com/"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null,
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/444656f9a976820c065893eb0a3b425f.png"
+    },
+    {
       "name": "Iron Fang",
       "city": "Кичево",
       "genre": "Пауер Метал, Спид Метал",
@@ -1052,7 +1087,7 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
-      "name": "Jana Burčeska",
+      "name": "Јана Бурческа",
       "city": "Скопје",
       "genre": "Поп",
       "soundsLike": "Ellie Goulding, Sia",
@@ -1089,7 +1124,8 @@
       "links": {
         "youtube": "https://www.youtube.com/@MVRSVR",
         "spotify": "https://open.spotify.com/artist/79XvNtUxP1krMoZT9Pe0dm?si=kWebdH0CQN63ID86hD_Q9w",
-        "instagram": "https://www.instagram.com/jean_larri_claude/"
+        "instagram": "https://www.instagram.com/jean_larri_claude/",
+        "soundcloud": "https://soundcloud.com/d_flute_master"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,

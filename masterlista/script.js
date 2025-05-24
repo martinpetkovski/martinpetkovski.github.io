@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return nameA.localeCompare(nameB, 'en');
             });
             document.getElementById('total-bands').textContent = bandsData.length;
-            const lastModified = new Date('2025-05-17T00:00:00');
+            const lastModified = new Date('2025-05-24T00:00:00');
             const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
             const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
             const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
