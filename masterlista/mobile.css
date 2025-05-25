@@ -33,7 +33,7 @@ header {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 60px;
+    min-height: 48px; /* Touch-friendly, dynamic height */
     z-index: 10;
 }
 
@@ -58,6 +58,7 @@ header::before {
     z-index: 2;
     width: 100%;
     gap: 0.3rem;
+    flex-wrap: wrap; /* Handle overflow if needed */
 }
 
 .logo-title-group {
@@ -69,7 +70,7 @@ header::before {
 
 .site-logo-text {
     font-family: 'Bungee', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Reduced from 1.4rem */
     font-weight: 400;
     background: linear-gradient(135deg, #ff0000 0%, #ffff00 100%);
     -webkit-background-clip: text;
@@ -78,25 +79,12 @@ header::before {
 }
 
 .title-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    display: none; /* Hide title and subtitle */
 }
 
-header h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    margin: 0;
-}
-
+header h1,
 header p {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 400;
-    margin: 0;
-    opacity: 0.9;
+    display: none; /* Hide "Македонска Музичка Мастер Листа" and "напојувано од Xotel" */
 }
 
 .xotel-link {
@@ -117,10 +105,10 @@ header p {
 
 .header-btn {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     font-weight: 600;
     color: white;
-    padding: 0.3rem 0.5rem;
+    padding: 0.2rem; /* Reduced for icon alignment */
     text-decoration: none;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     transform: translateY(0);
@@ -128,13 +116,13 @@ header p {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    display: inline-flex;
+    display: flex; /* Center icon */
+    justify-content: center;
     align-items: center;
-    gap: 0.2rem;
     min-height: 44px;
     min-width: 44px;
-    position: relative; /* Ensure clickability */
-    z-index: 11; /* Above header elements */
+    position: relative;
+    z-index: 11;
 }
 
 .header-btn.add-band {
@@ -173,14 +161,14 @@ header p {
 }
 
 .header-btn i {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
 }
 
 /* Main Content Styles */
 main {
     margin: 0;
     padding: 0;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 48px); /* Adjusted for min-height header */
     width: 100vw;
     overflow-y: hidden;
     display: flex;
@@ -203,11 +191,11 @@ body.guide-page main {
     padding: 0.4rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     position: fixed;
-    top: 60px;
+    top: 48px; /* Adjusted for min-height header */
     left: 0;
     right: 0;
     z-index: 100;
-    max-height: calc(100vh - 60px);
+    max-height: calc(100vh - 48px);
     overflow-y: auto;
 }
 
@@ -221,7 +209,7 @@ body.guide-page main {
 
 #search-name {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     padding: 0.4rem;
     border: 1px solid #ccc;
     background: white;
@@ -250,7 +238,7 @@ body.guide-page main {
 }
 
 .select2-selection__rendered {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     color: #333;
     line-height: 1.2;
     padding-right: 16px;
@@ -303,7 +291,7 @@ body.guide-page main {
 
 .select2-search__field {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     border: 1px solid #ccc !important;
     padding: 0.4rem;
     background: white;
@@ -314,7 +302,7 @@ body.guide-page main {
 
 .select2-results__option {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     padding: 0.4rem;
     color: #333;
     line-height: 1.2;
@@ -334,7 +322,7 @@ body.guide-page main {
 }
 
 .clear-filters-btn {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
     color: white;
     background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
     padding: 0.4rem;
@@ -349,9 +337,9 @@ body.guide-page main {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    position: relative; /* Ensure clickability */
-    z-index: 101; /* Above .controls */
-    pointer-events: auto; /* Ensure clickable */
+    position: relative;
+    z-index: 101;
+    pointer-events: auto;
 }
 
 .clear-filters-btn:hover {
@@ -409,7 +397,7 @@ td {
     align-items: center;
     padding: 0 0.3rem;
     border: none;
-    font-size: 1rem !important;
+    font-size: 0.9rem !important; /* Reduced from 1rem */
     color: #333;
     line-height: 1.2;
     height: 100%;
@@ -424,17 +412,37 @@ td[data-label="Акции"] {
 
 td[data-label="Име"] {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem; /* Reduced from 1.2rem */
     font-weight: 600;
     color: #2a1b4a;
     width: 40%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-x: auto; /* Add horizontal scrollbar */
+    touch-action: pan-x;
+    white-space: nowrap; /* Prevent wrapping */
+    scrollbar-width: thin;
+    scrollbar-color: #4a2c6d #e8ecef;
+}
+
+td[data-label="Име"]::-webkit-scrollbar {
+    height: 4px;
+}
+
+td[data-label="Име"]::-webkit-scrollbar-track {
+    background: #e8ecef;
+    border-radius: 3px;
+}
+
+td[data-label="Име"]::-webkit-scrollbar-thumb {
+    background: #4a2c6d;
+    border-radius: 3px;
+}
+
+td[data-label="Име"]::-webkit-scrollbar-thumb:hover {
+    background: #6b3e99;
 }
 
 td[data-label="Жанр"] {
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
     color: #555;
     width: 25%;
     overflow-x: auto;
@@ -502,7 +510,7 @@ td[data-label="Линкови"]::-webkit-scrollbar-thumb:hover {
 }
 
 td[data-label="Линкови"] a {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important; /* Reduced from 1.2rem */
     color: #4a2c6d;
     text-decoration: none;
     padding: 0.2rem;
@@ -516,7 +524,7 @@ td[data-label="Линкови"] a.contact-link {
     background: linear-gradient(135deg, #ad1457 0%, #ec407a 100%);
     color: white;
     padding: 0.2rem 0.4rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
     border-radius: 4px;
     max-width: none;
     line-height: 1.2;
@@ -560,7 +568,7 @@ tr:hover td[data-label="Линкови"] a {
     background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
     color: white;
     padding: 0.2rem 0.4rem;
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important; /* Reduced from 0.9rem */
     border-radius: 4px;
     margin: 0 !important;
     cursor: pointer;
@@ -578,7 +586,7 @@ tr:hover td[data-label="Линкови"] a {
     background: linear-gradient(135deg, #b71c1c 0%, #f44336 100%);
     color: white;
     padding: 0.2rem 0.4rem;
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important; /* Reduced from 0.9rem */
     border-radius: 4px;
     margin: 0 0.2rem;
     line-height: 1.2;
@@ -641,7 +649,7 @@ td[data-label="Статус"].missing-data > span.status-content {
     background: #333;
     color: white;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     font-weight: 600;
     padding: 0.2rem 0.4rem;
     white-space: nowrap;
@@ -684,7 +692,7 @@ td[data-label="Статус"].missing-data > span.status-content {
 
 footer p {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     font-weight: 400;
     margin: 0;
     opacity: 0.9;
@@ -710,14 +718,14 @@ footer p {
     border: 1px solid #888;
     width: 100%;
     height: 100%;
-    max-height: 100vh; /* Respect viewport height */
+    max-height: 100vh;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 0;
     position: relative;
     z-index: 1001;
-    overflow-y: auto; /* Enable vertical scrolling */
-    touch-action: pan-y; /* Smooth touch scrolling */
-    scrollbar-width: thin; /* Styled scrollbar */
+    overflow-y: auto;
+    touch-action: pan-y;
+    scrollbar-width: thin;
     scrollbar-color: #4a2c6d #e8ecef;
 }
 
@@ -744,7 +752,7 @@ footer p {
     position: absolute;
     top: 0.4rem;
     right: 0.4rem;
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Reduced from 1.5rem */
     font-weight: bold;
     cursor: pointer;
     z-index: 1002;
@@ -759,7 +767,7 @@ footer p {
 
 .modal h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Reduced from 1.2rem */
     color: #2a1b4a;
     margin-bottom: 0.8rem;
     padding-right: 2rem;
@@ -771,7 +779,7 @@ footer p {
 
 .form-group label {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     font-weight: 600;
     color: #333;
     display: block;
@@ -781,7 +789,7 @@ footer p {
 .form-group input, .form-group select {
     width: 100%;
     padding: 0.4rem;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     border: 1px solid #ccc;
     background: white;
     color: #333;
@@ -807,7 +815,7 @@ footer p {
 
 .link-group select, .link-group input {
     flex: 1;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     min-height: 44px;
 }
 
@@ -832,7 +840,7 @@ footer p {
 
 .add-link-btn, #save-band-btn {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     font-weight: 600;
     color: white;
     padding: 0.4rem 0.8rem;
@@ -878,7 +886,7 @@ footer p {
 
 .new-release-header {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     font-weight: 700;
     color: #2a1b4a;
     text-transform: uppercase;
@@ -890,7 +898,7 @@ footer p {
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     color: #4a2c6d;
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     margin-right: 0.2rem;
 }
 
@@ -927,7 +935,7 @@ footer p {
 
 .new-release-list li {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     font-weight: 600;
     color: #333;
     background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
@@ -957,13 +965,13 @@ footer p {
 }
 
 .new-release-list li i {
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     color: #fff;
 }
 
 .new-release-list li .missing-data {
     color: #fff3;
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
 }
 
 /* Guide Page Content */
@@ -977,7 +985,7 @@ footer p {
 
 .guide-content h2, .guide-content h3 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Reduced from 1.2rem */
     color: #2a1b4a;
     margin-top: 2rem;
     margin-bottom: 0.4rem;
@@ -987,11 +995,11 @@ footer p {
 }
 
 .guide-content h3 {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Reduced from 1rem */
 }
 
 .guide-content p {
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     margin-bottom: 0.6rem;
     line-height: 1.4;
 }
@@ -1003,7 +1011,7 @@ footer p {
 }
 
 .guide-content li {
-    font-size: 0.8rem;
+    font-size: 0.7rem; /* Reduced from 0.8rem */
     margin-bottom: 0.5rem;
     display: flex;
     align-items: flex-start;
@@ -1029,7 +1037,7 @@ footer p {
 .return-link {
     display: inline-block;
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     font-weight: 600;
     color: white;
     background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
@@ -1052,7 +1060,7 @@ footer p {
 
 /* Guide Icons */
 .guide-icon {
-    font-size: 0.9rem;
+    font-size: 0.8rem; /* Reduced from 0.9rem */
 }
 
 .status-icon {
@@ -1063,7 +1071,7 @@ footer p {
 }
 
 .guide-list-icon {
-    font-size: 0.7rem;
+    font-size: 0.6rem; /* Reduced from 0.7rem */
     flex-shrink: 0;
     margin-top: 0.2rem;
 }
