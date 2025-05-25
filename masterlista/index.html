@@ -29,43 +29,48 @@
         </div>
     </header>
     <main>
-        <button id="toggle-filters" class="toggle-filters-btn" title="Прикажи/Сокриј филтри">
-            <i class="fas fa-filter"></i>
-        </button>
-        <div class="controls">
-            <input type="text" id="search-name" placeholder="Пребарај по име...">
-            <select id="filter-city"></select>
-            <select id="filter-genre"></select>
-            <select id="filter-sounds-like"></select>
-            <select id="filter-status"></select>
-            <select id="filter-label"></select>
-            <label class="mode-toggle desktop-only">
-                <input type="checkbox" id="mode-toggle-checkbox" title="Промени во проширен приказ">
-                <i class="fas fa-expand-alt"></i>
-            </label>
-            <button id="clear-filters" class="clear-filters-btn" title="Исчисти филтри"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="loading-bar" class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="image-column"></th>
-                        <th>Име</th>
-                        <th>Град</th>
-                        <th>Жанр</th>
-                        <th>Звучи како</th>
-                        <th>Линкови</th>
-                        <th><i class="fas fa-circle status-header-icon"></i></th>
-                        <th class="edit-hidden">Акции</th>
-                    </tr>
-                </thead>
-                <tbody id="band-table-body"></tbody>
-            </table>
-        </div>
-    </main>
+    <button id="toggle-filters" class="toggle-filters-btn" title="Прикажи/Сокриј филтри">
+        <i class="fas fa-filter"></i>
+    </button>
+    <div id="new-release-artists" class="new-release-artists">
+        <h2 title="Најнови песни со ознака „Ново Издание“">
+            Ново Издание <i class="fas fa-star new-release-icon"></i>
+        </h2>
+    </div>
+    <div class="controls">
+        <input type="text" id="search-name" placeholder="Пребарај по име...">
+        <select id="filter-city"></select>
+        <select id="filter-genre"></select>
+        <select id="filter-sounds-like"></select>
+        <select id="filter-status"></select>
+        <select id="filter-label"></select>
+        <label class="mode-toggle desktop-only">
+            <input type="checkbox" id="mode-toggle-checkbox" title="Промени во проширен приказ">
+            <i class="fas fa-expand-alt"></i>
+        </label>
+        <button id="clear-filters" class="clear-filters-btn" title="Исчисти филтри"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="loading-bar" class="loading-bar">
+        <div class="loading-progress"></div>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th class="image-column"></th>
+                    <th>Име</th>
+                    <th>Град</th>
+                    <th>Жанр</th>
+                    <th>Звучи како</th>
+                    <th>Линкови</th>
+                    <th><i class="fas fa-circle status-header-icon"></i></th>
+                    <th class="edit-hidden">Акции</th>
+                </tr>
+            </thead>
+            <tbody id="band-table-body"></tbody>
+        </table>
+    </div>
+</main>
     <div id="band-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">×</span>

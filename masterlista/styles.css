@@ -175,15 +175,15 @@ header p {
 main {
     margin: 0;
     padding: 0.5rem 1rem;
-    overflow-y: auto;
+    overflow-y: hidden; /* No vertical scrollbar */
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 4rem);
+    height: calc(100vh - 4rem); /* Fit within viewport minus header and footer */
     width: 100%;
 }
 
 body.guide-page main {
-    min-height: calc(100vh - 4rem);
+    height: auto; /* Allow scrolling for guide page */
     overflow-y: auto;
 }
 
@@ -216,7 +216,7 @@ body.guide-page main {
 .controls {
     display: flex;
     gap: 0.3rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem; /* Reduced to save space */
     flex-wrap: wrap;
     align-items: center;
     flex-shrink: 0;
@@ -387,8 +387,9 @@ body.guide-page main {
 .table-wrapper {
     flex-grow: 1;
     width: 100%;
-    max-height: calc(100vh - 8rem);
-    overflow-y: auto;
+    max-height: calc(100vh - 8rem); /* Adjusted for header, footer, controls, and new-release-artists */
+    overflow-y: auto; /* Scrollbar only here */
+    overflow-x: hidden;
 }
 
 table {
@@ -516,6 +517,28 @@ tr:hover .name {
     cursor: pointer;
 }
 
+/* Single-character label styling */
+.band-label:where(:not(:empty)) {
+    /* Apply only to non-empty labels */
+}
+
+.band-label:not(:empty) {
+    /* More specific selector for clarity */
+    display: inline-block;
+}
+
+.band-label.single-char {
+    background: transparent; /* Transparent background */
+    color: #d32f2f; /* Red foreground */
+    font-weight: 700; /* Bold for emphasis */
+    padding: 0.2rem 0.3rem; /* Adjusted padding */
+    /* Border removed */
+}
+
+tr:hover .band-label.single-char {
+    color: #d32f2f; /* Maintain red foreground on hover */
+}
+
 .band-image img {
     width: 60px;
     height: 60px;
@@ -611,6 +634,10 @@ body.compact .links a.contact-link {
 body.compact .band-label {
     font-size: 0.7rem;
     padding: 0.15rem 0.3rem;
+}
+
+body.compact .band-label.single-char {
+    padding: 0.15rem 0.25rem;
 }
 
 .status-content {
@@ -947,6 +974,109 @@ footer p {
     display: table-cell;
 }
 
+/* New Release Artists Section */
+.new-release-artists {
+    background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+    padding: 0.2rem 0.4rem;
+    margin-bottom: 0.3rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #4a2c6d;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.new-release-header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2a1b4a;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.new-release-header::before {
+    content: '\f0a1'; /* Font Awesome bullhorn icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: #4a2c6d;
+    font-size: 0.9rem;
+    margin-right: 0.3rem;
+}
+
+.new-release-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.3rem;
+    scrollbar-width: thin;
+    scrollbar-color: #4a2c6d #e8ecef;
+}
+
+.new-release-list::-webkit-scrollbar {
+    height: 6px;
+}
+
+.new-release-list::-webkit-scrollbar-track {
+    background: #e8ecef;
+    border-radius: 3px;
+}
+
+.new-release-list::-webkit-scrollbar-thumb {
+    background: #4a2c6d;
+    border-radius: 3px;
+}
+
+.new-release-list::-webkit-scrollbar-thumb:hover {
+    background: #6b3e99;
+}
+
+.new-release-list li {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.new-release-list li:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.new-release-list li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.new-release-list li a:hover {
+    text-decoration: underline;
+}
+
+.new-release-list li i {
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.new-release-list li .missing-data {
+    color: #fff3;
+    font-size: 0.8rem;
+}
+
 /* Guide page content styling */
 .guide-content {
     background: white;
@@ -1100,14 +1230,67 @@ footer p {
     background: linear-gradient(135deg, #424242 0%, #616161 50%, #757575 100%);
 }
 
+/* Loading bar styles */
+.loading-bar {
+    display: none; /* Hidden by default */
+    width: 100%;
+    max-width: 1000px;
+    height: 10px; /* Slightly thicker for better visibility */
+    background: #e8ecef; /* Light gray background for contrast */
+    margin: 0.2rem auto; /* Reduced margin */
+    overflow: hidden;
+    border-radius: 5px; /* Rounded edges for a modern look */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    position: relative;
+}
+
+.loading-bar.active {
+    display: block; /* Shown when loading */
+}
+
+.loading-progress {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #5e35b1 0%, #3949ab 50%, #03a9f4 100%); /* Vibrant gradient */
+    border-radius: 5px; /* Match container's rounded edges */
+    box-shadow: 0 0 8px rgba(94, 53, 177, 0.5); /* Glow effect */
+    animation: loadingAnimation 1.5s ease-in-out infinite; /* Smooth, faster animation */
+    transition: width 0.1s ease; /* Smooth width changes */
+}
+
+@keyframes loadingAnimation {
+    0% {
+        width: 0;
+    }
+    70% {
+        width: 100%; /* Fully fill the bar */
+    }
+    100% {
+        width: 100%; /* Hold briefly at 100% */
+    }
+}
+
+/* Optional: Add a subtle overlay for depth */
+.loading-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
 /* Media queries */
 @media (max-width: 800px) {
     main {
         padding: 0.3rem 0.8rem;
-        min-height: calc(100vh - 4.5rem);
+        height: calc(100vh - 4.5rem); /* Adjusted for smaller header/footer */
+        overflow-y: hidden;
     }
     .table-wrapper {
-        max-height: calc(100vh - 7.5rem);
+        max-height: calc(100vh - 7.5rem); /* Adjusted for controls and new-release-artists */
         overflow-y: auto;
     }
     th, td {
@@ -1144,6 +1327,7 @@ footer p {
     .controls {
         flex-direction: column;
         gap: 0.2rem;
+        margin-bottom: 0.1rem;
     }
     #search-name {
         width: 100%;
@@ -1195,6 +1379,9 @@ footer p {
     .band-label {
         font-size: 0.7rem;
         padding: 0.15rem 0.3rem;
+    }
+    .band-label.single-char {
+        padding: 0.15rem 0.25rem;
     }
     .band-image img {
         width: 50px;
@@ -1275,32 +1462,70 @@ footer p {
         width: 14px;
         height: 14px;
     }
+    .new-release-artists {
+        padding: 0.15rem 0.3rem;
+        margin-bottom: 0.2rem;
+        border-left-width: 3px;
+    }
+    .new-release-header {
+        font-size: 0.9rem;
+    }
+    .new-release-header::before {
+        font-size: 0.8rem;
+    }
+    .new-release-list {
+        gap: 0.2rem;
+    }
+    .new-release-list li {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.3rem;
+    }
+    .new-release-list li i {
+        font-size: 0.7rem;
+    }
+    .new-release-list li .missing-data {
+        font-size: 0.7rem;
+    }
+    .loading-bar {
+        height: 8px;
+        margin: 0.1rem auto;
+        border-radius: 4px;
+    }
+    .loading-progress {
+        border-radius: 4px;
+    }
 }
 
 @media (max-width: 600px) {
     main {
         padding: 0;
-        min-height: calc(100vh - 3.5rem);
+        height: calc(100vh - 3.5rem); /* Adjusted for header (~2rem), footer (~1.5rem) */
         width: 100vw;
+        overflow-y: hidden;
     }
     .table-wrapper {
         padding: 0;
-        max-height: calc(100vh - 6.5rem);
+        max-height: calc(100vh - 7rem); /* Adjusted for toggle-filters (~2rem), new-release-artists (~1rem), controls (~2rem) */
         overflow-y: auto;
         width: 100vw;
     }
     body.guide-page main {
         padding: 0.5rem;
-        min-height: calc(100vh - 3.5rem);
+        height: auto;
+        overflow-y: auto;
     }
     .toggle-filters-btn {
         display: block;
-        font-size: 1.2rem;
-        padding: 0.3rem 0.5rem;
+        font-size: 1.4rem;
+        padding: 0.4rem 0.6rem;
         margin: 0.2rem;
-        border-radius: 0;
+        border-radius: 4px;
         background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        min-height: 44px; /* WCAG touch target */
     }
     .toggle-filters-btn:hover {
         background: linear-gradient(135deg, #03a9f4 0%, #0288d1 100%);
@@ -1309,9 +1534,19 @@ footer p {
     .controls {
         display: none;
         flex-direction: column;
-        gap: 0.2rem;
+        gap: 0.4rem;
         margin: 0.2rem;
         width: calc(100% - 0.4rem);
+        background: #fff;
+        padding: 0.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        position: fixed;
+        top: 2.8rem; /* Below toggle button */
+        left: 0;
+        right: 0;
+        z-index: 9;
+        max-height: calc(100vh - 3rem);
+        overflow-y: auto;
     }
     .controls.active {
         display: flex;
@@ -1320,55 +1555,55 @@ footer p {
         display: none;
     }
     #search-name {
-        font-size: 1.6rem;
-        padding: 0.3rem;
-        min-height: 36px;
-        border-radius: 0;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        min-height: 44px;
+        border-radius: 4px;
         width: 100%;
         border: 1px solid #ccc;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     .select2-container {
         width: 100% !important;
-        min-height: 36px;
+        min-height: 44px;
     }
     .select2-selection--single {
-        min-height: 36px;
-        padding: 0 0.3rem;
-        border-radius: 0 !important;
+        min-height: 44px;
+        padding: 0 0.5rem;
+        border-radius: 4px !important;
         border: 1px solid #ccc;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
     .select2-selection__rendered {
-        font-size: 1.6rem;
-        line-height: 36px;
+        font-size: 1.2rem;
+        line-height: 44px;
     }
     .select2-selection__placeholder {
-        line-height: 36px;
+        line-height: 44px;
     }
     .select2-selection__arrow {
-        height: 34px !important;
+        height: 42px !important;
     }
     .select2-search__field {
-        font-size: 1.6rem;
-        padding: 0.3rem;
-        min-height: 36px;
-        border-radius: 0;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        min-height: 44px;
+        border-radius: 4px;
         border: 1px solid #ccc;
     }
     .select2-results__option {
-        font-size: 1.6rem;
-        padding: 0.3rem;
-        min-height: 36px;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        min-height: 44px;
     }
     .clear-filters-btn {
-        font-size: 1.6rem;
-        padding: 0.3rem;
-        width: 36px;
-        min-height: 36px;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        width: 44px;
+        min-height: 44px;
         border-radius: 50%;
         background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
     .clear-filters-btn:hover {
         background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
@@ -1385,23 +1620,21 @@ footer p {
     tr {
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
         align-items: flex-start;
-        min-height: auto;
         background: white;
-        border-radius: 0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         padding: 0.5rem;
         position: relative;
         width: calc(100% - 0.4rem);
-        margin: 0.2rem;
+        margin: 0.3rem 0.2rem;
+        gap: 0.3rem;
     }
     tr:hover {
         background: linear-gradient(135deg, #5a3c7d 30%, #3a5d9f 100%);
         color: #fff;
     }
     tr:hover .name, tr:hover .links a, tr:hover .missing-data {
-        color: #fff;
         color: #e0e0e0;
     }
     td {
@@ -1409,52 +1642,105 @@ footer p {
         align-items: center;
         padding: 0.2rem 0;
         border: none;
-        font-size: 2.0rem !important;
+        font-size: 1.2rem !important;
         width: 100%;
         color: #333;
         line-height: 1.3;
     }
     td.band-image {
-        display: none;
+        display: none; /* Images hidden to save space */
     }
     td[data-label="Име"] {
         font-family: 'Montserrat', sans-serif;
-        font-size: 4.8rem;
-        font-weight: 600;
+        font-size: 2.4rem;
+        font-weight: 700;
         color: #2a1b4a;
-        padding: 0.2rem 0;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        padding: 0.3rem 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
-    td[data-label="Град"] {
-        font-size: 1.8rem;
+    td[data-label="Град"], td[data-label="Звучи какo"] {
+        display: none; /* Hidden by default, shown in details */
+    }
+    td[data-label="Жанр"] {
+        font-size: 1.2rem;
         color: #555;
-        padding: 0.2rem 0;
+        padding: 0.3rem 0;
         display: flex;
         flex-wrap: wrap;
-        gap: 0.2rem;
+        gap: 0.3rem;
         white-space: normal;
     }
-    td[data-label="Жанр"], td[data-label="Звучи какo"] {
+    td[data-label="Линкови"] {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.2rem;
-        max-width: 100%;
-        font-size: 1.6rem;
-        color: #555;
-        padding: 0.2rem 0;
-        white-space: normal;
+        gap: 0.4rem;
+        padding: 0.3rem 0;
+    }
+    td[data-label="Линкови"] a {
+        font-size: 1.4rem !important;
+        color: #4a2c6d;
+        text-decoration: none;
+        padding: 0.4rem;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        pointer-events: auto;
+        z-index: 2;
+    }
+    td[data-label="Линкови"] a.contact-link {
+        background: linear-gradient(135deg, #ad1457 0%, #ec407a 100%);
+        color: white;
+        padding: 0.4rem 0.6rem;
+        font-size: 1.2rem;
+        margin: 0.2rem 0.3rem;
+        border-radius: 4px;
+    }
+    td[data-label="Линкови"] a:hover {
+        color: #6b3e99;
+    }
+    td[data-label="Линкови"] a.contact-link:hover {
+        background: linear-gradient(135deg, #ec407a 0%, #ad1457 100%);
+    }
+    td[data-label="Статус"] {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0;
+        z-index: 1;
+        width: auto;
+        min-width: 60px;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    td[data-label="Статус"] > span.status-content {
+        width: 24px;
+        height: 24px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    td[data-label="Статус"]::after {
+        content: attr(data-status);
+        font-size: 1rem;
+        color: #333;
+        font-weight: 600;
+    }
+    tr:hover td[data-label="Статус"]::after {
+        color: #e0e0e0;
+    }
+    td[data-label="Акции"] {
+        display: none;
     }
     .genre-item, .sounds-like-item, .city-item {
         background: linear-gradient(135deg, #6b3e99 0%, #8e4ec6 100%);
         color: white;
-        padding: 0.2rem 0.4rem;
-        font-size: 1.0rem !important;
-        display: inline-block;
-        border-radius: 0;
-        margin: 0 0.1rem !important;
+        padding: 0.3rem 0.5rem;
+        font-size: 1rem !important;
+        border-radius: 4px;
+        margin: 0 0.2rem !important;
         cursor: pointer;
-        white-space: normal;
+        white-space: nowrap;
     }
     .sounds-like-item {
         background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
@@ -1462,69 +1748,48 @@ footer p {
     .band-label {
         background: linear-gradient(135deg, #b71c1c 0%, #f44336 100%);
         color: white;
-        padding: 0.2rem 0.4rem;
-        font-size: 1.0rem !important;
-        display: inline-block;
-        border-radius: 0;
+        padding: 0.3rem 0.5rem;
+        font-size: 1rem !important;
+        border-radius: 4px;
         margin: 0 0.3rem;
         line-height: 1.3;
         cursor: pointer;
     }
-    td[data-label="Линкови"] {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.3rem;
-        padding: 0.2rem 0;
+    .band-label.single-char {
+        background: transparent;
+        color: #d32f2f;
+        font-weight: 700;
+        padding: 0.2rem 0.3rem;
     }
-    td[data-label="Линкови"] a {
-        font-size: 1.8rem !important;
+    .details-toggle {
+        font-size: 1rem;
         color: #4a2c6d;
-        text-decoration: none;
-        padding: 0.3rem;
-        pointer-events: auto;
-        z-index: 2;
-    }
-    td[data-label="Линкови"] a.contact-link {
-        background: linear-gradient(135deg, #ad1457 0%, #ec407a 100%);
-        color: white;
+        background: none;
+        border: none;
         padding: 0.3rem 0.5rem;
-        font-size: 1.8rem;
-        margin: 0.2rem 0.3rem;
-    }
-    td[data-label="Линкови"] a:hover {
-        color: #6b3e99;
-    }
-    td[data-label="Линкови"] a.contact-link:hover {
-        background: linear-gradient(135deg, #ec407a 0%, #ad1457 100%);
-        color: white;
-    }
-    td[data-label="Статус"] {
-        position: absolute;
-        top: 10px;
-        right: 5px;
-        transform: none;
-        padding: 0;
-        z-index: 1;
-        width: auto;
-        min-width: 60px;
-    }
-    td[data-label="Статус"] > span.status-content {
-        width: 40px;
-        height: 40px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    td[data-label="Акции"] {
-        display: none;
-    }
-    tr > td:nth-child(1) {
-        display: none;
-    }
-    tr > td:nth-child(2) {
+        cursor: pointer;
         display: flex;
         align-items: center;
-        padding: 0.2rem 0;
-        flex: 1;
-        justify-content: flex-start;
+        gap: 0.3rem;
+        min-height: 44px;
+    }
+    .details-toggle::before {
+        content: '\f055'; /* Font Awesome plus icon */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+    }
+    .details-toggle.active::before {
+        content: '\f056'; /* Font Awesome minus icon */
+    }
+    .details-content {
+        display: none;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 0.3rem 0;
+        width: 100%;
+    }
+    .details-content.active {
+        display: flex;
     }
     .missing-data {
         display: none;
@@ -1554,14 +1819,15 @@ footer p {
     }
     .header-btn {
         font-size: 1rem;
-        padding: 0.3rem 0.5rem;
-        border-radius: 0;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        padding: 0.4rem 0.6rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         width: 100%;
         text-align: center;
+        min-height: 44px;
     }
     .header-btn i {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     .header-btn:hover {
         transform: translateY(-1px);
@@ -1580,137 +1846,72 @@ footer p {
         margin: 0;
         height: 100%;
         border-radius: 0;
+        padding: 0.5rem;
     }
     .form-group {
         margin-bottom: 0.6rem;
     }
     .form-group label {
-        font-size: 0.8rem;
-    }
-    .form-group input, .form-group select {
-        font-size: 0.7rem;
-        padding: 0.3rem;
-    }
-    .add-link-btn, #save-band-btn {
-        font-size: 0.7rem;
-        padding: 0.4rem 0.8rem;
-    }
-    .link-group select, .link-group input {
-        font-size: 0.7rem;
-    }
-    th:nth-child(7), td:nth-child(7) {
-        width: 60px;
-        min-width: 60px;
-    }
-    th:nth-child(8), td:nth-child(8) {
-        display: none;
-    }
-    .header-buttons {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-    }
-    .tag-item {
-        font-size: 0.6rem;
-        padding: 0.1rem 0.2rem;
-    }
-    .guide-content {
-        padding: 0.8rem;
-        margin-bottom: 4rem;
-    }
-    .guide-content h2 {
-        font-size: 1.2rem;
-    }
-    .guide-content h3 {
-        font-size: 1rem;
-    }
-    .guide-content p, .guide-content li {
-        font-size: 0.7rem;
-    }
-    .return-link {
-        font-size: 0.6rem;
-        padding: 0.3rem 0.6rem;
-    }
-    .guide-icon {
         font-size: 0.9rem;
     }
-    .guide-list-icon {
+    .form-group input, .form-group select {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+        min-height: 44px;
+        border-radius: 4px;
+    }
+    .add-link-btn, #save-band-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+    .link-group select, .link-group input {
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    .new-release-artists {
+        padding: 0.1rem 0.2rem;
+        margin: 0.1rem;
+        width: calc(100% - 0.4rem);
+        border-left-width: 2px;
+        gap: 0.4rem;
+    }
+    .new-release-header {
+        font-size: 0.9rem;
+    }
+    .new-release-header::before {
+        font-size: 0.8rem;
+    }
+    .new-release-list {
+        gap: 0.2rem;
+        touch-action: pan-x; /* Enable smooth swipe scrolling */
+    }
+    .new-release-list li {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.3rem;
+        min-height: 36px;
+    }
+    .new-release-list li i {
         font-size: 0.7rem;
     }
-    .status-indicator {
-        width: 12px;
-        height: 12px;
+    .new-release-list li .missing-data {
+        font-size: 0.7rem;
     }
-}
-
-/* Loading bar styles */
-.loading-bar {
-    display: none; /* Hidden by default */
-    width: 100%;
-    max-width: 1000px;
-    height: 10px; /* Slightly thicker for better visibility */
-    background: #e8ecef; /* Light gray background for contrast */
-    margin: 0.5rem auto;
-    overflow: hidden;
-    border-radius: 5px; /* Rounded edges for a modern look */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow */
-    position: relative;
-}
-
-.loading-bar.active {
-    display: block; /* Shown when loading */
-}
-
-.loading-progress {
-    width: 0;
-    height: 100%;
-    background: linear-gradient(135deg, #5e35b1 0%, #3949ab 50%, #03a9f4 100%); /* Vibrant gradient */
-    border-radius: 5px; /* Match container's rounded edges */
-    box-shadow: 0 0 8px rgba(94, 53, 177, 0.5); /* Glow effect */
-    animation: loadingAnimation 1.5s ease-in-out infinite; /* Smooth, faster animation */
-    transition: width 0.1s ease; /* Smooth width changes */
-}
-
-@keyframes loadingAnimation {
-    0% {
-        width: 0;
+    .new-release-list::-webkit-scrollbar {
+        height: 4px;
     }
-    70% {
-        width: 100%; /* Fully fill the bar */
+    .band-label {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.3rem;
+        margin: 0 0.2rem;
     }
-    100% {
-        width: 100%; /* Hold briefly at 100% */
+    .band-label.single-char {
+        padding: 0.2rem 0.3rem;
     }
-}
-
-/* Optional: Add a subtle overlay for depth */
-.loading-bar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-    pointer-events: none;
-}
-
-/* Media queries for responsive loading bar */
-@media (max-width: 800px) {
-    .loading-bar {
-        height: 8px;
-        margin: 0.3rem auto;
-        border-radius: 4px;
-    }
-    .loading-progress {
-        border-radius: 4px;
-    }
-}
-
-@media (max-width: 600px) {
     .loading-bar {
         width: calc(100% - 0.4rem);
-        margin: 0.2rem;
+        margin: 0.1rem;
         height: 6px;
         border-radius: 3px;
     }

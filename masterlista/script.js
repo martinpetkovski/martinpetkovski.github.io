@@ -149,6 +149,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return { valid: true };
     }
 
+    // Function to get the preferred link (YouTube > Spotify > first available link)
+    function getPreferredLink(band) {
+        const linkPriority = ['youtube', 'spotify'];
+        for (const platform of linkPriority) {
+            if (band.links[platform] && band.links[platform] !== 'недостигаат податоци') {
+                return { platform, url: platform === 'spotify' ? convertSpotifyUrlToAppUri(band.links[platform]) : band.links[platform] };
+            }
+        }
+        // Fallback to the first available link if neither YouTube nor Spotify exists
+        const firstPlatform = Object.keys(band.links).find(p => p !== 'none' && band.links[p] !== 'недостигаат податоци');
+        if (firstPlatform) {
+            return { platform: firstPlatform, url: band.links[firstPlatform] };
+        }
+        return { platform: 'none', url: null };
+    }
+
+// Function to render the "Ново Издание" artists
+function renderNewReleaseArtists(bands) {
+    console.log('Rendering Ново Издание artists');
+    const newReleaseContainer = document.getElementById('new-release-artists');
+    newReleaseContainer.innerHTML = `
+        <div class="new-release-header">
+            <span title="Најнови песни со ознака „Ново Издание“">Ново Издание</span>
+        </div>
+    `;
+
+    const newReleaseBands = bands.filter(band => band.label === 'Ново Издание');
+    if (newReleaseBands.length === 0) {
+        newReleaseContainer.innerHTML += '<p>Нема артисти со ознака „Ново Издание“.</p>';
+        return;
+    }
+
+    const list = document.createElement('ul');
+    list.className = 'new-release-list';
+    newReleaseBands.forEach(band => {
+        const listItem = document.createElement('li');
+        const { platform, url } = getPreferredLink(band);
+        if (url) {
+            listItem.innerHTML = `<a href="${url}" target="_blank">${band.name}</a> <i class="${socialPlatforms.find(p => p.id === platform)?.icon || 'fa-solid fa-link'}"></i>`;
+        } else {
+            listItem.innerHTML = `${band.name} <span class="missing-data"><i class="fas fa-question-circle"></i></span>`;
+        }
+        list.appendChild(listItem);
+    });
+    newReleaseContainer.appendChild(list);
+}
+
     async function loadBandsData() {
         const loadingBar = document.getElementById('loading-bar');
         const controls = document.querySelector('.controls');
@@ -210,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Loaded ${bandsData.length} bands`);
             populateFilters(bandsData);
             renderBands(bandsData);
+            renderNewReleaseArtists(bandsData); // Render new release artists
             initializeFilters();
             initializeModal();
             initializeCopyData();
@@ -318,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             }
             renderBands(bandsData);
+            renderNewReleaseArtists(bandsData); // Update new releases on mode toggle
         });
     }
 
@@ -500,6 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('total-bands').textContent = bandsData.length;
             populateFilters(bandsData);
             filterBands();
+            renderNewReleaseArtists(bandsData); // Update new releases after form submission
             modal.style.display = 'none';
             form.reset();
             linksContainer.innerHTML = '';
@@ -580,6 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('total-bands').textContent = bandsData.length;
                 populateFilters(bandsData);
                 filterBands();
+                renderNewReleaseArtists(bandsData); // Update new releases after deletion
             }
         }
 
@@ -646,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<i class="fas fa-edit"></i> Уреди';
             console.log('Edit mode:', isEditMode);
             renderBands(bandsData);
+            renderNewReleaseArtists(bandsData); // Update new releases on edit mode toggle
         });
     }
 
@@ -774,154 +826,156 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesName && matchesCity && matchesGenre && matchesSoundsLike && matchesStatus && matchesLabel;
         });
         renderBands(filteredBands);
+        renderNewReleaseArtists(bandsData); // Update new releases to ensure consistency
     }
 
-    function renderBands(bands) {
-        console.log(`Rendering ${bands.length} bands`);
-        const bandTableBody = document.getElementById('band-table-body');
-        bandTableBody.innerHTML = '';
-        bands.forEach((band, displayIndex) => {
-            const originalIndex = bandsData.findIndex(b => b.name === band.name && b.city === band.city && b.genre === band.genre);
-            const bandRow = document.createElement('tr');
-            const linkPopularityOrder = [
-                'youtube', 'spotify', 'itunes', 'deezer', 'instagram',
-                'facebook', 'twitter', 'soundcloud', 'bandcamp', 'website', 'linktree',
-                'tiktok', 'linkedin', 'pinterest', 'twitch', 'vimeo', 'patreon', 'discord', 'generic'
-            ];
-            const linkIcons = {
-                facebook: 'fa-brands fa-facebook',
-                instagram: 'fa-brands fa-instagram',
-                twitter: 'fa-brands fa-twitter',
-                youtube: 'fa-brands fa-youtube',
-                spotify: 'fa-brands fa-spotify',
-                bandcamp: 'fa-brands fa-bandcamp',
-                soundcloud: 'fa-brands fa-soundcloud',
-                itunes: 'fa-brands fa-itunes-note',
-                deezer: 'fa-brands fa-deezer',
-                lastfm: 'fa-brands fa-lastfm',
-                wikipedia: 'fa-brands fa-wikipedia-w',
-                tiktok: 'fa-brands fa-tiktok',
-                linkedin: 'fa-brands fa-linkedin',
-                pinterest: 'fa-brands fa-pinterest',
-                twitch: 'fa-brands fa-twitch',
-                vimeo: 'fa-brands fa-vimeo',
-                patreon: 'fa-brands fa-patreon',
-                discord: 'fa-brands fa-discord',
-                website: 'fa-solid fa-globe',
-                linktree: 'fa-solid fa-tree',
-                generic: 'fa-solid fa-link'
-            };
-            let linksHtml = '';
-            if (band.links.none === 'недостигаат податоци' && band.contact === 'недостигаат податоци') {
-                linksHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
-            } else {
-                const sortedPlatforms = Object.keys(band.links).sort((a, b) => {
-                    const indexA = linkPopularityOrder.indexOf(a);
-                    const indexB = linkPopularityOrder.indexOf(b);
-                    return indexA - indexB;
-                });
-                linksHtml = sortedPlatforms
-                    .map(platform => {
-                        let url = band.links[platform];
-                        if (platform === 'spotify') {
-                            url = convertSpotifyUrlToAppUri(url);
-                        }
-                        const iconClass = linkIcons[platform] || 'fa-solid fa-link';
-                        return `<a href="${url}" target="_blank"><i class="${iconClass}"></i></a>`;
-                    })
-                    .join('');
-                if (band.contact !== 'недостигаат податоци') {
-                    linksHtml += `<a href="mailto:${band.contact}" class="contact-link"><i class="fa-solid fa-envelope"></i></a>`;
-                }
+function renderBands(bands) {
+    console.log(`Rendering ${bands.length} bands`);
+    const bandTableBody = document.getElementById('band-table-body');
+    bandTableBody.innerHTML = '';
+    bands.forEach((band, displayIndex) => {
+        const originalIndex = bandsData.findIndex(b => b.name === band.name && b.city === band.city && b.genre === band.genre);
+        const bandRow = document.createElement('tr');
+        const linkPopularityOrder = [
+            'youtube', 'spotify', 'itunes', 'deezer', 'instagram',
+            'facebook', 'twitter', 'soundcloud', 'bandcamp', 'website', 'linktree',
+            'tiktok', 'linkedin', 'pinterest', 'twitch', 'vimeo', 'patreon', 'discord', 'generic'
+        ];
+        const linkIcons = {
+            facebook: 'fa-brands fa-facebook',
+            instagram: 'fa-brands fa-instagram',
+            twitter: 'fa-brands fa-twitter',
+            youtube: 'fa-brands fa-youtube',
+            spotify: 'fa-brands fa-spotify',
+            bandcamp: 'fa-brands fa-bandcamp',
+            soundcloud: 'fa-brands fa-soundcloud',
+            itunes: 'fa-brands fa-itunes-note',
+            deezer: 'fa-brands fa-deezer',
+            lastfm: 'fa-brands fa-lastfm',
+            wikipedia: 'fa-brands fa-wikipedia-w',
+            tiktok: 'fa-brands fa-tiktok',
+            linkedin: 'fa-brands fa-linkedin',
+            pinterest: 'fa-brands fa-pinterest',
+            twitch: 'fa-brands fa-twitch',
+            vimeo: 'fa-brands fa-vimeo',
+            patreon: 'fa-brands fa-patreon',
+            discord: 'fa-brands fa-discord',
+            website: 'fa-solid fa-globe',
+            linktree: 'fa-solid fa-tree',
+            generic: 'fa-solid fa-link'
+        };
+        let linksHtml = '';
+        if (band.links.none === 'недостигаат податоци' && band.contact === 'недостигаат податоци') {
+            linksHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
+        } else {
+            const sortedPlatforms = Object.keys(band.links).sort((a, b) => {
+                const indexA = linkPopularityOrder.indexOf(a);
+                const indexB = linkPopularityOrder.indexOf(b);
+                return indexA - indexB;
+            });
+            linksHtml = sortedPlatforms
+                .map(platform => {
+                    let url = band.links[platform];
+                    if (platform === 'spotify') {
+                        url = convertSpotifyUrlToAppUri(url);
+                    }
+                    const iconClass = linkIcons[platform] || 'fa-solid fa-link';
+                    return `<a href="${url}" target="_blank"><i class="${iconClass}"></i></a>`;
+                })
+                .join('');
+            if (band.contact !== 'недостигаат податоци') {
+                linksHtml += `<a href="mailto:${band.contact}" class="contact-link"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            let cityHtml = band.city === 'недостигаат податоци'
-                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
-                : band.city.split(',').map(c => c.trim()).map(c => `<span class="city-item" data-filter="city" data-value="${c}" style="background: ${generateCityColor(c)}">${c}</span>`).join('');
-            let genreHtml = band.genre === 'недостигаат податоци'
-                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
-                : band.genre.split(',').map(g => g.trim()).map(g => `<span class="genre-item" data-filter="genre" data-value="${g}">${g}</span>`).join('');
-            let soundsLikeHtml = band.soundsLike === 'недостигаат податоци'
-                ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
-                : band.soundsLike.split(',').map(s => s.trim()).map(s => `<span class="sounds-like-item" data-filter="sounds-like" data-value="${s}">${s}</span>`).join('');
-            let nameHtml = band.name;
-            if (band.label && band.label !== 'недостигаат податоци') {
-                nameHtml += ` <span class="band-label" data-filter="label" data-value="${band.label}">${band.label}</span>`;
-            }
-            const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
-            bandRow.innerHTML = `
-                <td data-label="Слика" class="band-image image-column">${document.body.classList.contains('compact') ? '' : `<img src="${band.image}" alt="${band.name}">`}</td>
-                <td data-label="Име" class="name">${nameHtml}</td>
-                <td data-label="Град">${cityHtml}</td>
-                <td data-label="Жанр">${genreHtml}</td>
-                <td data-label="Звучи като">${soundsLikeHtml}</td>
-                <td data-label="Линкови" class="links">${linksHtml}</td>
-                <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">
-                    <span class="status-content" data-status-text="${band.isActive}">${band.isActive}</span>
-                </td>
-                <td data-label="Акции" class="action-buttons edit-hidden">
-                    <button class="action-btn edit-btn" data-index="${originalIndex}"><i class="fas fa-edit"></i></button>
-                    <button class="action-btn delete-btn" onclick="window.deleteBand(${originalIndex})"><i class="fas fa-trash"></i></button>
-                </td>
-            `;
-            const statusSpan = bandRow.querySelector('.status-content');
-            statusSpan.addEventListener('mouseover', (e) => {
-                const tooltip = document.createElement('div');
-                tooltip.className = 'status-tooltip';
-                tooltip.textContent = band.isActive;
-                document.body.appendChild(tooltip);
+        }
+        let cityHtml = band.city === 'недостигаат податоци'
+            ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
+            : band.city.split(',').map(c => c.trim()).map(c => `<span class="city-item" data-filter="city" data-value="${c}" style="background: ${generateCityColor(c)}">${c}</span>`).join('');
+        let genreHtml = band.genre === 'недостигаат податоци'
+            ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
+            : band.genre.split(',').map(g => g.trim()).map(g => `<span class="genre-item" data-filter="genre" data-value="${g}">${g}</span>`).join('');
+        let soundsLikeHtml = band.soundsLike === 'недостигаат податоци'
+            ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
+            : band.soundsLike.split(',').map(s => s.trim()).map(s => `<span class="sounds-like-item" data-filter="sounds-like" data-value="${s}">${s}</span>`).join('');
+        let nameHtml = band.name;
+        if (band.label && band.label !== 'недостигаат податоци') {
+            const isSingleChar = band.label.length === 1;
+            nameHtml += ` <span class="band-label ${isSingleChar ? 'single-char' : ''}" data-filter="label" data-value="${band.label}">${band.label}</span>`;
+        }
+        const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
+        bandRow.innerHTML = `
+            <td data-label="Слика" class="band-image image-column">${document.body.classList.contains('compact') ? '' : `<img src="${band.image}" alt="${band.name}">`}</td>
+            <td data-label="Име" class="name">${nameHtml}</td>
+            <td data-label="Град">${cityHtml}</td>
+            <td data-label="Жанр">${genreHtml}</td>
+            <td data-label="Звучи като">${soundsLikeHtml}</td>
+            <td data-label="Линкови" class="links">${linksHtml}</td>
+            <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">
+                <span class="status-content" data-status-text="${band.isActive}">${band.isActive}</span>
+            </td>
+            <td data-label="Акции" class="action-buttons edit-hidden">
+                <button class="action-btn edit-btn" data-index="${originalIndex}"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" onclick="window.deleteBand(${originalIndex})"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        const statusSpan = bandRow.querySelector('.status-content');
+        statusSpan.addEventListener('mouseover', (e) => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'status-tooltip';
+            tooltip.textContent = band.isActive;
+            document.body.appendChild(tooltip);
+            const offsetX = 10;
+            const offsetY = 10;
+            tooltip.style.left = `${e.pageX + offsetX}px`;
+            tooltip.style.top = `${e.pageY + offsetY}px`;
+            statusSpan._tooltip = tooltip;
+        });
+        statusSpan.addEventListener('mousemove', (e) => {
+            const tooltip = statusSpan._tooltip;
+            if (tooltip) {
                 const offsetX = 10;
                 const offsetY = 10;
                 tooltip.style.left = `${e.pageX + offsetX}px`;
                 tooltip.style.top = `${e.pageY + offsetY}px`;
-                statusSpan._tooltip = tooltip;
-            });
-            statusSpan.addEventListener('mousemove', (e) => {
-                const tooltip = statusSpan._tooltip;
-                if (tooltip) {
-                    const offsetX = 10;
-                    const offsetY = 10;
-                    tooltip.style.left = `${e.pageX + offsetX}px`;
-                    tooltip.style.top = `${e.pageY + offsetY}px`;
-                }
-            });
-            statusSpan.addEventListener('mouseout', () => {
-                const tooltip = statusSpan._tooltip;
-                if (tooltip) {
-                    tooltip.remove();
-                    statusSpan._tooltip = null;
-                }
-            });
-            bandRow.querySelectorAll('.city-item, .genre-item, .sounds-like-item, .band-label').forEach(item => {
-                item.addEventListener('click', () => {
-                    console.log('Filter item clicked:', item.getAttribute('data-filter'), item.getAttribute('data-value'));
-                    const filterType = item.getAttribute('data-filter');
-                    const filterValue = item.getAttribute('data-value');
-                    if (filterType === 'city') {
-                        $('#filter-city').val(filterValue).trigger('change');
-                    } else if (filterType === 'genre') {
-                        $('#filter-genre').val(filterValue).trigger('change');
-                    } else if (filterType === 'sounds-like') {
-                        $('#filter-sounds-like').val(filterValue).trigger('change');
-                    } else if (filterType === 'label') {
-                        $('#filter-label').val(filterValue).trigger('change');
-                    }
-                    document.querySelector('.controls').style.display = 'flex';
-                });
-            });
-            const editBtn = bandRow.querySelector('.edit-btn');
-            editBtn.addEventListener('click', () => {
-                const idx = parseInt(editBtn.dataset.index);
-                console.log(`Edit button clicked for band at original index ${idx}`);
-                if (typeof window.openModal === 'function') {
-                    window.openModal('edit', bandsData[idx], idx);
-                } else {
-                    console.error('window.openModal is not defined');
-                    alert('Грешка: функцијата за уредување не е достапна.');
-                }
-            });
-            bandTableBody.appendChild(bandRow);
+            }
         });
-    }
+        statusSpan.addEventListener('mouseout', () => {
+            const tooltip = statusSpan._tooltip;
+            if (tooltip) {
+                tooltip.remove();
+                statusSpan._tooltip = null;
+            }
+        });
+        bandRow.querySelectorAll('.city-item, .genre-item, .sounds-like-item, .band-label').forEach(item => {
+            item.addEventListener('click', () => {
+                console.log('Filter item clicked:', item.getAttribute('data-filter'), item.getAttribute('data-value'));
+                const filterType = item.getAttribute('data-filter');
+                const filterValue = item.getAttribute('data-value');
+                if (filterType === 'city') {
+                    $('#filter-city').val(filterValue).trigger('change');
+                } else if (filterType === 'genre') {
+                    $('#filter-genre').val(filterValue).trigger('change');
+                } else if (filterType === 'sounds-like') {
+                    $('#filter-sounds-like').val(filterValue).trigger('change');
+                } else if (filterType === 'label') {
+                    $('#filter-label').val(filterValue).trigger('change');
+                }
+                document.querySelector('.controls').style.display = 'flex';
+            });
+        });
+        const editBtn = bandRow.querySelector('.edit-btn');
+        editBtn.addEventListener('click', () => {
+            const idx = parseInt(editBtn.dataset.index);
+            console.log(`Edit button clicked for band at original index ${idx}`);
+            if (typeof window.openModal === 'function') {
+                window.openModal('edit', bandsData[idx], idx);
+            } else {
+                console.error('window.openModal is not defined');
+                alert('Грешка: функцијата за уредување не е достапна.');
+            }
+        });
+        bandTableBody.appendChild(bandRow);
+    });
+}
 
     loadBandsData();
 });
