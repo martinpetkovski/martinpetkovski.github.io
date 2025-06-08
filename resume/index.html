@@ -5,109 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
-    <title>Resume - Martin Petkovski</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Curriculum Vitae - Martin Petkovski</title>
     <style>
         body {
-            font-family: Montserrat, Arial, sans-serif;
+            font-family: 'Source Serif 4', Georgia, serif;
             line-height: 1.6;
             margin: 0 auto;
-            max-width: 720px;
-            padding: 20px;
-            text-align: justify;
+            max-width: 600px;
+            padding: 20px 15px;
+            color: #1a1a1a;
+            background-color: #fff;
         }
-        .descSection:not(:last-child) {
-            font-weight: bold;
-            border-left: 2px #900 solid;
-            margin-right: 20px;
-            padding-left: 10px; 
-            font-size: 16px;
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d1d5db;
         }
-        .item:after {
-            content: ', ';
+        .descSection {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            margin: 6px 8px 6px 0;
+            background-color: #f8fafc;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
-        .item:last-child:after {
-            content: '';
-            color: #000;
+        .descSection a {
+            color: #002b5b;
+            text-decoration: none;
         }
-        .job{
-            margin: 20px 0px;
+        .descSection a:hover {
+            text-decoration: underline;
+        }
+        .skill-box, .interest-box, .language-box {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            margin: 6px 8px 6px 0;
+            background-color: #f8fafc;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .skill-box a, .interest-box a, .language-box a {
+            color: #002b5b;
+            text-decoration: none;
+        }
+        .skill-box a:hover, .interest-box a:hover, .language-box a:hover {
+            text-decoration: underline;
+        }
+        .job {
+            margin: 20px 0;
         }
         .jobTitle {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            color: #000;
-            text-align: left;
         }
-        .company, .company a:link, .company a:visited {
-            font-size: 18px;
-            font-weight: bold;
+        .company, .company a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #002b5b;
+            text-decoration: none;
+        }
+        .company a:hover {
+            text-decoration: underline;
         }
         .timespan {
-            font-size: 14px;
+            font-size: 12px;
             font-style: italic;
+            color: #4b5563;
+            margin-bottom: 6px;
         }
         .jobDescription {
-            font-size: 14px;
-            margin-left: 30px;
-            margin-top: 10px;
+            font-size: 12px;
+            margin: 6px 0 0 12px;
+            color: #1a1a1a;
         }
         .jobSubtitle {
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+            color: #1a1a1a;
+        }
+        .jobSubtitle span {
+            font-weight: 400;
+            color: #4b5563;
         }
         .subJob {
-            margin-top: 10px;
+            margin-top: 12px;
         }
         .subJobDescription {
-            margin-left: 20px;
-        }
-        .interest {
-            font-size: 14px;
-            font-weight: bold;
-            color: #000;
-            display: inline-flexbox;
-            margin: -6px 0px; 
-            padding: 5px 0px; 
-        }
-        .interest::before{
-            content: '• ';
-            color: #900;
+            margin-left: 12px;
+            font-size: 12px;
+            color: #1a1a1a;
         }
         h1 {
-            font-size: 60px;
-            border: none !important;
-            margin-bottom: 0;
-            font-weight: 800;
-        }
-        h2 {
-            font-size: 20px;
-        }
-        h1, h2, h3 {
-            margin-top: 40px;
-            border-bottom: 2px solid #000;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 6px;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
         }
-
-        a:link, a:visited {
-            color: #003688;
-            text-decoration: none;
-            transition: 0.2s;
+        h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 1px solid #002b5b;
+            padding-bottom: 3px;
+            margin: 25px 0 12px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
-
+        a {
+            color: #002b5b;
+            text-decoration: none;
+        }
         a:hover {
-            background-color: #003688;
-            color: #FFF !important;
-            padding: 0px 20px;
-            transition: 0.2s;
+            text-decoration: underline;
+            color: #001a3d;
+        }
+        section {
+            padding: 12px 0;
+        }
+        .education-details {
+            font-size: 12px;
+            margin: 6px 0 0 12px;
+            color: #1a1a1a;
+        }
+        .personal-project {
+            margin: 20px 0;
+        }
+        @media print {
+            body {
+                padding: 8px;
+            }
+            section {
+                padding: 0;
+            }
+            .descSection, .skill-box, .interest-box, .language-box {
+                background-color: transparent;
+                border: 1px solid #999;
+            }
+            header {
+                border-bottom: 1px solid #999;
+            }
+        }
+        @media (max-width: 550px) {
+            body {
+                padding: 12px 8px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 14px;
+            }
+            .jobTitle {
+                font-size: 14px;
+            }
+            .descSection, .skill-box, .interest-box, .language-box {
+                font-size: 11px;
+                padding: 3px 6px;
+                margin: 4px 6px 4px 0;
+            }
+            .company, .jobSubtitle {
+                font-size: 12px;
+            }
+            .timespan, .jobDescription, .subJobDescription, .education-details {
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>MARTIN PETKOVSKI</h1>
-        <div id="info" ><span class="descSection">Republic of Macedonia</span> <span class="descSection"><a href="tel:+38978306501">+389 78 306 501</a></span> <span class="descSection"><a href="mailto:martin@najjak.com">martin@najjak.com</a></span></p>
+        <h1>Martin Petkovski</h1>
+        <div id="info">
+            <span class="descSection">Macedonia</span>
+            <span class="descSection"><a href="tel:+38978306501">+389 78 306 501</a></span>
+            <span class="descSection"><a href="mailto:martin@najjak.com">martin@najjak.com</a></span>
+        </div>
     </header>
 
     <section>
@@ -118,74 +204,114 @@
     <section>
         <h2>Skills</h2>
         <div>
-            <div><strong>Programming languages:</strong> <span class="item">C++</span> <span class="item">C#</span> <span class="item">C</span> <span class="item">JavaScript</span> <span class="item">Java</span> <span class="item">PHP</span> <span class="item">various scripting languages</span></div> 
-            <div><strong>Technologies:</strong> <span class="item">Win32</span> <span class="item">Unreal Engine Blueprints</span> <span class="item">Dear ImGui</span> <span class="item">Qt</span> <span class="item">.NET</span> <span class="item">WPF</span> <span class="item">FMOD</span> <span class="item">Wwise</span> <span class="item">JUCE</span> <span class="item">HLSL</span> <span class="item">SQL</span> <span class="item">Firebase</span> <span class="item">MongoDB</span> <span class="item">Perforce</span> <span class="item">GIT</span> <span class="item">SVN</span> <span class="item">gtest</span></div>
-            <div><strong>Game Engines:</strong> <span class="item">Unreal Engine</span> <span class="item">CryEngine</span> <span class="item">Unity</span> <span class="item">Game Maker</span> <span class="item">various propriatery engines</span></div>
-            <div><strong>Software:</strong> <span class="item">Unreal Engine Editor</span> <span class="item">Visual Studio</span> <span class="item">FMOD Studio</span> <span class="item">FL Studio</span> <span class="item">P4V</span> <span class="item">Photoshop</span> <span class="item">Sentry</span></div>
+            <div><strong>Programming Languages:</strong>
+                <span class="skill-box">C++</span>
+                <span class="skill-box">C#</span>
+                <span class="skill-box">C</span>
+                <span class="skill-box">JavaScript</span>
+                <span class="skill-box">Java</span>
+                <span class="skill-box">PHP</span>
+                <span class="skill-box">various scripting languages</span>
+            </div>
+            <div><strong>Technologies:</strong>
+                <span class="skill-box"><a href="https://learn.microsoft.com/en-us/windows/win32/api">Win32</a></span>
+                <span class="skill-box"><a href="https://docs.unrealengine.com/5.4/en-US/blueprints-visual-scripting-in-unreal-engine">Unreal Engine Blueprints</a></span>
+                <span class="skill-box"><a href="https://github.com/ocornut/imgui">Dear ImGui</a></span>
+                <span Bitmap Font Generator class="skill-box"><a href="https://www.qt.io">Qt</a></span>
+                <span class="skill-box"><a href="https://dotnet.microsoft.com">.NET</a></span>
+                <span class="skill-box"><a href="https://learn.microsoft.com/en-us/dotnet/desktop/wpf">WPF</a></span>
+                <span class="skill-box"><a href="https://www.fmod.com">FMOD</a></span>
+                <span class="skill-box"><a href="https://www.audiokinetic.com/products/wwise">Wwise</a></span>
+                <span class="skill-box"><a href="https://juce.com">JUCE</a></span>
+                <span class="skill-box"><a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-1-features">HLSL</a></span>
+                <span class="skill-box">SQL</span>
+                <span class="skill-box"><a href="https://firebase.google.com">Firebase</a></span>
+                <span class="skill-box"><a href="https://www.mongodb.com">MongoDB</a></span>
+                <span class="skill-box"><a href="https://www.perforce.com">Perforce</a></span>
+                <span class="skill-box"><a href="https://git-scm.com">GIT</a></span>
+                <span class="skill-box"><a href="https://subversion.apache.org">SVN</a></span>
+                <span class="skill-box"><a href="https://github.com/google/googletest">gtest</a></span>
+            </div>
+            <div><strong>Game Engines:</strong>
+                <span class="skill-box"><a href="https://www.unrealengine.com">Unreal Engine</a></span>
+                <span class="skill-box"><a href="https://www.cryengine.com">CryEngine</a></span>
+                <span class="skill-box"><a href="https://unity.com">Unity</a></span>
+                <span class="skill-box"><a href="https://www.yoyogames.com/gamemaker">Game Maker</a></span>
+                <span class="skill-box">various proprietary engines</span>
+            </div>
+            <div><strong>Software:</strong>
+                <span class="skill-box"><a href="https://www.unrealengine.com">Unreal Engine Editor</a></span>
+                <span class="skill-box"><a href="https://visualstudio.microsoft.com">Visual Studio</a></span>
+                <span class="skill-box"><a href="https://www.fmod.com">FMOD Studio</a></span>
+                <span class="skill-box"><a href="https://www.image-line.com/flstudio">FL Studio</a></span>
+                <span class="skill-box"><a href="https://www.perforce.com/products/helix-core">P4V</a></span>
+                <span class="skill-box"><a href="https://www.adobe.com/products/photoshop.html">Photoshop</a></span>
+                <span class="skill-box"><a href="https://sentry.io">Sentry</a></span>
+            </div>
         </div>
     </section>
 
     <section>
         <h2>Experience</h2>
         <div class="job">
-            <div class="jobTitle">Senior Programmer</div> 
-            <div class="company"><a href="https://kamaikamai.com/">KAMAi MEDIA</a></div>
+            <div class="jobTitle">Senior Programmer</div>
+            <div class="company"><a href="https://kamaikamai.com/">KAMAi MEDIA, Macedonia</a></div>
             <div class="timespan">2017 - present</div>
             <div class="jobDescription">
                 <div class="subJob">
-                    <div class="jobSubtitle">Internship</div>
+                    <div class="jobSubtitle">Internship <span>(KAMAi MEDIA)</span></div>
                     <div class="timespan">2015</div>
                     <div class="subJobDescription">
-                        Gained experience in working with DirectX on a custom engine. Developed and implemented DirectX-based classes for managing 3D billboards and 2D sprites and modified the renderer loop to support them. Published Episode 01 of the video game Sonder on Steam.
+                        Gained experience in working with DirectX on a custom engine. Developed and implemented DirectX-based classes for managing 3D billboards and 2D sprites and modified the renderer loop to support them. Published Episode 01 of the video game <a href="https://store.steampowered.com/app/1772160">Sonder</a> on Steam.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.crytek.com/">Crytek</a></div>
+                    <div class="jobSubtitle"><a href="https://www.crytek.com/">Crytek</a> <span>External Partnership (Germany)</span></div>
                     <div class="timespan">2017 - 2018</div>
                     <div class="subJobDescription">
-                        Collaborated closely with Crytek Frankfurt to develop game-balancing tools tailored for Hunt: Showdown using CryEngine and VBA. Implemnted a CryEngine extention which automatically parses and imports game design data from Excel files.</div>
+                        Collaborated closely with Crytek to develop game-balancing tools tailored for <a href="https://www.huntshowdown.com">Hunt: Showdown</a> using CryEngine and VBA. Implemented a CryEngine extension which automatically parses and imports game design data from Excel files.
+                    </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.youtube.com/@akstekistanbul9371/videos">Astek</a></div>
+                    <div class="jobSubtitle"><a href="https://www.youtube.com/@akstekistanbul9371/videos">Astek</a> <span>Project (Turkey)</span></div>
                     <div class="timespan">2018 - 2019</div>
                     <div class="subJobDescription">
-                        Engaged in close collaboration with Astek in Istanbul for the development of the Oculus Rift mining simulation game, Black Diamond VR, utilizing CryEngine. Contributed comprehensively to the immersive VR experience, including resolving low-level rendering issues, developing a virtual assistant, and designing gameplay procedures.
+                        Engaged in close collaboration with Astek for the development of the Oculus Rift mining simulation game, <a href="https://store.steampowered.com/app/1046930">Black Diamond VR</a>, utilizing CryEngine. Contributed comprehensively to the immersive VR experience, including resolving low-level rendering issues, developing a virtual assistant, and designing gameplay procedures.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://airportbriefing.aero/">Airport Briefing</a></div>
+                    <div class="jobSubtitle"><a href="https://airportbriefing.aero/">Airport Briefing</a> <span>Project (Macedonia)</span></div>
                     <div class="timespan">2019 - 2020</div>
                     <div class="subJobDescription">
-                        Worked on developing a functional demo and editing tools for the Airport Briefing software in Unity. 
+                        Worked on developing a functional demo and editing tools for the Airport Briefing software in <a href="https://unity.com">Unity</a>.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.starstable.com/">Star Stable Entertainment</a></div>
+                    <div class="jobSubtitle"><a href="https://www.starstable.com/">Star Stable Entertainment</a> <span>External Partnership (Sweden)</span></div>
                     <div class="timespan">2020 - 2022</div>
                     <div class="subJobDescription">
-                        Technical assistance on developing core systems on the in-house engine of the company Star Stable Entertainment based in Sweden. Worked on creating tools for the custom animation system, developing a custom tools for the build versioning system in Qt, optimization of the version control system in the propriatery engine, etc. 
+                        Technical assistance on developing core systems on the in-house engine of Star Stable Entertainment. Worked on creating tools for the custom animation system, developing a custom tools for the build versioning system in <a href="https://www.qt.io">Qt</a>, optimization of the version control system in the proprietary engine, etc.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.intetic.com/">Intetic</a></div>
+                    <div class="jobSubtitle"><a href="https://www.intetic.com/">Intetic</a> <span>Project (Macedonia)</span></div>
                     <div class="timespan">2021 - 2023</div>
                     <div class="subJobDescription">
-                        Assistance on developing the sound on the game The Strange Story of Brian Fisher: Chapter 2, both on the engineering side and on the creative side.
+                        Assistance on developing the sound on the game <a href="https://store.steampowered.com/app/1590930">The Strange Story of Brian Fisher: Chapter 2</a>, both on the engineering side and on the creative side.
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.angelicthegame.com/">Metaverse Game Studios</a></div>
+                    <div class="jobSubtitle"><a href="https://www.angelicthegame.com/">Metaverse Game Studios</a> <span>External Partnership (USA)</span></div>
                     <div class="timespan">2022 - present</div>
                     <div class="subJobDescription">
-                        Worked on Angelic: The Chaos Theatre. Developed core gameplay systems including heroes, abilities and damage mechanics. Enhanced multiplayer functionality by developing key components of the multiplayer loop. Engineered an automated build pipeline for efficient distribution of game builds.
-                        Created foundational elements of the main menu, ensuring user-friendly navigation. Maintained game compatibility with the latest Unreal Engine updates and integrated third-party plugins, resolving related issues.
+                        Worked on <a href="https://store.steampowered.com/app/1532560">Angelic: The Chaos Theatre</a>. Developed core gameplay systems including heroes, abilities and damage mechanics. Enhanced multiplayer functionality by developing key components of the multiplayer loop. Engineered an automated build pipeline for efficient distribution of game builds. Created foundational elements of the main menu, ensuring user-friendly navigation. Maintained game compatibility with the latest <a href="https://www.unrealengine.com">Unreal Engine</a> updates and integrated third-party plugins, resolving related issues.
                     </div>
                 </div>
             </div>
         </div>
         <div class="job">
             <div class="jobTitle">Undergraduate Teaching Assistant</div>
-            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies - Bitola</a></div>
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies, Macedonia</a></div>
             <div class="timespan">2015 - 2017; 2021 - 2022</div>
             <div class="jobDescription">
                 Supported multiple undergraduate courses including Algorithms and Data Structures, and Advanced Databases and Data Warehouses. Facilitated learning by conducting lab sessions and providing one-on-one tutoring to enhance students' understanding of complex concepts. Developed supplementary materials and exercises to reinforce theoretical knowledge with practical applications, improving student engagement and comprehension.
@@ -197,32 +323,31 @@
         <h2>Education</h2>
         <div>
             <div class="jobTitle">MSc in Computer Science and Engineering</div>
-            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies - Bitola</a></div>  
-            <div class="timespan">2022</div>
-            <div class="jobDescription">Thesis: Analysis and application of state machines in the design of branching systems in video games</div>
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en">Faculty for Information and Communication Technologies, Macedonia</a></div>
+            <div class="timespan">November 2021 - October 2022</div>
+            <div class="education-details">GPA: 10.0/10.0<br>Thesis: Analysis and application of state machines in the design of branching systems in video games</div>
         </div>
     </section>
 
     <section>
         <h2>Personal Projects</h2>
-        <div>
+        <div class="personal-project">
             <div class="jobTitle">Nonlinear System Tools</div>
             <div class="timespan">proprietary game development tools</div>
             <div class="company"><a href="https://www.najjak.com/nst/">Website</a> • <a href="https://store.steampowered.com/app/1772160/NST/">Steam</a></div>
             <div class="jobDescription">
-                NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of Steamworks, Sentry, Catch Tests, Chromium Renderer and much more.
+                NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of <a href="https://www.steamworks.net">Steamworks</a>, <a href="https://sentry.io">Sentry</a>, <a href="https://github.com/catchorg/Catch2">Catch Tests</a>, Chromium Renderer and much more.
             </div>
         </div>
-        <div style="margin-top: 30px;">
+        <div class="personal-project">
             <div class="jobTitle">Checkmeg</div>
             <div class="timespan">open-source utility software</div>
-            <div class="timespan"></div>
             <div class="company"><a href="https://www.najjak.com/checkmeg/">Website</a> • <a href="https://github.com/martinpetkovski/Checkmeg">Source</a></div>
             <div class="jobDescription">
-                Checkmeg is a tool for Windows which allows you to bookmark and categorize any text, link or image that you can select or copy. Checkmeg is an unpubished personal project and a demo version is available only by request.
+                Checkmeg is a tool for Windows which allows you to bookmark and categorize any text, link or image that you can select or copy. Checkmeg is an unpublished personal project and a demo version is available only by request.
             </div>
         </div>
-        <div style="margin-top: 30px;">
+        <div class="personal-project">
             <div class="jobTitle">ImQuick</div>
             <div class="timespan">open-source extension</div>
             <div class="company"><a href="https://github.com/martinpetkovski/ImQuick">Source</a></div>
@@ -230,7 +355,7 @@
                 ImQuick is a single header ImGui extension library for clearer separation of interface from logic. ImQuick renders ImGui UI elements automagically based only on the variable type.
             </div>
         </div>
-        <div style="margin-top: 30px;">
+        <div class="personal-project">
             <div class="jobTitle">MKQR</div>
             <div class="timespan">open standard proposal (university collaboration)</div>
             <div class="company"><a href="https://github.com/fiktedu/mkqr">Source</a></div>
@@ -238,9 +363,9 @@
                 MKQR is a Macedonian open and independent standard proposal for encoding and data transmission for financial transactions. The types of transactions include payment of utilities, payment of invoices, donations, etc. It contains the full implementation of the standard in C++, along with bindings for other languages. It was developed as part of a university project.
             </div>
         </div>
-        <div style="margin-top: 30px;">
+        <div class="personal-project">
             <div class="jobTitle">qlib</div>
-            <div class="timespan">fork of <a href="https://qmk.fm/">qmk</a> </div>
+            <div class="timespan">fork of <a href="https://qmk.fm/">qmk</a></div>
             <div class="company"><a href="https://github.com/martinpetkovski/qlib">Source</a></div>
             <div class="jobDescription">
                 QLIB is a single-header library which contains common utility functions for custom keyboard firmwares. It's based on the QMK framework.
@@ -250,20 +375,20 @@
 
     <section>
         <h2>Interests</h2>
-        <div class="interest">Video Game Design</div>
-        <div class="interest">Linear Algebra</div>
-        <div class="interest">High-Concept Video Games</div>
-        <div class="interest">Interactive Narratives</div>
-        <div class="interest">Audio Design</div>
-        <div class="interest">Audio DSP</div>
-    </section> 
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Video_game_design">Video Game Design</a></div>
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Linear_algebra">Linear Algebra</a></div>
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/High-concept">High-Concept Video Games</a></div>
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Interactive_narrative">Interactive Narratives</a></div>
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Sound_design">Audio Design</a></div>
+        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Digital_signal_processing">Audio DSP</a></div>
+    </section>
 
     <section>
         <h2>Languages</h2>
-        <div class="interest">English - Excellent</div>
-        <div class="interest">Macedonian - Native</div>
-        <div class="interest">Serbian - Excellent</div>
-        <div class="interest">French - Essentials</div>
-    </section> 
+        <div class="language-box">English - Excellent</div>
+        <div class="language-box">Macedonian - Native</div>
+        <div class="language-box">Serbian - Excellent</div>
+        <div class="language-box">French - Essentials</div>
+    </section>
 </body>
 </html>
