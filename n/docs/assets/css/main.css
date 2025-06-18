@@ -89,10 +89,9 @@ h2 {
 }
 
 h3 {
-    font-size: 26px;
+    font-size: 20px;
     margin: 40px auto 0px;
-    color: rgba(0,0,0,.5);
-    font-weight: 400;
+    font-weight: 600;
 }
 
 h1 + h3 {
