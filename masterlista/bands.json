@@ -2324,12 +2324,16 @@
     },
     {
       "name": "Mамут",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
-      "soundsLike": "недостигаат податоци",
-      "isActive": "Непознато",
+      "city": "Битола, Охрид",
+      "genre": "Метал, Треш Метал, Грув Метал, Џангл Метал",
+      "soundsLike": "Pantera, Gojira",
+      "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/@mamutofficialmk",
+        "instagram": "https://www.instagram.com/officialmamut/",
+        "linktree": "https://linktr.ee/officialmamut",
+        "spotify": "https://open.spotify.com/artist/63CD7uVQiZ8jRc82Pl12aI",
+        "website": "https://mamutband.myshopify.com/"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
