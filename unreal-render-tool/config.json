@@ -1,0 +1,10 @@
+{
+  "unreal_engine_exe": "C:/Program Files/Epic Games/UE_5.4/Engine/Binaries/Win64/UnrealEditor-Cmd.exe",
+  "project_path": "D:/Unreal Projects/SequencerTestBed/SequencerTestBed.uproject",
+  "map_name": "/Game/TestRender/TestRender_Map",
+  "default_output_dir": "D:/Unreal Projects/SequencerTestBed/Saved/Screenshots",
+  "level_sequence": "/Game/Test_Render/Test_Render_SQ",
+  "movie_pipeline_config": "/Game/Cinematics/Presets/HighQualityPreset",
+  "log_enabled": true,
+  "no_texture_streaming": true
+}

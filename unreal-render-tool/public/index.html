@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMAi MEDIA - Unreal Engine Render</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+        <div class="flex items-center justify-center mb-6">
+            <h1 class="text-3xl font-bold text-blue-600">KAMAi MEDIA</h1>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Unreal Engine Render</h2>
+
+        <!-- Settings Section -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="text-lg font-semibold text-gray-800">Configuration Settings</h3>
+                <button id="edit-config-btn" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200">Edit Settings</button>
+            </div>
+            <div id="config-display" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Level Sequence Path</label>
+                    <p id="config-level_sequence" class="text-sm text-gray-600"></p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Movie Pipeline Config Path</label>
+                    <p id="config-movie_pipeline_config" class="text-sm text-gray-600"></p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Output Directory</label>
+                    <p id="config-default_output_dir" class="text-sm text-gray-600"></p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Map Name</label>
+                    <p id="config-map_name" class="text-sm text-gray-600"></p>
+                </div>
+            </div>
+            <form id="config-form" class="space-y-4 hidden">
+                <div>
+                    <label for="edit-level_sequence" class="block text-sm font-medium text-gray-700">Level Sequence Path</label>
+                    <input type="text" id="edit-level_sequence" name="level_sequence" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-movie_pipeline_config" class="block text-sm font-medium text-gray-700">Movie Pipeline Config Path</label>
+                    <input type="text" id="edit-movie_pipeline_config" name="movie_pipeline_config" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-default_output_dir" class="block text-sm font-medium text-gray-700">Output Directory</label>
+                    <input type="text" id="edit-default_output_dir" name="default_output_dir" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="edit-map_name" class="block text-sm font-medium text-gray-700">Map Name</label>
+                    <input type="text" id="edit-map_name" name="map_name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-200">Save Settings</button>
+                    <button type="button" id="cancel-config-btn" class="flex-1 bg-gray-300 text-gray-800 p-2 rounded-md hover:bg-gray-400 transition duration-200">Cancel</button>
+                </div>
+            </form>
+            <div id="config-response" class="mt-2 text-gray-600"></div>
+        </div>
+
+        <!-- Render Form -->
+        <form id="render-form" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="res_x" class="block text-sm font-medium text-gray-700">Resolution Width (px)</label>
+                    <input type="number" id="res_x" name="res_x" value="1920" min="1" max="7680" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="res_y" class="block text-sm font-medium text-gray-700">Resolution Height (px)</label>
+                    <input type="number" id="res_y" name="res_y" value="1080" min="1" max="4320" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="start_frame" class="block text-sm font-medium text-gray-700">Start Frame</label>
+                    <input type="number" id="start_frame" name="start_frame" value="1" min="0" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label for="end_frame" class="block text-sm font-medium text-gray-700">End Frame</label>
+                    <input type="number" id="end_frame" name="end_frame" value="100" min="1" class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-200">Start Render</button>
+        </form>
+        <div id="response" class="mt-4 text-gray-600"></div>
+        <div id="progress" class="mt-4 hidden">
+            <div class="text-sm font-medium text-gray-700 mb-2">Render Progress</div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0%"></div>
+            </div>
+            <div id="progress-text" class="text-sm text-gray-600 mt-1"></div>
+        </div>
+        <div id="gallery" class="mt-6 hidden">
+            <div class="text-sm font-medium text-gray-700 mb-2">Rendered Frames</div>
+            <div id="gallery-images" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
