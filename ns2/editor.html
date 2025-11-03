@@ -1,0 +1,2580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NS2 Editor</title>
+    <link rel="icon" type="image/png" href="icon_transparent.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"></script>
+    <script type="text/javascript" src="NSE2.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            font-size: 13px;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            background-color: #1E1E1E;
+            padding: 5px 10px;
+            border-bottom: 1px solid #2a2a2a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 10px;
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: #D4D4D4;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        button {
+            padding: 5px 8px;
+            background-color: #007bb0;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 12px;
+            margin: 0;
+        }
+
+            button:hover {
+                background-color: #005A9E;
+            }
+
+            button:active {
+                transform: scale(0.95);
+            }
+
+        input[type="file"] {
+            padding: 5px;
+            font-size: 12px;
+            background-color: #2D2D2D;
+            color: #D4D4D4;
+            border: 1px solid #3C3C3C;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+            input[type="file"]::file-selector-button {
+                background-color: #007bb0;
+                color: #FFFFFF;
+                border: none;
+                padding: 5px 8px;
+                border-radius: 3px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.2s;
+            }
+
+            input[type="file"]::file-selector-button:hover {
+                background-color: #005A9E;
+            }
+
+            input[type="file"]::file-selector-button:active {
+                transform: scale(0.95);
+            }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #2a2a2a;
+            overflow-x: auto;
+            white-space: nowrap;
+            position: sticky;
+            top: 40px;
+            z-index: 99;
+            background-color: #111;
+            background: linear-gradient(0deg,rgba(17, 17, 17, 1) 0%, rgba(30, 30, 30, 1) 100%);
+            padding: 0;
+            height: 30px;
+            box-sizing: border-box;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 80px;
+            padding: 0 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            color: #999;
+            transition: background 0.3s, color 0.3s, border-bottom 0.3s;
+            border-radius: 0;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: 0;
+        }
+
+            .tab-button.active {
+                color: #00AbC0;
+                border-bottom: 3px solid #00AbC0;
+                font-weight: bold;
+            }
+
+            .tab-button:hover {
+                color: #00AbC0;
+                background-color: #222;
+                background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            }
+
+        .tab-content {
+            flex-direction: column;
+            opacity: 0;
+            height: calc(100vh - 70px);
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative; /* Ensure relative positioning for z-index control */
+            z-index: 1;
+            display: none;
+            width: 100%;
+        }
+
+            .tab-content.active {
+                display: flex;
+                opacity: 1;
+                z-index: 10;
+            }
+
+        #tab-graph {
+            padding: 0; /* Remove padding for full expansion in graph tab */
+        }
+
+        #tab-graph .toolbar {
+            flex-shrink: 0;
+            margin-bottom: 0;
+            padding: 0 10px; /* Add padding only to toolbar */
+        }
+
+        #graph-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background-color: #252526;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+            transition: opacity 0.5s ease;
+            z-index: 1;
+            width: 100%;
+        }
+
+            #graph-container svg {
+                background-color: transparent;
+                border-radius: 5px;
+                pointer-events: auto; /* Only enable on active tab */
+                display: block;
+                width: 100%;
+                height: 100%;
+                max-width: none;
+                max-height: none;
+            }
+
+            #tab-graph:not(.active) #graph-container svg {
+                pointer-events: none !important;
+            }
+
+        .section {
+            margin-bottom: 8px;
+            background-color: #252526;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            padding: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        details {
+            margin-bottom: 8px;
+            transition: height 0.3s ease;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 500;
+            padding: 5px;
+            background-color: #2D2D2D;
+            border-radius: 3px;
+            color: #D4D4D4;
+            list-style: none;
+            transition: background-color 0.3s;
+        }
+
+            summary:hover {
+                background-color: #3C3C3C;
+            }
+
+        details[open] summary ~ * {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+            border-bottom: 1px solid #3C3C3C;
+            transition: background-color 0.3s;
+        }
+
+        th {
+            background-color: #2D2D2D;
+            font-weight: 500;
+            color: #D4D4D4;
+        }
+
+        tr:hover td {
+            background-color: #2D2D2D;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px;
+            border: 1px solid #3C3C3C;
+            border-radius: 3px;
+            font-size: 12px;
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            margin: 0;
+        }
+
+            input:focus, textarea:focus, select:focus {
+                border-color: #007bb0;
+                box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+            }
+
+        textarea {
+            min-height: 40px;
+            resize: vertical;
+        }
+
+        #story-description {
+            min-height: 100px;
+        }
+
+        #tab-text {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #1E1E1E;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 12px;
+            line-height: 1.2;
+            color: #D4D4D4;
+        }
+
+        #text-editor {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            height: calc(100% - 40px);
+            width: 100%;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+            .flex-row button {
+                flex-shrink: 0;
+            }
+
+        .grid-form {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+            .grid-form label {
+                text-align: right;
+                font-weight: 500;
+                color: #D4D4D4;
+            }
+
+        #state-search {
+            width: calc(100% - 60px);
+            background-color: #1E1E1E;
+            color: #D4D4D4;
+            border: 1px solid #3C3C3C;
+        }
+
+        .target-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .target-group input {
+                flex: 1;
+            }
+
+            .target-group button {
+                padding: 4px;
+                font-size: 11px;
+                background-color: #007bb0;
+                color: #FFFFFF;
+                border-radius: 50%;
+                min-width: 24px;
+                min-height: 24px;
+                justify-content: center;
+            }
+
+                .target-group button:hover {
+                    background-color: #005A9E;
+                }
+
+        .mermaid .node rect,
+        .mermaid .node polygon,
+        .mermaid .node circle {
+            fill: #1E90FF;
+            stroke: #0000FF;
+            stroke-width: 1px;
+            transition: fill 0.3s, stroke 0.3s;
+        }
+
+        .mermaid .node:hover rect,
+        .mermaid .node:hover polygon,
+        .mermaid .node:hover circle {
+            fill: #3C3C3C;
+            stroke: #007bb0;
+        }
+
+        .mermaid .node text {
+            fill: #FFFFFF;
+            font-size: 12px;
+        }
+
+        .mermaid .edgePath .path {
+            stroke: #FFFFFF;
+            stroke-width: 1.5px;
+            transition: stroke 0.3s;
+        }
+
+        .mermaid .edgeLabel {
+            background-color: #333333;
+            color: #FFFFFF;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 11px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            background: #2D2D2D;
+            border: 1px solid #3C3C3C;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow: auto;
+            z-index: 1;
+            width: 100%;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+
+            .dropdown-list.visible {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .dropdown-list li {
+                padding: 5px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+                .dropdown-list li:hover {
+                    background: #007bb0;
+                }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            margin: 0;
+            padding: 5px;
+            align-items: center;
+            margin-bottom: 8px;
+            background-color: #252526;
+            border-radius: 3px;
+        }
+
+            .toolbar .menu-button {
+                margin-left: auto;
+                cursor: pointer !important;
+            }
+
+        .play-content {
+            background-color: #252526;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+            .play-content h2 {
+                margin-top: 0;
+                font-size: 16px;
+                color: #007bb0;
+            }
+
+            .play-content h3 {
+                margin: 16px 0 8px 0;
+                font-size: 14px;
+                color: #007bb0;
+            }
+
+            .play-content p {
+                margin: 4px 0;
+                line-height: 1.4;
+            }
+
+        .error {
+            color: red;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 8px;
+            align-self: flex-start;
+            width: auto;
+        }
+
+            .choices button {
+                width: auto;
+                min-width: 200px;
+                justify-content: flex-start;
+                padding: 6px 10px;
+                font-size: 13px;
+                background-color: #2D2D2D;
+                transition: background-color 0.3s, transform 0.2s;
+                opacity: 0;
+                transform: translateX(-10px);
+                animation: slideIn 0.5s forwards;
+                text-align: left;
+            }
+
+                .choices button:hover {
+                    background-color: #3C3C3C;
+                    transform: translateX(2px);
+                }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .states-container {
+            display: flex;
+            height: 100%;
+        }
+
+        .states-list-panel {
+            width: 30%;
+            border-right: 1px solid #3C3C3C;
+            padding: 8px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+            .states-list-panel ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .states-list-panel ul li {
+                padding: 5px;
+                cursor: pointer;
+                border-bottom: 1px solid #3C3C3C;
+                transition: background-color 0.3s, transform 0.2s;
+            }
+
+                .states-list-panel ul li:hover {
+                    background-color: #2D2D2D;
+                    transform: translateX(6px);
+                }
+
+                .states-list-panel ul li.selected {
+                    background-color: #2D2D2D;
+                }
+
+        .state-details-panel {
+            width: 70%;
+            padding: 8px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .menubar {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .menu-button {
+            background-color: #252526;
+            padding: 4px 8px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+            .menu-button:hover {
+                background-color: #3C3C3C;
+            }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #252526;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 101;
+            left: auto;
+            right: 0;
+            top: 100%;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .menu-button:hover .dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+            .dropdown-menu button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                width: 150px;
+                text-align: left;
+                background: none;
+                border: none;
+                color: #D4D4D4;
+                padding: 8px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .dropdown-menu button:hover {
+                    background-color: #007bb0;
+                }
+
+        .states-list-panel .toolbar {
+            position: sticky;
+            top: 0;
+            background-color: #1E1E1E;
+            z-index: 1;
+            padding: 0;
+            display: flex;
+            gap: 8px;
+            margin: 0;
+        }
+
+        #tab-variables .toolbar {
+            position: sticky;
+            top: 0;
+            background-color: #1E1E1E;
+            z-index: 1;
+            padding: 0;
+            margin: 0;
+        }
+
+        #file-input, #load-save {
+            display: none;
+        }
+
+        #tab-graph .toolbar {
+            justify-content: flex-start;
+        }
+
+        #context-menu {
+            position: absolute;
+            background-color: #252526;
+            border: 1px solid #3C3C3C;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-height: 200px;
+            overflow: hidden;
+            display: none;
+            width: 300px;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+            #context-menu input {
+                flex: none;
+                position: relative;
+                z-index: 1;
+                background-color: #252526;
+                border-bottom: 1px solid #3C3C3C;
+                margin: 0;
+                width: calc(100% - 2px);
+            }
+
+            #context-menu ul {
+                flex: 1;
+                overflow-y: auto;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #context-menu li {
+                padding: 5px 10px;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                transition: background-color 0.3s;
+            }
+
+                #context-menu li:hover {
+                    background-color: #007bb0;
+                }
+
+                #context-menu li .token {
+                    flex: 1;
+                }
+
+                #context-menu li .example {
+                    color: #888;
+                    font-style: italic;
+                    margin-left: 10px;
+                }
+
+        .icon-button {
+            padding: 0;
+            font-size: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            margin: 0 4px;
+            display: inline-flex;
+        }
+
+        .force-visit {
+            background-color: red;
+        }
+
+            .force-visit:hover {
+                background-color: darkred;
+            }
+
+        #graph-context-menu {
+            position: absolute;
+            background-color: #252526;
+            border: 1px solid #3C3C3C;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+            #graph-context-menu ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #graph-context-menu li {
+                padding: 5px 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                #graph-context-menu li:hover {
+                    background-color: #007bb0;
+                }
+
+        #tab-text .toolbar {
+            margin: 0;
+            padding: 0;
+        }
+
+        .choices-section {
+            margin-top: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .choices-section .toolbar {
+                position: sticky;
+                top: 0;
+                background-color: #1E1E1E;
+                z-index: 1;
+                padding: 0;
+                margin: 0 0 4px 0;
+                flex-shrink: 0;
+            }
+
+            .choices-section .table-wrapper {
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            .choices-section table {
+                width: 100%;
+                display: table;
+            }
+
+        .play-choices-toolbar {
+            position: sticky;
+            top: 0;
+            background-color: #1E1E1E;
+            z-index: 1;
+            padding: 0;
+            margin: 0 0 4px 0;
+            flex-shrink: 0;
+        }
+
+        .play-vars-toolbar {
+            position: sticky;
+            top: 0;
+            background-color: #1E1E1E;
+            z-index: 1;
+            padding: 0;
+            margin: 0 0 4px 0;
+            flex-shrink: 0;
+        }
+
+        .state-name {
+            font-size: 10px;
+            color: #888;
+            font-style: italic;
+            margin-left: 8px;
+        }
+
+        .flag {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="icon_transparent.png" alt="Icon" style="height: 30px; width: auto;">
+        <h1 data-i18n="title">NS2 Editor</h1>
+        <div class="menubar">
+            <div class="menu-button">
+                <span data-i18n="file">File</span> <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu">
+                    <button onclick="newStory()"><i class="fas fa-file"></i> <span data-i18n="newStory">New Story</span></button>
+                    <button onclick="document.getElementById('file-input').click()"><i class="fas fa-folder-open"></i> <span data-i18n="loadStory">Load Story</span></button>
+                    <button onclick="saveFile()"><i class="fas fa-save"></i> <span data-i18n="saveStory">Save Story</span></button>
+                </div>
+            </div>
+            <div class="menu-button">
+                <span data-i18n="edit">Edit</span> <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu">
+                    <button onclick="openTab('variables'); addVariable()"><i class="fas fa-calculator"></i> <span data-i18n="addVariable">Add Variable</span></button>
+                    <button onclick="openTab('states'); addState()"><i class="fas fa-map"></i> <span data-i18n="addState">Add State</span></button>
+                </div>
+            </div>
+            <div class="menu-button">
+                <span data-i18n="play">Play</span> <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu">
+                    <button onclick="startPlayEngine()"><i class="fas fa-play"></i> <span data-i18n="startPlay">Start Play</span></button>
+                    <button onclick="restartStory()"><i class="fas fa-redo"></i> <span data-i18n="restart">Restart</span></button>
+                    <button onclick="document.getElementById('load-save').click()"><i class="fas fa-upload"></i> <span data-i18n="loadProgress">Load Progress</span></button>
+                    <button onclick="saveProgress()"><i class="fas fa-download"></i> <span data-i18n="saveProgress">Save Progress</span></button>
+                </div>
+            </div>
+            <div class="menu-button">
+                <span data-i18n="language">Language</span> <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu" id="language-dropdown">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+            <div class="menu-button">
+                <span data-i18n="help">Help</span> <i class="fas fa-caret-down"></i>
+                <div class="dropdown-menu">
+                    <button onclick="openHelp('guide')"><i class="fas fa-book"></i> <span data-i18n="guide">Guide...</span></button>
+                    <button onclick="openHelp('ai')"><i class="fas fa-robot"></i> <span data-i18n="ai">AI...</span></button>
+                    <button onclick="openHelp('about')"><i class="fas fa-info-circle"></i> <span data-i18n="about">About...</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" accept=".ns2" onchange="loadFile()">
+
+    <datalist id="state-list"></datalist>
+    <datalist id="token-list"></datalist>
+
+    <div id="editor">
+        <div class="tabs">
+            <button class="tab-button" data-i18n="text" onclick="openTab('text')">Text</button>
+            <button class="tab-button active" data-i18n="metadata" onclick="openTab('metadata')">Metadata</button>
+            <button class="tab-button" data-i18n="variables" onclick="openTab('variables')">Variables</button>
+            <button class="tab-button" onclick="openTab('states')" data-i18n="states">States</button>
+            <button class="tab-button" onclick="openTab('graph')" data-i18n="graph">Graph</button>
+            <button class="tab-button" onclick="openTab('play')" data-i18n="play">Play</button>
+        </div>
+
+        <div id="global-toolbar" class="toolbar" style="display: none; position: sticky; top: 70px; z-index: 98; background-color: #252526; padding: 5px 10px;"></div>
+
+        <div id="tab-text" class="tab-content">
+            <div id="text-editor"></div>
+        </div>
+
+        <div id="tab-metadata" class="tab-content active">
+            <div class="section">
+                <div class="grid-form">
+                    <label data-i18n="titleLabel:">Title:</label> <input type="text" id="story-title">
+                    <label data-i18n="desc:">Description:</label> <textarea id="story-description"></textarea>
+                    <label data-i18n="start:">Start:</label> <input id="start-state" list="state-list">
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-variables" class="tab-content">
+            <div class="section" style="flex: 1; overflow-y: auto;">
+                <div class="toolbar">
+                    <input type="text" id="var-search" data-i18n-placeholder="Search variables..." oninput="filterVariables()">
+                    <button class="icon-button" onclick="addVariable()" title="Add Variable"><i class="fas fa-plus"></i></button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-i18n="type">Type</th>
+                            <th data-i18n="name">Name</th>
+                            <th data-i18n="initial">Initial</th>
+                            <th data-i18n="constraint">Constraint</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="variables-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-states" class="tab-content">
+            <div class="states-container">
+                <div class="states-list-panel">
+                    <div class="toolbar">
+                        <input type="text" id="state-search" data-i18n-placeholder="Search states..." oninput="filterStates()">
+                        <button class="icon-button" onclick="addState()" title="Add State"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <ul id="states-list"></ul>
+                </div>
+                <div id="state-details" class="state-details-panel"></div>
+            </div>
+        </div>
+
+        <div id="tab-graph" class="tab-content">
+            <div id="graph-container"></div>
+        </div>
+
+        <div id="tab-play" class="tab-content">
+            <input type="file" id="load-save" accept=".save" onchange="loadProgress()">
+            <div class="play-content">
+                <h2 id="play-title"></h2>
+                <p id="play-desc"></p>
+                <p id="play-error" class="error"></p>
+                <p id="play-stats"></p>
+                <div class="play-choices-toolbar">
+                    <input type="text" id="choice-search-play" data-i18n-placeholder="Search choices..." oninput="filterPlayChoices()">
+                </div>
+                <div id="play-choices" class="choices"></div>
+                <h3 data-i18n="variables">Variables</h3>
+                <div class="play-vars-toolbar">
+                    <input type="text" id="play-var-search" data-i18n-placeholder="Search variables..." oninput="filterPlayVars()">
+                </div>
+                <div id="play-variables"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="context-menu">
+        <input type="text" id="context-search" placeholder="Search tokens..." oninput="filterContextMenu()">
+        <ul id="token-menu-list"></ul>
+    </div>
+
+    <div id="graph-context-menu">
+        <ul>
+            <li onclick="viewStateFromGraph()" data-i18n="View State">View State</li>
+        </ul>
+    </div>
+
+    <script>
+        let languages = {};
+        let currentLanguage = 'en';
+
+        async function loadLanguages() {
+            try {
+                const response = await fetch('languages.json');
+                languages = await response.json();
+                // Add missing keys
+                const missingKeys = ['file', 'edit', 'language'];
+                Object.keys(languages).forEach(lang => {
+                    missingKeys.forEach(key => {
+                        if (!languages[lang][key]) {
+                            languages[lang][key] = languages['en'][key] || key.charAt(0).toUpperCase() + key.slice(1);
+                        }
+                    });
+                });
+                populateLanguageMenu();
+                setLanguage(currentLanguage);
+            } catch (e) {
+                console.error('Failed to load languages.json', e);
+            }
+        }
+
+        function populateLanguageMenu() {
+            const langMenu = document.getElementById('language-dropdown');
+            langMenu.innerHTML = '';
+            const languageNames = {
+                'en': 'English',
+                'mk': 'Македонски',
+                'tr': 'Türkçe',
+                'ru': 'Русский',
+                'uk': 'Українська',
+                'de': 'Deutsch',
+                'fr': 'Français',
+                'es': 'Español',
+                'pt': 'Português',
+                'ar': 'العربية',
+                'ja': '日本語',
+                'zh': '中文'
+            };
+            const languageFlags = {
+                'en': '🇬🇧',
+                'mk': '🇲🇰',
+                'tr': '🇹🇷',
+                'ru': '🇷🇺',
+                'uk': '🇺🇦',
+                'de': '🇩🇪',
+                'fr': '🇫🇷',
+                'es': '🇪🇸',
+                'pt': '🇵🇹',
+                'ar': '🇸🇦',
+                'ja': '🇯🇵',
+                'zh': '🇨🇳'
+            };
+            Object.keys(languages).forEach(lang => {
+                const button = document.createElement('button');
+                button.onclick = () => setLanguage(lang);
+                button.innerHTML = `<span class="flag">${languageFlags[lang] || ''}</span> ${languageNames[lang] || lang.toUpperCase()}`;
+                langMenu.appendChild(button);
+            });
+        }
+
+        function setLanguage(lang) {
+            if (!languages[lang]) {
+                console.warn(`Language ${lang} not found, falling back to 'en'`);
+                lang = 'en';
+            }
+            currentLanguage = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = languages[lang][key] || key;
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = languages[lang][key] || key;
+            });
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                el.title = languages[lang][key] || key;
+            });
+        }
+
+        require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs' } });
+
+        let textEditor;
+
+        mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'dark',
+            flowchart: {
+                diagramPadding: 20,
+                nodeSpacing: 50,
+                rankSpacing: 240
+            }
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+
+        let Module;
+        let editorEngine;
+        let playEngine;
+        let currentGraphState = null;
+        let tokens = [];
+        let currentInput = null;
+        let graphSelectedState = null;
+        let stateTokens = [];
+        let variableTokens = [];
+        let functionTokens = ['set', 'reset', 'not', 'visited', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if'];
+        let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '='];
+        let constantTokens = ['true', 'false'];
+
+        const tokenExamples = {
+            'set': 'set(health, get(health) + 5)',
+            'reset': 'reset(state_name)',
+            'not': 'not(visited(state))',
+            'visited': 'visited(state_name)',
+            'get': 'get(variable_name)',
+            'dice': 'dice(1, 6)',
+            'min': 'min(5, get(value))',
+            'max': 'max(10, get(value))',
+            'abs': 'abs(-3.5)',
+            'sqrt': 'sqrt(16)',
+            'chance': 'chance(50)',
+            'if': 'if(visited(state), 1, 0)',
+            '+': 'get(a) + get(b)',
+            '-': 'get(a) - get(b)',
+            '*': 'get(a) * get(b)',
+            '/': 'get(a) / get(b)',
+            'or': 'visited(a) or visited(b)',
+            'and': 'visited(a) and visited(b)',
+            '>=': 'get(a) >= 10',
+            '<=': 'get(a) <= 5',
+            '!=': 'get(a) != get(b)',
+            '==': 'get(a) == get(b)',
+            '>': 'get(a) > 0',
+            '<': 'get(a) < 100',
+            '=': 'get(a) = 42',
+            'true': '',
+            'false': ''
+        };
+
+        let graphPanZoom;
+        let currentTab = 'metadata';
+        let selectedState = null;
+
+        function saveToLocalStorage() {
+            const ptr = Module._GenerateNS2Content(editorEngine);
+            const content = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            localStorage.setItem('ns2_content', content);
+        }
+
+        function newStory() {
+            if (confirm('Create a new blank story? Unsaved changes will be lost.')) {
+                Module._DestroyEngine(editorEngine);
+                editorEngine = Module._CreateEngine();
+                localStorage.removeItem('ns2_content');
+                renderEditor();
+            }
+        }
+
+        async function openTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(tab => tab.classList.remove('active'));
+            const button = Array.from(document.querySelectorAll('.tab-button')).find(b => b.textContent.toLowerCase() === tabName.toLowerCase());
+            if (button) button.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            const tabContent = document.getElementById(`tab-${tabName}`);
+            tabContent.classList.add('active');
+
+            currentTab = tabName;
+
+            updateGlobalToolbar(tabName);
+
+            // Clear graph container when switching away to prevent event bleed
+            if (tabName !== 'graph') {
+                const graphTab = document.getElementById('tab-graph');
+                const graphContainer = document.getElementById('graph-container');
+                if (graphContainer) {
+                    graphContainer.innerHTML = '';
+                }
+                if (graphPanZoom) {
+                    try {
+                        graphPanZoom.dispose();  // Clean up panzoom instance
+                    } catch (e) {
+                    }
+                    graphPanZoom = null;
+                }
+            } else {
+                renderGraph();
+            }
+            if (tabName === 'text') {
+                renderStoryView();
+            }
+            if (tabName === 'states') {
+                renderStates();
+            }
+            if (tabName === 'variables') {
+                renderVariables();
+            }
+            if (tabName === 'metadata') {
+                populateStateDatalist();
+            }
+
+            if (tabName === 'play') {
+                // Always ensure play engine is ready
+                if (!playEngine) {
+                    await startPlayEngine();  // Auto-start if not running
+                } else {
+                    updatePlay();  // Refresh UI
+                }
+            }
+        }
+        
+        function loadFile() {
+            const file = document.getElementById('file-input').files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const content = e.target.result;
+                Module.FS.writeFile('/story.ns2', content);
+                const pathPtr = allocateUTF8('/story.ns2');
+                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+                Module._free(pathPtr);
+                if (!loaded) {
+                    alert('Failed to load story');
+                    return;
+                }
+                saveToLocalStorage();
+                renderEditor();
+            };
+            reader.readAsText(file);
+        }
+
+        function allocateUTF8(str) {
+            const size = Module.lengthBytesUTF8(str) + 1;
+            const ptr = Module._malloc(size);
+            Module.stringToUTF8(str, ptr, size);
+            return ptr;
+        }
+
+        function renderStoryView() {
+            const ptr = Module._GenerateNS2Content(editorEngine);
+            const content = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            const container = document.getElementById('text-editor');
+            if (!textEditor) {
+                require(['vs/editor/editor.main'], function () {
+                    monaco.languages.register({ id: 'ns2' });
+                    const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
+                    const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
+                    const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
+                    const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
+                    const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
+                    const bracketRegex = /[\(\)\[\]]/g;
+
+                    monaco.languages.setMonarchTokensProvider('ns2', {
+                        tokenizer: {
+                            root: [
+                                [/^\s*\[metadata\]\s*$/, 'keyword'],
+                                [/^\s*\[variables\]\s*$/, 'keyword'],
+                                [/^\s*\[states\]\s*$/, 'keyword'],
+                                [/^\s*\[state\s+.*\]\s*$/, 'keyword'],
+                                [/^\s*title:\s*/, 'keyword', '@string'],
+                                [/^\s*description:\s*/, 'keyword', '@string'],
+                                [/^\s*context:\s*/, 'keyword', '@expression'],
+                                [/^\s*script:\s*/, 'keyword', '@expression'],
+                                [/^\s*requires:\s*/, 'keyword', '@expression'],
+                                [/^\s*actions:\s*/, 'keyword', '@expression'],
+                                [/^\s*properties:\s*/, 'keyword', '@expression'],
+                                [/^\s*start:\s*/, 'keyword', '@state'],
+                                [/^\s*choice:\s*/, 'keyword', '@choice'],
+                                [/^\s*type:\s*/, 'keyword', '@type'],
+                                [/^\s*name:\s*/, 'keyword', '@variable'],
+                                [/^\s*initial:\s*/, 'keyword', '@expression'],
+                                [/^\s*constraint:\s*/, 'keyword', '@expression'],
+                            ],
+                            string: [
+                                [/.*$/, 'string']
+                            ],
+                            expression: [
+                                [functionRegex, 'function'],
+                                [operatorRegex, 'operator'],
+                                [constantRegex, 'constant'],
+                                [variableRegex, 'variable'],
+                                [stateRegex, 'state'],
+                                [bracketRegex, 'bracket'],
+                                [/.+/, 'expression']
+                            ],
+                            state: [
+                                [/.*$/, 'state']
+                            ],
+                            choice: [
+                                [/.*$/, 'choice']
+                            ],
+                            type: [
+                                [/.*$/, 'type']
+                            ],
+                            variable: [
+                                [/.*$/, 'variable']
+                            ]
+                        }
+                    });
+                    monaco.editor.defineTheme('ns2-dark', {
+                        base: 'vs-dark',
+                        inherit: true,
+                        rules: [
+                            { token: 'keyword', foreground: '569cd6' },
+                            { token: 'string', foreground: 'ce9178' },
+                            { token: 'expression', foreground: '9cdcfe' },
+                            { token: 'state', foreground: 'c586c0' },
+                            { token: 'choice', foreground: 'dcdcaa' },
+                            { token: 'type', foreground: '4ec9b0' },
+                            { token: 'variable', foreground: '9cdcfe' },
+                            { token: 'function', foreground: 'dcdcaa' },
+                            { token: 'operator', foreground: 'd4d4d4' },
+                            { token: 'constant', foreground: '569cd6' },
+                            { token: 'bracket', foreground: 'ffd700' }
+                        ],
+                        colors: {
+                            'editor.background': '#1e1e1e'
+                        }
+                    });
+                    textEditor = monaco.editor.create(container, {
+                        value: content,
+                        language: 'ns2',
+                        theme: 'ns2-dark',
+                        automaticLayout: true,
+                        wordWrap: 'on'
+                    });
+                });
+            } else {
+                textEditor.setValue(content);
+            }
+        }
+
+        function applyTextChanges() {
+            const text = textEditor.getValue();
+            Module.FS.writeFile('/temp.ns2', text);
+            const pathPtr = allocateUTF8('/temp.ns2');
+            const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+            Module._free(pathPtr);
+            if (loaded) {
+                saveToLocalStorage();
+                renderEditor();
+            } else {
+                alert('Invalid NS2 format');
+            }
+        }
+
+        function populateStateDatalist() {
+            const stateList = document.getElementById('state-list');
+            stateList.innerHTML = '';
+            const count = Module._GetStateCount(editorEngine);
+            for (let i = 0; i < count; i++) {
+                const namePtr = Module._GetStateName(editorEngine, i);
+                const name = Module.UTF8ToString(namePtr);
+                Module._FreeString(namePtr);
+                const option = document.createElement('option');
+                option.value = name;
+                stateList.appendChild(option);
+            }
+        }
+
+        function populateTokenDatalist() {
+            const tokenList = document.getElementById('token-list');
+            tokenList.innerHTML = '';
+            tokens.forEach(token => {
+                const option = document.createElement('option');
+                option.value = token;
+                tokenList.appendChild(option);
+            });
+        }
+
+        function renderVariables() {
+            const list = document.getElementById('variables-list');
+            list.innerHTML = '';
+            const count = Module._GetVariableCount(editorEngine);
+            for (let i = 0; i < count; i++) {
+                const namePtr = Module._GetVariableName(editorEngine, i);
+                const name = Module.UTF8ToString(namePtr);
+                Module._FreeString(namePtr);
+                const namePtr2 = allocateUTF8(name);
+                const typePtr = Module._GetVariableType(editorEngine, namePtr2);
+                const type = Module.UTF8ToString(typePtr);
+                Module._FreeString(typePtr);
+                const initialPtr = Module._GetVariableInitial(editorEngine, namePtr2);
+                const initial = Module.UTF8ToString(initialPtr);
+                Module._FreeString(initialPtr);
+                const constraintPtr = Module._GetVariableConstraint(editorEngine, namePtr2);
+                const constraint = Module.UTF8ToString(constraintPtr);
+                Module._FreeString(constraintPtr);
+                Module._free(namePtr2);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><select onchange="updateVariable('${escapeHtml(name)}', 'type', this.value)"><option value="string">string</option><option value="int">int</option><option value="float">float</option><option value="bool">bool</option></select></td>
+                    <td><input value="${escapeHtml(name)}" onchange="updateVariableName('${escapeHtml(name)}', this.value)"></td>
+                    <td><input value="${escapeHtml(initial)}" onchange="updateVariable('${escapeHtml(name)}', 'initial', this.value)"></td>
+                    <td><input value="${escapeHtml(constraint)}" onchange="updateVariable('${escapeHtml(name)}', 'constraint', this.value)"></td>
+                    <td><button class="icon-button" onclick="removeVariable('${escapeHtml(name)}')" title="Delete Variable"><i class="fas fa-trash"></i></button></td>
+                `;
+                tr.querySelector('select').value = type || 'string';
+                list.appendChild(tr);
+            }
+            filterVariables();
+        }
+
+        function filterVariables() {
+            const searchInput = document.getElementById('var-search');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll('#variables-list tr');
+            rows.forEach(row => {
+                const nameCell = row.cells[1].querySelector('input').value.toLowerCase();
+                row.style.display = nameCell.includes(query) ? '' : 'none';
+            });
+        }
+
+        function addVariable() {
+            const name = prompt(languages[currentLanguage]['Variable name:'] || 'Variable name:');
+            if (!name) return;
+            const namePtr = allocateUTF8(name);
+            Module._AddVariable(editorEngine, allocateUTF8('string'), namePtr, allocateUTF8(''), allocateUTF8(''));
+            Module._free(namePtr);
+            renderVariables();
+            saveToLocalStorage();
+            updateTokens();
+            populateTokenDatalist();
+        }
+
+        function updateVariable(name, field, value) {
+            const namePtr = allocateUTF8(name);
+            const valuePtr = allocateUTF8(value);
+            if (field === 'type') {
+                Module._SetVariableType(editorEngine, namePtr, valuePtr);
+            } else if (field === 'initial') {
+                Module._SetVariableInitial(editorEngine, namePtr, valuePtr);
+            } else if (field === 'constraint') {
+                Module._SetVariableConstraint(editorEngine, namePtr, valuePtr);
+            }
+            Module._free(namePtr);
+            Module._free(valuePtr);
+            saveToLocalStorage();
+        }
+
+        function updateVariableName(oldName, newName) {
+            if (newName === oldName) return;
+            const oldPtr = allocateUTF8(oldName);
+            const newPtr = allocateUTF8(newName);
+            const typePtr = Module._GetVariableType(editorEngine, oldPtr);
+            const type = Module.UTF8ToString(typePtr);
+            Module._FreeString(typePtr);
+            const initialPtr = Module._GetVariableInitial(editorEngine, oldPtr);
+            const initial = Module.UTF8ToString(initialPtr);
+            Module._FreeString(initialPtr);
+            const constraintPtr = Module._GetVariableConstraint(editorEngine, oldPtr);
+            const constraint = Module.UTF8ToString(constraintPtr);
+            Module._FreeString(constraintPtr);
+            Module._AddVariable(editorEngine, allocateUTF8(type), newPtr, allocateUTF8(initial), allocateUTF8(constraint));
+            Module._RemoveVariable(editorEngine, oldPtr);
+            Module._free(oldPtr);
+            Module._free(newPtr);
+            renderVariables();
+            saveToLocalStorage();
+            updateTokens();
+            populateTokenDatalist();
+        }
+
+        function removeVariable(name) {
+            const namePtr = allocateUTF8(name);
+            Module._RemoveVariable(editorEngine, namePtr);
+            Module._free(namePtr);
+            renderVariables();
+            saveToLocalStorage();
+            updateTokens();
+            populateTokenDatalist();
+        }
+
+        function renderStates() {
+            const list = document.getElementById('states-list');
+            list.innerHTML = '';
+            const count = Module._GetStateCount(editorEngine);
+            for (let i = 0; i < count; i++) {
+                const namePtr = Module._GetStateName(editorEngine, i);
+                const name = Module.UTF8ToString(namePtr);
+                Module._FreeString(namePtr);
+                const titlePtr = Module._GetStateTitle(editorEngine, allocateUTF8(name));
+                const title = Module.UTF8ToString(titlePtr);
+                Module._FreeString(titlePtr);
+                const li = document.createElement('li');
+                li.innerHTML = `${title} <span class="state-name">${name}</span>`;
+                li.dataset.name = name;
+                li.onclick = () => selectState(name);
+                list.appendChild(li);
+            }
+            if (count > 0) {
+                const firstNamePtr = Module._GetStateName(editorEngine, 0);
+                const firstName = Module.UTF8ToString(firstNamePtr);
+                Module._FreeString(firstNamePtr);
+                selectState(firstName);
+            }
+            populateStateDatalist();
+            updateTokens();
+            populateTokenDatalist();
+        }
+
+        function selectState(name) {
+            selectedState = name;
+            document.querySelectorAll('#states-list li').forEach(li => li.classList.remove('selected'));
+            const selectedLi = Array.from(document.querySelectorAll('#states-list li')).find(li => li.dataset.name === name);
+            if (selectedLi) selectedLi.classList.add('selected');
+            const panel = document.getElementById('state-details');
+            panel.innerHTML = '';
+            if (!name) return;
+            const namePtr = allocateUTF8(name);
+            const titlePtr = Module._GetStateTitle(editorEngine, namePtr);
+            const title = Module.UTF8ToString(titlePtr);
+            Module._FreeString(titlePtr);
+            const descPtr = Module._GetStateDescription(editorEngine, namePtr);
+            const desc = Module.UTF8ToString(descPtr);
+            Module._FreeString(descPtr);
+            const contextPtr = Module._GetStateContext(editorEngine, namePtr);
+            const context = Module.UTF8ToString(contextPtr);
+            Module._FreeString(contextPtr);
+            const scriptPtr = Module._GetStateScript(editorEngine, namePtr);
+            const script = Module.UTF8ToString(scriptPtr);
+            Module._FreeString(scriptPtr);
+            let requires = [];
+            const reqCount = Module._GetStateRequiresCount(editorEngine, namePtr);
+            for (let i = 0; i < reqCount; i++) {
+                const reqPtr = Module._GetStateRequire(editorEngine, namePtr, i);
+                requires.push(Module.UTF8ToString(reqPtr));
+                Module._FreeString(reqPtr);
+            }
+            let actions = [];
+            const actCount = Module._GetStateActionsCount(editorEngine, namePtr);
+            for (let i = 0; i < actCount; i++) {
+                const actPtr = Module._GetStateAction(editorEngine, namePtr, i);
+                actions.push(Module.UTF8ToString(actPtr));
+                Module._FreeString(actPtr);
+            }
+            let properties = [];
+            const propCount = Module._GetStatePropertiesCount(editorEngine, namePtr);
+            for (let i = 0; i < propCount; i++) {
+                const propPtr = Module._GetStateProperty(editorEngine, namePtr, i);
+                properties.push(Module.UTF8ToString(propPtr));
+                Module._FreeString(propPtr);
+            }
+            Module._free(namePtr);
+            const content = document.createElement('div');
+            content.innerHTML = `
+                <div class="grid-form">
+                    <label data-i18n="name:">Name:</label> <input value="${escapeHtml(name)}" onchange="updateStateName('${escapeHtml(name)}', this.value)">
+                    <label data-i18n="titleLabel:">Title:</label> <input value="${escapeHtml(title)}" onchange="updateState('${escapeHtml(name)}', 'title', this.value); saveToLocalStorage()">
+                    <label data-i18n="desc:">Desc:</label> <textarea onchange="updateState('${escapeHtml(name)}', 'description', this.value); saveToLocalStorage()">${escapeHtml(desc)}</textarea>
+                    <label data-i18n="context:">Context:</label> <input list="token-list" value="${escapeHtml(context)}" onchange="updateState('${escapeHtml(name)}', 'context', this.value); saveToLocalStorage()">
+                    <label data-i18n="script:">Script:</label> <input list="token-list" value="${escapeHtml(script)}" onchange="updateState('${escapeHtml(name)}', 'script', this.value); saveToLocalStorage()">
+                    <label data-i18n="requires:">Requires:</label> <input list="token-list" value="${escapeHtml(requires.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'requires', this.value); saveToLocalStorage()">
+                    <label data-i18n="actions:">Actions:</label> <input list="token-list" value="${escapeHtml(actions.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'actions', this.value); saveToLocalStorage()">
+                    <label data-i18n="props:">Props:</label> <input list="token-list" value="${escapeHtml(properties.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'properties', this.value); saveToLocalStorage()">
+                </div>
+                <div class="choices-section">
+                    <div class="toolbar">
+                        <input type="text" id="choice-search" data-i18n-placeholder="Search choices..." oninput="filterChoices('${escapeHtml(name)}')">
+                        <button class="icon-button" onclick="addChoice('${escapeHtml(name)}')" title="Add Choice"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th data-i18n="text">Text</th><th data-i18n="cond">Cond</th><th data-i18n="target">Target</th><th data-i18n="effect">Effect</th><th data-i18n="hide">Hide</th><th></th></tr></thead>
+                            <tbody id="choices-${escapeHtml(name)}"></tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            panel.appendChild(content);
+            setLanguage(currentLanguage);  // to translate the new labels
+            renderChoices(name);
+            filterChoices(name);
+        }
+
+        function filterChoices(stateName) {
+            const query = document.getElementById(`choice-search`).value.toLowerCase();
+            const rows = document.querySelectorAll(`#choices-${stateName} tr`);
+            rows.forEach(row => {
+                const text = row.cells[0].querySelector('input').value.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function setAsStart(name) {
+            const namePtr = allocateUTF8(name);
+            Module._SetStartState(editorEngine, namePtr);
+            Module._free(namePtr);
+            saveToLocalStorage();
+            document.getElementById('start-state').value = name;
+        }
+
+        function jumpToState(name) {
+            if (!playEngine) {
+                alert('Start the play session first');
+                return;
+            }
+            const namePtr = allocateUTF8(name);
+            const canVisit = Module._CanVisitState(playEngine, namePtr);
+            if (canVisit) {
+                Module._SetCurrentState(playEngine, namePtr);
+                updatePlay();
+                openTab('play');
+            } else {
+                alert('Cannot visit this state from the current point');
+            }
+            Module._free(namePtr);
+        }
+
+        function forceJumpToState(name) {
+            if (!playEngine) {
+                alert('Start the play session first');
+                return;
+            }
+            const namePtr = allocateUTF8(name);
+            Module._SetCurrentState(playEngine, namePtr);
+            updatePlay();
+            openTab('play');
+            Module._free(namePtr);
+        }
+
+        function renderChoices(name) {
+            const list = document.getElementById(`choices-${escapeHtml(name)}`);
+            list.innerHTML = '';
+            const namePtr = allocateUTF8(name);
+            const count = Module._GetStateChoicesCount(editorEngine, namePtr);
+            for (let i = 0; i < count; i++) {
+                const textPtr = Module._GetStateChoiceText(editorEngine, namePtr, i);
+                const text = Module.UTF8ToString(textPtr);
+                Module._FreeString(textPtr);
+                const condPtr = Module._GetStateChoiceCondition(editorEngine, namePtr, i);
+                const cond = Module.UTF8ToString(condPtr);
+                Module._FreeString(condPtr);
+                const targetPtr = Module._GetStateChoiceTarget(editorEngine, namePtr, i);
+                const target = Module.UTF8ToString(targetPtr);
+                Module._FreeString(targetPtr);
+                const effectPtr = Module._GetStateChoiceEffect(editorEngine, namePtr, i);
+                const effect = Module.UTF8ToString(effectPtr);
+                Module._FreeString(effectPtr);
+                const hide = Module._GetStateChoiceHide(editorEngine, namePtr, i);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input list="token-list" value="${escapeHtml(text)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)"></td>
+                    <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
+                    <td class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button" onclick="scopeToState(this.previousSibling.value)" title="Go to State"><i class="fas fa-arrow-right"></i></button></td>
+                    <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
+                    <td><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
+                    <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
+                `;
+                list.appendChild(tr);
+            }
+            Module._free(namePtr);
+        }
+
+        function filterStates() {
+            const searchInput = document.getElementById('state-search');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase();
+            document.querySelectorAll('#states-list li').forEach(li => {
+                li.style.display = li.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function scopeToState(name) {
+            openTab('states');
+            selectState(name);
+        }
+
+        function viewInGraph(name) {
+            currentGraphState = name;
+            openTab('graph');
+        }
+
+        function addState() {
+            const name = prompt(languages[currentLanguage]['New state name:'] || 'New state name:');
+            if (name) {
+                Module._AddState(editorEngine, allocateUTF8(name));
+                renderStates();
+                selectState(name);
+                saveToLocalStorage();
+            }
+        }
+
+        function updateStateName(oldName, newName) {
+            if (newName === oldName || !newName) return;
+            const oldPtr = allocateUTF8(oldName);
+            const newPtr = allocateUTF8(newName);
+            Module._AddState(editorEngine, newPtr);
+            const titlePtr = Module._GetStateTitle(editorEngine, oldPtr);
+            Module._SetStateTitle(editorEngine, newPtr, titlePtr);
+            Module._FreeString(titlePtr);
+            const descPtr = Module._GetStateDescription(editorEngine, oldPtr);
+            Module._SetStateDescription(editorEngine, newPtr, descPtr);
+            Module._FreeString(descPtr);
+            const contextPtr = Module._GetStateContext(editorEngine, oldPtr);
+            Module._SetStateContext(editorEngine, newPtr, contextPtr);
+            Module._FreeString(contextPtr);
+            const scriptPtr = Module._GetStateScript(editorEngine, oldPtr);
+            Module._SetStateScript(editorEngine, newPtr, scriptPtr);
+            Module._FreeString(scriptPtr);
+            const reqCount = Module._GetStateRequiresCount(editorEngine, oldPtr);
+            for (let i = 0; i < reqCount; i++) {
+                const reqPtr = Module._GetStateRequire(editorEngine, oldPtr, i);
+                Module._AddStateRequire(editorEngine, newPtr, reqPtr);
+                Module._FreeString(reqPtr);
+            }
+            const actCount = Module._GetStateActionsCount(editorEngine, oldPtr);
+            for (let i = 0; i < actCount; i++) {
+                const actPtr = Module._GetStateAction(editorEngine, oldPtr, i);
+                Module._AddStateAction(editorEngine, newPtr, actPtr);
+                Module._FreeString(actPtr);
+            }
+            const propCount = Module._GetStatePropertiesCount(editorEngine, oldPtr);
+            for (let i = 0; i < propCount; i++) {
+                const propPtr = Module._GetStateProperty(editorEngine, oldPtr, i);
+                Module._AddStateProperty(editorEngine, newPtr, propPtr);
+                Module._FreeString(propPtr);
+            }
+            const choiceCount = Module._GetStateChoicesCount(editorEngine, oldPtr);
+            for (let i = 0; i < choiceCount; i++) {
+                Module._AddStateChoice(editorEngine, newPtr);
+                const textPtr = Module._GetStateChoiceText(editorEngine, oldPtr, i);
+                Module._SetStateChoiceText(editorEngine, newPtr, i, textPtr);
+                Module._FreeString(textPtr);
+                const condPtr = Module._GetStateChoiceCondition(editorEngine, oldPtr, i);
+                Module._SetStateChoiceCondition(editorEngine, newPtr, i, condPtr);
+                Module._FreeString(condPtr);
+                const targetPtr = Module._GetStateChoiceTarget(editorEngine, oldPtr, i);
+                Module._SetStateChoiceTarget(editorEngine, newPtr, i, targetPtr);
+                Module._FreeString(targetPtr);
+                const effectPtr = Module._GetStateChoiceEffect(editorEngine, oldPtr, i);
+                Module._SetStateChoiceEffect(editorEngine, newPtr, i, effectPtr);
+                Module._FreeString(effectPtr);
+                const hide = Module._GetStateChoiceHide(editorEngine, oldPtr, i);
+                Module._SetStateChoiceHide(editorEngine, newPtr, i, hide);
+            }
+            Module._RemoveState(editorEngine, oldPtr);
+            Module._free(oldPtr);
+            Module._free(newPtr);
+            renderStates();
+            selectState(newName);
+            saveToLocalStorage();
+        }
+
+        function updateState(name, field, value) {
+            const namePtr = allocateUTF8(name);
+            const valuePtr = allocateUTF8(value);
+            if (field === 'title') {
+                Module._SetStateTitle(editorEngine, namePtr, valuePtr);
+            } else if (field === 'description') {
+                Module._SetStateDescription(editorEngine, namePtr, valuePtr);
+            } else if (field === 'context') {
+                Module._SetStateContext(editorEngine, namePtr, valuePtr);
+            } else if (field === 'script') {
+                Module._SetStateScript(editorEngine, namePtr, valuePtr);
+            }
+            Module._free(namePtr);
+            Module._free(valuePtr);
+            saveToLocalStorage();
+        }
+
+        function updateStateList(name, field, value) {
+            const namePtr = allocateUTF8(name);
+            // Clear existing
+            let count;
+            if (field === 'requires') {
+                count = Module._GetStateRequiresCount(editorEngine, namePtr);
+                for (let i = count - 1; i >= 0; i--) {
+                    Module._RemoveStateRequire(editorEngine, namePtr, i);
+                }
+            } else if (field === 'actions') {
+                count = Module._GetStateActionsCount(editorEngine, namePtr);
+                for (let i = count - 1; i >= 0; i--) {
+                    Module._RemoveStateAction(editorEngine, namePtr, i);
+                }
+            } else if (field === 'properties') {
+                count = Module._GetStatePropertiesCount(editorEngine, namePtr);
+                for (let i = count - 1; i >= 0; i--) {
+                    Module._RemoveStateProperty(editorEngine, namePtr, i);
+                }
+            }
+            // Add new
+            const items = value.split(';').map(s => s.trim()).filter(s => s);
+            items.forEach(item => {
+                const itemPtr = allocateUTF8(item);
+                if (field === 'requires') {
+                    Module._AddStateRequire(editorEngine, namePtr, itemPtr);
+                } else if (field === 'actions') {
+                    Module._AddStateAction(editorEngine, namePtr, itemPtr);
+                } else if (field === 'properties') {
+                    Module._AddStateProperty(editorEngine, namePtr, itemPtr);
+                }
+                Module._free(itemPtr);
+            });
+            Module._free(namePtr);
+            saveToLocalStorage();
+        }
+
+        function addChoice(name) {
+            Module._AddStateChoice(editorEngine, allocateUTF8(name));
+            renderChoices(name);
+            filterChoices(name);
+            saveToLocalStorage();
+        }
+
+        function updateChoice(name, i, field, value) {
+            const namePtr = allocateUTF8(name);
+            if (field === 'hide') {
+                Module._SetStateChoiceHide(editorEngine, namePtr, i, value);
+            } else {
+                const valuePtr = allocateUTF8(value);
+                if (field === 'text') {
+                    Module._SetStateChoiceText(editorEngine, namePtr, i, valuePtr);
+                } else if (field === 'cond') {
+                    Module._SetStateChoiceCondition(editorEngine, namePtr, i, valuePtr);
+                } else if (field === 'target') {
+                    Module._SetStateChoiceTarget(editorEngine, namePtr, i, valuePtr);
+                } else if (field === 'effect') {
+                    Module._SetStateChoiceEffect(editorEngine, namePtr, i, valuePtr);
+                }
+                Module._free(valuePtr);
+            }
+            Module._free(namePtr);
+            saveToLocalStorage();
+        }
+
+        function removeChoice(name, i) {
+            Module._RemoveStateChoice(editorEngine, allocateUTF8(name), i);
+            renderChoices(name);
+            filterChoices(name);
+            saveToLocalStorage();
+        }
+
+        function removeState(name) {
+            Module._RemoveState(editorEngine, allocateUTF8(name));
+            renderStates();
+            document.getElementById('state-details').innerHTML = '';
+            saveToLocalStorage();
+        }
+
+        function saveFile() {
+            const ptr = Module._GenerateNS2Content(editorEngine);
+            const content = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'edited.ns2';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function generateNS2Content() {
+            const ptr = Module._GenerateNS2Content(editorEngine);
+            const content = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            return content;
+        }
+
+        async function initModule() {
+            if (!Module) {
+                if (typeof NSE2Module === 'undefined') {
+                    throw new Error('NSE2Module not defined. Please make sure NSE2.js is loaded and compiled with -s EXPORT_NAME="NSE2Module" -s MODULARIZE=1');
+                }
+                Module = await NSE2Module();
+            }
+        }
+
+        async function startPlayEngine() {
+            try {
+                await initModule();
+                if (playEngine) {
+                    Module._DestroyEngine(playEngine);
+                    playEngine = null;
+                }
+                playEngine = Module._CreateEngine();
+                const content = generateNS2Content();
+                const storyPath = '/story.ns2';
+                Module.FS.writeFile(storyPath, content);
+                const pathPtr = allocateUTF8(storyPath);
+                const loaded = Module._LoadFromFile(playEngine, pathPtr);
+                Module._free(pathPtr);
+                if (!loaded) {
+                    document.getElementById('play-error').textContent = 'Failed to load story for play.';
+                    return;
+                }
+                Module._Start(playEngine);
+                updatePlay();  // Now safe to update UI
+            } catch (e) {
+                document.getElementById('play-error').textContent = 'Error: ' + e.message;
+            }
+        }
+
+        function restartStory() {
+            startPlayEngine();
+        }
+
+        function saveProgress() {
+            if (!playEngine) {
+                return;
+            }
+            const savePath = '/save.save';
+            const pathPtr = allocateUTF8(savePath);
+            Module._SaveProgress(playEngine, pathPtr);
+            Module._free(pathPtr);
+            const saveContent = Module.FS.readFile(savePath, { encoding: 'utf8' });
+            const blob = new Blob([saveContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'story.save';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadProgress() {
+            const file = document.getElementById('load-save').files[0];
+            if (!file || !playEngine) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                const saveContent = e.target.result;
+                const savePath = '/save.save';
+                Module.FS.writeFile(savePath, saveContent);
+                const pathPtr = allocateUTF8(savePath);
+                Module._LoadProgress(playEngine, pathPtr);
+                Module._free(pathPtr);
+                updatePlay();
+            };
+            reader.readAsText(file);
+        }
+
+        function updatePlay() {
+            if (!playEngine) {
+                document.getElementById('play-title').textContent = '';
+                document.getElementById('play-desc').innerHTML = '<em>Click "Start Play" to begin the story.</em>';
+                document.getElementById('play-error').textContent = '';
+                document.getElementById('play-stats').textContent = '';
+                document.getElementById('play-choices').innerHTML = '';
+                document.getElementById('play-variables').innerHTML = '';
+                return;
+            }
+
+            const stateCount = Module._GetStateCount(playEngine);
+            if (stateCount === 0) {
+                document.getElementById('play-title').textContent = 'No Story Loaded';
+                document.getElementById('play-desc').innerHTML = '<em>Create states and set a start state in the Metadata tab.</em>';
+                document.getElementById('play-error').textContent = '';
+                document.getElementById('play-stats').textContent = '';
+                document.getElementById('play-choices').innerHTML = '';
+                document.getElementById('play-variables').innerHTML = '';
+                return;
+            }
+
+            const titlePtr = Module._GetCurrentTitle(playEngine);
+            const title = Module.UTF8ToString(titlePtr);
+            document.getElementById('play-title').textContent = title;
+            Module._FreeString(titlePtr);
+
+            const descPtr = Module._GetCurrentDescription(playEngine);
+            const desc = Module.UTF8ToString(descPtr);
+            document.getElementById('play-desc').textContent = desc;
+            Module._FreeString(descPtr);
+
+            const statsPtr = Module._GetPlayerStats(playEngine);
+            const stats = Module.UTF8ToString(statsPtr);
+            document.getElementById('play-stats').textContent = stats;
+            Module._FreeString(statsPtr);
+
+            const errorPtr = Module._GetStoryLastError(playEngine);
+            const error = Module.UTF8ToString(errorPtr);
+            document.getElementById('play-error').textContent = error;
+            Module._FreeString(errorPtr);
+
+            // Update variables
+            const variablesDiv = document.getElementById('play-variables');
+            variablesDiv.innerHTML = '';
+            const table = document.createElement('table');
+            table.innerHTML = '<thead><tr><th>Variable</th><th>Value</th></tr></thead><tbody></tbody>';
+            const tbody = table.querySelector('tbody');
+            const count = Module._GetVariableCount(playEngine);
+            for (let i = 0; i < count; i++) {
+                const namePtr = Module._GetVariableName(playEngine, i);
+                const name = Module.UTF8ToString(namePtr);
+                Module._FreeString(namePtr);
+                const namePtrVal = allocateUTF8(name);
+                const valuePtr = Module._GetVariableValue(playEngine, namePtrVal);
+                const value = Module.UTF8ToString(valuePtr);
+                Module._FreeString(valuePtr);
+                Module._free(namePtrVal);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${escapeHtml(name)}</td><td><input value="${escapeHtml(value)}" onchange="setVariableValue('${escapeHtml(name)}', this.value)"></td>`;
+                tbody.appendChild(tr);
+            }
+            variablesDiv.appendChild(table);
+            filterPlayVars();
+
+            const pActionsPtr = Module._malloc(4);
+            const countActions = Module._GetAvailableActions(playEngine, pActionsPtr);
+            const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
+            const choicesDiv = document.getElementById('play-choices');
+            choicesDiv.innerHTML = '';
+            for (let i = 0; i < countActions; i++) {
+                const strPtr = Module.getValue(actionsArrayPtr + i * 4, 'i32');
+                const text = Module.UTF8ToString(strPtr);
+                const btn = document.createElement('button');
+                btn.textContent = text;
+                btn.onclick = () => {
+                    Module._Advance(playEngine, i);
+                    updatePlay();
+                };
+                choicesDiv.appendChild(btn);
+            }
+            Module._FreeStrings(actionsArrayPtr, countActions);
+            Module._free(pActionsPtr);
+            filterPlayChoices();
+
+            const isEnded = Module._IsEnded(playEngine);
+            if (isEnded) {
+                document.getElementById('play-desc').textContent += '\n\nThe story has ended.';
+            }
+        }
+
+        function filterPlayChoices() {
+            const searchInput = document.getElementById('choice-search-play');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase();
+            const buttons = document.querySelectorAll('#play-choices button');
+            buttons.forEach(btn => {
+                btn.style.display = btn.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+            });
+        }
+
+        function filterPlayVars() {
+            const searchInput = document.getElementById('play-var-search');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll('#play-variables tbody tr');
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                row.style.display = name.includes(query) ? '' : 'none';
+            });
+        }
+
+        function setVariableValue(name, value) {
+            const namePtr = allocateUTF8(name);
+            const valuePtr = allocateUTF8(value);
+            Module._SetVariableValue(playEngine, namePtr, valuePtr);
+            Module._free(namePtr);
+            Module._free(valuePtr);
+            updatePlay();
+        }
+
+        function buildGraph() {
+            let adj = {};
+            let radj = {};
+            const count = Module._GetStateCount(editorEngine);
+            for (let si = 0; si < count; si++) {
+                const fromPtr = Module._GetStateName(editorEngine, si);
+                const from = Module.UTF8ToString(fromPtr);
+                Module._FreeString(fromPtr);
+                adj[from] = [];
+                radj[from] = [];
+                const fromPtr2 = allocateUTF8(from);
+                const choiceCount = Module._GetStateChoicesCount(editorEngine, fromPtr2);
+                for (let ci = 0; ci < choiceCount; ci++) {
+                    const targetPtr = Module._GetStateChoiceTarget(editorEngine, fromPtr2, ci);
+                    const target = Module.UTF8ToString(targetPtr);
+                    Module._FreeString(targetPtr);
+                    const labelPtr = Module._GetStateChoiceText(editorEngine, fromPtr2, ci);
+                    const label = Module.UTF8ToString(labelPtr);
+                    Module._FreeString(labelPtr);
+                    if (target) {
+                        adj[from].push({ to: target, label: label || '' });
+                        if (!radj[target]) radj[target] = [];
+                        radj[target].push({ from: from, label: label || '' });
+                    }
+                }
+                Module._free(fromPtr2);
+            }
+            return { adj, radj };
+        }
+
+        function getNeighbors(start, depth) {
+            const { adj, radj } = buildGraph();
+            let nodes = new Set();
+            let queue = [{ node: start, d: 0 }];
+            nodes.add(start);
+            while (queue.length) {
+                let { node, d } = queue.shift();
+                if (d >= depth) continue;
+                (adj[node] || []).forEach(({ to }) => {
+                    if (!nodes.has(to)) {
+                        nodes.add(to);
+                        queue.push({ node: to, d: d + 1 });
+                    }
+                });
+                (radj[node] || []).forEach(({ from }) => {
+                    if (!nodes.has(from)) {
+                        nodes.add(from);
+                        queue.push({ node: from, d: d + 1 });
+                    }
+                });
+            }
+            return nodes;
+        }
+
+        function generateGraphDef(start = null) {
+            const { adj, radj } = buildGraph();
+            let graphDef = 'flowchart TD\n';
+            let nodes = start ? getNeighbors(start, 2) : new Set(Object.keys(adj));
+            if (nodes.size === 0) {
+                graphDef += '    A["No states defined"]';
+                return graphDef;
+            }
+            for (let name of nodes) {
+                const namePtr = allocateUTF8(name);
+                const sTitlePtr = Module._GetStateTitle(editorEngine, namePtr);
+                const sTitle = Module.UTF8ToString(sTitlePtr);
+                Module._FreeString(sTitlePtr);
+                Module._free(namePtr);
+                graphDef += `    ${name}["${sTitle || name}"]\n`;
+            }
+            for (let from of nodes) {
+                (adj[from] || []).forEach(({ to, label }) => {
+                    if (nodes.has(to)) {
+                        graphDef += `    ${from} -->|${label}| ${to}\n`;
+                    }
+                });
+            }
+            if (start) {
+                graphDef += `    style ${start} fill:#007bb0,stroke:#007bb0,stroke-width:2px\n`;
+            }
+            return graphDef;
+        }
+
+        function renderMermaid(graphDef) {
+            const container = document.getElementById('graph-container');
+            container.innerHTML = '';
+            mermaid.render('graphDiv', graphDef).then(({ svg }) => {
+                container.innerHTML = svg;
+                const svgElement = container.querySelector('svg');
+                if (svgElement) {
+                    svgElement.removeAttribute('width');
+                    svgElement.removeAttribute('height');
+                    svgElement.style.width = '100%';
+                    svgElement.style.height = '100%';
+                    svgElement.style.maxWidth = 'none';
+                    const ns = 'http://www.w3.org/2000/svg';
+                    const contentG = svgElement.querySelector('g');
+                    graphPanZoom = panzoom(contentG, { 
+                        maxZoom: 5, 
+                        minZoom: 0.1, 
+                        bounds: false
+                    });
+                    const bbox = contentG.getBBox();
+                    const containerRect = container.getBoundingClientRect();
+                    const scale = Math.min(containerRect.width / bbox.width, containerRect.height / bbox.height) * 0.8;
+                    graphPanZoom.zoomAbs(0, 0, scale);
+                    const offsetX = (containerRect.width / 2) - (bbox.width * scale / 2) - (bbox.x * scale);
+                    const offsetY = (containerRect.height / 2) - (bbox.height * scale / 2) - (bbox.y * scale);
+                    graphPanZoom.moveTo(offsetX, offsetY);
+                    const nodes = svgElement.querySelectorAll('.node');
+                    nodes.forEach(node => {
+                        const labelElement = node.querySelector('text');
+                        if (labelElement) {
+                            const labelText = labelElement.textContent.trim();
+                            const namePtr = allocateUTF8(labelText);
+                            const descPtr = Module._GetStateDescription(editorEngine, namePtr);
+                            const desc = Module.UTF8ToString(descPtr);
+                            Module._FreeString(descPtr);
+                            Module._free(namePtr);
+                            const title = document.createElementNS(ns, 'title');
+                            title.textContent = desc.slice(0, 200) || '';
+                            node.appendChild(title);
+
+                            node.addEventListener('contextmenu', (e) => {
+                                // Ensure only active when graph tab is visible
+                                if (document.getElementById('tab-graph').classList.contains('active')) {
+                                    e.preventDefault();
+                                    graphSelectedState = labelText;
+                                    showGraphContextMenu(e.pageX, e.pageY);
+                                }
+                            });
+                        }
+                    });
+                }
+            }).catch(e => {
+                const container = document.getElementById('graph-container');
+                container.innerHTML = '<div style="color: #D4D4D4; text-align: center; padding: 20px;">Error rendering graph: ' + e.message + '</div>';
+            });
+        }
+
+        function renderGraph() {
+            const count = Module._GetStateCount(editorEngine);
+            const graphDef = generateGraphDef(currentGraphState);
+            renderMermaid(graphDef);
+        }
+
+        function resetGraph() {
+            currentGraphState = null;
+            renderGraph();
+        }
+
+        function zoomIn() {
+            if (graphPanZoom) {
+                graphPanZoom.zoomIn(0.1);
+            }
+        }
+
+        function zoomOut() {
+            if (graphPanZoom) {
+                graphPanZoom.zoomOut(0.1);
+            }
+        }
+
+        function centerGraph() {
+            if (graphPanZoom) {
+                const container = document.getElementById('graph-container');
+                const svgElement = container.querySelector('svg');
+                if (svgElement) {
+                    const contentG = svgElement.querySelector('g');
+                    const bbox = contentG.getBBox();
+                    const containerRect = container.getBoundingClientRect();
+                    const scale = Math.min(containerRect.width / bbox.width, containerRect.height / bbox.height) * 0.8;
+                    graphPanZoom.zoomAbs(0, 0, scale);
+                    const offsetX = (containerRect.width / 2) - (bbox.width * scale / 2) - (bbox.x * scale);
+                    const offsetY = (containerRect.height / 2) - (bbox.height * scale / 2) - (bbox.y * scale);
+                    graphPanZoom.moveTo(offsetX, offsetY);
+                }
+            }
+        }
+
+        function setupContextMenu() {
+            // Global contextmenu handler with tab check
+            document.addEventListener('contextmenu', (e) => {
+                const activeTab = document.querySelector('.tab-content.active');
+                const target = e.target;
+                if (activeTab && activeTab.contains(target)) {
+                    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+                        e.preventDefault();
+                        currentInput = target;
+                        showContextMenu(e.pageX, e.pageY);
+                    }
+                } else if (target.closest('#graph-container') && document.getElementById('tab-graph').classList.contains('active')) {
+                    // Graph-specific only if active
+                    e.preventDefault();
+                }
+                // Otherwise, allow default inspect
+            }, true); // Use capture phase for higher priority
+            document.addEventListener('click', hideContextMenu);
+            document.addEventListener('click', hideGraphContextMenu);
+            document.getElementById('context-menu').addEventListener('click', (e) => e.stopPropagation());
+            document.getElementById('context-search').addEventListener('focus', (e) => e.stopPropagation());
+            document.getElementById('context-search').addEventListener('mousedown', (e) => e.stopPropagation());
+            document.getElementById('context-search').addEventListener('click', (e) => e.stopPropagation());
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key.toLowerCase()) {
+                        case 's':
+                            e.preventDefault();
+                            saveFile();
+                            break;
+                        case 'o':
+                            e.preventDefault();
+                            document.getElementById('file-input').click();
+                            break;
+                        case 'n':
+                            e.preventDefault();
+                            newStory();
+                            break;
+                    }
+
+                    if (e.key >= '1' && e.key <= '6') {
+                        e.preventDefault();
+                        const tabs = ['text', 'metadata', 'variables', 'states', 'graph', 'play'];
+                        openTab(tabs[parseInt(e.key) - 1]);
+                    }
+                }
+                const activeTab = document.querySelector('.tab-button.active').textContent.toLowerCase();
+                if (activeTab === 'graph') {
+                    switch (e.key) {
+                        case '=':
+                        case '+':
+                            e.preventDefault();
+                            zoomIn();
+                            break;
+                        case '-':
+                            e.preventDefault();
+                            zoomOut();
+                            break;
+                        case '0':
+                            e.preventDefault();
+                            centerGraph();
+                            break;
+                        case 'ArrowLeft':
+                            e.preventDefault();
+                            if (graphPanZoom) graphPanZoom.moveBy(-20, 0);
+                            break;
+                        case 'ArrowRight':
+                            e.preventDefault();
+                            if (graphPanZoom) graphPanZoom.moveBy(20, 0);
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            if (graphPanZoom) graphPanZoom.moveBy(0, -20);
+                            break;
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            if (graphPanZoom) graphPanZoom.moveBy(0, 20);
+                            break;
+                    }
+                }
+            });
+        }
+
+        function showContextMenu(x, y) {
+            const menu = document.getElementById('context-menu');
+            const list = document.getElementById('token-menu-list');
+            list.innerHTML = '';
+            tokens.forEach(token => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="token">${token}</span> <span class="example">${tokenExamples[token] || ''}</span>`;
+                li.onclick = () => insertTextAtCursor(currentInput, token);
+                list.appendChild(li);
+            });
+            const separator = document.createElement('li');
+            separator.style.borderTop = '1px solid #3C3C3C';
+            separator.classList.add('separator');
+            list.appendChild(separator);
+
+            const copyLi = document.createElement('li');
+            copyLi.innerHTML = '<span class="token" data-i18n="Copy">Copy</span>';
+            copyLi.onclick = () => {
+                currentInput.select();
+                document.execCommand('copy');
+                hideContextMenu();
+            };
+            list.appendChild(copyLi);
+
+            const cutLi = document.createElement('li');
+            cutLi.innerHTML = '<span class="token" data-i18n="Cut">Cut</span>';
+            cutLi.onclick = () => {
+                currentInput.select();
+                document.execCommand('cut');
+                hideContextMenu();
+            };
+            list.appendChild(cutLi);
+
+            const pasteLi = document.createElement('li');
+            pasteLi.innerHTML = '<span class="token" data-i18n="Paste">Paste</span>';
+            pasteLi.onclick = () => {
+                navigator.clipboard.readText().then(text => {
+                    insertTextAtCursor(currentInput, text);
+                    hideContextMenu();
+                });
+            };
+            list.appendChild(pasteLi);
+
+            document.getElementById('context-search').value = '';
+            filterContextMenu();
+            menu.style.left = `${x}px`;
+            menu.style.top = `${y}px`;
+            menu.style.display = 'flex';
+        }
+
+        function hideContextMenu() {
+            document.getElementById('context-menu').style.display = 'none';
+        }
+
+        function filterContextMenu() {
+            const query = document.getElementById('context-search').value.toLowerCase();
+            document.querySelectorAll('#token-menu-list li').forEach(li => {
+                const tokenText = li.querySelector('.token') ? li.querySelector('.token').textContent.toLowerCase() : '';
+                li.style.display = (tokenText.includes(query) && !li.classList.contains('separator')) ? 'block' : (li.classList.contains('separator') ? 'block' : 'none');
+            });
+        }
+
+        function insertTextAtCursor(input, text) {
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            input.value = input.value.substring(0, start) + text + input.value.substring(end);
+            input.selectionStart = input.selectionEnd = start + text.length;
+            input.focus();
+            hideContextMenu();
+            input.dispatchEvent(new Event('change'));
+        }
+
+        function showGraphContextMenu(x, y) {
+            const menu = document.getElementById('graph-context-menu');
+            menu.style.left = `${x}px`;
+            menu.style.top = `${y}px`;
+            menu.style.display = 'block';
+        }
+
+        function hideGraphContextMenu() {
+            document.getElementById('graph-context-menu').style.display = 'none';
+        }
+
+        function viewStateFromGraph() {
+            if (graphSelectedState) {
+                scopeToState(graphSelectedState);
+            }
+            hideGraphContextMenu();
+        }
+
+        function updateTokens() {
+            stateTokens = [];
+            const stateCount = Module._GetStateCount(editorEngine);
+            for (let i = 0; i < stateCount; i++) {
+                const namePtr = Module._GetStateName(editorEngine, i);
+                stateTokens.push(Module.UTF8ToString(namePtr));
+                Module._FreeString(namePtr);
+            }
+            variableTokens = [];
+            const varCount = Module._GetVariableCount(editorEngine);
+            for (let i = 0; i < varCount; i++) {
+                const namePtr = Module._GetVariableName(editorEngine, i);
+                variableTokens.push(Module.UTF8ToString(namePtr));
+                Module._FreeString(namePtr);
+            }
+            tokens = [...stateTokens, ...variableTokens, ...functionTokens, ...operatorTokens, ...constantTokens];
+            tokens = [...new Set(tokens)].sort();
+        }
+
+        function renderEditor() {
+            const titlePtr = Module._GetStoryTitle(editorEngine);
+            document.getElementById('story-title').value = Module.UTF8ToString(titlePtr);
+            Module._FreeString(titlePtr);
+            document.getElementById('story-title').onchange = function() {
+                Module._SetStoryTitle(editorEngine, allocateUTF8(this.value));
+                saveToLocalStorage();
+            };
+            const descPtr = Module._GetStoryDescription(editorEngine);
+            document.getElementById('story-description').value = Module.UTF8ToString(descPtr);
+            Module._FreeString(descPtr);
+            document.getElementById('story-description').onchange = function() {
+                Module._SetStoryDescription(editorEngine, allocateUTF8(this.value));
+                saveToLocalStorage();
+            };
+            const startPtr = Module._GetStartState(editorEngine);
+            document.getElementById('start-state').value = Module.UTF8ToString(startPtr);
+            Module._FreeString(startPtr);
+            document.getElementById('start-state').onchange = function() {
+                Module._SetStartState(editorEngine, allocateUTF8(this.value));
+                saveToLocalStorage();
+            };
+            updateTokens();
+            populateStateDatalist();
+            populateTokenDatalist();
+            renderVariables();
+            renderStates();
+            document.getElementById('editor').style.display = 'block';
+            setupContextMenu();
+            setupKeyboardShortcuts();
+        }
+
+        function openHelp(page) {
+            window.open(page + '.html', '_self');
+        }
+
+        function updateGlobalToolbar(tabName) {
+            const toolbar = document.getElementById('global-toolbar');
+            toolbar.innerHTML = '';
+            toolbar.style.display = 'block';
+
+            if (tabName === 'text') {
+                const applyBtn = document.createElement('button');
+                applyBtn.className = 'icon-button';
+                applyBtn.onclick = applyTextChanges;
+                applyBtn.title = languages[currentLanguage]['Apply Changes'] || 'Apply Changes';
+                applyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                toolbar.appendChild(applyBtn);
+            } else if (tabName === 'variables') {
+                toolbar.style.display = 'none';
+            } else if (tabName === 'states') {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'icon-button';
+                deleteBtn.onclick = () => { if (selectedState) removeState(selectedState); };
+                deleteBtn.title = languages[currentLanguage]['Delete State'] || 'Delete State';
+                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                toolbar.appendChild(deleteBtn);
+
+                const startBtn = document.createElement('button');
+                startBtn.className = 'icon-button';
+                startBtn.onclick = () => { if (selectedState) setAsStart(selectedState); };
+                startBtn.title = languages[currentLanguage]['Set as Start'] || 'Set as Start';
+                startBtn.innerHTML = '<i class="fas fa-flag"></i>';
+                toolbar.appendChild(startBtn);
+
+                const jumpBtn = document.createElement('button');
+                jumpBtn.className = 'icon-button';
+                jumpBtn.onclick = () => { if (selectedState) jumpToState(selectedState); };
+                jumpBtn.title = languages[currentLanguage]['Jump to State'] || 'Jump to State';
+                jumpBtn.innerHTML = '<i class="fas fa-play"></i>';
+                toolbar.appendChild(jumpBtn);
+
+                const forceBtn = document.createElement('button');
+                forceBtn.className = 'icon-button force-visit';
+                forceBtn.onclick = () => { if (selectedState) forceJumpToState(selectedState); };
+                forceBtn.title = languages[currentLanguage]['Force Jump'] || 'Force Jump';
+                forceBtn.innerHTML = '<i class="fas fa-forward"></i>';
+                toolbar.appendChild(forceBtn);
+
+                const graphBtn = document.createElement('button');
+                graphBtn.className = 'icon-button';
+                graphBtn.onclick = () => { if (selectedState) viewInGraph(selectedState); };
+                graphBtn.title = languages[currentLanguage]['View in Graph'] || 'View in Graph';
+                graphBtn.innerHTML = '<i class="fas fa-project-diagram"></i>';
+                toolbar.appendChild(graphBtn);
+            } else if (tabName === 'graph') {
+                const resetBtn = document.createElement('button');
+                resetBtn.className = 'icon-button';
+                resetBtn.onclick = resetGraph;
+                resetBtn.title = languages[currentLanguage]['Reset Graph'] || 'Reset Graph';
+                resetBtn.innerHTML = '<i class="fas fa-sync"></i>';
+                toolbar.appendChild(resetBtn);
+
+                const zoomInBtn = document.createElement('button');
+                zoomInBtn.className = 'icon-button';
+                zoomInBtn.onclick = zoomIn;
+                zoomInBtn.title = languages[currentLanguage]['Zoom In'] || 'Zoom In';
+                zoomInBtn.innerHTML = '<i class="fas fa-search-plus"></i>';
+                toolbar.appendChild(zoomInBtn);
+
+                const zoomOutBtn = document.createElement('button');
+                zoomOutBtn.className = 'icon-button';
+                zoomOutBtn.onclick = zoomOut;
+                zoomOutBtn.title = languages[currentLanguage]['Zoom Out'] || 'Zoom Out';
+                zoomOutBtn.innerHTML = '<i class="fas fa-search-minus"></i>';
+                toolbar.appendChild(zoomOutBtn);
+
+                const centerBtn = document.createElement('button');
+                centerBtn.className = 'icon-button';
+                centerBtn.onclick = centerGraph;
+                centerBtn.title = languages[currentLanguage]['Center Graph'] || 'Center Graph';
+                centerBtn.innerHTML = '<i class="fas fa-crosshairs"></i>';
+                toolbar.appendChild(centerBtn);
+            } else if (tabName === 'play') {
+                const playBtn = document.createElement('button');
+                playBtn.className = 'icon-button';
+                playBtn.onclick = startPlayEngine;
+                playBtn.title = languages[currentLanguage]['Play Current Story'] || 'Play Current Story';
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                toolbar.appendChild(playBtn);
+
+                const loadBtn = document.createElement('button');
+                loadBtn.className = 'icon-button';
+                loadBtn.onclick = () => document.getElementById('load-save').click();
+                loadBtn.title = languages[currentLanguage]['Load Progress'] || 'Load Progress';
+                loadBtn.innerHTML = '<i class="fas fa-upload"></i>';
+                toolbar.appendChild(loadBtn);
+
+                const saveBtn = document.createElement('button');
+                saveBtn.className = 'icon-button';
+                saveBtn.onclick = saveProgress;
+                saveBtn.title = languages[currentLanguage]['Save Progress'] || 'Save Progress';
+                saveBtn.innerHTML = '<i class="fas fa-download"></i>';
+                toolbar.appendChild(saveBtn);
+
+                const restartBtn = document.createElement('button');
+                restartBtn.className = 'icon-button';
+                restartBtn.onclick = restartStory;
+                restartBtn.title = languages[currentLanguage]['Restart'] || 'Restart';
+                restartBtn.innerHTML = '<i class="fas fa-redo"></i>';
+                toolbar.appendChild(restartBtn);
+            } else {
+                toolbar.style.display = 'none';
+            }
+        }
+
+        (async () => {
+            await loadLanguages();
+            await initModule();
+            editorEngine = Module._CreateEngine();
+            const savedContent = localStorage.getItem('ns2_content');
+            if (savedContent) {
+                Module.FS.writeFile('/story.ns2', savedContent);
+                const pathPtr = allocateUTF8('/story.ns2');
+                Module._LoadFromFile(editorEngine, pathPtr);
+                Module._free(pathPtr);
+            } else {
+            }
+            renderEditor();
+            openTab('metadata');
+            updateGlobalToolbar('metadata');
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'ns2_content' && event.newValue) {
+                    Module.FS.writeFile('/story.ns2', event.newValue);
+                    const pathPtr = allocateUTF8('/story.ns2');
+                    const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+                    Module._free(pathPtr);
+                    if (loaded) {
+                        renderEditor();
+                    } else {
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
