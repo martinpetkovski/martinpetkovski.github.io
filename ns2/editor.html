@@ -23,6 +23,7 @@
             font-size: 13px;
             overflow: hidden;
             height: 100vh;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
         .header {
@@ -37,6 +38,7 @@
             gap: 10px;
             height: 40px;
             box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 2px 0 rgba(255,255,255,0.05);
         }
 
         h1 {
@@ -46,30 +48,41 @@
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
             margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
+        /* UNIFORM BUTTON STYLING - Base for all buttons */
         button {
             padding: 5px 8px;
-            background-color: #007bb0;
-            color: #FFFFFF;
+            background: none;
+            color: #999;
             border: none;
-            border-radius: 3px;
+            border-radius: 0;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 3px;
             font-size: 12px;
             margin: 0;
+            box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
+            border-bottom: 2px solid transparent;
+            font-weight: bold;
         }
 
-            button:hover {
-                background-color: #005A9E;
-            }
+        button:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+            transform: translateX(-1px);
+        }
 
-            button:active {
-                transform: scale(0.95);
-            }
+        button:active,
+        button.active {
+            color: #00AbC0;
+            border-bottom: 2px solid #00AbC0;
+            box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
+        }
 
         input[type="file"] {
             padding: 5px;
@@ -79,25 +92,27 @@
             border: 1px solid #3C3C3C;
             border-radius: 3px;
             cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
-            input[type="file"]::file-selector-button {
-                background-color: #007bb0;
-                color: #FFFFFF;
-                border: none;
-                padding: 5px 8px;
-                border-radius: 3px;
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
-            }
+        input[type="file"]::file-selector-button {
+            background: none;
+            color: #999;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
+            border-bottom: 2px solid transparent;
+            font-weight: bold;
+        }
 
-            input[type="file"]::file-selector-button:hover {
-                background-color: #005A9E;
-            }
-
-            input[type="file"]::file-selector-button:active {
-                transform: scale(0.95);
-            }
+        input[type="file"]::file-selector-button:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
 
         .tabs {
             display: flex;
@@ -112,39 +127,16 @@
             padding: 0;
             height: 30px;
             box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .tab-button {
             flex: 1;
             min-width: 80px;
             padding: 0 10px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            color: #999;
-            transition: background 0.3s, color 0.3s, border-bottom 0.3s;
-            border-radius: 0;
-            border-bottom: 2px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             height: 100%;
-            margin: 0;
+            justify-content: center;
         }
-
-            .tab-button.active {
-                color: #00AbC0;
-                border-bottom: 3px solid #00AbC0;
-                font-weight: bold;
-            }
-
-            .tab-button:hover {
-                color: #00AbC0;
-                background-color: #222;
-                background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-            }
 
         .tab-content {
             flex-direction: column;
@@ -153,26 +145,27 @@
             overflow: hidden;
             padding: 10px;
             box-sizing: border-box;
-            position: relative; /* Ensure relative positioning for z-index control */
+            position: relative;
             z-index: 1;
             display: none;
             width: 100%;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
         }
 
-            .tab-content.active {
-                display: flex;
-                opacity: 1;
-                z-index: 10;
-            }
+        .tab-content.active {
+            display: flex;
+            opacity: 1;
+            z-index: 10;
+        }
 
         #tab-graph {
-            padding: 0; /* Remove padding for full expansion in graph tab */
+            padding: 0;
         }
 
         #tab-graph .toolbar {
             flex-shrink: 0;
             margin-bottom: 0;
-            padding: 0 10px; /* Add padding only to toolbar */
+            padding: 0;
         }
 
         #graph-container {
@@ -181,39 +174,44 @@
             overflow: hidden;
             background-color: #252526;
             border-radius: 0 0 5px 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
-            transition: opacity 0.5s ease;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(255,255,255,0.05);
+            transition: all 0.5s ease;
             z-index: 1;
             width: 100%;
         }
 
-            #graph-container svg {
-                background-color: transparent;
-                border-radius: 5px;
-                pointer-events: auto; /* Only enable on active tab */
-                display: block;
-                width: 100%;
-                height: 100%;
-                max-width: none;
-                max-height: none;
-            }
+        #graph-container svg {
+            background-color: transparent;
+            border-radius: 5px;
+            pointer-events: auto;
+            display: block;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
 
-            #tab-graph:not(.active) #graph-container svg {
-                pointer-events: none !important;
-            }
+        #tab-graph:not(.active) #graph-container svg {
+            pointer-events: none !important;
+        }
 
         .section {
             margin-bottom: 8px;
             background-color: #252526;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.3);
             padding: 8px;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 3px 0 rgba(255,255,255,0.1), inset 0 -3px 0 rgba(0,0,0,0.4);
         }
 
         details {
             margin-bottom: 8px;
-            transition: height 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         summary {
@@ -224,12 +222,15 @@
             border-radius: 3px;
             color: #D4D4D4;
             list-style: none;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
-            summary:hover {
-                background-color: #3C3C3C;
-            }
+        summary:hover {
+            background-color: #3C3C3D;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.3);
+            transform: translateY(-1px);
+        }
 
         details[open] summary ~ * {
             animation: fadeIn 0.5s ease-in-out;
@@ -240,7 +241,6 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -251,23 +251,28 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            border-radius: 5px;
+            overflow: hidden;
         }
 
         th, td {
             padding: 5px;
             text-align: left;
             border-bottom: 1px solid #3C3C3C;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
         }
 
         th {
             background-color: #2D2D2D;
             font-weight: 500;
             color: #D4D4D4;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
         tr:hover td {
             background-color: #2D2D2D;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         input, textarea, select {
@@ -280,15 +285,29 @@
             background-color: #1E1E1E;
             color: #D4D4D4;
             font-family: 'Consolas', 'Monaco', monospace;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
+            transition: all 0.3s;
             margin: 0;
         }
 
-            input:focus, textarea:focus, select:focus {
-                border-color: #007bb0;
-                box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
-            }
+        input:focus, textarea:focus, select:focus {
+            border-color: #007bb0;
+            box-shadow: 0 0 8px rgba(0, 122, 204, 0.6), 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 0 rgba(0,123,176,0.5);
+            transform: translateY(-1px);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            height: 16px;
+            accent-color: #007bb0;
+            margin-right: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        input[type="checkbox"]:hover {
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
 
         textarea {
             min-height: 40px;
@@ -304,15 +323,15 @@
             background-color: #1E1E1E;
             padding: 8px;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
             font-size: 12px;
             line-height: 1.2;
             color: #D4D4D4;
         }
 
         #text-editor {
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-            height: calc(100% - 40px);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(255,255,255,0.05);
+            height: 100%;
             width: 100%;
         }
 
@@ -322,9 +341,9 @@
             align-items: center;
         }
 
-            .flex-row button {
-                flex-shrink: 0;
-            }
+        .flex-row button {
+            flex-shrink: 0;
+        }
 
         .grid-form {
             display: grid;
@@ -333,11 +352,12 @@
             align-items: center;
         }
 
-            .grid-form label {
-                text-align: right;
-                font-weight: 500;
-                color: #D4D4D4;
-            }
+        .grid-form label {
+            text-align: right;
+            font-weight: 500;
+            color: #D4D4D4;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
 
         #state-search {
             width: calc(100% - 60px);
@@ -352,32 +372,32 @@
             gap: 8px;
         }
 
-            .target-group input {
-                flex: 1;
-            }
+        .target-group input {
+            flex: 1;
+        }
 
-            .target-group button {
-                padding: 4px;
-                font-size: 11px;
-                background-color: #007bb0;
-                color: #FFFFFF;
-                border-radius: 50%;
-                min-width: 24px;
-                min-height: 24px;
-                justify-content: center;
-            }
-
-                .target-group button:hover {
-                    background-color: #005A9E;
-                }
+        /* Icon buttons - using uniform style */
+        .target-group button,
+        .icon-button {
+            padding: 4px;
+            font-size: 11px;
+            border-radius: 50%;
+            min-width: 24px;
+            min-height: 24px;
+            justify-content: center;
+            background-color: #334;
+            border: 1px solid #0A0A0A;
+        }
 
         .mermaid .node rect,
         .mermaid .node polygon,
         .mermaid .node circle {
             fill: #1E90FF;
             stroke: #0000FF;
-            stroke-width: 1px;
-            transition: fill 0.3s, stroke 0.3s;
+            stroke-width: 2px;
+            transition: all 0.3s;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .mermaid .node:hover rect,
@@ -385,17 +405,21 @@
         .mermaid .node:hover circle {
             fill: #3C3C3C;
             stroke: #007bb0;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+            transform: translateY(-2px);
         }
 
         .mermaid .node text {
             fill: #FFFFFF;
             font-size: 12px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .mermaid .edgePath .path {
             stroke: #FFFFFF;
-            stroke-width: 1.5px;
-            transition: stroke 0.3s;
+            stroke-width: 2px;
+            transition: all 0.3s;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .mermaid .edgeLabel {
@@ -404,7 +428,8 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-size: 11px;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
         .dropdown {
@@ -424,27 +449,31 @@
             z-index: 1;
             width: 100%;
             display: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
             transform: translateY(-10px);
             opacity: 0;
+            border-radius: 5px;
         }
 
-            .dropdown-list.visible {
-                display: block;
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .dropdown-list.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-            .dropdown-list li {
-                padding: 5px;
-                cursor: pointer;
-                transition: background 0.3s;
-            }
+        .dropdown-list li {
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
 
-                .dropdown-list li:hover {
-                    background: #007bb0;
-                }
+        .dropdown-list li:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
 
         .toolbar {
             display: flex;
@@ -452,44 +481,47 @@
             margin: 0;
             padding: 5px;
             align-items: center;
-            margin-bottom: 8px;
             background-color: #252526;
             border-radius: 3px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
         }
 
-            .toolbar .menu-button {
-                margin-left: auto;
-                cursor: pointer !important;
-            }
+        .toolbar .menu-button {
+            margin-left: auto;
+            cursor: pointer !important;
+        }
 
         .play-content {
             background-color: #252526;
             padding: 8px;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
             flex: 1;
             overflow-y: auto;
         }
 
-            .play-content h2 {
-                margin-top: 0;
-                font-size: 16px;
-                color: #007bb0;
-            }
+        .play-content h2 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #007bb0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
 
-            .play-content h3 {
-                margin: 16px 0 8px 0;
-                font-size: 14px;
-                color: #007bb0;
-            }
+        .play-content h3 {
+            margin: 16px 0 8px 0;
+            font-size: 14px;
+            color: #007bb0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
 
-            .play-content p {
-                margin: 4px 0;
-                line-height: 1.4;
-            }
+        .play-content p {
+            margin: 4px 0;
+            line-height: 1.4;
+        }
 
         .error {
             color: red;
+            text-shadow: 0 1px 2px rgba(255,0,0,0.5);
         }
 
         .choices {
@@ -501,24 +533,17 @@
             width: auto;
         }
 
-            .choices button {
-                width: auto;
-                min-width: 200px;
-                justify-content: flex-start;
-                padding: 6px 10px;
-                font-size: 13px;
-                background-color: #2D2D2D;
-                transition: background-color 0.3s, transform 0.2s;
-                opacity: 0;
-                transform: translateX(-10px);
-                animation: slideIn 0.5s forwards;
-                text-align: left;
-            }
-
-                .choices button:hover {
-                    background-color: #3C3C3C;
-                    transform: translateX(2px);
-                }
+        .choices button {
+            width: auto;
+            min-width: 200px;
+            justify-content: flex-start;
+            padding: 6px 10px;
+            font-size: 13px;
+            opacity: 0;
+            transform: translateX(-10px);
+            animation: slideIn 0.5s forwards;
+            text-align: left;
+        }
 
         @keyframes slideIn {
             to {
@@ -537,36 +562,45 @@
             border-right: 1px solid #3C3C3C;
             padding: 8px;
             overflow-y: auto;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 4px 0 8px rgba(0,0,0,0.3);
+            background-color: #151515;
         }
 
-            .states-list-panel ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        .states-list-panel ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-            .states-list-panel ul li {
-                padding: 5px;
-                cursor: pointer;
-                border-bottom: 1px solid #3C3C3C;
-                transition: background-color 0.3s, transform 0.2s;
-            }
+        .states-list-panel ul li {
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #3C3C3C;
+            transition: all 0.3s;
+            border-radius: 3px;
+            margin-bottom: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+            color: #999;
+        }
 
-                .states-list-panel ul li:hover {
-                    background-color: #2D2D2D;
-                    transform: translateX(6px);
-                }
+        .states-list-panel ul li:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
 
-                .states-list-panel ul li.selected {
-                    background-color: #2D2D2D;
-                }
+        .states-list-panel ul li.selected {
+            color: #00AbC0;
+            border-bottom: 2px solid #00AbC0;
+            box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
+        }
 
         .state-details-panel {
             width: 70%;
             padding: 8px;
             overflow-y: auto;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset -4px 0 8px rgba(0,0,0,0.3);
+            background-color: #252526;
         }
 
         .menubar {
@@ -580,25 +614,59 @@
             background-color: #252526;
             padding: 4px 8px;
             position: relative;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
         }
-
-            .menu-button:hover {
-                background-color: #3C3C3C;
-            }
 
         .dropdown-menu {
             display: none;
             position: absolute;
             background-color: #252526;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3);
             z-index: 101;
             left: auto;
             right: 0;
             top: 100%;
             opacity: 0;
             transform: translateY(-10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 5px;
+            border: 1px solid #3C3C3C;
+        }
+
+        #language-dropdown {
+            max-height: 200px;
+            overflow: hidden;
+        }
+
+        #language-dropdown input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            background: #1E1E1E;
+            border: none;
+            border-bottom: 1px solid #3C3C3C;
+            color: #D4D4D4;
+            box-sizing: border-box;
+            font-size: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
+        }
+
+        #language-dropdown .button-container {
+            overflow-y: auto;
+            max-height: 180px;
+        }
+
+        #language-dropdown button {
+            width: 100%;
+            text-align: left;
+            border-radius: 0;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .menu-button:hover .dropdown-menu {
@@ -607,23 +675,14 @@
             transform: translateY(0);
         }
 
-            .dropdown-menu button {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                width: 150px;
-                text-align: left;
-                background: none;
-                border: none;
-                color: #D4D4D4;
-                padding: 8px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
-
-                .dropdown-menu button:hover {
-                    background-color: #007bb0;
-                }
+        .dropdown-menu button {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 150px;
+            text-align: left;
+            padding: 8px;
+        }
 
         .states-list-panel .toolbar {
             position: sticky;
@@ -634,6 +693,7 @@
             display: flex;
             gap: 8px;
             margin: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         #tab-variables .toolbar {
@@ -643,6 +703,7 @@
             z-index: 1;
             padding: 0;
             margin: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         #file-input, #load-save {
@@ -657,102 +718,110 @@
             position: absolute;
             background-color: #252526;
             border: 1px solid #3C3C3C;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.3);
             z-index: 1000;
             max-height: 200px;
             overflow: hidden;
             display: none;
             width: 300px;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+            border-radius: 5px;
         }
 
-            #context-menu input {
-                flex: none;
-                position: relative;
-                z-index: 1;
-                background-color: #252526;
-                border-bottom: 1px solid #3C3C3C;
-                margin: 0;
-                width: calc(100% - 2px);
-            }
+        #context-menu input {
+            flex: none;
+            position: relative;
+            z-index: 1;
+            background-color: #252526;
+            border-bottom: 1px solid #3C3C3C;
+            margin: 0;
+            width: calc(100% - 2px);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
+        }
 
-            #context-menu ul {
-                flex: 1;
-                overflow-y: auto;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            #context-menu li {
-                padding: 5px 10px;
-                cursor: pointer;
-                display: flex;
-                justify-content: space-between;
-                transition: background-color 0.3s;
-            }
-
-                #context-menu li:hover {
-                    background-color: #007bb0;
-                }
-
-                #context-menu li .token {
-                    flex: 1;
-                }
-
-                #context-menu li .example {
-                    color: #888;
-                    font-style: italic;
-                    margin-left: 10px;
-                }
-
-        .icon-button {
+        #context-menu ul {
+            flex: 1;
+            overflow-y: auto;
+            list-style: none;
             padding: 0;
-            font-size: 12px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            justify-content: center;
-            align-items: center;
-            margin: 0 4px;
-            display: inline-flex;
+            margin: 0;
+        }
+
+        #context-menu li {
+            padding: 5px 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            transition: all 0.3s;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+            color: #999;
+        }
+
+        #context-menu li:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
+
+        #context-menu li .token {
+            flex: 1;
+        }
+
+        #context-menu li .example {
+            color: #888;
+            font-style: italic;
+            margin-left: 10px;
+        }
+
+        #context-menu,
+        #token-menu-list,
+        .dropdown-menu,
+        #language-dropdown .button-container,
+        #graph-context-menu ul {
+            overflow-x: hidden !important;
         }
 
         .force-visit {
-            background-color: red;
+            background-color: #8B0000 !important;
+            color: #fff !important;
         }
 
-            .force-visit:hover {
-                background-color: darkred;
-            }
+        .force-visit:hover {
+            background-color: #660000 !important;
+        }
 
         #graph-context-menu {
             position: absolute;
             background-color: #252526;
             border: 1px solid #3C3C3C;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
             z-index: 1000;
             display: none;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
+            border-radius: 5px;
         }
 
-            #graph-context-menu ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        #graph-context-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-            #graph-context-menu li {
-                padding: 5px 10px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
+        #graph-context-menu li {
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+            color: #999;
+        }
 
-                #graph-context-menu li:hover {
-                    background-color: #007bb0;
-                }
+        #graph-context-menu li:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
 
         #tab-text .toolbar {
             margin: 0;
@@ -766,25 +835,26 @@
             flex-direction: column;
         }
 
-            .choices-section .toolbar {
-                position: sticky;
-                top: 0;
-                background-color: #1E1E1E;
-                z-index: 1;
-                padding: 0;
-                margin: 0 0 4px 0;
-                flex-shrink: 0;
-            }
+        .choices-section .toolbar {
+            position: sticky;
+            top: 0;
+            background-color: #1E1E1E;
+            z-index: 1;
+            padding: 0;
+            margin: 0 0 4px 0;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
 
-            .choices-section .table-wrapper {
-                flex: 1;
-                overflow-y: auto;
-            }
+        .choices-section .table-wrapper {
+            flex: 1;
+            overflow-y: auto;
+        }
 
-            .choices-section table {
-                width: 100%;
-                display: table;
-            }
+        .choices-section table {
+            width: 100%;
+            display: table;
+        }
 
         .play-choices-toolbar {
             position: sticky;
@@ -794,6 +864,7 @@
             padding: 0;
             margin: 0 0 4px 0;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .play-vars-toolbar {
@@ -804,6 +875,7 @@
             padding: 0;
             margin: 0 0 4px 0;
             flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .state-name {
@@ -811,10 +883,90 @@
             color: #888;
             font-style: italic;
             margin-left: 8px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .flag {
             margin-right: 5px;
+        }
+
+        .props-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .props-container label {
+            position: relative;
+            padding: 4px 8px 7px 8px;
+            border-bottom: 3px solid transparent;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 3px;
+            color: #999;
+        }
+
+        .props-container label:hover {
+            color: #00AbC0;
+            background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+            box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        }
+
+        .props-container input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+            margin: 0;
+        }
+
+        .props-container label:has(input[type="checkbox"]:checked) {
+            border-bottom-color: #00ff00;
+            box-shadow: 0 6px 8px rgba(0, 255, 0, 0.3), inset 0 -1px 0 #00ff00;
+            color: #00AbC0;
+        }
+
+        .hide-cell {
+            text-align: center;
+            padding: 8px 5px !important;
+        }
+
+        .hide-cell input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 60px;
+            height: 26px;
+            background-color: #2D2D2D;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: background-color 0.3s;
+        }
+
+        .hide-cell input[type="checkbox"]:hover {
+            background-color: #3C3C3D;
+        }
+
+        .hide-cell input[type="checkbox"]::after {
+            content: "";
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            bottom: 4px;
+            height: 0;
+            background: #00ff00;
+            border-radius: 2px;
+            box-shadow: 0 0 12px #00ff00;
+            transition: height 0.3s ease;
+        }
+
+        .hide-cell input[type="checkbox"]:checked::after {
+            height: 1px;
         }
     </style>
 </head>
@@ -991,39 +1143,26 @@
         function populateLanguageMenu() {
             const langMenu = document.getElementById('language-dropdown');
             langMenu.innerHTML = '';
-            const languageNames = {
-                'en': 'English',
-                'mk': 'Македонски',
-                'tr': 'Türkçe',
-                'ru': 'Русский',
-                'uk': 'Українська',
-                'de': 'Deutsch',
-                'fr': 'Français',
-                'es': 'Español',
-                'pt': 'Português',
-                'ar': 'العربية',
-                'ja': '日本語',
-                'zh': '中文'
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = 'Search...';
+            searchInput.oninput = function() {
+                const query = this.value.toLowerCase();
+                Array.from(langMenu.querySelectorAll('.button-container button')).forEach(btn => {
+                    const text = btn.textContent.toLowerCase();
+                    btn.style.display = text.includes(query) ? 'flex' : 'none';
+                });
             };
-            const languageFlags = {
-                'en': '🇬🇧',
-                'mk': '🇲🇰',
-                'tr': '🇹🇷',
-                'ru': '🇷🇺',
-                'uk': '🇺🇦',
-                'de': '🇩🇪',
-                'fr': '🇫🇷',
-                'es': '🇪🇸',
-                'pt': '🇵🇹',
-                'ar': '🇸🇦',
-                'ja': '🇯🇵',
-                'zh': '🇨🇳'
-            };
+            searchInput.addEventListener('click', e => e.stopPropagation());
+            langMenu.appendChild(searchInput);
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'button-container';
+            langMenu.appendChild(buttonContainer);
             Object.keys(languages).forEach(lang => {
                 const button = document.createElement('button');
                 button.onclick = () => setLanguage(lang);
-                button.innerHTML = `<span class="flag">${languageFlags[lang] || ''}</span> ${languageNames[lang] || lang.toUpperCase()}`;
-                langMenu.appendChild(button);
+                button.innerHTML = `<span class="flag">${languages[lang].flag}</span> ${languages[lang].languageName}`;
+                buttonContainer.appendChild(button);
             });
         }
 
@@ -1050,6 +1189,7 @@
         require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs' } });
 
         let textEditor;
+        let stateScriptEditor;
 
         mermaid.initialize({ 
             startOnLoad: false, 
@@ -1075,7 +1215,7 @@
         let stateTokens = [];
         let variableTokens = [];
         let functionTokens = ['set', 'reset', 'not', 'visited', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if'];
-        let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '='];
+        let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '=', ',', ';'];
         let constantTokens = ['true', 'false'];
 
         const tokenExamples = {
@@ -1112,6 +1252,8 @@
         let currentTab = 'metadata';
         let selectedState = null;
 
+        const availableProps = ['start_visited', 'always_available', 'dont_mark_visited'];
+
         function saveToLocalStorage() {
             const ptr = Module._GenerateNS2Content(editorEngine);
             const content = Module.UTF8ToString(ptr);
@@ -1139,6 +1281,12 @@
             currentTab = tabName;
 
             updateGlobalToolbar(tabName);
+
+            const toolbar = document.getElementById('global-toolbar');
+            const toolbarHeight = toolbar.offsetHeight;
+            document.querySelectorAll('.tab-content').forEach(c => {
+                c.style.height = `calc(100vh - 70px - ${toolbarHeight}px)`;
+            });
 
             // Clear graph container when switching away to prevent event bleed
             if (tabName !== 'graph') {
@@ -1207,100 +1355,156 @@
             return ptr;
         }
 
-        function renderStoryView() {
-            const ptr = Module._GenerateNS2Content(editorEngine);
-            const content = Module.UTF8ToString(ptr);
-            Module._FreeString(ptr);
-            const container = document.getElementById('text-editor');
-            if (!textEditor) {
-                require(['vs/editor/editor.main'], function () {
-                    monaco.languages.register({ id: 'ns2' });
-                    const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
-                    const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
-                    const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
-                    const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
-                    const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
-                    const bracketRegex = /[\(\)\[\]]/g;
+function renderStoryView() {
+    const ptr = Module._GenerateNS2Content(editorEngine);
+    const content = Module.UTF8ToString(ptr);
+    Module._FreeString(ptr);
+    const container = document.getElementById('text-editor');
 
-                    monaco.languages.setMonarchTokensProvider('ns2', {
-                        tokenizer: {
-                            root: [
-                                [/^\s*\[metadata\]\s*$/, 'keyword'],
-                                [/^\s*\[variables\]\s*$/, 'keyword'],
-                                [/^\s*\[states\]\s*$/, 'keyword'],
-                                [/^\s*\[state\s+.*\]\s*$/, 'keyword'],
-                                [/^\s*title:\s*/, 'keyword', '@string'],
-                                [/^\s*description:\s*/, 'keyword', '@string'],
-                                [/^\s*context:\s*/, 'keyword', '@expression'],
-                                [/^\s*script:\s*/, 'keyword', '@expression'],
-                                [/^\s*requires:\s*/, 'keyword', '@expression'],
-                                [/^\s*actions:\s*/, 'keyword', '@expression'],
-                                [/^\s*properties:\s*/, 'keyword', '@expression'],
-                                [/^\s*start:\s*/, 'keyword', '@state'],
-                                [/^\s*choice:\s*/, 'keyword', '@choice'],
-                                [/^\s*type:\s*/, 'keyword', '@type'],
-                                [/^\s*name:\s*/, 'keyword', '@variable'],
-                                [/^\s*initial:\s*/, 'keyword', '@expression'],
-                                [/^\s*constraint:\s*/, 'keyword', '@expression'],
-                            ],
-                            string: [
-                                [/.*$/, 'string']
-                            ],
-                            expression: [
-                                [functionRegex, 'function'],
-                                [operatorRegex, 'operator'],
-                                [constantRegex, 'constant'],
-                                [variableRegex, 'variable'],
-                                [stateRegex, 'state'],
-                                [bracketRegex, 'bracket'],
-                                [/.+/, 'expression']
-                            ],
-                            state: [
-                                [/.*$/, 'state']
-                            ],
-                            choice: [
-                                [/.*$/, 'choice']
-                            ],
-                            type: [
-                                [/.*$/, 'type']
-                            ],
-                            variable: [
-                                [/.*$/, 'variable']
-                            ]
-                        }
-                    });
-                    monaco.editor.defineTheme('ns2-dark', {
-                        base: 'vs-dark',
-                        inherit: true,
-                        rules: [
-                            { token: 'keyword', foreground: '569cd6' },
-                            { token: 'string', foreground: 'ce9178' },
-                            { token: 'expression', foreground: '9cdcfe' },
-                            { token: 'state', foreground: 'c586c0' },
-                            { token: 'choice', foreground: 'dcdcaa' },
-                            { token: 'type', foreground: '4ec9b0' },
-                            { token: 'variable', foreground: '9cdcfe' },
-                            { token: 'function', foreground: 'dcdcaa' },
-                            { token: 'operator', foreground: 'd4d4d4' },
-                            { token: 'constant', foreground: '569cd6' },
-                            { token: 'bracket', foreground: 'ffd700' }
-                        ],
-                        colors: {
-                            'editor.background': '#1e1e1e'
-                        }
-                    });
-                    textEditor = monaco.editor.create(container, {
-                        value: content,
-                        language: 'ns2',
-                        theme: 'ns2-dark',
-                        automaticLayout: true,
-                        wordWrap: 'on'
-                    });
-                });
-            } else {
-                textEditor.setValue(content);
-            }
+    // Collect state and variable tokens dynamically
+    let stateTokens = [];
+    const stateCount = Module._GetStateCount(editorEngine);
+    for (let i = 0; i < stateCount; i++) {
+        const statePtr = Module._GetStateName(editorEngine, i);
+        stateTokens.push(Module.UTF8ToString(statePtr));
+        Module._FreeString(statePtr);
+    }
+
+    let variableTokens = [];
+    const varCount = Module._GetVariableCount(editorEngine);
+    for (let i = 0; i < varCount; i++) {
+        const varPtr = Module._GetVariableName(editorEngine, i);
+        variableTokens.push(Module.UTF8ToString(varPtr));
+        Module._FreeString(varPtr);
+    }
+
+    const functionTokens = ['set', 'reset', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if', 'not', 'visited'];
+    const operatorTokens = ['+', '-', '*', '/', '==', '!=', '>', '<', '>=', '<=', '=', 'and', 'or', ';'];
+    const constantTokens = ['true', 'false'];
+    const typeTokens = ['string', 'int', 'float', 'bool'];
+
+    const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
+    const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
+    const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
+    const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
+    const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
+    const typeRegex = new RegExp('\\b(' + typeTokens.join('|') + ')\\b', 'g');
+    const numberRegex = /[-+]?\d+(?:\.\d+)?/g;
+    const stringRegex = /"[^"]*"/g;
+
+    const commonExprRules = [
+        [functionRegex, 'ns2.function.inside'],
+        [operatorRegex, 'ns2.operator.inside'],
+        [constantRegex, 'ns2.constant.inside'],
+        [variableRegex, 'ns2.variable.inside'],
+        [stateRegex, 'ns2.state.inside'],
+        [typeRegex, 'ns2.type.inside'],
+        [/[\(\)]/g, 'ns2.roundbracket.inside'],
+        [numberRegex, 'ns2.number.inside'],
+        [stringRegex, 'ns2.string.inside']
+    ];
+
+    const monarchDefinition = {
+        tokenizer: {
+            root: [
+                [/^\s*(Variables|States)(:)(\s*)$/, ['', '', '']],
+                [/^\s*(Title:)(\s*)(.*)$/, ['', '', '']],
+                [/^\s*(Description:)(\s*)(.*)$/, ['', '', '']],
+                [/^\s*(Start:)(\s*)(\w+)$/, ['', '', '']],
+                [/^\s*(\w+)(:)(\s*)$/, ['', '', '']],
+                [/^\s*(string|int|float|bool)(\s+)(\w+)(:)(\s*)/, ['', '', '', '', ''], '@varinitial'],
+                [/^\s*-\s*/, '', '@choicetext'],
+                [/^\s*(context|script):(\s*)/, ['', ''], '@expression'],
+                [/^\s+(title|description):(\s*)/, ['', ''], '@text'],
+                [/^\s+(context|script|requires|actions|properties):\s*(?![ \t]*\[)/, ['', ''], '@expression'],
+                [/^\s*(requires|actions|properties):\s*\[/, ['', 'ns2.squarebracket.inside'], '@listexpr']
+            ],
+            text: [
+                [/\[/, 'ns2.squarebracket.inside', '@expression'],
+                [/[^[]+/, ''],
+                [/\s*$/, '@pop']
+            ],
+            varinitial: [
+                [/"[^"]*"/, ''],
+                [/true|false/, ''],
+                [/[-+]?\d+(?:\.\d+)?/, ''],
+                [/\s*\(\s*/, '', '@varconstraint'],
+                [/\s*$/, '@pop']
+            ],
+            varconstraint: [
+                [/"[^"]*"/, ''],
+                [/[-+]?\d+(?:\.\d+)?/, ''],
+                [/,/, ''],
+                [/\s*\)\s*$/, '', '@popall']
+            ],
+            listexpr: [
+                [/\s*/, '', '@listitemexpr'],
+                [/;/, 'ns2.operator.inside'],
+                [/\s*\]/, 'ns2.squarebracket.inside', '@pop']
+            ],
+            listitemexpr: commonExprRules.concat([
+                [/\s*(;)/, 'ns2.operator.inside', '@pop'],
+                [/\s*(\])/, 'ns2.squarebracket.inside', '@popall'],
+                [/./, 'ns2.expression.inside']
+            ]),
+            expression: commonExprRules.concat([
+                [/\]/, 'ns2.squarebracket.inside', '@pop'],
+                [/./, 'ns2.expression.inside']
+            ]),
+            choicetext: [
+                [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
+                [/\s*->\s*/, '', '@target'],
+                [/./, '']
+            ],
+            target: [
+                [/\s*(\w+)\s*/, '', '@aftertarget']
+            ],
+            aftertarget: [
+                [/\s*\[\s*(\w+)\s*\]/, ['ns2.squarebracket.inside', 'ns2.flag', 'ns2.squarebracket.inside'], '@popall'],
+                [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
+                [/\s*$/, '@popall']
+            ]
         }
+    };
+
+    if (!textEditor) {
+        require(['vs/editor/editor.main'], function () {
+            monaco.languages.register({ id: 'ns2' });
+            monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+            monaco.editor.defineTheme('ns2-dark', {
+                base: 'vs-dark',
+                inherit: true,
+                rules: [
+                    { token: 'ns2.function.inside', foreground: 'dcdcaa', background: '3c3c3c' },
+                    { token: 'ns2.operator.inside', foreground: 'd4d4d4', background: '3c3c3c' },
+                    { token: 'ns2.constant.inside', foreground: '569cd6', background: '3c3c3c' },
+                    { token: 'ns2.variable.inside', foreground: '9cdcfe', background: '3c3c3c' },
+                    { token: 'ns2.state.inside', foreground: 'c586c0', background: '3c3c3c' },
+                    { token: 'ns2.type.inside', foreground: '4ec9b0', background: '3c3c3c' },
+                    { token: 'ns2.roundbracket.inside', foreground: 'ffd700', background: '3c3c3c' },
+                    { token: 'ns2.number.inside', foreground: 'b5cea8', background: '3c3c3c' },
+                    { token: 'ns2.string.inside', foreground: 'ce9178', background: '3c3c3c' },
+                    { token: 'ns2.expression.inside', foreground: '9cdcfe', background: '3c3c3c' },
+                    { token: 'ns2.squarebracket.inside', foreground: 'ffd700', background: '3c3c3c' },
+                    { token: 'ns2.flag', foreground: '569cd6', background: '3c3c3c' }
+                ],
+                colors: {
+                    'editor.background': '#1e1e1e'
+                }
+            });
+            textEditor = monaco.editor.create(container, {
+                value: content,
+                language: 'ns2',
+                theme: 'ns2-dark',
+                automaticLayout: true,
+                wordWrap: 'on'
+            });
+        });
+    } else {
+        monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+        textEditor.setValue(content);
+    }
+}
 
         function applyTextChanges() {
             const text = textEditor.getValue();
@@ -1472,79 +1676,120 @@
             populateTokenDatalist();
         }
 
-        function selectState(name) {
-            selectedState = name;
-            document.querySelectorAll('#states-list li').forEach(li => li.classList.remove('selected'));
-            const selectedLi = Array.from(document.querySelectorAll('#states-list li')).find(li => li.dataset.name === name);
-            if (selectedLi) selectedLi.classList.add('selected');
-            const panel = document.getElementById('state-details');
-            panel.innerHTML = '';
-            if (!name) return;
-            const namePtr = allocateUTF8(name);
-            const titlePtr = Module._GetStateTitle(editorEngine, namePtr);
-            const title = Module.UTF8ToString(titlePtr);
-            Module._FreeString(titlePtr);
-            const descPtr = Module._GetStateDescription(editorEngine, namePtr);
-            const desc = Module.UTF8ToString(descPtr);
-            Module._FreeString(descPtr);
-            const contextPtr = Module._GetStateContext(editorEngine, namePtr);
-            const context = Module.UTF8ToString(contextPtr);
-            Module._FreeString(contextPtr);
-            const scriptPtr = Module._GetStateScript(editorEngine, namePtr);
-            const script = Module.UTF8ToString(scriptPtr);
-            Module._FreeString(scriptPtr);
-            let requires = [];
-            const reqCount = Module._GetStateRequiresCount(editorEngine, namePtr);
-            for (let i = 0; i < reqCount; i++) {
-                const reqPtr = Module._GetStateRequire(editorEngine, namePtr, i);
-                requires.push(Module.UTF8ToString(reqPtr));
-                Module._FreeString(reqPtr);
+function selectState(name) {
+    selectedState = name;
+    document.querySelectorAll('#states-list li').forEach(li => li.classList.remove('selected'));
+    const selectedLi = Array.from(document.querySelectorAll('#states-list li')).find(li => li.dataset.name === name);
+    if (selectedLi) selectedLi.classList.add('selected');
+    const panel = document.getElementById('state-details');
+    panel.innerHTML = '';
+    if (!name) return;
+    const namePtr = allocateUTF8(name);
+    const titlePtr = Module._GetStateTitle(editorEngine, namePtr);
+    const title = Module.UTF8ToString(titlePtr);
+    Module._FreeString(titlePtr);
+    const descPtr = Module._GetStateDescription(editorEngine, namePtr);
+    const desc = Module.UTF8ToString(descPtr);
+    Module._FreeString(descPtr);
+    const scriptPtr = Module._GetStateScript(editorEngine, namePtr);
+    const script = Module.UTF8ToString(scriptPtr);
+    Module._FreeString(scriptPtr);
+    let requires = [];
+    const reqCount = Module._GetStateRequiresCount(editorEngine, namePtr);
+    for (let i = 0; i < reqCount; i++) {
+        const reqPtr = Module._GetStateRequire(editorEngine, namePtr, i);
+        requires.push(Module.UTF8ToString(reqPtr));
+        Module._FreeString(reqPtr);
+    }
+    let actions = [];
+    const actCount = Module._GetStateActionsCount(editorEngine, namePtr);
+    for (let i = 0; i < actCount; i++) {
+        const actPtr = Module._GetStateAction(editorEngine, namePtr, i);
+        actions.push(Module.UTF8ToString(actPtr));
+        Module._FreeString(actPtr);
+    }
+    let properties = [];
+    const propCount = Module._GetStatePropertiesCount(editorEngine, namePtr);
+    for (let i = 0; i < propCount; i++) {
+        const propPtr = Module._GetStateProperty(editorEngine, namePtr, i);
+        properties.push(Module.UTF8ToString(propPtr));
+        Module._FreeString(propPtr);
+    }
+    Module._free(namePtr);
+    const content = document.createElement('div');
+    content.innerHTML = `
+        <style>
+            #state-script-textarea {
+                font-family: 'Consolas', 'Monaco', monospace;
+                font-size: 12px;
+                line-height: 1.4;
+                resize: vertical;
+                min-height: 100px;
+                max-height: 120px;
+                overflow-y: auto;
             }
-            let actions = [];
-            const actCount = Module._GetStateActionsCount(editorEngine, namePtr);
-            for (let i = 0; i < actCount; i++) {
-                const actPtr = Module._GetStateAction(editorEngine, namePtr, i);
-                actions.push(Module.UTF8ToString(actPtr));
-                Module._FreeString(actPtr);
+            #state-script-textarea:focus {
+                border-color: #007bb0;
+                box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
             }
-            let properties = [];
-            const propCount = Module._GetStatePropertiesCount(editorEngine, namePtr);
-            for (let i = 0; i < propCount; i++) {
-                const propPtr = Module._GetStateProperty(editorEngine, namePtr, i);
-                properties.push(Module.UTF8ToString(propPtr));
-                Module._FreeString(propPtr);
-            }
-            Module._free(namePtr);
-            const content = document.createElement('div');
-            content.innerHTML = `
-                <div class="grid-form">
-                    <label data-i18n="name:">Name:</label> <input value="${escapeHtml(name)}" onchange="updateStateName('${escapeHtml(name)}', this.value)">
-                    <label data-i18n="titleLabel:">Title:</label> <input value="${escapeHtml(title)}" onchange="updateState('${escapeHtml(name)}', 'title', this.value); saveToLocalStorage()">
-                    <label data-i18n="desc:">Desc:</label> <textarea onchange="updateState('${escapeHtml(name)}', 'description', this.value); saveToLocalStorage()">${escapeHtml(desc)}</textarea>
-                    <label data-i18n="context:">Context:</label> <input list="token-list" value="${escapeHtml(context)}" onchange="updateState('${escapeHtml(name)}', 'context', this.value); saveToLocalStorage()">
-                    <label data-i18n="script:">Script:</label> <input list="token-list" value="${escapeHtml(script)}" onchange="updateState('${escapeHtml(name)}', 'script', this.value); saveToLocalStorage()">
-                    <label data-i18n="requires:">Requires:</label> <input list="token-list" value="${escapeHtml(requires.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'requires', this.value); saveToLocalStorage()">
-                    <label data-i18n="actions:">Actions:</label> <input list="token-list" value="${escapeHtml(actions.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'actions', this.value); saveToLocalStorage()">
-                    <label data-i18n="props:">Props:</label> <input list="token-list" value="${escapeHtml(properties.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'properties', this.value); saveToLocalStorage()">
-                </div>
-                <div class="choices-section">
-                    <div class="toolbar">
-                        <input type="text" id="choice-search" data-i18n-placeholder="Search choices..." oninput="filterChoices('${escapeHtml(name)}')">
-                        <button class="icon-button" onclick="addChoice('${escapeHtml(name)}')" title="Add Choice"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead><tr><th data-i18n="text">Text</th><th data-i18n="cond">Cond</th><th data-i18n="target">Target</th><th data-i18n="effect">Effect</th><th data-i18n="hide">Hide</th><th></th></tr></thead>
-                            <tbody id="choices-${escapeHtml(name)}"></tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-            panel.appendChild(content);
-            setLanguage(currentLanguage);  // to translate the new labels
-            renderChoices(name);
-            filterChoices(name);
-        }
+        </style>
+        <div class="grid-form">
+            <label data-i18n="name:">Name:</label> <input value="${escapeHtml(name)}" onchange="updateStateName('${escapeHtml(name)}', this.value)">
+            <label data-i18n="titleLabel:">Title:</label> <input value="${escapeHtml(title)}" onchange="updateState('${escapeHtml(name)}', 'title', this.value); saveToLocalStorage()">
+            <label data-i18n="desc:">Desc:</label> <textarea onchange="updateState('${escapeHtml(name)}', 'description', this.value); saveToLocalStorage()">${escapeHtml(desc)}</textarea>
+            <label data-i18n="script:">Script:</label> <textarea id="state-script-textarea" list="token-list" onchange="updateState('${escapeHtml(name)}', 'script', this.value); saveToLocalStorage()">${escapeHtml(script)}</textarea>
+            <label data-i18n="requires:">Requires:</label> <input list="token-list" value="${escapeHtml(requires.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'requires', this.value); saveToLocalStorage()">
+            <label data-i18n="actions:">Actions:</label> <input list="token-list" value="${escapeHtml(actions.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'actions', this.value); saveToLocalStorage()">
+            <label data-i18n="props:">Props:</label> <div class="props-container" id="props-checkboxes-${escapeHtml(name)}"></div>
+        </div>
+        <div class="choices-section">
+            <div class="toolbar">
+                <input type="text" id="choice-search" data-i18n-placeholder="Search choices..." oninput="filterChoices('${escapeHtml(name)}')">
+                <button class="icon-button" onclick="addChoice('${escapeHtml(name)}')" title="Add Choice"><i class="fas fa-plus"></i></button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th data-i18n="text">Text</th><th data-i18n="cond">Cond</th><th data-i18n="target">Target</th><th data-i18n="effect">Effect</th><th data-i18n="hide">Hide</th><th></th></tr></thead>
+                    <tbody id="choices-${escapeHtml(name)}"></tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    panel.appendChild(content);
+    setLanguage(currentLanguage);  // to translate the new labels
+    renderChoices(name);
+    filterChoices(name);
+
+    // Render properties checkboxes
+    const propsDiv = document.getElementById(`props-checkboxes-${escapeHtml(name)}`);
+    availableProps.forEach(prop => {
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = prop;
+        if (properties.includes(prop)) checkbox.checked = true;
+        checkbox.onchange = () => {
+            const checkedProps = availableProps.filter(p => {
+                const cb = propsDiv.querySelector(`input[value="${p}"]`);
+                return cb && cb.checked;
+            }).join('; ');
+            updateStateList(name, 'properties', checkedProps);
+            saveToLocalStorage();
+        };
+        label.appendChild(checkbox);
+        const propDisplay = prop.replace('_', ' ').toUpperCase();
+        label.appendChild(document.createTextNode(` ${propDisplay}`));
+        propsDiv.appendChild(label);
+    });
+
+    // Ensure textarea is focusable and styled consistently
+    const scriptTextarea = document.getElementById('state-script-textarea');
+    if (scriptTextarea) {
+        scriptTextarea.style.width = '100%';
+        scriptTextarea.style.boxSizing = 'border-box';
+        scriptTextarea.focus();  // Optional: auto-focus on load if desired
+    }
+}
 
         function filterChoices(stateName) {
             const query = document.getElementById(`choice-search`).value.toLowerCase();
@@ -1617,7 +1862,7 @@
                     <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
                     <td class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button" onclick="scopeToState(this.previousSibling.value)" title="Go to State"><i class="fas fa-arrow-right"></i></button></td>
                     <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
-                    <td><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
+                    <td class="hide-cell"><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
                     <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
                 list.appendChild(tr);
@@ -1665,9 +1910,6 @@
             const descPtr = Module._GetStateDescription(editorEngine, oldPtr);
             Module._SetStateDescription(editorEngine, newPtr, descPtr);
             Module._FreeString(descPtr);
-            const contextPtr = Module._GetStateContext(editorEngine, oldPtr);
-            Module._SetStateContext(editorEngine, newPtr, contextPtr);
-            Module._FreeString(contextPtr);
             const scriptPtr = Module._GetStateScript(editorEngine, oldPtr);
             Module._SetStateScript(editorEngine, newPtr, scriptPtr);
             Module._FreeString(scriptPtr);
@@ -1722,8 +1964,6 @@
                 Module._SetStateTitle(editorEngine, namePtr, valuePtr);
             } else if (field === 'description') {
                 Module._SetStateDescription(editorEngine, namePtr, valuePtr);
-            } else if (field === 'context') {
-                Module._SetStateContext(editorEngine, namePtr, valuePtr);
             } else if (field === 'script') {
                 Module._SetStateScript(editorEngine, namePtr, valuePtr);
             }
@@ -2296,19 +2536,10 @@
             const menu = document.getElementById('context-menu');
             const list = document.getElementById('token-menu-list');
             list.innerHTML = '';
-            tokens.forEach(token => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="token">${token}</span> <span class="example">${tokenExamples[token] || ''}</span>`;
-                li.onclick = () => insertTextAtCursor(currentInput, token);
-                list.appendChild(li);
-            });
-            const separator = document.createElement('li');
-            separator.style.borderTop = '1px solid #3C3C3C';
-            separator.classList.add('separator');
-            list.appendChild(separator);
 
+            // Copy, Cut, Paste first, always visible with icons
             const copyLi = document.createElement('li');
-            copyLi.innerHTML = '<span class="token" data-i18n="Copy">Copy</span>';
+            copyLi.innerHTML = '<i class="fas fa-copy" style="margin-right: 8px;"></i> <span class="token" data-i18n="Copy">Copy</span>';
             copyLi.onclick = () => {
                 currentInput.select();
                 document.execCommand('copy');
@@ -2317,7 +2548,7 @@
             list.appendChild(copyLi);
 
             const cutLi = document.createElement('li');
-            cutLi.innerHTML = '<span class="token" data-i18n="Cut">Cut</span>';
+            cutLi.innerHTML = '<i class="fas fa-cut" style="margin-right: 8px;"></i> <span class="token" data-i18n="Cut">Cut</span>';
             cutLi.onclick = () => {
                 currentInput.select();
                 document.execCommand('cut');
@@ -2326,7 +2557,7 @@
             list.appendChild(cutLi);
 
             const pasteLi = document.createElement('li');
-            pasteLi.innerHTML = '<span class="token" data-i18n="Paste">Paste</span>';
+            pasteLi.innerHTML = '<i class="fas fa-paste" style="margin-right: 8px;"></i> <span class="token" data-i18n="Paste">Paste</span>';
             pasteLi.onclick = () => {
                 navigator.clipboard.readText().then(text => {
                     insertTextAtCursor(currentInput, text);
@@ -2334,6 +2565,20 @@
                 });
             };
             list.appendChild(pasteLi);
+
+            const separator = document.createElement('li');
+            separator.style.borderTop = '1px solid #3C3C3C';
+            separator.style.padding = '0';
+            separator.style.margin = '5px 0';
+            list.appendChild(separator);
+
+            // Then tokens
+            tokens.forEach(token => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="token">${token}</span> <span class="example">${tokenExamples[token] || ''}</span>`;
+                li.onclick = () => insertTextAtCursor(currentInput, token);
+                list.appendChild(li);
+            });
 
             document.getElementById('context-search').value = '';
             filterContextMenu();
@@ -2350,7 +2595,11 @@
             const query = document.getElementById('context-search').value.toLowerCase();
             document.querySelectorAll('#token-menu-list li').forEach(li => {
                 const tokenText = li.querySelector('.token') ? li.querySelector('.token').textContent.toLowerCase() : '';
-                li.style.display = (tokenText.includes(query) && !li.classList.contains('separator')) ? 'block' : (li.classList.contains('separator') ? 'block' : 'none');
+                if (li.style.borderTop) { // separator
+                    li.style.display = 'block';
+                } else {
+                    li.style.display = (tokenText.includes(query)) ? 'flex' : 'none';
+                }
             });
         }
 
@@ -2440,7 +2689,7 @@
         function updateGlobalToolbar(tabName) {
             const toolbar = document.getElementById('global-toolbar');
             toolbar.innerHTML = '';
-            toolbar.style.display = 'block';
+            toolbar.style.display = 'flex';
 
             if (tabName === 'text') {
                 const applyBtn = document.createElement('button');
