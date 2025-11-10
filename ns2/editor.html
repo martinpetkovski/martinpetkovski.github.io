@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"></script>
     <script type="text/javascript" src="NSE2.js"></script>
     <style>
-        body {
+         body {
             font-family: 'Noto Sans JP', sans-serif;
             margin: 0;
             padding: 0;
@@ -26,10 +26,68 @@
             box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #0C0C0C;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.08s ease-out;
+        }
+        #splash-screen img {
+            height: 140px;
+            width: auto;
+            filter: drop-shadow(0 0 30px #00AbC0);
+            animation: pulse 1.5s infinite alternate;
+        }
+        #splash-screen h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #D4D4D4;
+            margin: 30px 0 50px;
+        }
+        #loading-bar-container {
+            width: 40%;
+            max-width: 500px;
+            height: 6px;
+            background-color: #2a2a2a;
+            overflow: hidden;
+        }
+        #loading-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #00ffc0, #00AbC0, #007bb0);
+            animation: fill 1s linear forwards;
+        }
+        @keyframes fill {
+            0%   { width: 0%; }                     /* start */
+            12%  { width: 8%; }   /* slow start */
+            25%  { width: 22%; }  /* speed up */
+            38%  { width: 28%; }  /* tiny pause */
+            55%  { width: 58%; }  /* big burst */
+            70%  { width: 62%; }  /* short stall */
+            85%  { width: 88%; }  /* final sprint */
+            94%  { width: 94%; }  /* classic “99 %” hang */
+            100% { width: 100%; } /* snap to finish */
+        }
+        @keyframes pulse {
+            from { filter: drop-shadow(0 0 20px #00AbC0); }
+            to { filter: drop-shadow(0 0 40px #00AbC0); }
+        }
+        #splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .header {
             display: flex;
             align-items: center;
-            background-color: #1E1E1E;
+            background: linear-gradient(0deg, #0C0C0C, #121212);
             padding: 5px 10px;
             border-bottom: 1px solid #2a2a2a;
             position: sticky;
@@ -71,7 +129,7 @@
         }
 
         button:hover {
-            color: #00AbC0;
+            color: #FFF;
             background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
             box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
             transform: translateX(-1px);
@@ -385,7 +443,8 @@
             min-width: 24px;
             min-height: 24px;
             justify-content: center;
-            background-color: #334;
+            color: #FFFA;
+            background: linear-gradient(180deg, #214d64, #18384a);
             border: 1px solid #0A0A0A;
         }
 
@@ -903,7 +962,7 @@
             border-bottom: 3px solid transparent;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             border-radius: 3px;
-            color: #999;
+            color: #FFF5;
         }
 
         .props-container label:hover {
@@ -927,7 +986,9 @@
         .props-container label:has(input[type="checkbox"]:checked) {
             border-bottom-color: #00ff00;
             box-shadow: 0 6px 8px rgba(0, 255, 0, 0.3), inset 0 -1px 0 #00ff00;
-            color: #00AbC0;
+            color: #00ff00;
+            border: 1px #0f0 solid;
+            border-bottom-width: 5px;
         }
 
         .hide-cell {
@@ -941,7 +1002,7 @@
             width: 60px;
             height: 26px;
             background-color: #2D2D2D;
-            border-radius: 3px;
+            border-radius: 0px;
             position: relative;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
@@ -958,19 +1019,26 @@
             left: 8px;
             right: 8px;
             bottom: 4px;
-            height: 0;
-            background: #00ff00;
-            border-radius: 2px;
-            box-shadow: 0 0 12px #00ff00;
+            height: 5px;
+            background-color: #00000022;
+            box-shadow: 0;;
             transition: height 0.3s ease;
         }
 
         .hide-cell input[type="checkbox"]:checked::after {
-            height: 1px;
+            background-color: #0f0;
+            box-shadow: 0 0 22px #00ff00;
         }
     </style>
 </head>
 <body>
+    <div id="splash-screen">
+        <img src="icon_transparent.png" alt="NS2 Editor Logo">
+        <h1>NS2 Editor</h1>
+        <div id="loading-bar-container">
+            <div id="loading-bar"></div>
+        </div>
+    </div>
     <div class="header">
         <img src="icon_transparent.png" alt="Icon" style="height: 30px; width: auto;">
         <h1 data-i18n="title">NS2 Editor</h1>
@@ -1119,6 +1187,52 @@
     <script>
         let languages = {};
         let currentLanguage = 'en';
+
+        (async () => {
+            const splashStart = performance.now();  // <-- start timer for minimum 1-second splash
+
+            await loadLanguages();
+            await initModule();
+            editorEngine = Module._CreateEngine();
+            const savedContent = localStorage.getItem('ns2_content');
+            if (savedContent) {
+                Module.FS.writeFile('/story.ns2', savedContent);
+                const pathPtr = allocateUTF8('/story.ns2');
+                Module._LoadFromFile(editorEngine, pathPtr);
+                Module._free(pathPtr);
+            }
+            renderEditor();
+            openTab('metadata');
+            updateGlobalToolbar('metadata');
+
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'ns2_content' && event.newValue) {
+                    Module.FS.writeFile('/story.ns2', event.newValue);
+                    const pathPtr = allocateUTF8('/story.ns2');
+                    const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+                    Module._free(pathPtr);
+                    if (loaded) {
+                        renderEditor();
+                    }
+                }
+            });
+
+            // ----- Hide splash after at least 1 second (with smooth fade) -----
+            const elapsed = performance.now() - splashStart;
+            const minDuration = 1000;
+            const delay = Math.max(minDuration - elapsed, 0);
+
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.classList.add('hidden');
+                    setTimeout(() => {
+                        if (splash) splash.remove();
+                    }, 700); // match transition duration + a little buffer
+                }
+            }, delay);
+            // ------------------------------------------------------------------
+        })();
 
         async function loadLanguages() {
             try {
