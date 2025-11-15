@@ -1,3 +1,4 @@
+<!-- ...existing code... -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -474,21 +475,40 @@
     .mermaid .node rect,
     .mermaid .node polygon,
     .mermaid .node circle {
-        fill: #1E90FF;
-        stroke: #0000FF;
+        fill: #0b66a1;
+        stroke: #08324a;
         stroke-width: 2px;
-        transition: all 0.3s;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.18s ease;
+        filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));
+        box-shadow: 0 6px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+        rx: 6px; ry: 6px;
     }
 
+    /* Hover/active visual similar to UE Blueprint nodes */
     .mermaid .node:hover rect,
     .mermaid .node:hover polygon,
     .mermaid .node:hover circle {
-        fill: #3C3C3C;
-        stroke: #007bb0;
-        filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+        fill: #0d78b0;
+        stroke: #00c3ff;
+        filter: drop-shadow(0 10px 22px rgba(0,0,0,0.55));
+        transform: translateY(-2px) scale(1.01);
     }
+
+    /* Node header styling */
+    .mermaid .node text {
+        fill: #ffffff;
+        font-weight: 700;
+        font-family: 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif;
+        font-size: 12px;
+        pointer-events: none; /* text shouldn't block pointer events */
+    }
+
+    /* Make node labels clearer and give body a subtle inset */
+    .mermaid .node .label rect { fill-opacity: 0.02; }
+    .mermaid .node .label { pointer-events: none; }
+
+    /* Ports (if mermaid uses small circles) */
+    .mermaid .node circle { fill: #00c3ff; stroke: #004a5a; stroke-width: 1px; }
 
     .mermaid .node text {
         fill: #FFFFFF;
@@ -496,11 +516,36 @@
         text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
+    /* Highlight & selection visuals */
+    .mermaid .node.graph-hover rect,
+    .mermaid .node.graph-hover polygon,
+    .mermaid .node.graph-hover circle {
+        stroke: #ffd166;
+        stroke-width: 3px;
+        filter: drop-shadow(0 10px 22px rgba(255,209,102,0.12));
+    }
+
+    .mermaid .node.graph-selected rect,
+    .mermaid .node.graph-selected polygon,
+    .mermaid .node.graph-selected circle {
+        stroke: #ff8c42;
+        stroke-width: 3px;
+        filter: drop-shadow(0 12px 28px rgba(255,140,66,0.18));
+        transform: translateY(-3px) scale(1.02);
+    }
+
+    .graph-icon-fo { pointer-events: none; }
+
     .mermaid .edgePath .path {
-        stroke: #FFFFFF;
-        stroke-width: 2px;
-        transition: all 0.3s;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        stroke: #99e6ff;
+        stroke-width: 2.5px;
+        transition: all 0.18s ease;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+        stroke-linecap: round;
+    }
+
+    .mermaid .edgeLabel {
+        fill: #dff9ff; color: #012a36; background: rgba(255,255,255,0.02);
     }
 
     .mermaid .edgeLabel {
@@ -949,13 +994,14 @@
     }
 
     #graph-context-menu {
-        position: absolute;
+        position: fixed;
         background-color: #252526;
         border: 1px solid #3C3C3C;
         box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-        z-index: 1000;
+        z-index: 10000;
         display: none;
         transition: all 0.3s ease;
+        min-width: 160px;
     }
 
     #graph-context-menu ul {
@@ -973,6 +1019,36 @@
     }
 
     #graph-context-menu li:hover {
+        color: #00AbC0;
+        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
+        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+    }
+
+    /* Support for dynamic button-based context menu */
+    #graph-context-menu .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 6px;
+    }
+
+    #graph-context-menu .button-container button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        text-align: left;
+        padding: 8px 10px;
+        border: none;
+        background: rgba(37, 37, 38, 0.7);
+        color: #999;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        font-size: 13px;
+    }
+
+    #graph-context-menu .button-container button:hover {
         color: #00AbC0;
         background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
         box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
@@ -1392,9 +1468,7 @@
     </div>
 
     <div id="graph-context-menu">
-        <ul>
-            <li onclick="viewStateFromGraph()" data-i18n="View State">View State</li>
-        </ul>
+        <!-- Context menu items will be injected dynamically -->
     </div>
 
     <script>
@@ -1855,6 +1929,7 @@
                             { token: 'ns2.flag', foreground: '569cd6', background: '3c3c3c' }
                         ],
                         colors: {
+                           
                             'editor.background': '#1e1e1e'
                         }
                     });
@@ -2247,6 +2322,9 @@ function selectState(name) {
     if (firstInput) {
         firstInput.focus();
     }
+
+    // Sync selection with graph: highlight the node for the selected state
+    try { highlightGraphNode(name); } catch (e) {}
 }
 
         function filterChoices(stateName) {
@@ -2397,6 +2475,24 @@ function selectState(name) {
                 } else {
                     setStatus("State added successfully");
                 }
+            }
+        }
+
+        function playState(name) {
+            openTab('play');
+            if (typeof setPlayState === 'function') {
+                setPlayState(name);
+            } else {
+                window.currentPlayState = name;
+            }
+        }
+        function forcePlayState(name) {
+            openTab('play');
+            if (typeof setPlayState === 'function') {
+                setPlayState(name, true); // true = force
+            } else {
+                window.currentPlayState = name;
+                window.forcePlay = true;
             }
         }
 
@@ -3007,23 +3103,55 @@ function selectState(name) {
                 graphDef += '    A["No states defined"]';
                 return graphDef;
             }
+
+            // Map original state names to safe mermaid node IDs (avoid spaces/reserved words)
+            const idMap = {};
+            let idCounter = 1;
+            function makeId(name) {
+                if (idMap[name]) return idMap[name];
+                const id = 'n' + (idCounter++);
+                idMap[name] = id;
+                return id;
+            }
+
+            function escLabel(s) {
+                if (!s && s !== 0) return '';
+                return String(s).replace(/\|/g, '&#124;').replace(/"/g, '\\"').replace(/\n/g, ' ');
+            }
+
+            // Emit node definitions using safe IDs, but show the real title as label
             for (let name of nodes) {
                 const namePtr = allocateUTF8(name);
                 const sTitlePtr = Module._GetStateTitle(editorEngine, namePtr);
                 const sTitle = Module.UTF8ToString(sTitlePtr);
                 Module._FreeString(sTitlePtr);
                 Module._free(namePtr);
-                graphDef += `    ${name}["${sTitle || name}"]\n`;
+                const id = makeId(name);
+                // embed an internal-name marker in the label so we can map rendered nodes back to internal state names
+                const marker = '@@ID@@' + name;
+                graphDef += `    ${id}["${escLabel(sTitle || name)}"]\n`;
             }
+
+            // expose reverse mapping id -> state name for fallback resolution
+            window.graphIdToStateName = {};
+            Object.keys(idMap).forEach(k => {
+                window.graphIdToStateName[idMap[k]] = k;
+            });
+
+            // Emit edges using mapped IDs and sanitized labels
             for (let from of nodes) {
                 (adj[from] || []).forEach(({ to, label }) => {
                     if (nodes.has(to)) {
-                        graphDef += `    ${from} -->|${label}| ${to}\n`;
+                        const fromId = makeId(from);
+                        const toId = makeId(to);
+                        graphDef += `    ${fromId} -->|${escLabel(label)}| ${toId}\n`;
                     }
                 });
             }
+
             if (start) {
-                graphDef += `    style ${start} fill:#007bb0,stroke:#007bb0,stroke-width:2px\n`;
+                const startId = idMap[start] || makeId(start);
+                graphDef += `    style ${startId} fill:#007bb0,stroke:#007bb0,stroke-width:2px\n`;
             }
             return graphDef;
         }
@@ -3058,26 +3186,311 @@ function selectState(name) {
                     nodes.forEach(node => {
                         const labelElement = node.querySelector('text');
                         if (labelElement) {
-                            const labelText = labelElement.textContent.trim();
-                            const namePtr = allocateUTF8(labelText);
-                            const descPtr = Module._GetStateDescription(editorEngine, namePtr);
-                            const desc = Module.UTF8ToString(descPtr);
-                            Module._FreeString(descPtr);
-                            Module._free(namePtr);
+                            // Determine internal state name from the node's id via window.graphIdToStateName mapping
+                            const fullId = node.id || node.getAttribute('id') || '';
+                            console.debug('[renderMermaid] node id:', fullId);
+                            
+                            // Mermaid adds a prefix like 'flowchart-' to node IDs
+                            // Extract the base ID (e.g., 'n4' from 'flowchart-n4-3')
+                            let baseId = fullId;
+                            if (fullId.includes('-')) {
+                                // Try to extract n<number> pattern
+                                const match = fullId.match(/n\d+/);
+                                if (match) {
+                                    baseId = match[0];
+                                }
+                            }
+                            console.debug('[renderMermaid] base id:', baseId);
+                            
+                            let internalName = null;
+                            if (baseId && window.graphIdToStateName && window.graphIdToStateName[baseId]) {
+                                internalName = window.graphIdToStateName[baseId];
+                                console.debug('[renderMermaid] resolved from mapping:', internalName);
+                            } else {
+                                // Fallback: try to match the visible label text to a state title or name
+                                const labelText = (labelElement.textContent || '').trim();
+                                console.debug('[renderMermaid] trying to resolve from label text:', labelText);
+                                if (labelText) {
+                                    try {
+                                        const stateCount = Module._GetStateCount(editorEngine);
+                                        for (let si = 0; si < stateCount; si++) {
+                                            const sNamePtr = Module._GetStateName(editorEngine, si);
+                                            const sName = Module.UTF8ToString(sNamePtr);
+                                            Module._FreeString(sNamePtr);
+                                            const sTitlePtr = Module._GetStateTitle(editorEngine, allocateUTF8(sName));
+                                            const sTitle = Module.UTF8ToString(sTitlePtr);
+                                            Module._FreeString(sTitlePtr);
+                                            if (sTitle === labelText || sName === labelText) {
+                                                internalName = sName;
+                                                console.debug('[renderMermaid] resolved by title/name lookup:', internalName);
+                                                break;
+                                            }
+                                        }
+                                    } catch (e) {
+                                        console.warn('[renderMermaid] failed to resolve label to state:', e);
+                                    }
+                                }
+                                // Last resort: use the raw label text as-is
+                                if (!internalName) {
+                                    internalName = labelText || '';
+                                    console.debug('[renderMermaid] using label text as fallback:', internalName);
+                                }
+                            }
+                            node.setAttribute('data-state', internalName);
+
+                            // Ensure pointer events and visual cursor on SVG nodes and children
+                            try {
+                                node.style.pointerEvents = 'auto';
+                                node.style.cursor = 'pointer';
+                                Array.from(node.querySelectorAll('*')).forEach(el => { try { el.style.pointerEvents = 'auto'; el.style.cursor = 'pointer'; } catch (e) {} });
+                            } catch (e) {}
+
+                            // Debug mapping
+                            try { console.debug('[graph] node mapped ->', internalName); } catch (e) {}
+
+                            // Only attempt to fetch state description/title if we have a likely internal name
+                            let desc = '';
+                            try {
+                                if (internalName) {
+                                    // verify state exists by searching for internalName among state names
+                                    let found = false;
+                                    const sc = Module._GetStateCount(editorEngine);
+                                    for (let s = 0; s < sc; s++) {
+                                        const nPtr = Module._GetStateName(editorEngine, s);
+                                        const n = Module.UTF8ToString(nPtr);
+                                        Module._FreeString(nPtr);
+                                        if (n === internalName) { found = true; break; }
+                                    }
+                                    if (found) {
+                                        const namePtr = allocateUTF8(internalName);
+                                        const descPtr = Module._GetStateDescription(editorEngine, namePtr);
+                                        desc = Module.UTF8ToString(descPtr);
+                                        Module._FreeString(descPtr);
+                                        Module._free(namePtr);
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('[renderMermaid] error fetching state description:', e);
+                            }
                             const title = document.createElementNS(ns, 'title');
-                            title.textContent = desc.slice(0, 200) || '';
+                            title.textContent = (desc && desc.slice) ? desc.slice(0, 200) : '';
                             node.appendChild(title);
 
-                            node.addEventListener('contextmenu', (e) => {
-                                // Ensure only active when graph tab is visible
-                                if (document.getElementById('tab-graph').classList.contains('active')) {
-                                    e.preventDefault();
-                                    graphSelectedState = labelText;
-                                    showGraphContextMenu(e.pageX, e.pageY);
+                            // Helper to open state
+                            const openStateFromNode = (ev) => {
+                                try { ev && ev.stopPropagation(); } catch (e) {}
+                                if (internalName) {
+                                    scopeToState(internalName);
+                                    openTab('states');
                                 }
-                            });
+                            };
+
+                            // Helper to show context menu
+                            const showContextFromNode = (ev) => {
+                                if (document.getElementById('tab-graph').classList.contains('active')) {
+                                    try { ev && ev.preventDefault(); } catch (e) {}
+                                    graphSelectedState = internalName;
+                                    showGraphContextMenu((ev && ev.pageX) || 0, (ev && ev.pageY) || 0);
+                                }
+                            };
+
+                            // Attach listeners in capture phase for robustness
+                            try {
+                                node.addEventListener('pointerdown', (ev) => { if (ev.button === 0) openStateFromNode(ev); }, { passive: true, capture: true });
+                                node.addEventListener('click', openStateFromNode, true);
+                                node.addEventListener('contextmenu', showContextFromNode, true);
+                            } catch (e) {
+                                // fallback
+                                node.addEventListener('pointerdown', (ev) => { if (ev.button === 0) openStateFromNode(ev); });
+                                node.addEventListener('click', openStateFromNode);
+                                node.addEventListener('contextmenu', showContextFromNode);
+                            }
+
+                            // Also attach to inner shape/text to ensure events fire when those elements capture them
+                            const innerShape = node.querySelector('rect, polygon, circle, ellipse, path');
+                            if (innerShape) {
+                                try { innerShape.style.cursor = 'pointer'; innerShape.style.pointerEvents = 'auto'; } catch (e) {}
+                                innerShape.addEventListener('pointerdown', (ev) => { if (ev.button === 0) openStateFromNode(ev); }, true);
+                                innerShape.addEventListener('click', openStateFromNode, true);
+                                innerShape.addEventListener('contextmenu', showContextFromNode, true);
+                            }
+                            if (labelElement) {
+                                try { labelElement.style.cursor = 'pointer'; labelElement.style.pointerEvents = 'none'; } catch (e) {}
+                                labelElement.addEventListener('pointerdown', (ev) => { if (ev.button === 0) openStateFromNode(ev); }, true);
+                                labelElement.addEventListener('click', openStateFromNode, true);
+                                labelElement.addEventListener('contextmenu', showContextFromNode, true);
+                            }
+
+                            // Hover visual
+                            node.addEventListener('pointerenter', () => { node.classList.add('graph-hover'); }, true);
+                            node.addEventListener('pointerleave', () => { node.classList.remove('graph-hover'); }, true);
+
+                            // Insert small Font Awesome icon overlay (foreignObject) at top-left of node
+                            try {
+                                const nodeBBox = node.getBBox();
+                                const fo = document.createElementNS(ns, 'foreignObject');
+                                fo.setAttribute('x', String(nodeBBox.x + 6));
+                                fo.setAttribute('y', String(nodeBBox.y + 6));
+                                fo.setAttribute('width', '18');
+                                fo.setAttribute('height', '18');
+                                fo.setAttribute('class', 'graph-icon-fo');
+                                fo.innerHTML = `<div xmlns=\"http://www.w3.org/1999/xhtml\" style=\"width:18px;height:18px;display:flex;align-items:center;justify-content:center;pointer-events:none\"><i class=\"fas fa-book\" style=\"font-size:13px;color:#fff;font-family:'Font Awesome 6 Free';font-weight:900;\"></i></div>`;
+                                node.appendChild(fo);
+                            } catch (e) {}
                         }
                     });
+
+                    // Fallback: container-level click handler to catch clicks that don't reach node elements
+                    try {
+                        // remove previous handler if present
+                        if (container._graphClickHandler) container.removeEventListener('click', container._graphClickHandler, true);
+                        container._graphClickHandler = function(e) {
+                            try {
+                                const node = e.target && e.target.closest && e.target.closest('.node');
+                                if (node) {
+                                    const st = node.getAttribute('data-state') || node.dataset.state;
+                                    if (st) {
+                                        // primary button only
+                                        if (e.button === 0 || e.type === 'click') {
+                                            e.stopPropagation();
+                                            scopeToState(st);
+                                            openTab('states');
+                                        }
+                                    }
+                                }
+                            } catch (err) {}
+                        };
+                        container.addEventListener('click', container._graphClickHandler, true);
+                        // remove previous pointer handlers if present
+                        if (container._graphPointerDown) {
+                            container.removeEventListener('pointerdown', container._graphPointerDown, true);
+                            container.removeEventListener('pointermove', container._graphPointerMove, true);
+                            container.removeEventListener('pointerup', container._graphPointerUp, true);
+                            container.removeEventListener('contextmenu', container._graphContext, true);
+                        }
+
+                        // pointer tracking to distinguish click vs drag (so pan/zoom still works)
+                        container._graphPointerTracker = {};
+                        container._graphPointerDown = function(e) {
+                            try {
+                                if (!e.isPrimary) return;
+                                container._graphPointerTracker.pointerId = e.pointerId;
+                                container._graphPointerTracker.startX = e.clientX;
+                                container._graphPointerTracker.startY = e.clientY;
+                                container._graphPointerTracker.moved = false;
+                                container._graphPointerTracker.downTarget = (e.target && e.target.closest) ? e.target.closest('.node') : null;
+                            } catch (err) {}
+                        };
+                        container._graphPointerMove = function(e) {
+                            try {
+                                const t = container._graphPointerTracker;
+                                if (!t || typeof t.startX !== 'number') return;
+                                const dx = e.clientX - t.startX;
+                                const dy = e.clientY - t.startY;
+                                if (Math.hypot(dx, dy) > 6) t.moved = true;
+                            } catch (err) {}
+                        };
+                        container._graphPointerUp = function(e) {
+                            try {
+                                const t = container._graphPointerTracker;
+                                if (!t) return;
+                                // only primary
+                                if (e.button !== 0) return;
+                                const clickedNode = (e.target && e.target.closest) ? e.target.closest('.node') : null;
+                                // prefer the node where pointerdown started
+                                const node = t.downTarget || clickedNode;
+                                if (node && !t.moved) {
+                                    const st = node.getAttribute('data-state') || node.dataset.state;
+                                    if (st) {
+                                        try { e.stopPropagation(); } catch (er) {}
+                                        scopeToState(st);
+                                        openTab('states');
+                                    }
+                                }
+                                // reset tracker
+                                container._graphPointerTracker = {};
+                            } catch (err) {}
+                        };
+
+                        container._graphContext = function(e) {
+                            try {
+                                console.debug('[graph context] contextmenu event fired at', e.clientX, e.clientY);
+                                // find node under cursor at event position
+                                const el = document.elementFromPoint(e.clientX, e.clientY);
+                                console.debug('[graph context] elementFromPoint returned:', el ? el.className : 'null');
+                                const node = el && el.closest ? el.closest('.node') : null;
+                                console.debug('[graph context] closest node:', node ? node.id : 'null');
+                                if (node) {
+                                    e.preventDefault();
+                                    // Try attribute first
+                                    let st = node.getAttribute('data-state') || node.dataset.state || null;
+                                    // If not set or empty, try to resolve via node id -> mapping
+                                    if (!st) {
+                                        try {
+                                            const fullId = node.id || node.getAttribute('id') || '';
+                                            let baseId = fullId;
+                                            if (fullId && fullId.includes('-')) {
+                                                const match = fullId.match(/n\d+/);
+                                                if (match) baseId = match[0];
+                                            }
+                                            if (baseId && window.graphIdToStateName && window.graphIdToStateName[baseId]) {
+                                                st = window.graphIdToStateName[baseId];
+                                            }
+                                        } catch (e) {
+                                            console.debug('[graph context] id->name mapping failed', e);
+                                        }
+                                    }
+
+                                    // If still not resolved, try matching visible label text to state titles/names (case-insensitive)
+                                    if (!st) {
+                                        try {
+                                            const labelEl = node.querySelector && node.querySelector('text');
+                                            const labelText = labelEl ? (labelEl.textContent || '').trim().toLowerCase() : '';
+                                            if (labelText) {
+                                                const sc = Module._GetStateCount(editorEngine);
+                                                for (let si = 0; si < sc; si++) {
+                                                    const nPtr = Module._GetStateName(editorEngine, si);
+                                                    const n = Module.UTF8ToString(nPtr);
+                                                    Module._FreeString(nPtr);
+                                                    const tPtr = Module._GetStateTitle(editorEngine, allocateUTF8(n));
+                                                    const t = Module.UTF8ToString(tPtr);
+                                                    Module._FreeString(tPtr);
+                                                    if ((n && n.toLowerCase().trim() === labelText) || (t && t.toLowerCase().trim() === labelText)) {
+                                                        st = n;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        } catch (e) {
+                                            console.debug('[graph context] label->name lookup failed', e);
+                                        }
+                                    }
+
+                                    console.debug('[graph context] showing menu for state (resolved):', st);
+                                    graphSelectedState = st || null;
+                                    showGraphContextMenu(e.pageX, e.pageY);
+                                } else {
+                                    console.debug('[graph context] no node found');
+                                }
+                            } catch (err) {
+                                console.error('[graph context] error:', err);
+                            }
+                        };
+
+                        container.addEventListener('pointerdown', container._graphPointerDown, true);
+                        container.addEventListener('pointermove', container._graphPointerMove, true);
+                        container.addEventListener('pointerup', container._graphPointerUp, true);
+                        container.addEventListener('contextmenu', container._graphContext, true);
+                    } catch (e) {}
+                    // If a specific graph state was requested, highlight it now (ensure UI centers on it)
+                    try {
+                        if (typeof highlightGraphNode === 'function' && currentGraphState) {
+                            // schedule on next tick so DOM/SVG is fully ready
+                            setTimeout(() => {
+                                try { highlightGraphNode(currentGraphState); } catch (e) { console.warn('highlightGraphNode failed', e); }
+                            }, 30);
+                        }
+                    } catch (e) {}
                 }
             }).catch(e => {
                 const container = document.getElementById('graph-container');
@@ -3126,11 +3539,37 @@ function selectState(name) {
             }
         }
 
+        // Highlight a graph node corresponding to a state name, and center it in view
+        function highlightGraphNode(stateName) {
+            const container = document.getElementById('graph-container');
+            if (!container) return;
+            const svgElement = container.querySelector('svg');
+            if (!svgElement) return;
+            // remove previous selection
+            svgElement.querySelectorAll('.node.graph-selected').forEach(n => n.classList.remove('graph-selected'));
+            if (!stateName) return;
+            // find node by data-state
+            const node = svgElement.querySelector(`.node[data-state="${CSS.escape(stateName)}"]`) || svgElement.querySelector(`.node[data-state='${stateName}']`);
+            if (!node) return;
+            node.classList.add('graph-selected');
+            // try to center the node
+            try {
+                const contentG = svgElement.querySelector('g');
+                const bbox = node.getBBox();
+                const containerRect = container.getBoundingClientRect();
+                const scale = Math.min(containerRect.width / bbox.width, containerRect.height / bbox.height) * 0.6;
+                if (graphPanZoom && typeof graphPanZoom.zoomAbs === 'function') graphPanZoom.zoomAbs(0, 0, scale);
+                const offsetX = (containerRect.width / 2) - (bbox.width * scale / 2) - (bbox.x * scale);
+                const offsetY = (containerRect.height / 2) - (bbox.height * scale / 2) - (bbox.y * scale);
+                if (graphPanZoom && typeof graphPanZoom.moveTo === 'function') graphPanZoom.moveTo(offsetX, offsetY);
+            } catch (e) {}
+        }
         function setupContextMenu() {
             // Global contextmenu handler with tab check
             document.addEventListener('contextmenu', (e) => {
                 const activeTab = document.querySelector('.tab-content.active');
                 const target = e.target;
+                console.debug('[setupContextMenu] contextmenu event, tab:', activeTab?.id, 'target:', target.tagName, 'in graph?', target.closest('#graph-container') ? 'yes' : 'no');
                 if (activeTab && activeTab.contains(target)) {
                     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                         e.preventDefault();
@@ -3138,8 +3577,9 @@ function selectState(name) {
                         showContextMenu(e.pageX, e.pageY);
                     }
                 } else if (target.closest('#graph-container') && document.getElementById('tab-graph').classList.contains('active')) {
-                    // Graph-specific only if active
-                    e.preventDefault();
+                    // Graph-specific: let it bubble so container handler can process it
+                    // Do NOT preventDefault here; let the container._graphContext handler do it
+                    console.debug('[setupContextMenu] graph container context, allowing to bubble');
                 }
                 // Otherwise, allow default inspect
             }, true); // Use capture phase for higher priority
@@ -3191,19 +3631,19 @@ function selectState(name) {
                             e.preventDefault();
                             centerGraph();
                             break;
-                        case 'ArrowLeft':
+                        case 'arrowleft':
                             e.preventDefault();
                             if (graphPanZoom) graphPanZoom.moveBy(-20, 0);
                             break;
-                        case 'ArrowRight':
+                        case 'arrowright':
                             e.preventDefault();
                             if (graphPanZoom) graphPanZoom.moveBy(20, 0);
                             break;
-                        case 'ArrowUp':
+                        case 'arrowup':
                             e.preventDefault();
                             if (graphPanZoom) graphPanZoom.moveBy(0, -20);
                             break;
-                        case 'ArrowDown':
+                        case 'arrowdown':
                             e.preventDefault();
                             if (graphPanZoom) graphPanZoom.moveBy(0, 20);
                             break;
@@ -3295,6 +3735,57 @@ function selectState(name) {
 
         function showGraphContextMenu(x, y) {
             const menu = document.getElementById('graph-context-menu');
+            menu.className = '';
+            menu.innerHTML = '';
+
+            function resolveGraphSelectedState() {
+                if (!graphSelectedState) return null;
+                try {
+                    const sc = Module._GetStateCount(editorEngine);
+                    const needle = String(graphSelectedState).trim();
+                    for (let si = 0; si < sc; si++) {
+                        const nPtr = Module._GetStateName(editorEngine, si);
+                        const n = Module.UTF8ToString(nPtr);
+                        Module._FreeString(nPtr);
+                        if (n === needle) return n;
+                        // compare titles as fallback
+                        try {
+                            const tPtr = Module._GetStateTitle(editorEngine, allocateUTF8(n));
+                            const t = Module.UTF8ToString(tPtr);
+                            Module._FreeString(tPtr);
+                            if (t === needle) return n;
+                        } catch (e) {}
+                    }
+                } catch (e) {
+                    console.warn('[resolveGraphSelectedState] module not available or error', e);
+                }
+                return null;
+            }
+
+            const resolved = resolveGraphSelectedState();
+
+            const options = [
+                { icon: 'fas fa-eye', label: languages[currentLanguage]['View in States'] || 'View in States', action: () => { if (resolved) scopeToState(resolved); } },
+                { icon: 'fas fa-expand', label: languages[currentLanguage]['View in Graph'] || 'View in Graph', action: () => { if (resolved) { currentGraphState = resolved; viewInGraph(resolved); } } },
+                { icon: 'fas fa-star', label: languages[currentLanguage]['Set as Start'] || 'Set as Start', action: () => { if (resolved) setAsStart(resolved); } },
+                { icon: 'fas fa-play', label: languages[currentLanguage]['Play State'] || 'Play State', action: () => { if (resolved) playState(resolved); } },
+                { icon: 'fas fa-forward', label: languages[currentLanguage]['Force Play State'] || 'Force Play State', action: () => { if (resolved) forcePlayState(resolved); } },
+                { icon: 'fas fa-trash', label: languages[currentLanguage]['Delete State'] || 'Delete State', action: () => { if (resolved) deleteState(resolved); } },
+            ];
+
+            const inner = document.createElement('div');
+            inner.className = 'button-container';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.onclick = (e) => { e.stopPropagation(); menu.style.display = 'none'; opt.action(); };
+                btn.innerHTML = `<i class="${opt.icon}" style="margin-right:8px;"></i> ${opt.label}`;
+                if (!resolved) {
+                    btn.setAttribute('disabled', 'disabled');
+                    btn.classList.add('disabled');
+                }
+                inner.appendChild(btn);
+            });
+            menu.appendChild(inner);
             menu.style.left = `${x}px`;
             menu.style.top = `${y}px`;
             menu.style.display = 'block';
@@ -3305,10 +3796,35 @@ function selectState(name) {
         }
 
         function viewStateFromGraph() {
+            console.log('[viewStateFromGraph] graphSelectedState:', graphSelectedState);
             if (graphSelectedState) {
+                console.log('[viewStateFromGraph] calling scopeToState with:', graphSelectedState);
                 scopeToState(graphSelectedState);
+            } else {
+                console.warn('[viewStateFromGraph] graphSelectedState is empty');
             }
             hideGraphContextMenu();
+        }
+
+        function deleteState(name) {
+            console.log('[deleteState] called with name:', name);
+            if (!name) {
+                console.warn('[deleteState] no name provided');
+                return;
+            }
+            if (confirm(`Delete state "${name}"?`)) {
+                console.log('[deleteState] removing state:', name);
+                removeState(name);
+                // Refresh graph view
+                try { 
+                    console.log('[deleteState] refreshing graph');
+                        // clear any graph selection referencing the deleted state
+                        if (graphSelectedState === name) graphSelectedState = null;
+                        renderGraph(); 
+                } catch (e) {
+                    console.error('[deleteState] error:', e);
+                }
+            }
         }
 
         function updateTokens() {
