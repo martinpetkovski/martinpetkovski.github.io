@@ -564,6 +564,24 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
     }
 
+    /* Groups inside the global toolbar */
+    .toolbar-group {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        padding-right: 10px;
+        border-right: 1px solid rgba(255,255,255,0.03);
+        margin-right: 8px;
+    }
+    .toolbar-group .group-label {
+        color: #8b99a6;
+        font-size: 11px;
+        padding-right: 6px;
+        opacity: 0.5;
+        white-space: nowrap;
+        margin-left: auto;
+    }
+
     .toolbar .menu-button {
         margin-left: auto;
         cursor: pointer !important;
@@ -596,7 +614,7 @@
         line-height: 1.4;
     }
 
-    #play-desc, #play-stats {
+    #play-desc {
         margin-bottom: 20px !important;
     }
 
@@ -624,6 +642,28 @@
         transform: translateX(-10px);
         animation: slideIn 0.5s forwards;
         text-align: left;
+    }
+
+    /* Disabled choice buttons both in editor and play view */
+    .choices button[disabled],
+    .choices button.disabled {
+        opacity: 0.45 !important;
+        cursor: not-allowed !important;
+        color: #777 !important;
+        background-color: rgba(255,255,255,0.02) !important;
+        box-shadow: none !important;
+        transform: none !important;
+        text-decoration: line-through !important;
+    }
+
+    /* General disabled button styling for toolbar and other icon buttons */
+    button[disabled],
+    button.disabled {
+        opacity: 0.45 !important;
+        cursor: not-allowed !important;
+        color: #777 !important;
+        box-shadow: none !important;
+        background-color: rgba(255,255,255,0.02) !important;
     }
 
     @keyframes slideIn {
@@ -673,6 +713,14 @@
         color: #00AbC0;
         border-bottom: 2px solid #00AbC0;
         box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
+    }
+
+    .states-list-panel ul li.disabled {
+        opacity: 0.85;
+        cursor: pointer;
+        color: #999;
+        text-decoration: none;
+        font-style: italic;
     }
 
     .state-details-panel {
@@ -1084,8 +1132,8 @@
     #global-toolbar { 
         position: fixed;
         top: 70px;
-        left: 0;
-        right: 0;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 200;
         background: #151515 !important;
         opacity: 0;
@@ -1094,6 +1142,8 @@
         overflow: hidden;
         transition: all 0.3s ease;
         pointer-events: none;
+        width: fit-content;
+        max-width: 90vw;
     }
 
     .tabs:hover ~ #global-toolbar,
@@ -1160,6 +1210,58 @@
         width: 60px !important;
         margin: 0 !important;
     }
+    
+    #status-window {
+        display: none;
+        position: absolute;
+        top: 100px;
+        left: 100px;
+        width: 300px;
+        max-height: 200px;
+        background: #111;
+        color: #D4D4D4;
+        border: 1px solid #2a2a2a;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+        z-index: 999;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    #status-handle {
+        cursor: move;
+        background: #222;
+        padding: 5px 10px;
+        text-align: center;
+        border-bottom: 1px solid #2a2a2a;
+        font-weight: bold;
+        font-size: 13px;
+        box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);
+    }
+
+    #play-error {
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #ff6b6b;
+        background: rgba(255, 0, 0, 0.1);
+        border-bottom: 1px solid #2a2a2a;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-y: auto;
+        max-height: 80px;
+    }
+
+    #status-content {
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #D4D4D4;
+        background: #1E1E1E;
+        overflow-y: auto;
+        max-height: 100px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
 </style>
 </head>
 <body>
@@ -1175,37 +1277,13 @@
         <h1 data-i18n="title">NS2 Editor</h1>
         <div class="menubar">
             <div class="menu-button">
-                <span data-i18n="file">File</span> <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu">
-                    <button onclick="newStory()"><i class="fas fa-file"></i> <span data-i18n="newStory">New Story</span></button>
-                    <button onclick="document.getElementById('file-input').click()"><i class="fas fa-folder-open"></i> <span data-i18n="loadStory">Load Story</span></button>
-                    <button onclick="saveFile()"><i class="fas fa-save"></i> <span data-i18n="saveStory">Save Story</span></button>
-                </div>
-            </div>
-            <div class="menu-button">
-                <span data-i18n="edit">Edit</span> <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu">
-                    <button onclick="openTab('variables'); addVariable()"><i class="fas fa-calculator"></i> <span data-i18n="addVariable">Add Variable</span></button>
-                    <button onclick="openTab('states'); addState()"><i class="fas fa-map"></i> <span data-i18n="addState">Add State</span></button>
-                </div>
-            </div>
-            <div class="menu-button">
-                <span data-i18n="play">Play</span> <i class="fas fa-caret-down"></i>
-                <div class="dropdown-menu">
-                    <button onclick="startPlayEngine()"><i class="fas fa-play"></i> <span data-i18n="startPlay">Start Play</span></button>
-                    <button onclick="restartStory()"><i class="fas fa-redo"></i> <span data-i18n="restart">Restart</span></button>
-                    <button onclick="document.getElementById('load-save').click()"><i class="fas fa-upload"></i> <span data-i18n="loadProgress">Load Progress</span></button>
-                    <button onclick="saveProgress()"><i class="fas fa-download"></i> <span data-i18n="saveProgress">Save Progress</span></button>
-                </div>
-            </div>
-            <div class="menu-button">
-                <span data-i18n="language">Language</span> <i class="fas fa-caret-down"></i>
+                <i class="fas fa-globe" title="Language"></i>
                 <div class="dropdown-menu" id="language-dropdown">
                     <!-- Dynamically populated -->
                 </div>
             </div>
             <div class="menu-button">
-                <span data-i18n="help">Help</span> <i class="fas fa-caret-down"></i>
+                <i class="fas fa-question-circle" title="Help"></i>
                 <div class="dropdown-menu">
                     <button onclick="openHelp('guide')"><i class="fas fa-book"></i> <span data-i18n="guide">Guide...</span></button>
                     <button onclick="openHelp('ai')"><i class="fas fa-robot"></i> <span data-i18n="ai">AI...</span></button>
@@ -1289,8 +1367,6 @@
             <div class="play-content">
                 <h2 id="play-title"></h2>
                 <p id="play-desc"></p>
-                <p id="play-error" class="error"></p>
-                <p id="play-stats"></p>
                 <div class="play-choices-toolbar">
                     <input type="text" id="choice-search-play" data-i18n-placeholder="Search choices..." oninput="filterPlayChoices()">
                 </div>
@@ -1302,6 +1378,12 @@
                 <div id="play-variables"></div>
             </div>
         </div>
+    </div>
+
+    <div id="status-window">
+        <div id="status-handle">Status</div>
+        <div id="play-error">Error</div>
+        <div id="status-content">Ready</div>
     </div>
 
     <div id="context-menu">
@@ -1329,8 +1411,13 @@
             if (savedContent) {
                 Module.FS.writeFile('/story.ns2', savedContent);
                 const pathPtr = allocateUTF8('/story.ns2');
-                Module._LoadFromFile(editorEngine, pathPtr);
+                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
                 Module._free(pathPtr);
+                if (loaded) {
+                    setStatus("Loaded saved story from local storage");
+                } else {
+                    setStatus("Failed to load saved story: " + getLastError(editorEngine), true);
+                }
             }
             renderEditor();
             openTab('metadata');
@@ -1344,6 +1431,9 @@
                     Module._free(pathPtr);
                     if (loaded) {
                         renderEditor();
+                        setStatus("Story updated from storage");
+                    } else {
+                        setStatus("Failed to update story from storage: " + getLastError(editorEngine), true);
                     }
                 }
             });
@@ -1370,7 +1460,7 @@
                 const response = await fetch('languages.json');
                 languages = await response.json();
                 // Add missing keys
-                const missingKeys = ['file', 'edit', 'language'];
+                const missingKeys = ['file', 'edit', 'language', 'view', 'toggleStatus'];
                 Object.keys(languages).forEach(lang => {
                     missingKeys.forEach(key => {
                         if (!languages[lang][key]) {
@@ -1450,6 +1540,18 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
+        function normalizeForMatching(s) {
+            if (!s) return '';
+            // decode basic HTML entities using a textarea (works in browser)
+            try {
+                const ta = document.createElement('textarea');
+                ta.innerHTML = s;
+                s = ta.value;
+            } catch (e) {}
+            // collapse whitespace and trim
+            return s.replace(/\s+/g, ' ').trim();
+        }
+
         let Module;
         let editorEngine;
         let playEngine;
@@ -1462,6 +1564,8 @@
         let functionTokens = ['set', 'reset', 'not', 'visited', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if'];
         let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '=', ',', ';'];
         let constantTokens = ['true', 'false'];
+        let textApplyTimer = null;
+        let textEditorAutoApplyAttached = false;
 
         const tokenExamples = {
             'set': 'set(health, get(health) + 5)',
@@ -1497,6 +1601,8 @@
         let currentTab = 'metadata';
         let selectedState = null;
 
+        // Interval handle for live play-choice availability refreshing
+        let playAvailabilityInterval = null;
         const availableProps = ['start_visited', 'always_available', 'dont_mark_visited'];
 
         function saveToLocalStorage() {
@@ -1512,6 +1618,7 @@
                 editorEngine = Module._CreateEngine();
                 localStorage.removeItem('ns2_content');
                 renderEditor();
+                setStatus("New story created");
             }
         }
 
@@ -1583,12 +1690,13 @@
                 const pathPtr = allocateUTF8('/story.ns2');
                 const loaded = Module._LoadFromFile(editorEngine, pathPtr);
                 Module._free(pathPtr);
-                if (!loaded) {
-                    alert('Failed to load story');
-                    return;
+                if (loaded) {
+                    saveToLocalStorage();
+                    renderEditor();
+                    setStatus("Story loaded successfully");
+                } else {
+                    setStatus("Failed to load story: " + getLastError(editorEngine), true);
                 }
-                saveToLocalStorage();
-                renderEditor();
             };
             reader.readAsText(file);
         }
@@ -1600,156 +1708,184 @@
             return ptr;
         }
 
-function renderStoryView() {
-    const ptr = Module._GenerateNS2Content(editorEngine);
-    const content = Module.UTF8ToString(ptr);
-    Module._FreeString(ptr);
-    const container = document.getElementById('text-editor');
-
-    // Collect state and variable tokens dynamically
-    let stateTokens = [];
-    const stateCount = Module._GetStateCount(editorEngine);
-    for (let i = 0; i < stateCount; i++) {
-        const statePtr = Module._GetStateName(editorEngine, i);
-        stateTokens.push(Module.UTF8ToString(statePtr));
-        Module._FreeString(statePtr);
-    }
-
-    let variableTokens = [];
-    const varCount = Module._GetVariableCount(editorEngine);
-    for (let i = 0; i < varCount; i++) {
-        const varPtr = Module._GetVariableName(editorEngine, i);
-        variableTokens.push(Module.UTF8ToString(varPtr));
-        Module._FreeString(varPtr);
-    }
-
-    const functionTokens = ['set', 'reset', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if', 'not', 'visited'];
-    const operatorTokens = ['+', '-', '*', '/', '==', '!=', '>', '<', '>=', '<=', '=', 'and', 'or', ';'];
-    const constantTokens = ['true', 'false'];
-    const typeTokens = ['string', 'int', 'float', 'bool'];
-
-    const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
-    const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
-    const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
-    const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
-    const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
-    const typeRegex = new RegExp('\\b(' + typeTokens.join('|') + ')\\b', 'g');
-    const numberRegex = /[-+]?\d+(?:\.\d+)?/g;
-    const stringRegex = /"[^"]*"/g;
-
-    const commonExprRules = [
-        [functionRegex, 'ns2.function.inside'],
-        [operatorRegex, 'ns2.operator.inside'],
-        [constantRegex, 'ns2.constant.inside'],
-        [variableRegex, 'ns2.variable.inside'],
-        [stateRegex, 'ns2.state.inside'],
-        [typeRegex, 'ns2.type.inside'],
-        [/[\(\)]/g, 'ns2.roundbracket.inside'],
-        [numberRegex, 'ns2.number.inside'],
-        [stringRegex, 'ns2.string.inside']
-    ];
-
-    const monarchDefinition = {
-        tokenizer: {
-            root: [
-                [/^\s*(Variables|States)(:)(\s*)$/, ['', '', '']],
-                [/^\s*(Title:)(\s*)(.*)$/, ['', '', '']],
-                [/^\s*(Description:)(\s*)(.*)$/, ['', '', '']],
-                [/^\s*(Start:)(\s*)(\w+)$/, ['', '', '']],
-                [/^\s*(\w+)(:)(\s*)$/, ['', '', '']],
-                [/^\s*(string|int|float|bool)(\s+)(\w+)(:)(\s*)/, ['', '', '', '', ''], '@varinitial'],
-                [/^\s*-\s*/, '', '@choicetext'],
-                [/^\s*(context|script):(\s*)/, ['', ''], '@expression'],
-                [/^\s+(title|description):(\s*)/, ['', ''], '@text'],
-                [/^\s+(context|script|requires|actions|properties):\s*(?![ \t]*\[)/, ['', ''], '@expression'],
-                [/^\s*(requires|actions|properties):\s*\[/, ['', 'ns2.squarebracket.inside'], '@listexpr']
-            ],
-            text: [
-                [/\[/, 'ns2.squarebracket.inside', '@expression'],
-                [/[^[]+/, ''],
-                [/\s*$/, '@pop']
-            ],
-            varinitial: [
-                [/"[^"]*"/, ''],
-                [/true|false/, ''],
-                [/[-+]?\d+(?:\.\d+)?/, ''],
-                [/\s*\(\s*/, '', '@varconstraint'],
-                [/\s*$/, '@pop']
-            ],
-            varconstraint: [
-                [/"[^"]*"/, ''],
-                [/[-+]?\d+(?:\.\d+)?/, ''],
-                [/,/, ''],
-                [/\s*\)\s*$/, '', '@popall']
-            ],
-            listexpr: [
-                [/\s*/, '', '@listitemexpr'],
-                [/;/, 'ns2.operator.inside'],
-                [/\s*\]/, 'ns2.squarebracket.inside', '@pop']
-            ],
-            listitemexpr: commonExprRules.concat([
-                [/\s*(;)/, 'ns2.operator.inside', '@pop'],
-                [/\s*(\])/, 'ns2.squarebracket.inside', '@popall'],
-                [/./, 'ns2.expression.inside']
-            ]),
-            expression: commonExprRules.concat([
-                [/\]/, 'ns2.squarebracket.inside', '@pop'],
-                [/./, 'ns2.expression.inside']
-            ]),
-            choicetext: [
-                [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
-                [/\s*->\s*/, '', '@target'],
-                [/./, '']
-            ],
-            target: [
-                [/\s*(\w+)\s*/, '', '@aftertarget']
-            ],
-            aftertarget: [
-                [/\s*\[\s*(\w+)\s*\]/, ['ns2.squarebracket.inside', 'ns2.flag', 'ns2.squarebracket.inside'], '@popall'],
-                [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
-                [/\s*$/, '@popall']
-            ]
+        function getLastError(engine) {
+            const ptr = Module._GetStoryLastError(engine);
+            const err = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            return err;
         }
-    };
 
-    if (!textEditor) {
-        require(['vs/editor/editor.main'], function () {
-            monaco.languages.register({ id: 'ns2' });
-            monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
-            monaco.editor.defineTheme('ns2-dark', {
-                base: 'vs-dark',
-                inherit: true,
-                rules: [
-                    { token: 'ns2.function.inside', foreground: 'dcdcaa', background: '3c3c3c' },
-                    { token: 'ns2.operator.inside', foreground: 'd4d4d4', background: '3c3c3c' },
-                    { token: 'ns2.constant.inside', foreground: '569cd6', background: '3c3c3c' },
-                    { token: 'ns2.variable.inside', foreground: '9cdcfe', background: '3c3c3c' },
-                    { token: 'ns2.state.inside', foreground: 'c586c0', background: '3c3c3c' },
-                    { token: 'ns2.type.inside', foreground: '4ec9b0', background: '3c3c3c' },
-                    { token: 'ns2.roundbracket.inside', foreground: 'ffd700', background: '3c3c3c' },
-                    { token: 'ns2.number.inside', foreground: 'b5cea8', background: '3c3c3c' },
-                    { token: 'ns2.string.inside', foreground: 'ce9178', background: '3c3c3c' },
-                    { token: 'ns2.expression.inside', foreground: '9cdcfe', background: '3c3c3c' },
-                    { token: 'ns2.squarebracket.inside', foreground: 'ffd700', background: '3c3c3c' },
-                    { token: 'ns2.flag', foreground: '569cd6', background: '3c3c3c' }
-                ],
-                colors: {
-                    'editor.background': '#1e1e1e'
+        function setStatus(message, isError = false) {
+            const content = document.getElementById('status-content');
+            content.innerHTML = (message || 'Ready').replace(/\n/g, '<br>');
+            content.style.color = isError ? '#ff6b6b' : '#D4D4D4';
+        }
+
+        function renderStoryView() {
+            const ptr = Module._GenerateNS2Content(editorEngine);
+            const content = Module.UTF8ToString(ptr);
+            Module._FreeString(ptr);
+            const container = document.getElementById('text-editor');
+
+            // Collect state and variable tokens dynamically
+            let stateTokens = [];
+            const stateCount = Module._GetStateCount(editorEngine);
+            for (let i = 0; i < stateCount; i++) {
+                const statePtr = Module._GetStateName(editorEngine, i);
+                stateTokens.push(Module.UTF8ToString(statePtr));
+                Module._FreeString(statePtr);
+            }
+
+            let variableTokens = [];
+            const varCount = Module._GetVariableCount(editorEngine);
+            for (let i = 0; i < varCount; i++) {
+                const varPtr = Module._GetVariableName(editorEngine, i);
+                variableTokens.push(Module.UTF8ToString(varPtr));
+                Module._FreeString(varPtr);
+            }
+
+            const functionTokens = ['set', 'reset', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if', 'not', 'visited'];
+            const operatorTokens = ['+', '-', '*', '/', '==', '!=', '>', '<', '>=', '<=', '=', 'and', 'or', ';'];
+            const constantTokens = ['true', 'false'];
+            const typeTokens = ['string', 'int', 'float', 'bool'];
+
+            const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
+            const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
+            const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
+            const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
+            const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
+            const typeRegex = new RegExp('\\b(' + typeTokens.join('|') + ')\\b', 'g');
+            const numberRegex = /[-+]?\d+(?:\.\d+)?/g;
+            const stringRegex = /"[^"]*"/g;
+
+            const commonExprRules = [
+                [functionRegex, 'ns2.function.inside'],
+                [operatorRegex, 'ns2.operator.inside'],
+                [constantRegex, 'ns2.constant.inside'],
+                [variableRegex, 'ns2.variable.inside'],
+                [stateRegex, 'ns2.state.inside'],
+                [typeRegex, 'ns2.type.inside'],
+                [/[\(\)]/g, 'ns2.roundbracket.inside'],
+                [numberRegex, 'ns2.number.inside'],
+                [stringRegex, 'ns2.string.inside']
+            ];
+
+            const monarchDefinition = {
+                tokenizer: {
+                    root: [
+                        [/^\s*(Variables|States)(:)(\s*)$/, ['', '', '']],
+                        [/^\s*(Title:)(\s*)(.*)$/, ['', '', '']],
+                        [/^\s*(Description:)(\s*)(.*)$/, ['', '', '']],
+                        [/^\s*(Start:)(\s*)(\w+)$/, ['', '', '']],
+                        [/^\s*(\w+)(:)(\s*)$/, ['', '', '']],
+                        [/^\s*(string|int|float|bool)(\s+)(\w+)(:)(\s*)/, ['', '', '', '', ''], '@varinitial'],
+                        [/^\s*-\s*/, '', '@choicetext'],
+                        [/^\s*(context|script):(\s*)/, ['', ''], '@expression'],
+                        [/^\s+(title|description):(\s*)/, ['', ''], '@text'],
+                        [/^\s+(context|script|requires|actions|properties):\s*(?![ \t]*\[)/, ['', ''], '@expression'],
+                        [/^\s*(requires|actions|properties):\s*\[/, ['', 'ns2.squarebracket.inside'], '@listexpr']
+                    ],
+                    text: [
+                        [/\[/, 'ns2.squarebracket.inside', '@expression'],
+                        [/[^[]+/, ''],
+                        [/\s*$/, '@pop']
+                    ],
+                    varinitial: [
+                        [/"[^"]*"/, ''],
+                        [/true|false/, ''],
+                        [/[-+]?\d+(?:\.\d+)?/, ''],
+                        [/\s*\(\s*/, '', '@varconstraint'],
+                        [/\s*$/, '@pop']
+                    ],
+                    varconstraint: [
+                        [/"[^"]*"/, ''],
+                        [/[-+]?\d+(?:\.\d+)?/, ''],
+                        [/,/, ''],
+                        [/\s*\)\s*$/, '', '@popall']
+                    ],
+                    listexpr: [
+                        [/\s*/, '', '@listitemexpr'],
+                        [/;/, 'ns2.operator.inside'],
+                        [/\s*\]/, 'ns2.squarebracket.inside', '@pop']
+                    ],
+                    listitemexpr: commonExprRules.concat([
+                        [/\s*(;)/, 'ns2.operator.inside', '@pop'],
+                        [/\s*(\])/, 'ns2.squarebracket.inside', '@popall'],
+                        [/./, 'ns2.expression.inside']
+                    ]),
+                    expression: commonExprRules.concat([
+                        [/\]/, 'ns2.squarebracket.inside', '@pop'],
+                        [/./, 'ns2.expression.inside']
+                    ]),
+                    choicetext: [
+                        [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
+                        [/\s*->\s*/, '', '@target'],
+                        [/./, '']
+                    ],
+                    target: [
+                        [/\s*(\w+)\s*/, '', '@aftertarget']
+                    ],
+                    aftertarget: [
+                        [/\s*\[\s*(\w+)\s*\]/, ['ns2.squarebracket.inside', 'ns2.flag', 'ns2.squarebracket.inside'], '@popall'],
+                        [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
+                        [/\s*$/, '@popall']
+                    ]
                 }
+            };
+
+            if (!textEditor) {
+                require(['vs/editor/editor.main'], function () {
+                    monaco.languages.register({ id: 'ns2' });
+                    monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+                    monaco.editor.defineTheme('ns2-dark', {
+                        base: 'vs-dark',
+                        inherit: true,
+                        rules: [
+                            { token: 'ns2.function.inside', foreground: 'dcdcaa', background: '3c3c3c' },
+                            { token: 'ns2.operator.inside', foreground: 'd4d4d4', background: '3c3c3c' },
+                            { token: 'ns2.constant.inside', foreground: '569cd6', background: '3c3c3c' },
+                            { token: 'ns2.variable.inside', foreground: '9cdcfe', background: '3c3c3c' },
+                            { token: 'ns2.state.inside', foreground: 'c586c0', background: '3c3c3c' },
+                            { token: 'ns2.type.inside', foreground: '4ec9b0', background: '3c3c3c' },
+                            { token: 'ns2.roundbracket.inside', foreground: 'ffd700', background: '3c3c3c' },
+                            { token: 'ns2.number.inside', foreground: 'b5cea8', background: '3c3c3c' },
+                            { token: 'ns2.string.inside', foreground: 'ce9178', background: '3c3c3c' },
+                            { token: 'ns2.expression.inside', foreground: '9cdcfe', background: '3c3c3c' },
+                            { token: 'ns2.squarebracket.inside', foreground: 'ffd700', background: '3c3c3c' },
+                            { token: 'ns2.flag', foreground: '569cd6', background: '3c3c3c' }
+                        ],
+                        colors: {
+                            'editor.background': '#1e1e1e'
+                        }
+                    });
+                    textEditor = monaco.editor.create(container, {
+                        value: content,
+                        language: 'ns2',
+                        theme: 'ns2-dark',
+                        automaticLayout: true,
+                        wordWrap: 'on'
+                    });
+                    attachTextEditorAutoApply();
+                });
+            } else {
+                monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+                textEditor.setValue(content);
+                attachTextEditorAutoApply();
+            }
+        }
+
+        function attachTextEditorAutoApply() {
+            if (!textEditor || textEditorAutoApplyAttached) return;
+            textEditorAutoApplyAttached = true;
+            textEditor.onDidChangeModelContent(() => {
+                if (textApplyTimer) clearTimeout(textApplyTimer);
+                textApplyTimer = setTimeout(() => {
+                    try {
+                        applyTextChanges();
+                    } catch (e) {}
+                }, 800);
             });
-            textEditor = monaco.editor.create(container, {
-                value: content,
-                language: 'ns2',
-                theme: 'ns2-dark',
-                automaticLayout: true,
-                wordWrap: 'on'
-            });
-        });
-    } else {
-        monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
-        textEditor.setValue(content);
-    }
-}
+        }
 
         function applyTextChanges() {
             const text = textEditor.getValue();
@@ -1760,8 +1896,9 @@ function renderStoryView() {
             if (loaded) {
                 saveToLocalStorage();
                 renderEditor();
+                setStatus("Changes applied successfully");
             } else {
-                alert('Invalid NS2 format');
+                setStatus("Invalid NS2 format: " + getLastError(editorEngine), true);
             }
         }
 
@@ -1843,6 +1980,12 @@ function renderStoryView() {
             saveToLocalStorage();
             updateTokens();
             populateTokenDatalist();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error adding variable: " + err, true);
+            } else {
+                setStatus("Variable added successfully");
+            }
         }
 
         function updateVariable(name, field, value) {
@@ -1858,6 +2001,10 @@ function renderStoryView() {
             Module._free(namePtr);
             Module._free(valuePtr);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating variable: " + err, true);
+            }
         }
 
         function updateVariableName(oldName, newName) {
@@ -1881,6 +2028,10 @@ function renderStoryView() {
             saveToLocalStorage();
             updateTokens();
             populateTokenDatalist();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating variable name: " + err, true);
+            }
         }
 
         function removeVariable(name) {
@@ -1891,6 +2042,12 @@ function renderStoryView() {
             saveToLocalStorage();
             updateTokens();
             populateTokenDatalist();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error removing variable: " + err, true);
+            } else {
+                setStatus("Variable removed successfully");
+            }
         }
 
         function renderStates() {
@@ -1908,7 +2065,21 @@ function renderStoryView() {
                 li.innerHTML = `${title} <span class="state-name">${name}</span>`;
                 li.dataset.name = name;
                 li.onclick = () => selectState(name);
-                list.appendChild(li);
+                        list.appendChild(li);
+                        // If playEngine exists, check whether this state can be visited from current play context
+                        if (typeof playEngine !== 'undefined' && playEngine) {
+                            const pNamePtr = allocateUTF8(name);
+                            try {
+                                const canVisit = Module._CanVisitState(playEngine, pNamePtr);
+                                if (!canVisit) {
+                                    li.classList.add('disabled');
+                                    li.title = languages[currentLanguage]['cannotVisitState'] || 'State not visitable in current play session';
+                                }
+                            } catch (e) {
+                                // ignore if function not available
+                            }
+                            Module._free(pNamePtr);
+                        }
             }
             if (count > 0) {
                 const firstNamePtr = Module._GetStateName(editorEngine, 0);
@@ -1968,9 +2139,8 @@ function selectState(name) {
                 font-family: 'Consolas', 'Monaco', monospace;
                 font-size: 12px;
                 line-height: 1.4;
-                resize: vertical;
-                min-height: 100px;
-                max-height: 120px;
+                resize: none;
+                min-height: 60px;
                 overflow-y: auto;
             }
             #state-script-textarea:focus {
@@ -2004,6 +2174,44 @@ function selectState(name) {
     setLanguage(currentLanguage);  // to translate the new labels
     renderChoices(name);
     filterChoices(name);
+
+    // Auto-resize and live-save the state description textarea (keep behavior similar to story description)
+    try {
+        const descTextarea = panel.querySelector('textarea:not(#state-script-textarea)');
+        const scriptTextarea = panel.querySelector('#state-script-textarea');
+        function autoResizeTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
+        }
+        if (descTextarea) {
+            // apply initial size
+            setTimeout(() => autoResizeTextarea(descTextarea), 0);
+            descTextarea.addEventListener('input', function() {
+                autoResizeTextarea(this);
+                // update state description live (updateState already saves)
+                try {
+                    updateState(name, 'description', this.value);
+                } catch (e) {
+                    console.warn('Failed to update state description live', e);
+                }
+            });
+        }
+        if (scriptTextarea) {
+            // apply initial size for script textarea
+            setTimeout(() => autoResizeTextarea(scriptTextarea), 0);
+            scriptTextarea.addEventListener('input', function() {
+                autoResizeTextarea(this);
+                // update state script live
+                try {
+                    updateState(name, 'script', this.value);
+                } catch (e) {
+                    console.warn('Failed to update state script live', e);
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Auto-resize for state textareas failed', e);
+    }
 
     // Render properties checkboxes
     const propsDiv = document.getElementById(`props-checkboxes-${escapeHtml(name)}`);
@@ -2056,11 +2264,17 @@ function selectState(name) {
             Module._free(namePtr);
             saveToLocalStorage();
             document.getElementById('start-state').value = name;
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error setting start state: " + err, true);
+            } else {
+                setStatus("Start state set successfully");
+            }
         }
 
         function jumpToState(name) {
             if (!playEngine) {
-                alert('Start the play session first');
+                setStatus("Start the play session first", true);
                 return;
             }
             const namePtr = allocateUTF8(name);
@@ -2070,14 +2284,18 @@ function selectState(name) {
                 updatePlay();
                 openTab('play');
             } else {
-                alert('Cannot visit this state from the current point');
+                setStatus("Cannot visit this state from the current point", true);
             }
             Module._free(namePtr);
+            const err = getLastError(playEngine);
+            if (err) {
+                setStatus("Error jumping to state: " + err, true);
+            }
         }
 
         function forceJumpToState(name) {
             if (!playEngine) {
-                alert('Start the play session first');
+                setStatus("Start the play session first", true);
                 return;
             }
             const namePtr = allocateUTF8(name);
@@ -2085,6 +2303,12 @@ function selectState(name) {
             updatePlay();
             openTab('play');
             Module._free(namePtr);
+            const err = getLastError(playEngine);
+            if (err) {
+                setStatus("Error force jumping to state: " + err, true);
+            } else {
+                setStatus("Force jumped to state successfully");
+            }
         }
 
         function renderChoices(name) {
@@ -2110,12 +2334,33 @@ function selectState(name) {
                 tr.innerHTML = `
                     <td><input list="token-list" value="${escapeHtml(text)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)"></td>
                     <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
-                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button" onclick="scopeToState(this.previousSibling.value)" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
+                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button scope-button" onclick="scopeToState(this.previousSibling.value)" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
                     <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
                     <td class="hide-cell"><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
                     <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
                 list.appendChild(tr);
+                // Disable the "Go to State" button if the target state doesn't exist
+                const scopeBtn = tr.querySelector('.scope-button');
+                if (scopeBtn) {
+                    const targetInput = tr.querySelector('.target-group input');
+                    const targetVal = targetInput ? targetInput.value.trim() : '';
+                    let targetExists = false;
+                    if (targetVal) {
+                        const sCount = Module._GetStateCount(editorEngine);
+                        for (let si = 0; si < sCount; si++) {
+                            const sPtr = Module._GetStateName(editorEngine, si);
+                            const sName = Module.UTF8ToString(sPtr);
+                            Module._FreeString(sPtr);
+                            if (sName === targetVal) { targetExists = true; break; }
+                        }
+                    }
+                    if (!targetVal || !targetExists) {
+                        scopeBtn.setAttribute('disabled', 'disabled');
+                        scopeBtn.classList.add('disabled');
+                        scopeBtn.title = targetVal ? (languages[currentLanguage]['targetNotFound'] || 'Target state not found') : (languages[currentLanguage]['noTarget'] || 'No target state');
+                    }
+                }
             }
             Module._free(namePtr);
         }
@@ -2146,6 +2391,12 @@ function selectState(name) {
                 renderStates();
                 selectState(name);
                 saveToLocalStorage();
+                const err = getLastError(editorEngine);
+                if (err) {
+                    setStatus("Error adding state: " + err, true);
+                } else {
+                    setStatus("State added successfully");
+                }
             }
         }
 
@@ -2205,6 +2456,10 @@ function selectState(name) {
             renderStates();
             selectState(newName);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating state name: " + err, true);
+            }
         }
 
         function updateState(name, field, value) {
@@ -2220,6 +2475,10 @@ function selectState(name) {
             Module._free(namePtr);
             Module._free(valuePtr);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating state: " + err, true);
+            }
         }
 
         function updateStateList(name, field, value) {
@@ -2257,6 +2516,10 @@ function selectState(name) {
             });
             Module._free(namePtr);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating state list: " + err, true);
+            }
         }
 
         function addChoice(name) {
@@ -2264,6 +2527,12 @@ function selectState(name) {
             renderChoices(name);
             filterChoices(name);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error adding choice: " + err, true);
+            } else {
+                setStatus("Choice added successfully");
+            }
         }
 
         function updateChoice(name, i, field, value) {
@@ -2285,6 +2554,10 @@ function selectState(name) {
             }
             Module._free(namePtr);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error updating choice: " + err, true);
+            }
         }
 
         function removeChoice(name, i) {
@@ -2292,6 +2565,12 @@ function selectState(name) {
             renderChoices(name);
             filterChoices(name);
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error removing choice: " + err, true);
+            } else {
+                setStatus("Choice removed successfully");
+            }
         }
 
         function removeState(name) {
@@ -2299,6 +2578,12 @@ function selectState(name) {
             renderStates();
             document.getElementById('state-details').innerHTML = '';
             saveToLocalStorage();
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error removing state: " + err, true);
+            } else {
+                setStatus("State removed successfully");
+            }
         }
 
         function saveFile() {
@@ -2312,6 +2597,11 @@ function selectState(name) {
             a.download = 'edited.ns2';
             a.click();
             URL.revokeObjectURL(url);
+            setStatus("Story saved");
+            const err = getLastError(editorEngine);
+            if (err) {
+                setStatus("Error saving story: " + err, true);
+            }
         }
 
         function generateNS2Content() {
@@ -2334,6 +2624,11 @@ function selectState(name) {
             try {
                 await initModule();
                 if (playEngine) {
+                    // stop periodic availability refresh for previous engine
+                    if (playAvailabilityInterval) {
+                        clearInterval(playAvailabilityInterval);
+                        playAvailabilityInterval = null;
+                    }
                     Module._DestroyEngine(playEngine);
                     playEngine = null;
                 }
@@ -2344,23 +2639,24 @@ function selectState(name) {
                 const pathPtr = allocateUTF8(storyPath);
                 const loaded = Module._LoadFromFile(playEngine, pathPtr);
                 Module._free(pathPtr);
-                if (!loaded) {
-                    document.getElementById('play-error').textContent = 'Failed to load story for play.';
-                    return;
-                }
                 Module._Start(playEngine);
                 updatePlay();  // Now safe to update UI
+                setStatus("Play engine started");
             } catch (e) {
-                document.getElementById('play-error').textContent = 'Error: ' + e.message;
+                const errMsg = 'Error: ' + e.message;
+                document.getElementById('play-error').textContent = errMsg;
+                setStatus(errMsg, true);
             }
         }
 
         function restartStory() {
             startPlayEngine();
+            setStatus("Story restarted");
         }
 
         function saveProgress() {
             if (!playEngine) {
+                setStatus("No play engine running", true);
                 return;
             }
             const savePath = '/save.save';
@@ -2375,11 +2671,18 @@ function selectState(name) {
             a.download = 'story.save';
             a.click();
             URL.revokeObjectURL(url);
+            const err = getLastError(playEngine);
+            if (err) {
+                setStatus("Error saving progress: " + err, true);
+            } else {
+                setStatus("Progress saved");
+            }
         }
 
         function loadProgress() {
             const file = document.getElementById('load-save').files[0];
             if (!file || !playEngine) {
+                setStatus("No file or play engine not running", true);
                 return;
             }
             const reader = new FileReader();
@@ -2391,6 +2694,12 @@ function selectState(name) {
                 Module._LoadProgress(playEngine, pathPtr);
                 Module._free(pathPtr);
                 updatePlay();
+                const err = getLastError(playEngine);
+                if (err) {
+                    setStatus("Error loading progress: " + err, true);
+                } else {
+                    setStatus("Progress loaded successfully");
+                }
             };
             reader.readAsText(file);
         }
@@ -2400,7 +2709,6 @@ function selectState(name) {
                 document.getElementById('play-title').textContent = '';
                 document.getElementById('play-desc').innerHTML = '<em>Click "Start Play" to begin the story.</em>';
                 document.getElementById('play-error').textContent = '';
-                document.getElementById('play-stats').textContent = '';
                 document.getElementById('play-choices').innerHTML = '';
                 document.getElementById('play-variables').innerHTML = '';
                 return;
@@ -2411,7 +2719,6 @@ function selectState(name) {
                 document.getElementById('play-title').textContent = 'No Story Loaded';
                 document.getElementById('play-desc').innerHTML = '<em>Create states and set a start state in the Metadata tab.</em>';
                 document.getElementById('play-error').textContent = '';
-                document.getElementById('play-stats').textContent = '';
                 document.getElementById('play-choices').innerHTML = '';
                 document.getElementById('play-variables').innerHTML = '';
                 return;
@@ -2427,15 +2734,13 @@ function selectState(name) {
             document.getElementById('play-desc').textContent = desc;
             Module._FreeString(descPtr);
 
-            const statsPtr = Module._GetPlayerStats(playEngine);
-            const stats = Module.UTF8ToString(statsPtr);
-            document.getElementById('play-stats').textContent = stats;
-            Module._FreeString(statsPtr);
-
             const errorPtr = Module._GetStoryLastError(playEngine);
             const error = Module.UTF8ToString(errorPtr);
-            document.getElementById('play-error').textContent = error;
+            document.getElementById('play-error').innerHTML = error.replace(/\n/g, '<br>');
             Module._FreeString(errorPtr);
+            if (error) {
+                setStatus("Play error: " + error, true);
+            }
 
             // Update variables
             const variablesDiv = document.getElementById('play-variables');
@@ -2460,25 +2765,55 @@ function selectState(name) {
             variablesDiv.appendChild(table);
             filterPlayVars();
 
+            // Retrieve available actions (names) and also full current choices
             const pActionsPtr = Module._malloc(4);
-            const countActions = Module._GetAvailableActions(playEngine, pActionsPtr);
+            const countAvailable = Module._GetAvailableActions(playEngine, pActionsPtr);
             const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
+            // Build a mapping from action text -> queue of available indices (handles duplicate texts)
+            const availableActions = [];
+            const actionIndexMap = new Map();
+            for (let ai = 0; ai < countAvailable; ai++) {
+                const strPtr = Module.getValue(actionsArrayPtr + ai * 4, 'i32');
+                const actionText = Module.UTF8ToString(strPtr);
+                availableActions.push(actionText);
+                const key = normalizeForMatching(actionText);
+                if (!actionIndexMap.has(key)) actionIndexMap.set(key, []);
+                actionIndexMap.get(key).push(ai);
+            }
+
+            // Render all current choices but disable those that are not available
             const choicesDiv = document.getElementById('play-choices');
             choicesDiv.innerHTML = '';
-            for (let i = 0; i < countActions; i++) {
-                const strPtr = Module.getValue(actionsArrayPtr + i * 4, 'i32');
-                const text = Module.UTF8ToString(strPtr);
+            const totalChoices = Module._GetCurrentChoicesCount(playEngine);
+            for (let ci = 0; ci < totalChoices; ci++) {
+                const textPtr = Module._GetChoiceText(playEngine, ci);
+                const text = Module.UTF8ToString(textPtr);
+                Module._FreeString(textPtr);
                 const btn = document.createElement('button');
                 btn.textContent = text;
-                btn.onclick = () => {
-                    Module._Advance(playEngine, i);
-                    updatePlay();
-                };
+                // keep original text and index for later matching
+                btn.dataset.choiceText = text;
+                btn.dataset.choiceIndex = String(ci);
                 choicesDiv.appendChild(btn);
             }
-            Module._FreeStrings(actionsArrayPtr, countActions);
+
+            // cleanup
+            Module._FreeStrings(actionsArrayPtr, countAvailable);
             Module._free(pActionsPtr);
+
+            // Update availability of rendered buttons now and start periodic refresh
+            refreshPlayChoiceAvailability();
             filterPlayChoices();
+
+            if (playAvailabilityInterval) clearInterval(playAvailabilityInterval);
+            playAvailabilityInterval = setInterval(() => {
+                if (!playEngine) {
+                    clearInterval(playAvailabilityInterval);
+                    playAvailabilityInterval = null;
+                    return;
+                }
+                refreshPlayChoiceAvailability();
+            }, 500);
 
             const isEnded = Module._IsEnded(playEngine);
             if (isEnded) {
@@ -2507,6 +2842,96 @@ function selectState(name) {
             });
         }
 
+        // Refresh availability of buttons inside #play-choices by querying the play engine
+        function refreshPlayChoiceAvailability() {
+            if (!playEngine) return;
+            const pActionsPtr = Module._malloc(4);
+            const countAvailable = Module._GetAvailableActions(playEngine, pActionsPtr);
+            const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
+
+            // Build index queues for normalized action texts
+            const actionIndexMap = new Map();
+            for (let ai = 0; ai < countAvailable; ai++) {
+                const strPtr = Module.getValue(actionsArrayPtr + ai * 4, 'i32');
+                const actionText = Module.UTF8ToString(strPtr);
+                const key = normalizeForMatching(actionText);
+                if (!actionIndexMap.has(key)) actionIndexMap.set(key, []);
+                actionIndexMap.get(key).push(ai);
+            }
+
+            const choicesDiv = document.getElementById('play-choices');
+            if (!choicesDiv) {
+                Module._FreeStrings(actionsArrayPtr, countAvailable);
+                Module._free(pActionsPtr);
+                return;
+            }
+
+            const buttons = Array.from(choicesDiv.querySelectorAll('button'));
+            buttons.forEach(btn => {
+                const original = btn.dataset.choiceText || btn.textContent || '';
+                const ci = parseInt(btn.dataset.choiceIndex || '-1', 10);
+
+                // First: check target visitability for this specific choice index
+                let choiceTarget = '';
+                try {
+                    const targetPtr = Module._GetChoiceTarget(playEngine, ci);
+                    choiceTarget = Module.UTF8ToString(targetPtr);
+                    Module._FreeString(targetPtr);
+                } catch (e) {
+                    // fallback: no specific target info available
+                    choiceTarget = '';
+                }
+
+                // If a target exists, check whether it can be visited now
+                let targetVisitOk = true;
+                if (choiceTarget) {
+                    try {
+                        const tPtr = allocateUTF8(choiceTarget);
+                        const canVisit = Module._CanVisitState(playEngine, tPtr);
+                        targetVisitOk = !!canVisit;
+                        Module._free(tPtr);
+                    } catch (e) {
+                        targetVisitOk = true; // if API not available, conservatively allow
+                    }
+                }
+
+                if (!targetVisitOk) {
+                    // Target explicitly not visitable: disable
+                    btn.setAttribute('disabled', 'disabled');
+                    btn.classList.add('disabled');
+                    btn.title = languages[currentLanguage]['choiceUnavailable'] || 'Choice unavailable';
+                    btn.onclick = null;
+                    return;
+                }
+
+                // Otherwise, fall back to matching available actions by normalized text
+                const norm = normalizeForMatching(original);
+                const queue = actionIndexMap.get(norm);
+                if (queue && queue.length > 0) {
+                    const availIndex = queue.shift();
+                    btn.removeAttribute('disabled');
+                    btn.classList.remove('disabled');
+                    btn.title = '';
+                    // assign onclick to advance using this available index
+                    btn.onclick = () => {
+                        Module._Advance(playEngine, availIndex);
+                        const err = getLastError(playEngine);
+                        if (err) setStatus("Error advancing: " + err, true);
+                        updatePlay();
+                    };
+                } else {
+                    // not available: disable and remove handler
+                    btn.setAttribute('disabled', 'disabled');
+                    btn.classList.add('disabled');
+                    btn.title = languages[currentLanguage]['choiceUnavailable'] || 'Choice unavailable';
+                    btn.onclick = null;
+                }
+            });
+
+            Module._FreeStrings(actionsArrayPtr, countAvailable);
+            Module._free(pActionsPtr);
+        }
+
         function setVariableValue(name, value) {
             const namePtr = allocateUTF8(name);
             const valuePtr = allocateUTF8(value);
@@ -2514,6 +2939,10 @@ function selectState(name) {
             Module._free(namePtr);
             Module._free(valuePtr);
             updatePlay();
+            const err = getLastError(playEngine);
+            if (err) {
+                setStatus("Error setting variable value: " + err, true);
+            }
         }
 
         function buildGraph() {
@@ -2653,6 +3082,7 @@ function selectState(name) {
             }).catch(e => {
                 const container = document.getElementById('graph-container');
                 container.innerHTML = '<div style="color: #D4D4D4; text-align: center; padding: 20px;">Error rendering graph: ' + e.message + '</div>';
+                setStatus("Error rendering graph: " + e.message, true);
             });
         }
 
@@ -2907,20 +3337,41 @@ function selectState(name) {
             document.getElementById('story-title').onchange = function() {
                 Module._SetStoryTitle(editorEngine, allocateUTF8(this.value));
                 saveToLocalStorage();
+                const err = getLastError(editorEngine);
+                if (err) {
+                    setStatus("Error setting story title: " + err, true);
+                }
             };
             const descPtr = Module._GetStoryDescription(editorEngine);
-            document.getElementById('story-description').value = Module.UTF8ToString(descPtr);
+            const storyDescEl = document.getElementById('story-description');
+            storyDescEl.value = Module.UTF8ToString(descPtr);
             Module._FreeString(descPtr);
-            document.getElementById('story-description').onchange = function() {
+            function autoResizeTextarea(el) {
+                el.style.height = 'auto';
+                el.style.height = (el.scrollHeight) + 'px';
+            }
+            // Apply immediately and on input to auto-save and expand
+            storyDescEl.addEventListener('input', function() {
+                autoResizeTextarea(this);
                 Module._SetStoryDescription(editorEngine, allocateUTF8(this.value));
                 saveToLocalStorage();
-            };
+                const err = getLastError(editorEngine);
+                if (err) {
+                    setStatus("Error setting story description: " + err, true);
+                }
+            });
+            // initial resize
+            setTimeout(() => autoResizeTextarea(storyDescEl), 0);
             const startPtr = Module._GetStartState(editorEngine);
             document.getElementById('start-state').value = Module.UTF8ToString(startPtr);
             Module._FreeString(startPtr);
             document.getElementById('start-state').onchange = function() {
                 Module._SetStartState(editorEngine, allocateUTF8(this.value));
                 saveToLocalStorage();
+                const err = getLastError(editorEngine);
+                if (err) {
+                    setStatus("Error setting start state: " + err, true);
+                }
             };
             updateTokens();
             populateStateDatalist();
@@ -2930,6 +3381,8 @@ function selectState(name) {
             document.getElementById('editor').style.display = 'block';
             setupContextMenu();
             setupKeyboardShortcuts();
+            setupStatusWindow();
+            setStatus("Editor ready");
         }
 
         function openHelp(page) {
@@ -2941,110 +3394,181 @@ function selectState(name) {
             toolbar.innerHTML = '';
             toolbar.style.display = 'flex';
 
-            if (tabName === 'text') {
-                const applyBtn = document.createElement('button');
-                applyBtn.className = 'icon-button';
-                applyBtn.onclick = applyTextChanges;
-                applyBtn.title = languages[currentLanguage]['Apply Changes'] || 'Apply Changes';
-                applyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                toolbar.appendChild(applyBtn);
-            } else if (tabName === 'variables') {
-                toolbar.style.display = 'none';
-            } else if (tabName === 'states') {
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'icon-button';
-                deleteBtn.onclick = () => { if (selectedState) removeState(selectedState); };
-                deleteBtn.title = languages[currentLanguage]['Delete State'] || 'Delete State';
-                deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                toolbar.appendChild(deleteBtn);
+            function makeBtn(html, title, onclick, extraClass) {
+                const b = document.createElement('button');
+                b.className = 'icon-button' + (extraClass ? ' ' + extraClass : '');
+                if (onclick) b.onclick = onclick;
+                b.title = title || '';
+                b.innerHTML = html;
+                return b;
+            }
 
-                const startBtn = document.createElement('button');
-                startBtn.className = 'icon-button';
-                startBtn.onclick = () => { if (selectedState) setAsStart(selectedState); };
-                startBtn.title = languages[currentLanguage]['Set as Start'] || 'Set as Start';
-                startBtn.innerHTML = '<i class="fas fa-flag"></i>';
-                toolbar.appendChild(startBtn);
+            function addGroupLabel(group, labelText) {
+                const label = document.createElement('div');
+                label.className = 'group-label';
+                label.textContent = labelText;
+                group.appendChild(label);
+            }
 
-                const jumpBtn = document.createElement('button');
-                jumpBtn.className = 'icon-button';
-                jumpBtn.onclick = () => { if (selectedState) jumpToState(selectedState); };
-                jumpBtn.title = languages[currentLanguage]['Jump to State'] || 'Jump to State';
-                jumpBtn.innerHTML = '<i class="fas fa-play"></i>';
-                toolbar.appendChild(jumpBtn);
+            // FILE group (global)
+            const fileGroup = document.createElement('div'); fileGroup.className = 'toolbar-group';
+            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-file"></i>', languages[currentLanguage]['newStory'] || 'New Story', newStory), {}));
+            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-folder-open"></i>', languages[currentLanguage]['loadStory'] || 'Load Story', () => document.getElementById('file-input').click()), {}));
+            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-save"></i>', languages[currentLanguage]['saveStory'] || 'Save Story', saveFile), {}));
+            addGroupLabel(fileGroup, 'FILE');
+            toolbar.appendChild(fileGroup);
 
-                const forceBtn = document.createElement('button');
-                forceBtn.className = 'icon-button force-visit';
-                forceBtn.onclick = () => { if (selectedState) forceJumpToState(selectedState); };
-                forceBtn.title = languages[currentLanguage]['Force Jump'] || 'Force Jump';
-                forceBtn.innerHTML = '<i class="fas fa-forward"></i>';
-                toolbar.appendChild(forceBtn);
+            // PLAY group (global)
+            const playGroup = document.createElement('div'); playGroup.className = 'toolbar-group';
+            playGroup.appendChild(makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => { startPlayEngine(); openTab('play'); }));
+            playGroup.appendChild(makeBtn('<i class="fas fa-upload"></i>', languages[currentLanguage]['Load Progress'] || 'Load Progress', () => { document.getElementById('load-save').click(); openTab('play'); }));
+            playGroup.appendChild(makeBtn('<i class="fas fa-download"></i>', languages[currentLanguage]['Save Progress'] || 'Save Progress', () => { saveProgress(); openTab('play'); }));
+            playGroup.appendChild(makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => { restartStory(); openTab('play'); }));
+            addGroupLabel(playGroup, 'PLAY');
+            toolbar.appendChild(playGroup);
 
-                const graphBtn = document.createElement('button');
-                graphBtn.className = 'icon-button';
-                graphBtn.onclick = () => { if (selectedState) viewInGraph(selectedState); };
-                graphBtn.title = languages[currentLanguage]['View in Graph'] || 'View in Graph';
-                graphBtn.innerHTML = '<i class="fas fa-project-diagram"></i>';
-                toolbar.appendChild(graphBtn);
-            } else if (tabName === 'graph') {
-                const resetBtn = document.createElement('button');
-                resetBtn.className = 'icon-button';
-                resetBtn.onclick = resetGraph;
-                resetBtn.title = languages[currentLanguage]['Reset Graph'] || 'Reset Graph';
-                resetBtn.innerHTML = '<i class="fas fa-sync"></i>';
-                toolbar.appendChild(resetBtn);
+            // Tab-specific: VARIABLES group (only on variables tab)
+            if (tabName === 'variables') {
+                const variablesGroup = document.createElement('div'); variablesGroup.className = 'toolbar-group';
+                const addVarBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addVariable'] || 'Add Variable', addVariable);
+                variablesGroup.appendChild(addVarBtn);
+                addGroupLabel(variablesGroup, 'VARIABLES');
+                toolbar.appendChild(variablesGroup);
+            }
 
-                const zoomInBtn = document.createElement('button');
-                zoomInBtn.className = 'icon-button';
-                zoomInBtn.onclick = zoomIn;
-                zoomInBtn.title = languages[currentLanguage]['Zoom In'] || 'Zoom In';
-                zoomInBtn.innerHTML = '<i class="fas fa-search-plus"></i>';
-                toolbar.appendChild(zoomInBtn);
+            // Tab-specific: STATES group (only on states tab)
+            if (tabName === 'states') {
+                const statesGroup = document.createElement('div'); statesGroup.className = 'toolbar-group';
+                const addStateBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addState'] || 'Add State', addState);
+                statesGroup.appendChild(addStateBtn);
+                const deleteBtn = makeBtn('<i class="fas fa-trash"></i>', languages[currentLanguage]['Delete State'] || 'Delete State', () => { if (selectedState) removeState(selectedState); });
+                statesGroup.appendChild(deleteBtn);
+                const startBtn = makeBtn('<i class="fas fa-flag"></i>', languages[currentLanguage]['Set as Start'] || 'Set as Start', () => { if (selectedState) setAsStart(selectedState); });
+                statesGroup.appendChild(startBtn);
+                const jumpBtn = makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Jump to State'] || 'Jump to State', () => { if (selectedState) { jumpToState(selectedState); openTab('play'); } });
+                try {
+                    if (typeof playEngine !== 'undefined' && playEngine && selectedState) {
+                        const sPtr = allocateUTF8(selectedState);
+                        const canVisit = Module._CanVisitState(playEngine, sPtr);
+                        Module._free(sPtr);
+                        if (!canVisit) {
+                            jumpBtn.setAttribute('disabled', 'disabled');
+                            jumpBtn.classList.add('disabled');
+                            jumpBtn.title = languages[currentLanguage]['cannotVisitState'] || 'State not visitable in current play session';
+                        }
+                    } else if (!selectedState) {
+                        jumpBtn.setAttribute('disabled', 'disabled');
+                        jumpBtn.classList.add('disabled');
+                    }
+                } catch (e) {
+                    // ignore if API not present
+                }
+                statesGroup.appendChild(jumpBtn);
+                const forceBtn = makeBtn('<i class="fas fa-forward"></i>', languages[currentLanguage]['Force Jump'] || 'Force Jump', () => { if (selectedState) { forceJumpToState(selectedState); openTab('play'); } }, 'force-visit');
+                statesGroup.appendChild(forceBtn);
+                const graphBtn = makeBtn('<i class="fas fa-project-diagram"></i>', languages[currentLanguage]['View in Graph'] || 'View in Graph', () => { if (selectedState) viewInGraph(selectedState); });
+                statesGroup.appendChild(graphBtn);
+                addGroupLabel(statesGroup, 'STATES');
+                toolbar.appendChild(statesGroup);
+            }
 
-                const zoomOutBtn = document.createElement('button');
-                zoomOutBtn.className = 'icon-button';
-                zoomOutBtn.onclick = zoomOut;
-                zoomOutBtn.title = languages[currentLanguage]['Zoom Out'] || 'Zoom Out';
-                zoomOutBtn.innerHTML = '<i class="fas fa-search-minus"></i>';
-                toolbar.appendChild(zoomOutBtn);
+            // Tab-specific: GRAPH group (only on graph tab)
+            if (tabName === 'graph') {
+                const graphGroup = document.createElement('div'); graphGroup.className = 'toolbar-group';
+                graphGroup.appendChild(makeBtn('<i class="fas fa-sync"></i>', languages[currentLanguage]['Reset Graph'] || 'Reset Graph', resetGraph));
+                graphGroup.appendChild(makeBtn('<i class="fas fa-search-plus"></i>', languages[currentLanguage]['Zoom In'] || 'Zoom In', zoomIn));
+                graphGroup.appendChild(makeBtn('<i class="fas fa-search-minus"></i>', languages[currentLanguage]['Zoom Out'] || 'Zoom Out', zoomOut));
+                graphGroup.appendChild(makeBtn('<i class="fas fa-crosshairs"></i>', languages[currentLanguage]['Center Graph'] || 'Center Graph', centerGraph));
+                addGroupLabel(graphGroup, 'GRAPH');
+                toolbar.appendChild(graphGroup);
+            }
 
-                const centerBtn = document.createElement('button');
-                centerBtn.className = 'icon-button';
-                centerBtn.onclick = centerGraph;
-                centerBtn.title = languages[currentLanguage]['Center Graph'] || 'Center Graph';
-                centerBtn.innerHTML = '<i class="fas fa-crosshairs"></i>';
-                toolbar.appendChild(centerBtn);
-            } else if (tabName === 'play') {
-                const playBtn = document.createElement('button');
-                playBtn.className = 'icon-button';
-                playBtn.onclick = startPlayEngine;
-                playBtn.title = languages[currentLanguage]['Play Current Story'] || 'Play Current Story';
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                toolbar.appendChild(playBtn);
+            // VIEW/TOOLS group (toggle status) — always visible
+            const viewGroup = document.createElement('div'); viewGroup.className = 'toolbar-group';
+            viewGroup.appendChild(makeBtn('<i class="fas fa-window-maximize"></i>', languages[currentLanguage]['toggleStatus'] || 'Toggle Status Window', () => { document.getElementById('status-window').style.display = document.getElementById('status-window').style.display === 'none' ? 'block' : 'none'; }));
+            addGroupLabel(viewGroup, 'VIEW');
+            toolbar.appendChild(viewGroup);
 
-                const loadBtn = document.createElement('button');
-                loadBtn.className = 'icon-button';
-                loadBtn.onclick = () => document.getElementById('load-save').click();
-                loadBtn.title = languages[currentLanguage]['Load Progress'] || 'Load Progress';
-                loadBtn.innerHTML = '<i class="fas fa-upload"></i>';
-                toolbar.appendChild(loadBtn);
+            toolbar.style.pointerEvents = 'auto';
+        }
 
-                const saveBtn = document.createElement('button');
-                saveBtn.className = 'icon-button';
-                saveBtn.onclick = saveProgress;
-                saveBtn.title = languages[currentLanguage]['Save Progress'] || 'Save Progress';
-                saveBtn.innerHTML = '<i class="fas fa-download"></i>';
-                toolbar.appendChild(saveBtn);
+        function setupStatusWindow() {
+            const windowElement = document.getElementById('status-window');
+            const handle = document.getElementById('status-handle');
+            makeDraggable(windowElement, handle);
+        }
 
-                const restartBtn = document.createElement('button');
-                restartBtn.className = 'icon-button';
-                restartBtn.onclick = restartStory;
-                restartBtn.title = languages[currentLanguage]['Restart'] || 'Restart';
-                restartBtn.innerHTML = '<i class="fas fa-redo"></i>';
-                toolbar.appendChild(restartBtn);
-            } else {
-                toolbar.style.display = 'none';
+        function makeDraggable(element, handle) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            handle.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
             }
         }
+
+        // Toolbar mouse tracking - center on cursor when hovering over tabs, stop on toolbar hover
+        (function setupToolbarTracking() {
+            const tabs = document.querySelector('.tabs');
+            const toolbar = document.getElementById('global-toolbar');
+            let isTrackingMouse = false;
+
+            tabs.addEventListener('mouseenter', () => {
+                isTrackingMouse = true;
+            });
+
+            tabs.addEventListener('mouseleave', () => {
+                isTrackingMouse = false;
+            });
+
+            toolbar.addEventListener('mouseenter', () => {
+                isTrackingMouse = false;
+            });
+
+            toolbar.addEventListener('mouseleave', () => {
+                // Only restart tracking if still over tabs
+                if (tabs.matches(':hover')) {
+                    isTrackingMouse = true;
+                }
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isTrackingMouse && tabs.matches(':hover')) {
+                    // Center toolbar horizontally on cursor position, constrain to viewport
+                    const toolbarWidth = toolbar.offsetWidth || 0;
+                    const viewportWidth = window.innerWidth;
+                    
+                    // Calculate position to center on cursor
+                    let leftPosition = e.clientX;
+                    
+                    // Constrain toolbar to stay within viewport
+                    const minLeft = toolbarWidth / 2;
+                    const maxLeft = viewportWidth - (toolbarWidth / 2);
+                    leftPosition = Math.max(minLeft, Math.min(leftPosition, maxLeft));
+                    
+                    toolbar.style.left = leftPosition + 'px';
+                }
+            });
+        })();
 
         (async () => {
             await loadLanguages();
@@ -3054,8 +3578,14 @@ function selectState(name) {
             if (savedContent) {
                 Module.FS.writeFile('/story.ns2', savedContent);
                 const pathPtr = allocateUTF8('/story.ns2');
-                Module._LoadFromFile(editorEngine, pathPtr);
+                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
                 Module._free(pathPtr);
+                if (loaded) {
+                    renderEditor();
+                    setStatus("Loaded saved story from local storage");
+                } else {
+                    setStatus("Failed to load saved story: " + getLastError(editorEngine), true);
+                }
             } else {
             }
             renderEditor();
@@ -3069,7 +3599,9 @@ function selectState(name) {
                     Module._free(pathPtr);
                     if (loaded) {
                         renderEditor();
+                        setStatus("Story updated from storage");
                     } else {
+                        setStatus("Failed to update story from storage: " + getLastError(editorEngine), true);
                     }
                 }
             });
