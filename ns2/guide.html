@@ -519,14 +519,14 @@ properties: always_available; dont_mark_visited
         function copyRaw() {
             const content = document.getElementById('guide-content').textContent;
             navigator.clipboard.writeText(content).then(() => {
-                alert('Raw text copied to clipboard!');
+                alert((window.languages && window.languages[window.currentLanguage] && window.languages[window.currentLanguage]['copiedRaw']) || 'Raw text copied to clipboard!');
             });
         }
 
         function copyMarkdown() {
             const content = htmlToMarkdown(document.getElementById('guide-content'));
             navigator.clipboard.writeText(content).then(() => {
-                alert('Markdown copied to clipboard!');
+                alert((window.languages && window.languages[window.currentLanguage] && window.languages[window.currentLanguage]['copiedMarkdown']) || 'Markdown copied to clipboard!');
             });
         }
 

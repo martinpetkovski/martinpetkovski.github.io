@@ -199,7 +199,7 @@
         opacity: 1;
         visibility: visible;
         max-height: 50px;
-        transition: all 0.3s ease;
+        transition: opacity 0.12s ease, max-height 0.12s ease;
     }
 
     .tab-button {
@@ -472,49 +472,69 @@
         box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
     }
 
+    /* Base node body */
     .mermaid .node rect,
     .mermaid .node polygon,
     .mermaid .node circle {
-        fill: #0b66a1;
-        stroke: #08324a;
-        stroke-width: 2px;
+        fill: #0f394a; /* deep body color */
+        stroke: rgba(0,0,0,0.5);
+        stroke-width: 1.5px;
         transition: all 0.18s ease;
-        filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));
-        box-shadow: 0 6px 14px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
-        rx: 6px; ry: 6px;
+        /* Softer, more subtle shadow and an inset hint */
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+        box-shadow: inset 0 3px 6px rgba(0,0,0,0.12);
+        rx: 8; ry: 8;
     }
 
     /* Hover/active visual similar to UE Blueprint nodes */
     .mermaid .node:hover rect,
     .mermaid .node:hover polygon,
     .mermaid .node:hover circle {
-        fill: #0d78b0;
-        stroke: #00c3ff;
-        filter: drop-shadow(0 10px 22px rgba(0,0,0,0.55));
         transform: translateY(-2px) scale(1.01);
+        filter: drop-shadow(0 3px 8px rgba(0,0,0,0.28));
+        box-shadow: inset 0 4px 8px rgba(0,0,0,0.14);
     }
 
-    /* Node header styling */
+    /* Node label / title */
     .mermaid .node text {
-        fill: #ffffff;
+        fill: #FFFFFF;
         font-weight: 700;
         font-family: 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif;
         font-size: 12px;
         pointer-events: none; /* text shouldn't block pointer events */
+        text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
 
-    /* Make node labels clearer and give body a subtle inset */
+    /* Subtle body inset for the label group created by mermaid */
     .mermaid .node .label rect { fill-opacity: 0.02; }
     .mermaid .node .label { pointer-events: none; }
 
-    /* Ports (if mermaid uses small circles) */
-    .mermaid .node circle { fill: #00c3ff; stroke: #004a5a; stroke-width: 1px; }
+    /* Small pins used as connection ports (we insert these via JS) */
+    .mermaid .node .bp-pin { fill: #ffd166; stroke: #ff9f1c; stroke-width: 1px; }
+    .mermaid .node .bp-pin.in { fill: #7ed6ff; stroke: #00a3d1; }
+    .mermaid .node .bp-pin.out { fill: #ffd166; stroke: #ff9f1c; }
 
-    .mermaid .node text {
-        fill: #FFFFFF;
-        font-size: 12px;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    /* Blueprint-style header band (inserted via JS) */
+    .mermaid .node .bp-header,
+    svg .node .bp-header,
+    .node .bp-header {
+        fill: #0b66a1; /* header default */
+        stroke: rgba(0,0,0,0.4);
+        stroke-width: 1px;
+        rx: 6; ry: 6;
+        opacity: 1;
     }
+
+    /* When node hovered/selected, brighten header */
+    .mermaid .node.graph-hover .bp-header,
+    svg .node.graph-hover .bp-header,
+    .node.graph-hover .bp-header { fill: #0d78b0; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
+    .mermaid .node.graph-selected .bp-header,
+    svg .node.graph-selected .bp-header,
+    .node.graph-selected .bp-header { fill: #007bb0; filter: drop-shadow(0 3px 8px rgba(0,123,176,0.16)); }
+
+    /* Small helper class so inserted foreignObject icons don't steal pointer events */
+    .graph-icon-fo { pointer-events: none; }
 
     /* Highlight & selection visuals */
     .mermaid .node.graph-hover rect,
@@ -522,7 +542,9 @@
     .mermaid .node.graph-hover circle {
         stroke: #ffd166;
         stroke-width: 3px;
-        filter: drop-shadow(0 10px 22px rgba(255,209,102,0.12));
+        /* subtle highlight shadow (very faint) */
+        filter: drop-shadow(0 2px 6px rgba(255,209,102,0.06));
+        box-shadow: inset 0 2px 6px rgba(255,209,102,0.03);
     }
 
     .mermaid .node.graph-selected rect,
@@ -530,8 +552,8 @@
     .mermaid .node.graph-selected circle {
         stroke: #ff8c42;
         stroke-width: 3px;
-        filter: drop-shadow(0 12px 28px rgba(255,140,66,0.18));
-        transform: translateY(-3px) scale(1.02);
+        filter: drop-shadow(0 3px 8px rgba(255,140,66,0.08));
+        transform: translateY(-2px) scale(1.01);
     }
 
     .graph-icon-fo { pointer-events: none; }
@@ -564,20 +586,24 @@
 
     .dropdown-list {
         position: absolute;
-        background: #2D2D2D;
-        border: 1px solid #3C3C3C;
+        background: rgba(45,45,45,0.7);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(60,60,60,0.6);
         list-style: none;
         padding: 0;
         margin: 0;
-        max-height: 200px;
+        max-height: 50vh;
         overflow: auto;
-        z-index: 1;
+        z-index: 1000;
         width: 100%;
+        max-width: calc(100vw - 16px);
         display: none;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.3);
-        transition: all 0.3s ease;
-        transform: translateY(-10px);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+        transition: opacity 0.12s ease, transform 0.12s ease;
+        transform: translateY(-6px);
         opacity: 0;
+        border-radius: 6px;
     }
 
     .dropdown-list.visible {
@@ -587,16 +613,17 @@
     }
 
     .dropdown-list li {
-        padding: 5px;
+        padding: 4px 8px;
         cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        transition: background-color 0.12s ease, color 0.12s ease;
+        box-shadow: none;
+        color: #e4f3fb;
+        font-size: 12px;
     }
 
     .dropdown-list li:hover {
         color: #00AbC0;
-        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        background: rgba(15,15,15,0.15);
     }
 
     .toolbar {
@@ -917,29 +944,39 @@
     }
 
     #context-menu {
-        position: absolute;
-        background-color: #252526;
-        border: 1px solid #3C3C3C;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.3);
-        z-index: 1000;
-        max-height: 200px;
+        position: fixed; /* position relative to viewport for safe clamping */
+        background-color: rgba(34,36,38,0.7); /* 70% transparency */
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(60,60,60,0.7);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+        z-index: 10000;
+        max-height: 50vh; /* responsive to viewport */
         overflow: hidden;
         display: none;
         width: 300px;
-        transition: all 0.3s ease;
+        max-width: calc(100vw - 16px);
+        transition: opacity 0.12s ease, transform 0.12s ease;
         display: flex;
         flex-direction: column;
+        border-radius: 6px;
+        overflow: auto;
+        color: #d6e3ea;
+        font-size: 12px;
     }
 
     #context-menu input {
         flex: none;
         position: relative;
         z-index: 1;
-        background-color: #252526;
-        border-bottom: 1px solid #3C3C3C;
+        background-color: transparent;
+        border-bottom: 1px solid rgba(47,49,51,0.45);
         margin: 0;
         width: calc(100% - 2px);
-        box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
+        box-shadow: none;
+        padding: 4px 6px;
+        font-size: 12px;
+        color: #eaf6ff;
     }
 
     #context-menu ul {
@@ -950,20 +987,56 @@
         margin: 0;
     }
 
+    /* Each menu row: fixed first column (token/label), flexible second column (example/description) */
     #context-menu li {
-        padding: 5px 10px;
+        padding: 3px 6px;
         cursor: pointer;
         display: flex;
-        justify-content: space-between;
-        transition: all 0.3s;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-        color: #999;
+        align-items: center;
+        gap: 10px;
+        transition: background-color 0.12s ease, color 0.12s ease;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+        color: #cfe7f3;
+    }
+
+    /* Token/name column: fixed width to align items in a neat column */
+    #context-menu li .token {
+        flex: 0 0 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #dbefff;
+        font-weight: 600;
+    }
+
+    /* Example/description column grows to fill remaining space */
+    #context-menu li .example {
+        flex: 1 1 auto;
+        color: rgba(154,166,173,0.45); /* more transparent */
+        font-style: normal;
+        margin-left: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 11px;
+        line-height: 1.1;
+        text-align: right; /* push description to the right */
+    }
+
+    /* Category header rows inside the menu */
+    #context-menu li.menu-category {
+        padding: 6px 8px;
+        font-size: 10px;
+        color: rgba(139,153,166,0.9);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        cursor: default;
+        box-shadow: none;
     }
 
     #context-menu li:hover {
         color: #00AbC0;
-        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+        background: linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(25,25,25,1) 100%);
+        box-shadow: inset 20px 0px 30px rgba(0,123,176,0.18);
     }
 
     #context-menu li .token {
@@ -995,13 +1068,19 @@
 
     #graph-context-menu {
         position: fixed;
-        background-color: #252526;
-        border: 1px solid #3C3C3C;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+        background-color: rgba(37,37,38,0.7);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(60,60,60,0.7);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.02);
         z-index: 10000;
         display: none;
-        transition: all 0.3s ease;
+        transition: all 0.12s ease;
         min-width: 160px;
+        max-width: calc(100vw - 16px);
+        max-height: 50vh;
+        overflow: auto;
+        border-radius: 6px;
     }
 
     #graph-context-menu ul {
@@ -1038,14 +1117,14 @@
         gap: 8px;
         width: 100%;
         text-align: left;
-        padding: 8px 10px;
+        padding: 6px 8px;
         border: none;
-        background: rgba(37, 37, 38, 0.7);
-        color: #999;
+        background: rgba(37, 37, 38, 0.85);
+        color: #d0d6da;
         cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-        font-size: 13px;
+        transition: background-color 0.12s ease, color 0.12s ease;
+        box-shadow: none;
+        font-size: 12px;
     }
 
     #graph-context-menu .button-container button:hover {
@@ -1216,7 +1295,8 @@
         visibility: hidden;
         max-height: 0;
         overflow: hidden;
-        transition: all 0.3s ease;
+        /* only animate appearance, not position (so it follows cursor exactly) */
+        transition: opacity 0.12s ease, max-height 0.12s ease;
         pointer-events: none;
         width: fit-content;
         max-width: 90vw;
@@ -1342,24 +1422,24 @@
 </head>
 <body>
     <div id="splash-screen">
-        <img src="icon_transparent.png" alt="NS2 Editor Logo">
+        <img src="icon_transparent.png" data-i18n-alt="title" alt="NS2 Editor Logo">
         <h1>NS2 Editor</h1>
         <div id="loading-bar-container">
             <div id="loading-bar"></div>
         </div>
     </div>
     <div class="header">
-        <img src="icon_transparent.png" alt="Icon" style="height: 30px; width: auto;">
+        <img src="icon_transparent.png" data-i18n-alt="title" alt="Icon" style="height: 30px; width: auto;">
         <h1 data-i18n="title">NS2 Editor</h1>
         <div class="menubar">
             <div class="menu-button">
-                <i class="fas fa-globe" title="Language"></i>
+                <i class="fas fa-globe" data-i18n-title="language" title="Language"></i>
                 <div class="dropdown-menu" id="language-dropdown">
                     <!-- Dynamically populated -->
                 </div>
             </div>
             <div class="menu-button">
-                <i class="fas fa-question-circle" title="Help"></i>
+                <i class="fas fa-question-circle" data-i18n-title="help" title="Help"></i>
                 <div class="dropdown-menu">
                     <button onclick="openHelp('guide')"><i class="fas fa-book"></i> <span data-i18n="guide">Guide...</span></button>
                     <button onclick="openHelp('ai')"><i class="fas fa-robot"></i> <span data-i18n="ai">AI...</span></button>
@@ -1403,8 +1483,8 @@
         <div id="tab-variables" class="tab-content">
             <div class="section" style="flex: 1; overflow-y: auto;">
                 <div class="toolbar">
-                    <input type="text" id="var-search" data-i18n-placeholder="Search variables..." oninput="filterVariables()">
-                    <button class="icon-button" onclick="addVariable()" title="Add Variable"><i class="fas fa-plus"></i></button>
+                    <input type="text" id="var-search" data-i18n-placeholder="searchVars" oninput="filterVariables()">
+                    <button class="icon-button" onclick="addVariable()" data-i18n-title="addVariable" title="Add Variable"><i class="fas fa-plus"></i></button>
                 </div>
                 <table>
                     <thead>
@@ -1425,8 +1505,8 @@
             <div class="states-container">
                 <div class="states-list-panel">
                     <div class="toolbar">
-                        <input type="text" id="state-search" data-i18n-placeholder="Search states..." oninput="filterStates()">
-                        <button class="icon-button" onclick="addState()" title="Add State"><i class="fas fa-plus"></i></button>
+                        <input type="text" id="state-search" data-i18n-placeholder="searchStates" oninput="filterStates()">
+                        <button class="icon-button" onclick="addState()" data-i18n-title="addState" title="Add State"><i class="fas fa-plus"></i></button>
                     </div>
                     <ul id="states-list"></ul>
                 </div>
@@ -1444,7 +1524,7 @@
                 <h2 id="play-title"></h2>
                 <p id="play-desc"></p>
                 <div class="play-choices-toolbar">
-                    <input type="text" id="choice-search-play" data-i18n-placeholder="Search choices..." oninput="filterPlayChoices()">
+                    <input type="text" id="choice-search-play" data-i18n-placeholder="searchChoices" oninput="filterPlayChoices()">
                 </div>
                 <div id="play-choices" class="choices"></div>
                 <h3 data-i18n="variables">Variables</h3>
@@ -1457,13 +1537,13 @@
     </div>
 
     <div id="status-window">
-        <div id="status-handle">Status</div>
-        <div id="play-error">Error</div>
-        <div id="status-content">Ready</div>
+        <div id="status-handle" data-i18n="statusHandle">Status</div>
+            <div id="play-error" data-i18n="errorLabel">Error</div>
+            <div id="status-content" data-i18n="readyLabel">Ready</div>
     </div>
 
     <div id="context-menu">
-        <input type="text" id="context-search" placeholder="Search tokens..." oninput="filterContextMenu()">
+        <input type="text" id="context-search" data-i18n-placeholder="searchTokens" oninput="filterContextMenu()">
         <ul id="token-menu-list"></ul>
     </div>
 
@@ -1488,9 +1568,9 @@
                 const loaded = Module._LoadFromFile(editorEngine, pathPtr);
                 Module._free(pathPtr);
                 if (loaded) {
-                    setStatus("Loaded saved story from local storage");
+                    setStatus(languages[currentLanguage]['loadedSavedFromLocal'] || "Loaded saved story from local storage");
                 } else {
-                    setStatus("Failed to load saved story: " + getLastError(editorEngine), true);
+                        setStatus((languages[currentLanguage]['failedLoadSavedStory'] || "Failed to load saved story: {err}").replace('{err}', getLastError(editorEngine)), true);
                 }
             }
             renderEditor();
@@ -1505,9 +1585,9 @@
                     Module._free(pathPtr);
                     if (loaded) {
                         renderEditor();
-                        setStatus("Story updated from storage");
+                        setStatus(languages[currentLanguage]['storyUpdatedFromStorage'] || "Story updated from storage");
                     } else {
-                        setStatus("Failed to update story from storage: " + getLastError(editorEngine), true);
+                        setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', getLastError(editorEngine)), true);
                     }
                 }
             });
@@ -1554,7 +1634,7 @@
             langMenu.innerHTML = '';
             const searchInput = document.createElement('input');
             searchInput.type = 'text';
-            searchInput.placeholder = 'Search...';
+            searchInput.placeholder = languages[currentLanguage] && languages[currentLanguage]['search'] ? languages[currentLanguage]['search'] : 'Search...';
             searchInput.oninput = function() {
                 const query = this.value.toLowerCase();
                 Array.from(langMenu.querySelectorAll('.button-container button')).forEach(btn => {
@@ -1588,6 +1668,10 @@
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
                 el.placeholder = languages[lang][key] || key;
+            });
+            document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+                const key = el.getAttribute('data-i18n-alt');
+                try { el.alt = languages[lang][key] || key; } catch(e) {}
             });
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
@@ -1636,7 +1720,7 @@
         let stateTokens = [];
         let variableTokens = [];
         let functionTokens = ['set', 'reset', 'not', 'visited', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if'];
-        let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '=', ',', ';'];
+        let operatorTokens = ['+', '-', '*', '/', 'or', 'and', '>=', '<=', '!=', '==', '>', '<', '='];
         let constantTokens = ['true', 'false'];
         let textApplyTimer = null;
         let textEditorAutoApplyAttached = false;
@@ -1687,12 +1771,12 @@
         }
 
         function newStory() {
-            if (confirm('Create a new blank story? Unsaved changes will be lost.')) {
+            if (confirm(languages[currentLanguage]['createNewStoryConfirm'] || 'Create a new blank story? Unsaved changes will be lost.')) {
                 Module._DestroyEngine(editorEngine);
                 editorEngine = Module._CreateEngine();
                 localStorage.removeItem('ns2_content');
                 renderEditor();
-                setStatus("New story created");
+                setStatus(languages[currentLanguage]['newStoryCreated'] || "New story created");
             }
         }
 
@@ -1767,9 +1851,9 @@
                 if (loaded) {
                     saveToLocalStorage();
                     renderEditor();
-                    setStatus("Story loaded successfully");
+                    setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || "Story loaded successfully");
                 } else {
-                    setStatus("Failed to load story: " + getLastError(editorEngine), true);
+                    setStatus((languages[currentLanguage]['failedToLoadStory'] || "Failed to load story: {err}").replace('{err}', getLastError(editorEngine)), true);
                 }
             };
             reader.readAsText(file);
@@ -1819,7 +1903,7 @@
             }
 
             const functionTokens = ['set', 'reset', 'get', 'dice', 'min', 'max', 'abs', 'sqrt', 'chance', 'if', 'not', 'visited'];
-            const operatorTokens = ['+', '-', '*', '/', '==', '!=', '>', '<', '>=', '<=', '=', 'and', 'or', ';'];
+            const operatorTokens = ['+', '-', '*', '/', '==', '!=', '>', '<', '>=', '<=', '=', 'and', 'or'];
             const constantTokens = ['true', 'false'];
             const typeTokens = ['string', 'int', 'float', 'bool'];
 
@@ -1971,9 +2055,9 @@
             if (loaded) {
                 saveToLocalStorage();
                 renderEditor();
-                setStatus("Changes applied successfully");
+                setStatus(languages[currentLanguage]['changesApplied'] || "Changes applied successfully");
             } else {
-                setStatus("Invalid NS2 format: " + getLastError(editorEngine), true);
+                setStatus((languages[currentLanguage]['invalidNS2Format'] || "Invalid NS2 format: {err}").replace('{err}', getLastError(editorEngine)), true);
             }
         }
 
@@ -2026,7 +2110,7 @@
                     <td><input value="${escapeHtml(name)}" onchange="updateVariableName('${escapeHtml(name)}', this.value)"></td>
                     <td><input value="${escapeHtml(initial)}" onchange="updateVariable('${escapeHtml(name)}', 'initial', this.value)"></td>
                     <td><input value="${escapeHtml(constraint)}" onchange="updateVariable('${escapeHtml(name)}', 'constraint', this.value)"></td>
-                    <td><button class="icon-button" onclick="removeVariable('${escapeHtml(name)}')" title="Delete Variable"><i class="fas fa-trash"></i></button></td>
+                    <td><button class="icon-button" onclick="removeVariable('${escapeHtml(name)}')" data-i18n-title="deleteVariable" title="Delete Variable"><i class="fas fa-trash"></i></button></td>
                 `;
                 tr.querySelector('select').value = type || 'string';
                 list.appendChild(tr);
@@ -2057,9 +2141,9 @@
             populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error adding variable: " + err, true);
+                setStatus((languages[currentLanguage]['errorAddingVariable'] || "Error adding variable: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Variable added successfully");
+                setStatus(languages[currentLanguage]['variableAdded'] || "Variable added successfully");
             }
         }
 
@@ -2078,7 +2162,7 @@
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating variable: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingVariable'] || "Error updating variable: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2105,7 +2189,7 @@
             populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating variable name: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingVariableName'] || "Error updating variable name: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2119,9 +2203,9 @@
             populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error removing variable: " + err, true);
+                setStatus((languages[currentLanguage]['errorRemovingVariable'] || "Error removing variable: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Variable removed successfully");
+                setStatus(languages[currentLanguage]['variableRemoved'] || "Variable removed successfully");
             }
         }
 
@@ -2233,9 +2317,9 @@ function selectState(name) {
             <label data-i18n="props:">Props:</label> <div class="props-container" id="props-checkboxes-${escapeHtml(name)}"></div>
         </div>
         <div class="choices-section">
-            <div class="toolbar">
-                <input type="text" id="choice-search" data-i18n-placeholder="Search choices..." oninput="filterChoices('${escapeHtml(name)}')">
-                <button class="icon-button" onclick="addChoice('${escapeHtml(name)}')" title="Add Choice"><i class="fas fa-plus"></i></button>
+                <div class="toolbar">
+                <input type="text" id="choice-search" data-i18n-placeholder="searchChoices" oninput="filterChoices('${escapeHtml(name)}')">
+                <button class="icon-button" onclick="addChoice('${escapeHtml(name)}')" data-i18n-title="addChoice" title="Add Choice"><i class="fas fa-plus"></i></button>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -2344,36 +2428,28 @@ function selectState(name) {
             document.getElementById('start-state').value = name;
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error setting start state: " + err, true);
+                setStatus((languages[currentLanguage]['errorSettingStartState'] || "Error setting start state: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Start state set successfully");
+                setStatus(languages[currentLanguage]['startStateSet'] || "Start state set successfully");
             }
         }
 
         function jumpToState(name) {
-            if (!playEngine) {
-                setStatus("Start the play session first", true);
-                return;
-            }
-            const namePtr = allocateUTF8(name);
-            const canVisit = Module._CanVisitState(playEngine, namePtr);
-            if (canVisit) {
-                Module._SetCurrentState(playEngine, namePtr);
-                updatePlay();
-                openTab('play');
-            } else {
-                setStatus("Cannot visit this state from the current point", true);
-            }
-            Module._free(namePtr);
-            const err = getLastError(playEngine);
-            if (err) {
-                setStatus("Error jumping to state: " + err, true);
+            if (!name) return;
+            if (confirm((languages[currentLanguage]['confirmDeleteState'] || 'Delete state "{name}"?').replace('{name}', name))) {
+                removeState(name);
+                // Refresh graph view
+                try {
+                    // clear any graph selection referencing the deleted state
+                    if (graphSelectedState === name) graphSelectedState = null;
+                    renderGraph();
+                } catch (e) {}
             }
         }
 
         function forceJumpToState(name) {
             if (!playEngine) {
-                setStatus("Start the play session first", true);
+                setStatus(languages[currentLanguage]['startPlaySessionFirst'] || "Start the play session first", true);
                 return;
             }
             const namePtr = allocateUTF8(name);
@@ -2383,9 +2459,9 @@ function selectState(name) {
             Module._free(namePtr);
             const err = getLastError(playEngine);
             if (err) {
-                setStatus("Error force jumping to state: " + err, true);
+                setStatus((languages[currentLanguage]['errorForceJump'] || "Error force jumping to state: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Force jumped to state successfully");
+                setStatus(languages[currentLanguage]['forceJumpSuccess'] || "Force jumped to state successfully");
             }
         }
 
@@ -2412,10 +2488,10 @@ function selectState(name) {
                 tr.innerHTML = `
                     <td><input list="token-list" value="${escapeHtml(text)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)"></td>
                     <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
-                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button scope-button" onclick="scopeToState(this.previousSibling.value)" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
+                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button scope-button" onclick="scopeToState(this.previousSibling.value)" data-i18n-title="Jump to State" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
                     <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
                     <td class="hide-cell"><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
-                    <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
+                    <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" data-i18n-title="deleteChoice" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
                 list.appendChild(tr);
                 // Disable the "Go to State" button if the target state doesn't exist
@@ -2471,9 +2547,9 @@ function selectState(name) {
                 saveToLocalStorage();
                 const err = getLastError(editorEngine);
                 if (err) {
-                    setStatus("Error adding state: " + err, true);
+                    setStatus((languages[currentLanguage]['errorAddingState'] || "Error adding state: {err}").replace('{err}', err), true);
                 } else {
-                    setStatus("State added successfully");
+                    setStatus(languages[currentLanguage]['stateAdded'] || "State added successfully");
                 }
             }
         }
@@ -2554,7 +2630,7 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating state name: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingStateName'] || "Error updating state name: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2573,7 +2649,7 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating state: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingState'] || "Error updating state: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2614,7 +2690,7 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating state list: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingStateList'] || "Error updating state list: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2625,9 +2701,9 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error adding choice: " + err, true);
+                setStatus((languages[currentLanguage]['errorAddingChoice'] || "Error adding choice: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Choice added successfully");
+                setStatus(languages[currentLanguage]['choiceAdded'] || "Choice added successfully");
             }
         }
 
@@ -2652,7 +2728,7 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error updating choice: " + err, true);
+                setStatus((languages[currentLanguage]['errorUpdatingChoice'] || "Error updating choice: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2663,9 +2739,9 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error removing choice: " + err, true);
+                setStatus((languages[currentLanguage]['errorRemovingChoice'] || "Error removing choice: {err}").replace('{err}', err), true);
             } else {
-                setStatus("Choice removed successfully");
+                setStatus(languages[currentLanguage]['choiceRemoved'] || "Choice removed successfully");
             }
         }
 
@@ -2676,9 +2752,9 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error removing state: " + err, true);
+                setStatus((languages[currentLanguage]['errorRemovingState'] || "Error removing state: {err}").replace('{err}', err), true);
             } else {
-                setStatus("State removed successfully");
+                setStatus(languages[currentLanguage]['stateRemoved'] || "State removed successfully");
             }
         }
 
@@ -2693,10 +2769,10 @@ function selectState(name) {
             a.download = 'edited.ns2';
             a.click();
             URL.revokeObjectURL(url);
-            setStatus("Story saved");
+            setStatus(languages[currentLanguage]['storySaved'] || "Story saved");
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus("Error saving story: " + err, true);
+                setStatus((languages[currentLanguage]['errorSavingStory'] || "Error saving story: {err}").replace('{err}', err), true);
             }
         }
 
@@ -2737,7 +2813,7 @@ function selectState(name) {
                 Module._free(pathPtr);
                 Module._Start(playEngine);
                 updatePlay();  // Now safe to update UI
-                setStatus("Play engine started");
+                setStatus(languages[currentLanguage]['playEngineStarted'] || "Play engine started");
             } catch (e) {
                 const errMsg = 'Error: ' + e.message;
                 document.getElementById('play-error').textContent = errMsg;
@@ -2747,7 +2823,7 @@ function selectState(name) {
 
         function restartStory() {
             startPlayEngine();
-            setStatus("Story restarted");
+            setStatus(languages[currentLanguage]['storyRestarted'] || "Story restarted");
         }
 
         function saveProgress() {
@@ -3160,7 +3236,35 @@ function selectState(name) {
             const container = document.getElementById('graph-container');
             container.innerHTML = '';
             mermaid.render('graphDiv', graphDef).then(({ svg }) => {
-                container.innerHTML = svg;
+                // Inject SVG-internal styles so rules apply inside the generated <svg>
+                const injectStyle = `
+                    <defs>
+                        <linearGradient id="ueGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                            <stop offset="0%" stop-color="#1b6b8a" stop-opacity="1"/>
+                            <stop offset="60%" stop-color="#0f394a" stop-opacity="1"/>
+                            <stop offset="100%" stop-color="#0b2b36" stop-opacity="1"/>
+                        </linearGradient>
+                        <filter id="ueDrop" x="-50%" y="-50%" width="200%" height="200%">
+                            <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000" flood-opacity="0.45"/>
+                        </filter>
+                    </defs>
+                    <style>
+                        /* Apply UE-like gradient + shadow to node bodies */
+                        .node rect { fill: url(#ueGradient) !important; stroke: rgba(0,0,0,0.6) !important; stroke-width: 1.5px !important; filter: url(#ueDrop) !important; rx:8; ry:8; }
+                        /* Slightly brighter stroke for hovered/selected states */
+                        .node:hover rect, .node.graph-hover rect { stroke: #33c3ff !important; stroke-width: 2px !important; }
+                        .node.graph-selected rect { stroke: #ffd166 !important; stroke-width: 2.5px !important; }
+                        /* Node title styling */
+                        .node text { fill: #FFFFFF !important; font-weight:700 !important; font-family: 'Segoe UI', Roboto, sans-serif !important; font-size:12px !important; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+                        /* Edge appearance */
+                        .edgePath .path { stroke: #99e6ff !important; stroke-width: 2.5px !important; stroke-linecap: round !important; }
+                        /* Make labels legible */
+                        .edgeLabel, .edgeLabel text { fill: #e6fbff !important; }
+                    </style>
+                `;
+                // Insert style right after opening <svg ...>
+                const svgWithStyle = svg.replace(/<svg([^>]*)>/i, `<svg$1>${injectStyle}`);
+                container.innerHTML = svgWithStyle;
                 const svgElement = container.querySelector('svg');
                 if (svgElement) {
                     svgElement.removeAttribute('width');
@@ -3170,6 +3274,7 @@ function selectState(name) {
                     svgElement.style.maxWidth = 'none';
                     const ns = 'http://www.w3.org/2000/svg';
                     const contentG = svgElement.querySelector('g');
+                    // No overlay/pins — we style existing Mermaid nodes with SVG-local defs/styles above
                     graphPanZoom = panzoom(contentG, { 
                         maxZoom: 5, 
                         minZoom: 0.1, 
@@ -3186,9 +3291,77 @@ function selectState(name) {
                     nodes.forEach(node => {
                         const labelElement = node.querySelector('text');
                         if (labelElement) {
+                            // Add a blueprint-style header band and input/output pins
+                            try {
+                                const ns = 'http://www.w3.org/2000/svg';
+                                // Try to use the node's primary shape bbox (rect/polygon) so header aligns correctly
+                                let baseShape = node.querySelector('rect, polygon, path, ellipse');
+                                let shapeBBox = null;
+                                try {
+                                    if (baseShape) shapeBBox = baseShape.getBBox();
+                                } catch (e) { shapeBBox = null; }
+                                // Fallback to group's bbox
+                                let nodeBBox = null;
+                                try { nodeBBox = node.getBBox(); } catch (e) { nodeBBox = null; }
+                                const refBBox = shapeBBox || nodeBBox || { x: 0, y: 0, width: 120, height: 48 };
+                                const headerH = Math.max(18, Math.min(32, refBBox.height * 0.22));
+
+                                // Avoid duplicating when re-rendering: create an overlay group painted last
+                                if (!node.querySelector('.bp-overlay')) {
+                                    const overlay = document.createElementNS(ns, 'g');
+                                    overlay.setAttribute('class', 'bp-overlay');
+                                    overlay.style.pointerEvents = 'none';
+
+                                    // Header rect appended into overlay so it is rendered on top
+                                    const headerRect = document.createElementNS(ns, 'rect');
+                                    headerRect.setAttribute('class', 'bp-header');
+                                    headerRect.setAttribute('x', String(refBBox.x));
+                                    headerRect.setAttribute('y', String(refBBox.y));
+                                    headerRect.setAttribute('width', String(Math.max(8, refBBox.width)));
+                                    headerRect.setAttribute('height', String(Math.max(6, headerH)));
+                                    headerRect.setAttribute('rx', '6');
+                                    headerRect.setAttribute('ry', '6');
+                                    // inline styles to ensure visibility even if external CSS fails
+                                    headerRect.setAttribute('fill', '#0b66a1');
+                                    headerRect.setAttribute('stroke', 'rgba(0,0,0,0.4)');
+                                    headerRect.setAttribute('stroke-width', '1');
+                                    overlay.appendChild(headerRect);
+
+                                    // Pins: left (input) and right (output)
+                                    const pinRadius = Math.max(4, Math.min(7, headerH * 0.36));
+                                    const cy = refBBox.y + (headerH / 2);
+                                    const leftCx = refBBox.x - (pinRadius + 2);
+                                    const rightCx = refBBox.x + refBBox.width + (pinRadius + 2);
+
+                                    const leftPin = document.createElementNS(ns, 'circle');
+                                    leftPin.setAttribute('class', 'bp-pin in');
+                                    leftPin.setAttribute('cx', String(leftCx));
+                                    leftPin.setAttribute('cy', String(cy));
+                                    leftPin.setAttribute('r', String(pinRadius));
+                                    leftPin.setAttribute('fill', '#7ed6ff');
+                                    leftPin.setAttribute('stroke', '#00a3d1');
+                                    leftPin.setAttribute('stroke-width', '1');
+                                    overlay.appendChild(leftPin);
+
+                                    const rightPin = document.createElementNS(ns, 'circle');
+                                    rightPin.setAttribute('class', 'bp-pin out');
+                                    rightPin.setAttribute('cx', String(rightCx));
+                                    rightPin.setAttribute('cy', String(cy));
+                                    rightPin.setAttribute('r', String(pinRadius));
+                                    rightPin.setAttribute('fill', '#ffd166');
+                                    rightPin.setAttribute('stroke', '#ff9f1c');
+                                    rightPin.setAttribute('stroke-width', '1');
+                                    overlay.appendChild(rightPin);
+
+                                    // Append overlay as last child of node so it paints on top
+                                    node.appendChild(overlay);
+                                }
+                            } catch (e) {
+                                // if SVG bbox access fails (browser quirk), ignore and continue
+                            }
                             // Determine internal state name from the node's id via window.graphIdToStateName mapping
                             const fullId = node.id || node.getAttribute('id') || '';
-                            console.debug('[renderMermaid] node id:', fullId);
+                            
                             
                             // Mermaid adds a prefix like 'flowchart-' to node IDs
                             // Extract the base ID (e.g., 'n4' from 'flowchart-n4-3')
@@ -3200,16 +3373,15 @@ function selectState(name) {
                                     baseId = match[0];
                                 }
                             }
-                            console.debug('[renderMermaid] base id:', baseId);
+                            
                             
                             let internalName = null;
                             if (baseId && window.graphIdToStateName && window.graphIdToStateName[baseId]) {
                                 internalName = window.graphIdToStateName[baseId];
-                                console.debug('[renderMermaid] resolved from mapping:', internalName);
                             } else {
                                 // Fallback: try to match the visible label text to a state title or name
                                 const labelText = (labelElement.textContent || '').trim();
-                                console.debug('[renderMermaid] trying to resolve from label text:', labelText);
+                                
                                 if (labelText) {
                                     try {
                                         const stateCount = Module._GetStateCount(editorEngine);
@@ -3222,18 +3394,16 @@ function selectState(name) {
                                             Module._FreeString(sTitlePtr);
                                             if (sTitle === labelText || sName === labelText) {
                                                 internalName = sName;
-                                                console.debug('[renderMermaid] resolved by title/name lookup:', internalName);
                                                 break;
                                             }
                                         }
                                     } catch (e) {
-                                        console.warn('[renderMermaid] failed to resolve label to state:', e);
                                     }
                                 }
                                 // Last resort: use the raw label text as-is
                                 if (!internalName) {
                                     internalName = labelText || '';
-                                    console.debug('[renderMermaid] using label text as fallback:', internalName);
+                                    
                                 }
                             }
                             node.setAttribute('data-state', internalName);
@@ -3246,7 +3416,7 @@ function selectState(name) {
                             } catch (e) {}
 
                             // Debug mapping
-                            try { console.debug('[graph] node mapped ->', internalName); } catch (e) {}
+                            
 
                             // Only attempt to fetch state description/title if we have a likely internal name
                             let desc = '';
@@ -3340,6 +3510,9 @@ function selectState(name) {
                         }
                     });
 
+                    // Diagnostics: log how many nodes and overlays were created (dev only)
+                    try { console.debug('[renderMermaid] nodes:', nodes.length, 'bp-overlays:', svgElement.querySelectorAll('.bp-overlay').length); } catch(e) {}
+
                     // Fallback: container-level click handler to catch clicks that don't reach node elements
                     try {
                         // remove previous handler if present
@@ -3414,12 +3587,9 @@ function selectState(name) {
 
                         container._graphContext = function(e) {
                             try {
-                                console.debug('[graph context] contextmenu event fired at', e.clientX, e.clientY);
                                 // find node under cursor at event position
                                 const el = document.elementFromPoint(e.clientX, e.clientY);
-                                console.debug('[graph context] elementFromPoint returned:', el ? el.className : 'null');
                                 const node = el && el.closest ? el.closest('.node') : null;
-                                console.debug('[graph context] closest node:', node ? node.id : 'null');
                                 if (node) {
                                     e.preventDefault();
                                     // Try attribute first
@@ -3437,7 +3607,7 @@ function selectState(name) {
                                                 st = window.graphIdToStateName[baseId];
                                             }
                                         } catch (e) {
-                                            console.debug('[graph context] id->name mapping failed', e);
+                                        
                                         }
                                     }
 
@@ -3462,15 +3632,15 @@ function selectState(name) {
                                                 }
                                             }
                                         } catch (e) {
-                                            console.debug('[graph context] label->name lookup failed', e);
+                                        
                                         }
                                     }
 
-                                    console.debug('[graph context] showing menu for state (resolved):', st);
+                                    
                                     graphSelectedState = st || null;
                                     showGraphContextMenu(e.pageX, e.pageY);
                                 } else {
-                                    console.debug('[graph context] no node found');
+                                    
                                 }
                             } catch (err) {
                                 console.error('[graph context] error:', err);
@@ -3483,14 +3653,14 @@ function selectState(name) {
                         container.addEventListener('contextmenu', container._graphContext, true);
                     } catch (e) {}
                     // If a specific graph state was requested, highlight it now (ensure UI centers on it)
-                    try {
-                        if (typeof highlightGraphNode === 'function' && currentGraphState) {
-                            // schedule on next tick so DOM/SVG is fully ready
-                            setTimeout(() => {
-                                try { highlightGraphNode(currentGraphState); } catch (e) { console.warn('highlightGraphNode failed', e); }
-                            }, 30);
-                        }
-                    } catch (e) {}
+                            try {
+                                if (typeof highlightGraphNode === 'function' && currentGraphState) {
+                                    // schedule on next tick so DOM/SVG is fully ready
+                                    setTimeout(() => {
+                                        try { highlightGraphNode(currentGraphState); } catch (e) { }
+                                    }, 30);
+                                }
+                            } catch (e) {}
                 }
             }).catch(e => {
                 const container = document.getElementById('graph-container');
@@ -3569,7 +3739,6 @@ function selectState(name) {
             document.addEventListener('contextmenu', (e) => {
                 const activeTab = document.querySelector('.tab-content.active');
                 const target = e.target;
-                console.debug('[setupContextMenu] contextmenu event, tab:', activeTab?.id, 'target:', target.tagName, 'in graph?', target.closest('#graph-container') ? 'yes' : 'no');
                 if (activeTab && activeTab.contains(target)) {
                     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
                         e.preventDefault();
@@ -3579,7 +3748,7 @@ function selectState(name) {
                 } else if (target.closest('#graph-container') && document.getElementById('tab-graph').classList.contains('active')) {
                     // Graph-specific: let it bubble so container handler can process it
                     // Do NOT preventDefault here; let the container._graphContext handler do it
-                    console.debug('[setupContextMenu] graph container context, allowing to bubble');
+                    
                 }
                 // Otherwise, allow default inspect
             }, true); // Use capture phase for higher priority
@@ -3658,8 +3827,9 @@ function selectState(name) {
             list.innerHTML = '';
 
             // Copy, Cut, Paste first, always visible with icons
-            const copyLi = document.createElement('li');
-            copyLi.innerHTML = '<i class="fas fa-copy" style="margin-right: 8px;"></i> <span class="token" data-i18n="Copy">Copy</span>';
+                const copyLi = document.createElement('li');
+                const copyLabel = languages[currentLanguage] && languages[currentLanguage]['Copy'] ? languages[currentLanguage]['Copy'] : 'Copy';
+                copyLi.innerHTML = `<i class="fas fa-copy" style="margin-right: 8px;"></i> <span class="token">${copyLabel}</span>`;
             copyLi.onclick = () => {
                 currentInput.select();
                 document.execCommand('copy');
@@ -3668,7 +3838,8 @@ function selectState(name) {
             list.appendChild(copyLi);
 
             const cutLi = document.createElement('li');
-            cutLi.innerHTML = '<i class="fas fa-cut" style="margin-right: 8px;"></i> <span class="token" data-i18n="Cut">Cut</span>';
+            const cutLabel = languages[currentLanguage] && languages[currentLanguage]['Cut'] ? languages[currentLanguage]['Cut'] : 'Cut';
+            cutLi.innerHTML = `<i class="fas fa-cut" style="margin-right: 8px;"></i> <span class="token">${cutLabel}</span>`;
             cutLi.onclick = () => {
                 currentInput.select();
                 document.execCommand('cut');
@@ -3677,7 +3848,8 @@ function selectState(name) {
             list.appendChild(cutLi);
 
             const pasteLi = document.createElement('li');
-            pasteLi.innerHTML = '<i class="fas fa-paste" style="margin-right: 8px;"></i> <span class="token" data-i18n="Paste">Paste</span>';
+            const pasteLabel = languages[currentLanguage] && languages[currentLanguage]['Paste'] ? languages[currentLanguage]['Paste'] : 'Paste';
+            pasteLi.innerHTML = `<i class="fas fa-paste" style="margin-right: 8px;"></i> <span class="token">${pasteLabel}</span>`;
             pasteLi.onclick = () => {
                 navigator.clipboard.readText().then(text => {
                     insertTextAtCursor(currentInput, text);
@@ -3692,19 +3864,79 @@ function selectState(name) {
             separator.style.margin = '5px 0';
             list.appendChild(separator);
 
-            // Then tokens
+            // Then tokens, grouped by category for easier discovery
+            const categorized = {
+                'Functions': [],
+                'Operators': [],
+                'Constants': [],
+                'States': [],
+                'Variables': [],
+                'Other': []
+            };
+
             tokens.forEach(token => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="token">${token}</span> <span class="example">${tokenExamples[token] || ''}</span>`;
-                li.onclick = () => insertTextAtCursor(currentInput, token);
-                list.appendChild(li);
+                if (functionTokens.includes(token)) categorized['Functions'].push(token);
+                else if (operatorTokens.includes(token)) categorized['Operators'].push(token);
+                else if (constantTokens.includes(token)) categorized['Constants'].push(token);
+                else if (stateTokens.includes(token)) categorized['States'].push(token);
+                else if (variableTokens.includes(token)) categorized['Variables'].push(token);
+                else categorized['Other'].push(token);
+            });
+
+            // Sort each category alphabetically (natural order) and render with headers
+            Object.keys(categorized).forEach(cat => {
+                const items = Array.from(new Set(categorized[cat])).sort((a,b) => a.localeCompare(b, undefined, {numeric:true, sensitivity:'base'}));
+                if (!items.length) return;
+
+                // category header
+                const header = document.createElement('li');
+                header.className = 'menu-category';
+                header.textContent = cat;
+                list.appendChild(header);
+
+                items.forEach(token => {
+                    const li = document.createElement('li');
+                    const tokenSpan = document.createElement('span'); tokenSpan.className = 'token'; tokenSpan.textContent = token;
+                    const exampleSpan = document.createElement('span'); exampleSpan.className = 'example'; exampleSpan.textContent = tokenExamples[token] || '';
+                    li.appendChild(tokenSpan);
+                    li.appendChild(exampleSpan);
+                    li.onclick = () => insertTextAtCursor(currentInput, token);
+                    list.appendChild(li);
+                });
+
+                // separator between categories
+                const sep = document.createElement('li');
+                sep.style.borderTop = '1px solid #3C3C3C';
+                sep.style.padding = '0';
+                sep.style.margin = '6px 0';
+                list.appendChild(sep);
             });
 
             document.getElementById('context-search').value = '';
             filterContextMenu();
-            menu.style.left = `${x}px`;
-            menu.style.top = `${y}px`;
+            // Place menu and clamp to viewport so it never clips offscreen
+            menu.style.visibility = 'hidden';
             menu.style.display = 'flex';
+            // allow layout to occur then measure
+            requestAnimationFrame(() => {
+                const rect = menu.getBoundingClientRect();
+                const margin = 8;
+                let left = x;
+                let top = y;
+                // clamp horizontally
+                if (left + rect.width > window.innerWidth - margin) left = Math.max(margin, window.innerWidth - rect.width - margin);
+                if (left < margin) left = margin;
+                // clamp vertically; prefer below cursor, otherwise place above
+                if (top + rect.height > window.innerHeight - margin) {
+                    // try placing above cursor
+                    if (y - rect.height > margin) top = Math.max(margin, y - rect.height);
+                    else top = Math.max(margin, window.innerHeight - rect.height - margin);
+                }
+                if (top < margin) top = margin;
+                menu.style.left = left + 'px';
+                menu.style.top = top + 'px';
+                menu.style.visibility = 'visible';
+            });
         }
 
         function hideContextMenu() {
@@ -3713,14 +3945,39 @@ function selectState(name) {
 
         function filterContextMenu() {
             const query = document.getElementById('context-search').value.toLowerCase();
-            document.querySelectorAll('#token-menu-list li').forEach(li => {
-                const tokenText = li.querySelector('.token') ? li.querySelector('.token').textContent.toLowerCase() : '';
-                if (li.style.borderTop) { // separator
-                    li.style.display = 'block';
-                } else {
-                    li.style.display = (tokenText.includes(query)) ? 'flex' : 'none';
-                }
-            });
+                document.querySelectorAll('#token-menu-list li').forEach(li => {
+                    // always show category headers and separators
+                        if (li.classList && li.classList.contains('menu-category')) return; // handled later
+                        if (li.style && li.style.borderTop) { li.style.display = 'none'; return; } // handled later
+                        const tokenEl = li.querySelector('.token');
+                        const tokenText = tokenEl ? tokenEl.textContent.toLowerCase() : '';
+                        li.style.display = (tokenText.includes(query)) ? 'flex' : 'none';
+                });
+
+                    // Now show/hide category headers and separators based on whether their items are visible
+                    const headers = Array.from(document.querySelectorAll('#token-menu-list li.menu-category'));
+                    headers.forEach(header => {
+                        let anyVisible = false;
+                        let node = header.nextElementSibling;
+                        while (node) {
+                            if (node.classList && node.classList.contains('menu-category')) break;
+                            // separator nodes have style.borderTop set
+                            if (node.style && node.style.borderTop) {
+                                node = node.nextElementSibling;
+                                continue;
+                            }
+                            if (node.style && node.style.display !== 'none') { anyVisible = true; break; }
+                            node = node.nextElementSibling;
+                        }
+                        header.style.display = anyVisible ? 'block' : 'none';
+                        // find separator after this category and show/hide it accordingly
+                        let sep = header.nextElementSibling;
+                        while (sep) {
+                            if (sep.style && sep.style.borderTop) { sep.style.display = anyVisible ? 'block' : 'none'; break; }
+                            if (sep.classList && sep.classList.contains('menu-category')) break;
+                            sep = sep.nextElementSibling;
+                        }
+                    });
         }
 
         function insertTextAtCursor(input, text) {
@@ -3757,7 +4014,6 @@ function selectState(name) {
                         } catch (e) {}
                     }
                 } catch (e) {
-                    console.warn('[resolveGraphSelectedState] module not available or error', e);
                 }
                 return null;
             }
@@ -3786,9 +4042,25 @@ function selectState(name) {
                 inner.appendChild(btn);
             });
             menu.appendChild(inner);
-            menu.style.left = `${x}px`;
-            menu.style.top = `${y}px`;
+            // Clamp graph context menu to viewport similarly to token menu
+            menu.style.visibility = 'hidden';
             menu.style.display = 'block';
+            requestAnimationFrame(() => {
+                const rect = menu.getBoundingClientRect();
+                const margin = 8;
+                let left = x;
+                let top = y;
+                if (left + rect.width > window.innerWidth - margin) left = Math.max(margin, window.innerWidth - rect.width - margin);
+                if (left < margin) left = margin;
+                if (top + rect.height > window.innerHeight - margin) {
+                    if (y - rect.height > margin) top = Math.max(margin, y - rect.height);
+                    else top = Math.max(margin, window.innerHeight - rect.height - margin);
+                }
+                if (top < margin) top = margin;
+                menu.style.left = left + 'px';
+                menu.style.top = top + 'px';
+                menu.style.visibility = 'visible';
+            });
         }
 
         function hideGraphContextMenu() {
@@ -3796,34 +4068,22 @@ function selectState(name) {
         }
 
         function viewStateFromGraph() {
-            console.log('[viewStateFromGraph] graphSelectedState:', graphSelectedState);
-            if (graphSelectedState) {
-                console.log('[viewStateFromGraph] calling scopeToState with:', graphSelectedState);
-                scopeToState(graphSelectedState);
-            } else {
-                console.warn('[viewStateFromGraph] graphSelectedState is empty');
-            }
+                if (graphSelectedState) {
+                    scopeToState(graphSelectedState);
+                }
             hideGraphContextMenu();
         }
 
         function deleteState(name) {
-            console.log('[deleteState] called with name:', name);
-            if (!name) {
-                console.warn('[deleteState] no name provided');
-                return;
-            }
-            if (confirm(`Delete state "${name}"?`)) {
-                console.log('[deleteState] removing state:', name);
+            if (!name) return;
+            if (confirm((languages[currentLanguage]['confirmDeleteState'] || 'Delete state "{name}"?').replace('{name}', name))) {
                 removeState(name);
                 // Refresh graph view
-                try { 
-                    console.log('[deleteState] refreshing graph');
-                        // clear any graph selection referencing the deleted state
-                        if (graphSelectedState === name) graphSelectedState = null;
-                        renderGraph(); 
-                } catch (e) {
-                    console.error('[deleteState] error:', e);
-                }
+                try {
+                    // clear any graph selection referencing the deleted state
+                    if (graphSelectedState === name) graphSelectedState = null;
+                    renderGraph();
+                } catch (e) {}
             }
         }
 
