@@ -3,19 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <title>NS2 Reader</title>
-<link rel="stylesheet" href="style.css">
 <style>
+/* Book-like reader theme (sepia) */
 html, body { height:100%; }
-body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#d4d4d4; display:flex; }
-.main { flex:1; display:flex; flex-direction:column; min-height:0; padding:16px; box-sizing:border-box; }
-.play-content { flex:1; overflow-y:auto; }
-.play-content h2 { margin-top:0; }
-.play-content table { width:100%; border-collapse: collapse; }
-.play-content table th, .play-content table td { padding:4px 6px; border-bottom:1px solid #333; }
-.play-content input[type=text] { width:100%; box-sizing:border-box; }
-.choices { display:flex; flex-direction:column; gap:6px; margin:12px 0; }
-.choices button { background:#2d2d2d; color:#d4d4d4; border:1px solid #444; padding:6px 10px; cursor:pointer; text-align:left; }
-.choices button.disabled { opacity:.5; cursor:not-allowed; }
+html { background:#f6f1e1; }
+body {
+    margin:0;
+    background:#f6f1e1;
+    color:#1f1a12;
+    display:flex;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", Times, serif;
+    box-shadow: none; /* override dark app-wide vignette */
+}
+
+/* Sepia thin scrollbars (override for reader) */
+*::-webkit-scrollbar {
+    width: 1px;
+    height: 1px;
+}
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(90, 70, 45, 0.78); /* warm sepia tone */
+    box-shadow: 0 0 6px rgba(90, 70, 45, 0.45); /* subtle glow */
+}
+*::-webkit-scrollbar-thumb:hover {
+    box-shadow: 0 0 8px rgba(90, 70, 45, 0.6);
+}
+html, body, .play-content {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(90, 70, 45, 0.78) rgba(246, 241, 225, 0.35);
+}
+
+.main {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    box-sizing:border-box;
+    padding:48px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    background:#f6f1e1;
+    box-shadow: none !important;
+}
+
+.play-toolbar {
+    /* Turn the top toolbar into an auto-hiding left sidebar */
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    padding: 12px 10px;
+    background: rgba(246, 241, 225, 0.92);
+    border-right: 1px solid #e6e6e6;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    transform: translateX(calc(-100% + 12px)); /* leave a 12px sliver visible */
+    transition: transform 0.2s ease;
+    z-index: 1000;
+}
+.play-toolbar:hover,
+.play-toolbar:focus-within {
+    transform: translateX(0);
+}
+
+button {
+    appearance: none;
+    background: transparent;
+    color: #222;
+    border: 2px solid #111;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.play-toolbar button {
+    /* Stack buttons vertically and make them fill the sidebar width */
+    width: 100%;
+    flex: 0 0 auto;
+}
+.play-toolbar button > span { min-width: 0; }
+.play-toolbar button:hover 
+{ 
+    background:#111;
+    color: #fff;
+    transition: 0.15s;
+}
+/* Keep choices full-width and left-aligned within the list */
+.choices button { width: 100%; text-align: left; }
+/* Match toolbar hover style for choices */
+.choices button:hover { background:#111; color:#fff; transition:0.15s; text-decoration:none; }
+
+#play-title {
+    font-size: 24px;
+    margin-right: auto;
+    color: #000 !important;
+    text-shadow: none !important;
+    font-weight: bolder !important;
+}
+
+.play-content {
+    flex:1;
+    overflow-y:auto;
+    background:#f6f1e1;
+    box-shadow: none !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+}
+.play-content h2 {
+    margin: 0 0 .4em;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: .01em;
+}
+.play-content h3 { margin: 1.5em 0 .5em; font-weight:600; color:#3a3122; }
+.play-content p {
+    font-size: 18px;
+    line-height: 1.7;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    margin: 0 0 1em;
+}
+
+.play-content table { width:100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #e6e0cf; box-shadow: none; background:#fdf9ea; }
+.play-content table th, .play-content table td { padding:10px 8px; border-bottom:1px solid #e6e0cf; }
+.play-content table th { background:#f3ecd6; font-weight:600; color:#3a3122; text-align:left; }
+.play-content input[type=text] { width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid #cfc7b0; border-radius:4px; background:#fffdf4; color:#1f1a12; font: 14px/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+.play-content input[type=text]:focus { outline:none; border-color:#999; box-shadow: 0 0 0 2px rgba(0,0,0,0.05); }
+
+/* Book-like choices */
+.choices {
+    display:flex;
+    flex-direction:column;
+    gap: 6px;
+    margin: 16px 0 20px;
+    counter-reset: choice;
+}
+.choices button::before {
+    counter-increment: choice;
+    content: "[" counter(choice) "] ";
+    color: #666;
+    font-size: 0.95em;
+}
+
+.choices button:active { color:#000; }
+.choices button.disabled { color:#8a8375; cursor:not-allowed; text-decoration: none; }
+.choices button.disabled::before { color:#b4ab95; }
+/* Variables visibility toggle */
+#play-vars-section.is-collapsed { display:none; }
+/* Vars toolbar styling */
+.play-vars-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.play-vars-toolbar button {
+    appearance: none;
+    background: #f6f6f6;
+    color: #222;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.play-vars-toolbar button:hover { background:#eee; }
+</style>
 </style>
 <script src="NSE2.js"></script>
 <script>
@@ -104,6 +264,7 @@ body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#
         Module._free(pActionsPtr);
     }
     function filterPlayVars(){ const searchInput = document.getElementById('play-var-search'); if(!searchInput) return; const q = normalizeForMatching(searchInput.value||'').toLowerCase(); const rows = document.querySelectorAll('#play-variables tbody tr'); rows.forEach(row=>{ try{ const name=normalizeForMatching(row.cells[0].textContent||'').toLowerCase(); row.style.display = name.includes(q) ? '' : 'none'; }catch(e){ row.style.display=''; } }); }
+    function toggleVariablesVisibility(){ const panel=document.getElementById('play-vars-section'); const btn=document.getElementById('toggle-vars-btn'); if(!panel||!btn) return; const collapsed = panel.classList.toggle('is-collapsed'); btn.setAttribute('aria-expanded', String(!collapsed)); btn.textContent = collapsed ? 'Show Variables' : 'Hide Variables'; }
     function updatePlay(){ const Module = ensureModule(); if(!Module || !g.playEngine){ const t=document.getElementById('play-title'); if(t) t.textContent=''; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Click "Start" to begin.</em>'; const c=document.getElementById('play-choices'); if(c) c.innerHTML=''; const v=document.getElementById('play-variables'); if(v) v.innerHTML=''; return; } const stateCount = Module._GetStateCount(g.playEngine); if(stateCount===0){ const t=document.getElementById('play-title'); if(t) t.textContent='No Story Loaded'; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Create states and set a start state.</em>'; return; }
         const titlePtr = Module._GetCurrentTitle(g.playEngine); const title = Module.UTF8ToString(titlePtr); Module._FreeString(titlePtr); const t=document.getElementById('play-title'); if(t) t.textContent=title; const descPtr = Module._GetCurrentDescription(g.playEngine); const desc = Module.UTF8ToString(descPtr); Module._FreeString(descPtr); const d=document.getElementById('play-desc'); if(d) d.textContent=desc;
         const variablesDiv=document.getElementById('play-variables'); if(variablesDiv){ variablesDiv.innerHTML=''; const table=document.createElement('table'); table.innerHTML='<thead><tr><th>Variable</th><th>Value</th></tr></thead><tbody></tbody>'; const tbody=table.querySelector('tbody'); const count=Module._GetVariableCount(g.playEngine); for(let i=0;i<count;i++){ const namePtr=Module._GetVariableName(g.playEngine,i); const name=Module.UTF8ToString(namePtr); Module._FreeString(namePtr); const namePtrVal=allocateUTF8(name); const valuePtr=Module._GetVariableValue(g.playEngine,namePtrVal); const value=Module.UTF8ToString(valuePtr); Module._FreeString(valuePtr); Module._free(namePtrVal); const tr=document.createElement('tr'); tr.innerHTML = '<td>'+escapeHtml(name)+'</td><td><input value="'+escapeHtml(value)+'" onchange="setVariableValue(\''+escapeHtml(name)+'\', this.value)" onblur="setVariableValue(\''+escapeHtml(name)+'\', this.value)"></td>'; tbody.appendChild(tr); } variablesDiv.appendChild(table); }
@@ -114,12 +275,17 @@ body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#
     g.startPlayEngine = startPlayEngine;
     g.restartStory = restartStory;
     g.saveProgress = saveProgress;
+    function handleLoadStory(file){ if(!file) return; const Module = ensureModule(); const reader = new FileReader(); reader.onload = ev => { try { const content = ev.target.result || ''; localStorage.setItem('ns2_content', content); if(Module){ try{ if(g.playEngine){ Module._DestroyEngine(g.playEngine); g.playEngine=null; } }catch(e){} try{ g.playEngine = Module._CreateEngine(); Module.FS.writeFile('/story.ns2', content); const p = allocateUTF8('/story.ns2'); Module._LoadFromFile(g.playEngine, p); Module._free(p); Module._Start(g.playEngine); updatePlay(); }catch(e){} } } catch(e){} }; try{ reader.readAsText(file); }catch(e){} }
+    function triggerLoadStory(){ const inp=document.getElementById('load-story'); if(inp) inp.click(); }
     function handleLoadFile(file){ if(file) loadProgress(file); }
     function triggerLoad(){ const inp=document.getElementById('load-save'); if(inp) inp.click(); }
+    g.handleLoadStory = handleLoadStory;
+    g.triggerLoadStory = triggerLoadStory;
     g.handleLoadFile = handleLoadFile;
     g.triggerLoad = triggerLoad;
     g.updatePlay = updatePlay;
     g.filterPlayVars = filterPlayVars;
+    g.toggleVariablesVisibility = toggleVariablesVisibility;
     g.refreshPlayChoiceAvailability = refreshPlayChoiceAvailability;
     g.setVariableValue = setVariableValue;
     g.performChoice = performChoice;
@@ -193,11 +359,13 @@ body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#
 </head>
 <body>
 <div class="main">
-    <div class="play-toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-        <button onclick="startPlayEngine()">Start</button>
+    <div class="play-toolbar">
+        <button onclick="triggerLoadStory()">Story Load</button>
         <button onclick="restartStory()">Restart</button>
-        <button onclick="saveProgress()">Save</button>
-        <button onclick="triggerLoad()">Load</button>
+        <button onclick="saveProgress()" title="Save Bookmark">Save Bookmark</button>
+        <button onclick="triggerLoad()" title="Load Bookmark">Load Bookmark</button>
+        <button id="toggle-vars-btn" aria-controls="play-vars-section" aria-expanded="false" onclick="toggleVariablesVisibility()">Show Variables</button>
+        <input type="file" id="load-story" accept=".ns2,.txt" style="display:none" onchange="handleLoadStory(this.files[0])">
         <input type="file" id="load-save" accept=".save" style="display:none" onchange="handleLoadFile(this.files[0])">
         <!-- removed choice search input -->
     </div>
@@ -205,11 +373,13 @@ body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#
         <h2 id="play-title"></h2>
         <p id="play-desc"></p>
         <div id="play-choices" class="choices"></div>
-        <h3 data-i18n="variables">Variables</h3>
-        <div class="play-vars-toolbar" style="margin-bottom:6px;">
-            <input type="text" id="play-var-search" placeholder="Search variables..." oninput="filterPlayVars()" style="width:240px;">
+        <div id="play-vars-section" class="is-collapsed">
+            <h3 data-i18n="variables">Variables</h3>
+            <div class="play-vars-toolbar" style="margin-bottom:6px;">
+                <input type="text" id="play-var-search" placeholder="Search variables..." oninput="filterPlayVars()" style="width:240px;">
+            </div>
+            <div id="play-variables"></div>
         </div>
-        <div id="play-variables"></div>
     </div>
     <!-- removed play-error and status elements -->
 </div>
