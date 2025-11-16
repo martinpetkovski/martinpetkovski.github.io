@@ -1755,6 +1755,49 @@
         <!-- Context menu items will be injected dynamically -->
     </div>
 
+    <style>
+    /* Backdrop used to highlight bracketed expressions inside plain text inputs/textarea */
+    .bracket-backdrop-wrapper { position: relative; width: 100%; }
+    .bracket-backdrop {
+        position: absolute;
+        inset: 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow: hidden;
+        color: transparent; /* hide default text color so only spans show */
+        pointer-events: none;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.4;
+        padding: 5px;
+        box-sizing: border-box;
+        color: #000000;
+    }
+    .bracket-backdrop .bracket {
+        background: #111; /* darker background */
+        color: #000000; /* white foreground */
+        font-weight: 700;
+        /* no italics per request */
+        padding: 0 2px;
+        border-radius: 2px;
+        border: 1px solid #3c3c3c;
+        box-shadow: inset 0 0 0 10px rgba(0,0,0,0.45), inset 0 1px 3px rgba(0,0,0,0.45);
+    }
+    .bracket-backdrop .ns2-state {
+        color: #c586c0;
+        font-weight: 700;
+    }
+    .bracket-backdrop .ns2-variable {
+        color: #9cdcfe;
+        font-weight: 700;
+    }
+    .bracket-overlay-textarea {
+        position: relative;
+        background: transparent !important;
+        color: #d4d4d4 !important;
+    }
+    </style>
+
     <script>
         let languages = {};
         let currentLanguage = 'en';
@@ -1846,6 +1889,71 @@
                     btn.style.display = text.includes(query) ? 'flex' : 'none';
                 });
             };
+
+            // Helper to register Monarch provider while injecting dynamic state-name regexes
+            function setNs2Monarch(baseDef) {
+                try {
+                    const origTokenizer = baseDef.tokenizer || {};
+
+                    // Build a safe state-name rule for root only (no /g flags)
+                    let stateRule = null;
+                    if (Array.isArray(stateTokens) && stateTokens.length > 0) {
+                        const escaped = stateTokens.map(s => s.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
+                        const pattern = '\\b(' + escaped.join('|') + ')\\b';
+                        stateRule = [new RegExp(pattern), 'ns2.state'];
+                    }
+                    // Build a variable-name rule to highlight variables anywhere (if available)
+                    let variableRule = null;
+                    if (Array.isArray(variableTokens) && variableTokens.length > 0) {
+                        const escapedVars = variableTokens.map(s => s.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
+                        try {
+                            variableRule = [new RegExp('\\b(' + escapedVars.join('|') + ')\\b'), 'ns2.variable'];
+                        } catch (e) {
+                            variableRule = null;
+                        }
+                    }
+
+                    // Bracket rule to enter script state; inject into every tokenizer state so '[' works everywhere
+                    const bracketRule = [/\[/, { token: 'ns2.squarebracket', next: '@script' }];
+                    // Arrow rule: prefer a forced match against known state names so targets are highlighted reliably
+                    let arrowRule = [/->\s*([A-Za-z0-9_\-]+)/, ['ns2.punct', 'ns2.state']];
+                    if (Array.isArray(stateTokens) && stateTokens.length > 0) {
+                        const escapedStates = stateTokens.map(s => s.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
+                        try {
+                            const arrowPattern = '->\\s*(' + escapedStates.join('|') + ')\\b';
+                            arrowRule = [new RegExp(arrowPattern), ['ns2.punct', 'ns2.state']];
+                        } catch (e) {
+                            // fallback to generic arrow rule
+                            arrowRule = [/->\s*([A-Za-z0-9_\-]+)/, ['ns2.punct', 'ns2.state']];
+                        }
+                    }
+
+                    // Clone tokenizer states and prepend arrow/bracket/variable rules so they match everywhere
+                    const newTokenizer = {};
+                    Object.keys(origTokenizer).forEach(stateName => {
+                        const rules = Array.isArray(origTokenizer[stateName]) ? origTokenizer[stateName].slice() : [];
+                        // variable rule should be first so variables are recognized inside scripts/choices
+                        if (variableRule) rules.unshift(variableRule);
+                        // Ensure arrowRule then bracket rule so '-> target' and '[' are recognized everywhere
+                        rules.unshift(bracketRule);
+                        rules.unshift(arrowRule);
+                        // If this is root and we have stateRule, add it after arrow/bracket/variable rules
+                        if (stateName === 'root' && stateRule) {
+                            rules.unshift(stateRule);
+                        }
+                        newTokenizer[stateName] = rules;
+                    });
+
+                    const provider = Object.assign({}, baseDef, { tokenizer: newTokenizer });
+                    monaco.languages.setMonarchTokensProvider('ns2', provider);
+                    console.debug('[ns2] setNs2Monarch: registered provider with', (stateTokens||[]).length, 'state tokens');
+                } catch (e) {
+                    console.error('[ns2] setNs2Monarch failed', e);
+                    monaco.languages.setMonarchTokensProvider('ns2', baseDef);
+                }
+            }
+
+            
             searchInput.addEventListener('click', e => e.stopPropagation());
             langMenu.appendChild(searchInput);
             const buttonContainer = document.createElement('div');
@@ -2111,14 +2219,14 @@
             const constantTokens = ['true', 'false'];
             const typeTokens = ['string', 'int', 'float', 'bool'];
 
-            const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b', 'g');
-            const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
-            const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b', 'g');
-            const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b', 'g');
-            const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b', 'g');
-            const typeRegex = new RegExp('\\b(' + typeTokens.join('|') + ')\\b', 'g');
-            const numberRegex = /[-+]?\d+(?:\.\d+)?/g;
-            const stringRegex = /"[^"]*"/g;
+            const functionRegex = new RegExp('\\b(' + functionTokens.join('|') + ')\\b');
+            const operatorRegex = new RegExp('(' + operatorTokens.map(op => op.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')');
+            const constantRegex = new RegExp('\\b(' + constantTokens.join('|') + ')\\b');
+            const variableRegex = new RegExp('\\b(' + variableTokens.join('|') + ')\\b');
+            const stateRegex = new RegExp('\\b(' + stateTokens.join('|') + ')\\b');
+            const typeRegex = new RegExp('\\b(' + typeTokens.join('|') + ')\\b');
+            const numberRegex = /[-+]?\d+(?:\.\d+)?/;
+            const stringRegex = /"[^"]*"/;
 
             const commonExprRules = [
                 [functionRegex, 'ns2.function.inside'],
@@ -2127,94 +2235,127 @@
                 [variableRegex, 'ns2.variable.inside'],
                 [stateRegex, 'ns2.state.inside'],
                 [typeRegex, 'ns2.type.inside'],
-                [/[\(\)]/g, 'ns2.roundbracket.inside'],
+                [/[\(\)]/, 'ns2.roundbracket.inside'],
                 [numberRegex, 'ns2.number.inside'],
                 [stringRegex, 'ns2.string.inside']
             ];
 
+            // Improved Monarch tokenizer matching the NS2 format described in the guide.
             const monarchDefinition = {
+                defaultToken: '',
                 tokenizer: {
                     root: [
-                        [/^\s*(Variables|States)(:)(\s*)$/, ['', '', '']],
-                        [/^\s*(Title:)(\s*)(.*)$/, ['', '', '']],
-                        [/^\s*(Description:)(\s*)(.*)$/, ['', '', '']],
-                        [/^\s*(Start:)(\s*)(\w+)$/, ['', '', '']],
-                        [/^\s*(\w+)(:)(\s*)$/, ['', '', '']],
-                        [/^\s*(string|int|float|bool)(\s+)(\w+)(:)(\s*)/, ['', '', '', '', ''], '@varinitial'],
-                        [/^\s*-\s*/, '', '@choicetext'],
-                        [/^\s*(context|script):(\s*)/, ['', ''], '@expression'],
-                        [/^\s+(title|description):(\s*)/, ['', ''], '@text'],
-                        [/^\s+(context|script|requires|actions|properties):\s*(?![ \t]*\[)/, ['', ''], '@expression'],
-                        [/^\s*(requires|actions|properties):\s*\[/, ['', 'ns2.squarebracket.inside'], '@listexpr']
+                        // Top-level headings and sections
+                        [/^\s*(Title\s*:)(.*)$/, ['ns2.keyword', 'ns2.title']],
+                        [/^\s*(Description\s*:)(.*)$/, ['ns2.keyword', 'ns2.description']],
+                        [/^\s*(Start\s*:)(.*)$/, ['ns2.keyword', 'ns2.start']],
+                        [/^\s*(Variables)\s*:\s*$/, 'ns2.section'],
+                        [/^\s*(States)\s*:\s*$/, 'ns2.section'],
+
+                        // State header (stateName:)
+                        [/^([A-Za-z0-9_\-]+)(\s*)(:)(\s*)$/, ['ns2.state', '', 'ns2.punct', '']],
+
+                        // Variable declarations: type name: initial [constraint]
+                        [/^\s*(string|int|float|bool)(\s+)([A-Za-z0-9_]+)(\s*)(:)(.*)$/, ['ns2.type', '', 'ns2.variable', '', 'ns2.punct', 'ns2.initial']],
+
+                        // Choice line leading dash
+                        [/^\s*\-\s+/, 'ns2.punct', '@choicetext'],
+
+                        // Sub-keys under states (title:, description:, script:, requires:, actions:, properties:)
+                        [/^\s+(title|description|script)(\s*:\s*)(.*)$/, ['ns2.key', 'ns2.punct', 'ns2.string']],
+                        [/^\s+(requires|actions|properties)(\s*:\s*)(\[.*\])?$/, ['ns2.key', 'ns2.punct', 'ns2.squarebracket.inside']],
+
+                        // Opening bracket starts a script/expression region handled by @script state
+                        [/\[/, { token: 'ns2.squarebracket', next: '@script' }],
+                        // numbers and strings in general
+                        [/"[^"]*"/, 'ns2.string'],
+                        [/\b(true|false)\b/, 'ns2.constant'],
+                        [/[-+]?\d+(?:\.\d+)?\b/, 'ns2.number'],
+
+                        // fallback: identifiers and punctuation
+                        [/[:\[\]\(\)\-\>]/, 'ns2.punct'],
+                        [/\w+/, '']
                     ],
-                    text: [
-                        [/\[/, 'ns2.squarebracket.inside', '@expression'],
-                        [/[^[]+/, ''],
-                        [/\s*$/, '@pop']
-                    ],
-                    varinitial: [
-                        [/"[^"]*"/, ''],
-                        [/true|false/, ''],
-                        [/[-+]?\d+(?:\.\d+)?/, ''],
-                        [/\s*\(\s*/, '', '@varconstraint'],
-                        [/\s*$/, '@pop']
-                    ],
-                    varconstraint: [
-                        [/"[^"]*"/, ''],
-                        [/[-+]?\d+(?:\.\d+)?/, ''],
-                        [/,/, ''],
-                        [/\s*\)\s*$/, '', '@popall']
-                    ],
-                    listexpr: [
-                        [/\s*/, '', '@listitemexpr'],
-                        [/;/, 'ns2.operator.inside'],
-                        [/\s*\]/, 'ns2.squarebracket.inside', '@pop']
-                    ],
-                    listitemexpr: commonExprRules.concat([
-                        [/\s*(;)/, 'ns2.operator.inside', '@pop'],
-                        [/\s*(\])/, 'ns2.squarebracket.inside', '@popall'],
-                        [/./, 'ns2.expression.inside']
-                    ]),
-                    expression: commonExprRules.concat([
-                        [/\]/, 'ns2.squarebracket.inside', '@pop'],
-                        [/./, 'ns2.expression.inside']
-                    ]),
+
+                    // State for parsing choice text after the leading '- '
                     choicetext: [
-                        [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
-                        [/\s*->\s*/, '', '@target'],
-                        [/./, '']
+                        // bracketed expressions at start
+                        [/\s*\[([^\]]*)\]/, ['ns2.squarebracket.inside', 'ns2.expression']],
+                        // arrow to target
+                        [/\s*->\s*/, 'ns2.punct', '@target'],
+                        // rest of line as plain text
+                        [/.*$/, { token: 'ns2.choiceText', next: '@pop' }]
                     ],
+
                     target: [
-                        [/\s*(\w+)\s*/, '', '@aftertarget']
+                        [/\s*([A-Za-z0-9_\-]+)\s*/, { token: 'ns2.state', next: '@aftertarget' }]
                     ],
+
                     aftertarget: [
-                        [/\s*\[\s*(\w+)\s*\]/, ['ns2.squarebracket.inside', 'ns2.flag', 'ns2.squarebracket.inside'], '@popall'],
-                        [/\s*(\[)\s*/, 'ns2.squarebracket.inside', '@expression'],
-                        [/\s*$/, '@popall']
+                        // optional bracketed effect or flags
+                        [/\s*\[([^\]]*)\]/, ['ns2.squarebracket.inside', 'ns2.flag'], '@pop'],
+                        [/.*$/, { token: '', next: '@pop' }]
+                    ]
+                    ,
+                    // script state: everything inside [ ... ] is treated as script
+                    script: [
+                        [/[^\]]+/, 'ns2.script'],
+                        [/\]/, { token: 'ns2.squarebracket', next: '@pop' }]
                     ]
                 }
             };
 
             if (!textEditor) {
                 require(['vs/editor/editor.main'], function () {
-                    monaco.languages.register({ id: 'ns2' });
-                    monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
-                    monaco.editor.defineTheme('ns2-dark', {
+                        console.debug('[ns2] Monaco editor main loaded');
+                        try {
+                            console.debug('[ns2] registering language id=ns2');
+                            monaco.languages.register({ id: 'ns2' });
+                                console.debug('[ns2] setting Monarch tokens provider for ns2');
+                                    if (typeof setNs2Monarch === 'function') setNs2Monarch(monarchDefinition);
+                                    else monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+                        } catch (err) {
+                            console.error('[ns2] Error registering language or tokens provider', err);
+                        }
+                        try {
+                            console.debug('[ns2] defining theme ns2-dark');
+                            monaco.editor.defineTheme('ns2-dark', {
                         base: 'vs-dark',
                         inherit: true,
                         rules: [
-                            { token: 'ns2.function.inside', foreground: 'dcdcaa', background: '3c3c3c' },
-                            { token: 'ns2.operator.inside', foreground: 'd4d4d4', background: '3c3c3c' },
-                            { token: 'ns2.constant.inside', foreground: '569cd6', background: '3c3c3c' },
-                            { token: 'ns2.variable.inside', foreground: '9cdcfe', background: '3c3c3c' },
-                            { token: 'ns2.state.inside', foreground: 'c586c0', background: '3c3c3c' },
-                            { token: 'ns2.type.inside', foreground: '4ec9b0', background: '3c3c3c' },
-                            { token: 'ns2.roundbracket.inside', foreground: 'ffd700', background: '3c3c3c' },
-                            { token: 'ns2.number.inside', foreground: 'b5cea8', background: '3c3c3c' },
-                            { token: 'ns2.string.inside', foreground: 'ce9178', background: '3c3c3c' },
-                            { token: 'ns2.expression.inside', foreground: '9cdcfe', background: '3c3c3c' },
-                            { token: 'ns2.squarebracket.inside', foreground: 'ffd700', background: '3c3c3c' },
-                            { token: 'ns2.flag', foreground: '569cd6', background: '3c3c3c' }
+                            // tokens emitted by the Monarch tokenizer
+                            { token: 'ns2.keyword', foreground: 'c586c0' },
+                            { token: 'ns2.title', foreground: 'c586c0' },
+                            { token: 'ns2.description', foreground: 'c586c0' },
+                            { token: 'ns2.start', foreground: '9cdcfe' },
+                            { token: 'ns2.section', foreground: '4ec9b0' },
+                            { token: 'ns2.state', foreground: 'c586c0' },
+                            { token: 'ns2.type', foreground: '4ec9b0' },
+                            { token: 'ns2.variable', foreground: '9cdcfe' },
+                            { token: 'ns2.initial', foreground: 'b5cea8' },
+                            { token: 'ns2.punct', foreground: 'd4d4d4' },
+                            { token: 'ns2.key', foreground: '4ec9b0' },
+                            { token: 'ns2.choiceText', foreground: 'dcdcaa' },
+                            { token: 'ns2.string', foreground: 'ce9178' },
+                            { token: 'ns2.number', foreground: 'b5cea8' },
+                            { token: 'ns2.constant', foreground: '569cd6' },
+                            { token: 'ns2.squarebracket.inside', foreground: '000000' },
+                            { token: 'ns2.expression', foreground: '9cdcfe' },
+                            { token: 'ns2.squarebracket', foreground: 'ffffff', background: '555555', fontStyle: 'bold' },
+                            { token: 'ns2.squarebracket.inside', foreground: 'ffffff', background: '555555' },
+                            { token: 'ns2.script', foreground: 'ffffff', background: '555555', fontStyle: 'bold' },
+                            { token: 'ns2.flag', foreground: '569cd6' },
+                            // legacy/compat tokens from earlier tokenizer (keep them mapped too)
+                            { token: 'ns2.function.inside', foreground: 'dcdcaa' },
+                            { token: 'ns2.operator.inside', foreground: 'd4d4d4' },
+                            { token: 'ns2.constant.inside', foreground: '569cd6' },
+                            { token: 'ns2.variable.inside', foreground: '9cdcfe' },
+                            { token: 'ns2.state.inside', foreground: 'c586c0' },
+                            { token: 'ns2.type.inside', foreground: '4ec9b0' },
+                            { token: 'ns2.roundbracket.inside', foreground: 'ffd700' },
+                            { token: 'ns2.number.inside', foreground: 'b5cea8' },
+                            { token: 'ns2.string.inside', foreground: 'ce9178' },
+                            { token: 'ns2.expression.inside', foreground: '9cdcfe' }
                         ],
                         colors: {
                            
@@ -2229,9 +2370,25 @@
                         wordWrap: 'on'
                     });
                     attachTextEditorAutoApply();
+                    try {
+                        // Diagnostic: tokenize a small sample and log results
+                        if (monaco && monaco.editor && typeof monaco.editor.tokenize === 'function') {
+                            const sample = 'int health: 100 [0,100]\nintro:\n  title: Welcome\n  - Go north -> forest';
+                            try {
+                                const toks = monaco.editor.tokenize(sample, 'ns2');
+                                console.debug('[ns2] tokenize sample result:', toks);
+                            } catch (e) {
+                                console.error('[ns2] tokenize sample failed', e);
+                            }
+                        }
+                    } catch(e) {}
+                    } catch (err) {
+                        console.error('[ns2] Error defining theme or creating editor', err);
+                    }
                 });
             } else {
-                monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
+                if (typeof setNs2Monarch === 'function') setNs2Monarch(monarchDefinition);
+                else monaco.languages.setMonarchTokensProvider('ns2', monarchDefinition);
                 textEditor.setValue(content);
                 attachTextEditorAutoApply();
             }
@@ -2247,7 +2404,106 @@
                         applyTextChanges();
                     } catch (e) {}
                 }, 800);
+                // update bracket decorations live
+                try { applyMonacoBracketDecorations(); } catch (e) {}
             });
+            // initial decorations
+            try { applyMonacoBracketDecorations(); } catch (e) {}
+        }
+
+        // Monaco decoration id holder for bracket regions
+        let bracketDecorations = [];
+
+        function applyMonacoBracketDecorations() {
+            if (!textEditor) return;
+            const model = textEditor.getModel();
+            if (!model) return;
+            const text = model.getValue();
+            const ranges = [];
+            // Find all bracketed ranges (including nested/simple)
+            let match;
+            const re = /\[([\s\S]*?)\]/g;
+            while ((match = re.exec(text)) !== null) {
+                const startIndex = match.index;
+                const endIndex = re.lastIndex;
+                const startPos = model.getPositionAt(startIndex);
+                const endPos = model.getPositionAt(endIndex);
+                ranges.push({ range: new monaco.Range(startPos.lineNumber, startPos.column, endPos.lineNumber, endPos.column), options: { inlineClassName: 'ns2-bracket-deco' } });
+            }
+            // Apply decorations
+            bracketDecorations = textEditor.deltaDecorations(bracketDecorations, ranges);
+        }
+
+        // Apply decoration CSS (Visual Studio style aggressive black background)
+        (function injectBracketDecorationStyle(){
+            const id = 'ns2-bracket-style';
+            if (document.getElementById(id)) return;
+            const s = document.createElement('style');
+            s.id = id;
+            s.textContent = `
+            .monaco-editor .ns2-bracket-deco { background-color: #222; color: #690 !important; font-weight:700; border:1px solid #555; box-shadow: inset 3px 5px 8px rgba(0,0,0,1); }
+        `;
+            document.head.appendChild(s);
+        })();
+
+        // Overlay highlighter for plain text inputs/textarea
+        function ensureBracketBackdrop(field) {
+            if (!field) return;
+            // Only apply to single-line inputs and textareas
+            if (field.dataset.bracketBackdropAttached) return;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bracket-backdrop-wrapper';
+            field.parentNode.insertBefore(wrapper, field);
+            wrapper.appendChild(field);
+
+                const backdrop = document.createElement('div');
+                backdrop.className = 'bracket-backdrop';
+            wrapper.insertBefore(backdrop, field);
+
+            // Make the field transparent so backdrop shows highlighted substrings
+            field.classList.add('bracket-overlay-textarea');
+            field.style.backgroundColor = 'transparent';
+            field.style.position = 'relative';
+            field.style.zIndex = 2;
+
+            function updateBackdrop() {
+                const v = field.value || field.textContent || '';
+                // Escape HTML
+                const esc = v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                // If we have variable tokens, highlight them first across the whole text
+                let processed = esc;
+                try {
+                    if (Array.isArray(variableTokens) && variableTokens.length > 0) {
+                        const escapedVars = variableTokens.map(s => s.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
+                        const varRe = new RegExp('\\b(' + escapedVars.join('|') + ')\\b', 'g');
+                        processed = processed.replace(varRe, function(m) { return '<span class="ns2-variable">' + m + '</span>'; });
+                    }
+                } catch (e) {}
+
+                // Then convert arrow -> stateName (allow optional variable span around the name)
+                processed = processed.replace(/->\s*(?:<span class="ns2-variable">)?([A-Za-z0-9_\-]+)(?:<\/span>)?/g, function(_, name) {
+                    return '-> <span class="ns2-state">' + name + '</span>';
+                });
+
+                // Replace bracketed parts with span (inner may already contain ns2-variable/ns2-state spans)
+                const html = processed.replace(/\[([\s\S]*?)\]/g, function(_, inner){
+                    return '<span class="bracket">[' + inner.replace(/\n/g, '<br>') + ']</span>';
+                }).replace(/\n/g, '<br>');
+                backdrop.innerHTML = html + '\n';
+            }
+
+            // Sync sizes
+            function syncSize(){
+                backdrop.style.font = window.getComputedStyle(field).font;
+                backdrop.style.padding = window.getComputedStyle(field).padding;
+                backdrop.style.lineHeight = window.getComputedStyle(field).lineHeight;
+            }
+
+            field.addEventListener('input', updateBackdrop);
+            field.addEventListener('scroll', () => { backdrop.scrollTop = field.scrollTop; backdrop.scrollLeft = field.scrollLeft; });
+            window.addEventListener('resize', syncSize);
+            setTimeout(() => { syncSize(); updateBackdrop(); }, 30);
+            field.dataset.bracketBackdropAttached = '1';
         }
 
         function applyTextChanges() {
@@ -2538,6 +2794,17 @@ function selectState(name) {
     renderChoices(name);
     filterChoices(name);
 
+    // Attach bracket backdrops for state script and list inputs
+    try {
+        const scriptTextarea = panel.querySelector('#state-script-textarea');
+        if (scriptTextarea) ensureBracketBackdrop(scriptTextarea);
+        // requires/actions inputs (these are single-line inputs)
+        const reqInput = panel.querySelector('input[list="token-list"][onchange*="requires"]');
+        const actInput = panel.querySelector('input[list="token-list"][onchange*="actions"]');
+        if (reqInput) ensureBracketBackdrop(reqInput);
+        if (actInput) ensureBracketBackdrop(actInput);
+    } catch (e) {}
+
     // Auto-resize and live-save the state description textarea (keep behavior similar to story description)
     try {
         const descTextarea = panel.querySelector('textarea:not(#state-script-textarea)');
@@ -2698,6 +2965,11 @@ function selectState(name) {
                     <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" data-i18n-title="deleteChoice" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
                 list.appendChild(tr);
+                // Attach bracket backdrop to newly created inputs (text/effect/cond)
+                try {
+                    const inputs = tr.querySelectorAll('input, textarea');
+                    inputs.forEach(inp => ensureBracketBackdrop(inp));
+                } catch (e) {}
                 // Disable the "Go to State" button if the target state doesn't exist
                 const scopeBtn = tr.querySelector('.scope-button');
                 if (scopeBtn) {
@@ -4308,6 +4580,10 @@ function selectState(name) {
             }
             tokens = [...stateTokens, ...variableTokens, ...functionTokens, ...operatorTokens, ...constantTokens];
             tokens = [...new Set(tokens)].sort();
+            // Re-register Monarch provider when state list changes so state names highlight consistently
+            try {
+                if (window.monaco && typeof setNs2Monarch === 'function') setNs2Monarch(monarchDefinition);
+            } catch (e) {}
         }
 
         function renderEditor() {
