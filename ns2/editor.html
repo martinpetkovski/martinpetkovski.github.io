@@ -14,2263 +14,7 @@
     <script src="https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"></script>
     <script type="text/javascript" src="NSE2.js"></script>
-    <style>
-    body {
-        font-family: 'Noto Sans JP', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #1E1E1E;
-        color: #D4D4D4;
-        font-size: 13px;
-        height: 100vh;
-        box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
-    }
-
-    /* Disable text selection by default across the UI; re-enable only for
-       form controls and the Monaco editor so users can select code and form text */
-    * {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-    input, textarea, select, option, button {
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
-    }
-    [contenteditable], .monaco-editor, .monaco-editor * {
-        -webkit-user-select: text !important;
-        -moz-user-select: text !important;
-        -ms-user-select: text !important;
-        user-select: text !important;
-    }
-
-    #splash-screen {
-        position: fixed;
-        inset: 0;
-        background-color: #0C0C0C;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-        transition: opacity 0.08s ease-out;
-    }
-    #splash-screen img {
-        height: 140px;
-        width: auto;
-        filter: drop-shadow(0 0 30px #00AbC0);
-        animation: pulse 1.5s infinite alternate;
-    }
-    #splash-screen h1 {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 26px;
-        font-weight: 900;
-        letter-spacing: 4px;
-        color: #D4D4D4;
-        margin: 30px 0 50px;
-    }
-    #loading-bar-container {
-        width: 40%;
-        max-width: 500px;
-        height: 6px;
-        background-color: #2a2a2a;
-        overflow: hidden;
-    }
-    #loading-bar {
-        height: 100%;
-        width: 0;
-        background: linear-gradient(to right, #00ffc0, #00AbC0, #007bb0);
-        animation: fill 1s linear forwards;
-    }
-    @keyframes fill {
-        0%   { width: 0%; }
-        12%  { width: 8%; }
-        25%  { width: 22%; }
-        38%  { width: 28%; }
-        55%  { width: 58%; }
-        70%  { width: 62%; }
-        85%  { width: 88%; }
-        94%  { width: 94%; }
-        100% { width: 100%; }
-    }
-    @keyframes pulse {
-        from { filter: drop-shadow(0 0 20px #00AbC0); }
-        to { filter: drop-shadow(0 0 40px #00AbC0); }
-    }
-    #splash-screen.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    .header {
-        display: grid;
-        grid-template-columns: auto 1fr auto; /* left / center (toolbar) / right (window-controls) */
-        align-items: center;
-        background: linear-gradient(0deg, #0C0C0C, #161616);
-        padding: 0 10px; /* remove vertical padding from title bar */
-        border-bottom: 1px solid #2a2a2a;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        gap: 10px;
-        min-height: 34px; /* previous header height — restore to previous look */
-        height: auto;
-        flex-shrink: 0;
-        box-sizing: border-box;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 2px 0 rgba(255,255,255,0.05);
-    }
-    /* Make header draggable in frameless Electron; interactive controls must opt-out with no-drag */
-    .header { -webkit-app-region: drag; }
-    .no-drag { -webkit-app-region: no-drag; }
-    /* Ensure interactive controls are clickable inside draggable header */
-    .icon-button, .menu-button, button, a, input, select, textarea { -webkit-app-region: no-drag; }
-
-    /* Layout helpers for the three header columns when using CSS grid */
-    .header-left { display:flex; align-items:center; gap:8px; min-width:0; }
-    .header-center { display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0; }
-    .header-right { display:flex; align-items:center; gap:6px; justify-self:end; flex:0 0 auto; }
-
-    /* remove the forced small title-line rule so compact header rules take effect */
-
-    /* Ensure toolbar group labels are explicitly non-selectable */
-    .toolbar-group .group-label,
-    .toolbar .group-label {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-    }
-
-    h1 {
-        font-size: 20px;
-        color: #D4D4D4;
-        font-weight: bold;
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 1px;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    /* UNIFORM BUTTON STYLING */
-    button {
-        padding: 5px 8px;
-        background: linear-gradient(0deg, #111, #222 );
-        color: #999;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-        font-size: 12px;
-        margin: 0;
-        border: 1px outset #FFF2;
-        font-weight: bold;
-    }
-
-    button:hover {
-        color: #FFF;
-        background: transparent;
-        background-color: rgba(0,123,176,0.2);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    button:active,
-    button.active {
-        color: #00AbC0;
-        border-bottom: 2px solid #00AbC0;
-        box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
-        background-color: rgba(0,123,176,0.2) !important;
-        background: rgba(0,123,176,0.2) !important;
-    }
-
-    .tab-button.active {
-        background-color: rgba(0,123,176,0.4);
-    }
-
-    input[type="file"] {
-        padding: 5px;
-        font-size: 12px;
-        background-color: #2D2D2D;
-        color: #D4D4D4;
-        border: 1px solid #3C3C3C;
-        border-radius: 3px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    input[type="file"]::file-selector-button {
-        background: none;
-        color: #999;
-        border: none;
-        padding: 5px 8px;
-        border-radius: 0;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
-        border-bottom: 2px solid transparent;
-        font-weight: bold;
-    }
-
-    input[type="file"]::file-selector-button:hover {
-        color: #00AbC0;
-        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    .tabs {
-        display: flex;
-        border-bottom: 1px solid #2a2a2a;
-        overflow-x: auto;
-        white-space: nowrap;
-        position: sticky;
-        top: 40px;
-        z-index: 99;
-        background-color: #111;
-        background: linear-gradient(0deg,rgba(17, 17, 17, 1) 0%, rgba(30, 30, 30, 1) 100%);
-        padding: 0;
-        height: 30px;
-        flex-shrink: 0;
-        box-sizing: border-box;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    /* Ensure toolbar is always visible in the header */
-    #global-toolbar {
-        opacity: 1 !important;
-        visibility: visible !important;
-        max-height: none !important;
-    }
-
-    .tab-button {
-        flex: 1;
-        min-width: 80px;
-        padding: 0 10px;
-        height: 100%;
-        justify-content: center;
-        border: 0 !important;
-        border-radius: 0px;
-    }
-
-    .tab-content {
-        flex: 1;
-        flex-direction: column;
-        opacity: 0;
-        padding: 0;
-        box-sizing: border-box;
-        position: relative;
-        z-index: 1;
-        display: none;
-        width: 100%;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
-    }
-
-    .tab-content.active {
-        display: flex;
-        opacity: 1;
-        z-index: 10;
-    }
-
-    #tab-graph {
-        padding: 0;
-    }
-
-    #tab-graph .toolbar {
-        flex-shrink: 0;
-        margin-bottom: 0;
-        padding: 0;
-    }
-
-    #graph-container {
-        flex: 1;
-        position: relative;
-        background-color: #252526;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(255,255,255,0.05);
-        transition: all 0.5s ease;
-        z-index: 1;
-        width: 100%;
-    }
-
-    #graph-container svg {
-        background-color: transparent;
-        pointer-events: auto;
-        display: block;
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        max-height: none;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    #tab-graph:not(.active) #graph-container svg {
-        pointer-events: none !important;
-    }
-
-    .section {
-        background-color: #252526;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -2px 0 rgba(0,0,0,0.3);
-        padding: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .section:hover {
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 3px 0 rgba(255,255,255,0.1), inset 0 -3px 0 rgba(0,0,0,0.4);
-    }
-
-    details {
-        margin-bottom: 8px;
-        transition: all 0.3s ease;
-    }
-
-    summary {
-        cursor: pointer;
-        font-weight: 500;
-        padding: 5px;
-        background-color: #2D2D2D;
-        border-radius: 3px;
-        color: #D4D4D4;
-        list-style: none;
-        transition: all 0.3s;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
-    }
-
-    summary:hover {
-        background-color: #3C3C3D;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.3);
-    }
-
-    details[open] summary ~ * {
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-        border: inset 1px #333;
-    }
-
-    th, td {
-        padding: 5px;
-        text-align: left;
-        border-bottom: 1px solid #3C3C3C;
-        transition: all 0.3s;
-        vertical-align: middle;
-        height: auto;
-    }
-
-    th {
-        background-color: #2D2D2D;
-        font-weight: 500;
-        color: #D4D4D4;
-        box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
-        text-align: center;
-    }
-
-    tr:hover td {
-        background-color: #2D2D2D;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    input, textarea, select {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 5px;
-        border: 1px inset #3C3C3C;
-        border-radius: 0;
-        font-size: 12px;
-        background-color: #1E1E1E;
-        color: #D4D4D4;
-        font-family: 'Consolas', 'Monaco', monospace;
-        box-shadow: inset 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
-        transition: all 0.3s;
-        margin: 0;
-    }
-
-    input:focus, textarea:focus, select:focus {
-        border: 1px solid #007bb0;
-        box-shadow: 0 0 8px rgba(0, 122, 204, 0.6), 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 0 rgba(0,123,176,0.5);
-    }
-
-    input[type="checkbox"] {
-        width: auto;
-        height: 16px;
-        accent-color: #007bb0;
-        margin-right: 5px;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-
-    input[type="checkbox"]:hover {
-        box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
-    }
-
-    textarea {
-        min-height: 40px;
-        resize: vertical;
-    }
-
-    #story-description {
-        min-height: 100px;
-    }
-
-    #tab-text {
-        font-family: 'Consolas', 'Courier New', monospace;
-        background-color: #1E1E1E;
-        padding: 8px;
-        font-size: 12px;
-        line-height: 1.2;
-        color: #D4D4D4;
-    }
-
-    #text-editor {
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(255,255,255,0.05);
-        height: 100%;
-        width: 100%;
-    }
-
-    .flex-row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .flex-row button {
-        flex-shrink: 0;
-    }
-
-    .grid-form {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .grid-form label {
-        text-align: right;
-        font-weight: 500;
-        color: #D4D4D4;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-
-    #state-search {
-        /* Use flexbox sizing so search inputs fill available toolbar space */
-        background-color: #1E1E1E;
-        color: #D4D4D4;
-        border: 1px solid #3C3C3C;
-        box-sizing: border-box;
-        height: 26px !important;
-        padding: 0 8px;
-        width: auto;
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
-    /* Make text inputs inside toolbars expand to fill available area */
-    .toolbar input[type="text"], .play-choices-toolbar input[type="text"], .play-vars-toolbar input[type="text"] {
-        flex: 1 1 auto;
-        min-width: 0;
-        width: auto;
-        box-sizing: border-box;
-        height: 26px !important;
-        padding: 0 8px;
-        background-color: #1E1E1E;
-        color: #D4D4D4;
-        border: 1px solid #3C3C3C;
-    }
-
-    .target-group {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        width: 100%;
-    }
-
-    .target-group input {
-        flex: 1;
-        width: auto;
-        box-sizing: border-box;
-        height: 26px !important;
-        margin: 0 !important;
-    }
-
-    /* Icon buttons - using uniform style similar to tab-buttons */
-    .target-group button,
-    .icon-button {
-        padding: 0;
-        font-size: 12px;
-        border-radius: 0;
-        width: 22px;
-        height: 22px;
-        justify-content: center;
-        color: #999;
-        background: linear-gradient(135deg, rgba(0,123,176,0.38) 0%, rgba(0,123,176,0.56) 100%);
-        border: none;
-        box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
-        border-bottom: 2px solid transparent;
-        transition: background-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease, transform 0.12s ease;
-        cursor: pointer;
-    }
-
-    .target-group button:hover,
-    .icon-button:hover {
-        color: #FFF;
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    /* Restore colored icon buttons inside the toolbar (keeps toolbar background transparent) */
-    #global-toolbar .icon-button,
-    #global-toolbar .toolbar-group .icon-button {
-        padding: 0;
-        font-size: 12px;
-        border-radius: 0;
-        width: 22px;
-        height: 22px;
-        justify-content: center;
-        color: #999;
-        background: linear-gradient(135deg, rgba(0,123,176,0.38) 0%, rgba(0,123,176,0.56) 100%);
-        border: none;
-        box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
-        border-bottom: 2px solid transparent;
-        transition: background-color 0.22s ease, box-shadow 0.22s ease, color 0.22s ease, transform 0.12s ease;
-        cursor: pointer;
-    }
-
-     /* window controls styling (min/max/close) - keep static inside the header-right column
-         so they never overlap toolbar and will not use absolute positioning */
-     .window-controls { display:flex; gap:6px; align-items:center; z-index: 120; }
-     .window-controls .icon-button { width:28px; height:22px; padding:0; display:flex; align-items:center; justify-content:center; }
-     .window-controls .icon-button:hover { background-color: rgba(255,255,255,0.03); color:#fff; }
-     .window-controls #win-close:hover { background: linear-gradient(90deg, rgba(220,60,60,0.95), rgba(200,30,30,0.95)); color: #fff; }
-     .window-controls { -webkit-app-region: no-drag; flex: 0 0 auto; }
-
-    #global-toolbar .icon-button:hover,
-    #global-toolbar .toolbar-group .icon-button:hover {
-        color: #FFF;
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-
-    /* Story title displayed in the toolbar */
-    .toolbar-story-title {
-        color: #D4D4D4;
-        font-size: 13px;
-        font-weight: 600;
-        margin-right: 8px;
-        padding: 2px 6px;
-        background: transparent;
-        border-radius: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex: 1 1 auto;
-        min-width: 0; /* allow ellipsis to work inside flex */
-        align-self: center;
-        font-family: 'Orbitron', sans-serif;
-    }
-
-    /* Sci‑fi scrollbar styling (WebKit/Blink) */
-    *::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    *::-webkit-scrollbar-track {
-        background: linear-gradient(180deg, rgba(10,10,12,0.6), rgba(20,20,24,0.6));
-        border-left: 1px solid rgba(255,255,255,0.02);
-        box-shadow: inset 0 0 8px rgba(0,170,200,0.03);
-        border-radius: 0;
-    }
-    *::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, rgba(0,170,200,0.9), rgba(0,100,140,0.9));
-        border-radius: 0;
-        box-shadow: 0 0 8px rgba(0,170,200,0.18), inset 0 -2px 0 rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.03);
-    }
-    *::-webkit-scrollbar-thumb:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 14px rgba(0,170,200,0.28), inset 0 -2px 0 rgba(255,255,255,0.06);
-    }
-
-    /* Firefox scrollbar support */
-    html, body, .section, .tab-content, .states-list-panel, .play-content {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(0,170,200,0.9) rgba(20,20,24,0.6);
-    }
-
-    /* Compact header elements */
-    .header h1 { font-size: 15px; margin-left: 6px; line-height: 20px; }
-    .header { padding: 3px 8px; }
-    button { padding: 3px 5px; font-size: 12px; }
-    .toolbar .icon-button { width:20px; height:20px; }
-
-    /* Responsive compaction: reduce spacing and sizes on narrow windows */
-    @media (max-width: 1100px) {
-        .toolbar { gap: 4px; }
-        .toolbar-group { padding: 6px 4px; }
-        .toolbar .group-label { display: none; }
-        .icon-button, .window-controls .icon-button { width: 20px; height: 20px; }
-        .toolbar-story-title { font-size: 12px; padding: 0 6px; }
-    }
-    @media (max-width: 720px) {
-        .header h1 { font-size: 14px; }
-        .icon-button { width: 18px; height: 18px; }
-        .window-controls .icon-button { width: 22px; }
-    }
-    /* Base node body */
-    .mermaid .node rect,
-    .mermaid .node polygon,
-    .mermaid .node circle {
-        fill: #0f394a; /* deep body color */
-        stroke: rgba(0,0,0,0.5);
-        stroke-width: 1.5px;
-        transition: all 0.18s ease;
-        /* Softer, more subtle shadow and an inset hint */
-        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
-        box-shadow: inset 0 3px 6px rgba(0,0,0,0.12);
-        rx: 8; ry: 8;
-    }
-
-    /* Hover/active visual similar to UE Blueprint nodes */
-    .mermaid .node:hover rect,
-    .mermaid .node:hover polygon,
-    .mermaid .node:hover circle {
-        transform: translateY(-2px) scale(1.01);
-        filter: drop-shadow(0 3px 8px rgba(0,0,0,0.28));
-        box-shadow: inset 0 4px 8px rgba(0,0,0,0.14);
-    }
-
-    /* Node label / title */
-    .mermaid .node text {
-        fill: #FFFFFF;
-        font-weight: 700;
-        font-family: 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif;
-        font-size: 12px;
-        pointer-events: none; /* text shouldn't block pointer events */
-        text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-    }
-
-    /* Subtle body inset for the label group created by mermaid */
-    .mermaid .node .label rect { fill-opacity: 0.02; }
-    .mermaid .node .label { pointer-events: none; }
-
-    /* Small pins used as connection ports (we insert these via JS) */
-    .mermaid .node .bp-pin { fill: #ffd166; stroke: #ff9f1c; stroke-width: 1px; }
-    .mermaid .node .bp-pin.in { fill: #7ed6ff; stroke: #00a3d1; }
-    .mermaid .node .bp-pin.out { fill: #ffd166; stroke: #ff9f1c; }
-
-    /* Blueprint-style header band (inserted via JS) */
-    .mermaid .node .bp-header,
-    svg .node .bp-header,
-    .node .bp-header {
-        fill: #0b66a1; /* header default */
-        stroke: rgba(0,0,0,0.4);
-        stroke-width: 1px;
-        rx: 6; ry: 6;
-        opacity: 1;
-    }
-
-    /* When node hovered/selected, brighten header */
-    .mermaid .node.graph-hover .bp-header,
-    svg .node.graph-hover .bp-header,
-    .node.graph-hover .bp-header { fill: #0d78b0; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
-    .mermaid .node.graph-selected .bp-header,
-    svg .node.graph-selected .bp-header,
-    .node.graph-selected .bp-header { fill: #007bb0; filter: drop-shadow(0 3px 8px rgba(0,123,176,0.16)); }
-
-    /* Small helper class so inserted foreignObject icons don't steal pointer events */
-    .graph-icon-fo { pointer-events: none; }
-
-    /* Highlight & selection visuals */
-    .mermaid .node.graph-hover rect,
-    .mermaid .node.graph-hover polygon,
-    .mermaid .node.graph-hover circle {
-        stroke: #ffd166;
-        stroke-width: 3px;
-        /* subtle highlight shadow (very faint) */
-        filter: drop-shadow(0 2px 6px rgba(255,209,102,0.06));
-        box-shadow: inset 0 2px 6px rgba(255,209,102,0.03);
-    }
-
-    .mermaid .node.graph-selected rect,
-    .mermaid .node.graph-selected polygon,
-    .mermaid .node.graph-selected circle {
-        stroke: #ff8c42;
-        stroke-width: 3px;
-        filter: drop-shadow(0 3px 8px rgba(255,140,66,0.08));
-        transform: translateY(-2px) scale(1.01);
-    }
-
-    .graph-icon-fo { pointer-events: none; }
-
-    .mermaid .edgePath .path {
-        stroke: #99e6ff;
-        stroke-width: 2.5px;
-        transition: all 0.18s ease;
-        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
-        stroke-linecap: round;
-    }
-
-    .mermaid .edgeLabel {
-        fill: #dff9ff; color: #012a36; background: rgba(255,255,255,0.02);
-    }
-
-    .mermaid .edgeLabel {
-        background-color: #333333;
-        color: #FFFFFF;
-        padding: 2px 4px;
-        font-size: 11px;
-        transition: all 0.3s;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.2);
-    }
-
-    .dropdown {
-        position: relative;
-        width: 100%;
-    }
-
-    .dropdown-list {
-        position: absolute;
-        background: rgba(45,45,45,0.7);
-        -webkit-backdrop-filter: blur(6px);
-        backdrop-filter: blur(6px);
-        border: 1px solid rgba(60,60,60,0.6);
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        max-height: 50vh;
-        overflow: auto;
-        z-index: 1000;
-        width: 100%;
-        max-width: calc(100vw - 16px);
-        display: none;
-        box-shadow: 0 8px 22px rgba(0,0,0,0.28);
-        transition: opacity 0.12s ease, transform 0.12s ease;
-        transform: translateY(-6px);
-        opacity: 0;
-        border-radius: 0;
-    }
-
-    .dropdown-list.visible {
-        display: block;
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .dropdown-list li {
-        padding: 4px 8px;
-        cursor: pointer;
-        transition: background-color 0.12s ease, color 0.12s ease;
-        box-shadow: none;
-        color: #e4f3fb;
-        font-size: 12px;
-    }
-
-    /* Only hover rows that contain child elements (guards against empty/placeholder LIs) */
-    .dropdown-list li:has(*):hover {
-        color: #00AbC0;
-        background: rgba(15,15,15,0.15);
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 8px;
-        margin: 0;
-        padding: 5px;
-        align-items: center;
-        background-color: #252526;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
-    }
-
-    /* Groups inside the global toolbar */
-    .toolbar-group {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        padding: 8px 6px;
-        border-right: 1px solid rgba(255,255,255,0.03);
-        margin-right: 8px;
-    }
-    /* Practical inline group labels (left of the buttons) with 50% foreground transparency */
-    .toolbar-group .group-label {
-        display: inline-block;
-        margin-right: 6px;
-        padding: 0 6px;
-        background: transparent;
-        border: none;
-        border-radius: 8px;
-        color: rgba(174,190,205,0.5); /* 50% foreground */
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.4px;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .toolbar .menu-button {
-        margin-left: auto;
-        cursor: pointer !important;
-    }
-
-    .play-content {
-        background-color: #252526;
-        padding: 8px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-        flex: 1;
-        overflow-y: auto;
-    }
-
-    .play-content h2 {
-        margin-top: 0;
-        font-size: 16px;
-        color: #007bb0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .play-content h3 {
-        margin: 16px 0 8px 0;
-        font-size: 14px;
-        color: #007bb0;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    }
-
-    .play-content p {
-        margin: 4px 0;
-        line-height: 1.4;
-    }
-
-    #play-desc {
-        margin-bottom: 20px !important;
-    }
-
-    .error {
-        color: red;
-        text-shadow: 0 1px 2px rgba(255,0,0,0.5);
-    }
-
-    .choices {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-top: 8px;
-        align-self: flex-start;
-        width: auto;
-    }
-
-    .choices button {
-        width: auto;
-        min-width: 200px;
-        justify-content: flex-start;
-        padding: 6px 10px;
-        font-size: 13px;
-        opacity: 0;
-        transform: translateX(-10px);
-        animation: slideIn 0.5s forwards;
-        text-align: left;
-    }
-
-    /* Disabled choice buttons both in editor and play view */
-    .choices button[disabled],
-    .choices button.disabled {
-        opacity: 0.45 !important;
-        cursor: not-allowed !important;
-        color: #777 !important;
-        background-color: rgba(255,255,255,0.02) !important;
-        box-shadow: none !important;
-        transform: none !important;
-        text-decoration: line-through !important;
-    }
-
-    /* General disabled button styling for toolbar and other icon buttons */
-    button[disabled],
-    button.disabled {
-        opacity: 0.45 !important;
-        cursor: not-allowed !important;
-        color: #777 !important;
-        box-shadow: none !important;
-        background-color: rgba(255,255,255,0.02) !important;
-    }
-
-    @keyframes slideIn {
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    .states-container {
-        display: flex;
-        height: 100%;
-    }
-
-    .states-list-panel {
-        width: 30%;
-        border-right: 1px solid #3C3C3C;
-        padding: 0;
-        overflow-y: auto;
-        box-shadow: inset 4px 0 8px rgba(0,0,0,0.3);
-        background-color: #151515;
-    }
-
-    .states-list-panel ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .states-list-panel ul li {
-        padding: 5px;
-        cursor: pointer;
-        transition: all 0.3s;
-        padding-left: 20px;
-        border-bottom: 1px solid #222;
-        box-shadow: inset 0 2px 12px rgba(0,0,0,0.2);
-        color: #999;
-    }
-
-    /* Only hover rows that contain child elements (guards against empty/placeholder LIs) */
-    .states-list-panel ul li:has(*):hover {
-        color: #00AbC0;
-        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    .states-list-panel ul li.selected {
-        color: #00AbC0;
-        border-bottom: 2px solid #00AbC0;
-        box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
-    }
-
-    .states-list-panel ul li.disabled {
-        opacity: 0.85;
-        cursor: pointer;
-        color: #999;
-        text-decoration: none;
-        font-style: italic;
-    }
-
-    .state-details-panel {
-        width: 70%;
-        padding: 0;
-        overflow-y: auto;
-        box-shadow: inset -4px 0 8px rgba(0,0,0,0.3);
-        background-color: #252526;
-    }
-
-    .menubar {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        margin-left: auto;
-        flex: 1 1 auto; /* allow menubar to shrink and wrap */
-        flex-wrap: wrap;
-        justify-content: flex-end;
-    }
-
-    /* toolbar should wrap into its own row when space is limited so it pushes the content below downward */
-    .toolbar {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-        flex-wrap: nowrap; /* do not wrap toolbar groups; use overflow menu instead */
-        flex: 0 0 auto;
-        justify-content: flex-end;
-        overflow: hidden;
-    }
-
-    /* Make toolbar groups wrap as whole units: each .toolbar-group keeps its size and moves to next line if needed */
-    .toolbar-group {
-        display: inline-flex;
-        gap: 6px;
-        align-items: center;
-        padding: 6px 4px;
-        flex: 0 1 auto; /* allow groups to shrink; overflow handled by JS */
-        white-space: nowrap; /* prevent internal buttons from wrapping */
-        min-width: 0;
-    }
-
-    /* ensure the menubar's non-toolbar controls (language/help) stay on the right row */
-    .menubar .dropdown-menu { order: 2; }
-
-    .menu-button {
-        background-color: #252526;
-        padding: 4px 8px;
-        position: relative;
-        transition: all 0.3s;
-        cursor: pointer;
-    }
-
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        background: transparent;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        z-index: 101;
-        left: auto;
-        right: 0;
-        top: 100%;
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid rgba(60, 60, 60, 0.8);
-    }
-
-    .dropdown-menu .menu-button {
-        /* subtle bluish toolbar background for visual separation */
-        /* slightly stronger blue tint (10% more prominent) */
-        background: linear-gradient(180deg, rgba(12,28,48,0.61), rgba(6,16,30,0.66)) !important;
-        border: 1px solid rgba(80,140,200,0.066) !important;
-    }
-
-    @keyframes dropdownOpen {
-        from {
-            opacity: 0;
-            transform: translateY(-10px) scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
-    @keyframes dropdownClose {
-        from {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        to {
-            opacity: 0;
-            transform: translateY(-10px) scale(0.95);
-        }
-    }
-
-    #language-dropdown {
-        max-height: 50vh;
-        overflow: hidden;
-    }
-
-    #language-dropdown input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        background: #1E1E1E;
-        border: none;
-        border-bottom: 1px solid #3C3C3C;
-        color: #D4D4D4;
-        box-sizing: border-box;
-        font-size: 12px;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-        box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2);
-    }
-
-    #language-dropdown .button-container {
-        overflow-y: auto;
-        max-height: calc(50vh - 40px);
-    }
-
-    #language-dropdown button {
-        width: 100%;
-        text-align: left;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    .menu-button:hover .dropdown-menu {
-        display: block;
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        animation: dropdownOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    /* Dropdowns styled to match toolbar/tabs (same dark gradient + subtle inner highlight) */
-    .dropdown-menu {
-        background: linear-gradient(0deg, #111, #222);
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-        backdrop-filter: blur(6px);
-        color: #D4D4D4;
-        border-radius: 0;
-        padding: 6px;
-    }
-
-    .dropdown-menu button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-        text-align: left;
-        padding: 8px 10px;
-        border: none !important;
-        background: transparent !important;
-        color: #D4D4D4;
-        margin: 2px 0;
-        border-radius: 0;
-        transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .dropdown-menu button:hover {
-        color: #FFF;
-        /* Use the same hover visual as toolbar icon buttons for perfect match */
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    /* Inline toolbar styling to match menubar buttons (allow wrapping on small screens) */
-    #global-toolbar {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap; /* allow groups to wrap to next line on small screens */
-        background: transparent;
-        padding-left: 6px;
-        padding-right: 6px;
-        margin-left: 6px;
-        pointer-events: auto;
-        z-index: 102;
-    }
-
-    .dropdown-menu .menu-category {
-        padding: 6px 8px;
-        border-bottom: 1px solid rgba(255,255,255,0.03);
-    }
-
-    .dropdown-menu .menu-category-title {
-        color: #cfcfcf;
-        font-size: 12px;
-        padding: 4px 2px 8px 2px;
-        font-weight: 600;
-        min-width: 120px;
-        text-align: left;
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 0.3px;
-    }
-
-    /* Category titles should not receive hover highlights */
-    .dropdown-menu .menu-category-title,
-    .dropdown-menu .menu-category-title * {
-        background: transparent !important;
-        color: #cfcfcf !important;
-        cursor: default !important;
-        pointer-events: none; /* ensure title doesn't react to hover/click */
-    }
-
-    /* Ensure the category container itself does not get highlighted when hovering its items */
-    .dropdown-menu .menu-category,
-    .dropdown-menu .menu-category:hover {
-        background: transparent !important;
-    }
-
-    /* category layout: title left, items stacked on the right */
-    .dropdown-menu .menu-category {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-        padding: 6px 8px;
-    }
-
-    .dropdown-menu .menu-category-items {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        flex: 1 1 auto;
-    }
-
-    /* Toolbar should be visually transparent (no background) per request */
-    #global-toolbar {
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-
-    /* Context menus that are not the small dropdowns (token/graph context)
-       — use the same visual language as `.dropdown-menu` so all menus look uniform */
-    #context-menu, #graph-context-menu {
-        background: linear-gradient(0deg, #111, #222);
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-        color: #D4D4D4;
-        border-radius: 0;
-        padding: 6px;
-        max-height: 50vh;
-        overflow: auto;
-        backdrop-filter: blur(6px);
-    }
-
-    #context-menu .dropdown-item, #graph-context-menu .dropdown-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 8px 10px;
-        margin: 4px 0;
-        background: transparent;
-        color: #D4D4D4;
-        border-radius: 0;
-        transition: background-color 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    #context-menu .dropdown-item:hover, #graph-context-menu .dropdown-item:hover {
-        color: #fff;
-        /* Use the toolbar button hover gradient to match exact color */
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0 40px rgba(0,123,176,0.6);
-    }
-
-    /* Icon tinting: default subtle, teal on hover */
-    .dropdown-menu button i,
-    .dropdown-menu button .fa,
-    #context-menu .dropdown-item i,
-    #context-menu .dropdown-item .fa,
-    #graph-context-menu .dropdown-item i,
-    #graph-context-menu .dropdown-item .fa {
-        transition: color 0.18s ease, opacity 0.18s ease;
-        color: rgba(212,212,212,0.7);
-    }
-
-    .dropdown-menu button:hover i,
-    .dropdown-menu button:hover .fa,
-    #context-menu .dropdown-item:hover i,
-    #context-menu .dropdown-item:hover .fa,
-    #graph-context-menu .dropdown-item:hover i,
-    #graph-context-menu .dropdown-item:hover .fa {
-        color: #00AbC0; /* teal accent */
-    }
-
-    .states-list-panel .toolbar {
-        position: sticky;
-        top: 0;
-        background-color: #1E1E1E;
-        z-index: 1;
-        padding: 5px 5px 5px 0; /* remove left padding so search touches left edge */
-        display: flex;
-        gap: 8px;
-        margin: 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    #tab-variables .toolbar {
-        position: sticky;
-        top: 0;
-        background-color: #1E1E1E;
-        z-index: 1;
-        padding: 0;
-        margin: 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    #file-input, #load-save {
-        display: none;
-    }
-
-    #tab-graph .toolbar {
-        justify-content: flex-start;
-    }
-
-    /* Positioning for context menus (kept distinct from small dropdowns) */
-    #context-menu {
-        position: fixed; /* position relative to viewport for safe clamping */
-        z-index: 10000;
-        max-height: 50vh; /* responsive to viewport */
-        overflow: hidden;
-        display: none;
-        width: 300px;
-        max-width: calc(100vw - 16px);
-        transition: opacity 0.12s ease, transform 0.12s ease;
-        display: flex;
-        flex-direction: column;
-        color: #d6e3ea;
-        font-size: 12px;
-    }
-
-    #context-menu input {
-        flex: none;
-        position: relative;
-        z-index: 1;
-        background-color: transparent;
-        border-bottom: 1px solid rgba(47,49,51,0.45);
-        margin: 0;
-        width: calc(100% - 2px);
-        box-shadow: none;
-        padding: 4px 6px;
-        font-size: 12px;
-        color: #eaf6ff;
-    }
-
-    #context-menu ul {
-        flex: 1;
-        overflow-y: auto;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    /* Each menu row: fixed first column (token/label), flexible second column (example/description) */
-    #context-menu li {
-        padding: 3px 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: background-color 0.12s ease, color 0.12s ease;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-        color: #cfe7f3;
-    }
-
-    /* Token/name column: fixed width to align items in a neat column */
-    #context-menu li .token {
-        flex: 0 0 100px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: #dbefff;
-        font-weight: 600;
-    }
-
-    /* Example/description column grows to fill remaining space */
-    #context-menu li .example {
-        flex: 1 1 auto;
-        color: rgba(154,166,173,0.45); /* more transparent */
-        font-style: normal;
-        margin-left: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 11px;
-        line-height: 1.1;
-        text-align: right; /* push description to the right */
-    }
-
-    /* Category header rows inside the menu */
-    #context-menu li.menu-category {
-        padding: 6px 8px;
-        font-size: 10px;
-        color: rgba(139,153,166,0.9);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        cursor: default;
-        box-shadow: none;
-    }
-
-    /* Only apply hover to rows that contain child elements (prevents hover on empty/placeholders) */
-    #context-menu li:not(.menu-category):has(*):hover {
-        color: #00AbC0;
-        /* Use toolbar button hover gradient for stronger, consistent highlight */
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    /* Prevent category header rows from highlighting on hover */
-    #context-menu li.menu-category:hover {
-        background: transparent !important;
-        color: rgba(139,153,166,0.9) !important;
-        box-shadow: none !important;
-    }
-
-    #context-menu li .token {
-        flex: 1;
-    }
-
-    #context-menu li .example {
-        color: rgba(154,166,173,0.5); /* 50% transparent description */
-        font-style: normal;
-        margin-left: 10px;
-        text-align: right; /* ensure description is on the right */
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* Ensure hidden/placeholder LIs don't receive pointer events (covers inline style cases) */
-    .states-list-panel ul li[hidden],
-    .states-list-panel ul li[style*="display:none"],
-    .states-list-panel ul li[style*="display: none"],
-    .dropdown-list li[hidden],
-    .dropdown-list li[style*="display:none"],
-    .dropdown-list li[style*="display: none"],
-    #context-menu li[hidden],
-    #context-menu li[style*="display:none"],
-    #context-menu li[style*="display: none"] {
-        pointer-events: none;
-    }
-
-    #context-menu,
-    #token-menu-list,
-    .dropdown-menu,
-    #language-dropdown .button-container,
-    #graph-context-menu ul {
-        overflow-x: hidden !important;
-    }
-
-    .force-visit {
-        background-color: #8B0000 !important;
-        color: #fff !important;
-    }
-
-    .force-visit:hover {
-        background-color: #660000 !important;
-    }
-
-    /* Graph context menu: use the same visual language as dropdowns for uniformity */
-    #graph-context-menu {
-        position: fixed;
-        z-index: 10000;
-        display: none;
-        transition: all 0.12s ease;
-        min-width: 160px;
-        max-width: calc(100vw - 16px);
-        max-height: 50vh;
-        overflow: auto;
-        border-radius: 0;
-        /* Visuals matching `.dropdown-menu` */
-        background: linear-gradient(0deg, #111, #222);
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-        padding: 6px;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        color: #D4D4D4;
-    }
-
-    #graph-context-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    #graph-context-menu li {
-        padding: 6px 8px;
-        cursor: pointer;
-        transition: background-color 0.18s ease, color 0.18s ease;
-        border-radius: 0;
-        background: transparent;
-        color: #d6e3ea;
-    }
-
-    /* Only hover real graph context menu items (skip separators/empty LIs) */
-    #graph-context-menu li:has(*):hover {
-        color: #FFF;
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    /* Support for dynamic button-based context menu */
-    #graph-context-menu .button-container {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        padding: 6px;
-    }
-
-    #graph-context-menu .button-container button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-        text-align: left;
-        padding: 8px 10px;
-        border: none !important;
-        background: transparent !important;
-        color: #D4D4D4;
-        cursor: pointer;
-        transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
-        border-radius: 0;
-        font-size: 12px;
-    }
-
-    #graph-context-menu .button-container button:hover {
-        color: #FFF;
-        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    #tab-text .toolbar {
-        margin: 0;
-        padding: 0;
-    }
-
-    .choices-section {
-        margin-top: 16px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .choices-section .toolbar {
-        position: sticky;
-        top: 0;
-        background-color: #1E1E1E;
-        z-index: 1;
-        padding: 0;
-        margin: 0 0 4px 0;
-        flex-shrink: 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    .choices-section .table-wrapper {
-        flex: 1;
-        overflow-y: auto;
-    }
-
-    .choices-section table {
-        width: 100%;
-        display: table;
-    }
-
-    .play-choices-toolbar {
-        position: sticky;
-        top: 0;
-        background-color: #1E1E1E;
-        z-index: 1;
-        padding: 0;
-        margin: 0 0 4px 0;
-        flex-shrink: 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    .play-vars-toolbar {
-        position: sticky;
-        top: 0;
-        background-color: #1E1E1E;
-        z-index: 1;
-        padding: 0;
-        margin: 0 0 4px 0;
-        flex-shrink: 0;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-
-    .state-name {
-        font-size: 10px;
-        color: #FFF4;
-        font-style: italic;
-        margin-left: 8px;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    }
-
-    .flag {
-        margin-right: 5px;
-        /* prefer OS color emoji fonts so flags render inside Electron */
-        font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "EmojiOne Color", sans-serif;
-        font-size: 16px;
-        line-height: 1;
-    }
-    .flag-img {
-        display: inline-block;
-        width: 20px;
-        height: 14px;
-        object-fit: cover;
-        margin-right: 6px;
-        vertical-align: middle;
-    }
-
-    .props-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-    }
-
-    .props-container label {
-        position: relative;
-        padding: 4px 8px 7px 8px;
-        border-bottom: 3px solid transparent;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        border-radius: 3px;
-        color: #FFF5;
-    }
-
-    .props-container label:hover {
-        color: #00AbC0;
-        background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
-    }
-
-    .props-container input[type="checkbox"] {
-        opacity: 0;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-        z-index: 2;
-        margin: 0;
-    }
-
-    .props-container label:has(input[type="checkbox"]:checked) {
-        border-bottom-color: #00ff00;
-        box-shadow: 0 6px 8px rgba(0, 255, 0, 0.3), inset 0 -1px 0 #00ff00;
-        color: #00ff00;
-        border: 1px #0f0 solid;
-        border-bottom-width: 5px;
-    }
-
-    .hide-cell {
-        text-align: center;
-        padding: 0 5px !important;
-    }
-
-    .hide-cell input[type="checkbox"] {
-        appearance: none;
-        -webkit-appearance: none;
-        width: 60px;
-        height: 26px;
-        background-color: #2D2D2D;
-        position: relative;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
-        transition: background-color 0.3s;
-    }
-
-    .hide-cell input[type="checkbox"]:hover {
-        background-color: #3C3C3D;
-    }
-
-    .hide-cell input[type="checkbox"]::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        bottom: auto;
-        left: 8px;
-        right: 8px;
-        height: 5px;
-        background-color: #00000022;
-        transition: all 0.3s ease;
-    }
-
-    .hide-cell input[type="checkbox"]:checked::after {
-        background-color: #0f0;
-        box-shadow: 0 0 22px #00ff00;
-    }
-
-    html, body { height: 100vh; margin: 0 !important; padding: 0 !important; overflow: hidden; }
-    #editor { display: flex; flex-direction: column; height: 100vh; width: 100%; }
-
-    /* Make the global toolbar inline and always visible in the header menubar.
-       This neutralizes older fixed/hidden behaviour and lets the header control layout. */
-    #global-toolbar {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-        z-index: 102 !important;
-        background: transparent !important;
-        border-radius: 6px;
-        opacity: 1 !important;
-        visibility: visible !important;
-        max-height: none !important;
-        overflow: visible !important;
-        transition: none !important;
-        pointer-events: auto !important;
-        width: auto !important;
-        max-width: none !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        padding: 4px 8px !important;
-        margin-right: 6px;
-    }
-
-    #tab-metadata .section,
-    #tab-variables .section,
-    #tab-states .states-container,
-    #tab-play .play-content,
-    #state-details,
-    #graph-container,
-    #text-editor { flex: 1; }
-
-    #tab-metadata .section,
-    #tab-variables .section,
-    #tab-play .play-content,
-    #state-details > div { padding: 10px; box-sizing: border-box; }
-
-    .section, table, #graph-container, .play-content, .toolbar,
-    .dropdown-menu, #context-menu, #graph-context-menu,
-    .state-details-panel, .states-list-panel, .tab-content,
-    .menu-button, .dropdown-menu button,
-    summary, .props-container label { border-radius: 0 !important; }
-
-    /* Restore rounded visual for menus (this overrides the global zero-radius rule above)
-       so dropdowns and context menus remain visually consistent. */
-    .dropdown-menu, #context-menu, #graph-context-menu {
-        border-radius: 6px !important;
-        background: linear-gradient(0deg, #111, #222) !important;
-        border: 1px solid rgba(255,255,255,0.03) !important;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.6) !important;
-        padding: 6px !important;
-    }
-
-    .toolbar-group {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        padding: 8px 6px;
-        margin-right: 8px;
-        flex: 0 1 auto; /* allow groups to shrink and wrap as units */
-        min-width: 0;
-    }
-    /* Contextual toolbar group visual: slightly lighter blue tint and subtle border */
-    /* More specific selector: toolbar groups that are contextual should be a bit lighter/more prominent */
-    .toolbar-group.toolbar-context {
-        background: rgba(120,190,240,0.10); /* ~20% more prominent (lighter) */
-        border-radius: 6px;
-        padding: 6px 8px;
-        border: 1px solid rgba(120,190,240,0.07);
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
-    }
-    /* vertical separators between categories (30% opacity) */
-    .toolbar-group:not(:last-child) {
-        border-right: 1px solid rgba(212,212,212,0.1); /* 10% opacity, 1px */
-    }
-    /* Practical inline group labels (left of the buttons) with 20% foreground transparency and site title font */
-    .toolbar-group .group-label {
-        order: -1; /* force label to the left of group buttons */
-        display: inline-block;
-        margin-right: 8px;
-        margin-left: 0;
-        padding: 0 6px;
-        background: transparent;
-        border: none;
-        border-radius: 8px;
-        color: rgba(174,190,205,0.2); /* 20% foreground */
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.4px;
-        text-transform: uppercase;
-        white-space: nowrap;
-        font-family: 'Orbitron', sans-serif; /* match site title */
-    }
-
-    /* Slight layout tweaks on very small screens */
-    @media (max-width: 720px) {
-        #global-toolbar { gap: 6px; }
-        .toolbar-group { padding: 6px 4px; }
-        .toolbar-group .group-label { font-size: 11px; margin-right: 4px; }
-    }
-    /* Overflow menu for toolbar groups when space is limited */
-    .toolbar-overflow { position: relative; }
-    .toolbar-overflow .overflow-btn { padding: 6px 8px; }
-    .toolbar-overflow .overflow-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: #1e1e1e;
-        border: 1px solid rgba(255,255,255,0.06);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-        z-index: 9999;
-        min-width: 220px;
-        max-height: 360px;
-        overflow: auto;
-        padding: 6px;
-        border-radius: 6px;
-    }
-    /* Each overflowed group shows its label on top, and buttons flow horizontally beneath */
-    .toolbar-overflow .overflow-menu .toolbar-group {
-        display: block;
-        border-right: none;
-        margin: 6px 0;
-        padding: 6px 4px;
-    }
-    .toolbar-overflow .overflow-menu .toolbar-group .group-label {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        color: rgba(174,190,205,0.35);
-    }
-    .toolbar-overflow .overflow-menu .toolbar-group .icon-button {
-        display: inline-flex;
-        margin-right: 6px;
-        margin-bottom: 4px;
-        vertical-align: middle;
-    }
-    /* Hide the visual separator now that title removed */
-    .toolbar-separator { display: none; }
-
-    /* Contextual toolbar groups (states, variables, graph) - visually distinct */
-    .toolbar-context-container { display: inline-flex; align-items: center; gap:6px; }
-    .toolbar-context { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); border-radius:6px; padding:4px 6px; }
-    .choices-section table select {
-        height: 26px !important;
-        padding: 0 5px !important;
-        line-height: 26px !important;
-    }
-    .hide-cell { 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        padding: 0 5px !important; 
-    }
-
-    .hide-cell input[type="checkbox"] {
-        height: 26px !important;
-        width: 60px !important;
-        margin: 0 !important;
-    }
-    
-    /* Status window behaves like a dropdown now (anchored to toolbar).
-       Use the shared `.dropdown-menu` visual language and force 50% width. */
-    #status-window.dropdown-menu {
-        display: none;
-        position: fixed; /* will be positioned by `toggleDropdown` */
-        width: 50%;
-        max-width: 90vw;
-        min-width: 320px;
-        max-height: 50vh;
-        overflow: auto;
-        z-index: 110;
-    }
-
-    #status-handle {
-        cursor: default;
-        padding: 8px 10px;
-        text-align: left;
-        border-bottom: 1px solid rgba(255,255,255,0.03);
-        font-weight: 700;
-        font-size: 13px;
-        background: transparent;
-    }
-
-    #play-error {
-        padding: 8px 10px;
-        font-size: 12px;
-        color: #D4D4D4;
-        background: transparent;
-        border-bottom: 1px solid rgba(255,255,255,0.03);
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow-y: auto;
-        max-height: 80px;
-    }
-    #play-error:empty { display: none; }
-
-    #status-content {
-        padding: 8px 10px;
-        font-size: 12px;
-        color: #D4D4D4;
-        background: transparent;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-    /* ------------------------------------------------------------------
-       Unified menu styles
-       Define a small set of CSS variables and a single rule that applies
-       the same visual language to all dropdowns and context menus so
-       they look and feel identical (states view context menu is the
-       canonical appearance).
-       This rule is placed after the other menu rules so it overrides
-       duplicate properties and ensures visual consistency.
-       ------------------------------------------------------------------ */
-    :root {
-        /* 50% transparent canonical menu background with blur backdrop */
-        --menu-bg: rgba(17,17,17,0.5);
-        --menu-border: 1px solid rgba(255,255,255,0.03);
-        --menu-shadow: 0 8px 20px rgba(0,0,0,0.6);
-        --menu-padding: 6px;
-        --menu-radius: 6px;
-        --menu-color: #D4D4D4;
-        --menu-backdrop: blur(8px);
-        --menu-hover-bg: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
-        --menu-hover-icon: #00AbC0;
-    }
-
-    /* Apply unified variables to all known menu-like selectors */
-    .dropdown-menu,
-    #context-menu,
-    #graph-context-menu,
-    .dropdown-list,
-    #token-menu-list,
-    #status-window {
-        /* Use semi-transparent background and a subtle gradient overlay to match the canonical look */
-        background: linear-gradient(0deg, rgba(17,17,17,0.5), rgba(34,34,34,0.5)) !important;
-        border: var(--menu-border) !important;
-        box-shadow: var(--menu-shadow) !important;
-        padding: var(--menu-padding) !important;
-        border-radius: var(--menu-radius) !important;
-        color: var(--menu-color) !important;
-        backdrop-filter: var(--menu-backdrop) !important;
-        -webkit-backdrop-filter: var(--menu-backdrop) !important;
-    }
-
-    /* Ensure menus are interactive inside draggable header areas in Electron */
-    .dropdown-menu,
-    #undo-dropdown,
-    #language-dropdown,
-    #help-dropdown,
-    #status-window,
-    #graph-context-menu,
-    #context-menu {
-        -webkit-app-region: no-drag !important;
-        pointer-events: auto !important;
-    }
-
-    /* Unified hover for real menu items across different menu implementations.
-       Exclude category headers and empty/separator list items (they shouldn't highlight). */
-    .dropdown-menu button:hover,
-    #context-menu li:not(.menu-category):has(*):hover,
-    #graph-context-menu li:not(.menu-category):has(*):hover,
-    .dropdown-list li:has(*):hover,
-    #token-menu-list li:has(*):hover,
-    #status-window .button-container button:hover {
-        color: #FFF !important;
-        background: var(--menu-hover-bg) !important;
-        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6) !important;
-    }
-
-    /* Icons in menus adopt the unified hover tint */
-    .dropdown-menu button:hover i,
-    #context-menu li:not(.menu-category):has(*):hover i,
-    #graph-context-menu li:not(.menu-category):has(*):hover i,
-    .dropdown-list li:has(*):hover i,
-    #token-menu-list li:has(*):hover i {
-        color: var(--menu-hover-icon) !important;
-    }
-
-    /* Ensure Font Awesome and SVG icons inside menus render correctly and inherit color */
-    .dropdown-menu i,
-    .dropdown-menu .fa,
-    .dropdown-menu .fas,
-    #context-menu i,
-    #context-menu .fa,
-    #context-menu .fas,
-    #graph-context-menu i,
-    #graph-context-menu .fa,
-    #graph-context-menu .fas,
-    .dropdown-list i,
-    .dropdown-list .fa,
-    #token-menu-list i,
-    #token-menu-list .fa,
-    #status-window i,
-    #status-window .fa {
-        color: inherit !important;
-        opacity: 1 !important;
-        filter: none !important;
-        font-size: 13px !important;
-        line-height: 1 !important;
-        display: inline-block !important;
-        width: 18px !important;
-        text-align: center !important;
-    }
-
-    /* Force Font Awesome font family for icons inside menus (solid/regular/brands) */
-    .dropdown-menu .fa,
-    .dropdown-menu .fas,
-    .dropdown-menu .far,
-    .dropdown-menu .fab,
-    #context-menu .fa,
-    #context-menu .fas,
-    #context-menu .far,
-    #context-menu .fab,
-    #graph-context-menu .fa,
-    #graph-context-menu .fas,
-    #graph-context-menu .far,
-    #graph-context-menu .fab {
-        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
-        font-style: normal !important;
-        font-variant: normal !important;
-        text-rendering: auto !important;
-        -webkit-font-smoothing: antialiased !important;
-        -moz-osx-font-smoothing: grayscale !important;
-    }
-    /* Brands use the Brands family and normal weight */
-    .fab { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
-    /* Solid icons require heavier weight */
-    .fas { font-weight: 900 !important; }
-
-    /* Pseudo-element rules (Font Awesome uses ::before) */
-    .dropdown-menu i::before,
-    .dropdown-menu .fa::before,
-    #context-menu i::before,
-    #context-menu .fa::before,
-    #graph-context-menu i::before,
-    #graph-context-menu .fa::before {
-        color: inherit !important;
-        opacity: 1 !important;
-    }
-
-    /* Ensure SVG icons fill with currentColor */
-    .dropdown-menu svg,
-    #context-menu svg,
-    #graph-context-menu svg,
-    .dropdown-list svg,
-    #token-menu-list svg {
-        fill: currentColor !important;
-        color: inherit !important;
-        width: 18px !important;
-        height: 18px !important;
-    }
-    
-    /* Ensure internal menu structure (labels, categories, list items) also follow unified style */
-    .dropdown-menu *,
-    #context-menu *,
-    #graph-context-menu *,
-    .dropdown-list *,
-    #token-menu-list *,
-    #status-window * {
-        box-sizing: border-box;
-        color: var(--menu-color) !important;
-        font-family: inherit !important;
-    }
-
-    /* Normalize lists inside menus */
-    .dropdown-menu ul,
-    #context-menu ul,
-    #graph-context-menu ul,
-    .dropdown-list,
-    #token-menu-list,
-    #status-window ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        overflow: auto;
-    }
-
-    /* Generic menu row */
-    .dropdown-menu li,
-    #context-menu li,
-    #graph-context-menu li,
-    .dropdown-list li,
-    #token-menu-list li,
-    #status-window li,
-    .dropdown-menu button,
-    #status-window .button-container button {
-        display: flex !important;
-        align-items: center !important;
-
-    /* Explicitly neutralize separators and non-interactive boundary labels so they
-       never receive hover styling or pointer events (they are visual only). */
-    .menu-separator,
-    .history-boundary {
-        pointer-events: none !important;
-        background: transparent !important;
-        color: inherit !important;
-    }
-        gap: 8px !important;
-        width: 100% !important;
-        text-align: left !important;
-        justify-content: flex-start !important;
-        padding: 8px 10px !important;
-        background: transparent !important;
-        color: var(--menu-color) !important;
-        border: none !important;
-        border-radius: 4px !important;
-        cursor: pointer !important;
-        transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
-    }
-
-    /* Ensure buttons and li inside menus accept pointer events (override app-region effects) */
-    .dropdown-menu li,
-    .dropdown-menu li button,
-    .dropdown-menu button,
-    #undo-dropdown li,
-    #undo-dropdown li button {
-        pointer-events: auto !important;
-    }
-
-    /* History item layout: title on the left, description aligned to the right.
-       Use flex row with space-between so titles and details occupy their sides. */
-    .history-item {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 12px !important;
-        padding: 10px 12px !important;
-        background: transparent !important;
-        color: var(--menu-color) !important;
-        border-radius: 4px !important;
-        width: 100% !important;
-        text-align: left !important;
-    }
-    .history-item .history-title {
-        font-weight: 600 !important;
-        font-size: 13px !important;
-        color: rgba(255,255,255,0.95) !important;
-        line-height: 1.1 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        display: block !important;
-        flex: 1 1 auto !important;
-        text-align: left !important;
-    }
-    .history-item .history-detail {
-        font-size: 12px !important;
-        color: rgba(255,255,255,0.35) !important;
-        line-height: 1.15 !important;
-        font-weight: 400 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        flex: 0 0 auto !important;
-        margin-left: 8px !important;
-        text-align: right !important;
-        max-width: 55% !important;
-    }
-    /* Reduce empty spacing between list items while preserving visual separation */
-    #undo-dropdown .menu-category-items { padding: 6px !important; }
-    #history-list li { padding: 0 !important; margin: 2px 0 !important; }
-
-    /* Icon area: fixed small width so text can use rest of the row */
-    .dropdown-menu li i,
-    .dropdown-menu button i,
-    #context-menu li i,
-    #graph-context-menu li i {
-        flex: 0 0 20px !important;
-        width: 20px !important;
-        text-align: center !important;
-    }
-
-    /* Ensure textual content uses remaining space and is left-aligned */
-    .dropdown-menu li span,
-    .dropdown-menu button span,
-    #context-menu li span,
-    #graph-context-menu li span,
-    .dropdown-list li span {
-        display: block !important;
-        flex: 1 1 auto !important;
-        text-align: left !important;
-    }
-
-    /* History list separators and boundary marker */
-    #history-list { padding: 0 !important; }
-    /* Thin separators between rows (but not the visual boundary) */
-    #history-list li:not(.history-boundary) { border-bottom: 1px solid rgba(255,255,255,0.03) !important; }
-    /* Visual boundary showing the current historyIndex */
-    #history-list li.history-boundary {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 6px 8px !important;
-        color: rgba(200,200,200,0.75) !important;
-        font-size: 11px !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.6px !important;
-        background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
-        pointer-events: none !important;
-    }
-
-    /* Category title / label inside menus (not interactive) */
-    .dropdown-menu .menu-category-title,
-    .dropdown-menu .menu-category,
-    #context-menu li.menu-category,
-    #graph-context-menu li.menu-category,
-    .dropdown-menu .menu-category-title * {
-        font-size: 11px !important;
-        color: rgba(207,207,207,0.85) !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.6px !important;
-        font-weight: 700 !important;
-        cursor: default !important;
-        pointer-events: none !important;
-        background: transparent !important;
-        padding: 6px 8px !important;
-        margin: 0 !important;
-    }
-    /* Put category title above items (stacked) so items can take full width.
-       Some menu styles elsewhere lay out category title and items side-by-side;
-       force a stacked layout for cleaner history dropdowns. */
-    .dropdown-menu .menu-category {
-        display: block !important;
-        width: 100% !important;
-    }
-    .dropdown-menu .menu-category-title {
-        display: block !important;
-        width: 100% !important;
-        margin-bottom: 8px !important;
-        padding: 8px 12px !important;
-    }
-    .dropdown-menu .menu-category-items {
-        display: block !important;
-        padding-left: 0 !important;
-    }
-
-    /* Prevent category rows from being highlighted like items */
-    #context-menu li.menu-category:hover,
-    .dropdown-menu .menu-category:hover,
-    #graph-context-menu li.menu-category:hover {
-        background: transparent !important;
-        box-shadow: none !important;
-        color: rgba(207,207,207,0.85) !important;
-    }
-
-    /* Inputs inside menus (search fields) use the unified look */
-    .dropdown-menu input[type="text"],
-    #context-menu input[type="text"],
-    #graph-context-menu input[type="text"],
-    #status-window input[type="text"] {
-        background: transparent !important;
-        border: 1px solid rgba(255,255,255,0.03) !important;
-        border-radius: 4px !important;
-        color: var(--menu-color) !important;
-        padding: 6px 8px !important;
-        width: 100% !important;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.02) !important;
-    }
-
-    /* Disabled / non-interactive items appearance */
-    .dropdown-menu button[disabled],
-    .dropdown-menu .disabled,
-    #context-menu li.disabled,
-    #graph-context-menu li.disabled,
-    .dropdown-list li.disabled {
-        opacity: 0.6 !important;
-        cursor: not-allowed !important;
-        color: rgba(200,200,200,0.6) !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-
-    /* Ensure icons/text alignment inside token / example rows */
-    #context-menu li .token,
-    #context-menu li .example,
-    #token-menu-list li .token,
-    #token-menu-list li .example {
-        color: var(--menu-color) !important;
-    }
-
-    /* Small safety: keep menu radiuses consistent where other rules tried to remove them */
-    .dropdown-menu, #context-menu, #graph-context-menu, .dropdown-list, #token-menu-list, #status-window {
-        border-radius: var(--menu-radius) !important;
-    }
-
-    /* Force-hide elements when the `hidden` attribute is used. Using `hidden` plus
-       an !important rule makes hiding robust against other CSS that may try to
-       override inline `display` styles in complex menus. Applies broadly to
-       dropdowns, token menus and language/button lists. */
-    .dropdown-menu [hidden],
-    .dropdown-list [hidden],
-    #context-menu [hidden],
-    #token-menu-list [hidden],
-    #graph-context-menu [hidden] {
-        display: none !important;
-    }
-    /* Also ensure buttons hidden inside language menus and other button-based
-       dropdowns are removed from layout (some menus render items as buttons). */
-    .button-container button[hidden],
-    .dropdown-menu button[hidden] {
-        display: none !important;
-    }
-</style>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <div id="splash-screen">
@@ -2284,7 +28,9 @@
         <div class="header-left" style="display:flex;align-items:center;gap:8px;min-width:0;">
             <img src="icon_transparent.png" data-i18n-alt="title" alt="Icon" style="height: 26px; width: auto;">
             <div class="toolbar-separator" aria-hidden="true" style="margin-left:6px;margin-right:6px;">|</div>
-            <div id="toolbar-story-title" class="toolbar-story-title" style="margin-right:6px;min-width:0;">&nbsp;</div>
+            <div id="toolbar-story-title" class="toolbar-story-title" style="margin-right:6px;min-width:0;display:flex;align-items:center;gap:4px;">
+                <span id="toolbar-story-text">&nbsp;</span><span id="unsaved-dot" title="Unsaved changes" style="color:#e5c07b;display:none;">●</span>
+            </div>
         </div>
         <div class="header-center" style="display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;">
             <div id="global-toolbar" class="toolbar no-drag" style="flex:1 1 auto;min-width:0;"></div>
@@ -2295,7 +41,7 @@
             <div class="dropdown-menu" id="undo-dropdown" style="display:none; min-width:260px;">
                 <div class="menu-category">
                     <div class="menu-category-title">History</div>
-                    <div class="menu-category-items" style="max-height:360px; overflow:auto; padding:4px;">
+                    <div class="menu-category-items" style="padding:0;">
                         <ul id="history-list" style="list-style:none; margin:0; padding:0;"></ul>
                     </div>
                 </div>
@@ -2411,6 +157,15 @@
                 <div id="play-variables"></div>
             </div>
         </div>
+
+        <!-- Help view container: loads full HTML pages in the tab area (no tab button) -->
+        <div id="tab-help" class="tab-content">
+            <div class="section" style="padding:0; height:100%; display:flex; flex-direction:column;">
+                <div id="help-container" style="flex:1 1 auto; overflow:hidden;">
+                    <iframe id="help-iframe" title="Help" style="width:100%; height:100%; border:0; background:#1E1E1E;"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="status-window" class="dropdown-menu" style="display:none;">
@@ -2460,6 +215,7 @@
             renderEditor();
             openTab('metadata');
             updateGlobalToolbar('metadata');
+            updateFileIndicator();
 
             window.addEventListener('storage', (event) => {
                 if (event.key === 'ns2_content' && event.newValue) {
@@ -2491,6 +247,7 @@
             })();
             // ------------------------------------------------------------------
         })();
+        // Simplified: direct save functions now manage clean state; wrapper removed to avoid stale closures.
         (function(){
             // Wire custom window controls when running in Electron
             if(!window || !window.electronAPI) return;
@@ -2651,10 +408,20 @@
             Object.keys(languages).forEach(lang => {
                 const button = document.createElement('button');
                 button.onclick = () => setLanguage(lang);
+                // Ensure left alignment of content
+                button.style.display = 'flex';
+                button.style.alignItems = 'center';
+                button.style.gap = '6px';
+                button.style.justifyContent = 'flex-start';
+                button.style.textAlign = 'left';
+                button.style.width = '100%';
 
+                // Build single flag element: prefer image (ISO), fallback to emoji
+                let flagElement = null;
+                const rawFlagEmoji = languages[lang].flag || '';
                 const emojiSpan = document.createElement('span');
                 emojiSpan.className = 'flag';
-                emojiSpan.textContent = languages[lang].flag || '';
+                emojiSpan.textContent = rawFlagEmoji;
 
                 // Map regional indicator emoji to ISO country code (e.g. 🇬🇧 -> gb)
                 function emojiToISO(flagEmoji) {
@@ -2671,19 +438,28 @@
                     return null;
                 }
 
-                const iso = emojiToISO(languages[lang].flag || '');
+                const iso = emojiToISO(rawFlagEmoji);
                 if (iso) {
                     const img = document.createElement('img');
                     img.className = 'flag-img';
                     img.alt = (languages[lang].languageName || lang) + ' flag';
                     img.src = `https://flagcdn.com/w40/${iso}.png`;
-                    img.onload = () => { try { emojiSpan.style.display = 'none'; } catch(e){} };
-                    img.onerror = () => { try { img.style.display = 'none'; } catch(e){} };
-                    button.appendChild(img);
+                    img.onerror = () => { try { img.remove(); button.insertBefore(emojiSpan, button.firstChild); } catch(e){} };
+                    flagElement = img;
+                } else {
+                    flagElement = emojiSpan;
                 }
 
-                button.appendChild(emojiSpan);
-                button.appendChild(document.createTextNode(' ' + (languages[lang].languageName || lang)));
+                if (flagElement && rawFlagEmoji) button.appendChild(flagElement);
+                // Language name text node
+                const nameNode = document.createElement('span');
+                nameNode.className = 'language-name';
+                nameNode.textContent = languages[lang].languageName || lang;
+                nameNode.style.flex = '1 1 auto';
+                nameNode.style.overflow = 'hidden';
+                nameNode.style.textOverflow = 'ellipsis';
+                nameNode.style.whiteSpace = 'nowrap';
+                button.appendChild(nameNode);
                 buttonContainer.appendChild(button);
             });
         }
@@ -2748,6 +524,10 @@
         let Module;
         let editorEngine;
         let playEngine;
+        // Help view state
+        let __lastNonHelpTab = 'metadata';
+        let __currentHelpPage = null;
+        const __helpTitles = { guide: 'Guide', ai: 'AI', about: 'About' };
         let currentGraphState = null;
         let tokens = [];
         let currentInput = null;
@@ -2759,6 +539,87 @@
         let constantTokens = ['true', 'false'];
         let textApplyTimer = null;
         let textEditorAutoApplyAttached = false;
+        // Browser File System Access API tracking (non-Electron)
+        let fsCurrentHandle = null; // FileSystemFileHandle when opened/saved via FS Access
+        let electronCurrentPath = null; // Absolute path of currently opened file in Electron
+        let fsCurrentName = null;
+
+        // Display name = story title; dirty indicator tracks text edits only
+        let currentFileName = null;       // legacy name (not displayed)
+        // Simplified reset: drop unified target abstraction (electron uses electronCurrentPath, browser uses fsCurrentHandle)
+        let isDirtyText = false;          // True only when Text tab content changed since last save/open
+        let lastSavedText = null;         // Snapshot of text content at last save/open
+
+        function getBaseName(p) {
+            try { if (!p) return null; const s = String(p); const sep = s.includes('\\') ? '\\' : '/'; const parts = s.split(sep); return parts[parts.length - 1] || null; } catch (e) { return null; }
+        }
+
+        function updateFileIndicator() {
+            try {
+                const titleWrapper = document.getElementById('toolbar-story-title');
+                const titleSpan = document.getElementById('toolbar-story-text');
+                const dotEl = document.getElementById('unsaved-dot');
+                let name = '';
+                // Pull current story title from engine (safer than DOM alone)
+                try {
+                    const ptr = Module._GetStoryTitle(editorEngine);
+                    name = Module.UTF8ToString(ptr);
+                    Module._FreeString(ptr);
+                } catch (e) {}
+                if (!name) name = languages[currentLanguage]['untitled'] || 'Untitled';
+                if (titleSpan) titleSpan.textContent = name;
+                if (dotEl) {
+                    dotEl.style.display = isDirtyText ? 'inline-block' : 'none';
+                    dotEl.style.marginLeft = isDirtyText ? '2px' : '0';
+                    dotEl.style.fontSize = '12px';
+                }
+                if (titleWrapper) titleWrapper.title = name + (isDirtyText ? ' (unsaved changes)' : '');
+                // Window title: only story title, prefixed with dot when dirty
+                try { document.title = (isDirtyText ? '● ' : '') + name; } catch (e) {}
+            } catch (e) {}
+        }
+
+        function setDirtyText(flag) {
+            try {
+                const prev = isDirtyText;
+                isDirtyText = !!flag;
+                if (prev !== isDirtyText) updateFileIndicator();
+            } catch (e) {}
+        }
+
+        function markClean(content, name) {
+            try {
+                if (typeof name === 'string' && name) currentFileName = name; // retained for save backend only
+                // prefer Monaco model snapshot if available; else fall back to provided content
+                try { lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : (typeof content === 'string' ? content : null); } catch (e) { lastSavedText = typeof content === 'string' ? content : null; }
+                setDirtyText(false);
+                updateFileIndicator();
+            } catch (e) {}
+        }
+
+        function recalcDirty() {
+            try {
+                if (lastSavedText == null) { return; }
+                const now = (textEditor && textEditor.getValue) ? textEditor.getValue() : null;
+                if (now == null) return; // cannot determine yet
+                setDirtyText(now !== lastSavedText);
+            } catch (e) {}
+        }
+
+        // Allow Electron bridge to inform us about current file and load content in one place
+        window.setCurrentFileInfo = function(filePathOrName, content) {
+            try {
+                const name = getBaseName(filePathOrName) || filePathOrName || null;
+                if (typeof content === 'string') {
+                    loadFromString(content);
+                    markClean(content, name);
+                } else {
+                    currentFileName = name;
+                    setDirty(false);
+                    updateFileIndicator();
+                }
+            } catch (e) { console.warn('setCurrentFileInfo failed', e); }
+        };
 
         const tokenExamples = {
             'set': 'set(health, get(health) + 5)',
@@ -2823,6 +684,7 @@
             historyIndex = programHistory.length;
             updateUndoDropdown();
             updateToolbarUndoButtons();
+            // Do not mark dirty here; dot reflects text edits only
         }
 
         // Helper: create a short, single-line summary of a value for history details
@@ -2846,6 +708,7 @@
             try { refreshView(); } catch (e) {}
             updateUndoDropdown();
             updateToolbarUndoButtons();
+            recalcDirty();
             return true;
         }
 
@@ -2858,6 +721,7 @@
             try { refreshView(); } catch (e) {}
             updateUndoDropdown();
             updateToolbarUndoButtons();
+            recalcDirty();
             return true;
         }
 
@@ -2890,6 +754,7 @@
             try { refreshView(); } catch (e) {}
             updateUndoDropdown();
             updateToolbarUndoButtons();
+            recalcDirty();
         }
 
         function refreshView() {
@@ -3053,99 +918,138 @@
             try {
                 const hist = document.getElementById('history-list');
                 if (!hist) return;
+                // Preserve any existing search query before rerender
+                let existingQuery = '';
+                try {
+                    const existingInput = hist.querySelector('.history-search input');
+                    if (existingInput) existingQuery = existingInput.value || '';
+                } catch (e) {}
                 hist.innerHTML = '';
-                // Build combined list from programHistory using historyIndex
-                // We'll iterate explicitly so items are always shown last-to-first
-                const undoPart = programHistory.slice(0, historyIndex);
-                const redoPart = programHistory.slice(historyIndex);
-                // Render undo items (available to undo) with most-recent first
-                for (let idx = undoPart.length - 1; idx >= 0; idx--) {
-                    const item = undoPart[idx];
+                // Add search box as the first list item
+                const searchLi = document.createElement('li');
+                searchLi.className = 'history-search';
+                searchLi.style.padding = '6px 8px';
+                searchLi.style.position = 'sticky';
+                searchLi.style.top = '0';
+                searchLi.style.background = 'rgba(0,0,0,0.6)';
+                const searchInput = document.createElement('input');
+                searchInput.type = 'text';
+                searchInput.placeholder = (languages[currentLanguage] && languages[currentLanguage]['search']) ? languages[currentLanguage]['search'] : 'Search...';
+                searchInput.value = existingQuery;
+                searchInput.style.width = '100%';
+                searchInput.style.boxSizing = 'border-box';
+                searchInput.style.padding = '6px 8px';
+                searchInput.style.background = 'rgba(255,255,255,0.08)';
+                searchInput.style.border = '1px solid rgba(255,255,255,0.15)';
+                searchInput.style.color = '#fff';
+                searchInput.style.borderRadius = '4px';
+                searchInput.addEventListener('click', e => e.stopPropagation());
+                searchLi.appendChild(searchInput);
+                hist.appendChild(searchLi);
+
+                // Render all actions with most recent on top (reverse order)
+                for (let j = programHistory.length - 1; j >= 0; j--) {
+                    const item = programHistory[j];
+                    const indexDisplay = j + 1; // 1-based index for this entry
+                    const isRedo = j >= historyIndex;
                     const li = document.createElement('li');
-                    // support { title, detail } description objects or plain strings
-                    // compute display title/detail
-                    let title = item.description || `Change ${historyIndex - (undoPart.length - 1 - idx)}`;
-                    let detail = '';
-                    if (item && typeof item.description === 'object') { title = item.description.title || ''; detail = item.description.detail || ''; }
+                    li.className = 'history-row';
                     li.style.padding = '0';
                     li.style.cursor = 'pointer';
-                    li.dataset.idx = idx; // original index within history
-                    // create a button inside li so the clickable area is reliable
+                    if (isRedo) li.style.opacity = '0.5'; // redo items at 50% opacity
+
+                    // Visually indicate the current undo cursor (the item just before historyIndex)
+                    if (!isRedo && j === historyIndex - 1) {
+                        li.className = 'history-row history-current';
+                        li.style.borderLeft = '3px solid #4FC3F7';
+                        li.style.background = 'rgba(79,195,247,0.08)';
+                    }
+
+                    // support { title, detail } description objects or plain strings
+                    let title = '';
+                    let detail = '';
+                    if (item && typeof item.description === 'object') {
+                        title = item.description.title || '';
+                        detail = item.description.detail || '';
+                    } else if (item && typeof item.description === 'string') {
+                        const raw = item.description.trim();
+                        const m = raw.match(/^(.*?)([.!?])\s+(.*)$/);
+                        if (m) { title = m[1] + m[2]; detail = m[3]; }
+                        else { title = raw; detail = ''; }
+                    }
+                    if (!title) title = 'Change ' + indexDisplay;
+
+                    // Create a button for better click handling
                     const btn = document.createElement('button');
-                    btn.className = 'history-item';
+                    btn.className = 'history-item' + (isRedo ? ' redo' : '');
                     btn.type = 'button';
                     btn.style.display = 'block';
                     btn.style.width = '100%';
                     btn.style.border = 'none';
                     btn.style.background = 'transparent';
-                    btn.style.padding = '6px 8px';
+                    btn.style.padding = '8px 10px';
                     btn.style.textAlign = 'left';
                     btn.style.cursor = 'pointer';
                     try {
                         const titleColor = 'rgba(255,255,255,0.95)';
                         const detailColor = 'rgba(255,255,255,0.35)';
-                        btn.innerHTML = `<span class=\"history-title\" style=\"color:${titleColor}\">${escapeHtml(title)}</span>${detail ? `<span class=\"history-detail\" style=\"color:${detailColor}\">${escapeHtml(detail)}</span>` : ''}`;
-                    } catch (e) { btn.textContent = title; }
+                        // index + title on first line; description below (2 lines), left-aligned and full width
+                        btn.innerHTML = `
+                            <div style="display:flex;align-items:flex-start;gap:4px;width:100%;">
+                                <span class="history-index" style="color:${detailColor};flex:0 0 auto;width:auto;inline-size:max-content;white-space:nowrap;padding:0;margin:0;">${indexDisplay}.</span>
+                                <div class="history-text" style="flex:1 1 auto;min-width:0;">
+                                    <div class="history-title" style="color:${titleColor};font-weight:600;line-height:1.2;">${escapeHtml(title)}</div>
+                                    ${detail ? `<div class="history-detail" style="color:${detailColor};margin-top:2px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;">${escapeHtml(detail)}</div>` : ''}
+                                </div>
+                            </div>`;
+                    } catch (e) {
+                        btn.textContent = indexDisplay + '. ' + title;
+                    }
                     // Prevent blur-driven commit when this button is pressed
                     btn.addEventListener('pointerdown', () => { __suppressCommitOnBlur = true; setTimeout(() => { __suppressCommitOnBlur = false; }, 400); });
-                    // Jump to this history index (non-destructive navigation)
+                    // Jump to the state immediately AFTER this action (index j + 1)
                     btn.addEventListener('click', () => {
-                        navigateHistoryTo(idx);
+                        navigateHistoryTo(j + 1);
                         toggleDropdown('undo-dropdown', null);
                     });
                     li.appendChild(btn);
                     hist.appendChild(li);
                 }
-                // Insert a visual boundary that represents the current historyIndex.
-                // If there are redo items, place the boundary before them; otherwise
-                // it will be implied at the end of the undo list.
-                if (redoPart.length > 0) {
-                        const boundary = document.createElement('li');
-                        boundary.className = 'history-boundary';
-                        boundary.textContent = 'Current';
-                        boundary.setAttribute('aria-hidden', 'true');
-                        boundary.style.pointerEvents = 'none';
-                        hist.appendChild(boundary);
-                }
-                // Render redo items (available to redo) with more transparent color
-                // Render most-recent redo first (so list is consistent)
-                for (let rIdx = redoPart.length - 1; rIdx >= 0; rIdx--) {
-                    const item = redoPart[rIdx];
-                    const li = document.createElement('li');
-                    let titleR = item.description || `Redo ${redoPart.length - rIdx}`;
-                    let detailR = '';
-                    if (item && typeof item.description === 'object') { titleR = item.description.title || ''; detailR = item.description.detail || ''; }
-                    li.style.padding = '0';
-                    li.style.cursor = 'pointer';
-                    li.dataset.ridx = rIdx; // index within redoPart
-                    // make redo entries semi-transparent
-                    li.style.opacity = '0.5';
-                    // create button for redo as well
-                    const btn = document.createElement('button');
-                    btn.className = 'history-item redo';
-                    btn.type = 'button';
-                    btn.style.display = 'block';
-                    btn.style.width = '100%';
-                    btn.style.border = 'none';
-                    btn.style.background = 'transparent';
-                    btn.style.padding = '6px 8px';
-                    btn.style.textAlign = 'left';
-                    btn.style.cursor = 'pointer';
+
+                // Make dropdown content consume available viewport height (scroll on the container, not inside UL)
+                try {
+                    const container = hist.closest('.menu-category-items');
+                    const rect = container && container.getBoundingClientRect ? container.getBoundingClientRect() : (hist.getBoundingClientRect ? hist.getBoundingClientRect() : null);
+                    const available = Math.max(120, Math.floor(window.innerHeight - (rect ? rect.top : 0) - 12));
+                    if (container) {
+                        container.style.height = available + 'px';
+                        container.style.maxHeight = available + 'px';
+                        container.style.overflowY = 'auto';
+                        container.style.padding = '0';
+                        container.style.margin = '0';
+                    }
+                    // Avoid nested scrollbars on the UL itself
+                    hist.style.maxHeight = '';
+                    hist.style.overflow = '';
+                } catch (e) {}
+
+                // Hook up filtering
+                const performFilter = () => {
                     try {
-                        const titleColor = 'rgba(255,255,255,0.95)';
-                        const detailColor = 'rgba(255,255,255,0.35)';
-                        btn.innerHTML = `<span class=\\"history-title\\" style=\\"color:${titleColor}\\">${escapeHtml(titleR)}</span>${detailR ? `<span class=\\"history-detail\\" style=\\"color:${detailColor}\\">${escapeHtml(detailR)}</span>` : ''}`;
-                    } catch (e) { btn.textContent = titleR; }
-                    // compute the actual history index to jump to (position after the action)
-                    const targetIndex = historyIndex + rIdx + 1;
-                    btn.addEventListener('pointerdown', () => { __suppressCommitOnBlur = true; setTimeout(() => { __suppressCommitOnBlur = false; }, 400); });
-                    btn.addEventListener('click', () => {
-                        navigateHistoryTo(targetIndex);
-                        toggleDropdown('undo-dropdown', null);
-                    });
-                    li.appendChild(btn);
-                    hist.appendChild(li);
-                }
+                        const raw = searchInput.value || '';
+                        const q = normalizeForMatching(raw).toLowerCase();
+                        const rows = hist.querySelectorAll('li.history-row');
+                        rows.forEach(r => {
+                            try {
+                                const text = normalizeForMatching(r.textContent || '').toLowerCase();
+                                r.hidden = q ? !text.includes(q) : false;
+                            } catch (e) { r.style.display = q ? ( (r.textContent||'').toLowerCase().includes(q) ? '' : 'none') : ''; }
+                        });
+                    } catch (e) {}
+                };
+                searchInput.addEventListener('input', performFilter);
+                // Run initial filter if we had a previous query
+                if (existingQuery) performFilter();
             } catch (e) { }
         }
 
@@ -3206,13 +1110,75 @@
 
         function newStory() {
             if (confirm(languages[currentLanguage]['createNewStoryConfirm'] || 'Create a new blank story? Unsaved changes will be lost.')) {
-                Module._DestroyEngine(editorEngine);
+                // Reset engine and any persisted/opened file references
+                try { if (editorEngine) Module._DestroyEngine(editorEngine); } catch (e) {}
                 editorEngine = Module._CreateEngine();
-                localStorage.removeItem('ns2_content');
-                renderEditor();
-                setStatus(languages[currentLanguage]['newStoryCreated'] || "New story created");
+                try { localStorage.removeItem('ns2_content'); } catch (e) {}
+                try { fsCurrentHandle = null; fsCurrentName = null; } catch (e) {}
+
+                // Build a minimal default story via API, then reload it via text to satisfy "load from string"
+                try {
+                    // Metadata
+                    Module._SetStoryTitle(editorEngine, allocateUTF8(languages[currentLanguage]['untitled'] || 'Untitled'));
+                    Module._SetStoryDescription(editorEngine, allocateUTF8(''));
+                    // One initial state
+                    const stName = 'start';
+                    const stPtr = allocateUTF8(stName);
+                    Module._AddState(editorEngine, stPtr);
+                    Module._SetStateTitle(editorEngine, stPtr, allocateUTF8('Start'));
+                    Module._SetStateDescription(editorEngine, stPtr, allocateUTF8('Write your story here.'));
+                    Module._SetStartState(editorEngine, stPtr);
+                    Module._free(stPtr);
+                } catch (e) { console.warn('Failed to build default story via API', e); }
+
+                // Generate canonical text and re-load through parser to refresh all views
+                try {
+                    const txt = generateNS2Content();
+                    loadFromString(txt);
+                    // New blank story is clean (no unsaved text changes yet)
+                    markClean(txt, null);
+                } catch (e) {
+                    // Fallback: render directly if generation/loading failed
+                    try { renderEditor(); } catch (ee) {}
+                }
+                setStatus(languages[currentLanguage]['newStoryCreated'] || 'New story created');
+                updateFileIndicator();
+                // Focus editor for immediate typing (fallback to title input if Monaco not ready yet)
+                setTimeout(() => {
+                    try {
+                        if (textEditor && textEditor.focus) { textEditor.focus(); return; }
+                        const titleInput = document.getElementById('story-title');
+                        if (titleInput) titleInput.focus();
+                    } catch (e) {}
+                }, 60);
             }
         }
+
+        // Helper to load story content from a string (used by FS Access and Electron bridges)
+        function loadFromString(content) {
+            try {
+                Module.FS.writeFile('/story.ns2', content);
+                const pathPtr = allocateUTF8('/story.ns2');
+                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+                Module._free(pathPtr);
+                if (loaded) {
+                    saveToLocalStorage();
+                    renderEditor();
+                    setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || 'Story loaded successfully');
+                    try { openTab('text'); } catch (e) {}
+                    updateFileIndicator();
+                    // After load, ensure clean state (text basis) if this is a direct open/save action
+                    try { lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } catch (e) {}
+                } else {
+                    setStatus((languages[currentLanguage]['failedToLoadStory'] || 'Failed to load story: {err}').replace('{err}', getLastError(editorEngine)), true);
+                }
+            } catch (e) {
+                setStatus((languages[currentLanguage]['failedToLoadStory'] || 'Failed to load story: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
+            }
+        }
+
+        // Return the current NS2 content as a string (used by Save actions and Electron bridge)
+        function getCurrentContent() { return generateNS2Content(); }
 
         async function openTab(tabName) {
             document.querySelectorAll('.tab-button').forEach(tab => tab.classList.remove('active'));
@@ -3272,25 +1238,56 @@
             }
         }
         
+        // Open via legacy <input type="file"> (fallback)
         function loadFile() {
             const file = document.getElementById('file-input').files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = e => {
                 const content = e.target.result;
-                Module.FS.writeFile('/story.ns2', content);
-                const pathPtr = allocateUTF8('/story.ns2');
-                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
-                Module._free(pathPtr);
-                if (loaded) {
-                    saveToLocalStorage();
-                    renderEditor();
-                    setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || "Story loaded successfully");
-                } else {
-                    setStatus((languages[currentLanguage]['failedToLoadStory'] || "Failed to load story: {err}").replace('{err}', getLastError(editorEngine)));
-                }
+                // Files opened via file input cannot be written back; clear FS handle
+                fsCurrentHandle = null; fsCurrentName = file && file.name ? file.name : null;
+                loadFromString(content);
+                try { currentFileName = fsCurrentName || null; markClean(content, null); } catch (err) {}
             };
             reader.readAsText(file);
+        }
+
+        // Prefer modern File System Access API when available
+        async function openFile() {
+            try {
+                // In Electron, prefer the bridge; handle both returning result or self-loading
+                if (window.electronAPI && typeof window.loadFile === 'function') {
+                    const maybe = await window.loadFile();
+                    // If Electron returns content, process here; otherwise its override should call loadFromString
+                    if (maybe && typeof maybe === 'object' && typeof maybe.content === 'string') {
+                        loadFromString(maybe.content);
+                        markClean(maybe.content, null);
+                        if (maybe.path) { try { electronCurrentPath = maybe.path; } catch(e){} }
+                    }
+                    return;
+                }
+                if (window.showOpenFilePicker) {
+                    const [handle] = await window.showOpenFilePicker({
+                        multiple: false,
+                        types: [{ description: 'NS2 Story', accept: { 'text/plain': ['.ns2'] } }]
+                    });
+                    if (!handle) return;
+                    const file = await handle.getFile();
+                    const text = await file.text();
+                    fsCurrentHandle = handle; fsCurrentName = file.name;
+                    loadFromString(text);
+                    currentFileName = fsCurrentName || null;
+                    markClean(text, null);
+                    setStatus((languages[currentLanguage]['storyLoadedSuccessfully'] || 'Story loaded successfully') + (fsCurrentName ? ` (${fsCurrentName})` : ''));
+                } else {
+                    // Fallback to hidden file input
+                    const inp = document.getElementById('file-input');
+                    if (inp) inp.click();
+                }
+            } catch (e) {
+                setStatus((languages[currentLanguage]['failedToLoadStory'] || 'Failed to load story: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
+            }
         }
 
         function allocateUTF8(str) {
@@ -3528,6 +1525,8 @@
                 }, 800);
                 // update bracket decorations live
                 try { applyMonacoBracketDecorations(); } catch (e) {}
+                // mark dirty only for text changes
+                try { setDirtyText(true); updateFileIndicator(); } catch (e) {}
             });
             // initial decorations
             try { applyMonacoBracketDecorations(); } catch (e) {}
@@ -3571,6 +1570,7 @@
         
 
         function applyTextChanges() {
+            try { setDirtyText(true); updateFileIndicator(); } catch (e) {}
             const text = textEditor.getValue();
             Module.FS.writeFile('/temp.ns2', text);
             const pathPtr = allocateUTF8('/temp.ns2');
@@ -4695,21 +2695,85 @@ function selectState(name) {
             Module._free(namePtr);
         }
 
-        function saveFile() {
-            const ptr = Module._GenerateNS2Content(editorEngine);
-            const content = Module.UTF8ToString(ptr);
-            Module._FreeString(ptr);
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'edited.ns2';
-            a.click();
-            URL.revokeObjectURL(url);
-            setStatus(languages[currentLanguage]['storySaved'] || "Story saved");
-            const err = getLastError(editorEngine);
-            if (err) {
-                setStatus((languages[currentLanguage]['errorSavingStory'] || "Error saving story: {err}").replace('{err}', err));
+        // Simplified save logic: use electronCurrentPath or fsCurrentHandle; otherwise trigger Save As
+        async function saveFile() {
+            const content = generateNS2Content();
+            try {
+                // Electron environment
+                if (window.electronAPI && typeof window.electronAPI.saveFile === 'function') {
+                    if (electronCurrentPath) {
+                        const res = await window.electronAPI.saveFile(content, electronCurrentPath);
+                        if (res && res.error) throw new Error(res.error);
+                        setStatus(languages[currentLanguage]['storySaved'] || 'Story saved');
+                        lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
+                        return true;
+                    }
+                } else if (fsCurrentHandle && typeof fsCurrentHandle.createWritable === 'function') {
+                    // Browser File System Access
+                    const writable = await fsCurrentHandle.createWritable();
+                    await writable.write(content);
+                    await writable.close();
+                    setStatus((languages[currentLanguage]['storySaved'] || 'Story saved') + (fsCurrentName ? ` (${fsCurrentName})` : ''));
+                    lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
+                    return true;
+                }
+            } catch (err) {
+                console.warn('Save failed (will attempt Save As)', err);
+            }
+            return await saveFileAs(content);
+        }
+
+        async function saveFileAs(existingContent) {
+            const content = existingContent != null ? existingContent : generateNS2Content();
+            // Electron Save As
+            if (window.electronAPI && typeof window.electronAPI.saveAs === 'function') {
+                try {
+                    const res = await window.electronAPI.saveAs(content);
+                    if (res && res.error) {
+                        setStatus((languages[currentLanguage]['errorSavingStory'] || 'Error saving story: {err}').replace('{err}', res.error), true);
+                        return false;
+                    }
+                    if (res && res.path) {
+                        electronCurrentPath = res.path;
+                        setStatus(languages[currentLanguage]['storySaved'] || 'Story saved');
+                        lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
+                        return true;
+                    }
+                } catch(e) {
+                    console.warn('Electron saveAs failed', e);
+                }
+            }
+            // Browser File System Access Save As
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: fsCurrentName || 'story.ns2',
+                        types: [{ description: 'NS2 Story', accept: { 'text/plain': ['.ns2'] } }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(content);
+                    await writable.close();
+                    fsCurrentHandle = handle;
+                    try { const file = await handle.getFile(); fsCurrentName = file && file.name ? file.name : (fsCurrentName || 'story.ns2'); } catch(e){}
+                    setStatus((languages[currentLanguage]['storySaved'] || 'Story saved') + (fsCurrentName ? ` (${fsCurrentName})` : ''));
+                    lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
+                    return true;
+                } catch(e) {
+                    setStatus((languages[currentLanguage]['errorSavingStory'] || 'Error saving story: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
+                    return false;
+                }
+            }
+            // Fallback: download
+            try {
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = fsCurrentName || 'story.ns2'; a.click(); URL.revokeObjectURL(url);
+                setStatus(languages[currentLanguage]['storySaved'] || 'Story saved');
+                lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
+                return true;
+            } catch(e) {
+                setStatus((languages[currentLanguage]['errorSavingStory'] || 'Error saving story: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
+                return false;
             }
         }
 
@@ -5776,65 +3840,126 @@ function selectState(name) {
             }, true);
         }
 
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey || e.metaKey) {
-                    switch (e.key.toLowerCase()) {
-                        case 's':
-                            e.preventDefault();
-                            saveFile();
-                            break;
-                        case 'o':
-                            e.preventDefault();
-                            document.getElementById('file-input').click();
-                            break;
-                        case 'n':
-                            e.preventDefault();
-                            newStory();
-                            break;
-                    }
+        // Centralized shortcut map and helpers to ensure keyboard triggers exact button actions
+        const SHORTCUTS = {
+            'Ctrl+S': { action: 'file-save' },
+            'Ctrl+O': { action: 'file-open' },
+            'Ctrl+N': { action: 'file-new' },
+            'Ctrl+P': { action: 'play-start' },
+            'Ctrl+L': { action: 'play-loadprogress' },
+            'Ctrl+Shift+L': { action: 'play-saveprogress' },
+            'Ctrl+R': { action: 'play-restart' },
+            // Tab switching
+            'Ctrl+1': { fn: () => openTab('text') },
+            'Ctrl+2': { fn: () => openTab('metadata') },
+            'Ctrl+3': { fn: () => openTab('variables') },
+            'Ctrl+4': { fn: () => openTab('states') },
+            'Ctrl+5': { fn: () => openTab('graph') },
+            'Ctrl+6': { fn: () => openTab('play') },
+        };
 
-                    if (e.key >= '1' && e.key <= '6') {
+        function normalizeKeyEvent(e){
+            const parts = [];
+            if(e.ctrlKey || e.metaKey) parts.push('Ctrl');
+            if(e.shiftKey) parts.push('Shift');
+            if(e.altKey) parts.push('Alt');
+            const k = e.key.length === 1 ? e.key.toUpperCase() : e.key;
+            parts.push(k);
+            return parts.join('+');
+        }
+
+        // Basic cooldown to prevent repeated dialogs from auto-repeat or duplicate listeners
+        const __actionCooldown = Object.create(null);
+        function clickAction(actionName){
+            try{
+                const now = Date.now();
+                const last = __actionCooldown[actionName] || 0;
+                if (now - last < 800) return true; // treat as handled; suppress duplicates
+                const btn = document.querySelector(`[data-action="${actionName}"]`);
+                if(btn && !btn.disabled){
+                    __actionCooldown[actionName] = now;
+                    btn.click();
+                    return true;
+                }
+            }catch(e){}
+            return false;
+        }
+
+        function applyShortcutHints(){
+            const hints = {
+                'file-save': 'Ctrl+S',
+                'file-open': 'Ctrl+O',
+                'file-new': 'Ctrl+N',
+                'play-start': 'Ctrl+P',
+                'play-loadprogress': 'Ctrl+L',
+                'play-saveprogress': 'Ctrl+Shift+L',
+                'play-restart': 'Ctrl+R',
+                'undo-btn': 'Ctrl+Z',
+                'redo-btn': 'Ctrl+Y',
+            };
+            Object.entries(hints).forEach(([action, combo])=>{
+                try{
+                    const el = document.querySelector(`[data-action="${action}"]`);
+                    if(!el) return;
+                    const t = el.title || '';
+                    if(!t.includes('(' + combo + ')')) el.title = t ? `${t} (${combo})` : combo;
+                }catch(e){}
+            });
+        }
+
+        let __kbInstalled = false;
+        let __kbHandler = null;
+        function setupKeyboardShortcuts() {
+            if (__kbInstalled && __kbHandler) return; // ensure single attachment across re-renders
+            __kbHandler = (e) => {
+                // Do not override Monaco typing for undo/redo; those are handled separately above
+                const active = document.activeElement;
+                const inMonaco = !!(active && active.closest && active.closest('.monaco-editor'));
+
+                // Graph navigation (non-modifier)
+                try {
+                    const activeTabBtn = document.querySelector('.tab-button.active');
+                    const activeTab = activeTabBtn ? (activeTabBtn.textContent||'').toLowerCase() : '';
+                    if (activeTab === 'graph' && !(e.ctrlKey||e.metaKey||e.altKey)) {
+                        switch (e.key) {
+                            case '=':
+                            case '+': e.preventDefault(); zoomIn(); return;
+                            case '-': e.preventDefault(); zoomOut(); return;
+                            case '0': e.preventDefault(); centerGraph(); return;
+                            case 'ArrowLeft': e.preventDefault(); if (graphPanZoom) graphPanZoom.moveBy(-20, 0); return;
+                            case 'ArrowRight': e.preventDefault(); if (graphPanZoom) graphPanZoom.moveBy(20, 0); return;
+                            case 'ArrowUp': e.preventDefault(); if (graphPanZoom) graphPanZoom.moveBy(0, -20); return;
+                            case 'ArrowDown': e.preventDefault(); if (graphPanZoom) graphPanZoom.moveBy(0, 20); return;
+                        }
+                    }
+                } catch (ex) {}
+
+                // Handle mapped shortcuts
+                const keySig = normalizeKeyEvent(e);
+                if ((e.ctrlKey || e.metaKey) || e.altKey) {
+                    // Tab numbers
+                    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && e.key >= '1' && e.key <= '6') {
                         e.preventDefault();
                         const tabs = ['text', 'metadata', 'variables', 'states', 'graph', 'play'];
                         openTab(tabs[parseInt(e.key) - 1]);
+                        return;
+                    }
+
+                    const handler = SHORTCUTS[keySig];
+                    if (handler) {
+                        e.preventDefault();
+                        if (handler.action) {
+                            if (clickAction(handler.action)) return;
+                        }
+                        if (typeof handler.fn === 'function') {
+                            const ok = handler.fn();
+                            if (ok !== false) return;
+                        }
                     }
                 }
-                const activeTab = document.querySelector('.tab-button.active').textContent.toLowerCase();
-                if (activeTab === 'graph') {
-                    switch (e.key) {
-                        case '=':
-                        case '+':
-                            e.preventDefault();
-                            zoomIn();
-                            break;
-                        case '-':
-                            e.preventDefault();
-                            zoomOut();
-                            break;
-                        case '0':
-                            e.preventDefault();
-                            centerGraph();
-                            break;
-                        case 'arrowleft':
-                            e.preventDefault();
-                            if (graphPanZoom) graphPanZoom.moveBy(-20, 0);
-                            break;
-                        case 'arrowright':
-                            e.preventDefault();
-                            if (graphPanZoom) graphPanZoom.moveBy(20, 0);
-                            break;
-                        case 'arrowup':
-                            e.preventDefault();
-                            if (graphPanZoom) graphPanZoom.moveBy(0, -20);
-                            break;
-                        case 'arrowdown':
-                            e.preventDefault();
-                            if (graphPanZoom) graphPanZoom.moveBy(0, 20);
-                            break;
-                    }
-                }
-            });
+            };
+            document.addEventListener('keydown', __kbHandler);
+            __kbInstalled = true;
         }
 
         function showContextMenu(x, y) {
@@ -6167,6 +4292,8 @@ function selectState(name) {
             const tb = document.getElementById('toolbar-story-title');
             if(tb) tb.textContent = currentTitle || (languages[currentLanguage]['untitled'] || 'Untitled');
             Module._FreeString(titlePtr);
+            // keep header/window title synced to story title
+            try { updateFileIndicator(); } catch (e) {}
             document.getElementById('story-title').onchange = function() {
                 const prevPtr = Module._GetStoryTitle(editorEngine);
                 const prev = Module.UTF8ToString(prevPtr);
@@ -6175,6 +4302,7 @@ function selectState(name) {
                 Module._SetStoryTitle(editorEngine, allocateUTF8(newVal));
                 // update toolbar copy
                 try{ const el = document.getElementById('toolbar-story-title'); if(el) el.textContent = newVal || (languages[currentLanguage]['untitled'] || 'Untitled'); }catch(e){}
+                try { updateFileIndicator(); } catch (e) {}
                 saveToLocalStorage();
                 const err = getLastError(editorEngine);
                 if (err) {
@@ -6282,7 +4410,126 @@ function selectState(name) {
         }
 
         function openHelp(page) {
-            window.open(page + '.html', '_self');
+            try {
+                if (!page) return;
+                try {
+                    const dd = document.getElementById('help-dropdown');
+                    if (dd) dd.style.display = 'none';
+                } catch (e) {}
+                if (typeof currentTab === 'string' && currentTab !== 'help') {
+                    __lastNonHelpTab = currentTab;
+                }
+                __currentHelpPage = page;
+                const iframe = document.getElementById('help-iframe');
+                if (iframe) {
+                    // Ensure embedded pages show their .tab-content sections
+                    const activateContent = () => {
+                        try {
+                            const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                            if (!doc) return;
+                            doc.querySelectorAll('.tab-content').forEach(el => {
+                                try { el.classList.add('active'); } catch (e) {}
+                            });
+                            // Hide page-local header/back links and inline utility buttons; we surface controls in the main toolbar
+                            try { doc.querySelectorAll('.header, .back-link').forEach(el => el && (el.style.display = 'none')); } catch (e) {}
+                            try {
+                                const guide = doc.getElementById('guide-content');
+                                if (guide) {
+                                    const prev = guide.previousElementSibling;
+                                    if (prev && prev.querySelector && prev.querySelector('button')) prev.style.display = 'none';
+                                }
+                            } catch (e) {}
+                            // Force scrolling: override global page CSS from style.css (body {height:100vh})
+                            try {
+                                const style = doc.createElement('style');
+                                style.textContent = `html, body { height: auto !important; min-height: 0 !important; overflow-y: auto !important; }
+                                                      .tab-content { display: block !important; opacity: 1 !important; height: auto !important; overflow: visible !important; }`;
+                                doc.head && doc.head.appendChild(style);
+                            } catch (e) {}
+                        } catch (e) {}
+                    };
+                    try { iframe.removeEventListener('load', activateContent); } catch (e) {}
+                    try { iframe.addEventListener('load', activateContent); } catch (e) {}
+                    iframe.src = page + '.html';
+                }
+                openTab('help');
+            } catch (e) { console.warn('openHelp failed', e); }
+        }
+
+        function closeHelp() {
+            try {
+                const iframe = document.getElementById('help-iframe');
+                if (iframe) iframe.src = 'about:blank';
+            } catch (e) {}
+            try { openTab(__lastNonHelpTab || 'metadata'); } catch (e) {}
+        }
+
+        // Copy utilities for embedded help pages
+        function copyHelpRaw() {
+            try {
+                const iframe = document.getElementById('help-iframe');
+                if (!iframe) return;
+                const doc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
+                if (!doc) return;
+                const node = doc.getElementById('guide-content') || doc.body;
+                const text = (node && (node.innerText || node.textContent)) || '';
+                navigator.clipboard.writeText(text.trim());
+            } catch (e) { console.warn('copyHelpRaw failed', e); }
+        }
+
+        function __basicHtmlToMarkdown(node, level = 0) {
+            if (!node) return '';
+            if (node.nodeType === 3) return node.textContent;
+            if (node.nodeType !== 1) return '';
+            const tag = node.tagName.toLowerCase();
+            const joinKids = () => Array.from(node.childNodes).map(ch => __basicHtmlToMarkdown(ch, level)).join('');
+            switch (tag) {
+                case 'h1': return '# ' + joinKids().trim() + '\n\n';
+                case 'h2': return '## ' + joinKids().trim() + '\n\n';
+                case 'h3': return '### ' + joinKids().trim() + '\n\n';
+                case 'p':  return joinKids().trim() + '\n\n';
+                case 'strong': return '**' + joinKids() + '**';
+                case 'em': return '*' + joinKids() + '*';
+                case 'code': return '`' + joinKids() + '`';
+                case 'pre': return '```\n' + (node.textContent || '') + '\n```\n\n';
+                case 'ul': {
+                    const items = Array.from(node.querySelectorAll(':scope > li')).map(li => __basicHtmlToMarkdown(li, level));
+                    return items.join('') + '\n';
+                }
+                case 'li': {
+                    const parts = [];
+                    const subUls = [];
+                    node.childNodes.forEach(child => {
+                        if (child.nodeType === 1 && child.tagName && child.tagName.toLowerCase() === 'ul') {
+                            subUls.push(__basicHtmlToMarkdown(child, level + 1));
+                        } else {
+                            parts.push(__basicHtmlToMarkdown(child, level).trim());
+                        }
+                    });
+                    const indent = '  '.repeat(level);
+                    return indent + '- ' + parts.join(' ') + '\n' + (subUls.length ? subUls.join('\n') : '');
+                }
+                default: return joinKids();
+            }
+        }
+
+        function copyHelpMarkdown() {
+            try {
+                const iframe = document.getElementById('help-iframe');
+                if (!iframe) return;
+                const win = iframe.contentWindow;
+                const doc = iframe.contentDocument || (win && win.document);
+                if (!doc) return;
+                const node = doc.getElementById('guide-content') || doc.body;
+                if (!node) return;
+                let md = '';
+                if (win && typeof win.htmlToMarkdown === 'function') {
+                    try { md = win.htmlToMarkdown(node); } catch (e) { md = __basicHtmlToMarkdown(node); }
+                } else {
+                    md = __basicHtmlToMarkdown(node);
+                }
+                navigator.clipboard.writeText((md || '').trim());
+            } catch (e) { console.warn('copyHelpMarkdown failed', e); }
         }
 
         function updateGlobalToolbar(tabName) {
@@ -6306,23 +4553,47 @@ function selectState(name) {
                 group.appendChild(label);
             }
 
+            // Help mode: minimal toolbar with back/close and page actions
+            if (tabName === 'help') {
+                const helpGroup = document.createElement('div');
+                helpGroup.className = 'toolbar-group group-help';
+                addGroupLabel(helpGroup, 'HELP');
+
+                const titleText = (__helpTitles[__currentHelpPage] || 'Help');
+                const backBtn = makeBtn('<i class="fas fa-arrow-left"></i>', 'Back', () => closeHelp());
+                helpGroup.appendChild(backBtn);
+
+                // Page-specific actions (Copy Raw / Copy Markdown), shown when content exists
+                const copyRawBtn = makeBtn('<i class="fas fa-copy"></i>', 'Copy Raw', () => { try { copyHelpRaw(); } catch (e) {} });
+                helpGroup.appendChild(copyRawBtn);
+                const copyMdBtn = makeBtn('<i class="fas fa-file-alt"></i>', 'Copy as Markdown', () => { try { copyHelpMarkdown(); } catch (e) {} });
+                helpGroup.appendChild(copyMdBtn);
+
+                // Title label (non-clickable)
+                const titleEl = document.createElement('div');
+                titleEl.className = 'group-label';
+                titleEl.textContent = titleText;
+                helpGroup.appendChild(titleEl);
+
+                toolbar.appendChild(helpGroup);
+                return; // Skip normal toolbar when viewing help
+            }
+
             // FILE group (global)
             const fileGroup = document.createElement('div'); fileGroup.className = 'toolbar-group group-file'; fileGroup.id = 'toolbar-file-group';
             // (toolbar story title moved to header menubar for layout: logo -> editor -> | -> story -> buttons)
 
-            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-file"></i>', languages[currentLanguage]['newStory'] || 'New Story', newStory), {}));
-            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-folder-open"></i>', languages[currentLanguage]['loadStory'] || 'Load Story', () => document.getElementById('file-input').click()), {}));
-            fileGroup.appendChild(Object.assign(makeBtn('<i class="fas fa-save"></i>', languages[currentLanguage]['saveStory'] || 'Save Story', saveFile), {}));
-            // Save As button (matches toolbar style)
-            const saveAsBtn = makeBtn('<i class="fas fa-file-export"></i>', languages[currentLanguage]['saveAs'] || 'Save As', function(){
-                try{
-                    if(typeof window.saveFileAs === 'function') return window.saveFileAs();
-                    if(typeof saveFileAs === 'function') return saveFileAs();
-                    if(typeof window.saveFile === 'function') return window.saveFile();
-                }catch(e){ console.warn(e); }
-            });
-            saveAsBtn.id = 'electron-saveas-btn';
-            fileGroup.appendChild(Object.assign(saveAsBtn, {}));
+            const newBtn = makeBtn('<i class="fas fa-file"></i>', languages[currentLanguage]['newStory'] || 'New Story', () => { try { window.newStory(); } catch(e) { try { newStory(); } catch(ee) {} } });
+            newBtn.dataset.action = 'file-new';
+            fileGroup.appendChild(newBtn);
+
+            const openBtn = makeBtn('<i class="fas fa-folder-open"></i>', languages[currentLanguage]['loadStory'] || 'Load Story', () => { try { window.openFile(); } catch(e) { try { openFile(); } catch(ee) { try { const inp = document.getElementById('file-input'); if (inp) inp.click(); } catch(eee) {} } } });
+            openBtn.dataset.action = 'file-open';
+            fileGroup.appendChild(openBtn);
+
+            const saveBtn = makeBtn('<i class="fas fa-save"></i>', languages[currentLanguage]['saveStory'] || 'Save Story', () => { try { window.saveFile(); } catch(e) { try { saveFile(); } catch(ee) {} } });
+            saveBtn.dataset.action = 'file-save';
+            fileGroup.appendChild(saveBtn);
             addGroupLabel(fileGroup, 'FILE');
             toolbar.appendChild(fileGroup);
 
@@ -6333,10 +4604,18 @@ function selectState(name) {
 
             // PLAY group (global)
             const playGroup = document.createElement('div'); playGroup.className = 'toolbar-group';
-            playGroup.appendChild(makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => { startPlayEngine(); openTab('play'); }));
-            playGroup.appendChild(makeBtn('<i class="fas fa-upload"></i>', languages[currentLanguage]['Load Progress'] || 'Load Progress', () => { document.getElementById('load-save').click(); openTab('play'); }));
-            playGroup.appendChild(makeBtn('<i class="fas fa-download"></i>', languages[currentLanguage]['Save Progress'] || 'Save Progress', () => { saveProgress(); openTab('play'); }));
-            playGroup.appendChild(makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => { restartStory(); openTab('play'); }));
+            const playBtn = makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => { startPlayEngine(); openTab('play'); });
+            playBtn.dataset.action = 'play-start';
+            playGroup.appendChild(playBtn);
+            const loadProgBtn = makeBtn('<i class="fas fa-upload"></i>', languages[currentLanguage]['Load Progress'] || 'Load Progress', () => { document.getElementById('load-save').click(); openTab('play'); });
+            loadProgBtn.dataset.action = 'play-loadprogress';
+            playGroup.appendChild(loadProgBtn);
+            const saveProgBtn = makeBtn('<i class="fas fa-download"></i>', languages[currentLanguage]['Save Progress'] || 'Save Progress', () => { saveProgress(); openTab('play'); });
+            saveProgBtn.dataset.action = 'play-saveprogress';
+            playGroup.appendChild(saveProgBtn);
+            const restartBtn = makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => { restartStory(); openTab('play'); });
+            restartBtn.dataset.action = 'play-restart';
+            playGroup.appendChild(restartBtn);
             addGroupLabel(playGroup, 'PLAY');
             
 
@@ -6344,6 +4623,7 @@ function selectState(name) {
             if (tabName === 'variables') {
                 const variablesGroup = document.createElement('div'); variablesGroup.className = 'toolbar-group toolbar-context';
                 const addVarBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addVariable'] || 'Add Variable', addVariable);
+                addVarBtn.dataset.action = 'var-add';
                 variablesGroup.appendChild(addVarBtn);
                 addGroupLabel(variablesGroup, 'VARIABLES');
                 contextContainer.appendChild(variablesGroup);
@@ -6353,12 +4633,16 @@ function selectState(name) {
             if (tabName === 'states') {
                 const statesGroup = document.createElement('div'); statesGroup.className = 'toolbar-group toolbar-context';
                 const addStateBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addState'] || 'Add State', addState);
+                addStateBtn.dataset.action = 'state-add';
                 statesGroup.appendChild(addStateBtn);
                 const deleteBtn = makeBtn('<i class="fas fa-trash"></i>', languages[currentLanguage]['Delete State'] || 'Delete State', () => { if (selectedState) removeState(selectedState); });
+                deleteBtn.dataset.action = 'state-delete';
                 statesGroup.appendChild(deleteBtn);
                 const startBtn = makeBtn('<i class="fas fa-flag"></i>', languages[currentLanguage]['Set as Start'] || 'Set as Start', () => { if (selectedState) setAsStart(selectedState); });
+                startBtn.dataset.action = 'state-setstart';
                 statesGroup.appendChild(startBtn);
                 const jumpBtn = makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Jump to State'] || 'Jump to State', () => { if (selectedState) { jumpToState(selectedState); openTab('play'); } });
+                jumpBtn.dataset.action = 'state-jump';
                 try {
                     if (typeof playEngine !== 'undefined' && playEngine && selectedState) {
                         const sPtr = allocateUTF8(selectedState);
@@ -6378,8 +4662,10 @@ function selectState(name) {
                 }
                 statesGroup.appendChild(jumpBtn);
                 const forceBtn = makeBtn('<i class="fas fa-forward"></i>', languages[currentLanguage]['Force Jump'] || 'Force Jump', () => { if (selectedState) { forceJumpToState(selectedState); openTab('play'); } }, 'force-visit');
+                forceBtn.dataset.action = 'state-forcejump';
                 statesGroup.appendChild(forceBtn);
                 const graphBtn = makeBtn('<i class="fas fa-project-diagram"></i>', languages[currentLanguage]['View in Graph'] || 'View in Graph', () => { if (selectedState) viewInGraph(selectedState); });
+                graphBtn.dataset.action = 'state-viewgraph';
                 statesGroup.appendChild(graphBtn);
                 addGroupLabel(statesGroup, 'STATES');
                 contextContainer.appendChild(statesGroup);
@@ -6388,10 +4674,18 @@ function selectState(name) {
             // Tab-specific: GRAPH group (only on graph tab)
             if (tabName === 'graph') {
                 const graphGroup = document.createElement('div'); graphGroup.className = 'toolbar-group toolbar-context';
-                graphGroup.appendChild(makeBtn('<i class="fas fa-sync"></i>', languages[currentLanguage]['Reset Graph'] || 'Reset Graph', resetGraph));
-                graphGroup.appendChild(makeBtn('<i class="fas fa-search-plus"></i>', languages[currentLanguage]['Zoom In'] || 'Zoom In', zoomIn));
-                graphGroup.appendChild(makeBtn('<i class="fas fa-search-minus"></i>', languages[currentLanguage]['Zoom Out'] || 'Zoom Out', zoomOut));
-                graphGroup.appendChild(makeBtn('<i class="fas fa-crosshairs"></i>', languages[currentLanguage]['Center Graph'] || 'Center Graph', centerGraph));
+                const resetGraphBtn = makeBtn('<i class="fas fa-sync"></i>', languages[currentLanguage]['Reset Graph'] || 'Reset Graph', resetGraph);
+                resetGraphBtn.dataset.action = 'graph-reset';
+                graphGroup.appendChild(resetGraphBtn);
+                const zoomInBtn = makeBtn('<i class="fas fa-search-plus"></i>', languages[currentLanguage]['Zoom In'] || 'Zoom In', zoomIn);
+                zoomInBtn.dataset.action = 'graph-zoomin';
+                graphGroup.appendChild(zoomInBtn);
+                const zoomOutBtn = makeBtn('<i class="fas fa-search-minus"></i>', languages[currentLanguage]['Zoom Out'] || 'Zoom Out', zoomOut);
+                zoomOutBtn.dataset.action = 'graph-zoomout';
+                graphGroup.appendChild(zoomOutBtn);
+                const centerBtn = makeBtn('<i class="fas fa-crosshairs"></i>', languages[currentLanguage]['Center Graph'] || 'Center Graph', centerGraph);
+                centerBtn.dataset.action = 'graph-center';
+                graphGroup.appendChild(centerBtn);
                 addGroupLabel(graphGroup, 'GRAPH');
                 contextContainer.appendChild(graphGroup);
             }
@@ -6430,6 +4724,8 @@ function selectState(name) {
             try { updateToolbarUndoButtons(); } catch (e) {}
             // Ensure toolbar overflow is arranged (move groups into overflow if they don't fit)
             try { arrangeToolbarOverflow(); } catch (e) {}
+            // Apply visible shortcut hints on buttons
+            try { applyShortcutHints(); } catch(e) {}
         }
 
         // Arrange toolbar groups into an overflow menu when they don't fit
@@ -6525,21 +4821,29 @@ function selectState(name) {
             dd.style.zIndex = 110;
             dd.dataset.visible = '1';
 
-            // Animate into place and clamp horizontally to viewport
+            // Animate into place. Special case: undo-dropdown uses full viewport height.
             requestAnimationFrame(() => {
-                const b = dd.getBoundingClientRect();
-                let left = Math.max(8, Math.min(rect.left, window.innerWidth - b.width - 8));
-                let top = rect.bottom + 8;
-                // If bottom would overflow, open above anchor
-                if (top + b.height > window.innerHeight - 8) {
-                    top = rect.top - b.height - 8;
+                if (dropdownId === 'undo-dropdown') {
+                    const b0 = dd.getBoundingClientRect();
+                    const left = Math.max(8, Math.min(rect.left, window.innerWidth - b0.width - 8));
+                    dd.style.left = left + 'px';
+                    dd.style.top = '0px';
+                    dd.style.height = window.innerHeight + 'px';
+                    dd.style.maxHeight = window.innerHeight + 'px';
+                    dd.style.overflowY = 'auto';
+                } else {
+                    const b = dd.getBoundingClientRect();
+                    let left = Math.max(8, Math.min(rect.left, window.innerWidth - b.width - 8));
+                    let top = rect.bottom + 8;
+                    if (top + b.height > window.innerHeight - 8) {
+                        top = rect.top - b.height - 8;
+                    }
+                    dd.style.left = left + 'px';
+                    dd.style.top = top + 'px';
                 }
-                dd.style.left = left + 'px';
-                dd.style.top = top + 'px';
                 dd.style.transition = 'opacity 160ms ease, transform 160ms ease';
                 dd.style.opacity = '1';
                 dd.style.transform = 'translateY(0) scale(1)';
-                // match header-like background so dropdown is visible
                 dd.style.background = 'linear-gradient(0deg, rgba(17,17,17,0.96) 0%, rgba(30,30,30,0.96) 100%)';
                 dd.style.backdropFilter = 'blur(8px)';
                 dd.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
@@ -6672,8 +4976,7 @@ function selectState(name) {
             if(!window.electronAPI) return; // only run inside Electron where preload exposes electronAPI
             console.info('Electron bridge detected — enabling disk I/O overrides');
 
-            // keep track of an opened path (if available)
-            let electronCurrentPath = null;
+            // use global electronCurrentPath declared earlier
 
             async function electronOpenFile(){
                 try{
@@ -6707,12 +5010,15 @@ function selectState(name) {
                     if(electronCurrentPath){
                         const res = await window.electronAPI.saveFile(content, electronCurrentPath);
                         if(res && res.error) console.error('saveFile error', res.error);
+                        // Mark clean after successful save
+                        try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
                         return res;
                     }
                     // no current path — open Save As
                     const res = await window.electronAPI.saveAs(content);
                     if(res && res.error) console.error('saveAs error', res.error);
                     if(res && res.path) electronCurrentPath = res.path;
+                    try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
                     return res;
                 }catch(err){ console.error('electronSaveFile', err); }
             }
@@ -6726,12 +5032,20 @@ function selectState(name) {
                     const res = await window.electronAPI.saveAs(content);
                     if(res && res.path) electronCurrentPath = res.path;
                     if(res && res.error) console.error('saveAs error', res.error);
+                    // Mark clean after Save As and remember new path
+                    try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
                     return res;
                 }catch(err){ console.error('electronSaveAs', err); }
             }
 
             // Override existing web functions only when present; otherwise, add minimal wrappers
             try{
+                // Also wrap newStory to clear the current electron path when starting fresh
+                if(typeof window.newStory === 'function'){
+                    const origNew = window.newStory;
+                    window.newStory = function(){ try{ electronCurrentPath = null; }catch(e){} return origNew.apply(this, arguments); };
+                }
+
                 if(typeof window.loadFile === 'function'){
                     const webLoad = window.loadFile;
                     window.loadFile = function(){ return electronOpenFile(); };
@@ -6759,31 +5073,7 @@ function selectState(name) {
                     });
                 }
 
-                // Add a 'Save As' button into the toolbar if we can detect a toolbar update function
-                if(typeof window.updateGlobalToolbar === 'function'){
-                    const orig = window.updateGlobalToolbar;
-                    window.updateGlobalToolbar = function(){
-                        orig.apply(this, arguments);
-                        try{
-                            // attempt to find a FILE toolbar group
-                            const fileGroup = document.querySelector('.toolbar .group-file') || document.querySelector('#toolbar-file-group') || document.querySelector('.toolbar');
-                            if(fileGroup && !document.getElementById('electron-saveas-btn')){
-                                const btn = document.createElement('button');
-                                btn.id = 'electron-saveas-btn';
-                                btn.className = 'toolbtn';
-                                btn.textContent = 'Save As';
-                                btn.addEventListener('click', async function(){ await electronSaveAs(); });
-                                fileGroup.appendChild(btn);
-                            }
-                        }catch(e){ console.warn(e); }
-                    }
-                } else {
-                    // if no toolbar function, try to append a small save-as button into body header
-                    const header = document.querySelector('header') || document.body;
-                    if(header && !document.getElementById('electron-saveas-btn')){
-                        const btn = document.createElement('button'); btn.id = 'electron-saveas-btn'; btn.style.marginLeft = '8px'; btn.textContent = 'Save As'; btn.addEventListener('click', async ()=> electronSaveAs()); header.appendChild(btn);
-                    }
-                }
+                // Intentionally do not inject any 'Save As' UI; Save As remains available via programmatic APIs only.
             }catch(e){ console.error('Error installing electron overrides', e); }
 
         })();
