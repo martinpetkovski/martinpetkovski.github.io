@@ -109,7 +109,7 @@
         display: grid;
         grid-template-columns: auto 1fr auto; /* left / center (toolbar) / right (window-controls) */
         align-items: center;
-        background: linear-gradient(0deg, #0C0C0C, #121212);
+        background: linear-gradient(0deg, #0C0C0C, #161616);
         padding: 0 10px; /* remove vertical padding from title bar */
         border-bottom: 1px solid #2a2a2a;
         position: sticky;
@@ -595,11 +595,11 @@
         background: linear-gradient(180deg, rgba(10,10,12,0.6), rgba(20,20,24,0.6));
         border-left: 1px solid rgba(255,255,255,0.02);
         box-shadow: inset 0 0 8px rgba(0,170,200,0.03);
-        border-radius: 6px;
+        border-radius: 0;
     }
     *::-webkit-scrollbar-thumb {
         background: linear-gradient(180deg, rgba(0,170,200,0.9), rgba(0,100,140,0.9));
-        border-radius: 6px;
+        border-radius: 0;
         box-shadow: 0 0 8px rgba(0,170,200,0.18), inset 0 -2px 0 rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.03);
     }
@@ -764,7 +764,7 @@
         transition: opacity 0.12s ease, transform 0.12s ease;
         transform: translateY(-6px);
         opacity: 0;
-        border-radius: 6px;
+        border-radius: 0;
     }
 
     .dropdown-list.visible {
@@ -782,7 +782,8 @@
         font-size: 12px;
     }
 
-    .dropdown-list li:hover {
+    /* Only hover rows that contain child elements (guards against empty/placeholder LIs) */
+    .dropdown-list li:has(*):hover {
         color: #00AbC0;
         background: rgba(15,15,15,0.15);
     }
@@ -943,7 +944,8 @@
         color: #999;
     }
 
-    .states-list-panel ul li:hover {
+    /* Only hover rows that contain child elements (guards against empty/placeholder LIs) */
+    .states-list-panel ul li:has(*):hover {
         color: #00AbC0;
         background: linear-gradient(0deg,rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 100%);
         box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
@@ -986,19 +988,21 @@
         display: flex;
         gap: 6px;
         align-items: center;
-        flex-wrap: wrap;
-        flex: 0 0 auto; /* toolbar keeps its intrinsic width; if it doesn't fit the header will wrap */
+        flex-wrap: nowrap; /* do not wrap toolbar groups; use overflow menu instead */
+        flex: 0 0 auto;
         justify-content: flex-end;
+        overflow: hidden;
     }
 
     /* Make toolbar groups wrap as whole units: each .toolbar-group keeps its size and moves to next line if needed */
     .toolbar-group {
-        display: flex;
+        display: inline-flex;
         gap: 6px;
         align-items: center;
         padding: 6px 4px;
-        flex: 0 0 auto; /* do not shrink individual groups; wrap whole group */
+        flex: 0 1 auto; /* allow groups to shrink; overflow handled by JS */
         white-space: nowrap; /* prevent internal buttons from wrapping */
+        min-width: 0;
     }
 
     /* ensure the menubar's non-toolbar controls (language/help) stay on the right row */
@@ -1032,7 +1036,10 @@
     }
 
     .dropdown-menu .menu-button {
-        background: transparent !important;
+        /* subtle bluish toolbar background for visual separation */
+        /* slightly stronger blue tint (10% more prominent) */
+        background: linear-gradient(180deg, rgba(12,28,48,0.61), rgba(6,16,30,0.66)) !important;
+        border: 1px solid rgba(80,140,200,0.066) !important;
     }
 
     @keyframes dropdownOpen {
@@ -1102,7 +1109,7 @@
         box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
         backdrop-filter: blur(6px);
         color: #D4D4D4;
-        border-radius: 6px;
+        border-radius: 0;
         padding: 6px;
     }
 
@@ -1117,7 +1124,7 @@
         background: transparent !important;
         color: #D4D4D4;
         margin: 2px 0;
-        border-radius: 4px;
+        border-radius: 0;
         transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
     }
 
@@ -1202,7 +1209,7 @@
         border: 1px solid rgba(255,255,255,0.03);
         box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
         color: #D4D4D4;
-        border-radius: 6px;
+        border-radius: 0;
         padding: 6px;
         max-height: 50vh;
         overflow: auto;
@@ -1218,7 +1225,7 @@
         margin: 4px 0;
         background: transparent;
         color: #D4D4D4;
-        border-radius: 4px;
+        border-radius: 0;
         transition: background-color 0.18s ease, box-shadow 0.18s ease;
     }
 
@@ -1363,7 +1370,8 @@
         box-shadow: none;
     }
 
-    #context-menu li:hover {
+    /* Only apply hover to rows that contain child elements (prevents hover on empty/placeholders) */
+    #context-menu li:not(.menu-category):has(*):hover {
         color: #00AbC0;
         /* Use toolbar button hover gradient for stronger, consistent highlight */
         background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
@@ -1382,9 +1390,25 @@
     }
 
     #context-menu li .example {
-        color: #888;
-        font-style: italic;
+        color: rgba(154,166,173,0.5); /* 50% transparent description */
+        font-style: normal;
         margin-left: 10px;
+        text-align: right; /* ensure description is on the right */
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Ensure hidden/placeholder LIs don't receive pointer events (covers inline style cases) */
+    .states-list-panel ul li[hidden],
+    .states-list-panel ul li[style*="display:none"],
+    .states-list-panel ul li[style*="display: none"],
+    .dropdown-list li[hidden],
+    .dropdown-list li[style*="display:none"],
+    .dropdown-list li[style*="display: none"],
+    #context-menu li[hidden],
+    #context-menu li[style*="display:none"],
+    #context-menu li[style*="display: none"] {
+        pointer-events: none;
     }
 
     #context-menu,
@@ -1414,7 +1438,7 @@
         max-width: calc(100vw - 16px);
         max-height: 50vh;
         overflow: auto;
-        border-radius: 6px;
+        border-radius: 0;
         /* Visuals matching `.dropdown-menu` */
         background: linear-gradient(0deg, #111, #222);
         border: 1px solid rgba(255,255,255,0.03);
@@ -1435,12 +1459,13 @@
         padding: 6px 8px;
         cursor: pointer;
         transition: background-color 0.18s ease, color 0.18s ease;
-        border-radius: 4px;
+        border-radius: 0;
         background: transparent;
         color: #d6e3ea;
     }
 
-    #graph-context-menu li:hover {
+    /* Only hover real graph context menu items (skip separators/empty LIs) */
+    #graph-context-menu li:has(*):hover {
         color: #FFF;
         background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
         box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
@@ -1466,7 +1491,7 @@
         color: #D4D4D4;
         cursor: pointer;
         transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
-        border-radius: 4px;
+        border-radius: 0;
         font-size: 12px;
     }
 
@@ -1702,6 +1727,15 @@
         flex: 0 1 auto; /* allow groups to shrink and wrap as units */
         min-width: 0;
     }
+    /* Contextual toolbar group visual: slightly lighter blue tint and subtle border */
+    /* More specific selector: toolbar groups that are contextual should be a bit lighter/more prominent */
+    .toolbar-group.toolbar-context {
+        background: rgba(120,190,240,0.10); /* ~20% more prominent (lighter) */
+        border-radius: 6px;
+        padding: 6px 8px;
+        border: 1px solid rgba(120,190,240,0.07);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
     /* vertical separators between categories (30% opacity) */
     .toolbar-group:not(:last-child) {
         border-right: 1px solid rgba(212,212,212,0.1); /* 10% opacity, 1px */
@@ -1731,6 +1765,50 @@
         .toolbar-group { padding: 6px 4px; }
         .toolbar-group .group-label { font-size: 11px; margin-right: 4px; }
     }
+    /* Overflow menu for toolbar groups when space is limited */
+    .toolbar-overflow { position: relative; }
+    .toolbar-overflow .overflow-btn { padding: 6px 8px; }
+    .toolbar-overflow .overflow-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1e1e1e;
+        border: 1px solid rgba(255,255,255,0.06);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+        z-index: 9999;
+        min-width: 220px;
+        max-height: 360px;
+        overflow: auto;
+        padding: 6px;
+        border-radius: 6px;
+    }
+    /* Each overflowed group shows its label on top, and buttons flow horizontally beneath */
+    .toolbar-overflow .overflow-menu .toolbar-group {
+        display: block;
+        border-right: none;
+        margin: 6px 0;
+        padding: 6px 4px;
+    }
+    .toolbar-overflow .overflow-menu .toolbar-group .group-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(174,190,205,0.35);
+    }
+    .toolbar-overflow .overflow-menu .toolbar-group .icon-button {
+        display: inline-flex;
+        margin-right: 6px;
+        margin-bottom: 4px;
+        vertical-align: middle;
+    }
+    /* Hide the visual separator now that title removed */
+    .toolbar-separator { display: none; }
+
+    /* Contextual toolbar groups (states, variables, graph) - visually distinct */
+    .toolbar-context-container { display: inline-flex; align-items: center; gap:6px; }
+    .toolbar-context { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); border-radius:6px; padding:4px 6px; }
     .choices-section table select {
         height: 26px !important;
         padding: 0 5px !important;
@@ -1749,56 +1827,448 @@
         margin: 0 !important;
     }
     
-    #status-window {
+    /* Status window behaves like a dropdown now (anchored to toolbar).
+       Use the shared `.dropdown-menu` visual language and force 50% width. */
+    #status-window.dropdown-menu {
         display: none;
-        position: absolute;
-        top: 100px;
-        left: 100px;
-        width: 300px;
-        max-height: 200px;
-        background: #111;
-        color: #D4D4D4;
-        border: 1px solid #2a2a2a;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-        z-index: 999;
-        border-radius: 4px;
-        overflow: hidden;
-        transition: all 0.3s ease;
+        position: fixed; /* will be positioned by `toggleDropdown` */
+        width: 50%;
+        max-width: 90vw;
+        min-width: 320px;
+        max-height: 50vh;
+        overflow: auto;
+        z-index: 110;
     }
 
     #status-handle {
-        cursor: move;
-        background: #222;
-        padding: 5px 10px;
-        text-align: center;
-        border-bottom: 1px solid #2a2a2a;
-        font-weight: bold;
+        cursor: default;
+        padding: 8px 10px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+        font-weight: 700;
         font-size: 13px;
-        box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2);
+        background: transparent;
     }
 
     #play-error {
         padding: 8px 10px;
         font-size: 12px;
-        color: #ff6b6b;
-        background: rgba(255, 0, 0, 0.1);
-        border-bottom: 1px solid #2a2a2a;
+        color: #D4D4D4;
+        background: transparent;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
         white-space: pre-wrap;
         word-wrap: break-word;
         overflow-y: auto;
         max-height: 80px;
     }
+    #play-error:empty { display: none; }
 
     #status-content {
         padding: 8px 10px;
         font-size: 12px;
         color: #D4D4D4;
-        background: #1E1E1E;
-        overflow-y: auto;
-        max-height: 100px;
+        background: transparent;
         white-space: pre-wrap;
         word-wrap: break-word;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    /* ------------------------------------------------------------------
+       Unified menu styles
+       Define a small set of CSS variables and a single rule that applies
+       the same visual language to all dropdowns and context menus so
+       they look and feel identical (states view context menu is the
+       canonical appearance).
+       This rule is placed after the other menu rules so it overrides
+       duplicate properties and ensures visual consistency.
+       ------------------------------------------------------------------ */
+    :root {
+        /* 50% transparent canonical menu background with blur backdrop */
+        --menu-bg: rgba(17,17,17,0.5);
+        --menu-border: 1px solid rgba(255,255,255,0.03);
+        --menu-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        --menu-padding: 6px;
+        --menu-radius: 6px;
+        --menu-color: #D4D4D4;
+        --menu-backdrop: blur(8px);
+        --menu-hover-bg: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
+        --menu-hover-icon: #00AbC0;
+    }
+
+    /* Apply unified variables to all known menu-like selectors */
+    .dropdown-menu,
+    #context-menu,
+    #graph-context-menu,
+    .dropdown-list,
+    #token-menu-list,
+    #status-window {
+        /* Use semi-transparent background and a subtle gradient overlay to match the canonical look */
+        background: linear-gradient(0deg, rgba(17,17,17,0.5), rgba(34,34,34,0.5)) !important;
+        border: var(--menu-border) !important;
+        box-shadow: var(--menu-shadow) !important;
+        padding: var(--menu-padding) !important;
+        border-radius: var(--menu-radius) !important;
+        color: var(--menu-color) !important;
+        backdrop-filter: var(--menu-backdrop) !important;
+        -webkit-backdrop-filter: var(--menu-backdrop) !important;
+    }
+
+    /* Ensure menus are interactive inside draggable header areas in Electron */
+    .dropdown-menu,
+    #undo-dropdown,
+    #language-dropdown,
+    #help-dropdown,
+    #status-window,
+    #graph-context-menu,
+    #context-menu {
+        -webkit-app-region: no-drag !important;
+        pointer-events: auto !important;
+    }
+
+    /* Unified hover for real menu items across different menu implementations.
+       Exclude category headers and empty/separator list items (they shouldn't highlight). */
+    .dropdown-menu button:hover,
+    #context-menu li:not(.menu-category):has(*):hover,
+    #graph-context-menu li:not(.menu-category):has(*):hover,
+    .dropdown-list li:has(*):hover,
+    #token-menu-list li:has(*):hover,
+    #status-window .button-container button:hover {
+        color: #FFF !important;
+        background: var(--menu-hover-bg) !important;
+        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6) !important;
+    }
+
+    /* Icons in menus adopt the unified hover tint */
+    .dropdown-menu button:hover i,
+    #context-menu li:not(.menu-category):has(*):hover i,
+    #graph-context-menu li:not(.menu-category):has(*):hover i,
+    .dropdown-list li:has(*):hover i,
+    #token-menu-list li:has(*):hover i {
+        color: var(--menu-hover-icon) !important;
+    }
+
+    /* Ensure Font Awesome and SVG icons inside menus render correctly and inherit color */
+    .dropdown-menu i,
+    .dropdown-menu .fa,
+    .dropdown-menu .fas,
+    #context-menu i,
+    #context-menu .fa,
+    #context-menu .fas,
+    #graph-context-menu i,
+    #graph-context-menu .fa,
+    #graph-context-menu .fas,
+    .dropdown-list i,
+    .dropdown-list .fa,
+    #token-menu-list i,
+    #token-menu-list .fa,
+    #status-window i,
+    #status-window .fa {
+        color: inherit !important;
+        opacity: 1 !important;
+        filter: none !important;
+        font-size: 13px !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+        width: 18px !important;
+        text-align: center !important;
+    }
+
+    /* Force Font Awesome font family for icons inside menus (solid/regular/brands) */
+    .dropdown-menu .fa,
+    .dropdown-menu .fas,
+    .dropdown-menu .far,
+    .dropdown-menu .fab,
+    #context-menu .fa,
+    #context-menu .fas,
+    #context-menu .far,
+    #context-menu .fab,
+    #graph-context-menu .fa,
+    #graph-context-menu .fas,
+    #graph-context-menu .far,
+    #graph-context-menu .fab {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", sans-serif !important;
+        font-style: normal !important;
+        font-variant: normal !important;
+        text-rendering: auto !important;
+        -webkit-font-smoothing: antialiased !important;
+        -moz-osx-font-smoothing: grayscale !important;
+    }
+    /* Brands use the Brands family and normal weight */
+    .fab { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
+    /* Solid icons require heavier weight */
+    .fas { font-weight: 900 !important; }
+
+    /* Pseudo-element rules (Font Awesome uses ::before) */
+    .dropdown-menu i::before,
+    .dropdown-menu .fa::before,
+    #context-menu i::before,
+    #context-menu .fa::before,
+    #graph-context-menu i::before,
+    #graph-context-menu .fa::before {
+        color: inherit !important;
+        opacity: 1 !important;
+    }
+
+    /* Ensure SVG icons fill with currentColor */
+    .dropdown-menu svg,
+    #context-menu svg,
+    #graph-context-menu svg,
+    .dropdown-list svg,
+    #token-menu-list svg {
+        fill: currentColor !important;
+        color: inherit !important;
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    /* Ensure internal menu structure (labels, categories, list items) also follow unified style */
+    .dropdown-menu *,
+    #context-menu *,
+    #graph-context-menu *,
+    .dropdown-list *,
+    #token-menu-list *,
+    #status-window * {
+        box-sizing: border-box;
+        color: var(--menu-color) !important;
+        font-family: inherit !important;
+    }
+
+    /* Normalize lists inside menus */
+    .dropdown-menu ul,
+    #context-menu ul,
+    #graph-context-menu ul,
+    .dropdown-list,
+    #token-menu-list,
+    #status-window ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+    }
+
+    /* Generic menu row */
+    .dropdown-menu li,
+    #context-menu li,
+    #graph-context-menu li,
+    .dropdown-list li,
+    #token-menu-list li,
+    #status-window li,
+    .dropdown-menu button,
+    #status-window .button-container button {
+        display: flex !important;
+        align-items: center !important;
+
+    /* Explicitly neutralize separators and non-interactive boundary labels so they
+       never receive hover styling or pointer events (they are visual only). */
+    .menu-separator,
+    .history-boundary {
+        pointer-events: none !important;
+        background: transparent !important;
+        color: inherit !important;
+    }
+        gap: 8px !important;
+        width: 100% !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        padding: 8px 10px !important;
+        background: transparent !important;
+        color: var(--menu-color) !important;
+        border: none !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        transition: background-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    /* Ensure buttons and li inside menus accept pointer events (override app-region effects) */
+    .dropdown-menu li,
+    .dropdown-menu li button,
+    .dropdown-menu button,
+    #undo-dropdown li,
+    #undo-dropdown li button {
+        pointer-events: auto !important;
+    }
+
+    /* History item layout: title on the left, description aligned to the right.
+       Use flex row with space-between so titles and details occupy their sides. */
+    .history-item {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 12px !important;
+        padding: 10px 12px !important;
+        background: transparent !important;
+        color: var(--menu-color) !important;
+        border-radius: 4px !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+    .history-item .history-title {
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        color: rgba(255,255,255,0.95) !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
+        flex: 1 1 auto !important;
+        text-align: left !important;
+    }
+    .history-item .history-detail {
+        font-size: 12px !important;
+        color: rgba(255,255,255,0.35) !important;
+        line-height: 1.15 !important;
+        font-weight: 400 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        flex: 0 0 auto !important;
+        margin-left: 8px !important;
+        text-align: right !important;
+        max-width: 55% !important;
+    }
+    /* Reduce empty spacing between list items while preserving visual separation */
+    #undo-dropdown .menu-category-items { padding: 6px !important; }
+    #history-list li { padding: 0 !important; margin: 2px 0 !important; }
+
+    /* Icon area: fixed small width so text can use rest of the row */
+    .dropdown-menu li i,
+    .dropdown-menu button i,
+    #context-menu li i,
+    #graph-context-menu li i {
+        flex: 0 0 20px !important;
+        width: 20px !important;
+        text-align: center !important;
+    }
+
+    /* Ensure textual content uses remaining space and is left-aligned */
+    .dropdown-menu li span,
+    .dropdown-menu button span,
+    #context-menu li span,
+    #graph-context-menu li span,
+    .dropdown-list li span {
+        display: block !important;
+        flex: 1 1 auto !important;
+        text-align: left !important;
+    }
+
+    /* History list separators and boundary marker */
+    #history-list { padding: 0 !important; }
+    /* Thin separators between rows (but not the visual boundary) */
+    #history-list li:not(.history-boundary) { border-bottom: 1px solid rgba(255,255,255,0.03) !important; }
+    /* Visual boundary showing the current historyIndex */
+    #history-list li.history-boundary {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 8px !important;
+        color: rgba(200,200,200,0.75) !important;
+        font-size: 11px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.6px !important;
+        background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+        pointer-events: none !important;
+    }
+
+    /* Category title / label inside menus (not interactive) */
+    .dropdown-menu .menu-category-title,
+    .dropdown-menu .menu-category,
+    #context-menu li.menu-category,
+    #graph-context-menu li.menu-category,
+    .dropdown-menu .menu-category-title * {
+        font-size: 11px !important;
+        color: rgba(207,207,207,0.85) !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.6px !important;
+        font-weight: 700 !important;
+        cursor: default !important;
+        pointer-events: none !important;
+        background: transparent !important;
+        padding: 6px 8px !important;
+        margin: 0 !important;
+    }
+    /* Put category title above items (stacked) so items can take full width.
+       Some menu styles elsewhere lay out category title and items side-by-side;
+       force a stacked layout for cleaner history dropdowns. */
+    .dropdown-menu .menu-category {
+        display: block !important;
+        width: 100% !important;
+    }
+    .dropdown-menu .menu-category-title {
+        display: block !important;
+        width: 100% !important;
+        margin-bottom: 8px !important;
+        padding: 8px 12px !important;
+    }
+    .dropdown-menu .menu-category-items {
+        display: block !important;
+        padding-left: 0 !important;
+    }
+
+    /* Prevent category rows from being highlighted like items */
+    #context-menu li.menu-category:hover,
+    .dropdown-menu .menu-category:hover,
+    #graph-context-menu li.menu-category:hover {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: rgba(207,207,207,0.85) !important;
+    }
+
+    /* Inputs inside menus (search fields) use the unified look */
+    .dropdown-menu input[type="text"],
+    #context-menu input[type="text"],
+    #graph-context-menu input[type="text"],
+    #status-window input[type="text"] {
+        background: transparent !important;
+        border: 1px solid rgba(255,255,255,0.03) !important;
+        border-radius: 4px !important;
+        color: var(--menu-color) !important;
+        padding: 6px 8px !important;
+        width: 100% !important;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.02) !important;
+    }
+
+    /* Disabled / non-interactive items appearance */
+    .dropdown-menu button[disabled],
+    .dropdown-menu .disabled,
+    #context-menu li.disabled,
+    #graph-context-menu li.disabled,
+    .dropdown-list li.disabled {
+        opacity: 0.6 !important;
+        cursor: not-allowed !important;
+        color: rgba(200,200,200,0.6) !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* Ensure icons/text alignment inside token / example rows */
+    #context-menu li .token,
+    #context-menu li .example,
+    #token-menu-list li .token,
+    #token-menu-list li .example {
+        color: var(--menu-color) !important;
+    }
+
+    /* Small safety: keep menu radiuses consistent where other rules tried to remove them */
+    .dropdown-menu, #context-menu, #graph-context-menu, .dropdown-list, #token-menu-list, #status-window {
+        border-radius: var(--menu-radius) !important;
+    }
+
+    /* Force-hide elements when the `hidden` attribute is used. Using `hidden` plus
+       an !important rule makes hiding robust against other CSS that may try to
+       override inline `display` styles in complex menus. Applies broadly to
+       dropdowns, token menus and language/button lists. */
+    .dropdown-menu [hidden],
+    .dropdown-list [hidden],
+    #context-menu [hidden],
+    #token-menu-list [hidden],
+    #graph-context-menu [hidden] {
+        display: none !important;
+    }
+    /* Also ensure buttons hidden inside language menus and other button-based
+       dropdowns are removed from layout (some menus render items as buttons). */
+    .button-container button[hidden],
+    .dropdown-menu button[hidden] {
+        display: none !important;
     }
 </style>
 </head>
@@ -1813,7 +2283,6 @@
     <div class="header">
         <div class="header-left" style="display:flex;align-items:center;gap:8px;min-width:0;">
             <img src="icon_transparent.png" data-i18n-alt="title" alt="Icon" style="height: 26px; width: auto;">
-            <h1 data-i18n="title">NS2 Editor</h1>
             <div class="toolbar-separator" aria-hidden="true" style="margin-left:6px;margin-right:6px;">|</div>
             <div id="toolbar-story-title" class="toolbar-story-title" style="margin-right:6px;min-width:0;">&nbsp;</div>
         </div>
@@ -1822,6 +2291,14 @@
             <!-- dropdown containers kept in DOM; toolbar buttons will toggle them -->
             <div class="dropdown-menu" id="language-dropdown">
                 <!-- Dynamically populated -->
+            </div>
+            <div class="dropdown-menu" id="undo-dropdown" style="display:none; min-width:260px;">
+                <div class="menu-category">
+                    <div class="menu-category-title">History</div>
+                    <div class="menu-category-items" style="max-height:360px; overflow:auto; padding:4px;">
+                        <ul id="history-list" style="list-style:none; margin:0; padding:0;"></ul>
+                    </div>
+                </div>
             </div>
             <div class="dropdown-menu" id="help-dropdown" style="display:none">
                 <div class="menu-category">
@@ -1936,8 +2413,13 @@
         </div>
     </div>
 
-    <div id="status-window">
-        <div id="status-handle" data-i18n="statusHandle">Status</div>
+    <div id="status-window" class="dropdown-menu" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div id="status-handle" data-i18n="statusHandle">Status</div>
+            <div class="status-actions" style="display:flex;gap:6px;align-items:center;">
+                <button id="status-copy" class="icon-button" title="Copy status"><i class="fas fa-copy"></i></button>
+            </div>
+        </div>
             <div id="play-error" data-i18n="errorLabel">Error</div>
             <div id="status-content" data-i18n="readyLabel">Ready</div>
     </div>
@@ -1972,7 +2454,7 @@
                 if (loaded) {
                     setStatus(languages[currentLanguage]['loadedSavedFromLocal'] || "Loaded saved story from local storage");
                 } else {
-                        setStatus((languages[currentLanguage]['failedLoadSavedStory'] || "Failed to load saved story: {err}").replace('{err}', getLastError(editorEngine)), true);
+                    setStatus((languages[currentLanguage]['failedLoadSavedStory'] || "Failed to load saved story: {err}").replace('{err}', getLastError(editorEngine)));
                 }
             }
             renderEditor();
@@ -1989,17 +2471,16 @@
                         renderEditor();
                         setStatus(languages[currentLanguage]['storyUpdatedFromStorage'] || "Story updated from storage");
                     } else {
-                        setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', getLastError(editorEngine)), true);
+                        setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', getLastError(editorEngine)));
                     }
                 }
             });
 
-            // ----- Hide splash after at least 1 second (with smooth fade) -----
-            const elapsed = performance.now() - splashStart;
-            const minDuration = 1000;
-            const delay = Math.max(minDuration - elapsed, 0);
-
-            setTimeout(() => {
+            // ----- Hide splash as soon as initialization finishes (no artificial wait) -----
+            // If initialization took long, the splash stays visible until now; if it was fast,
+            // we remove it immediately so the app loads as fast as possible while still
+            // showing the loading screen if necessary.
+            (function hideSplashNow(){
                 const splash = document.getElementById('splash-screen');
                 if (splash) {
                     splash.classList.add('hidden');
@@ -2007,7 +2488,7 @@
                         if (splash) splash.remove();
                     }, 700); // match transition duration + a little buffer
                 }
-            }, delay);
+            })();
             // ------------------------------------------------------------------
         })();
         (function(){
@@ -2066,10 +2547,11 @@
             searchInput.type = 'text';
             searchInput.placeholder = languages[currentLanguage] && languages[currentLanguage]['search'] ? languages[currentLanguage]['search'] : 'Search...';
             searchInput.oninput = function() {
-                const query = this.value.toLowerCase();
+                const raw = this.value || '';
+                const query = normalizeForMatching(raw).toLowerCase();
                 Array.from(langMenu.querySelectorAll('.button-container button')).forEach(btn => {
-                    const text = btn.textContent.toLowerCase();
-                    btn.style.display = text.includes(query) ? 'flex' : 'none';
+                    const text = normalizeForMatching(btn.textContent || '').toLowerCase();
+                    try { btn.hidden = !text.includes(query); } catch (e) { btn.style.display = text.includes(query) ? 'flex' : 'none'; }
                 });
             };
 
@@ -2261,6 +2743,8 @@
             return s.replace(/\s+/g, ' ').trim();
         }
 
+        // Debug helper removed in production build.
+
         let Module;
         let editorEngine;
         let playEngine;
@@ -2308,6 +2792,379 @@
 
         let graphPanZoom;
         let graphCurrentScale = 1;
+
+        // Program-wide history (single array + index pointer).
+        // Stores actions as { undo: fn, redo: fn, description?: string }
+        // historyIndex is the position AFTER the last executed action (i.e. next redo index).
+        const programHistory = [];
+        let historyIndex = 0;
+        const programHistoryLimit = 200;
+        let __suppressProgramPush = false;
+        // When true, commitFocusedChange will ignore the next blur/change
+        // This is used to prevent accidental pushes when clicking history items
+        // (mousedown/focus sequence can trigger blur on an input before our
+        // history navigation runs). We clear the flag after handling.
+        let __suppressCommitOnBlur = false;
+
+        function pushProgramAction(action) {
+            // action: { undo: fn, redo: fn, description?: string }
+            if (!action || (typeof action.undo !== 'function') || (typeof action.redo !== 'function')) return;
+            if (__suppressProgramPush) return;
+            // truncate history if we've undone some actions
+            if (historyIndex < programHistory.length) {
+                programHistory.length = historyIndex;
+            }
+            programHistory.push(action);
+            // enforce limit
+            while (programHistory.length > programHistoryLimit) {
+                programHistory.shift();
+                if (historyIndex > 0) historyIndex--;
+            }
+            historyIndex = programHistory.length;
+            updateUndoDropdown();
+            updateToolbarUndoButtons();
+        }
+
+        // Helper: create a short, single-line summary of a value for history details
+        function summarizeForHistory(v, maxLen=60) {
+            try {
+                if (v === null || typeof v === 'undefined') return '';
+                let s = String(v);
+                // collapse whitespace and newlines
+                s = s.replace(/\s+/g, ' ').trim();
+                if (s.length > maxLen) return s.slice(0, maxLen-1) + '…';
+                return s;
+            } catch (e) { return '';} 
+        }
+
+        function undoProgram() {
+            if (historyIndex === 0) return false;
+            historyIndex--;
+            const action = programHistory[historyIndex];
+            try { __suppressProgramPush = true; action.undo(); } catch (e) { console.warn('undo action failed', e); } finally { __suppressProgramPush = false; }
+            // Ensure the UI reflects the new program state
+            try { refreshView(); } catch (e) {}
+            updateUndoDropdown();
+            updateToolbarUndoButtons();
+            return true;
+        }
+
+        function redoProgram() {
+            if (historyIndex >= programHistory.length) return false;
+            const action = programHistory[historyIndex];
+            try { __suppressProgramPush = true; action.redo(); } catch (e) { console.warn('redo action failed', e); } finally { __suppressProgramPush = false; }
+            historyIndex++;
+            // Ensure the UI reflects the new program state
+            try { refreshView(); } catch (e) {}
+            updateUndoDropdown();
+            updateToolbarUndoButtons();
+            return true;
+        }
+
+        // Navigate to an explicit history index without mutating the history array.
+        // targetIndex is the new historyIndex (position AFTER last executed action).
+        // This function performs the required undo() or redo() calls while
+        // suppressing program pushes so the history array is unchanged.
+        function navigateHistoryTo(targetIndex) {
+            try {
+                if (typeof targetIndex !== 'number') return;
+                if (targetIndex < 0) targetIndex = 0;
+                if (targetIndex > programHistory.length) targetIndex = programHistory.length;
+                if (targetIndex === historyIndex) return;
+                __suppressProgramPush = true;
+                if (targetIndex < historyIndex) {
+                    // need to undo actions from historyIndex-1 down to targetIndex
+                    for (let i = historyIndex - 1; i >= targetIndex; i--) {
+                        try { programHistory[i].undo(); } catch (e) { console.warn('navigate undo failed', e); }
+                    }
+                } else {
+                    // need to redo actions from historyIndex up to targetIndex-1
+                    for (let i = historyIndex; i < targetIndex; i++) {
+                        try { programHistory[i].redo(); } catch (e) { console.warn('navigate redo failed', e); }
+                    }
+                }
+            } finally {
+                __suppressProgramPush = false;
+            }
+            historyIndex = targetIndex;
+            try { refreshView(); } catch (e) {}
+            updateUndoDropdown();
+            updateToolbarUndoButtons();
+        }
+
+        function refreshView() {
+            try {
+                // Re-render lists and tokens so UI matches the current editorEngine state
+                updateTokens();
+                populateStateDatalist();
+                populateTokenDatalist();
+                renderVariables();
+                renderStates();
+                // Keep editor form fields in sync
+                try { renderEditor(); } catch (e) {}
+                // If we're currently on the play tab, update play UI immediately
+                try { if (currentTab === 'play') updatePlay(); } catch (e) {}
+                // If graph tab is active, re-render graph
+                try { if (currentTab === 'graph') renderGraph(); } catch (e) {}
+            } catch (e) { console.warn('refreshView failed', e); }
+        }
+
+        // Live-update helpers: update visible list items as the user types without mutating the engine
+        function liveUpdateStateName(originalName, liveValue) {
+            try {
+                const li = document.querySelector(`#states-list li[data-name="${originalName}"]`);
+                if (li) {
+                    const span = li.querySelector('.state-name');
+                    if (span) span.textContent = liveValue;
+                }
+                // also update any datalist option visually (doesn't change engine)
+                const opts = document.querySelectorAll('#state-list option');
+                opts.forEach(opt => { if (opt.value === originalName) opt.value = liveValue; });
+            } catch (e) {}
+        }
+
+        function liveUpdateStateTitle(name, liveTitle) {
+            try {
+                const li = document.querySelector(`#states-list li[data-name="${name}"]`);
+                if (li) {
+                    li.innerHTML = `${escapeHtml(liveTitle)} <span class="state-name">${name}</span>`;
+                }
+            } catch (e) {}
+        }
+
+        // Helpers to create input-change actions
+        function describeElement(el) {
+            try {
+                if (!el) return 'Edit field';
+                if (el.getAttribute) {
+                    const a = el.getAttribute('aria-label') || el.getAttribute('data-i18n') || el.getAttribute('placeholder') || el.id || el.name;
+                    if (a) return `Edit ${a}`;
+                }
+                if (el.tagName) return `Edit ${el.tagName.toLowerCase()}`;
+            } catch (e) {}
+            return 'Edit field';
+        }
+        function makeInputAction(el, prev, next) {
+            return {
+                description: { title: describeElement(el), detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(next)}` },
+                undo: () => {
+                    try {
+                        if (el.type === 'checkbox' || el.type === 'radio') {
+                            el.checked = prev;
+                        } else if (el.isContentEditable) {
+                            el.innerHTML = prev;
+                        } else {
+                            el.value = prev;
+                        }
+                        el.dispatchEvent(new Event('input', { bubbles: true }));
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    } catch (e) {}
+                },
+                redo: () => {
+                    try {
+                        if (el.type === 'checkbox' || el.type === 'radio') {
+                            el.checked = next;
+                        } else if (el.isContentEditable) {
+                            el.innerHTML = next;
+                        } else {
+                            el.value = next;
+                        }
+                        el.dispatchEvent(new Event('input', { bubbles: true }));
+                        el.dispatchEvent(new Event('change', { bubbles: true }));
+                    } catch (e) {}
+                }
+            };
+        }
+
+        // Track focused input's initial value so we can push the change on blur/change
+        let __program_lastFocused = null;
+        document.addEventListener('focusin', (e) => {
+            const t = e.target;
+            if (!t) return;
+            // Ignore Monaco editor and its children
+            if (t.closest && t.closest('.monaco-editor')) return;
+            if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable || t.tagName === 'SELECT') {
+                try {
+                    if (t.type === 'checkbox' || t.type === 'radio') __program_lastFocused = { el: t, val: !!t.checked };
+                    else if (t.isContentEditable) __program_lastFocused = { el: t, val: t.innerHTML };
+                    else __program_lastFocused = { el: t, val: t.value };
+                } catch (e) { __program_lastFocused = null; }
+            } else {
+                __program_lastFocused = null;
+            }
+        }, true);
+
+        function commitFocusedChange() {
+            // If a history navigation is about to occur, suppress committing the
+            // focused change (clicking history causes blur -> commit otherwise)
+            if (__suppressCommitOnBlur) { __suppressCommitOnBlur = false; __program_lastFocused = null; return; }
+            if (!__program_lastFocused) return;
+            const el = __program_lastFocused.el;
+            try {
+                let now;
+                if (el.type === 'checkbox' || el.type === 'radio') now = !!el.checked;
+                else if (el.isContentEditable) now = el.innerHTML;
+                else now = el.value;
+                const prev = __program_lastFocused.val;
+                if (now !== prev) {
+                    pushProgramAction(makeInputAction(el, prev, now));
+                    // Do not trigger a full refresh on blur/change — UI updates should be contextual.
+                    // Refresh of the whole view will be performed only when undo/redo is used.
+                }
+            } catch (e) {}
+            __program_lastFocused = null;
+        }
+
+        // Commit on blur and on change events
+        document.addEventListener('blur', (e) => { commitFocusedChange(); }, true);
+        document.addEventListener('change', (e) => { 
+            // For selects and checkbox changes, commit immediately if not inside Monaco
+            const t = e.target;
+            if (t && t.closest && t.closest('.monaco-editor')) return;
+            commitFocusedChange();
+        }, true);
+
+        // Keyboard shortcuts: Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z
+        document.addEventListener('keydown', (e) => {
+            if (!(e.ctrlKey || e.metaKey)) return;
+            // If focus is inside Monaco editor, don't interfere
+            const active = document.activeElement;
+            if (active && active.closest && active.closest('.monaco-editor')) return;
+            if (e.key === 'z' || e.key === 'Z') {
+                if (e.shiftKey) {
+                    if (redoProgram()) e.preventDefault();
+                } else {
+                    if (undoProgram()) e.preventDefault();
+                }
+            } else if (e.key === 'y' || e.key === 'Y') {
+                if (redoProgram()) e.preventDefault();
+            }
+        }, true);
+
+        // Expose APIs for other code to push actions
+        window.pushProgramAction = pushProgramAction;
+        window.undoProgram = undoProgram;
+        window.redoProgram = redoProgram;
+        // Expose history for debugging and UI
+        window.programHistory = programHistory;
+        window.programHistoryIndex = () => historyIndex;
+
+        function updateUndoDropdown() {
+            try {
+                const hist = document.getElementById('history-list');
+                if (!hist) return;
+                hist.innerHTML = '';
+                // Build combined list from programHistory using historyIndex
+                // We'll iterate explicitly so items are always shown last-to-first
+                const undoPart = programHistory.slice(0, historyIndex);
+                const redoPart = programHistory.slice(historyIndex);
+                // Render undo items (available to undo) with most-recent first
+                for (let idx = undoPart.length - 1; idx >= 0; idx--) {
+                    const item = undoPart[idx];
+                    const li = document.createElement('li');
+                    // support { title, detail } description objects or plain strings
+                    // compute display title/detail
+                    let title = item.description || `Change ${historyIndex - (undoPart.length - 1 - idx)}`;
+                    let detail = '';
+                    if (item && typeof item.description === 'object') { title = item.description.title || ''; detail = item.description.detail || ''; }
+                    li.style.padding = '0';
+                    li.style.cursor = 'pointer';
+                    li.dataset.idx = idx; // original index within history
+                    // create a button inside li so the clickable area is reliable
+                    const btn = document.createElement('button');
+                    btn.className = 'history-item';
+                    btn.type = 'button';
+                    btn.style.display = 'block';
+                    btn.style.width = '100%';
+                    btn.style.border = 'none';
+                    btn.style.background = 'transparent';
+                    btn.style.padding = '6px 8px';
+                    btn.style.textAlign = 'left';
+                    btn.style.cursor = 'pointer';
+                    try {
+                        const titleColor = 'rgba(255,255,255,0.95)';
+                        const detailColor = 'rgba(255,255,255,0.35)';
+                        btn.innerHTML = `<span class=\"history-title\" style=\"color:${titleColor}\">${escapeHtml(title)}</span>${detail ? `<span class=\"history-detail\" style=\"color:${detailColor}\">${escapeHtml(detail)}</span>` : ''}`;
+                    } catch (e) { btn.textContent = title; }
+                    // Prevent blur-driven commit when this button is pressed
+                    btn.addEventListener('pointerdown', () => { __suppressCommitOnBlur = true; setTimeout(() => { __suppressCommitOnBlur = false; }, 400); });
+                    // Jump to this history index (non-destructive navigation)
+                    btn.addEventListener('click', () => {
+                        navigateHistoryTo(idx);
+                        toggleDropdown('undo-dropdown', null);
+                    });
+                    li.appendChild(btn);
+                    hist.appendChild(li);
+                }
+                // Insert a visual boundary that represents the current historyIndex.
+                // If there are redo items, place the boundary before them; otherwise
+                // it will be implied at the end of the undo list.
+                if (redoPart.length > 0) {
+                        const boundary = document.createElement('li');
+                        boundary.className = 'history-boundary';
+                        boundary.textContent = 'Current';
+                        boundary.setAttribute('aria-hidden', 'true');
+                        boundary.style.pointerEvents = 'none';
+                        hist.appendChild(boundary);
+                }
+                // Render redo items (available to redo) with more transparent color
+                // Render most-recent redo first (so list is consistent)
+                for (let rIdx = redoPart.length - 1; rIdx >= 0; rIdx--) {
+                    const item = redoPart[rIdx];
+                    const li = document.createElement('li');
+                    let titleR = item.description || `Redo ${redoPart.length - rIdx}`;
+                    let detailR = '';
+                    if (item && typeof item.description === 'object') { titleR = item.description.title || ''; detailR = item.description.detail || ''; }
+                    li.style.padding = '0';
+                    li.style.cursor = 'pointer';
+                    li.dataset.ridx = rIdx; // index within redoPart
+                    // make redo entries semi-transparent
+                    li.style.opacity = '0.5';
+                    // create button for redo as well
+                    const btn = document.createElement('button');
+                    btn.className = 'history-item redo';
+                    btn.type = 'button';
+                    btn.style.display = 'block';
+                    btn.style.width = '100%';
+                    btn.style.border = 'none';
+                    btn.style.background = 'transparent';
+                    btn.style.padding = '6px 8px';
+                    btn.style.textAlign = 'left';
+                    btn.style.cursor = 'pointer';
+                    try {
+                        const titleColor = 'rgba(255,255,255,0.95)';
+                        const detailColor = 'rgba(255,255,255,0.35)';
+                        btn.innerHTML = `<span class=\\"history-title\\" style=\\"color:${titleColor}\\">${escapeHtml(titleR)}</span>${detailR ? `<span class=\\"history-detail\\" style=\\"color:${detailColor}\\">${escapeHtml(detailR)}</span>` : ''}`;
+                    } catch (e) { btn.textContent = titleR; }
+                    // compute the actual history index to jump to (position after the action)
+                    const targetIndex = historyIndex + rIdx + 1;
+                    btn.addEventListener('pointerdown', () => { __suppressCommitOnBlur = true; setTimeout(() => { __suppressCommitOnBlur = false; }, 400); });
+                    btn.addEventListener('click', () => {
+                        navigateHistoryTo(targetIndex);
+                        toggleDropdown('undo-dropdown', null);
+                    });
+                    li.appendChild(btn);
+                    hist.appendChild(li);
+                }
+            } catch (e) { }
+        }
+
+        function updateToolbarUndoButtons() {
+            try {
+                const toolbar = document.getElementById('global-toolbar');
+                if (!toolbar) return;
+                const undoBtn = toolbar.querySelector('[data-action="undo-btn"]');
+                const redoBtn = toolbar.querySelector('[data-action="redo-btn"]');
+                if (undoBtn) {
+                    if (historyIndex === 0) { undoBtn.setAttribute('disabled', 'disabled'); undoBtn.classList.add('disabled'); }
+                    else { undoBtn.removeAttribute('disabled'); undoBtn.classList.remove('disabled'); }
+                }
+                if (redoBtn) {
+                    if (historyIndex >= programHistory.length) { redoBtn.setAttribute('disabled', 'disabled'); redoBtn.classList.add('disabled'); }
+                    else { redoBtn.removeAttribute('disabled'); redoBtn.classList.remove('disabled'); }
+                }
+            } catch (e) {}
+        }
         let currentTab = 'metadata';
         let selectedState = null;
 
@@ -2320,6 +3177,31 @@
             const content = Module.UTF8ToString(ptr);
             Module._FreeString(ptr);
             localStorage.setItem('ns2_content', content);
+        }
+
+        // Play-engine snapshot helpers (save/restore progress to a string)
+        function savePlaySnapshot(engine) {
+            try {
+                const savePath = '/__snapshot.save';
+                const pathPtr = allocateUTF8(savePath);
+                Module._SaveProgress(engine, pathPtr);
+                Module._free(pathPtr);
+                const saveContent = Module.FS.readFile(savePath, { encoding: 'utf8' });
+                return saveContent;
+            } catch (e) { console.warn('savePlaySnapshot failed', e); return null; }
+        }
+
+        function restorePlaySnapshot(engine, snapshot) {
+            try {
+                if (!snapshot) return false;
+                const savePath = '/__snapshot.save';
+                Module.FS.writeFile(savePath, snapshot);
+                const pathPtr = allocateUTF8(savePath);
+                Module._LoadProgress(engine, pathPtr);
+                Module._free(pathPtr);
+                try { updatePlay(); } catch (e) {}
+                return true;
+            } catch (e) { console.warn('restorePlaySnapshot failed', e); return false; }
         }
 
         function newStory() {
@@ -2405,7 +3287,7 @@
                     renderEditor();
                     setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || "Story loaded successfully");
                 } else {
-                    setStatus((languages[currentLanguage]['failedToLoadStory'] || "Failed to load story: {err}").replace('{err}', getLastError(editorEngine)), true);
+                    setStatus((languages[currentLanguage]['failedToLoadStory'] || "Failed to load story: {err}").replace('{err}', getLastError(editorEngine)));
                 }
             };
             reader.readAsText(file);
@@ -2698,8 +3580,8 @@
                 saveToLocalStorage();
                 renderEditor();
                 setStatus(languages[currentLanguage]['changesApplied'] || "Changes applied successfully");
-            } else {
-                setStatus((languages[currentLanguage]['invalidNS2Format'] || "Invalid NS2 format: {err}").replace('{err}', getLastError(editorEngine)), true);
+                } else {
+                setStatus((languages[currentLanguage]['invalidNS2Format'] || "Invalid NS2 format: {err}").replace('{err}', getLastError(editorEngine)));
             }
         }
 
@@ -2749,9 +3631,9 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><select onchange="updateVariable('${escapeHtml(name)}', 'type', this.value)"><option value="string">string</option><option value="int">int</option><option value="float">float</option><option value="bool">bool</option></select></td>
-                    <td><input value="${escapeHtml(name)}" onchange="updateVariableName('${escapeHtml(name)}', this.value)"></td>
-                    <td><input value="${escapeHtml(initial)}" onchange="updateVariable('${escapeHtml(name)}', 'initial', this.value)"></td>
-                    <td><input value="${escapeHtml(constraint)}" onchange="updateVariable('${escapeHtml(name)}', 'constraint', this.value)"></td>
+                    <td><input value="${escapeHtml(name)}" onchange="updateVariableName('${escapeHtml(name)}', this.value)" onblur="updateVariableName('${escapeHtml(name)}', this.value)"></td>
+                    <td><input value="${escapeHtml(initial)}" onchange="updateVariable('${escapeHtml(name)}', 'initial', this.value)" onblur="updateVariable('${escapeHtml(name)}', 'initial', this.value)"></td>
+                    <td><input value="${escapeHtml(constraint)}" onchange="updateVariable('${escapeHtml(name)}', 'constraint', this.value)" onblur="updateVariable('${escapeHtml(name)}', 'constraint', this.value)"></td>
                     <td><button class="icon-button" onclick="removeVariable('${escapeHtml(name)}')" data-i18n-title="deleteVariable" title="Delete Variable"><i class="fas fa-trash"></i></button></td>
                 `;
                 tr.querySelector('select').value = type || 'string';
@@ -2760,20 +3642,57 @@
             filterVariables();
         }
 
+        function generateUniqueVariableName() {
+            const prefix = 'var';
+            const existing = new Set();
+            try {
+                const count = Module._GetVariableCount(editorEngine);
+                for (let i = 0; i < count; i++) {
+                    const namePtr = Module._GetVariableName(editorEngine, i);
+                    const name = Module.UTF8ToString(namePtr);
+                    Module._FreeString(namePtr);
+                    existing.add(name);
+                }
+            } catch (e) {}
+            let idx = 1;
+            while (existing.has(prefix + idx)) idx++;
+            return prefix + idx;
+        }
+
+        function generateUniqueStateName() {
+            const prefix = 'state';
+            const existing = new Set();
+            try {
+                const count = Module._GetStateCount(editorEngine);
+                for (let i = 0; i < count; i++) {
+                    const namePtr = Module._GetStateName(editorEngine, i);
+                    const name = Module.UTF8ToString(namePtr);
+                    Module._FreeString(namePtr);
+                    existing.add(name);
+                }
+            } catch (e) {}
+            let idx = 1;
+            while (existing.has(prefix + idx)) idx++;
+            return prefix + idx;
+        }
+
         function filterVariables() {
             const searchInput = document.getElementById('var-search');
             if (!searchInput) return;
-            const query = searchInput.value.toLowerCase();
+            const raw = searchInput.value || '';
+            const query = normalizeForMatching(raw).toLowerCase();
             const rows = document.querySelectorAll('#variables-list tr');
             rows.forEach(row => {
-                const nameCell = row.cells[1].querySelector('input').value.toLowerCase();
-                row.style.display = nameCell.includes(query) ? '' : 'none';
+                try {
+                    const nameCell = row.cells[1].querySelector('input').value || '';
+                    const nameNorm = normalizeForMatching(nameCell).toLowerCase();
+                    try { row.hidden = !nameNorm.includes(query); } catch (e) { row.style.display = nameNorm.includes(query) ? '' : 'none'; }
+                } catch (e) { try { row.hidden = false; } catch (ee) { row.style.display = ''; } }
             });
         }
 
         function addVariable() {
-            const name = prompt(languages[currentLanguage]['Variable name:'] || 'Variable name:');
-            if (!name) return;
+            const name = generateUniqueVariableName();
             const namePtr = allocateUTF8(name);
             Module._AddVariable(editorEngine, allocateUTF8('string'), namePtr, allocateUTF8(''), allocateUTF8(''));
             Module._free(namePtr);
@@ -2783,28 +3702,83 @@
             populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorAddingVariable'] || "Error adding variable: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorAddingVariable'] || "Error adding variable: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['variableAdded'] || "Variable added successfully");
+                // push undo/redo action for addVariable
+                try {
+                    const action = {
+                        description: { title: `Add variable ${name}`, detail: `name: ${summarizeForHistory(name)}` },
+                        undo: () => { removeVariable(name); },
+                        redo: () => { const nPtr = allocateUTF8(name); Module._AddVariable(editorEngine, allocateUTF8('string'), nPtr, allocateUTF8(''), allocateUTF8('')); Module._free(nPtr); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); }
+                    };
+                    pushProgramAction(action);
+                    // Contextual update: update the corresponding variable row instead of full re-render
+                    try {
+                        const rows = Array.from(document.querySelectorAll('#variables-list tr'));
+                        for (const tr of rows) {
+                            const nameInp = tr.cells[1] && tr.cells[1].querySelector('input');
+                            if (!nameInp) continue;
+                            if (nameInp.value === name) {
+                                if (field === 'type') {
+                                    const sel = tr.querySelector('select'); if (sel) sel.value = value || 'string';
+                                } else if (field === 'initial') {
+                                    const inp = tr.cells[2] && tr.cells[2].querySelector('input'); if (inp) inp.value = value;
+                                } else if (field === 'constraint') {
+                                    const inp = tr.cells[3] && tr.cells[3].querySelector('input'); if (inp) inp.value = value;
+                                }
+                                break;
+                            }
+                        }
+                        try { updateTokens(); populateTokenDatalist(); } catch (e) {}
+                    } catch (e) {}
+                } catch (e) {}
             }
         }
 
         function updateVariable(name, field, value) {
             const namePtr = allocateUTF8(name);
-            const valuePtr = allocateUTF8(value);
-            if (field === 'type') {
-                Module._SetVariableType(editorEngine, namePtr, valuePtr);
-            } else if (field === 'initial') {
-                Module._SetVariableInitial(editorEngine, namePtr, valuePtr);
-            } else if (field === 'constraint') {
-                Module._SetVariableConstraint(editorEngine, namePtr, valuePtr);
-            }
+            // capture previous value
+            let prev = null;
+            try {
+                if (field === 'type') {
+                    const prevPtr = Module._GetVariableType(editorEngine, namePtr);
+                    prev = Module.UTF8ToString(prevPtr);
+                    Module._FreeString(prevPtr);
+                    const valuePtr = allocateUTF8(value);
+                    Module._SetVariableType(editorEngine, namePtr, valuePtr);
+                    Module._free(valuePtr);
+                } else if (field === 'initial') {
+                    const prevPtr = Module._GetVariableInitial(editorEngine, namePtr);
+                    prev = Module.UTF8ToString(prevPtr);
+                    Module._FreeString(prevPtr);
+                    const valuePtr = allocateUTF8(value);
+                    Module._SetVariableInitial(editorEngine, namePtr, valuePtr);
+                    Module._free(valuePtr);
+                } else if (field === 'constraint') {
+                    const prevPtr = Module._GetVariableConstraint(editorEngine, namePtr);
+                    prev = Module.UTF8ToString(prevPtr);
+                    Module._FreeString(prevPtr);
+                    const valuePtr = allocateUTF8(value);
+                    Module._SetVariableConstraint(editorEngine, namePtr, valuePtr);
+                    Module._free(valuePtr);
+                }
+            } catch (e) { console.warn('updateVariable capture failed', e); }
             Module._free(namePtr);
-            Module._free(valuePtr);
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingVariable'] || "Error updating variable: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorUpdatingVariable'] || "Error updating variable: {err}").replace('{err}', err));
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Update variable ${name}`, detail: `${field}: ${summarizeForHistory(prev)} -> ${summarizeForHistory(value)}` },
+                        undo: () => { try { updateVariable(name, field, prev); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} },
+                        redo: () => { try { updateVariable(name, field, value); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    try { refreshView(); } catch (e) {}
+                } catch (e) {}
             }
         }
 
@@ -2812,31 +3786,58 @@
             if (newName === oldName) return;
             const oldPtr = allocateUTF8(oldName);
             const newPtr = allocateUTF8(newName);
-            const typePtr = Module._GetVariableType(editorEngine, oldPtr);
-            const type = Module.UTF8ToString(typePtr);
-            Module._FreeString(typePtr);
-            const initialPtr = Module._GetVariableInitial(editorEngine, oldPtr);
-            const initial = Module.UTF8ToString(initialPtr);
-            Module._FreeString(initialPtr);
-            const constraintPtr = Module._GetVariableConstraint(editorEngine, oldPtr);
-            const constraint = Module.UTF8ToString(constraintPtr);
-            Module._FreeString(constraintPtr);
+            let type = 'string', initial = '', constraint = '';
+            try {
+                const typePtr = Module._GetVariableType(editorEngine, oldPtr);
+                type = Module.UTF8ToString(typePtr); Module._FreeString(typePtr);
+                const initialPtr = Module._GetVariableInitial(editorEngine, oldPtr);
+                initial = Module.UTF8ToString(initialPtr); Module._FreeString(initialPtr);
+                const constraintPtr = Module._GetVariableConstraint(editorEngine, oldPtr);
+                constraint = Module.UTF8ToString(constraintPtr); Module._FreeString(constraintPtr);
+            } catch (e) {}
             Module._AddVariable(editorEngine, allocateUTF8(type), newPtr, allocateUTF8(initial), allocateUTF8(constraint));
             Module._RemoveVariable(editorEngine, oldPtr);
             Module._free(oldPtr);
             Module._free(newPtr);
-            renderVariables();
+            // Contextual DOM updates: update the variable row name input and relevant datalists
+            try {
+                const rows = Array.from(document.querySelectorAll('#variables-list tr'));
+                for (const tr of rows) {
+                    const nameInp = tr.cells[1] && tr.cells[1].querySelector('input');
+                    if (nameInp && nameInp.value === oldName) {
+                        nameInp.value = newName;
+                        break;
+                    }
+                }
+                try { updateTokens(); populateTokenDatalist(); } catch (e) {}
+            } catch (e) {}
             saveToLocalStorage();
-            updateTokens();
-            populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingVariableName'] || "Error updating variable name: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorUpdatingVariableName'] || "Error updating variable name: {err}").replace('{err}', err));
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Rename variable ${oldName} -> ${newName}`, detail: `${summarizeForHistory(type)} ${summarizeForHistory(initial)}` },
+                        undo: () => { try { const nPtr = allocateUTF8(oldName); Module._AddVariable(editorEngine, allocateUTF8(type), nPtr, allocateUTF8(initial), allocateUTF8(constraint)); const remPtr = allocateUTF8(newName); Module._RemoveVariable(editorEngine, remPtr); Module._free(remPtr); Module._free(nPtr); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} },
+                        redo: () => { try { updateVariableName(oldName, newName); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    try { refreshView(); } catch (e) {}
+                } catch (e) {}
             }
         }
 
         function removeVariable(name) {
             const namePtr = allocateUTF8(name);
+            // capture variable data
+            let type = 'string', initial = '', constraint = '';
+            try {
+                const tPtr = Module._GetVariableType(editorEngine, namePtr); type = Module.UTF8ToString(tPtr); Module._FreeString(tPtr);
+                const iPtr = Module._GetVariableInitial(editorEngine, namePtr); initial = Module.UTF8ToString(iPtr); Module._FreeString(iPtr);
+                const cPtr = Module._GetVariableConstraint(editorEngine, namePtr); constraint = Module.UTF8ToString(cPtr); Module._FreeString(cPtr);
+            } catch (e) {}
+
             Module._RemoveVariable(editorEngine, namePtr);
             Module._free(namePtr);
             renderVariables();
@@ -2845,9 +3846,18 @@
             populateTokenDatalist();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorRemovingVariable'] || "Error removing variable: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorRemovingVariable'] || "Error removing variable: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['variableRemoved'] || "Variable removed successfully");
+                try {
+                    const action = {
+                        description: { title: `Remove variable ${name}`, detail: `${summarizeForHistory(type)} ${summarizeForHistory(initial)}` },
+                        undo: () => { try { const nPtr = allocateUTF8(name); Module._AddVariable(editorEngine, allocateUTF8(type), nPtr, allocateUTF8(initial), allocateUTF8(constraint)); Module._free(nPtr); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} },
+                        redo: () => { try { const rPtr = allocateUTF8(name); Module._RemoveVariable(editorEngine, rPtr); Module._free(rPtr); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    try { refreshView(); } catch (e) {}
+                } catch (e) {}
             }
         }
 
@@ -2886,7 +3896,19 @@
                 const firstNamePtr = Module._GetStateName(editorEngine, 0);
                 const firstName = Module.UTF8ToString(firstNamePtr);
                 Module._FreeString(firstNamePtr);
-                selectState(firstName);
+                // If a state was previously selected and still exists, keep it selected
+                try {
+                    if (selectedState) {
+                        const exists = Array.from(list.querySelectorAll('li')).some(li => li.dataset.name === selectedState);
+                        if (exists) {
+                            selectState(selectedState);
+                        } else {
+                            selectState(firstName);
+                        }
+                    } else {
+                        selectState(firstName);
+                    }
+                } catch (e) { selectState(firstName); }
             }
             populateStateDatalist();
             updateTokens();
@@ -2950,9 +3972,9 @@ function selectState(name) {
             }
         </style>
         <div class="grid-form">
-            <label data-i18n="name:">Name:</label> <input value="${escapeHtml(name)}" onchange="updateStateName('${escapeHtml(name)}', this.value)">
-            <label data-i18n="titleLabel:">Title:</label> <input value="${escapeHtml(title)}" onchange="updateState('${escapeHtml(name)}', 'title', this.value); saveToLocalStorage()">
-            <label data-i18n="desc:">Desc:</label> <textarea onchange="updateState('${escapeHtml(name)}', 'description', this.value); saveToLocalStorage()">${escapeHtml(desc)}</textarea>
+                <label data-i18n="name:">Name:</label> <input value="${escapeHtml(name)}" data-live="true" oninput="liveUpdateStateName('${escapeHtml(name)}', this.value)" onchange="updateStateName('${escapeHtml(name)}', this.value)" onblur="updateStateName('${escapeHtml(name)}', this.value)">
+                <label data-i18n="titleLabel:">Title:</label> <input value="${escapeHtml(title)}" data-live="true" oninput="liveUpdateStateTitle('${escapeHtml(name)}', this.value)" onchange="updateState('${escapeHtml(name)}', 'title', this.value); saveToLocalStorage()">
+            <label data-i18n="desc:">Desc:</label> <textarea data-live="true" onchange="updateState('${escapeHtml(name)}', 'description', this.value); saveToLocalStorage()">${escapeHtml(desc)}</textarea>
             <label data-i18n="script:">Script:</label> <textarea id="state-script-textarea" list="token-list" onchange="updateState('${escapeHtml(name)}', 'script', this.value); saveToLocalStorage()">${escapeHtml(script)}</textarea>
             <label data-i18n="requires:">Requires:</label> <input list="token-list" value="${escapeHtml(requires.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'requires', this.value); saveToLocalStorage()">
             <label data-i18n="actions:">Actions:</label> <input list="token-list" value="${escapeHtml(actions.join('; '))}" onchange="updateStateList('${escapeHtml(name)}', 'actions', this.value); saveToLocalStorage()">
@@ -3045,10 +4067,17 @@ function selectState(name) {
         scriptTextarea.style.boxSizing = 'border-box';
     }
     
-    // Focus the first input element (Name field) for consistency
+    // Focus the first input element (Name field) only if the panel doesn't already contain focus
     const firstInput = panel.querySelector('input');
     if (firstInput) {
-        firstInput.focus();
+        try {
+            const active = document.activeElement;
+            if (!panel.contains(active) || active === document.body) {
+                firstInput.focus();
+            }
+        } catch (e) {
+            try { firstInput.focus(); } catch (ee) {}
+        }
     }
 
     // Sync selection with graph: highlight the node for the selected state
@@ -3056,11 +4085,15 @@ function selectState(name) {
 }
 
         function filterChoices(stateName) {
-            const query = document.getElementById(`choice-search`).value.toLowerCase();
+            const raw = (document.getElementById(`choice-search`) && document.getElementById(`choice-search`).value) || '';
+            const query = normalizeForMatching(raw).toLowerCase();
             const rows = document.querySelectorAll(`#choices-${stateName} tr`);
             rows.forEach(row => {
-                const text = row.cells[0].querySelector('input').value.toLowerCase();
-                row.style.display = text.includes(query) ? '' : 'none';
+                try {
+                    const text = (row.cells[0].querySelector('input').value || '');
+                    const textNorm = normalizeForMatching(text).toLowerCase();
+                    try { row.hidden = !textNorm.includes(query); } catch (e) { row.style.display = textNorm.includes(query) ? '' : 'none'; }
+                } catch (e) { try { row.hidden = false; } catch (ee) { row.style.display = ''; } }
             });
         }
 
@@ -3072,7 +4105,7 @@ function selectState(name) {
             document.getElementById('start-state').value = name;
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorSettingStartState'] || "Error setting start state: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorSettingStartState'] || "Error setting start state: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['startStateSet'] || "Start state set successfully");
             }
@@ -3096,17 +4129,29 @@ function selectState(name) {
                 setStatus(languages[currentLanguage]['startPlaySessionFirst'] || "Start the play session first", true);
                 return;
             }
-            const namePtr = allocateUTF8(name);
-            Module._SetCurrentState(playEngine, namePtr);
-            updatePlay();
-            openTab('play');
-            Module._free(namePtr);
-            const err = getLastError(playEngine);
-            if (err) {
-                setStatus((languages[currentLanguage]['errorForceJump'] || "Error force jumping to state: {err}").replace('{err}', err), true);
-            } else {
-                setStatus(languages[currentLanguage]['forceJumpSuccess'] || "Force jumped to state successfully");
-            }
+            try {
+                const before = savePlaySnapshot(playEngine);
+                const namePtr = allocateUTF8(name);
+                Module._SetCurrentState(playEngine, namePtr);
+                Module._free(namePtr);
+                updatePlay();
+                openTab('play');
+                const after = savePlaySnapshot(playEngine);
+                const err = getLastError(playEngine);
+                if (err) {
+                    setStatus((languages[currentLanguage]['errorForceJump'] || "Error force jumping to state: {err}").replace('{err}', err));
+                } else {
+                    setStatus(languages[currentLanguage]['forceJumpSuccess'] || "Force jumped to state successfully");
+                    try {
+                        const action = {
+                                description: { title: `Force jump to ${name}`, detail: `to: ${summarizeForHistory(name)}` },
+                                undo: () => { try { restorePlaySnapshot(playEngine, before); } catch (e) {} },
+                                redo: () => { try { restorePlaySnapshot(playEngine, after); } catch (e) {} }
+                            };
+                        pushProgramAction(action);
+                    } catch (e) {}
+                }
+            } catch (e) { console.warn('forceJumpToState failed', e); }
         }
 
         function renderChoices(name) {
@@ -3130,10 +4175,10 @@ function selectState(name) {
                 const hide = Module._GetStateChoiceHide(editorEngine, namePtr, i);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><input list="token-list" value="${escapeHtml(text)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)"></td>
-                    <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
-                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button scope-button" onclick="scopeToState(this.previousSibling.value)" data-i18n-title="Jump to State" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
-                    <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
+                    <td><input list="token-list" value="${escapeHtml(text)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)" onblur="updateChoice('${escapeHtml(name)}', ${i}, 'text', this.value)"></td>
+                    <td><input list="token-list" value="${escapeHtml(cond)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)" onblur="updateChoice('${escapeHtml(name)}', ${i}, 'cond', this.value)"></td>
+                    <td><div class="target-group"><input list="state-list" value="${escapeHtml(target)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)" onblur="updateChoice('${escapeHtml(name)}', ${i}, 'target', this.value)"><button class="icon-button scope-button" onclick="scopeToState(this.previousSibling.value)" data-i18n-title="Jump to State" title="Go to State"><i class="fas fa-arrow-right"></i></button></div></td>
+                    <td><input list="token-list" value="${escapeHtml(effect)}" onchange="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)" onblur="updateChoice('${escapeHtml(name)}', ${i}, 'effect', this.value)"></td>
                     <td class="hide-cell"><input type="checkbox" ${hide ? 'checked' : ''} onchange="updateChoice('${escapeHtml(name)}', ${i}, 'hide', this.checked)"></td>
                     <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" data-i18n-title="deleteChoice" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
@@ -3167,9 +4212,13 @@ function selectState(name) {
         function filterStates() {
             const searchInput = document.getElementById('state-search');
             if (!searchInput) return;
-            const query = searchInput.value.toLowerCase();
+            const raw = searchInput.value || '';
+            const query = normalizeForMatching(raw).toLowerCase();
             document.querySelectorAll('#states-list li').forEach(li => {
-                li.style.display = li.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+                try {
+                    const txt = normalizeForMatching(li.textContent || '').toLowerCase();
+                    try { li.hidden = !txt.includes(query); } catch (e) { li.style.display = txt.includes(query) ? 'block' : 'none'; }
+                } catch (e) { try { li.hidden = false; } catch (ee) { li.style.display = 'block'; } }
             });
         }
 
@@ -3184,19 +4233,28 @@ function selectState(name) {
         }
 
         function addState() {
-            const name = prompt(languages[currentLanguage]['New state name:'] || 'New state name:');
-            if (name) {
+            const name = generateUniqueStateName();
+            try {
                 Module._AddState(editorEngine, allocateUTF8(name));
                 renderStates();
                 selectState(name);
                 saveToLocalStorage();
                 const err = getLastError(editorEngine);
                 if (err) {
-                    setStatus((languages[currentLanguage]['errorAddingState'] || "Error adding state: {err}").replace('{err}', err), true);
+                    setStatus((languages[currentLanguage]['errorAddingState'] || "Error adding state: {err}").replace('{err}', err));
                 } else {
                     setStatus(languages[currentLanguage]['stateAdded'] || "State added successfully");
+                    // push undo/redo action for addState
+                    try {
+                        const action = {
+                            description: { title: `Add state ${name}`, detail: `name: ${summarizeForHistory(name)}` },
+                            undo: () => { removeState(name); },
+                            redo: () => { const p = allocateUTF8(name); Module._AddState(editorEngine, p); Module._free(p); renderStates(); selectState(name); saveToLocalStorage(); }
+                            };
+                        pushProgramAction(action);
+                    } catch (e) {}
                 }
-            }
+            } catch (e) { console.warn('addState failed', e); }
         }
 
         function playState(name) {
@@ -3270,36 +4328,129 @@ function selectState(name) {
             Module._RemoveState(editorEngine, oldPtr);
             Module._free(oldPtr);
             Module._free(newPtr);
-            renderStates();
-            selectState(newName);
+            // Update DOM contextually: update list item, datalist options, choice targets and selection
+            try {
+                // Update selectedState reference
+                if (selectedState === oldName) selectedState = newName;
+
+                // Update the states list item text and data-name
+                const li = document.querySelector(`#states-list li[data-name="${oldName}"]`);
+                if (li) {
+                    li.dataset.name = newName;
+                    const span = li.querySelector('.state-name');
+                    if (span) span.textContent = newName;
+                }
+
+                // Update datalist options for state-list
+                const stateOptions = Array.from(document.querySelectorAll('#state-list option'));
+                stateOptions.forEach(opt => { if (opt.value === oldName) opt.value = newName; });
+
+                // Update any choice target inputs that reference the old name
+                Array.from(document.querySelectorAll('input[list="state-list"]')).forEach(inp => {
+                    if (inp.value === oldName) inp.value = newName;
+                });
+
+                // If the state-details panel is open for this state, update its name input
+                const panel = document.getElementById('state-details');
+                if (panel) {
+                    const nameInput = panel.querySelector('input');
+                    if (nameInput && nameInput.value === oldName) nameInput.value = newName;
+                }
+
+                // Update graph highlight if present
+                try { highlightGraphNode(newName); } catch (e) {}
+            } catch (e) {}
             saveToLocalStorage();
             const err = getLastError(editorEngine);
-            if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingStateName'] || "Error updating state name: {err}").replace('{err}', err), true);
+                if (err) {
+                setStatus((languages[currentLanguage]['errorUpdatingStateName'] || "Error updating state name: {err}").replace('{err}', err));
+                }
+            else {
+                try {
+                    const action = {
+                        description: { title: `Rename state ${oldName} -> ${newName}`, detail: `${summarizeForHistory(newName)}` },
+                        undo: () => { try { updateStateName(newName, oldName); renderStates(); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { updateStateName(oldName, newName); renderStates(); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    // refreshView may be expensive; do a targeted refresh of dependent UIs
+                    try { updateTokens(); populateStateDatalist(); populateTokenDatalist(); } catch (e) {}
+                } catch (e) {}
             }
         }
 
         function updateState(name, field, value) {
             const namePtr = allocateUTF8(name);
-            const valuePtr = allocateUTF8(value);
-            if (field === 'title') {
-                Module._SetStateTitle(editorEngine, namePtr, valuePtr);
-            } else if (field === 'description') {
-                Module._SetStateDescription(editorEngine, namePtr, valuePtr);
-            } else if (field === 'script') {
-                Module._SetStateScript(editorEngine, namePtr, valuePtr);
-            }
+            let prev = '';
+            try {
+                if (field === 'title') {
+                    const p = Module._GetStateTitle(editorEngine, namePtr); prev = Module.UTF8ToString(p); Module._FreeString(p);
+                    const valuePtr = allocateUTF8(value); Module._SetStateTitle(editorEngine, namePtr, valuePtr); Module._free(valuePtr);
+                } else if (field === 'description') {
+                    const p = Module._GetStateDescription(editorEngine, namePtr); prev = Module.UTF8ToString(p); Module._FreeString(p);
+                    const valuePtr = allocateUTF8(value); Module._SetStateDescription(editorEngine, namePtr, valuePtr); Module._free(valuePtr);
+                } else if (field === 'script') {
+                    const p = Module._GetStateScript(editorEngine, namePtr); prev = Module.UTF8ToString(p); Module._FreeString(p);
+                    const valuePtr = allocateUTF8(value); Module._SetStateScript(editorEngine, namePtr, valuePtr); Module._free(valuePtr);
+                }
+            } catch (e) { console.warn('updateState capture failed', e); }
             Module._free(namePtr);
-            Module._free(valuePtr);
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingState'] || "Error updating state: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorUpdatingState'] || "Error updating state: {err}").replace('{err}', err));
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Update state ${name}`, detail: `${field}: ${summarizeForHistory(prev)} -> ${summarizeForHistory(value)}` },
+                        undo: () => { try { updateState(name, field, prev); renderStates(); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { updateState(name, field, value); renderStates(); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    // Contextual UI update: if title changed, update the corresponding list item title
+                    try {
+                        if (field === 'title') {
+                            const li = document.querySelector(`#states-list li[data-name="${name}"]`);
+                            if (li) {
+                                // set innerHTML to title + span
+                                li.innerHTML = `${escapeHtml(value)} <span class="state-name">${name}</span>`;
+                            }
+                        } else {
+                            // For description/script updates, ensure the editor panel remains in sync
+                            const panel = document.getElementById('state-details');
+                            if (panel) {
+                                // update the corresponding input/textarea if present
+                                if (field === 'description') {
+                                    const ta = panel.querySelector('textarea:not(#state-script-textarea)'); if (ta) ta.value = value;
+                                } else if (field === 'script') {
+                                    const st = panel.querySelector('#state-script-textarea'); if (st) st.value = value;
+                                }
+                            }
+                        }
+                    } catch (e) {}
+                } catch (e) {}
             }
         }
 
         function updateStateList(name, field, value) {
             const namePtr = allocateUTF8(name);
+            // capture previous list
+            let prevList = '';
+            try {
+                const parts = [];
+                let count = 0;
+                if (field === 'requires') {
+                    count = Module._GetStateRequiresCount(editorEngine, namePtr);
+                    for (let i = 0; i < count; i++) { const p = Module._GetStateRequire(editorEngine, namePtr, i); parts.push(Module.UTF8ToString(p)); Module._FreeString(p); }
+                } else if (field === 'actions') {
+                    count = Module._GetStateActionsCount(editorEngine, namePtr);
+                    for (let i = 0; i < count; i++) { const p = Module._GetStateAction(editorEngine, namePtr, i); parts.push(Module.UTF8ToString(p)); Module._FreeString(p); }
+                } else if (field === 'properties') {
+                    count = Module._GetStatePropertiesCount(editorEngine, namePtr);
+                    for (let i = 0; i < count; i++) { const p = Module._GetStateProperty(editorEngine, namePtr, i); parts.push(Module.UTF8ToString(p)); Module._FreeString(p); }
+                }
+                prevList = parts.join(';');
+            } catch (e) { console.warn('capture state list failed', e); }
             // Clear existing
             let count;
             if (field === 'requires') {
@@ -3335,72 +4486,213 @@ function selectState(name) {
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingStateList'] || "Error updating state list: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorUpdatingStateList'] || "Error updating state list: {err}").replace('{err}', err));
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Update state list ${name} ${field}`, detail: `${summarizeForHistory(prevList)} -> ${summarizeForHistory(value)}` },
+                        undo: () => { try { updateStateList(name, field, prevList); renderStates(); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { updateStateList(name, field, value); renderStates(); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
         }
 
+
         function addChoice(name) {
-            Module._AddStateChoice(editorEngine, allocateUTF8(name));
+            const namePtr = allocateUTF8(name);
+            Module._AddStateChoice(editorEngine, namePtr);
+            // capture new choice data (likely empty defaults)
+            const idx = Module._GetStateChoicesCount(editorEngine, namePtr) - 1;
+            const textPtr = Module._GetStateChoiceText(editorEngine, namePtr, idx);
+            const condPtr = Module._GetStateChoiceCondition(editorEngine, namePtr, idx);
+            const targetPtr = Module._GetStateChoiceTarget(editorEngine, namePtr, idx);
+            const effectPtr = Module._GetStateChoiceEffect(editorEngine, namePtr, idx);
+            const hide = Module._GetStateChoiceHide(editorEngine, namePtr, idx);
+            const text = Module.UTF8ToString(textPtr);
+            const cond = Module.UTF8ToString(condPtr);
+            const target = Module.UTF8ToString(targetPtr);
+            const effect = Module.UTF8ToString(effectPtr);
+            Module._FreeString(textPtr);
+            Module._FreeString(condPtr);
+            Module._FreeString(targetPtr);
+            Module._FreeString(effectPtr);
+
             renderChoices(name);
             filterChoices(name);
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorAddingChoice'] || "Error adding choice: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorAddingChoice'] || "Error adding choice: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['choiceAdded'] || "Choice added successfully");
+                try {
+                    const action = {
+                        description: { title: `Add choice ${name}`, detail: `text: ${summarizeForHistory(text)}` },
+                        undo: () => { try { const p = allocateUTF8(name); const cIdx = Module._GetStateChoicesCount(editorEngine, p) - 1; if (cIdx >= 0) Module._RemoveStateChoice(editorEngine, p, cIdx); Module._free(p); renderChoices(name); filterChoices(name); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { const p = allocateUTF8(name); Module._AddStateChoice(editorEngine, p); const newIdx = Module._GetStateChoicesCount(editorEngine, p) - 1; Module._SetStateChoiceText(editorEngine, p, newIdx, allocateUTF8(text)); Module._SetStateChoiceCondition(editorEngine, p, newIdx, allocateUTF8(cond)); Module._SetStateChoiceTarget(editorEngine, p, newIdx, allocateUTF8(target)); Module._SetStateChoiceEffect(editorEngine, p, newIdx, allocateUTF8(effect)); Module._SetStateChoiceHide(editorEngine, p, newIdx, hide); Module._free(p); renderChoices(name); filterChoices(name); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
+            Module._free(namePtr);
         }
 
         function updateChoice(name, i, field, value) {
             const namePtr = allocateUTF8(name);
+            // capture previous value
+            let prev = null;
             if (field === 'hide') {
+                prev = Module._GetStateChoiceHide(editorEngine, namePtr, i);
                 Module._SetStateChoiceHide(editorEngine, namePtr, i, value);
-            } else {
+            } else if (field === 'text') {
+                const prevPtr = Module._GetStateChoiceText(editorEngine, namePtr, i);
+                prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
                 const valuePtr = allocateUTF8(value);
-                if (field === 'text') {
-                    Module._SetStateChoiceText(editorEngine, namePtr, i, valuePtr);
-                } else if (field === 'cond') {
-                    Module._SetStateChoiceCondition(editorEngine, namePtr, i, valuePtr);
-                } else if (field === 'target') {
-                    Module._SetStateChoiceTarget(editorEngine, namePtr, i, valuePtr);
-                } else if (field === 'effect') {
-                    Module._SetStateChoiceEffect(editorEngine, namePtr, i, valuePtr);
-                }
+                Module._SetStateChoiceText(editorEngine, namePtr, i, valuePtr);
+                Module._free(valuePtr);
+            } else if (field === 'cond') {
+                const prevPtr = Module._GetStateChoiceCondition(editorEngine, namePtr, i);
+                prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+                const valuePtr = allocateUTF8(value);
+                Module._SetStateChoiceCondition(editorEngine, namePtr, i, valuePtr);
+                Module._free(valuePtr);
+            } else if (field === 'target') {
+                const prevPtr = Module._GetStateChoiceTarget(editorEngine, namePtr, i);
+                prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+                const valuePtr = allocateUTF8(value);
+                Module._SetStateChoiceTarget(editorEngine, namePtr, i, valuePtr);
+                Module._free(valuePtr);
+            } else if (field === 'effect') {
+                const prevPtr = Module._GetStateChoiceEffect(editorEngine, namePtr, i);
+                prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+                const valuePtr = allocateUTF8(value);
+                Module._SetStateChoiceEffect(editorEngine, namePtr, i, valuePtr);
                 Module._free(valuePtr);
             }
             Module._free(namePtr);
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorUpdatingChoice'] || "Error updating choice: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorUpdatingChoice'] || "Error updating choice: {err}").replace('{err}', err));
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Update choice ${name}`, detail: `${field}: ${summarizeForHistory(prev)} -> ${summarizeForHistory(value)}` },
+                        undo: () => { try { updateChoice(name, i, field, prev); renderChoices(name); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { updateChoice(name, i, field, value); renderChoices(name); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
         }
 
         function removeChoice(name, i) {
-            Module._RemoveStateChoice(editorEngine, allocateUTF8(name), i);
+            const namePtr = allocateUTF8(name);
+            // capture current choice
+            const textPtr = Module._GetStateChoiceText(editorEngine, namePtr, i);
+            const condPtr = Module._GetStateChoiceCondition(editorEngine, namePtr, i);
+            const targetPtr = Module._GetStateChoiceTarget(editorEngine, namePtr, i);
+            const effectPtr = Module._GetStateChoiceEffect(editorEngine, namePtr, i);
+            const hide = Module._GetStateChoiceHide(editorEngine, namePtr, i);
+            const text = Module.UTF8ToString(textPtr);
+            const cond = Module.UTF8ToString(condPtr);
+            const target = Module.UTF8ToString(targetPtr);
+            const effect = Module.UTF8ToString(effectPtr);
+            Module._FreeString(textPtr);
+            Module._FreeString(condPtr);
+            Module._FreeString(targetPtr);
+            Module._FreeString(effectPtr);
+
+            Module._RemoveStateChoice(editorEngine, namePtr, i);
             renderChoices(name);
             filterChoices(name);
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorRemovingChoice'] || "Error removing choice: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorRemovingChoice'] || "Error removing choice: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['choiceRemoved'] || "Choice removed successfully");
+                try {
+                    const action = {
+                        description: { title: `Remove choice ${name}`, detail: `text: ${summarizeForHistory(text)}` },
+                        undo: () => { try { const p = allocateUTF8(name); Module._AddStateChoice(editorEngine, p); const newIdx = Module._GetStateChoicesCount(editorEngine, p) - 1; Module._SetStateChoiceText(editorEngine, p, newIdx, allocateUTF8(text)); Module._SetStateChoiceCondition(editorEngine, p, newIdx, allocateUTF8(cond)); Module._SetStateChoiceTarget(editorEngine, p, newIdx, allocateUTF8(target)); Module._SetStateChoiceEffect(editorEngine, p, newIdx, allocateUTF8(effect)); Module._SetStateChoiceHide(editorEngine, p, newIdx, hide); Module._free(p); renderChoices(name); filterChoices(name); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { const p = allocateUTF8(name); // find a matching choice index
+                                    let found = -1; const count = Module._GetStateChoicesCount(editorEngine, p); for (let k = 0; k < count; k++) { const tPtr = Module._GetStateChoiceText(editorEngine, p, k); const t = Module.UTF8ToString(tPtr); Module._FreeString(tPtr); if (t === text) { found = k; break; } } if (found >= 0) Module._RemoveStateChoice(editorEngine, p, found); Module._free(p); renderChoices(name); filterChoices(name); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
+            Module._free(namePtr);
         }
 
         function removeState(name) {
-            Module._RemoveState(editorEngine, allocateUTF8(name));
+            const namePtr = allocateUTF8(name);
+            // capture whole state
+            const state = { title: '', description: '', script: '', requires: [], actions: [], properties: [], choices: [] };
+            try {
+                const tPtr = Module._GetStateTitle(editorEngine, namePtr); state.title = Module.UTF8ToString(tPtr); Module._FreeString(tPtr);
+                const dPtr = Module._GetStateDescription(editorEngine, namePtr); state.description = Module.UTF8ToString(dPtr); Module._FreeString(dPtr);
+                const sPtr = Module._GetStateScript(editorEngine, namePtr); state.script = Module.UTF8ToString(sPtr); Module._FreeString(sPtr);
+                const reqCount = Module._GetStateRequiresCount(editorEngine, namePtr);
+                for (let i = 0; i < reqCount; i++) { const rPtr = Module._GetStateRequire(editorEngine, namePtr, i); state.requires.push(Module.UTF8ToString(rPtr)); Module._FreeString(rPtr); }
+                const actCount = Module._GetStateActionsCount(editorEngine, namePtr);
+                for (let i = 0; i < actCount; i++) { const aPtr = Module._GetStateAction(editorEngine, namePtr, i); state.actions.push(Module.UTF8ToString(aPtr)); Module._FreeString(aPtr); }
+                const propCount = Module._GetStatePropertiesCount(editorEngine, namePtr);
+                for (let i = 0; i < propCount; i++) { const pPtr = Module._GetStateProperty(editorEngine, namePtr, i); state.properties.push(Module.UTF8ToString(pPtr)); Module._FreeString(pPtr); }
+                const choiceCount = Module._GetStateChoicesCount(editorEngine, namePtr);
+                for (let i = 0; i < choiceCount; i++) {
+                    const textPtr = Module._GetStateChoiceText(editorEngine, namePtr, i);
+                    const condPtr = Module._GetStateChoiceCondition(editorEngine, namePtr, i);
+                    const targetPtr = Module._GetStateChoiceTarget(editorEngine, namePtr, i);
+                    const effectPtr = Module._GetStateChoiceEffect(editorEngine, namePtr, i);
+                    const hide = Module._GetStateChoiceHide(editorEngine, namePtr, i);
+                    state.choices.push({ text: Module.UTF8ToString(textPtr), cond: Module.UTF8ToString(condPtr), target: Module.UTF8ToString(targetPtr), effect: Module.UTF8ToString(effectPtr), hide });
+                    Module._FreeString(textPtr); Module._FreeString(condPtr); Module._FreeString(targetPtr); Module._FreeString(effectPtr);
+                }
+            } catch (e) { console.warn('capture state failed', e); }
+
+            Module._RemoveState(editorEngine, namePtr);
             renderStates();
             document.getElementById('state-details').innerHTML = '';
             saveToLocalStorage();
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorRemovingState'] || "Error removing state: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorRemovingState'] || "Error removing state: {err}").replace('{err}', err));
             } else {
                 setStatus(languages[currentLanguage]['stateRemoved'] || "State removed successfully");
+                try {
+                    const action = {
+                        description: { title: `Remove state ${name}`, detail: `${summarizeForHistory(state.title)}` },
+                        undo: () => {
+                            try {
+                                const nPtr = allocateUTF8(name);
+                                Module._AddState(editorEngine, nPtr);
+                                const tp = allocateUTF8(state.title); Module._SetStateTitle(editorEngine, nPtr, tp); Module._free(tp);
+                                const dp = allocateUTF8(state.description); Module._SetStateDescription(editorEngine, nPtr, dp); Module._free(dp);
+                                const sp = allocateUTF8(state.script); Module._SetStateScript(editorEngine, nPtr, sp); Module._free(sp);
+                                state.requires.forEach(it => { Module._AddStateRequire(editorEngine, nPtr, allocateUTF8(it)); });
+                                state.actions.forEach(it => { Module._AddStateAction(editorEngine, nPtr, allocateUTF8(it)); });
+                                state.properties.forEach(it => { Module._AddStateProperty(editorEngine, nPtr, allocateUTF8(it)); });
+                                state.choices.forEach(ch => { Module._AddStateChoice(editorEngine, nPtr); const idx = Module._GetStateChoicesCount(editorEngine, nPtr) - 1; Module._SetStateChoiceText(editorEngine, nPtr, idx, allocateUTF8(ch.text)); Module._SetStateChoiceCondition(editorEngine, nPtr, idx, allocateUTF8(ch.cond)); Module._SetStateChoiceTarget(editorEngine, nPtr, idx, allocateUTF8(ch.target)); Module._SetStateChoiceEffect(editorEngine, nPtr, idx, allocateUTF8(ch.effect)); Module._SetStateChoiceHide(editorEngine, nPtr, idx, ch.hide); });
+                                Module._free(nPtr);
+                                renderStates();
+                                saveToLocalStorage();
+                            } catch (e) { console.warn('undo remove state failed', e); }
+                        },
+                        redo: () => {
+                            try { const p = allocateUTF8(name); Module._RemoveState(editorEngine, p); Module._free(p); renderStates(); saveToLocalStorage(); } catch (e) { console.warn('redo remove state failed', e); }
+                        }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
+            Module._free(namePtr);
         }
 
         function saveFile() {
@@ -3417,7 +4709,7 @@ function selectState(name) {
             setStatus(languages[currentLanguage]['storySaved'] || "Story saved");
             const err = getLastError(editorEngine);
             if (err) {
-                setStatus((languages[currentLanguage]['errorSavingStory'] || "Error saving story: {err}").replace('{err}', err), true);
+                setStatus((languages[currentLanguage]['errorSavingStory'] || "Error saving story: {err}").replace('{err}', err));
             }
         }
 
@@ -3556,7 +4848,7 @@ function selectState(name) {
             document.getElementById('play-error').innerHTML = error.replace(/\n/g, '<br>');
             Module._FreeString(errorPtr);
             if (error) {
-                setStatus("Play error: " + error, true);
+                setStatus(error);
             }
 
             // Update variables
@@ -3576,7 +4868,7 @@ function selectState(name) {
                 Module._FreeString(valuePtr);
                 Module._free(namePtrVal);
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${escapeHtml(name)}</td><td><input value="${escapeHtml(value)}" onchange="setVariableValue('${escapeHtml(name)}', this.value)"></td>`;
+                tr.innerHTML = `<td>${escapeHtml(name)}</td><td><input value="${escapeHtml(value)}" onchange="setVariableValue('${escapeHtml(name)}', this.value)" onblur="setVariableValue('${escapeHtml(name)}', this.value)"></td>`;
                 tbody.appendChild(tr);
             }
             variablesDiv.appendChild(table);
@@ -3641,21 +4933,28 @@ function selectState(name) {
         function filterPlayChoices() {
             const searchInput = document.getElementById('choice-search-play');
             if (!searchInput) return;
-            const query = searchInput.value.toLowerCase();
+            const raw = searchInput.value || '';
+            const query = normalizeForMatching(raw).toLowerCase();
             const buttons = document.querySelectorAll('#play-choices button');
             buttons.forEach(btn => {
-                btn.style.display = btn.textContent.toLowerCase().includes(query) ? 'block' : 'none';
+                try {
+                    const txt = normalizeForMatching(btn.textContent || '').toLowerCase();
+                    try { btn.hidden = !txt.includes(query); } catch (e) { btn.style.display = txt.includes(query) ? 'block' : 'none'; }
+                } catch (e) { try { btn.hidden = false; } catch (ee) { btn.style.display = 'block'; } }
             });
         }
 
         function filterPlayVars() {
             const searchInput = document.getElementById('play-var-search');
             if (!searchInput) return;
-            const query = searchInput.value.toLowerCase();
+            const raw = searchInput.value || '';
+            const query = normalizeForMatching(raw).toLowerCase();
             const rows = document.querySelectorAll('#play-variables tbody tr');
             rows.forEach(row => {
-                const name = row.cells[0].textContent.toLowerCase();
-                row.style.display = name.includes(query) ? '' : 'none';
+                try {
+                    const name = normalizeForMatching(row.cells[0].textContent || '').toLowerCase();
+                    try { row.hidden = !name.includes(query); } catch (e) { row.style.display = name.includes(query) ? '' : 'none'; }
+                } catch (e) { try { row.hidden = false; } catch (ee) { row.style.display = ''; } }
             });
         }
 
@@ -3731,10 +5030,23 @@ function selectState(name) {
                     btn.title = '';
                     // assign onclick to advance using this available index
                     btn.onclick = () => {
-                        Module._Advance(playEngine, availIndex);
-                        const err = getLastError(playEngine);
-                        if (err) setStatus("Error advancing: " + err, true);
-                        updatePlay();
+                        try {
+                            // capture pre and post snapshots to allow reliable undo/redo
+                            const before = savePlaySnapshot(playEngine);
+                            Module._Advance(playEngine, availIndex);
+                            const err = getLastError(playEngine);
+                            if (err) setStatus("Error advancing: " + err, true);
+                            updatePlay();
+                            const after = savePlaySnapshot(playEngine);
+                            try {
+                                            const action = {
+                                                description: { title: `Advance action`, detail: `index: ${availIndex}` },
+                                                undo: () => { try { restorePlaySnapshot(playEngine, before); } catch (e) {} },
+                                                redo: () => { try { restorePlaySnapshot(playEngine, after); } catch (e) {} }
+                                            };
+                                pushProgramAction(action);
+                            } catch (e) {}
+                        } catch (e) { console.warn('advance wrapper failed', e); }
                     };
                 } else {
                     // not available: disable and remove handler
@@ -3750,15 +5062,32 @@ function selectState(name) {
         }
 
         function setVariableValue(name, value) {
+            if (!playEngine) return;
             const namePtr = allocateUTF8(name);
+            // capture previous value
+            let prev = '';
+            try {
+                const prevPtr = Module._GetVariableValue(playEngine, namePtr);
+                prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+            } catch (e) { prev = ''; }
             const valuePtr = allocateUTF8(value);
             Module._SetVariableValue(playEngine, namePtr, valuePtr);
-            Module._free(namePtr);
             Module._free(valuePtr);
+            Module._free(namePtr);
             updatePlay();
             const err = getLastError(playEngine);
             if (err) {
                 setStatus("Error setting variable value: " + err, true);
+            } else {
+                try {
+                    const action = {
+                        description: { title: `Set variable ${name}`, detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(value)}` },
+                        undo: () => { try { const np = allocateUTF8(name); const pv = allocateUTF8(prev); Module._SetVariableValue(playEngine, np, pv); Module._free(np); Module._free(pv); updatePlay(); } catch (e) {} },
+                        redo: () => { try { const np = allocateUTF8(name); const nv = allocateUTF8(value); Module._SetVariableValue(playEngine, np, nv); Module._free(np); Module._free(nv); updatePlay(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                } catch (e) {}
             }
         }
 
@@ -4413,10 +5742,38 @@ function selectState(name) {
             }, true); // Use capture phase for higher priority
             document.addEventListener('click', hideContextMenu);
             document.addEventListener('click', hideGraphContextMenu);
+            // Close context/graph menus on Escape key (capture phase)
+            document.addEventListener('keydown', (e) => {
+                try {
+                    if (e.key === 'Escape' || e.key === 'Esc') {
+                        const cm = document.getElementById('context-menu');
+                        const gm = document.getElementById('graph-context-menu');
+                        let closed = false;
+                        if (cm && cm.style && cm.style.display && cm.style.display !== 'none') { hideContextMenu(); closed = true; }
+                        if (gm && gm.style && gm.style.display && gm.style.display !== 'none') { hideGraphContextMenu(); closed = true; }
+                        if (closed) { e.stopPropagation(); e.preventDefault(); }
+                    }
+                } catch (ex) {}
+            }, true);
             document.getElementById('context-menu').addEventListener('click', (e) => e.stopPropagation());
-            document.getElementById('context-search').addEventListener('focus', (e) => e.stopPropagation());
-            document.getElementById('context-search').addEventListener('mousedown', (e) => e.stopPropagation());
-            document.getElementById('context-search').addEventListener('click', (e) => e.stopPropagation());
+            const ctxSearch = document.getElementById('context-search');
+            if (ctxSearch) {
+                try { ctxSearch.addEventListener('focus', (e) => e.stopPropagation()); } catch (e) {}
+                try { ctxSearch.addEventListener('mousedown', (e) => e.stopPropagation()); } catch (e) {}
+                try { ctxSearch.addEventListener('click', (e) => e.stopPropagation()); } catch (e) {}
+                // Ensure input events reach filterContextMenu even if inline handlers fail
+                try { ctxSearch.addEventListener('input', filterContextMenu); } catch (e) {}
+            }
+
+            // Global input listener for debugging and to catch dropdown search inputs
+            // input event listener (no debug logging)
+            document.addEventListener('input', (e) => {
+                try {
+                    const t = e.target;
+                    if (!t) return;
+                    // previously logged debug events here; removed for production
+                } catch (ex) {}
+            }, true);
         }
 
         function setupKeyboardShortcuts() {
@@ -4484,9 +5841,11 @@ function selectState(name) {
             const menu = document.getElementById('context-menu');
             const list = document.getElementById('token-menu-list');
             list.innerHTML = '';
+            try { console.log('[ns2] showContextMenu', { x: x, y: y, hasInput: !!currentInput }); } catch(e) {}
 
             // Copy, Cut, Paste first, always visible with icons
                 const copyLi = document.createElement('li');
+                copyLi.className = 'menu-item';
                 const copyLabel = languages[currentLanguage] && languages[currentLanguage]['Copy'] ? languages[currentLanguage]['Copy'] : 'Copy';
                 copyLi.innerHTML = `<i class="fas fa-copy" style="margin-right: 8px;"></i> <span class="token">${copyLabel}</span>`;
             copyLi.onclick = () => {
@@ -4497,6 +5856,7 @@ function selectState(name) {
             list.appendChild(copyLi);
 
             const cutLi = document.createElement('li');
+            cutLi.className = 'menu-item';
             const cutLabel = languages[currentLanguage] && languages[currentLanguage]['Cut'] ? languages[currentLanguage]['Cut'] : 'Cut';
             cutLi.innerHTML = `<i class="fas fa-cut" style="margin-right: 8px;"></i> <span class="token">${cutLabel}</span>`;
             cutLi.onclick = () => {
@@ -4507,6 +5867,7 @@ function selectState(name) {
             list.appendChild(cutLi);
 
             const pasteLi = document.createElement('li');
+            pasteLi.className = 'menu-item';
             const pasteLabel = languages[currentLanguage] && languages[currentLanguage]['Paste'] ? languages[currentLanguage]['Paste'] : 'Paste';
             pasteLi.innerHTML = `<i class="fas fa-paste" style="margin-right: 8px;"></i> <span class="token">${pasteLabel}</span>`;
             pasteLi.onclick = () => {
@@ -4518,9 +5879,12 @@ function selectState(name) {
             list.appendChild(pasteLi);
 
             const separator = document.createElement('li');
+            separator.className = 'menu-separator';
+            separator.setAttribute('aria-hidden', 'true');
             separator.style.borderTop = '1px solid #3C3C3C';
             separator.style.padding = '0';
             separator.style.margin = '5px 0';
+            separator.style.pointerEvents = 'none';
             list.appendChild(separator);
 
             // Then tokens, grouped by category for easier discovery
@@ -4555,6 +5919,7 @@ function selectState(name) {
 
                 items.forEach(token => {
                     const li = document.createElement('li');
+                    li.className = 'menu-item';
                     const tokenSpan = document.createElement('span'); tokenSpan.className = 'token'; tokenSpan.textContent = token;
                     const exampleSpan = document.createElement('span'); exampleSpan.className = 'example'; exampleSpan.textContent = tokenExamples[token] || '';
                     li.appendChild(tokenSpan);
@@ -4565,9 +5930,12 @@ function selectState(name) {
 
                 // separator between categories
                 const sep = document.createElement('li');
+                sep.className = 'menu-separator';
+                sep.setAttribute('aria-hidden', 'true');
                 sep.style.borderTop = '1px solid #3C3C3C';
                 sep.style.padding = '0';
                 sep.style.margin = '6px 0';
+                sep.style.pointerEvents = 'none';
                 list.appendChild(sep);
             });
 
@@ -4603,36 +5971,58 @@ function selectState(name) {
         }
 
         function filterContextMenu() {
-            const query = document.getElementById('context-search').value.toLowerCase();
-                document.querySelectorAll('#token-menu-list li').forEach(li => {
-                    // always show category headers and separators
-                        if (li.classList && li.classList.contains('menu-category')) return; // handled later
-                        if (li.style && li.style.borderTop) { li.style.display = 'none'; return; } // handled later
-                        const tokenEl = li.querySelector('.token');
-                        const tokenText = tokenEl ? tokenEl.textContent.toLowerCase() : '';
-                        li.style.display = (tokenText.includes(query)) ? 'flex' : 'none';
-                });
+                    const raw = (document.getElementById('context-search') && document.getElementById('context-search').value) || '';
+                    const query = normalizeForMatching(raw).toLowerCase();
+                    // debug logging removed
 
-                    // Now show/hide category headers and separators based on whether their items are visible
+                    // Prefer explicit menu-item markers, but fall back to any LI (excluding categories/separators)
+                    let items = Array.from(document.querySelectorAll('#token-menu-list li.menu-item'));
+                    if (!items.length) {
+                        items = Array.from(document.querySelectorAll('#token-menu-list li')).filter(li => {
+                            if (li.classList && (li.classList.contains('menu-category') || li.classList.contains('menu-separator'))) return false;
+                            return true;
+                        });
+                    }
+
+                    // debug logging removed
+
+                    items.forEach((li, idx) => {
+                        try {
+                            // Collect a few sensible text sources so this works across different menu renderers
+                            let tokenTextRaw = '';
+                            const tokenEl = li.querySelector && (li.querySelector('.token') || li.querySelector('.example') || li.querySelector('button') || li.querySelector('span'));
+                            if (tokenEl && tokenEl.textContent) tokenTextRaw = tokenEl.textContent;
+                            else if (li.dataset && li.dataset.name) tokenTextRaw = li.dataset.name;
+                            else tokenTextRaw = li.textContent || '';
+
+                            const tokenText = normalizeForMatching(tokenTextRaw).toLowerCase();
+                            const ok = (query === '' || tokenText.includes(query));
+                            // Use the boolean `hidden` attribute rather than inline display toggles.
+                            // This is more reliable and works with the CSS rule we added above.
+                            try { li.hidden = !ok; } catch (e) { li.style.display = ok ? '' : 'none'; }
+                            // log first few items for diagnostics
+                            // debug logging removed
+                        } catch (e) { try { ns2Debug({ err: 'item-check-failed', idx: idx }); } catch(e) {} }
+                    });
+
+                    // Now adjust category headers and separators based on whether their items are visible
                     const headers = Array.from(document.querySelectorAll('#token-menu-list li.menu-category'));
                     headers.forEach(header => {
                         let anyVisible = false;
                         let node = header.nextElementSibling;
                         while (node) {
-                            if (node.classList && node.classList.contains('menu-category')) break;
-                            // separator nodes have style.borderTop set
-                            if (node.style && node.style.borderTop) {
-                                node = node.nextElementSibling;
-                                continue;
-                            }
-                            if (node.style && node.style.display !== 'none') { anyVisible = true; break; }
+                            if (node.classList && node.classList.contains('menu-category')) break; // next category
+                            // skip over separators
+                            if (node.classList && node.classList.contains('menu-separator')) { node = node.nextElementSibling; continue; }
+                            // If an element is not hidden (or doesn't have hidden true), consider it visible
+                            if (!(node.hidden === true) && (node.style ? node.style.display !== 'none' : true)) { anyVisible = true; break; }
                             node = node.nextElementSibling;
                         }
-                        header.style.display = anyVisible ? 'block' : 'none';
+                        try { header.hidden = !anyVisible; } catch(e) { header.style.display = anyVisible ? 'block' : 'none'; }
                         // find separator after this category and show/hide it accordingly
                         let sep = header.nextElementSibling;
                         while (sep) {
-                            if (sep.style && sep.style.borderTop) { sep.style.display = anyVisible ? 'block' : 'none'; break; }
+                            if (sep.classList && sep.classList.contains('menu-separator')) { try { sep.hidden = !anyVisible; } catch(e) { sep.style.display = anyVisible ? 'block' : 'none'; } break; }
                             if (sep.classList && sep.classList.contains('menu-category')) break;
                             sep = sep.nextElementSibling;
                         }
@@ -4778,15 +6168,29 @@ function selectState(name) {
             if(tb) tb.textContent = currentTitle || (languages[currentLanguage]['untitled'] || 'Untitled');
             Module._FreeString(titlePtr);
             document.getElementById('story-title').onchange = function() {
-                Module._SetStoryTitle(editorEngine, allocateUTF8(this.value));
+                const prevPtr = Module._GetStoryTitle(editorEngine);
+                const prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+                const newVal = this.value;
+                Module._SetStoryTitle(editorEngine, allocateUTF8(newVal));
                 // update toolbar copy
-                try{ const el = document.getElementById('toolbar-story-title'); if(el) el.textContent = this.value || (languages[currentLanguage]['untitled'] || 'Untitled'); }catch(e){}
+                try{ const el = document.getElementById('toolbar-story-title'); if(el) el.textContent = newVal || (languages[currentLanguage]['untitled'] || 'Untitled'); }catch(e){}
                 saveToLocalStorage();
                 const err = getLastError(editorEngine);
                 if (err) {
                     setStatus("Error setting story title: " + err, true);
+                } else {
+                    try {
+                        const action = {
+                            description: { title: `Set story title`, detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(newVal)}` },
+                            undo: () => { try { Module._SetStoryTitle(editorEngine, allocateUTF8(prev)); renderEditor(); saveToLocalStorage(); } catch (e) {} },
+                            redo: () => { try { Module._SetStoryTitle(editorEngine, allocateUTF8(newVal)); renderEditor(); saveToLocalStorage(); } catch (e) {} }
+                        };
+                        pushProgramAction(action);
+                    } catch (e) {}
                 }
             };
+
             const descPtr = Module._GetStoryDescription(editorEngine);
             const storyDescEl = document.getElementById('story-description');
             storyDescEl.value = Module.UTF8ToString(descPtr);
@@ -4796,6 +6200,8 @@ function selectState(name) {
                 el.style.height = (el.scrollHeight) + 'px';
             }
             // Apply immediately and on input to auto-save and expand
+            // track last saved description to push a single history entry on blur
+            let lastSavedDesc = storyDescEl.value;
             storyDescEl.addEventListener('input', function() {
                 autoResizeTextarea(this);
                 Module._SetStoryDescription(editorEngine, allocateUTF8(this.value));
@@ -4805,17 +6211,62 @@ function selectState(name) {
                     setStatus("Error setting story description: " + err, true);
                 }
             });
+            storyDescEl.addEventListener('blur', function() {
+                const prev = lastSavedDesc;
+                const newVal = this.value;
+                if (prev === newVal) return;
+                try {
+                    const action = {
+                        description: { title: `Edit story description`, detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(newVal)}` },
+                        undo: () => { try { Module._SetStoryDescription(editorEngine, allocateUTF8(prev)); renderEditor(); saveToLocalStorage(); } catch (e) {} },
+                        redo: () => { try { Module._SetStoryDescription(editorEngine, allocateUTF8(newVal)); renderEditor(); saveToLocalStorage(); } catch (e) {} }
+                    };
+                    pushProgramAction(action);
+                    lastSavedDesc = newVal;
+                } catch (e) {}
+            });
             // initial resize
             setTimeout(() => autoResizeTextarea(storyDescEl), 0);
             const startPtr = Module._GetStartState(editorEngine);
             document.getElementById('start-state').value = Module.UTF8ToString(startPtr);
             Module._FreeString(startPtr);
             document.getElementById('start-state').onchange = function() {
-                Module._SetStartState(editorEngine, allocateUTF8(this.value));
+                const prevPtr = Module._GetStartState(editorEngine);
+                const prev = Module.UTF8ToString(prevPtr);
+                Module._FreeString(prevPtr);
+                const newVal = this.value;
+                Module._SetStartState(editorEngine, allocateUTF8(newVal));
                 saveToLocalStorage();
                 const err = getLastError(editorEngine);
                 if (err) {
                     setStatus("Error setting start state: " + err, true);
+                } else {
+                    try {
+                        const action = {
+                            description: { title: `Set start state`, detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(newVal)}` },
+                            undo: () => { try { Module._SetStartState(editorEngine, allocateUTF8(prev)); renderEditor(); saveToLocalStorage(); } catch (e) {} },
+                            redo: () => { try { Module._SetStartState(editorEngine, allocateUTF8(newVal)); renderEditor(); saveToLocalStorage(); } catch (e) {} }
+                        };
+                        pushProgramAction(action);
+                        // Contextual update: if this state's choices panel is visible, update the specific row
+                        try {
+                            const panelTbody = document.getElementById(`choices-${name}`);
+                            if (panelTbody && panelTbody.rows && panelTbody.rows[i]) {
+                                const row = panelTbody.rows[i];
+                                if (field === 'text') {
+                                    const inp = row.cells[0].querySelector('input'); if (inp) inp.value = value;
+                                } else if (field === 'cond') {
+                                    const inp = row.cells[1].querySelector('input'); if (inp) inp.value = value;
+                                } else if (field === 'target') {
+                                    const inp = row.cells[2].querySelector('.target-group input'); if (inp) inp.value = value;
+                                } else if (field === 'effect') {
+                                    const inp = row.cells[3].querySelector('input'); if (inp) inp.value = value;
+                                } else if (field === 'hide') {
+                                    const cb = row.cells[4] && row.cells[4].querySelector('input[type="checkbox"]'); if (cb) cb.checked = !!value;
+                                }
+                            }
+                        } catch (e) {}
+                    } catch (e) {}
                 }
             };
             updateTokens();
@@ -4875,6 +6326,11 @@ function selectState(name) {
             addGroupLabel(fileGroup, 'FILE');
             toolbar.appendChild(fileGroup);
 
+            // Create a container for contextual groups (states, variables, graph)
+            const contextContainer = document.createElement('div'); contextContainer.className = 'toolbar-context-container';
+            // Append file group first, then contextual groups, then play/tools to enforce ordering
+            toolbar.appendChild(contextContainer);
+
             // PLAY group (global)
             const playGroup = document.createElement('div'); playGroup.className = 'toolbar-group';
             playGroup.appendChild(makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => { startPlayEngine(); openTab('play'); }));
@@ -4882,20 +6338,20 @@ function selectState(name) {
             playGroup.appendChild(makeBtn('<i class="fas fa-download"></i>', languages[currentLanguage]['Save Progress'] || 'Save Progress', () => { saveProgress(); openTab('play'); }));
             playGroup.appendChild(makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => { restartStory(); openTab('play'); }));
             addGroupLabel(playGroup, 'PLAY');
-            toolbar.appendChild(playGroup);
+            
 
             // Tab-specific: VARIABLES group (only on variables tab)
             if (tabName === 'variables') {
-                const variablesGroup = document.createElement('div'); variablesGroup.className = 'toolbar-group';
+                const variablesGroup = document.createElement('div'); variablesGroup.className = 'toolbar-group toolbar-context';
                 const addVarBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addVariable'] || 'Add Variable', addVariable);
                 variablesGroup.appendChild(addVarBtn);
                 addGroupLabel(variablesGroup, 'VARIABLES');
-                toolbar.appendChild(variablesGroup);
+                contextContainer.appendChild(variablesGroup);
             }
 
             // Tab-specific: STATES group (only on states tab)
             if (tabName === 'states') {
-                const statesGroup = document.createElement('div'); statesGroup.className = 'toolbar-group';
+                const statesGroup = document.createElement('div'); statesGroup.className = 'toolbar-group toolbar-context';
                 const addStateBtn = makeBtn('<i class="fas fa-plus"></i>', languages[currentLanguage]['addState'] || 'Add State', addState);
                 statesGroup.appendChild(addStateBtn);
                 const deleteBtn = makeBtn('<i class="fas fa-trash"></i>', languages[currentLanguage]['Delete State'] || 'Delete State', () => { if (selectedState) removeState(selectedState); });
@@ -4926,24 +6382,38 @@ function selectState(name) {
                 const graphBtn = makeBtn('<i class="fas fa-project-diagram"></i>', languages[currentLanguage]['View in Graph'] || 'View in Graph', () => { if (selectedState) viewInGraph(selectedState); });
                 statesGroup.appendChild(graphBtn);
                 addGroupLabel(statesGroup, 'STATES');
-                toolbar.appendChild(statesGroup);
+                contextContainer.appendChild(statesGroup);
             }
 
             // Tab-specific: GRAPH group (only on graph tab)
             if (tabName === 'graph') {
-                const graphGroup = document.createElement('div'); graphGroup.className = 'toolbar-group';
+                const graphGroup = document.createElement('div'); graphGroup.className = 'toolbar-group toolbar-context';
                 graphGroup.appendChild(makeBtn('<i class="fas fa-sync"></i>', languages[currentLanguage]['Reset Graph'] || 'Reset Graph', resetGraph));
                 graphGroup.appendChild(makeBtn('<i class="fas fa-search-plus"></i>', languages[currentLanguage]['Zoom In'] || 'Zoom In', zoomIn));
                 graphGroup.appendChild(makeBtn('<i class="fas fa-search-minus"></i>', languages[currentLanguage]['Zoom Out'] || 'Zoom Out', zoomOut));
                 graphGroup.appendChild(makeBtn('<i class="fas fa-crosshairs"></i>', languages[currentLanguage]['Center Graph'] || 'Center Graph', centerGraph));
                 addGroupLabel(graphGroup, 'GRAPH');
-                toolbar.appendChild(graphGroup);
+                contextContainer.appendChild(graphGroup);
             }
 
             // TOOLS group (language + help + view toggles merged)
             const toolsGroup = document.createElement('div'); toolsGroup.className = 'toolbar-group';
+            // Undo / Redo (program-level) - do not interfere with Monaco's own undo
+            const undoBtn = makeBtn('<i class="fas fa-undo"></i>', 'Undo', () => { undoProgram(); });
+            undoBtn.dataset.action = 'undo-btn';
+            try { if (historyIndex === 0) { undoBtn.setAttribute('disabled', 'disabled'); undoBtn.classList.add('disabled'); } } catch (e) {}
+            toolsGroup.appendChild(undoBtn);
+            const redoBtn = makeBtn('<i class="fas fa-redo"></i>', 'Redo', () => { redoProgram(); });
+            redoBtn.dataset.action = 'redo-btn';
+            try { if (historyIndex >= programHistory.length) { redoBtn.setAttribute('disabled', 'disabled'); redoBtn.classList.add('disabled'); } } catch (e) {}
+            toolsGroup.appendChild(redoBtn);
+            // small caret button to open the undo/redo history dropdown (placed to the right of redo)
+            const undoMenuBtn = makeBtn('<i class="fas fa-caret-down"></i>', 'Undo/Redo History', null, 'small-caret');
+            undoMenuBtn.onclick = () => { toggleDropdown('undo-dropdown', undoMenuBtn); };
+            toolsGroup.appendChild(undoMenuBtn);
             // Toggle status button (moved from VIEW group into TOOLS)
-            const toggleStatusBtn = makeBtn('<i class="fas fa-window-maximize"></i>', languages[currentLanguage]['toggleStatus'] || 'Toggle Status Window', () => { document.getElementById('status-window').style.display = document.getElementById('status-window').style.display === 'none' ? 'block' : 'none'; });
+            const toggleStatusBtn = makeBtn('<i class="fas fa-window-maximize"></i>', languages[currentLanguage]['toggleStatus'] || 'Toggle Status Window', null);
+            toggleStatusBtn.onclick = () => { toggleDropdown('status-window', toggleStatusBtn); };
             toolsGroup.appendChild(toggleStatusBtn);
             const langBtn = makeBtn('<i class="fas fa-globe"></i>', languages[currentLanguage]['language'] || 'Language', null);
             langBtn.onclick = () => { toggleDropdown('language-dropdown', langBtn); };
@@ -4952,10 +6422,79 @@ function selectState(name) {
             helpBtn.onclick = () => { toggleDropdown('help-dropdown', helpBtn); };
             toolsGroup.appendChild(helpBtn);
             addGroupLabel(toolsGroup, 'TOOLS');
+            // Ensure playGroup is inserted before tools so the final order is: FILE -> CONTEXT -> PLAY -> TOOLS
+            try { if (typeof playGroup !== 'undefined') toolbar.appendChild(playGroup); } catch (e) {}
             toolbar.appendChild(toolsGroup);
 
             toolbar.style.pointerEvents = 'auto';
+            try { updateToolbarUndoButtons(); } catch (e) {}
+            // Ensure toolbar overflow is arranged (move groups into overflow if they don't fit)
+            try { arrangeToolbarOverflow(); } catch (e) {}
         }
+
+        // Arrange toolbar groups into an overflow menu when they don't fit
+        function arrangeToolbarOverflow() {
+            const toolbar = document.getElementById('global-toolbar');
+            if (!toolbar) return;
+            // create overflow holder if missing
+            let overflow = toolbar.querySelector('.toolbar-overflow');
+            if (!overflow) {
+                overflow = document.createElement('div');
+                overflow.className = 'toolbar-overflow toolbar-group';
+                overflow.id = 'toolbar-overflow';
+                const overflowBtn = document.createElement('button');
+                overflowBtn.className = 'icon-button overflow-btn';
+                overflowBtn.innerHTML = '<i class="fas fa-ellipsis-h"></i>';
+                overflowBtn.title = 'More';
+                overflowBtn.onclick = (e) => {
+                    const menu = overflow.querySelector('.overflow-menu');
+                    if (!menu) return;
+                    menu.style.display = (menu.style.display === 'block') ? '' : 'block';
+                };
+                const menu = document.createElement('div');
+                menu.className = 'overflow-menu';
+                overflow.appendChild(overflowBtn);
+                overflow.appendChild(menu);
+                toolbar.appendChild(overflow);
+            }
+            const menu = overflow.querySelector('.overflow-menu');
+            // move any previously overflowed groups back to toolbar before measuring
+            while (menu && menu.firstChild) {
+                const g = menu.firstChild;
+                toolbar.insertBefore(g, overflow);
+            }
+
+            // compute available space (reserve overflow button width)
+            const toolbarWidth = toolbar.clientWidth;
+            const overflowBtnWidth = overflow.offsetWidth || 40;
+            let used = 0;
+            const children = Array.from(toolbar.children).filter(c => c !== overflow);
+            // measure from left to right, move groups that overflow into the overflow menu
+            for (const ch of children) {
+                // ensure element is visible for measurement
+                ch.style.display = '';
+                const w = ch.offsetWidth;
+                if (used + w + overflowBtnWidth > toolbarWidth) {
+                    // move this and all following into overflow
+                    const following = Array.from(toolbar.children).filter(c => c !== overflow).slice(children.indexOf(ch));
+                    following.forEach(f => { try { menu.appendChild(f); } catch (e) {} });
+                    break;
+                }
+                used += w;
+            }
+            // hide overflow if empty
+            if (menu && menu.children.length === 0) overflow.style.display = 'none'; else overflow.style.display = '';
+        }
+
+        // Close overflow menus on resize or click outside
+        window.addEventListener('resize', () => { try { arrangeToolbarOverflow(); } catch (e) {} });
+        document.addEventListener('click', (e) => {
+            const of = document.getElementById('toolbar-overflow');
+            if (!of) return;
+            const menu = of.querySelector('.overflow-menu');
+            if (!menu) return;
+            if (!of.contains(e.target)) menu.style.display = '';
+        });
 
         // Toggle an existing dropdown container (positions it under the anchor)
         function toggleDropdown(dropdownId, anchorEl) {
@@ -4974,6 +6513,8 @@ function selectState(name) {
                 }
             });
 
+            // If this is the undo dropdown, refresh its contents
+            try { if (dropdownId === 'undo-dropdown') updateUndoDropdown(); } catch (e) {}
             // Position dropdown below anchor
             const rect = anchorEl.getBoundingClientRect();
             dd.style.position = 'fixed';
@@ -5016,9 +6557,45 @@ function selectState(name) {
         }
 
         function setupStatusWindow() {
+            // Status window is now a dropdown anchored to the toolbar; no dragging needed.
             const windowElement = document.getElementById('status-window');
-            const handle = document.getElementById('status-handle');
-            makeDraggable(windowElement, handle);
+            if (windowElement) {
+                windowElement.style.display = '';
+                windowElement.dataset.visible = '';
+            }
+            const copyBtn = document.getElementById('status-copy');
+            if (copyBtn) {
+                copyBtn.onclick = copyStatusContent;
+            }
+        }
+
+        function copyStatusContent() {
+            try {
+                const play = document.getElementById('play-error') ? document.getElementById('play-error').innerText : '';
+                const status = document.getElementById('status-content') ? document.getElementById('status-content').innerText : '';
+                const combined = [play, status].filter(Boolean).join('\n\n');
+                if (!combined) { setStatus(languages[currentLanguage]['nothingToCopy'] || 'Nothing to copy'); return; }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(combined).then(() => { setStatus(languages[currentLanguage]['copiedToClipboard'] || 'Status copied to clipboard'); }, () => { fallbackCopy(combined); });
+                } else {
+                    fallbackCopy(combined);
+                }
+            } catch (e) { console.warn('copyStatusContent failed', e); setStatus(languages[currentLanguage]['copyFailed'] || 'Copy failed', true); }
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed'; ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                setStatus(languages[currentLanguage]['copiedToClipboard'] || 'Status copied to clipboard');
+            } catch (e) {
+                setStatus(languages[currentLanguage]['copyFailed'] || 'Copy failed', true);
+            }
+            ta.remove();
         }
 
         function makeDraggable(element, handle) {
@@ -5065,7 +6642,7 @@ function selectState(name) {
                     renderEditor();
                     setStatus("Loaded saved story from local storage");
                 } else {
-                    setStatus("Failed to load saved story: " + getLastError(editorEngine), true);
+                    setStatus("Failed to load saved story: " + getLastError(editorEngine));
                 }
             } else {
             }
@@ -5082,7 +6659,7 @@ function selectState(name) {
                         renderEditor();
                         setStatus("Story updated from storage");
                     } else {
-                        setStatus("Failed to update story from storage: " + getLastError(editorEngine), true);
+                        setStatus("Failed to update story from storage: " + getLastError(editorEngine));
                     }
                 }
             });

@@ -11,6 +11,9 @@ async function createWindow() {
     height: 800,
     frame: false, // frameless window so we can render custom window controls
     backgroundColor: '#121212',
+    // Use the shared transparent icon from the parent ns2 folder so the app
+    // displays the same icon in the taskbar and window (platform-dependent).
+    icon: path.join(__dirname, '..', 'icon_transparent.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -35,6 +38,7 @@ async function createWindow() {
     win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
       console.error('Renderer failed to load:', errorCode, errorDescription, validatedURL);
     });
+    // DevTools and console-forwarding enabled. (temporary DOM-dump removed)
   } catch (e) {
     console.warn('Could not open DevTools automatically', e);
   }
@@ -64,7 +68,15 @@ async function createWindow() {
   }
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  try {
+    if (process.platform === 'win32') {
+      // Ensure Windows shows the correct taskbar icon
+      app.setAppUserModelId('com.martinpetkovski.ns2');
+    }
+  } catch (e) {}
+  return createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
