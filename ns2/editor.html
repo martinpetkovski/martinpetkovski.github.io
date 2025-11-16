@@ -1755,48 +1755,7 @@
         <!-- Context menu items will be injected dynamically -->
     </div>
 
-    <style>
-    /* Backdrop used to highlight bracketed expressions inside plain text inputs/textarea */
-    .bracket-backdrop-wrapper { position: relative; width: 100%; }
-    .bracket-backdrop {
-        position: absolute;
-        inset: 0;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow: hidden;
-        color: transparent; /* hide default text color so only spans show */
-        pointer-events: none;
-        font-family: Consolas, Monaco, monospace;
-        font-size: 12px;
-        line-height: 1.4;
-        padding: 5px;
-        box-sizing: border-box;
-        color: #000000;
-    }
-    .bracket-backdrop .bracket {
-        background: #111; /* darker background */
-        color: #000000; /* white foreground */
-        font-weight: 700;
-        /* no italics per request */
-        padding: 0 2px;
-        border-radius: 2px;
-        border: 1px solid #3c3c3c;
-        box-shadow: inset 0 0 0 10px rgba(0,0,0,0.45), inset 0 1px 3px rgba(0,0,0,0.45);
-    }
-    .bracket-backdrop .ns2-state {
-        color: #c586c0;
-        font-weight: 700;
-    }
-    .bracket-backdrop .ns2-variable {
-        color: #9cdcfe;
-        font-weight: 700;
-    }
-    .bracket-overlay-textarea {
-        position: relative;
-        background: transparent !important;
-        color: #d4d4d4 !important;
-    }
-    </style>
+    
 
     <script>
         let languages = {};
@@ -2446,65 +2405,7 @@
             document.head.appendChild(s);
         })();
 
-        // Overlay highlighter for plain text inputs/textarea
-        function ensureBracketBackdrop(field) {
-            if (!field) return;
-            // Only apply to single-line inputs and textareas
-            if (field.dataset.bracketBackdropAttached) return;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'bracket-backdrop-wrapper';
-            field.parentNode.insertBefore(wrapper, field);
-            wrapper.appendChild(field);
-
-                const backdrop = document.createElement('div');
-                backdrop.className = 'bracket-backdrop';
-            wrapper.insertBefore(backdrop, field);
-
-            // Make the field transparent so backdrop shows highlighted substrings
-            field.classList.add('bracket-overlay-textarea');
-            field.style.backgroundColor = 'transparent';
-            field.style.position = 'relative';
-            field.style.zIndex = 2;
-
-            function updateBackdrop() {
-                const v = field.value || field.textContent || '';
-                // Escape HTML
-                const esc = v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                // If we have variable tokens, highlight them first across the whole text
-                let processed = esc;
-                try {
-                    if (Array.isArray(variableTokens) && variableTokens.length > 0) {
-                        const escapedVars = variableTokens.map(s => s.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&'));
-                        const varRe = new RegExp('\\b(' + escapedVars.join('|') + ')\\b', 'g');
-                        processed = processed.replace(varRe, function(m) { return '<span class="ns2-variable">' + m + '</span>'; });
-                    }
-                } catch (e) {}
-
-                // Then convert arrow -> stateName (allow optional variable span around the name)
-                processed = processed.replace(/->\s*(?:<span class="ns2-variable">)?([A-Za-z0-9_\-]+)(?:<\/span>)?/g, function(_, name) {
-                    return '-> <span class="ns2-state">' + name + '</span>';
-                });
-
-                // Replace bracketed parts with span (inner may already contain ns2-variable/ns2-state spans)
-                const html = processed.replace(/\[([\s\S]*?)\]/g, function(_, inner){
-                    return '<span class="bracket">[' + inner.replace(/\n/g, '<br>') + ']</span>';
-                }).replace(/\n/g, '<br>');
-                backdrop.innerHTML = html + '\n';
-            }
-
-            // Sync sizes
-            function syncSize(){
-                backdrop.style.font = window.getComputedStyle(field).font;
-                backdrop.style.padding = window.getComputedStyle(field).padding;
-                backdrop.style.lineHeight = window.getComputedStyle(field).lineHeight;
-            }
-
-            field.addEventListener('input', updateBackdrop);
-            field.addEventListener('scroll', () => { backdrop.scrollTop = field.scrollTop; backdrop.scrollLeft = field.scrollLeft; });
-            window.addEventListener('resize', syncSize);
-            setTimeout(() => { syncSize(); updateBackdrop(); }, 30);
-            field.dataset.bracketBackdropAttached = '1';
-        }
+        
 
         function applyTextChanges() {
             const text = textEditor.getValue();
@@ -2794,16 +2695,7 @@ function selectState(name) {
     renderChoices(name);
     filterChoices(name);
 
-    // Attach bracket backdrops for state script and list inputs
-    try {
-        const scriptTextarea = panel.querySelector('#state-script-textarea');
-        if (scriptTextarea) ensureBracketBackdrop(scriptTextarea);
-        // requires/actions inputs (these are single-line inputs)
-        const reqInput = panel.querySelector('input[list="token-list"][onchange*="requires"]');
-        const actInput = panel.querySelector('input[list="token-list"][onchange*="actions"]');
-        if (reqInput) ensureBracketBackdrop(reqInput);
-        if (actInput) ensureBracketBackdrop(actInput);
-    } catch (e) {}
+    // (no overlays) highlighting restricted to Monaco editor only
 
     // Auto-resize and live-save the state description textarea (keep behavior similar to story description)
     try {
@@ -2965,11 +2857,7 @@ function selectState(name) {
                     <td><button class="icon-button" onclick="removeChoice('${escapeHtml(name)}', ${i})" data-i18n-title="deleteChoice" title="Delete Choice"><i class="fas fa-trash"></i></button></td>
                 `;
                 list.appendChild(tr);
-                // Attach bracket backdrop to newly created inputs (text/effect/cond)
-                try {
-                    const inputs = tr.querySelectorAll('input, textarea');
-                    inputs.forEach(inp => ensureBracketBackdrop(inp));
-                } catch (e) {}
+                // (no overlays) highlighting restricted to Monaco editor only
                 // Disable the "Go to State" button if the target state doesn't exist
                 const scopeBtn = tr.querySelector('.scope-button');
                 if (scopeBtn) {
