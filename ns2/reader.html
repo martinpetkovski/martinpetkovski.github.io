@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NS2 Reader</title>
+<link rel="stylesheet" href="style.css">
+<style>
+html, body { height:100%; }
+body { margin:0; font-family: system-ui, sans-serif; background:#1e1e1e; color:#d4d4d4; display:flex; }
+.main { flex:1; display:flex; flex-direction:column; min-height:0; padding:16px; box-sizing:border-box; }
+.play-content { flex:1; overflow-y:auto; }
+.play-content h2 { margin-top:0; }
+.play-content table { width:100%; border-collapse: collapse; }
+.play-content table th, .play-content table td { padding:4px 6px; border-bottom:1px solid #333; }
+.play-content input[type=text] { width:100%; box-sizing:border-box; }
+.choices { display:flex; flex-direction:column; gap:6px; margin:12px 0; }
+.choices button { background:#2d2d2d; color:#d4d4d4; border:1px solid #444; padding:6px 10px; cursor:pointer; text-align:left; }
+.choices button.disabled { opacity:.5; cursor:not-allowed; }
+</style>
+<script src="NSE2.js"></script>
+<script>
+// Inline play logic (formerly in play.js) so reader.html is fully self-contained.
+(function(){
+    const g = window;
+    function ensureModule(){ return g.Module || null; }
+    function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+    function normalizeForMatching(s){ if(!s) return ''; return String(s).replace(/\s+/g,' ').trim(); }
+    function allocateUTF8(str){ const Module = ensureModule(); if(!Module) return 0; const size = Module.lengthBytesUTF8(str)+1; const ptr = Module._malloc(size); Module.stringToUTF8(str,ptr,size); return ptr; }
+    function getLastError(engine){ const Module = ensureModule(); if(!Module || !engine) return ''; try{ const ptr = Module._GetStoryLastError(engine); const err = Module.UTF8ToString(ptr); Module._FreeString(ptr); return err; }catch(e){ return ''; } }
+
+    g.playEngine = g.playEngine || null;
+    let playAvailabilityInterval = null;
+
+    // Removed generateNS2Content (debug/unused)
+
+    function startPlayEngine(){ const Module = ensureModule(); if(!Module){ return; } try{
+        if(g.playEngine){ if(playAvailabilityInterval){ clearInterval(playAvailabilityInterval); playAvailabilityInterval=null; } Module._DestroyEngine(g.playEngine); g.playEngine=null; }
+        g.playEngine = Module._CreateEngine();
+        let content = localStorage.getItem('ns2_content') || '';
+        if(content){ Module.FS.writeFile('/story.ns2', content); const pathPtr = allocateUTF8('/story.ns2'); Module._LoadFromFile(g.playEngine, pathPtr); Module._free(pathPtr); }
+        Module._Start(g.playEngine); updatePlay();
+    }catch(e){ /* silent */ }}
+
+    function restartStory(){ startPlayEngine(); }
+    function saveProgress(){ const Module = ensureModule(); if(!Module || !g.playEngine){ return; } try{ const savePath='/save.save'; const p=allocateUTF8(savePath); Module._SaveProgress(g.playEngine,p); Module._free(p); const saveContent = Module.FS.readFile(savePath,{encoding:'utf8'}); const blob=new Blob([saveContent],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='story.save'; a.click(); URL.revokeObjectURL(url); }catch(e){ /* silent */ }}
+    function loadProgress(file){ const Module = ensureModule(); if(!Module || !g.playEngine){ return; } try{ const reader = new FileReader(); reader.onload = ev => { try{ const saveContent = ev.target.result; const savePath='/save.save'; Module.FS.writeFile(savePath, saveContent); const p=allocateUTF8(savePath); Module._LoadProgress(g.playEngine,p); Module._free(p); updatePlay(); }catch(er){ /* silent */ } }; reader.readAsText(file); }catch(e){ /* silent */ }}
+    function setVariableValue(name,value){ const Module = ensureModule(); if(!Module || !g.playEngine) return; const namePtr = allocateUTF8(name); const valuePtr = allocateUTF8(value); Module._SetVariableValue(g.playEngine,namePtr,valuePtr); Module._free(valuePtr); Module._free(namePtr); updatePlay(); }
+    function performChoice(actionIndex){
+        const Module = ensureModule();
+        if(!Module || !g.playEngine) return;
+        if(typeof Module._Advance !== 'function') { return; }
+        try {
+            Module._Advance(g.playEngine, actionIndex);
+            // On success, just refresh UI silently.
+            updatePlay();
+        } catch(e) { /* silent */ }
+    }
+    function refreshPlayChoiceAvailability(){
+        const Module = ensureModule();
+        if(!Module || !g.playEngine) return;
+        // Gather available actions (texts) into a set for quick lookup.
+        const pActionsPtr = Module._malloc(4);
+        const countAvailable = Module._GetAvailableActions(g.playEngine, pActionsPtr);
+        const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
+        const availableSet = new Map(); // text -> first action index
+        for(let ai=0; ai<countAvailable; ai++){
+            const strPtr = Module.getValue(actionsArrayPtr + ai*4, 'i32');
+            const txt = normalizeForMatching(Module.UTF8ToString(strPtr));
+            if(!availableSet.has(txt)) availableSet.set(txt, ai);
+        }
+        const choicesDiv = document.getElementById('play-choices');
+        if(choicesDiv){
+            const totalChoices = choicesDiv.querySelectorAll('button').length;
+            let idx = 0;
+            [...choicesDiv.querySelectorAll('button')].forEach(btn => {
+                const rawText = btn.dataset.choiceText || btn.textContent || '';
+                const normText = normalizeForMatching(rawText);
+                // Determine target state visitability.
+                const targetPtr = Module._GetChoiceTarget(g.playEngine, idx);
+                const target = Module.UTF8ToString(targetPtr);
+                Module._FreeString(targetPtr);
+                const targetNamePtr = allocateUTF8(target);
+                const canVisit = Module._CanVisitState(g.playEngine, targetNamePtr) === 1;
+                Module._free(targetNamePtr);
+                const actionIdx = availableSet.has(normText) ? availableSet.get(normText) : -1;
+                const enable = actionIdx >= 0 && canVisit;
+                if(!enable){
+                    btn.classList.add('disabled');
+                    btn.disabled = true;
+                    btn.title = canVisit ? 'Action not currently available' : 'Target state not visitable';
+                    btn.onclick = null;
+                    btn.dataset.actionIndex = '';
+                } else {
+                    btn.classList.remove('disabled');
+                    btn.disabled = false;
+                    btn.title = '';
+                    btn.dataset.actionIndex = String(actionIdx);
+                    btn.onclick = () => performChoice(actionIdx);
+                }
+                idx++;
+            });
+        }
+        Module._FreeStrings(actionsArrayPtr, countAvailable);
+        Module._free(pActionsPtr);
+    }
+    function filterPlayVars(){ const searchInput = document.getElementById('play-var-search'); if(!searchInput) return; const q = normalizeForMatching(searchInput.value||'').toLowerCase(); const rows = document.querySelectorAll('#play-variables tbody tr'); rows.forEach(row=>{ try{ const name=normalizeForMatching(row.cells[0].textContent||'').toLowerCase(); row.style.display = name.includes(q) ? '' : 'none'; }catch(e){ row.style.display=''; } }); }
+    function updatePlay(){ const Module = ensureModule(); if(!Module || !g.playEngine){ const t=document.getElementById('play-title'); if(t) t.textContent=''; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Click "Start" to begin.</em>'; const c=document.getElementById('play-choices'); if(c) c.innerHTML=''; const v=document.getElementById('play-variables'); if(v) v.innerHTML=''; return; } const stateCount = Module._GetStateCount(g.playEngine); if(stateCount===0){ const t=document.getElementById('play-title'); if(t) t.textContent='No Story Loaded'; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Create states and set a start state.</em>'; return; }
+        const titlePtr = Module._GetCurrentTitle(g.playEngine); const title = Module.UTF8ToString(titlePtr); Module._FreeString(titlePtr); const t=document.getElementById('play-title'); if(t) t.textContent=title; const descPtr = Module._GetCurrentDescription(g.playEngine); const desc = Module.UTF8ToString(descPtr); Module._FreeString(descPtr); const d=document.getElementById('play-desc'); if(d) d.textContent=desc;
+        const variablesDiv=document.getElementById('play-variables'); if(variablesDiv){ variablesDiv.innerHTML=''; const table=document.createElement('table'); table.innerHTML='<thead><tr><th>Variable</th><th>Value</th></tr></thead><tbody></tbody>'; const tbody=table.querySelector('tbody'); const count=Module._GetVariableCount(g.playEngine); for(let i=0;i<count;i++){ const namePtr=Module._GetVariableName(g.playEngine,i); const name=Module.UTF8ToString(namePtr); Module._FreeString(namePtr); const namePtrVal=allocateUTF8(name); const valuePtr=Module._GetVariableValue(g.playEngine,namePtrVal); const value=Module.UTF8ToString(valuePtr); Module._FreeString(valuePtr); Module._free(namePtrVal); const tr=document.createElement('tr'); tr.innerHTML = '<td>'+escapeHtml(name)+'</td><td><input value="'+escapeHtml(value)+'" onchange="setVariableValue(\''+escapeHtml(name)+'\', this.value)" onblur="setVariableValue(\''+escapeHtml(name)+'\', this.value)"></td>'; tbody.appendChild(tr); } variablesDiv.appendChild(table); }
+        filterPlayVars();
+        const choicesDiv=document.getElementById('play-choices'); if(choicesDiv){ choicesDiv.innerHTML=''; const totalChoices=Module._GetCurrentChoicesCount(g.playEngine); for(let ci=0; ci<totalChoices; ci++){ const textPtr=Module._GetChoiceText(g.playEngine,ci); const text=Module.UTF8ToString(textPtr); Module._FreeString(textPtr); const btn=document.createElement('button'); btn.textContent = text; btn.dataset.choiceText = text; choicesDiv.appendChild(btn); } }
+        refreshPlayChoiceAvailability(); if(playAvailabilityInterval) clearInterval(playAvailabilityInterval); playAvailabilityInterval = setInterval(()=>{ if(!g.playEngine){ clearInterval(playAvailabilityInterval); playAvailabilityInterval=null; return; } refreshPlayChoiceAvailability(); },500); if(ensureModule()._IsEnded(g.playEngine)){ if(d) d.textContent += '\n\nThe story has ended.'; }
+    }
+    g.startPlayEngine = startPlayEngine;
+    g.restartStory = restartStory;
+    g.saveProgress = saveProgress;
+    function handleLoadFile(file){ if(file) loadProgress(file); }
+    function triggerLoad(){ const inp=document.getElementById('load-save'); if(inp) inp.click(); }
+    g.handleLoadFile = handleLoadFile;
+    g.triggerLoad = triggerLoad;
+    g.updatePlay = updatePlay;
+    g.filterPlayVars = filterPlayVars;
+    g.refreshPlayChoiceAvailability = refreshPlayChoiceAvailability;
+    g.setVariableValue = setVariableValue;
+    g.performChoice = performChoice;
+    function maybeAutoStart(){ if(!ensureModule() || g.__playAutoStarted) return; if(document.getElementById('play-title')){ g.__playAutoStarted = true; startPlayEngine(); }}
+    let tries=0; const poll=setInterval(()=>{ tries++; maybeAutoStart(); if(g.__playAutoStarted || tries>40) clearInterval(poll); },250);
+
+    // Message bridge for editor iframe control
+    g.addEventListener('message', (ev) => {
+        const data = ev && ev.data;
+        if(!data || !data.type) return;
+        try {
+            switch(data.type) {
+                case 'ns2-play': {
+                    const Module = ensureModule();
+                    if(!Module) return;
+                    // Recreate engine
+                    if(g.playEngine){ try{ Module._DestroyEngine(g.playEngine); }catch(e){} g.playEngine=null; }
+                    g.playEngine = Module._CreateEngine();
+                    if(data.content){
+                        try {
+                            Module.FS.writeFile('/story.ns2', data.content);
+                            const pathPtr = allocateUTF8('/story.ns2');
+                            Module._LoadFromFile(g.playEngine, pathPtr);
+                            Module._free(pathPtr);
+                        } catch(e){}
+                    } else {
+                        // fallback to localStorage
+                        let content = localStorage.getItem('ns2_content') || '';
+                        if(content){ Module.FS.writeFile('/story.ns2', content); const pathPtr = allocateUTF8('/story.ns2'); Module._LoadFromFile(g.playEngine, pathPtr); Module._free(pathPtr); }
+                    }
+                    Module._Start(g.playEngine);
+                    updatePlay();
+                    break;
+                }
+                case 'ns2-restart': {
+                    restartStory();
+                    break;
+                }
+                case 'ns2-jump': {
+                    const state = data.state;
+                    const Module = ensureModule();
+                    if(!Module || !state) return;
+                    if(!g.playEngine){ g.playEngine = Module._CreateEngine(); Module._Start(g.playEngine); }
+                    try {
+                        const namePtr = allocateUTF8(state);
+                        const canVisit = Module._CanVisitState(g.playEngine, namePtr) === 1;
+                        if(canVisit){ Module._SetCurrentState(g.playEngine, namePtr); }
+                        Module._free(namePtr);
+                        updatePlay();
+                    } catch(e){}
+                    break;
+                }
+                case 'ns2-forcejump': {
+                    const state = data.state;
+                    const Module = ensureModule();
+                    if(!Module || !state) return;
+                    if(!g.playEngine){ g.playEngine = Module._CreateEngine(); Module._Start(g.playEngine); }
+                    try {
+                        const namePtr = allocateUTF8(state);
+                        Module._SetCurrentState(g.playEngine, namePtr);
+                        Module._free(namePtr);
+                        updatePlay();
+                    } catch(e){}
+                    break;
+                }
+            }
+        } catch(e){}
+    });
+})();
+</script>
+</head>
+<body>
+<div class="main">
+    <div class="play-toolbar" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+        <button onclick="startPlayEngine()">Start</button>
+        <button onclick="restartStory()">Restart</button>
+        <button onclick="saveProgress()">Save</button>
+        <button onclick="triggerLoad()">Load</button>
+        <input type="file" id="load-save" accept=".save" style="display:none" onchange="handleLoadFile(this.files[0])">
+        <!-- removed choice search input -->
+    </div>
+    <div class="play-content">
+        <h2 id="play-title"></h2>
+        <p id="play-desc"></p>
+        <div id="play-choices" class="choices"></div>
+        <h3 data-i18n="variables">Variables</h3>
+        <div class="play-vars-toolbar" style="margin-bottom:6px;">
+            <input type="text" id="play-var-search" placeholder="Search variables..." oninput="filterPlayVars()" style="width:240px;">
+        </div>
+        <div id="play-variables"></div>
+    </div>
+    <!-- removed play-error and status elements -->
+</div>
+<script>
+// Lightweight language/context setup for reader standalone; shared logic in play.js
+window.languages = window.languages || { en: { playEngineStarted: 'Play engine started', storyRestarted: 'Story restarted' } };
+window.currentLanguage = window.currentLanguage || 'en';
+// Initialize module and start engine
+(async()=>{ try{ if(!window.Module){ if(typeof NSE2Module==='undefined') throw new Error('NSE2Module missing'); window.Module = await NSE2Module(); } startPlayEngine(); }catch(e){ /* silent */ } })();
+</script>
+</body>
+</html>

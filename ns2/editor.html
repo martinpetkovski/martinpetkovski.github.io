@@ -14,6 +14,7 @@
     <script src="https://unpkg.com/panzoom@9.4.3/dist/panzoom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.min.js"></script>
     <script type="text/javascript" src="NSE2.js"></script>
+    <script type="text/javascript" src="play.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -141,21 +142,9 @@
             <div id="graph-container"></div>
         </div>
 
-        <div id="tab-play" class="tab-content">
-            <input type="file" id="load-save" accept=".save" onchange="loadProgress()">
-            <div class="play-content">
-                <h2 id="play-title"></h2>
-                <p id="play-desc"></p>
-                <div class="play-choices-toolbar">
-                    <input type="text" id="choice-search-play" data-i18n-placeholder="searchChoices" oninput="filterPlayChoices()">
-                </div>
-                <div id="play-choices" class="choices"></div>
-                <h3 data-i18n="variables">Variables</h3>
-                <div class="play-vars-toolbar">
-                    <input type="text" id="play-var-search" data-i18n-placeholder="Search variables..." oninput="filterPlayVars()">
-                </div>
-                <div id="play-variables"></div>
-            </div>
+        <div id="tab-play" class="tab-content" style="display:flex;flex-direction:column;">
+            <!-- Externalized play view: loaded entirely via iframe; no play logic resides in editor. -->
+            <iframe id="play-iframe" src="reader.html" title="Play" style="flex:1 1 auto;width:100%;border:0;background:#1e1e1e;min-height:300px;"></iframe>
         </div>
 
         <!-- Help view container: loads full HTML pages in the tab area (no tab button) -->
@@ -216,6 +205,8 @@
             openTab('metadata');
             updateGlobalToolbar('metadata');
             updateFileIndicator();
+                // Dispatch readiness AFTER editorEngine exists and story (if any) loaded
+                try { window.dispatchEvent(new Event('ns2-module-ready')); } catch(e) {}
 
             window.addEventListener('storage', (event) => {
                 if (event.key === 'ns2_content' && event.newValue) {
@@ -1228,14 +1219,8 @@
                 populateStateDatalist();
             }
 
-            if (tabName === 'play') {
-                // Always ensure play engine is ready
-                if (!playEngine) {
-                    await startPlayEngine();  // Auto-start if not running
-                } else {
-                    updatePlay();  // Refresh UI
-                }
-            }
+            // Play tab now hosts iframe; all play logic is inside reader.html
+            // (no local initialization required).
         }
         
         // Open via legacy <input type="file"> (fallback)
@@ -2113,45 +2098,28 @@ function selectState(name) {
 
         function jumpToState(name) {
             if (!name) return;
-            if (confirm((languages[currentLanguage]['confirmDeleteState'] || 'Delete state "{name}"?').replace('{name}', name))) {
-                removeState(name);
-                // Refresh graph view
-                try {
-                    // clear any graph selection referencing the deleted state
-                    if (graphSelectedState === name) graphSelectedState = null;
-                    renderGraph();
-                } catch (e) {}
+            try {
+                const iframe = document.getElementById('play-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({ type: 'ns2-jump', state: name }, '*');
+                }
+                openTab('play');
+            } catch(e) {
+                setStatus((languages[currentLanguage]['errorJumpState'] || 'Error jumping to state: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
             }
         }
 
         function forceJumpToState(name) {
-            if (!playEngine) {
-                setStatus(languages[currentLanguage]['startPlaySessionFirst'] || "Start the play session first", true);
-                return;
-            }
+            if (!name) return;
             try {
-                const before = savePlaySnapshot(playEngine);
-                const namePtr = allocateUTF8(name);
-                Module._SetCurrentState(playEngine, namePtr);
-                Module._free(namePtr);
-                updatePlay();
-                openTab('play');
-                const after = savePlaySnapshot(playEngine);
-                const err = getLastError(playEngine);
-                if (err) {
-                    setStatus((languages[currentLanguage]['errorForceJump'] || "Error force jumping to state: {err}").replace('{err}', err));
-                } else {
-                    setStatus(languages[currentLanguage]['forceJumpSuccess'] || "Force jumped to state successfully");
-                    try {
-                        const action = {
-                                description: { title: `Force jump to ${name}`, detail: `to: ${summarizeForHistory(name)}` },
-                                undo: () => { try { restorePlaySnapshot(playEngine, before); } catch (e) {} },
-                                redo: () => { try { restorePlaySnapshot(playEngine, after); } catch (e) {} }
-                            };
-                        pushProgramAction(action);
-                    } catch (e) {}
+                const iframe = document.getElementById('play-iframe');
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage({ type: 'ns2-forcejump', state: name }, '*');
                 }
-            } catch (e) { console.warn('forceJumpToState failed', e); }
+                openTab('play');
+            } catch(e) {
+                setStatus((languages[currentLanguage]['errorForceJump'] || 'Error force jumping to state: {err}').replace('{err}', e && e.message ? e.message : String(e)), true);
+            }
         }
 
         function renderChoices(name) {
@@ -2793,206 +2761,15 @@ function selectState(name) {
             }
         }
 
-        async function startPlayEngine() {
-            try {
-                await initModule();
-                if (playEngine) {
-                    // stop periodic availability refresh for previous engine
-                    if (playAvailabilityInterval) {
-                        clearInterval(playAvailabilityInterval);
-                        playAvailabilityInterval = null;
-                    }
-                    Module._DestroyEngine(playEngine);
-                    playEngine = null;
-                }
-                playEngine = Module._CreateEngine();
-                const content = generateNS2Content();
-                const storyPath = '/story.ns2';
-                Module.FS.writeFile(storyPath, content);
-                const pathPtr = allocateUTF8(storyPath);
-                const loaded = Module._LoadFromFile(playEngine, pathPtr);
-                Module._free(pathPtr);
-                Module._Start(playEngine);
-                updatePlay();  // Now safe to update UI
-                setStatus(languages[currentLanguage]['playEngineStarted'] || "Play engine started");
-            } catch (e) {
-                const errMsg = 'Error: ' + e.message;
-                document.getElementById('play-error').textContent = errMsg;
-                setStatus(errMsg, true);
-            }
-        }
+        // startPlayEngine moved to play.js
 
-        function restartStory() {
-            startPlayEngine();
-            setStatus(languages[currentLanguage]['storyRestarted'] || "Story restarted");
-        }
+        // restartStory moved to play.js
 
-        function saveProgress() {
-            if (!playEngine) {
-                setStatus("No play engine running", true);
-                return;
-            }
-            const savePath = '/save.save';
-            const pathPtr = allocateUTF8(savePath);
-            Module._SaveProgress(playEngine, pathPtr);
-            Module._free(pathPtr);
-            const saveContent = Module.FS.readFile(savePath, { encoding: 'utf8' });
-            const blob = new Blob([saveContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'story.save';
-            a.click();
-            URL.revokeObjectURL(url);
-            const err = getLastError(playEngine);
-            if (err) {
-                setStatus("Error saving progress: " + err, true);
-            } else {
-                setStatus("Progress saved");
-            }
-        }
+        // saveProgress moved to play.js
 
-        function loadProgress() {
-            const file = document.getElementById('load-save').files[0];
-            if (!file || !playEngine) {
-                setStatus("No file or play engine not running", true);
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = e => {
-                const saveContent = e.target.result;
-                const savePath = '/save.save';
-                Module.FS.writeFile(savePath, saveContent);
-                const pathPtr = allocateUTF8(savePath);
-                Module._LoadProgress(playEngine, pathPtr);
-                Module._free(pathPtr);
-                updatePlay();
-                const err = getLastError(playEngine);
-                if (err) {
-                    setStatus("Error loading progress: " + err, true);
-                } else {
-                    setStatus("Progress loaded successfully");
-                }
-            };
-            reader.readAsText(file);
-        }
+        // loadProgress moved to play.js
 
-        function updatePlay() {
-            if (!playEngine) {
-                document.getElementById('play-title').textContent = '';
-                document.getElementById('play-desc').innerHTML = '<em>Click "Start Play" to begin the story.</em>';
-                document.getElementById('play-error').textContent = '';
-                document.getElementById('play-choices').innerHTML = '';
-                document.getElementById('play-variables').innerHTML = '';
-                return;
-            }
-
-            const stateCount = Module._GetStateCount(playEngine);
-            if (stateCount === 0) {
-                document.getElementById('play-title').textContent = 'No Story Loaded';
-                document.getElementById('play-desc').innerHTML = '<em>Create states and set a start state in the Metadata tab.</em>';
-                document.getElementById('play-error').textContent = '';
-                document.getElementById('play-choices').innerHTML = '';
-                document.getElementById('play-variables').innerHTML = '';
-                return;
-            }
-
-            const titlePtr = Module._GetCurrentTitle(playEngine);
-            const title = Module.UTF8ToString(titlePtr);
-            document.getElementById('play-title').textContent = title;
-            Module._FreeString(titlePtr);
-
-            const descPtr = Module._GetCurrentDescription(playEngine);
-            const desc = Module.UTF8ToString(descPtr);
-            document.getElementById('play-desc').textContent = desc;
-            Module._FreeString(descPtr);
-
-            const errorPtr = Module._GetStoryLastError(playEngine);
-            const error = Module.UTF8ToString(errorPtr);
-            document.getElementById('play-error').innerHTML = error.replace(/\n/g, '<br>');
-            Module._FreeString(errorPtr);
-            if (error) {
-                setStatus(error);
-            }
-
-            // Update variables
-            const variablesDiv = document.getElementById('play-variables');
-            variablesDiv.innerHTML = '';
-            const table = document.createElement('table');
-            table.innerHTML = '<thead><tr><th>Variable</th><th>Value</th></tr></thead><tbody></tbody>';
-            const tbody = table.querySelector('tbody');
-            const count = Module._GetVariableCount(playEngine);
-            for (let i = 0; i < count; i++) {
-                const namePtr = Module._GetVariableName(playEngine, i);
-                const name = Module.UTF8ToString(namePtr);
-                Module._FreeString(namePtr);
-                const namePtrVal = allocateUTF8(name);
-                const valuePtr = Module._GetVariableValue(playEngine, namePtrVal);
-                const value = Module.UTF8ToString(valuePtr);
-                Module._FreeString(valuePtr);
-                Module._free(namePtrVal);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${escapeHtml(name)}</td><td><input value="${escapeHtml(value)}" onchange="setVariableValue('${escapeHtml(name)}', this.value)" onblur="setVariableValue('${escapeHtml(name)}', this.value)"></td>`;
-                tbody.appendChild(tr);
-            }
-            variablesDiv.appendChild(table);
-            filterPlayVars();
-
-            // Retrieve available actions (names) and also full current choices
-            const pActionsPtr = Module._malloc(4);
-            const countAvailable = Module._GetAvailableActions(playEngine, pActionsPtr);
-            const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
-            // Build a mapping from action text -> queue of available indices (handles duplicate texts)
-            const availableActions = [];
-            const actionIndexMap = new Map();
-            for (let ai = 0; ai < countAvailable; ai++) {
-                const strPtr = Module.getValue(actionsArrayPtr + ai * 4, 'i32');
-                const actionText = Module.UTF8ToString(strPtr);
-                availableActions.push(actionText);
-                const key = normalizeForMatching(actionText);
-                if (!actionIndexMap.has(key)) actionIndexMap.set(key, []);
-                actionIndexMap.get(key).push(ai);
-            }
-
-            // Render all current choices but disable those that are not available
-            const choicesDiv = document.getElementById('play-choices');
-            choicesDiv.innerHTML = '';
-            const totalChoices = Module._GetCurrentChoicesCount(playEngine);
-            for (let ci = 0; ci < totalChoices; ci++) {
-                const textPtr = Module._GetChoiceText(playEngine, ci);
-                const text = Module.UTF8ToString(textPtr);
-                Module._FreeString(textPtr);
-                const btn = document.createElement('button');
-                btn.textContent = text;
-                // keep original text and index for later matching
-                btn.dataset.choiceText = text;
-                btn.dataset.choiceIndex = String(ci);
-                choicesDiv.appendChild(btn);
-            }
-
-            // cleanup
-            Module._FreeStrings(actionsArrayPtr, countAvailable);
-            Module._free(pActionsPtr);
-
-            // Update availability of rendered buttons now and start periodic refresh
-            refreshPlayChoiceAvailability();
-            filterPlayChoices();
-
-            if (playAvailabilityInterval) clearInterval(playAvailabilityInterval);
-            playAvailabilityInterval = setInterval(() => {
-                if (!playEngine) {
-                    clearInterval(playAvailabilityInterval);
-                    playAvailabilityInterval = null;
-                    return;
-                }
-                refreshPlayChoiceAvailability();
-            }, 500);
-
-            const isEnded = Module._IsEnded(playEngine);
-            if (isEnded) {
-                document.getElementById('play-desc').textContent += '\n\nThe story has ended.';
-            }
-        }
+        // updatePlay moved to play.js
 
         function filterPlayChoices() {
             const searchInput = document.getElementById('choice-search-play');
@@ -3008,152 +2785,11 @@ function selectState(name) {
             });
         }
 
-        function filterPlayVars() {
-            const searchInput = document.getElementById('play-var-search');
-            if (!searchInput) return;
-            const raw = searchInput.value || '';
-            const query = normalizeForMatching(raw).toLowerCase();
-            const rows = document.querySelectorAll('#play-variables tbody tr');
-            rows.forEach(row => {
-                try {
-                    const name = normalizeForMatching(row.cells[0].textContent || '').toLowerCase();
-                    try { row.hidden = !name.includes(query); } catch (e) { row.style.display = name.includes(query) ? '' : 'none'; }
-                } catch (e) { try { row.hidden = false; } catch (ee) { row.style.display = ''; } }
-            });
-        }
+        // filterPlayVars moved to play.js
 
-        // Refresh availability of buttons inside #play-choices by querying the play engine
-        function refreshPlayChoiceAvailability() {
-            if (!playEngine) return;
-            const pActionsPtr = Module._malloc(4);
-            const countAvailable = Module._GetAvailableActions(playEngine, pActionsPtr);
-            const actionsArrayPtr = Module.getValue(pActionsPtr, 'i32');
+        // refreshPlayChoiceAvailability moved to play.js
 
-            // Build index queues for normalized action texts
-            const actionIndexMap = new Map();
-            for (let ai = 0; ai < countAvailable; ai++) {
-                const strPtr = Module.getValue(actionsArrayPtr + ai * 4, 'i32');
-                const actionText = Module.UTF8ToString(strPtr);
-                const key = normalizeForMatching(actionText);
-                if (!actionIndexMap.has(key)) actionIndexMap.set(key, []);
-                actionIndexMap.get(key).push(ai);
-            }
-
-            const choicesDiv = document.getElementById('play-choices');
-            if (!choicesDiv) {
-                Module._FreeStrings(actionsArrayPtr, countAvailable);
-                Module._free(pActionsPtr);
-                return;
-            }
-
-            const buttons = Array.from(choicesDiv.querySelectorAll('button'));
-            buttons.forEach(btn => {
-                const original = btn.dataset.choiceText || btn.textContent || '';
-                const ci = parseInt(btn.dataset.choiceIndex || '-1', 10);
-
-                // First: check target visitability for this specific choice index
-                let choiceTarget = '';
-                try {
-                    const targetPtr = Module._GetChoiceTarget(playEngine, ci);
-                    choiceTarget = Module.UTF8ToString(targetPtr);
-                    Module._FreeString(targetPtr);
-                } catch (e) {
-                    // fallback: no specific target info available
-                    choiceTarget = '';
-                }
-
-                // If a target exists, check whether it can be visited now
-                let targetVisitOk = true;
-                if (choiceTarget) {
-                    try {
-                        const tPtr = allocateUTF8(choiceTarget);
-                        const canVisit = Module._CanVisitState(playEngine, tPtr);
-                        targetVisitOk = !!canVisit;
-                        Module._free(tPtr);
-                    } catch (e) {
-                        targetVisitOk = true; // if API not available, conservatively allow
-                    }
-                }
-
-                if (!targetVisitOk) {
-                    // Target explicitly not visitable: disable
-                    btn.setAttribute('disabled', 'disabled');
-                    btn.classList.add('disabled');
-                    btn.title = languages[currentLanguage]['choiceUnavailable'] || 'Choice unavailable';
-                    btn.onclick = null;
-                    return;
-                }
-
-                // Otherwise, fall back to matching available actions by normalized text
-                const norm = normalizeForMatching(original);
-                const queue = actionIndexMap.get(norm);
-                if (queue && queue.length > 0) {
-                    const availIndex = queue.shift();
-                    btn.removeAttribute('disabled');
-                    btn.classList.remove('disabled');
-                    btn.title = '';
-                    // assign onclick to advance using this available index
-                    btn.onclick = () => {
-                        try {
-                            // capture pre and post snapshots to allow reliable undo/redo
-                            const before = savePlaySnapshot(playEngine);
-                            Module._Advance(playEngine, availIndex);
-                            const err = getLastError(playEngine);
-                            if (err) setStatus("Error advancing: " + err, true);
-                            updatePlay();
-                            const after = savePlaySnapshot(playEngine);
-                            try {
-                                            const action = {
-                                                description: { title: `Advance action`, detail: `index: ${availIndex}` },
-                                                undo: () => { try { restorePlaySnapshot(playEngine, before); } catch (e) {} },
-                                                redo: () => { try { restorePlaySnapshot(playEngine, after); } catch (e) {} }
-                                            };
-                                pushProgramAction(action);
-                            } catch (e) {}
-                        } catch (e) { console.warn('advance wrapper failed', e); }
-                    };
-                } else {
-                    // not available: disable and remove handler
-                    btn.setAttribute('disabled', 'disabled');
-                    btn.classList.add('disabled');
-                    btn.title = languages[currentLanguage]['choiceUnavailable'] || 'Choice unavailable';
-                    btn.onclick = null;
-                }
-            });
-
-            Module._FreeStrings(actionsArrayPtr, countAvailable);
-            Module._free(pActionsPtr);
-        }
-
-        function setVariableValue(name, value) {
-            if (!playEngine) return;
-            const namePtr = allocateUTF8(name);
-            // capture previous value
-            let prev = '';
-            try {
-                const prevPtr = Module._GetVariableValue(playEngine, namePtr);
-                prev = Module.UTF8ToString(prevPtr);
-                Module._FreeString(prevPtr);
-            } catch (e) { prev = ''; }
-            const valuePtr = allocateUTF8(value);
-            Module._SetVariableValue(playEngine, namePtr, valuePtr);
-            Module._free(valuePtr);
-            Module._free(namePtr);
-            updatePlay();
-            const err = getLastError(playEngine);
-            if (err) {
-                setStatus("Error setting variable value: " + err, true);
-            } else {
-                try {
-                    const action = {
-                        description: { title: `Set variable ${name}`, detail: `${summarizeForHistory(prev)} -> ${summarizeForHistory(value)}` },
-                        undo: () => { try { const np = allocateUTF8(name); const pv = allocateUTF8(prev); Module._SetVariableValue(playEngine, np, pv); Module._free(np); Module._free(pv); updatePlay(); } catch (e) {} },
-                        redo: () => { try { const np = allocateUTF8(name); const nv = allocateUTF8(value); Module._SetVariableValue(playEngine, np, nv); Module._free(np); Module._free(nv); updatePlay(); } catch (e) {} }
-                    };
-                    pushProgramAction(action);
-                } catch (e) {}
-            }
-        }
+        // setVariableValue moved to play.js
 
         function buildGraph() {
             let adj = {};
@@ -4602,18 +4238,29 @@ function selectState(name) {
             // Append file group first, then contextual groups, then play/tools to enforce ordering
             toolbar.appendChild(contextContainer);
 
-            // PLAY group (global)
+            // PLAY group (global) - Play + Restart send messages to reader iframe
             const playGroup = document.createElement('div'); playGroup.className = 'toolbar-group';
-            const playBtn = makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => { startPlayEngine(); openTab('play'); });
+            const playBtn = makeBtn('<i class="fas fa-play"></i>', languages[currentLanguage]['Play Current Story'] || 'Play Current Story', () => {
+                try {
+                    const iframe = document.getElementById('play-iframe');
+                    if (iframe && iframe.contentWindow) {
+                        const content = generateNS2Content();
+                        iframe.contentWindow.postMessage({ type: 'ns2-play', content }, '*');
+                    }
+                } catch(e) {}
+                openTab('play');
+            });
             playBtn.dataset.action = 'play-start';
             playGroup.appendChild(playBtn);
-            const loadProgBtn = makeBtn('<i class="fas fa-upload"></i>', languages[currentLanguage]['Load Progress'] || 'Load Progress', () => { document.getElementById('load-save').click(); openTab('play'); });
-            loadProgBtn.dataset.action = 'play-loadprogress';
-            playGroup.appendChild(loadProgBtn);
-            const saveProgBtn = makeBtn('<i class="fas fa-download"></i>', languages[currentLanguage]['Save Progress'] || 'Save Progress', () => { saveProgress(); openTab('play'); });
-            saveProgBtn.dataset.action = 'play-saveprogress';
-            playGroup.appendChild(saveProgBtn);
-            const restartBtn = makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => { restartStory(); openTab('play'); });
+            const restartBtn = makeBtn('<i class="fas fa-redo"></i>', languages[currentLanguage]['Restart'] || 'Restart', () => {
+                try {
+                    const iframe = document.getElementById('play-iframe');
+                    if (iframe && iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({ type: 'ns2-restart' }, '*');
+                    }
+                } catch(e) {}
+                openTab('play');
+            });
             restartBtn.dataset.action = 'play-restart';
             playGroup.appendChild(restartBtn);
             addGroupLabel(playGroup, 'PLAY');

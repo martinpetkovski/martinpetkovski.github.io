@@ -92,7 +92,7 @@
         display: grid;
         grid-template-columns: auto 1fr auto; /* left / center (toolbar) / right (window-controls) */
         align-items: center;
-        background: linear-gradient(0deg, #0C0C0C, #161616);
+        background: linear-gradient(0deg, #0C0C0C, #1C1C1C);
         padding: 0 10px; /* remove vertical padding from title bar */
         border-bottom: 1px solid #2a2a2a;
         position: sticky;
@@ -165,7 +165,7 @@
     button.active {
         color: #00AbC0;
         border-bottom: 2px solid #00AbC0;
-        box-shadow: inset 16px 0px 20px rgba(0,123,176,0.4);
+        box-shadow: inset 16px -5px 20px rgba(0,123,176,0.6);
         background-color: rgba(0,123,176,0.2) !important;
         background: rgba(0,123,176,0.2) !important;
     }
@@ -553,8 +553,8 @@
 
     /* Story title displayed in the toolbar */
     .toolbar-story-title {
-        color: #D4D4D4;
-        font-size: 13px;
+        color: #FFF5;
+        font-size: 16px;
         font-weight: 600;
         margin-right: 8px;
         padding: 2px 6px;
@@ -599,7 +599,7 @@
 
     /* Compact header elements */
     .header h1 { font-size: 15px; margin-left: 6px; line-height: 20px; }
-    .header { padding: 3px 8px; }
+    .header { padding: 0px 8px; }
     button { padding: 3px 5px; font-size: 12px; }
     .toolbar .icon-button { width:20px; height:20px; }
 
@@ -839,7 +839,9 @@
     }
 
     #play-desc {
+        max-width: 500px;
         margin-bottom: 20px !important;
+        text-align: justify;
     }
 
     .error {
@@ -1603,6 +1605,7 @@
         color: #00ff00;
         border: 1px #0f0 solid;
         border-bottom-width: 5px;
+        background-color: #00ff0011;
     }
 
     .hide-cell {
