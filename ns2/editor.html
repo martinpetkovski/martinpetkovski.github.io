@@ -932,16 +932,37 @@
         animation: dropdownOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
+    /* Dropdowns styled to match toolbar/tabs (same dark gradient + subtle inner highlight) */
+    .dropdown-menu {
+        background: linear-gradient(0deg, #111, #222);
+        border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+        backdrop-filter: blur(6px);
+        color: #D4D4D4;
+        border-radius: 6px;
+        padding: 6px;
+    }
+
     .dropdown-menu button {
         display: flex;
         align-items: center;
-        gap: 5px;
-        width: 150px;
+        gap: 8px;
+        width: 100%;
         text-align: left;
-        padding: 8px;
+        padding: 8px 10px;
         border: none !important;
-        background: rgba(37, 37, 38, 0.7) !important;
-        margin: 2px;
+        background: transparent !important;
+        color: #D4D4D4;
+        margin: 2px 0;
+        border-radius: 4px;
+        transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .dropdown-menu button:hover {
+        color: #FFF;
+        /* Use the same hover visual as toolbar icon buttons for perfect match */
+        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
+        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
     }
 
     /* Inline toolbar styling to match menubar buttons (allow wrapping on small screens) */
@@ -971,6 +992,23 @@
         font-weight: 600;
         min-width: 120px;
         text-align: left;
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 0.3px;
+    }
+
+    /* Category titles should not receive hover highlights */
+    .dropdown-menu .menu-category-title,
+    .dropdown-menu .menu-category-title * {
+        background: transparent !important;
+        color: #cfcfcf !important;
+        cursor: default !important;
+        pointer-events: none; /* ensure title doesn't react to hover/click */
+    }
+
+    /* Ensure the category container itself does not get highlighted when hovering its items */
+    .dropdown-menu .menu-category,
+    .dropdown-menu .menu-category:hover {
+        background: transparent !important;
     }
 
     /* category layout: title left, items stacked on the right */
@@ -992,6 +1030,59 @@
     #global-toolbar {
         background: transparent !important;
         box-shadow: none !important;
+    }
+
+    /* Context menus that are not the small dropdowns (token/graph context) */
+    #context-menu, #graph-context-menu {
+        background: linear-gradient(0deg, #111, #222);
+        border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+        color: #D4D4D4;
+        border-radius: 8px;
+        padding: 8px;
+        max-height: 50vh;
+        overflow: auto;
+        backdrop-filter: blur(6px);
+    }
+
+    #context-menu .dropdown-item, #graph-context-menu .dropdown-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 8px 10px;
+        margin: 4px 0;
+        background: transparent;
+        color: #D4D4D4;
+        border-radius: 4px;
+        transition: background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    #context-menu .dropdown-item:hover, #graph-context-menu .dropdown-item:hover {
+        color: #fff;
+        /* Use the toolbar button hover gradient to match exact color */
+        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
+        box-shadow: inset 30px 0 40px rgba(0,123,176,0.6);
+    }
+
+    /* Icon tinting: default subtle, teal on hover */
+    .dropdown-menu button i,
+    .dropdown-menu button .fa,
+    #context-menu .dropdown-item i,
+    #context-menu .dropdown-item .fa,
+    #graph-context-menu .dropdown-item i,
+    #graph-context-menu .dropdown-item .fa {
+        transition: color 0.18s ease, opacity 0.18s ease;
+        color: rgba(212,212,212,0.7);
+    }
+
+    .dropdown-menu button:hover i,
+    .dropdown-menu button:hover .fa,
+    #context-menu .dropdown-item:hover i,
+    #context-menu .dropdown-item:hover .fa,
+    #graph-context-menu .dropdown-item:hover i,
+    #graph-context-menu .dropdown-item:hover .fa {
+        color: #00AbC0; /* teal accent */
     }
 
     .states-list-panel .toolbar {
@@ -1116,8 +1207,16 @@
 
     #context-menu li:hover {
         color: #00AbC0;
-        background: linear-gradient(0deg, rgba(15,15,15,1) 0%, rgba(25,25,25,1) 100%);
-        box-shadow: inset 20px 0px 30px rgba(0,123,176,0.18);
+        /* Use toolbar button hover gradient for stronger, consistent highlight */
+        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
+        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+    }
+
+    /* Prevent category header rows from highlighting on hover */
+    #context-menu li.menu-category:hover {
+        background: transparent !important;
+        color: rgba(139,153,166,0.9) !important;
+        box-shadow: none !important;
     }
 
     #context-menu li .token {
