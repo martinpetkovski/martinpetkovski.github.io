@@ -194,12 +194,11 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
     }
 
-    .tabs:hover ~ #global-toolbar,
-    #global-toolbar:hover {
-        opacity: 1;
-        visibility: visible;
-        max-height: 50px;
-        transition: opacity 0.12s ease, max-height 0.12s ease;
+    /* Ensure toolbar is always visible in the header */
+    #global-toolbar {
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: none !important;
     }
 
     .tab-button {
@@ -472,6 +471,31 @@
         box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
     }
 
+    /* Restore colored icon buttons inside the toolbar (keeps toolbar background transparent) */
+    #global-toolbar .icon-button,
+    #global-toolbar .toolbar-group .icon-button {
+        padding: 0;
+        font-size: 12px;
+        border-radius: 0;
+        width: 26px;
+        height: 26px;
+        justify-content: center;
+        color: #999;
+        background: linear-gradient(135deg, rgba(0,123,176,0.4) 0%, rgba(0,123,176,0.6) 100%);
+        border: none;
+        box-shadow: inset 0 -2px 0 rgba(255,255,255,0.05);
+        border-bottom: 2px solid transparent;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+        cursor: pointer;
+    }
+
+    #global-toolbar .icon-button:hover,
+    #global-toolbar .toolbar-group .icon-button:hover {
+        color: #FFF;
+        background: linear-gradient(135deg, rgba(0,123,176,0.6) 0%, rgba(0,123,176,0.8) 100%);
+        box-shadow: inset 30px 0px 40px rgba(0,123,176,0.6);
+    }
+
     /* Base node body */
     .mermaid .node rect,
     .mermaid .node polygon,
@@ -639,19 +663,26 @@
     /* Groups inside the global toolbar */
     .toolbar-group {
         display: flex;
-        gap: 6px;
+        gap: 8px;
         align-items: center;
-        padding-right: 10px;
+        padding: 8px 6px;
         border-right: 1px solid rgba(255,255,255,0.03);
         margin-right: 8px;
     }
+    /* Practical inline group labels (left of the buttons) with 50% foreground transparency */
     .toolbar-group .group-label {
-        color: #8b99a6;
-        font-size: 11px;
-        padding-right: 6px;
-        opacity: 0.5;
+        display: inline-block;
+        margin-right: 6px;
+        padding: 0 6px;
+        background: transparent;
+        border: none;
+        border-radius: 8px;
+        color: rgba(174,190,205,0.5); /* 50% foreground */
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
         white-space: nowrap;
-        margin-left: auto;
     }
 
     .toolbar .menu-button {
@@ -911,6 +942,56 @@
         border: none !important;
         background: rgba(37, 37, 38, 0.7) !important;
         margin: 2px;
+    }
+
+    /* Inline toolbar styling to match menubar buttons (allow wrapping on small screens) */
+    #global-toolbar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap; /* allow groups to wrap to next line on small screens */
+        background: transparent;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-left: 6px;
+        pointer-events: auto;
+        z-index: 102;
+    }
+
+    .dropdown-menu .menu-category {
+        padding: 6px 8px;
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .dropdown-menu .menu-category-title {
+        color: #cfcfcf;
+        font-size: 12px;
+        padding: 4px 2px 8px 2px;
+        font-weight: 600;
+        min-width: 120px;
+        text-align: left;
+    }
+
+    /* category layout: title left, items stacked on the right */
+    .dropdown-menu .menu-category {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 6px 8px;
+    }
+
+    .dropdown-menu .menu-category-items {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1 1 auto;
+    }
+
+    /* Toolbar should be visually transparent (no background) per request */
+    #global-toolbar {
+        background: transparent !important;
+        box-shadow: none !important;
     }
 
     .states-list-panel .toolbar {
@@ -1284,27 +1365,29 @@
     html, body { height: 100vh; margin: 0 !important; padding: 0 !important; overflow: hidden; }
     #editor { display: flex; flex-direction: column; height: 100vh; width: 100%; }
 
-    #global-toolbar { 
-        position: fixed;
-        top: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 200;
-        background: #151515 !important;
-        opacity: 0;
-        visibility: hidden;
-        max-height: 0;
-        overflow: hidden;
-        /* only animate appearance, not position (so it follows cursor exactly) */
-        transition: opacity 0.12s ease, max-height 0.12s ease;
-        pointer-events: none;
-        width: fit-content;
-        max-width: 90vw;
-    }
-
-    .tabs:hover ~ #global-toolbar,
-    #global-toolbar:hover {
-        pointer-events: auto;
+    /* Make the global toolbar inline and always visible in the header menubar.
+       This neutralizes older fixed/hidden behaviour and lets the header control layout. */
+    #global-toolbar {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        z-index: 102 !important;
+        background: transparent !important;
+        border-radius: 6px;
+        opacity: 1 !important;
+        visibility: visible !important;
+        max-height: none !important;
+        overflow: visible !important;
+        transition: none !important;
+        pointer-events: auto !important;
+        width: auto !important;
+        max-width: none !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 4px 8px !important;
+        margin-right: 6px;
     }
 
     #tab-metadata .section,
@@ -1326,29 +1409,44 @@
     .menu-button, .dropdown-menu button,
     summary, .props-container label { border-radius: 0 !important; }
 
-    .toolbar + ul,
-    .toolbar + table,
-    .toolbar + .table-wrapper,
-    .play-choices-toolbar + #play-choices,
-    .play-vars-toolbar + #play-variables { margin-top: 8px !important; }
-
-    #states-list,
-    #variables-list tbody,
-    .choices-section .table-wrapper,
-    #play-choices,
-    #play-variables,
-    .states-list-panel,
-    .state-details-panel { padding-bottom: 0px !important; }
-
-    .choices-section tr { height: 34px; }
-    .choices-section th,
-    .choices-section td {
-        padding: 4px 5px !important;
-        height: 34px !important;
-        vertical-align: middle !important;
+    .toolbar-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 6px;
+        margin-right: 8px;
+        flex: 0 1 auto; /* allow groups to shrink and wrap as units */
+        min-width: 0;
+    }
+    /* vertical separators between categories (30% opacity) */
+    .toolbar-group:not(:last-child) {
+        border-right: 1px solid rgba(212,212,212,0.1); /* 10% opacity, 1px */
+    }
+    /* Practical inline group labels (left of the buttons) with 20% foreground transparency and site title font */
+    .toolbar-group .group-label {
+        order: -1; /* force label to the left of group buttons */
+        display: inline-block;
+        margin-right: 8px;
+        margin-left: 0;
+        padding: 0 6px;
+        background: transparent;
+        border: none;
+        border-radius: 8px;
+        color: rgba(174,190,205,0.2); /* 20% foreground */
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        font-family: 'Orbitron', sans-serif; /* match site title */
     }
 
-    .choices-section table input:not([type="checkbox"]),
+    /* Slight layout tweaks on very small screens */
+    @media (max-width: 720px) {
+        #global-toolbar { gap: 6px; }
+        .toolbar-group { padding: 6px 4px; }
+        .toolbar-group .group-label { font-size: 11px; margin-right: 4px; }
+    }
     .choices-section table select {
         height: 26px !important;
         padding: 0 5px !important;
@@ -1432,21 +1530,28 @@
         <img src="icon_transparent.png" data-i18n-alt="title" alt="Icon" style="height: 30px; width: auto;">
         <h1 data-i18n="title">NS2 Editor</h1>
         <div class="menubar">
-            <div class="menu-button">
-                <i class="fas fa-globe" data-i18n-title="language" title="Language"></i>
+                <!-- global toolbar moved into header so it sits left of Language/Help -->
+                <div id="global-toolbar" class="toolbar"></div>
+                <!-- dropdown containers kept in DOM; toolbar buttons will toggle them -->
                 <div class="dropdown-menu" id="language-dropdown">
                     <!-- Dynamically populated -->
                 </div>
-            </div>
-            <div class="menu-button">
-                <i class="fas fa-question-circle" data-i18n-title="help" title="Help"></i>
-                <div class="dropdown-menu">
-                    <button onclick="openHelp('guide')"><i class="fas fa-book"></i> <span data-i18n="guide">Guide...</span></button>
-                    <button onclick="openHelp('ai')"><i class="fas fa-robot"></i> <span data-i18n="ai">AI...</span></button>
-                    <button onclick="openHelp('about')"><i class="fas fa-info-circle"></i> <span data-i18n="about">About...</span></button>
+                <div class="dropdown-menu" id="help-dropdown" style="display:none">
+                    <div class="menu-category">
+                        <div class="menu-category-title">Documentation</div>
+                        <div class="menu-category-items">
+                            <button onclick="openHelp('guide')"><i class="fas fa-book"></i> <span data-i18n="guide">Guide...</span></button>
+                            <button onclick="openHelp('ai')"><i class="fas fa-robot"></i> <span data-i18n="ai">AI...</span></button>
+                        </div>
+                    </div>
+                    <div class="menu-category">
+                        <div class="menu-category-title">About</div>
+                        <div class="menu-category-items">
+                            <button onclick="openHelp('about')"><i class="fas fa-info-circle"></i> <span data-i18n="about">About...</span></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 
     <input type="file" id="file-input" accept=".ns2" onchange="loadFile()">
@@ -1464,7 +1569,7 @@
             <button class="tab-button" onclick="openTab('play')" data-i18n="play">Play</button>
         </div>
 
-        <div id="global-toolbar" class="toolbar"></div>
+        <!-- toolbar was moved into the header menubar -->
 
         <div id="tab-text" class="tab-content">
             <div id="text-editor"></div>
@@ -4265,7 +4370,76 @@ function selectState(name) {
             addGroupLabel(viewGroup, 'VIEW');
             toolbar.appendChild(viewGroup);
 
+            // TOOLS group (language + help) — always add to the toolbar so they blend
+            const toolsGroup = document.createElement('div'); toolsGroup.className = 'toolbar-group';
+            const langBtn = makeBtn('<i class="fas fa-globe"></i>', languages[currentLanguage]['language'] || 'Language', null);
+            langBtn.onclick = () => { toggleDropdown('language-dropdown', langBtn); };
+            toolsGroup.appendChild(langBtn);
+            const helpBtn = makeBtn('<i class="fas fa-question-circle"></i>', languages[currentLanguage]['help'] || 'Help', null);
+            helpBtn.onclick = () => { toggleDropdown('help-dropdown', helpBtn); };
+            toolsGroup.appendChild(helpBtn);
+            addGroupLabel(toolsGroup, 'TOOLS');
+            toolbar.appendChild(toolsGroup);
+
             toolbar.style.pointerEvents = 'auto';
+        }
+
+        // Toggle an existing dropdown container (positions it under the anchor)
+        function toggleDropdown(dropdownId, anchorEl) {
+            const dd = document.getElementById(dropdownId);
+            if (!dd || !anchorEl) return;
+            if (dd.dataset.visible === '1') {
+                dd.style.display = '';
+                dd.dataset.visible = '';
+                return;
+            }
+            // Close other open dropdowns first
+            document.querySelectorAll('.dropdown-menu').forEach(d => {
+                if (d.id !== dropdownId && d.dataset.visible === '1') {
+                    d.style.display = '';
+                    d.dataset.visible = '';
+                }
+            });
+
+            // Position dropdown below anchor
+            const rect = anchorEl.getBoundingClientRect();
+            dd.style.position = 'fixed';
+            // start hidden state for animation
+            dd.style.display = 'block';
+            dd.style.opacity = '0';
+            dd.style.transform = 'translateY(-8px) scale(0.98)';
+            dd.style.zIndex = 110;
+            dd.dataset.visible = '1';
+
+            // Animate into place and clamp horizontally to viewport
+            requestAnimationFrame(() => {
+                const b = dd.getBoundingClientRect();
+                let left = Math.max(8, Math.min(rect.left, window.innerWidth - b.width - 8));
+                let top = rect.bottom + 8;
+                // If bottom would overflow, open above anchor
+                if (top + b.height > window.innerHeight - 8) {
+                    top = rect.top - b.height - 8;
+                }
+                dd.style.left = left + 'px';
+                dd.style.top = top + 'px';
+                dd.style.transition = 'opacity 160ms ease, transform 160ms ease';
+                dd.style.opacity = '1';
+                dd.style.transform = 'translateY(0) scale(1)';
+                // match header-like background so dropdown is visible
+                dd.style.background = 'linear-gradient(0deg, rgba(17,17,17,0.96) 0%, rgba(30,30,30,0.96) 100%)';
+                dd.style.backdropFilter = 'blur(8px)';
+                dd.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
+                dd.style.border = '1px solid rgba(60,60,60,0.8)';
+            });
+
+            function outsideClick(e) {
+                if (!dd.contains(e.target) && !anchorEl.contains(e.target)) {
+                    dd.style.display = '';
+                    dd.dataset.visible = '';
+                    document.removeEventListener('click', outsideClick);
+                }
+            }
+            setTimeout(() => document.addEventListener('click', outsideClick), 0);
         }
 
         function setupStatusWindow() {
@@ -4302,49 +4476,7 @@ function selectState(name) {
             }
         }
 
-        // Toolbar mouse tracking - center on cursor when hovering over tabs, stop on toolbar hover
-        (function setupToolbarTracking() {
-            const tabs = document.querySelector('.tabs');
-            const toolbar = document.getElementById('global-toolbar');
-            let isTrackingMouse = false;
-
-            tabs.addEventListener('mouseenter', () => {
-                isTrackingMouse = true;
-            });
-
-            tabs.addEventListener('mouseleave', () => {
-                isTrackingMouse = false;
-            });
-
-            toolbar.addEventListener('mouseenter', () => {
-                isTrackingMouse = false;
-            });
-
-            toolbar.addEventListener('mouseleave', () => {
-                // Only restart tracking if still over tabs
-                if (tabs.matches(':hover')) {
-                    isTrackingMouse = true;
-                }
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isTrackingMouse && tabs.matches(':hover')) {
-                    // Center toolbar horizontally on cursor position, constrain to viewport
-                    const toolbarWidth = toolbar.offsetWidth || 0;
-                    const viewportWidth = window.innerWidth;
-                    
-                    // Calculate position to center on cursor
-                    let leftPosition = e.clientX;
-                    
-                    // Constrain toolbar to stay within viewport
-                    const minLeft = toolbarWidth / 2;
-                    const maxLeft = viewportWidth - (toolbarWidth / 2);
-                    leftPosition = Math.max(minLeft, Math.min(leftPosition, maxLeft));
-                    
-                    toolbar.style.left = leftPosition + 'px';
-                }
-            });
-        })();
+        // Toolbar mouse tracking removed — toolbar is now static in the header next to Language/Help
 
         (async () => {
             await loadLanguages();
