@@ -1,0 +1,12 @@
+{
+  "name": "ns2-editor-electron",
+  "version": "1.0.0",
+  "description": "Electron wrapper for NS2 Editor (loads/saves from disk)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
