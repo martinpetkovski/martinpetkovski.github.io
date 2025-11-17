@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let bandsData = [];
     let isEditMode = false;
+    // Optional: set window.MMM_PR_ENDPOINT globally to override the button data-endpoint/localStorage
     const lastfmApiKey = 'd186251f2ae019335f832db01d96c2f9';
     const defaultFallbackImage = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg';
 
@@ -259,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeModal();
             initializeCopyData();
             initializeMasterEdit();
+            initializeSubmitPR();
         } catch (error) {
             console.error('Error loading bands:', error);
             document.getElementById('band-table-body').innerHTML = '<tr><td colspan="8">Извинете, нешто тргна наопаку.</td></tr>';
@@ -673,6 +675,92 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Error preparing data for copy:', error);
                 alert('Грешка при подготовка на податоците за копирање. Проверете ја конзолата за детали.');
+            }
+        });
+    }
+
+    function initializeSubmitPR() {
+        console.log('Initializing submit PR');
+        const submitBtn = document.getElementById('submit-pr-btn');
+        if (!submitBtn) {
+            console.warn('Submit PR button not found, skipping init');
+            return;
+        }
+
+        const resolveEndpoint = () => {
+            if (typeof window.MMM_PR_ENDPOINT === 'string' && window.MMM_PR_ENDPOINT.trim()) return window.MMM_PR_ENDPOINT.trim();
+            const attr = submitBtn.getAttribute('data-endpoint');
+            if (attr && attr.trim()) return attr.trim();
+            const stored = localStorage.getItem('mmm_pr_endpoint');
+            if (stored && stored.trim()) return stored.trim();
+            return '';
+        };
+
+        submitBtn.addEventListener('click', async () => {
+            try {
+                if (!isEditMode) {
+                    alert('Вклучете уредување за да побарате промена.');
+                    return;
+                }
+
+                let endpoint = resolveEndpoint();
+                if (!endpoint) {
+                    endpoint = prompt('Внесете URL на worker endpoint за PR (ќе се зачува локално):');
+                    if (!endpoint) return;
+                    localStorage.setItem('mmm_pr_endpoint', endpoint);
+                }
+
+                const contributor = prompt('Ваше име или контакт (опционално):') || '';
+                const description = prompt('Краток опис на промените за PR:') || 'Предлог промени од MMM формуларот';
+
+                const exportData = {
+                    muzickaMasterLista: bandsData.map(band => ({
+                        name: band.name,
+                        city: band.city,
+                        genre: band.genre,
+                        soundsLike: band.soundsLike,
+                        isActive: band.isActive === 'Активен' ? true : band.isActive === 'Неактивен' ? false : band.isActive,
+                        links: band.links,
+                        contact: band.contact,
+                        lastfmName: band.lastfmName,
+                        label: band.label,
+                        image: band.image
+                    }))
+                };
+
+                const json = JSON.stringify(exportData, null, 2);
+
+                submitBtn.disabled = true;
+                const originalHtml = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Испраќање...';
+
+                const resp = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bandsJson: json,
+                        contributor,
+                        description,
+                        path: 'masterlista/bands.json'
+                    })
+                });
+
+                if (!resp.ok) {
+                    const text = await resp.text();
+                    throw new Error(`Worker error (${resp.status}): ${text}`);
+                }
+
+                const result = await resp.json();
+                const prUrl = result.pr_url || result.html_url || '';
+                alert(prUrl ? `Успешно! Отворен е PR: ${prUrl}` : 'Успешно! Отворен е PR.');
+                if (prUrl) window.open(prUrl, '_blank');
+
+            } catch (err) {
+                console.error('Submit PR failed:', err);
+                alert('Неуспешно испраќање на PR: ' + (err?.message || err));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Побарај промена';
             }
         });
     }
