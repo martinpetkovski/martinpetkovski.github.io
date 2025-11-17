@@ -1495,3 +1495,142 @@ footer p {
         border-radius: 4px;
     }
 }
+
+/* Custom Dialog Styles */
+.dialog-modal-content {
+    max-width: 500px;
+    width: 90%;
+    height: auto;
+    max-height: 70vh;
+    margin: 15vh auto;
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+#dialog-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    color: #2a1b4a;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#dialog-message {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#dialog-input-container {
+    margin-bottom: 1.5rem;
+}
+
+#dialog-input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.dialog-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Source Sans Pro', sans-serif;
+    min-height: 48px;
+}
+
+.cancel-btn {
+    background: #f5f5f5;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.cancel-btn:hover {
+    background: #e8e8e8;
+}
+
+.confirm-btn {
+    background: linear-gradient(135deg, #4a2c6d 0%, #2a4d8f 100%);
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: linear-gradient(135deg, #6b3e99 0%, #3949ab 100%);
+}
+
+/* Notification Area Styles */
+.notification-area {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    max-width: 400px;
+}
+
+.notification {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    margin-bottom: 0.75rem;
+    border-left: 6px solid #4a2c6d;
+    animation: slideIn 0.3s ease-out;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    color: #333;
+}
+
+.notification.success {
+    border-left-color: #2e7d32;
+}
+
+.notification.error {
+    border-left-color: #d32f2f;
+}
+
+.notification.info {
+    border-left-color: #1976d2;
+}
+
+.notification.warning {
+    border-left-color: #f57c00;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}

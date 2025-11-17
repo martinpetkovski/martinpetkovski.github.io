@@ -49,6 +49,94 @@ document.addEventListener('DOMContentLoaded', () => {
         return webUrl;
     }
 
+    // Custom dialog and notification functions
+    function showCustomDialog(title, message, inputPlaceholder = '', defaultValue = '') {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('custom-dialog-modal');
+            const titleEl = document.getElementById('dialog-title');
+            const messageEl = document.getElementById('dialog-message');
+            const inputContainer = document.getElementById('dialog-input-container');
+            const inputEl = document.getElementById('dialog-input');
+            const cancelBtn = document.getElementById('dialog-cancel-btn');
+            const confirmBtn = document.getElementById('dialog-confirm-btn');
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+
+            if (inputPlaceholder) {
+                inputContainer.style.display = 'block';
+                inputEl.placeholder = inputPlaceholder;
+                inputEl.value = defaultValue;
+                inputEl.focus();
+            } else {
+                inputContainer.style.display = 'none';
+            }
+
+            modal.style.display = 'block';
+
+            const closeModal = () => {
+                modal.style.display = 'none';
+            };
+
+            cancelBtn.onclick = () => {
+                closeModal();
+                resolve(null);
+            };
+
+            confirmBtn.onclick = () => {
+                const value = inputPlaceholder ? inputEl.value : true;
+                closeModal();
+                resolve(value);
+            };
+
+            // Close on outside click
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                    resolve(null);
+                }
+            };
+
+            // Handle Enter key
+            if (inputPlaceholder) {
+                inputEl.onkeydown = (e) => {
+                    if (e.key === 'Enter') {
+                        confirmBtn.click();
+                    }
+                };
+            }
+        });
+    }
+
+    function showNotification(message, type = 'info', duration = 5000) {
+        const notificationArea = document.getElementById('notification-area');
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+
+        notificationArea.appendChild(notification);
+
+        // Auto remove after duration
+        setTimeout(() => {
+            notification.classList.add('fade-out');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, duration);
+
+        // Click to dismiss
+        notification.onclick = () => {
+            notification.classList.add('fade-out');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        };
+    }
+
     function generateCityColor(city) {
         const asciiSum = city.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
         const colorPalette = [
@@ -246,12 +334,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 return nameA.localeCompare(nameB, 'en');
             });
             document.getElementById('total-bands').textContent = bandsData.length;
-            const lastModified = new Date('2025-05-24T00:00:00');
-            const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-            const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
-            const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
-            const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
-            document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
+            
+            // Fetch last modified date from GitHub API
+            try {
+                const response = await fetch('https://api.github.com/repos/martinpetkovski/martinpetkovski.github.io/commits?path=masterlista/bands.json&per_page=1');
+                if (response.ok) {
+                    const commits = await response.json();
+                    if (commits.length > 0) {
+                        const lastCommit = commits[0];
+                        const lastModified = new Date(lastCommit.commit.committer.date);
+                        const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+                        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                        const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
+                        const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
+                        document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
+                    } else {
+                        // Fallback to hardcoded date if no commits found
+                        const lastModified = new Date('2025-05-24T00:00:00');
+                        const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+                        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                        const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
+                        const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
+                        document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
+                    }
+                } else {
+                    throw new Error('GitHub API request failed');
+                }
+            } catch (error) {
+                console.warn('Failed to fetch last modified date from GitHub:', error);
+                // Fallback to hardcoded date
+                const lastModified = new Date('2025-05-24T00:00:00');
+                const dateOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+                const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+                const formattedDate = lastModified.toLocaleDateString('mk-MK', dateOptions).replace(' г.', '');
+                const formattedTime = lastModified.toLocaleTimeString('mk-MK', timeOptions);
+                document.getElementById('last-modified').textContent = `${formattedDate} ${formattedTime}`;
+            }
+            
             console.log(`Loaded ${bandsData.length} bands`);
             populateFilters(bandsData);
             renderBands(bandsData);
@@ -379,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!modal || !closeModal || !form || !addLinkBtn || !linksContainer) {
             console.error('Modal elements not found:', { modal, closeModal, form, addLinkBtn, linksContainer });
-            alert('Грешка: елементите на модалот не се пронајдени.');
+            showNotification('Грешка: елементите на модалот не се пронајдени.', 'error');
             return;
         }
 
@@ -596,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Pre-filling form with band data:', band);
                 if (!band) {
                     console.error('No band data provided for edit mode');
-                    alert('Грешка: нема податоци за артистот за уредување.');
+                    showNotification('Грешка: нема податоци за артистот за уредување.', 'error');
                     return;
                 }
                 document.getElementById('band-name').value = band.name !== 'недостигаат податоци' ? band.name : '';
@@ -621,9 +740,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Modal opened successfully');
         }
 
-        function deleteBand(index) {
+        async function deleteBand(index) {
             console.log(`Delete band requested for index ${index}`);
-            if (confirm('Дали сте сигурни дека сакате да го избришете овој бенд?')) {
+            const confirmed = await showCustomDialog(
+                'Потврда за бришење',
+                'Дали сте сигурни дека сакате да го избришете овој бенд?'
+            );
+            if (confirmed) {
                 console.log(`Deleting band at index ${index}`);
                 bandsData.splice(index, 1);
                 document.getElementById('total-bands').textContent = bandsData.length;
@@ -644,7 +767,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const copyButton = document.getElementById('copy-data-btn');
         if (!copyButton) {
             console.error('Copy data button not found in DOM');
-            alert('Грешка: копчето за копирање податоци не е пронајдено.');
+            showNotification('Грешка: копчето за копирање податоци не е пронајдено.', 'error');
             return;
         }
         copyButton.addEventListener('click', () => {
@@ -667,23 +790,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const json = JSON.stringify(exportData, null, 2);
                 navigator.clipboard.writeText(json).then(() => {
                     console.log('Data copied to clipboard successfully');
-                    alert('Податоците се копирани во клипборд.');
+                    showNotification('Податоците се копирани во клипборд.', 'success');
                 }).catch(err => {
                     console.error('Error copying data to clipboard:', err);
-                    alert('Грешка при копирање на податоците во клипборд. Проверете ја конзолата за детали.');
+                    showNotification('Грешка при копирање на податоците во клипборд. Проверете ја конзолата за детали.', 'error');
                 });
             } catch (error) {
                 console.error('Error preparing data for copy:', error);
-                alert('Грешка при подготовка на податоците за копирање. Проверете ја конзолата за детали.');
+                showNotification('Грешка при подготовка на податоците за копирање. Проверете ја конзолата за детали.', 'error');
             }
         });
     }
 
     function initializeSubmitPR() {
-        console.log('Initializing submit PR');
+        // Minimal init (debug logs removed for production cleanliness)
         const submitBtn = document.getElementById('submit-pr-btn');
         if (!submitBtn) {
-            console.warn('Submit PR button not found, skipping init');
             return;
         }
 
@@ -696,22 +818,45 @@ document.addEventListener('DOMContentLoaded', () => {
             return '';
         };
 
+        // Inject status container after button (now used for notifications instead)
+        let statusEl = document.getElementById('pr-submit-status');
+        if (!statusEl) {
+            statusEl = document.createElement('div');
+            statusEl.id = 'pr-submit-status';
+            statusEl.style.display = 'none'; // Hide the old status element
+            submitBtn.insertAdjacentElement('afterend', statusEl);
+        }
+
         submitBtn.addEventListener('click', async () => {
             try {
                 if (!isEditMode) {
-                    alert('Вклучете уредување за да побарате промена.');
+                    showNotification('Вклучете уредување пред поднесување.', 'error');
                     return;
                 }
 
                 let endpoint = resolveEndpoint();
                 if (!endpoint) {
-                    endpoint = prompt('Внесете URL на worker endpoint за PR (ќе се зачува локално):');
+                    endpoint = await showCustomDialog(
+                        'Worker Endpoint',
+                        'Внесете URL на worker endpoint за PR (ќе се зачува локално):',
+                        'https://example.com/worker'
+                    );
                     if (!endpoint) return;
                     localStorage.setItem('mmm_pr_endpoint', endpoint);
                 }
 
-                const contributor = prompt('Ваше име или контакт (опционално):') || '';
-                const description = prompt('Краток опис на промените за PR:') || 'Предлог промени од MMM формуларот';
+                const contributor = await showCustomDialog(
+                    'Вашите информации',
+                    'Ваше име или контакт (опционално):',
+                    'Име или е-пошта'
+                ) || '';
+
+                const description = await showCustomDialog(
+                    'Опис на промените',
+                    'Краток опис на промените за PR:',
+                    'Опис на промените',
+                    'Предлог промени од MMM формуларот'
+                ) || 'Предлог промени од MMM формуларот';
 
                 const exportData = {
                     muzickaMasterLista: bandsData.map(band => ({
@@ -733,6 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.disabled = true;
                 const originalHtml = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Испраќање...';
+                showNotification('Испраќање...', 'info');
 
                 const resp = await fetch(endpoint, {
                     method: 'POST',
@@ -752,12 +898,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const result = await resp.json();
                 const prUrl = result.pr_url || result.html_url || '';
-                alert(prUrl ? `Успешно! Отворен е PR: ${prUrl}` : 'Успешно! Отворен е PR.');
-                if (prUrl) window.open(prUrl, '_blank');
+                if (prUrl) {
+                    showNotification('Успешно поднесено! Отворен е PR.', 'success');
+                    window.open(prUrl, '_blank');
+                } else {
+                    showNotification('Успешно поднесено!', 'success');
+                }
 
             } catch (err) {
                 console.error('Submit PR failed:', err);
-                alert('Неуспешно испраќање на PR: ' + (err?.message || err));
+                showNotification('Грешка при поднесување: ' + (err?.message || err), 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Побарај промена';
@@ -770,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const masterEditBtn = document.getElementById('master-edit-btn');
         if (!masterEditBtn) {
             console.error('Master edit button not found in DOM');
-            alert('Грешка: копчето за уредување не е пронајдено.');
+            showNotification('Грешка: копчето за уредување не е пронајдено.', 'error');
             return;
         }
         masterEditBtn.addEventListener('click', () => {
@@ -1055,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.openModal('edit', bandsData[idx], idx);
                 } else {
                     console.error('window.openModal is not defined');
-                    alert('Грешка: функцијата за уредување не е достапна.');
+                    showNotification('Грешка: функцијата за уредување не е достапна.', 'error');
                 }
             });
             bandTableBody.appendChild(bandRow);

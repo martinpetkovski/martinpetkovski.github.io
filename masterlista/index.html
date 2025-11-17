@@ -128,6 +128,22 @@
             </form>
         </div>
     </div>
+    <!-- Custom Dialog Modals -->
+    <div id="custom-dialog-modal" class="modal">
+        <div class="modal-content dialog-modal-content">
+            <h2 id="dialog-title">Дијалог</h2>
+            <div id="dialog-message"></div>
+            <div id="dialog-input-container" style="display: none;">
+                <input type="text" id="dialog-input" placeholder="Внесете текст">
+            </div>
+            <div class="dialog-buttons">
+                <button id="dialog-cancel-btn" class="dialog-btn cancel-btn">Откажи</button>
+                <button id="dialog-confirm-btn" class="dialog-btn confirm-btn">Потврди</button>
+            </div>
+        </div>
+    </div>
+    <!-- Notification Area -->
+    <div id="notification-area" class="notification-area"></div>
     <footer>
         <div class="footer-content">
             <p>напојувано од <a class="xotel-link" href="https://discord.gg/fj6dJGhM" target="_blank">Xotel</a> | Вкупно бендови: <span id="total-bands">0</span> | Последна промена: <span id="last-modified">непознато</span></p>

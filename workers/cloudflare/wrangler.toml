@@ -1,0 +1,9 @@
+name = "muzichka-master-lista"
+main = "src/pr-worker.js"
+compatibility_date = "2023-10-02"
+
+[vars]
+# Optional defaults; can be set as secrets too
+GITHUB_OWNER = "martinpetkovski"
+GITHUB_REPO = "martinpetkovski.github.io"
+GITHUB_DEFAULT_BRANCH = "master"
