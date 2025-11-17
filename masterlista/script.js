@@ -50,60 +50,118 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Custom dialog and notification functions
-    function showCustomDialog(title, message, inputPlaceholder = '', defaultValue = '') {
+    function showCustomDialog(title, message, inputPlaceholder = '', defaultValue = '', isPRForm = false) {
         return new Promise((resolve) => {
             const modal = document.getElementById('custom-dialog-modal');
             const titleEl = document.getElementById('dialog-title');
             const messageEl = document.getElementById('dialog-message');
             const inputContainer = document.getElementById('dialog-input-container');
+            const prFormContainer = document.getElementById('pr-form-container');
             const inputEl = document.getElementById('dialog-input');
             const cancelBtn = document.getElementById('dialog-cancel-btn');
             const confirmBtn = document.getElementById('dialog-confirm-btn');
+            const submitBtn = document.getElementById('dialog-submit-btn');
 
             titleEl.textContent = title;
             messageEl.textContent = message;
 
-            if (inputPlaceholder) {
-                inputContainer.style.display = 'block';
-                inputEl.placeholder = inputPlaceholder;
-                inputEl.value = defaultValue;
-                inputEl.focus();
-            } else {
+            if (isPRForm) {
+                // Show PR form
+                messageEl.style.display = 'none';
                 inputContainer.style.display = 'none';
+                prFormContainer.style.display = 'block';
+                confirmBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+
+                // Focus on contributor field
+                const contributorInput = document.getElementById('pr-contributor');
+                contributorInput.focus();
+
+            } else {
+                // Show simple dialog
+                messageEl.style.display = 'block';
+                prFormContainer.style.display = 'none';
+                confirmBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+
+                if (inputPlaceholder) {
+                    inputContainer.style.display = 'block';
+                    inputEl.placeholder = inputPlaceholder;
+                    inputEl.value = defaultValue;
+                    inputEl.focus();
+                } else {
+                    inputContainer.style.display = 'none';
+                }
             }
 
             modal.style.display = 'block';
 
             const closeModal = () => {
                 modal.style.display = 'none';
+                // Clean up event listeners
+                cancelBtn.removeEventListener('click', cancelHandler);
+                confirmBtn.removeEventListener('click', confirmHandler);
+                submitBtn.removeEventListener('click', submitHandler);
+                modal.removeEventListener('click', outsideClickHandler);
+                if (inputEl) inputEl.removeEventListener('keydown', enterHandler);
             };
 
-            cancelBtn.onclick = () => {
+            const cancelHandler = (e) => {
+                e.stopPropagation();
                 closeModal();
                 resolve(null);
             };
 
-            confirmBtn.onclick = () => {
+            const confirmHandler = (e) => {
+                e.stopPropagation();
                 const value = inputPlaceholder ? inputEl.value : true;
                 closeModal();
                 resolve(value);
             };
 
-            // Close on outside click
-            modal.onclick = (e) => {
+            const submitHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Validate form
+                const contributorInput = document.getElementById('pr-contributor');
+                const descriptionInput = document.getElementById('pr-description');
+
+                if (!descriptionInput.value.trim()) {
+                    showNotification('Внесете опис на промените.', 'error');
+                    descriptionInput.focus();
+                    return;
+                }
+
+                const formData = {
+                    contributor: contributorInput.value.trim(),
+                    description: descriptionInput.value.trim()
+                };
+
+                closeModal();
+                resolve(formData);
+            };
+
+            const outsideClickHandler = (e) => {
                 if (e.target === modal) {
                     closeModal();
                     resolve(null);
                 }
             };
 
-            // Handle Enter key
-            if (inputPlaceholder) {
-                inputEl.onkeydown = (e) => {
-                    if (e.key === 'Enter') {
-                        confirmBtn.click();
-                    }
-                };
+            const enterHandler = (e) => {
+                if (e.key === 'Enter') {
+                    confirmHandler(e);
+                }
+            };
+
+            cancelBtn.addEventListener('click', cancelHandler);
+            confirmBtn.addEventListener('click', confirmHandler);
+            submitBtn.addEventListener('click', submitHandler);
+            modal.addEventListener('click', outsideClickHandler);
+
+            if (!isPRForm && inputPlaceholder) {
+                inputEl.addEventListener('keydown', enterHandler);
             }
         });
     }
@@ -845,18 +903,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('mmm_pr_endpoint', endpoint);
                 }
 
-                const contributor = await showCustomDialog(
-                    'Вашите информации',
-                    'Ваше име или контакт (опционално):',
-                    'Име или е-пошта'
-                ) || '';
+                const formData = await showCustomDialog(
+                    'Поднесување на Pull Request',
+                    'Пополнете ги информациите за поднесување на вашите промени:',
+                    '',
+                    '',
+                    true
+                );
 
-                const description = await showCustomDialog(
-                    'Опис на промените',
-                    'Краток опис на промените за PR:',
-                    'Опис на промените',
-                    'Предлог промени од MMM формуларот'
-                ) || 'Предлог промени од MMM формуларот';
+                if (!formData) return; // User canceled
 
                 const exportData = {
                     muzickaMasterLista: bandsData.map(band => ({
@@ -885,8 +940,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         bandsJson: json,
-                        contributor,
-                        description,
+                        contributor: formData.contributor,
+                        description: formData.description,
                         path: 'masterlista/bands.json'
                     })
                 });

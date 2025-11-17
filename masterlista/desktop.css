@@ -1571,6 +1571,44 @@ footer p {
     background: linear-gradient(135deg, #6b3e99 0%, #3949ab 100%);
 }
 
+/* PR Form Styles */
+#pr-form-container .form-group {
+    margin-bottom: 1.2rem;
+}
+
+#pr-form-container label {
+    display: block;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.4rem;
+}
+
+#pr-form-container input,
+#pr-form-container textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: 'Source Sans Pro', sans-serif;
+    box-sizing: border-box;
+}
+
+#pr-form-container textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+#pr-form-container .form-help {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.3rem;
+    font-style: italic;
+}
+
 /* Notification Area Styles */
 .notification-area {
     position: fixed;

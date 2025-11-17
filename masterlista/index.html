@@ -136,9 +136,25 @@
             <div id="dialog-input-container" style="display: none;">
                 <input type="text" id="dialog-input" placeholder="Внесете текст">
             </div>
+            <!-- PR Submission Form -->
+            <div id="pr-form-container" style="display: none;">
+                <form id="pr-submission-form">
+                    <div class="form-group">
+                        <label for="pr-contributor">Ваши информации (опционално)</label>
+                        <input type="text" id="pr-contributor" placeholder="Име или е-пошта">
+                        <small class="form-help">Вашето име или контакт информации</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pr-description">Опис на промените</label>
+                        <textarea id="pr-description" placeholder="Опишете ги промените кои ги правите..." rows="3" required>Предлог промени од MMM формуларот</textarea>
+                        <small class="form-help">Краток опис на промените за Pull Request</small>
+                    </div>
+                </form>
+            </div>
             <div class="dialog-buttons">
                 <button id="dialog-cancel-btn" class="dialog-btn cancel-btn">Откажи</button>
                 <button id="dialog-confirm-btn" class="dialog-btn confirm-btn">Потврди</button>
+                <button id="dialog-submit-btn" class="dialog-btn confirm-btn" style="display: none;">Поднеси PR</button>
             </div>
         </div>
     </div>
