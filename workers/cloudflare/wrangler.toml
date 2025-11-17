@@ -7,3 +7,5 @@ compatibility_date = "2023-10-02"
 GITHUB_OWNER = "martinpetkovski"
 GITHUB_REPO = "martinpetkovski.github.io"
 GITHUB_DEFAULT_BRANCH = "master"
+## Comma-separated list of allowed origins for CORS
+CORS_ORIGINS = "https://www.najjak.com,https://martinpetkovski.github.io"

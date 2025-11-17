@@ -24,11 +24,26 @@ function rateLimitCheck(ip, max, windowMs) {
 
 export default {
   async fetch(request, env) {
-    // Revert to permissive CORS for local testing
+    // Dynamic CORS: allow specific origins (incl. najjak.com) with sensible defaults
+    const origin = request.headers.get('Origin') || '';
+    const configured = (env.CORS_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+    const defaultAllowed = [
+      'https://www.najjak.com',
+      'https://martinpetkovski.github.io',
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'http://127.0.0.1:5500',
+      'http://localhost'
+    ];
+    const allowedOrigins = configured.length ? configured : defaultAllowed;
+    const allowThisOrigin = origin && allowedOrigins.includes(origin);
+    const vary = 'Origin, Access-Control-Request-Method, Access-Control-Request-Headers';
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+      'Access-Control-Allow-Origin': allowThisOrigin ? origin : '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+      'Access-Control-Allow-Headers': request.headers.get('Access-Control-Request-Headers') || 'Content-Type,Authorization',
+      'Access-Control-Max-Age': '86400',
+      'Vary': vary,
     };
 
     // Debug endpoint to inspect auth variable presence (temporary)
