@@ -1,0 +1,12 @@
+{
+  "name": "ns2-reader-electron",
+  "version": "1.0.0",
+  "description": "Electron wrapper for NS2 Reader (loads reader.html)",
+  "main": "main.js",
+  "scripts": {
+    "start": "npx electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

@@ -70,6 +70,7 @@ html, body, .play-content {
     transition: transform 0.2s ease;
     z-index: 1000;
 }
+.has-electron-titlebar .play-toolbar { top: 37px; }
 .play-toolbar:hover,
 .play-toolbar:focus-within {
     transform: translateX(0);
@@ -177,6 +178,36 @@ button {
 .play-vars-toolbar button:hover { background:#eee; }
 </style>
 </style>
+<style>
+/* Electron custom title bar (book style) */
+.electron-titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    display: none; /* enabled dynamically only in Electron */
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px;
+    background: #efe8d2;
+    border-bottom: 1px solid #e6e0cf;
+    color: #1f1a12;
+    -webkit-app-region: drag;
+    z-index: 2000;
+}
+.electron-titlebar .app-icon { width: 16px; height: 16px; border-radius: 2px; -webkit-app-region: no-drag; }
+.electron-titlebar .title { font-weight: 700; letter-spacing: .15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+.electron-titlebar .spacer { flex: 1; }
+.electron-titlebar .win-btns { display: flex; gap: 4px; -webkit-app-region: no-drag; }
+.electron-titlebar .win-btns button {
+    width: 28px; height: 22px; border: 1px solid #cfc7b0; border-radius: 4px; background: #f6f1e1; color: #1f1a12; cursor: pointer; font-weight: 700; font-size: 12px;
+}
+.electron-titlebar .win-btns button:hover { background: #eadfbe; }
+
+/* Compensate content top padding when titlebar is visible */
+.has-electron-titlebar .main { padding-top: 56px; }
+</style>
 <script src="NSE2.js"></script>
 <script>
 // Inline play logic (formerly in play.js) so reader.html is fully self-contained.
@@ -266,7 +297,38 @@ button {
     function filterPlayVars(){ const searchInput = document.getElementById('play-var-search'); if(!searchInput) return; const q = normalizeForMatching(searchInput.value||'').toLowerCase(); const rows = document.querySelectorAll('#play-variables tbody tr'); rows.forEach(row=>{ try{ const name=normalizeForMatching(row.cells[0].textContent||'').toLowerCase(); row.style.display = name.includes(q) ? '' : 'none'; }catch(e){ row.style.display=''; } }); }
     function toggleVariablesVisibility(){ const panel=document.getElementById('play-vars-section'); const btn=document.getElementById('toggle-vars-btn'); if(!panel||!btn) return; const collapsed = panel.classList.toggle('is-collapsed'); btn.setAttribute('aria-expanded', String(!collapsed)); btn.textContent = collapsed ? 'Show Variables' : 'Hide Variables'; }
     function updatePlay(){ const Module = ensureModule(); if(!Module || !g.playEngine){ const t=document.getElementById('play-title'); if(t) t.textContent=''; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Click "Start" to begin.</em>'; const c=document.getElementById('play-choices'); if(c) c.innerHTML=''; const v=document.getElementById('play-variables'); if(v) v.innerHTML=''; return; } const stateCount = Module._GetStateCount(g.playEngine); if(stateCount===0){ const t=document.getElementById('play-title'); if(t) t.textContent='No Story Loaded'; const d=document.getElementById('play-desc'); if(d) d.innerHTML='<em>Create states and set a start state.</em>'; return; }
-        const titlePtr = Module._GetCurrentTitle(g.playEngine); const title = Module.UTF8ToString(titlePtr); Module._FreeString(titlePtr); const t=document.getElementById('play-title'); if(t) t.textContent=title; const descPtr = Module._GetCurrentDescription(g.playEngine); const desc = Module.UTF8ToString(descPtr); Module._FreeString(descPtr); const d=document.getElementById('play-desc'); if(d) d.textContent=desc;
+        const titlePtr = Module._GetCurrentTitle(g.playEngine); const title = Module.UTF8ToString(titlePtr); Module._FreeString(titlePtr);
+        const t=document.getElementById('play-title'); if(t) t.textContent=title;
+        const descPtr = Module._GetCurrentDescription(g.playEngine); const desc = Module.UTF8ToString(descPtr); Module._FreeString(descPtr); const d=document.getElementById('play-desc'); if(d) d.textContent=desc;
+        // Build Electron compact title: StoryTitle — CurrentStateName (fallbacks apply)
+        try {
+            const et=document.getElementById('electron-title');
+            if(et){
+                // Story title (global)
+                let storyTitle = '';
+                try { const stPtr = Module._GetStoryTitle(g.playEngine); storyTitle = Module.UTF8ToString(stPtr); Module._FreeString(stPtr); } catch(e){}
+                // Current state name via matching script content (robust fallback)
+                let currentStateName = '';
+                try {
+                    const curScriptPtr = Module._GetCurrentScript(g.playEngine);
+                    const curScript = Module.UTF8ToString(curScriptPtr);
+                    Module._FreeString(curScriptPtr);
+                    const sc = Module._GetStateCount(g.playEngine);
+                    for(let i=0;i<sc;i++){
+                        const sPtr = Module._GetStateScript(g.playEngine,i);
+                        const s = Module.UTF8ToString(sPtr); Module._FreeString(sPtr);
+                        if(s === curScript){
+                            const nmPtr = Module._GetStateName(g.playEngine,i);
+                            currentStateName = Module.UTF8ToString(nmPtr); Module._FreeString(nmPtr);
+                            break;
+                        }
+                    }
+                } catch(e){}
+                const left = (storyTitle && storyTitle.trim()) ? storyTitle.trim() : 'NS2 Reader';
+                const right = (currentStateName && currentStateName.trim()) ? currentStateName.trim() : (title||'').trim();
+                et.textContent = right ? (left + ' — ' + right) : left;
+            }
+        } catch(e){}
         const variablesDiv=document.getElementById('play-variables'); if(variablesDiv){ variablesDiv.innerHTML=''; const table=document.createElement('table'); table.innerHTML='<thead><tr><th>Variable</th><th>Value</th></tr></thead><tbody></tbody>'; const tbody=table.querySelector('tbody'); const count=Module._GetVariableCount(g.playEngine); for(let i=0;i<count;i++){ const namePtr=Module._GetVariableName(g.playEngine,i); const name=Module.UTF8ToString(namePtr); Module._FreeString(namePtr); const namePtrVal=allocateUTF8(name); const valuePtr=Module._GetVariableValue(g.playEngine,namePtrVal); const value=Module.UTF8ToString(valuePtr); Module._FreeString(valuePtr); Module._free(namePtrVal); const tr=document.createElement('tr'); tr.innerHTML = '<td>'+escapeHtml(name)+'</td><td><input value="'+escapeHtml(value)+'" onchange="setVariableValue(\''+escapeHtml(name)+'\', this.value)" onblur="setVariableValue(\''+escapeHtml(name)+'\', this.value)"></td>'; tbody.appendChild(tr); } variablesDiv.appendChild(table); }
         filterPlayVars();
         const choicesDiv=document.getElementById('play-choices'); if(choicesDiv){ choicesDiv.innerHTML=''; const totalChoices=Module._GetCurrentChoicesCount(g.playEngine); for(let ci=0; ci<totalChoices; ci++){ const textPtr=Module._GetChoiceText(g.playEngine,ci); const text=Module.UTF8ToString(textPtr); Module._FreeString(textPtr); const btn=document.createElement('button'); btn.textContent = text; btn.dataset.choiceText = text; choicesDiv.appendChild(btn); } }
@@ -389,6 +451,56 @@ window.languages = window.languages || { en: { playEngineStarted: 'Play engine s
 window.currentLanguage = window.currentLanguage || 'en';
 // Initialize module and start engine
 (async()=>{ try{ if(!window.Module){ if(typeof NSE2Module==='undefined') throw new Error('NSE2Module missing'); window.Module = await NSE2Module(); } startPlayEngine(); }catch(e){ /* silent */ } })();
+// Inject Electron title bar when running under Electron
+(function(){
+    if(!window.electronAPI) return;
+    document.documentElement.classList.add('has-electron-titlebar');
+    const bar = document.createElement('div');
+        bar.className = 'electron-titlebar';
+        bar.innerHTML = `
+                <img class="app-icon" src="icon_reader.ico" alt="icon" onerror="this.onerror=null;this.src='icon_transparent.png'" />
+                <div id="electron-title" class="title">NS2 Reader</div>
+                <div class="spacer"></div>
+                <div class="win-btns">
+                    <button id="btn-min" title="Minimize" aria-label="Minimize" tabindex="0" aria-keyshortcuts="Alt+Space, N">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="8" height="1.5" fill="#1f1a12"/></svg>
+                    </button>
+                    <button id="btn-max" title="Maximize" aria-label="Maximize" tabindex="0">
+                        <svg id="icon-max" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="8" height="8" stroke="#1f1a12" stroke-width="1.5" fill="none"/></svg>
+                    </button>
+                    <button id="btn-close" title="Close" aria-label="Close" tabindex="0">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 3 L9 9 M9 3 L3 9" stroke="#1f1a12" stroke-width="1.5" stroke-linecap="square"/></svg>
+                    </button>
+                </div>`;
+    document.body.appendChild(bar);
+    bar.style.display = 'flex';
+        const minBtn = bar.querySelector('#btn-min');
+        const maxBtn = bar.querySelector('#btn-max');
+        const closeBtn = bar.querySelector('#btn-close');
+        if(minBtn) minBtn.onclick = ()=> window.electronAPI.minimize && window.electronAPI.minimize();
+        if(maxBtn) maxBtn.onclick = async ()=> {
+            try {
+                const r = await (window.electronAPI.toggleMaximize && window.electronAPI.toggleMaximize());
+                if(r && typeof r.maximized === 'boolean') updateMaxIcon(r.maximized);
+            } catch(e){}
+        };
+        if(closeBtn) closeBtn.onclick = ()=> window.electronAPI.closeWindow && window.electronAPI.closeWindow();
+
+        function updateMaxIcon(isMax){
+            const icon = bar.querySelector('#icon-max');
+            if(!icon) return;
+            if(isMax){
+                icon.outerHTML = '<svg id="icon-max" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 4.5 H9 V10.5 H3 Z M4.5 3 H10.5 V9" stroke="#1f1a12" stroke-width="1.5" fill="none"/></svg>';
+                maxBtn.title = 'Restore'; maxBtn.setAttribute('aria-label','Restore');
+            } else {
+                icon.outerHTML = '<svg id="icon-max" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="8" height="8" stroke="#1f1a12" stroke-width="1.5" fill="none"/></svg>';
+                maxBtn.title = 'Maximize'; maxBtn.setAttribute('aria-label','Maximize');
+            }
+        }
+        if(window.electronWindowEvents && window.electronWindowEvents.onMaximize){
+            window.electronWindowEvents.onMaximize((isMax)=>{ try{ updateMaxIcon(!!isMax); }catch(e){} });
+        }
+})();
 </script>
 </body>
 </html>

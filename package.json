@@ -1,0 +1,10 @@
+{
+  "name": "martinpetkovski.github.io",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Root package for convenience dev scripts",
+  "scripts": {
+    "editor": "npm run start --prefix ns2/electron-editor",
+    "reader": "npm run start --prefix ns2/electron-reader"
+  }
+}
