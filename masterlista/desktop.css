@@ -559,6 +559,10 @@ tr:hover .links a {
     color: #e0e0e0;
 }
 
+/* Make edit icon lighten with row hover like other text */
+tr:hover .action-btn.edit-btn { color: #e0e0e0; }
+tr:hover .action-btn.edit-btn:hover { color: #e0e0e0; }
+
 .links a.contact-link {
     background: linear-gradient(135deg, #ad1457 0%, #ec407a 100%);
     color: white;
@@ -890,47 +894,46 @@ footer p {
     flex-wrap: wrap;
 }
 
+/* Disabled state for request-change button */
+.header-btn.request-change:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .action-buttons {
-    display: block;
+    display: table-cell;
     text-align: center;
-    line-height: 28px;
+    line-height: normal;
 }
 
 .action-btn {
     display: inline;
     font-size: 0.9rem;
-    color: white;
+    color: #4a2c6d;
     padding: 0;
-    margin: 0.2rem 0;
+    margin: 0 0.2rem;
     border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    line-height: normal;
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: color 0.15s ease-in-out;
+    cursor: pointer;
 }
 
-.action-btn.edit-btn {
-    background: linear-gradient(135deg, #f5d000 0%, #ffd700 100%);
-}
-
-.action-btn.edit-btn:hover {
-    background: linear-gradient(135deg, #ffd700 0%, #f5d000 100%);
-    transform: scale(1.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+.action-btn:hover {
+    color: #6b3e99;
 }
 
 .action-btn.delete-btn {
-    background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+    color: #d32f2f;
 }
 
 .action-btn.delete-btn:hover {
-    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-    transform: scale(1.1);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    color: #f44336;
 }
 
 .tag-container {
@@ -962,18 +965,13 @@ footer p {
     background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%);
 }
 
-/* Edit Mode Styles */
-.edit-hidden {
-    display: none;
-}
+/* Editing always visible */
+.edit-hidden { display: inline-block; }
+th.edit-hidden, td.edit-hidden, .action-buttons { display: table-cell; }
+.edit-mode .action-buttons, .edit-mode th.edit-hidden { display: table-cell; }
 
-.edit-mode .edit-hidden {
-    display: table-cell;
-}
-
-.edit-mode .action-buttons, .edit-mode th.edit-hidden {
-    display: table-cell;
-}
+/* Hide deprecated master edit button */
+.master-edit { display: none; }
 
 /* New Release Artists Section */
 .new-release-artists {

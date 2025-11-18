@@ -983,6 +983,33 @@ footer p {
     margin-bottom: 2rem;
 }
 
+/* Editing always visible on mobile */
+.edit-hidden { display: inline-block; }
+th.edit-hidden, td.edit-hidden, .action-buttons { display: table-cell; }
+.master-edit { display: none; }
+
+/* Clean, small action icons on mobile */
+.action-buttons { display: table-cell; text-align: center; line-height: normal; }
+.action-btn {
+    display: inline;
+    font-size: 0.8rem;
+    color: #4a2c6d;
+    padding: 0;
+    margin: 0 0.15rem;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    transition: color 0.15s ease-in-out;
+    cursor: pointer;
+}
+.action-btn:hover { color: #6b3e99; }
+.action-btn.delete-btn { color: #d32f2f; }
+.action-btn.delete-btn:hover { color: #f44336; }
+
 .guide-content h2, .guide-content h3 {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.1rem; /* Reduced from 1.2rem */
