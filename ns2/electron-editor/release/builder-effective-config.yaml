@@ -1,0 +1,34 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.martinpetkovski.ns2.editor
+productName: NS2 Editor
+files:
+  - filter:
+      - '**/*'
+extraResources:
+  - from: ..
+    to: ns2
+    filter:
+      - editor.html
+      - NSE2.js
+      - NSE2.wasm
+      - style.css
+      - icon_transparent.png
+      - languages.json
+      - ai.html
+      - about.html
+      - guide.html
+asar: true
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: ../icon_transparent.png
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+electronVersion: 31.7.7

@@ -1,18 +1,17 @@
+// Editor preload exposes window control APIs for custom title bar
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  openFile: () => ipcRenderer.invoke('dialog:openFile'),
-  saveFile: (content, filePath) => ipcRenderer.invoke('dialog:saveFile', { content, filePath }),
-  saveAs: (content) => ipcRenderer.invoke('dialog:saveAs', content),
-  // Window controls (available when running under Electron)
   minimize: () => ipcRenderer.invoke('window:minimize'),
   toggleMaximize: () => ipcRenderer.invoke('window:toggle-maximize'),
   closeWindow: () => ipcRenderer.invoke('window:close')
 });
-// Allow renderer to listen for maximize/unmaximize events
+
+// Forward maximize/unmaximize to renderer to toggle icons
 ipcRenderer.on('window:maximized', (event, isMax) => {
-  // forward via a global callback if set
-  if (window && window.__onWindowMaximized) try { window.__onWindowMaximized(isMax); } catch(e){}
+  if (window && window.__onWindowMaximized) {
+    try { window.__onWindowMaximized(isMax); } catch(e){}
+  }
 });
 
 contextBridge.exposeInMainWorld('electronWindowEvents', {

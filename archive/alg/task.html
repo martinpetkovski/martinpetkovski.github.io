@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Martin Petkovski">
+
+    <title>
+        Алгоритамско програмирање - Училиште за Фини вештини
+    </title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="common.js"></script>
+    <script src="task.js"></script>
+</head>
+
+<body>
+    <a href="index.html">
+        <header>
+            <h1>Алгоритамско програмирање</h1>
+            <div class="subtitle">- Училиште за Фини вештини -</div>
+        </header>
+    </a>
+
+    <main>
+        <section>
+            <div id="title"></div>
+            <a href="" id="externalLink"><i class="fas fa-link"></i> МЕНДО</a>
+            <div class="progressBar"></div>
+            <div class="text" id="description"></div>
+        </section>
+        <section>
+            <h2>Влез</h2>
+            <div class="text" id="input"></div>
+        </section>
+        <section>
+            <h2>Излез</h2>
+            <div class="text" id="output"></div>
+        </section>
+        <section>
+            <h2>Ограничувања</h2>
+            <div class="text" id="limitations"></div>
+        </section>
+        <section>
+            <h2>Примери</h2>
+            <div class="examples">
+                <table>
+                    <th>влез</th>
+                    <th>излез</th>
+                </table>
+            </div>
+        </section>
+        <section>
+            <details>
+                <summary> Решение</summary>
+                <pre><code class="cpp"></code></pre>
+                <button class="copy-btn"><i class="fas fa-copy"></i> Копирај го кодот</button>
+            </details>
+        </section>
+        <section>
+            <details>
+                <summary>Објаснување</summary>
+                <div id="explanation"></div>
+            </details>
+        </section>
+    </main>
+
+    <script>
+        const copyButtons = document.querySelectorAll('.copy-btn');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const code = button.previousElementSibling.textContent;
+
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                button.innerHTML = '<i class="fas fa-check"></i> Кодот е ископиран!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy"></i> Копирај го кодот';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>

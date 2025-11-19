@@ -5,6 +5,13 @@
   "description": "Root package for convenience dev scripts",
   "scripts": {
     "editor": "npm run start --prefix ns2/electron-editor",
-    "reader": "npm run start --prefix ns2/electron-reader"
+    "reader": "npm run start --prefix ns2/electron-reader",
+    "build:editor": "npm run dist:win --prefix ns2/electron-editor",
+    "build:editor:portable": "npm run dist:portable --prefix ns2/electron-editor",
+    "build:reader": "npm run dist:win --prefix ns2/electron-reader",
+    "build:reader:portable": "npm run dist:portable --prefix ns2/electron-reader",
+    "build:bundle": "powershell -ExecutionPolicy Bypass -File .\\build-all.ps1",
+    "build:portable": "powershell -ExecutionPolicy Bypass -File .\\build-portable.ps1",
+    "clean:build": "powershell -ExecutionPolicy Bypass -File .\\clean.ps1"
   }
 }

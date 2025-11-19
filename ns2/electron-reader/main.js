@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
+const fsp = require('fs').promises;
 
 async function createWindow() {
   const win = new BrowserWindow({
@@ -13,7 +14,8 @@ async function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      devTools: !app.isPackaged
     }
   });
 
@@ -25,21 +27,24 @@ async function createWindow() {
     win.on('unmaximize', () => { win.webContents.send('window:maximized', false); });
   } catch(e){}
 
-  // Load the shared reader.html from parent ns2 folder
-  const sharedReader = path.join(__dirname, '..', 'reader.html');
-  try {
-    await fs.access(sharedReader);
-    await win.loadFile(sharedReader);
-  } catch (err) {
-    // Fallback to local reader.html if someone copies it here later
-    const localReader = path.join(__dirname, 'reader.html');
-    try {
-      await fs.access(localReader);
-      await win.loadFile(localReader);
-    } catch (err2) {
-      console.error('No reader.html found (parent or local)');
-      await win.loadURL('data:text/html,<h1>reader.html not found</h1>');
+  // Resolve path depending on dev vs packaged build with fallbacks
+  const devDir = path.join(__dirname, '..');
+  const packagedExternal = path.join(process.resourcesPath || '', 'ns2');
+  const packagedInternal = path.join(__dirname, 'ns2');
+  const pickBase = () => {
+    if (app.isPackaged) {
+      try { if (fs.existsSync(path.join(packagedExternal, 'reader.html'))) return packagedExternal; } catch {}
+      try { if (fs.existsSync(path.join(packagedInternal, 'reader.html'))) return packagedInternal; } catch {}
     }
+    return devDir;
+  };
+  const baseDir = pickBase();
+  const entry = path.join(baseDir, 'reader.html');
+  try {
+    await win.loadFile(entry);
+  } catch (err) {
+    console.error('Failed to load reader.html from', entry, err);
+    await win.loadURL('data:text/html,<h1>reader.html not found</h1>');
   }
 }
 

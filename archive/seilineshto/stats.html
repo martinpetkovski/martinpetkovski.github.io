@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сè или нешто: Статистичка симулација</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #ffffff;
+            color: #333333;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 2.8em;
+            color: #6b4e9b;
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #d4a017;
+            padding-bottom: 10px;
+        }
+        #input-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+        }
+        label {
+            font-size: 1.1em;
+            color: #333333;
+            margin-right: 10px;
+        }
+        input {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            background: #ffffff;
+            color: #333333;
+        }
+        input:focus {
+            outline: 1px solid #6b4e9b;
+        }
+        button {
+            padding: 10px 20px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.2em;
+            background: #6b4e9b;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #503c7a;
+        }
+        h2 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.8em;
+            color: #d4a017;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #results {
+            background: #f5f5f5;
+            padding: 15px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1em;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .result-section {
+            margin-bottom: 20px;
+        }
+        .result-section h3 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.4em;
+            color: #6b4e9b;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #dcdcdc;
+        }
+        th {
+            background: #6b4e9b;
+            color: #ffffff;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+        tr:nth-child(even) {
+            background: #f0f0f0;
+        }
+        tr:nth-child(odd) {
+            background: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сè или нешто: Статистичка симулација</h1>
+    <div id="input-form">
+        <label for="iterations">Број на симулации: </label>
+        <input type="number" id="iterations" value="1000" min="1">
+        <button onclick="runSimulation()">Изврши симулација</button>
+    </div>
+    <h2>Резултати</h2>
+    <div id="results"><p>Кликнете „Изврши симулација“ за да ги видите резултатите.</p></div>
+
+    <script>
+        // Награди во денари
+        const prizes = [
+            1, 10, 50, 100, 500, 1000, 2500, 5000, 7500, 10000, 15000,
+            20000, 25000, 50000, 75000, 100000, 150000, 200000, 250000, 500000, 750000, 1000000
+        ];
+
+        // Опсези на добивки
+        const brackets = [
+            { min: 0, max: 1000, label: "0 - 1.000 денари" },
+            { min: 1001, max: 10000, label: "1.001 - 10.000 денари" },
+            { min: 10001, max: 100000, label: "10.001 - 100.000 денари" },
+            { min: 100001, max: 500000, label: "100.001 - 500.000 денари" },
+            { min: 500001, max: 1000000, label: "500.001 - 1.000.000 денари" }
+        ];
+
+        // Параметри за симулација
+        const rounds = [5, 3, 3, 3, 2, 1]; // Кутии за отворање по рунда
+        const offerMultipliers = [0.5, 0.6, 0.7, 0.8, 0.85, 0.9]; // Понуди на Банкарот
+        const acceptThreshold = 0.8; // Прифати понуда ако е >= 80% од очекуваната вредност
+        const rejectAcceptableOfferProbability = 0.2; // 20% шанса да се одбие прифатлива понуда
+
+        // Мешање на низа (Fisher-Yates)
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Пресметка на очекуваната вредност на преостанатите кутии
+        function calculateExpectedValue(boxes) {
+            const sum = boxes.reduce((acc, val) => acc + val, 0);
+            return sum / boxes.length;
+        }
+
+        // Симулирање на една игра
+        function simulateGame() {
+            let boxes = shuffle([...prizes]);
+            const chosenBox = boxes[0];
+            let remainingBoxes = [...boxes];
+            let acceptedOffer = false;
+            let wentToEnd = false;
+            let finalWinnings = 0;
+            let millionOpened = false;
+            let oneDenarOpened = false;
+            let rejectedAtLeastOnce = false;
+            let acceptanceRound = 0;
+            let offerValues = [];
+            let acceptedOfferValue = 0;
+            let expectedValues = [];
+            let highValueRemainingAfterRound4 = 0;
+            let millionAfterRound3 = false;
+            let oneDenarAfterRound3 = false;
+            let reachedFinalRound = false;
+            let finalTwoIsMillionVsOne = false;
+
+            const millionInChosenBox = chosenBox === 1000000;
+            const chosenBoxHighValue = chosenBox >= 100000;
+            const chosenBoxLowValue = chosenBox <= 1000;
+
+            // Играње на рунди
+            for (let round = 0; round < rounds.length; round++) {
+                // Отстранување кутии
+                for (let i = 0; i < rounds[round] && remainingBoxes.length > 2; i++) {
+                    const indexToRemove = Math.floor(Math.random() * (remainingBoxes.length - 1)) + 1;
+                    const removedValue = remainingBoxes[indexToRemove];
+                    if (removedValue === 1000000) millionOpened = true;
+                    if (removedValue === 1) oneDenarOpened = true;
+                    remainingBoxes.splice(indexToRemove, 1);
+                }
+
+                // Проверка за преостанати награди по рунда 3 и 4
+                if (round === 2) {
+                    millionAfterRound3 = remainingBoxes.includes(1000000);
+                    oneDenarAfterRound3 = remainingBoxes.includes(1);
+                }
+                if (round === 3) {
+                    highValueRemainingAfterRound4 = remainingBoxes.filter(val => val >= 100000).length;
+                }
+
+                // Пресметка на понуда
+                const expectedValue = calculateExpectedValue(remainingBoxes);
+                expectedValues.push(expectedValue);
+                const offer = Math.round(expectedValue * offerMultipliers[round]);
+                offerValues.push(offer);
+
+                // Одлука за понуда
+                if (offer >= acceptThreshold * expectedValue && Math.random() >= rejectAcceptableOfferProbability) {
+                    acceptedOffer = true;
+                    finalWinnings = offer;
+                    acceptanceRound = round + 1;
+                    acceptedOfferValue = offer;
+                    break;
+                } else if (offer >= acceptThreshold * expectedValue) {
+                    rejectedAtLeastOnce = true;
+                }
+
+                // Проверка за финална рунда
+                if (round === rounds.length - 1 && !acceptedOffer) {
+                    reachedFinalRound = true;
+                    finalTwoIsMillionVsOne = remainingBoxes.length === 2 && 
+                        ((remainingBoxes.includes(1000000) && remainingBoxes.includes(1)) ||
+                         (chosenBox === 1000000 && remainingBoxes[1] === 1) ||
+                         (chosenBox === 1 && remainingBoxes[1] === 1000000));
+                }
+            }
+
+            if (!acceptedOffer) {
+                wentToEnd = true;
+                finalWinnings = chosenBox;
+            }
+
+            return {
+                winnings: finalWinnings,
+                acceptedOffer: acceptedOffer,
+                wentToEnd: wentToEnd,
+                rejectedAtLeastOnce: rejectedAtLeastOnce && acceptedOffer,
+                millionInChosenBox: millionInChosenBox,
+                millionOpened: millionOpened,
+                oneDenarOpened: oneDenarOpened,
+                millionWon: finalWinnings === 1000000,
+                oneDenarWon: finalWinnings === 1,
+                acceptanceRound: acceptanceRound,
+                offerValues: offerValues,
+                acceptedOfferValue: acceptedOfferValue,
+                expectedValues: expectedValues,
+                millionAfterRound3: millionAfterRound3,
+                oneDenarAfterRound3: oneDenarAfterRound3,
+                highValueRemainingAfterRound4: highValueRemainingAfterRound4,
+                chosenBoxHighValue: chosenBoxHighValue,
+                chosenBoxLowValue: chosenBoxLowValue,
+                reachedFinalRound: reachedFinalRound,
+                finalTwoIsMillionVsOne: finalTwoIsMillionVsOne
+            };
+        }
+
+        // Извршување на N симулации и собирање статистики
+        function runSimulation() {
+            const iterations = parseInt(document.getElementById('iterations').value);
+            if (isNaN(iterations) || iterations < 1) {
+                alert('Внесете валиден број на симулации.');
+                return;
+            }
+
+            let totalWinningsAccept = 0;
+            let totalWinningsReject = 0;
+            let totalWinningsEnd = 0;
+            let acceptCount = 0;
+            let rejectContinueCount = 0;
+            let endCount = 0;
+            let millionWonCount = 0;
+            let millionOpenedCount = 0;
+            let millionInChosenBoxCount = 0;
+            let oneDenarWonCount = 0;
+            let oneDenarOpenedCount = 0;
+            let totalAcceptanceRound = 0;
+            let firstOfferAcceptedCount = 0;
+            let totalAcceptedOfferValue = 0;
+            let totalRejectedOfferValue = 0;
+            let rejectedOfferCount = 0;
+            let offersAboveEVAcceptedCount = 0;
+            let millionAfterRound3Count = 0;
+            let oneDenarAfterRound3Count = 0;
+            let totalHighValueAfterRound4 = 0;
+            let chosenBoxHighValueCount = 0;
+            let chosenBoxLowValueCount = 0;
+            let reachedFinalRoundCount = 0;
+            let finalTwoMillionVsOneCount = 0;
+            let totalWinningsFinalRound = 0;
+            let highValueEndCount = 0;
+            let lowValueEndCount = 0;
+            let totalEVWhenAccepting = 0;
+            let totalEVWhenGoingToEnd = 0;
+            let offerExceedsWinningsCount = 0;
+            let totalOfferMinusEV = 0;
+            let acceptedOfferCountForEV = 0;
+            let millionLostToOfferCount = 0;
+            const winningsDistribution = {};
+            const bracketCounts = brackets.map(() => 0);
+
+            // Извршување на симулации
+            for (let i = 0; i < iterations; i++) {
+                const result = simulateGame();
+                if (result.acceptedOffer && !result.rejectedAtLeastOnce) {
+                    totalWinningsAccept += result.winnings;
+                    acceptCount++;
+                } else if (result.acceptedOffer && result.rejectedAtLeastOnce) {
+                    totalWinningsReject += result.winnings;
+                    rejectContinueCount++;
+                } else if (result.wentToEnd) {
+                    totalWinningsEnd += result.winnings;
+                    endCount++;
+                }
+
+                if (result.millionWon) millionWonCount++;
+                if (result.millionOpened) millionOpenedCount++;
+                if (result.millionInChosenBox) millionInChosenBoxCount++;
+                if (result.oneDenarWon) oneDenarWonCount++;
+                if (result.oneDenarOpened) oneDenarOpenedCount++;
+
+                // Дополнителни статистики
+                if (result.acceptedOffer) {
+                    totalAcceptanceRound += result.acceptanceRound;
+                    totalAcceptedOfferValue += result.acceptedOfferValue;
+                    if (result.acceptanceRound === 1) firstOfferAcceptedCount++;
+                    if (result.acceptedOfferValue >= result.expectedValues[result.acceptanceRound - 1]) {
+                        offersAboveEVAcceptedCount++;
+                    }
+                    totalEVWhenAccepting += result.expectedValues[result.acceptanceRound - 1];
+                    totalOfferMinusEV += result.acceptedOfferValue - result.expectedValues[result.acceptanceRound - 1];
+                    acceptedOfferCountForEV++;
+                    if (result.millionInChosenBox) millionLostToOfferCount++;
+                }
+                if (result.wentToEnd) {
+                    totalEVWhenGoingToEnd += result.expectedValues[result.expectedValues.length - 1];
+                    if (result.chosenBoxHighValue) highValueEndCount++;
+                    if (result.chosenBoxLowValue) lowValueEndCount++;
+                }
+                if (result.millionAfterRound3) millionAfterRound3Count++;
+                if (result.oneDenarAfterRound3) oneDenarAfterRound3Count++;
+                totalHighValueAfterRound4 += result.highValueRemainingAfterRound4;
+                if (result.chosenBoxHighValue) chosenBoxHighValueCount++;
+                if (result.chosenBoxLowValue) chosenBoxLowValueCount++;
+                if (result.reachedFinalRound) {
+                    reachedFinalRoundCount++;
+                    totalWinningsFinalRound += result.winnings;
+                    if (result.finalTwoIsMillionVsOne) finalTwoMillionVsOneCount++;
+                }
+                result.offerValues.forEach((offer, idx) => {
+                    if (!result.acceptedOffer || (result.acceptedOffer && idx < result.acceptanceRound - 1)) {
+                        totalRejectedOfferValue += offer;
+                        rejectedOfferCount++;
+                    }
+                });
+                const lastOffer = result.offerValues[result.offerValues.length - 1];
+                if (result.acceptedOffer && result.acceptedOfferValue > result.winnings) {
+                    offerExceedsWinningsCount++;
+                } else if (!result.acceptedOffer && lastOffer > result.winnings) {
+                    offerExceedsWinningsCount++;
+                }
+
+                winningsDistribution[result.winnings] = (winningsDistribution[result.winnings] || 0) + 1;
+                for (let j = 0; j < brackets.length; j++) {
+                    if (result.winnings >= brackets[j].min && result.winnings <= brackets[j].max) {
+                        bracketCounts[j]++;
+                        break;
+                    }
+                }
+            }
+
+            // Пресметка на статистики
+            const avgWinningsAccept = acceptCount > 0 ? (totalWinningsAccept / acceptCount).toFixed(2) : 0;
+            const avgWinningsReject = rejectContinueCount > 0 ? (totalWinningsReject / rejectContinueCount).toFixed(2) : 0;
+            const avgWinningsEnd = endCount > 0 ? (totalWinningsEnd / endCount).toFixed(2) : 0;
+            const acceptPercentage = ((acceptCount / iterations) * 100).toFixed(2);
+            const rejectContinuePercentage = ((rejectContinueCount / iterations) * 100).toFixed(2);
+            const endPercentage = ((endCount / iterations) * 100).toFixed(2);
+            const millionWonPercentage = ((millionWonCount / iterations) * 100).toFixed(2);
+            const millionOpenedPercentage = ((millionOpenedCount / iterations) * 100).toFixed(2);
+            const millionInChosenBoxPercentage = ((millionInChosenBoxCount / iterations) * 100).toFixed(2);
+            const millionSuccessRate = millionInChosenBoxCount > 0 ? ((millionWonCount / millionInChosenBoxCount) * 100).toFixed(2) : 0;
+            const oneDenarWonPercentage = ((oneDenarWonCount / iterations) * 100).toFixed(2);
+            const oneDenarOpenedPercentage = ((oneDenarOpenedCount / iterations) * 100).toFixed(2);
+            const avgAcceptanceRound = acceptCount > 0 ? (totalAcceptanceRound / acceptCount).toFixed(2) : 0;
+            const firstOfferAcceptedPercentage = ((firstOfferAcceptedCount / iterations) * 100).toFixed(2);
+            const avgAcceptedOfferValue = acceptCount > 0 ? (totalAcceptedOfferValue / acceptCount).toFixed(2) : 0;
+            const avgRejectedOfferValue = rejectedOfferCount > 0 ? (totalRejectedOfferValue / rejectedOfferCount).toFixed(2) : 0;
+            const offersAboveEVAcceptedPercentage = acceptCount > 0 ? ((offersAboveEVAcceptedCount / acceptCount) * 100).toFixed(2) : 0;
+            const millionAfterRound3Percentage = ((millionAfterRound3Count / iterations) * 100).toFixed(2);
+            const oneDenarAfterRound3Percentage = ((oneDenarAfterRound3Count / iterations) * 100).toFixed(2);
+            const avgHighValueAfterRound4 = (totalHighValueAfterRound4 / iterations).toFixed(2);
+            const chosenBoxHighValuePercentage = ((chosenBoxHighValueCount / iterations) * 100).toFixed(2);
+            const chosenBoxLowValuePercentage = ((chosenBoxLowValueCount / iterations) * 100).toFixed(2);
+            const reachedFinalRoundPercentage = ((reachedFinalRoundCount / iterations) * 100).toFixed(2);
+            const avgWinningsFinalRound = reachedFinalRoundCount > 0 ? (totalWinningsFinalRound / reachedFinalRoundCount).toFixed(2) : 0;
+            const finalTwoMillionVsOnePercentage = reachedFinalRoundCount > 0 ? ((finalTwoMillionVsOneCount / reachedFinalRoundCount) * 100).toFixed(2) : 0;
+            const highValueEndPercentage = endCount > 0 ? ((highValueEndCount / endCount) * 100).toFixed(2) : 0;
+            const lowValueEndPercentage = endCount > 0 ? ((lowValueEndCount / endCount) * 100).toFixed(2) : 0;
+            const avgEVWhenAccepting = acceptCount > 0 ? (totalEVWhenAccepting / acceptCount).toFixed(2) : 0;
+            const avgEVWhenGoingToEnd = endCount > 0 ? (totalEVWhenGoingToEnd / endCount).toFixed(2) : 0;
+            const offerExceedsWinningsPercentage = ((offerExceedsWinningsCount / iterations) * 100).toFixed(2);
+            const avgOfferMinusEV = acceptedOfferCountForEV > 0 ? (totalOfferMinusEV / acceptedOfferCountForEV).toFixed(2) : 0;
+            const millionLostToOfferPercentage = ((millionLostToOfferCount / iterations) * 100).toFixed(2);
+
+            // Подготовка на резултати со табели
+            let results = `
+                <div class="result-section">
+                    <h3>Општи статистики</h3>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Вкупно симулации</td><td>${iterations}</td></tr>
+                        <tr><td>Симулации со веднаш прифатена понуда</td><td>${acceptCount} (${acceptPercentage}%)</td></tr>
+                        <tr><td>Симулации со одбиена, но подоцна прифатена понуда</td><td>${rejectContinueCount} (${rejectContinuePercentage}%)</td></tr>
+                        <tr><td>Симулации до крај на играта</td><td>${endCount} (${endPercentage}%)</td></tr>
+                        <tr><td>Просечна добивка (веднаш прифатена понуда)</td><td>${avgWinningsAccept} денари</td></tr>
+                        <tr><td>Просечна добивка (одбиена, подоцна прифатена понуда)</td><td>${avgWinningsReject} денари</td></tr>
+                        <tr><td>Просечна добивка (до крај на играта)</td><td>${avgWinningsEnd} денари</td></tr>
+                    </table>
+                </div>
+                <div class="result-section">
+                    <h3>Дополнителни статистики за стратегија</h3>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Просечна рунда на прифаќање понуда</td><td>${avgAcceptanceRound}</td></tr>
+                        <tr><td>Процент на игри со прифатена прва понуда</td><td>${firstOfferAcceptedPercentage}%</td></tr>
+                        <tr><td>Просечна вредност на прифатена понуда</td><td>${avgAcceptedOfferValue} денари</td></tr>
+                        <tr><td>Просечна вредност на одбиена понуда</td><td>${avgRejectedOfferValue} денари</td></tr>
+                        <tr><td>Процент на прифатени понуди над очекуваната вредност</td><td>${offersAboveEVAcceptedPercentage}%</td></tr>
+                        <tr><td>Процент на игри со 1.000.000 денари преостанати по рунда 3</td><td>${millionAfterRound3Percentage}%</td></tr>
+                        <tr><td>Процент на игри со 1 денар преостанати по рунда 3</td><td>${oneDenarAfterRound3Percentage}%</td></tr>
+                        <tr><td>Просечен број на високи награди (≥ 100.000) по рунда 4</td><td>${avgHighValueAfterRound4}</td></tr>
+                        <tr><td>Процент на игри со висока вредност (≥ 100.000) во избраната кутија</td><td>${chosenBoxHighValuePercentage}%</td></tr>
+                        <tr><td>Процент на игри со ниска вредност (≤ 1.000) во избраната кутија</td><td>${chosenBoxLowValuePercentage}%</td></tr>
+                        <tr><td>Процент на игри што стигнале до финална рунда (рунда 6)</td><td>${reachedFinalRoundPercentage}%</td></tr>
+                        <tr><td>Просечна добивка при стигнување до финална рунда</td><td>${avgWinningsFinalRound} денари</td></tr>
+                        <tr><td>Процент на финални рунди со 1.000.000 vs. 1 денар</td><td>${finalTwoMillionVsOnePercentage}%</td></tr>
+                        <tr><td>Процент на игри до крај со висока вредност (≥ 100.000)</td><td>${highValueEndPercentage}%</td></tr>
+                        <tr><td>Процент на игри до крај со ниска вредност (≤ 1.000)</td><td>${lowValueEndPercentage}%</td></tr>
+                        <tr><td>Просечна очекувана вредност при прифаќање понуда</td><td>${avgEVWhenAccepting} денари</td></tr>
+                        <tr><td>Просечна очекувана вредност при одење до крај</td><td>${avgEVWhenGoingToEnd} денари</td></tr>
+                        <tr><td>Процент на игри каде понудата ја надминува конечната добивка</td><td>${offerExceedsWinningsPercentage}%</td></tr>
+                        <tr><td>Просечна разлика помеѓу прифатена понуда и очекувана вредност</td><td>${avgOfferMinusEV} денари</td></tr>
+                        <tr><td>Процент на игри каде милионот е изгубен поради прифаќање понуда</td><td>${millionLostToOfferPercentage}%</td></tr>
+                    </table>
+                </div>
+                <div class="result-section">
+                    <h3>Статистики за 1.000.000 и 1 денар</h3>
+                    <table>
+                        <tr><th>Статистика</th><th>Вредност</th></tr>
+                        <tr><td>Освоен 1.000.000 денари</td><td>${millionWonCount} пати (${millionWonPercentage}%)</td></tr>
+                        <tr><td>1.000.000 денари во избраната кутија</td><td>${millionInChosenBoxCount} пати (${millionInChosenBoxPercentage}%)</td></tr>
+                        <tr><td>Успешност за освојување на 1.000.000 денари кога е во избраната кутија</td><td>${millionSuccessRate}%</td></tr>
+                        <tr><td>1.000.000 денари отворен за време на играта</td><td>${millionOpenedCount} пати (${millionOpenedPercentage}%)</td></tr>
+                        <tr><td>Освоен 1 денар</td><td>${oneDenarWonCount} пати (${oneDenarWonPercentage}%)</td></tr>
+                        <tr><td>1 денар отворен за време на играта</td><td>${oneDenarOpenedCount} пати (${oneDenarOpenedPercentage}%)</td></tr>
+                    </table>
+                </div>
+                <div class="result-section">
+                    <h3>Добивки по опсези</h3>
+                    <table>
+                        <tr><th>Опсег</th><th>Вредност</th></tr>
+            `;
+            for (let i = 0; i < brackets.length; i++) {
+                const percentage = ((bracketCounts[i] / iterations) * 100).toFixed(2);
+                results += `<tr><td>${brackets[i].label}</td><td>${bracketCounts[i]} пати (${percentage}%)</td></tr>`;
+            }
+            results += `
+                    </table>
+                </div>
+                <div class="result-section">
+                    <h3>Распределба на добивките (поединечни износи)</h3>
+                    <table>
+                        <tr><th>Износ</th><th>Вредност</th></tr>
+            `;
+            for (const prize in winningsDistribution) {
+                if (winningsDistribution[prize] > 0) {
+                    const percentage = ((winningsDistribution[prize] / iterations) * 100).toFixed(2);
+                    results += `<tr><td>${prize} денари</td><td>${winningsDistribution[prize]} пати (${percentage}%)</td></tr>`;
+                }
+            }
+            results += `</table></div>`;
+
+            // Прикажување на резултати
+            document.getElementById('results').innerHTML = results;
+        }
+    </script>
+</body>
+</html>
