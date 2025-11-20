@@ -30,7 +30,9 @@
             <img src="icon_transparent.png" data-i18n-alt="title" alt="Icon" style="height: 26px; width: auto;">
             <div class="toolbar-separator" aria-hidden="true" style="margin-left:6px;margin-right:6px;">|</div>
             <div id="toolbar-story-title" class="toolbar-story-title" style="margin-right:6px;min-width:0;display:flex;align-items:center;gap:4px;">
-                <span id="toolbar-story-text">&nbsp;</span><span id="unsaved-dot" title="Unsaved changes" style="color:#e5c07b;display:none;">●</span>
+                <span id="toolbar-story-text">&nbsp;</span>
+                <span id="unsaved-dot" title="Unsaved changes" style="color:#e5c07b;display:none;">●</span>
+                <span id="unsaved-pill" class="unsaved-pill" aria-hidden="true">Edited</span>
             </div>
         </div>
         <div class="header-center" style="display:flex;align-items:center;gap:8px;flex:1 1 auto;min-width:0;">
@@ -39,14 +41,8 @@
             <div class="dropdown-menu" id="language-dropdown">
                 <!-- Dynamically populated -->
             </div>
-            <div class="dropdown-menu" id="undo-dropdown" style="display:none; min-width:260px;">
-                <div class="menu-category">
-                    <div class="menu-category-title">History</div>
-                    <div class="menu-category-items" style="padding:0;">
-                        <ul id="history-list" style="list-style:none; margin:0; padding:0;"></ul>
-                    </div>
-                </div>
-            </div>
+            <div class="dropdown-menu keep-width" id="recent-dropdown" style="display:none"></div>
+            <div class="dropdown-menu keep-width" id="undo-dropdown" style="display:none"></div>
             <div class="dropdown-menu" id="help-dropdown" style="display:none">
                 <div class="menu-category">
                     <div class="menu-category-title">Documentation</div>
@@ -177,51 +173,92 @@
         <!-- Context menu items will be injected dynamically -->
     </div>
 
+    <div id="external-change-modal" class="ns2-modal" aria-hidden="true">
+        <div class="ns2-modal__backdrop" data-change-close></div>
+        <div class="ns2-modal__panel" role="dialog" aria-modal="true" aria-labelledby="external-change-title">
+            <button class="ns2-modal__close" title="Dismiss" data-change-close>
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="ns2-modal__icon">
+                <i class="fas fa-wave-square"></i>
+            </div>
+            <div class="ns2-modal__body">
+                <div class="ns2-modal__eyebrow">Live Sync</div>
+                <h2 id="external-change-title">External update detected</h2>
+                <p data-change-message></p>
+                <div class="ns2-modal__meta">
+                    <div>
+                        <span class="label">File</span>
+                        <span data-change-name>—</span>
+                    </div>
+                    <div>
+                        <span class="label">Modified</span>
+                        <span data-change-timestamp>Just now</span>
+                    </div>
+                </div>
+                <p class="ns2-modal__warning" data-change-warning style="display:none;"><i class="fas fa-exclamation-triangle"></i> Unsaved editor changes will be overwritten.</p>
+                <div class="ns2-modal__actions">
+                    <button class="primary" data-change-reload><i class="fas fa-sync"></i> Reload story</button>
+                    <button class="ghost" data-change-ignore>Keep my version</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ns2-generic-modal" class="ns2-modal" aria-hidden="true">
+        <div class="ns2-modal__backdrop" data-modal-close></div>
+        <div class="ns2-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ns2-generic-title">
+            <button class="ns2-modal__close" title="Dismiss" data-modal-close>
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="ns2-modal__icon">
+                <i data-modal-icon class="fas fa-wave-square"></i>
+            </div>
+            <div class="ns2-modal__body">
+                <div class="ns2-modal__eyebrow" data-modal-eyebrow>Confirm</div>
+                <h2 id="ns2-generic-title" data-modal-title>Are you sure?</h2>
+                <p data-modal-message></p>
+                <div class="ns2-modal__meta" data-modal-meta style="display:none;"></div>
+                <p class="ns2-modal__warning" data-modal-warning style="display:none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span data-modal-warning-text></span>
+                </p>
+                <div class="ns2-modal__actions" data-modal-actions>
+                    <button class="primary" data-modal-primary>
+                        <i class="fas fa-check"></i>
+                        <span data-modal-primary-label>Continue</span>
+                    </button>
+                    <button class="ghost" data-modal-secondary>
+                        <i class="fas fa-times"></i>
+                        <span data-modal-secondary-label>Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     
 
     <script>
         let languages = {};
         let currentLanguage = 'en';
+        let editorBootstrapped = false;
+        let storageSyncInstalled = false;
 
         (async () => {
+            if (editorBootstrapped) return;
+            editorBootstrapped = true;
             const splashStart = performance.now();  // <-- start timer for minimum 1-second splash
 
             await loadLanguages();
             await initModule();
-            editorEngine = Module._CreateEngine();
-            const savedContent = localStorage.getItem('ns2_content');
-            if (savedContent) {
-                Module.FS.writeFile('/story.ns2', savedContent);
-                const pathPtr = allocateUTF8('/story.ns2');
-                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
-                Module._free(pathPtr);
-                if (loaded) {
-                    setStatus(languages[currentLanguage]['loadedSavedFromLocal'] || "Loaded saved story from local storage");
-                } else {
-                    setStatus((languages[currentLanguage]['failedLoadSavedStory'] || "Failed to load saved story: {err}").replace('{err}', getLastError(editorEngine)));
-                }
-            }
-            renderEditor();
+            await resetEditorToBlank({ skipStatus: true, skipFocus: true, reason: 'startup' });
             openTab('metadata');
             updateGlobalToolbar('metadata');
             updateFileIndicator();
+            installStorageSyncBridge();
                 // Dispatch readiness AFTER editorEngine exists and story (if any) loaded
                 try { window.dispatchEvent(new Event('ns2-module-ready')); } catch(e) {}
-
-            window.addEventListener('storage', (event) => {
-                if (event.key === 'ns2_content' && event.newValue) {
-                    Module.FS.writeFile('/story.ns2', event.newValue);
-                    const pathPtr = allocateUTF8('/story.ns2');
-                    const loaded = Module._LoadFromFile(editorEngine, pathPtr);
-                    Module._free(pathPtr);
-                    if (loaded) {
-                        renderEditor();
-                        setStatus(languages[currentLanguage]['storyUpdatedFromStorage'] || "Story updated from storage");
-                    } else {
-                        setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', getLastError(editorEngine)));
-                    }
-                }
-            });
 
             // ----- Hide splash as soon as initialization finishes (no artificial wait) -----
             // If initialization took long, the splash stays visible until now; if it was fast,
@@ -286,6 +323,199 @@
             } catch (e) {
                 console.error('Failed to load languages.json', e);
             }
+        }
+
+        function installStorageSyncBridge() {
+            if (storageSyncInstalled || typeof window === 'undefined') return;
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'ns2_content' && event.newValue) {
+                    try {
+                        Module.FS.writeFile('/story.ns2', event.newValue);
+                        const pathPtr = allocateUTF8('/story.ns2');
+                        const loaded = Module._LoadFromFile(editorEngine, pathPtr);
+                        Module._free(pathPtr);
+                        if (loaded) {
+                            renderEditor();
+                            setStatus(languages[currentLanguage]['storyUpdatedFromStorage'] || "Story updated from storage");
+                        } else {
+                            setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', getLastError(editorEngine)));
+                        }
+                    } catch (err) {
+                        setStatus((languages[currentLanguage]['failedUpdateFromStorage'] || "Failed to update story from storage: {err}").replace('{err}', err && err.message ? err.message : String(err)), true);
+                    }
+                }
+            });
+            storageSyncInstalled = true;
+        }
+
+        function setRecentStories(items) {
+            if (!Array.isArray(items)) {
+                recentStoryEntries = [];
+            } else {
+                recentStoryEntries = items.slice(0, 10);
+            }
+            updateRecentDropdownContent();
+        }
+
+        function updateRecentDropdownContent() {
+            const dropdown = document.getElementById('recent-dropdown');
+            if (!dropdown) return;
+            const prevInput = dropdown.querySelector('.dropdown-search input');
+            const preservedQuery = prevInput ? (prevInput.value || '') : '';
+            const queryToRestore = recentDropdownQuery || preservedQuery;
+
+            dropdown.innerHTML = '';
+            const category = document.createElement('div');
+            category.className = 'menu-category';
+            const title = document.createElement('div');
+            title.className = 'menu-category-title';
+            title.textContent = languages[currentLanguage]?.recentStories || 'Recent Stories';
+            category.appendChild(title);
+
+            const itemsContainer = document.createElement('div');
+            itemsContainer.className = 'menu-category-items indexed-list';
+
+            const searchWrapper = document.createElement('div');
+            searchWrapper.className = 'dropdown-search';
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = (languages[currentLanguage]?.search) || 'Search...';
+            searchInput.value = queryToRestore;
+            searchInput.spellcheck = false;
+            searchWrapper.appendChild(searchInput);
+            itemsContainer.appendChild(searchWrapper);
+
+            const listWrapper = document.createElement('div');
+            listWrapper.id = 'recent-list';
+            listWrapper.className = 'indexed-rows';
+            const scrollRegion = document.createElement('div');
+            scrollRegion.className = 'indexed-scroll';
+            scrollRegion.appendChild(listWrapper);
+            itemsContainer.appendChild(scrollRegion);
+
+            const entryButtons = [];
+            if (!recentStoryEntries || recentStoryEntries.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'recent-empty';
+                empty.textContent = languages[currentLanguage]?.recentEmpty || 'No recent stories yet.';
+                listWrapper.appendChild(empty);
+            } else {
+                recentStoryEntries.forEach((entry, idx) => {
+                    const indexDisplay = idx + 1;
+                    const btn = document.createElement('button');
+                    btn.className = 'indexed-entry recent-entry';
+                    btn.type = 'button';
+                    const name = entry && entry.name ? entry.name : (entry && entry.path ? getBaseName(entry.path) : 'Untitled');
+                    const pathValue = entry && entry.path ? entry.path : '';
+                    const secondary = pathValue || '';
+                    btn.dataset.filterText = normalizeForMatching(`${name || ''} ${secondary}`).toLowerCase();
+                    btn.innerHTML = `
+                        <div class="indexed-entry__content">
+                            <div class="indexed-entry__heading">
+                                <span class="indexed-entry__index">${indexDisplay}.</span>
+                                <span class="indexed-entry__primary">${escapeHtml(name || '')}</span>
+                            </div>
+                            ${secondary ? `<div class="indexed-entry__secondary">${escapeHtml(secondary)}</div>` : ''}
+                        </div>`;
+                    btn.title = secondary;
+                    btn.addEventListener('click', () => openRecentStoryFromList(pathValue));
+                    listWrapper.appendChild(btn);
+                    entryButtons.push(btn);
+                });
+            }
+
+            let noResults = null;
+            if (entryButtons.length > 0) {
+                noResults = document.createElement('div');
+                noResults.className = 'recent-empty recent-empty--filtered';
+                noResults.textContent = languages[currentLanguage]?.recentNoMatches || 'No matches found.';
+                noResults.style.display = 'none';
+                listWrapper.appendChild(noResults);
+            }
+
+            const filterEntries = () => {
+                const raw = searchInput.value || '';
+                recentDropdownQuery = raw;
+                if (!entryButtons.length) {
+                    if (noResults) noResults.style.display = 'none';
+                    return;
+                }
+                const q = normalizeForMatching(raw).toLowerCase();
+                let visibleCount = 0;
+                entryButtons.forEach(btn => {
+                    const haystack = btn.dataset.filterText || '';
+                    const match = q ? haystack.includes(q) : true;
+                    btn.style.display = match ? 'flex' : 'none';
+                    if (match) visibleCount++;
+                });
+                if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            };
+            searchInput.addEventListener('input', filterEntries);
+            if (searchInput.value) filterEntries();
+
+            category.appendChild(itemsContainer);
+            dropdown.appendChild(category);
+            applyDropdownHeightClamp(scrollRegion);
+        }
+
+        function applyDropdownHeightClamp(scrollRegion) {
+            if (!scrollRegion) return;
+            requestAnimationFrame(() => {
+                try {
+                    const rect = scrollRegion.getBoundingClientRect();
+                    const available = Math.floor(window.innerHeight - rect.top - 12);
+                    if (available <= 0) return;
+                    const contentHeight = scrollRegion.scrollHeight;
+                    if (contentHeight > available) {
+                        scrollRegion.style.maxHeight = available + 'px';
+                        scrollRegion.style.overflowY = 'auto';
+                        scrollRegion.classList.add('indexed-scroll--clamped');
+                    } else {
+                        scrollRegion.style.maxHeight = '';
+                        scrollRegion.style.overflowY = '';
+                        scrollRegion.classList.remove('indexed-scroll--clamped');
+                    }
+                } catch (e) {}
+            });
+        }
+
+        async function refreshRecentStories() {
+            if (!window || !window.electronAPI || typeof window.electronAPI.getRecentStories !== 'function') return;
+            try {
+                const res = await window.electronAPI.getRecentStories();
+                if (res && Array.isArray(res.items)) {
+                    setRecentStories(res.items);
+                }
+            } catch (err) {
+                console.warn('Failed to refresh recent stories', err);
+            }
+        }
+
+        function toggleRecentDropdown(anchorEl) {
+            updateRecentDropdownContent();
+            toggleDropdown('recent-dropdown', anchorEl);
+            refreshRecentStories();
+        }
+
+        function closeRecentDropdown() {
+            const dd = document.getElementById('recent-dropdown');
+            if (!dd) return;
+            dd.style.display = '';
+            dd.dataset.visible = '';
+        }
+
+        function openRecentStoryFromList(filePath) {
+            if (!filePath) return Promise.resolve(false);
+            const handler = typeof window.__openRecentStoryFromElectron === 'function'
+                ? window.__openRecentStoryFromElectron
+                : null;
+            if (!handler) {
+                closeRecentDropdown();
+                return Promise.resolve(false);
+            }
+            return Promise.resolve(handler(filePath))
+                .catch(() => false)
+                .finally(() => closeRecentDropdown());
         }
 
         function populateLanguageMenu() {
@@ -534,6 +764,11 @@
         let fsCurrentHandle = null; // FileSystemFileHandle when opened/saved via FS Access
         let electronCurrentPath = null; // Absolute path of currently opened file in Electron
         let fsCurrentName = null;
+        let recentStoryEntries = [];
+        let recentDropdownQuery = '';
+        let historyDropdownQuery = '';
+        let suppressTextEditorApply = false;
+        let pendingStoryTextSync = null;
 
         // Display name = story title; dirty indicator tracks text edits only
         let currentFileName = null;       // legacy name (not displayed)
@@ -560,13 +795,19 @@
                 if (!name) name = languages[currentLanguage]['untitled'] || 'Untitled';
                 if (titleSpan) titleSpan.textContent = name;
                 if (dotEl) {
+                    dotEl.textContent = isDirtyText ? '*' : '';
                     dotEl.style.display = isDirtyText ? 'inline-block' : 'none';
-                    dotEl.style.marginLeft = isDirtyText ? '2px' : '0';
+                    dotEl.style.marginLeft = isDirtyText ? '4px' : '0';
                     dotEl.style.fontSize = '12px';
                 }
-                if (titleWrapper) titleWrapper.title = name + (isDirtyText ? ' (unsaved changes)' : '');
-                // Window title: only story title, prefixed with dot when dirty
-                try { document.title = (isDirtyText ? '● ' : '') + name; } catch (e) {}
+                const pillEl = document.getElementById('unsaved-pill');
+                if (pillEl) {
+                    pillEl.style.display = isDirtyText ? 'inline-flex' : 'none';
+                    pillEl.setAttribute('aria-hidden', isDirtyText ? 'false' : 'true');
+                }
+                if (titleWrapper) titleWrapper.title = name + (isDirtyText ? ' (unsaved changes *)' : '');
+                // Window title: include story name + dirty marker for taskbar visibility
+                try { document.title = `${name}${isDirtyText ? ' *' : ''} - NS2`; } catch (e) {}
             } catch (e) {}
         }
 
@@ -576,6 +817,15 @@
                 isDirtyText = !!flag;
                 if (prev !== isDirtyText) updateFileIndicator();
             } catch (e) {}
+        }
+
+        function getCurrentEditorText() {
+            try {
+                if (textEditor && typeof textEditor.getValue === 'function') {
+                    return textEditor.getValue();
+                }
+            } catch (e) {}
+            return null;
         }
 
         function markClean(content, name) {
@@ -590,9 +840,15 @@
 
         function recalcDirty() {
             try {
-                if (lastSavedText == null) { return; }
-                const now = (textEditor && textEditor.getValue) ? textEditor.getValue() : null;
-                if (now == null) return; // cannot determine yet
+                const now = getCurrentEditorText();
+                if (now == null) {
+                    setDirtyText(!!lastSavedText);
+                    return;
+                }
+                if (lastSavedText == null) {
+                    setDirtyText(now.length > 0);
+                    return;
+                }
                 setDirtyText(now !== lastSavedText);
             } catch (e) {}
         }
@@ -658,6 +914,18 @@
         // history navigation runs). We clear the flag after handling.
         let __suppressCommitOnBlur = false;
 
+        function clearProgramHistory() {
+            try {
+                programHistory.length = 0;
+                historyIndex = 0;
+                updateToolbarUndoButtons();
+                const list = document.getElementById('history-list');
+                if (list) list.innerHTML = '';
+                historyDropdownQuery = '';
+                updateUndoDropdown();
+            } catch (e) { console.warn('clearProgramHistory failed', e); }
+        }
+
         function pushProgramAction(action) {
             // action: { undo: fn, redo: fn, description?: string }
             if (!action || (typeof action.undo !== 'function') || (typeof action.redo !== 'function')) return;
@@ -666,6 +934,32 @@
             if (historyIndex < programHistory.length) {
                 programHistory.length = historyIndex;
             }
+            // Helper: dedupe consecutive actions
+            function __normalizeDesc(d) {
+                try {
+                    if (!d) return '';
+                    if (typeof d === 'string') return d.trim();
+                    if (typeof d === 'object') return `${d.title || ''}::${d.detail || ''}`.trim();
+                    return '';
+                } catch (e) { return ''; }
+            }
+            try {
+                const last = programHistory[programHistory.length - 1];
+                const lastNorm = last ? __normalizeDesc(last.description) : '';
+                const nextNorm = __normalizeDesc(action.description);
+                // Exact normalized duplicate -> skip
+                if (last && lastNorm && nextNorm && lastNorm === nextNorm) return;
+                // Duplicate by title (collapse repeated edits to same field regardless of detail)
+                const lastTitle = last && last.description && last.description.title ? String(last.description.title).trim() : '';
+                const nextTitle = action && action.description && action.description.title ? String(action.description.title).trim() : '';
+                if (lastTitle && nextTitle && lastTitle === nextTitle) {
+                    // For edit-type actions just update last redo handler
+                    if (/^Edit /i.test(lastTitle)) {
+                        try { if (typeof action.redo === 'function') last.redo = action.redo; } catch (e) {}
+                        return;
+                    }
+                }
+            } catch (e) { /* swallow */ }
             programHistory.push(action);
             // enforce limit
             while (programHistory.length > programHistoryLimit) {
@@ -850,12 +1144,13 @@
             }
         }, true);
 
-        function commitFocusedChange() {
+        function commitFocusedChange(target) {
             // If a history navigation is about to occur, suppress committing the
             // focused change (clicking history causes blur -> commit otherwise)
             if (__suppressCommitOnBlur) { __suppressCommitOnBlur = false; __program_lastFocused = null; return; }
             if (!__program_lastFocused) return;
             const el = __program_lastFocused.el;
+            let changed = false;
             try {
                 let now;
                 if (el.type === 'checkbox' || el.type === 'radio') now = !!el.checked;
@@ -864,20 +1159,24 @@
                 const prev = __program_lastFocused.val;
                 if (now !== prev) {
                     pushProgramAction(makeInputAction(el, prev, now));
+                    changed = true;
                     // Do not trigger a full refresh on blur/change — UI updates should be contextual.
                     // Refresh of the whole view will be performed only when undo/redo is used.
                 }
             } catch (e) {}
             __program_lastFocused = null;
+            if (changed && (!target || !target.closest || !target.closest('.monaco-editor'))) {
+                scheduleStoryTextSync();
+            }
         }
 
         // Commit on blur and on change events
-        document.addEventListener('blur', (e) => { commitFocusedChange(); }, true);
+        document.addEventListener('blur', (e) => { commitFocusedChange(e.target); }, true);
         document.addEventListener('change', (e) => { 
             // For selects and checkbox changes, commit immediately if not inside Monaco
             const t = e.target;
             if (t && t.closest && t.closest('.monaco-editor')) return;
-            commitFocusedChange();
+            commitFocusedChange(t);
         }, true);
 
         // Keyboard shortcuts: Ctrl+Z / Ctrl+Y or Ctrl+Shift+Z
@@ -907,141 +1206,128 @@
 
         function updateUndoDropdown() {
             try {
-                const hist = document.getElementById('history-list');
-                if (!hist) return;
-                // Preserve any existing search query before rerender
-                let existingQuery = '';
-                try {
-                    const existingInput = hist.querySelector('.history-search input');
-                    if (existingInput) existingQuery = existingInput.value || '';
-                } catch (e) {}
-                hist.innerHTML = '';
-                // Add search box as the first list item
-                const searchLi = document.createElement('li');
-                searchLi.className = 'history-search';
-                searchLi.style.padding = '6px 8px';
-                searchLi.style.position = 'sticky';
-                searchLi.style.top = '0';
-                searchLi.style.background = 'rgba(0,0,0,0.6)';
+                const dropdown = document.getElementById('undo-dropdown');
+                if (!dropdown) return;
+                const prevInput = dropdown.querySelector('.dropdown-search input');
+                const preservedQuery = prevInput ? (prevInput.value || '') : '';
+                const queryToRestore = historyDropdownQuery || preservedQuery;
+
+                dropdown.innerHTML = '';
+                const category = document.createElement('div');
+                category.className = 'menu-category';
+                const titleEl = document.createElement('div');
+                titleEl.className = 'menu-category-title';
+                titleEl.textContent = languages[currentLanguage]?.history || 'History';
+                category.appendChild(titleEl);
+
+                const itemsContainer = document.createElement('div');
+                itemsContainer.className = 'menu-category-items indexed-list';
+                category.appendChild(itemsContainer);
+                dropdown.appendChild(category);
+
+                const searchWrapper = document.createElement('div');
+                searchWrapper.className = 'dropdown-search';
                 const searchInput = document.createElement('input');
                 searchInput.type = 'text';
-                searchInput.placeholder = (languages[currentLanguage] && languages[currentLanguage]['search']) ? languages[currentLanguage]['search'] : 'Search...';
-                searchInput.value = existingQuery;
-                searchInput.style.width = '100%';
-                searchInput.style.boxSizing = 'border-box';
-                searchInput.style.padding = '6px 8px';
-                searchInput.style.background = 'rgba(255,255,255,0.08)';
-                searchInput.style.border = '1px solid rgba(255,255,255,0.15)';
-                searchInput.style.color = '#fff';
-                searchInput.style.borderRadius = '4px';
-                searchInput.addEventListener('click', e => e.stopPropagation());
-                searchLi.appendChild(searchInput);
-                hist.appendChild(searchLi);
+                searchInput.placeholder = (languages[currentLanguage]?.search) || 'Search...';
+                searchInput.value = queryToRestore;
+                searchInput.spellcheck = false;
+                searchWrapper.appendChild(searchInput);
+                itemsContainer.appendChild(searchWrapper);
 
-                // Render all actions with most recent on top (reverse order)
-                for (let j = programHistory.length - 1; j >= 0; j--) {
-                    const item = programHistory[j];
-                    const indexDisplay = j + 1; // 1-based index for this entry
-                    const isRedo = j >= historyIndex;
-                    const li = document.createElement('li');
-                    li.className = 'history-row';
-                    li.style.padding = '0';
-                    li.style.cursor = 'pointer';
-                    if (isRedo) li.style.opacity = '0.5'; // redo items at 50% opacity
+                const list = document.createElement('div');
+                list.id = 'history-list';
+                list.className = 'indexed-rows';
+                const scrollRegion = document.createElement('div');
+                scrollRegion.className = 'indexed-scroll';
+                scrollRegion.appendChild(list);
+                itemsContainer.appendChild(scrollRegion);
 
-                    // Visually indicate the current undo cursor (the item just before historyIndex)
-                    if (!isRedo && j === historyIndex - 1) {
-                        li.className = 'history-row history-current';
-                        li.style.borderLeft = '3px solid #4FC3F7';
-                        li.style.background = 'rgba(79,195,247,0.08)';
-                    }
+                const entryButtons = [];
+                if (programHistory.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'recent-empty';
+                    empty.textContent = languages[currentLanguage]?.historyEmpty || 'No edits yet.';
+                    list.appendChild(empty);
+                } else {
+                    for (let j = programHistory.length - 1; j >= 0; j--) {
+                        const item = programHistory[j];
+                        const indexDisplay = j + 1;
+                        const isRedo = j >= historyIndex;
+                        let title = '';
+                        let detail = '';
+                        if (item && typeof item.description === 'object') {
+                            title = item.description.title || '';
+                            detail = item.description.detail || '';
+                        } else if (item && typeof item.description === 'string') {
+                            const raw = item.description.trim();
+                            const m = raw.match(/^(.*?)([.!?])\s+(.*)$/);
+                            if (m) { title = m[1] + m[2]; detail = m[3]; }
+                            else { title = raw; detail = ''; }
+                        }
+                        if (!title) title = 'Change ' + indexDisplay;
 
-                    // support { title, detail } description objects or plain strings
-                    let title = '';
-                    let detail = '';
-                    if (item && typeof item.description === 'object') {
-                        title = item.description.title || '';
-                        detail = item.description.detail || '';
-                    } else if (item && typeof item.description === 'string') {
-                        const raw = item.description.trim();
-                        const m = raw.match(/^(.*?)([.!?])\s+(.*)$/);
-                        if (m) { title = m[1] + m[2]; detail = m[3]; }
-                        else { title = raw; detail = ''; }
-                    }
-                    if (!title) title = 'Change ' + indexDisplay;
-
-                    // Create a button for better click handling
-                    const btn = document.createElement('button');
-                    btn.className = 'history-item' + (isRedo ? ' redo' : '');
-                    btn.type = 'button';
-                    btn.style.display = 'block';
-                    btn.style.width = '100%';
-                    btn.style.border = 'none';
-                    btn.style.background = 'transparent';
-                    btn.style.padding = '8px 10px';
-                    btn.style.textAlign = 'left';
-                    btn.style.cursor = 'pointer';
-                    try {
-                        const titleColor = 'rgba(255,255,255,0.95)';
-                        const detailColor = 'rgba(255,255,255,0.35)';
-                        // index + title on first line; description below (2 lines), left-aligned and full width
+                        const btn = document.createElement('button');
+                        btn.className = 'indexed-entry history-entry history-row' + (isRedo ? ' redo' : '');
+                        if (!isRedo && j === historyIndex - 1) btn.classList.add('history-current');
+                        btn.type = 'button';
+                        btn.dataset.filterText = normalizeForMatching(`${title} ${detail || ''}`).toLowerCase();
                         btn.innerHTML = `
-                            <div style="display:flex;align-items:flex-start;gap:4px;width:100%;">
-                                <span class="history-index" style="color:${detailColor};flex:0 0 auto;width:auto;inline-size:max-content;white-space:nowrap;padding:0;margin:0;">${indexDisplay}.</span>
-                                <div class="history-text" style="flex:1 1 auto;min-width:0;">
-                                    <div class="history-title" style="color:${titleColor};font-weight:600;line-height:1.2;">${escapeHtml(title)}</div>
-                                    ${detail ? `<div class="history-detail" style="color:${detailColor};margin-top:2px;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;">${escapeHtml(detail)}</div>` : ''}
+                            <div class="indexed-entry__content">
+                                <div class="indexed-entry__heading">
+                                    <span class="indexed-entry__index">${indexDisplay}.</span>
+                                    <span class="indexed-entry__primary">${escapeHtml(title)}</span>
                                 </div>
+                                ${detail ? `<div class="indexed-entry__secondary">${escapeHtml(detail)}</div>` : ''}
                             </div>`;
-                    } catch (e) {
-                        btn.textContent = indexDisplay + '. ' + title;
+                        btn.addEventListener('pointerdown', () => {
+                            __suppressCommitOnBlur = true;
+                            setTimeout(() => { __suppressCommitOnBlur = false; }, 400);
+                        });
+                        btn.addEventListener('click', () => {
+                            navigateHistoryTo(j + 1);
+                            const dd = document.getElementById('undo-dropdown');
+                            if (dd) {
+                                dd.style.display = '';
+                                dd.dataset.visible = '';
+                            }
+                        });
+                        list.appendChild(btn);
+                        entryButtons.push(btn);
                     }
-                    // Prevent blur-driven commit when this button is pressed
-                    btn.addEventListener('pointerdown', () => { __suppressCommitOnBlur = true; setTimeout(() => { __suppressCommitOnBlur = false; }, 400); });
-                    // Jump to the state immediately AFTER this action (index j + 1)
-                    btn.addEventListener('click', () => {
-                        navigateHistoryTo(j + 1);
-                        toggleDropdown('undo-dropdown', null);
-                    });
-                    li.appendChild(btn);
-                    hist.appendChild(li);
                 }
 
-                // Make dropdown content consume available viewport height (scroll on the container, not inside UL)
-                try {
-                    const container = hist.closest('.menu-category-items');
-                    const rect = container && container.getBoundingClientRect ? container.getBoundingClientRect() : (hist.getBoundingClientRect ? hist.getBoundingClientRect() : null);
-                    const available = Math.max(120, Math.floor(window.innerHeight - (rect ? rect.top : 0) - 12));
-                    if (container) {
-                        container.style.height = available + 'px';
-                        container.style.maxHeight = available + 'px';
-                        container.style.overflowY = 'auto';
-                        container.style.padding = '0';
-                        container.style.margin = '0';
-                    }
-                    // Avoid nested scrollbars on the UL itself
-                    hist.style.maxHeight = '';
-                    hist.style.overflow = '';
-                } catch (e) {}
+                let noResults = null;
+                if (entryButtons.length > 0) {
+                    noResults = document.createElement('div');
+                    noResults.className = 'recent-empty recent-empty--filtered';
+                    noResults.textContent = languages[currentLanguage]?.historyNoMatches || 'No matching edits.';
+                    noResults.style.display = 'none';
+                    list.appendChild(noResults);
+                }
 
-                // Hook up filtering
                 const performFilter = () => {
-                    try {
-                        const raw = searchInput.value || '';
-                        const q = normalizeForMatching(raw).toLowerCase();
-                        const rows = hist.querySelectorAll('li.history-row');
-                        rows.forEach(r => {
-                            try {
-                                const text = normalizeForMatching(r.textContent || '').toLowerCase();
-                                r.hidden = q ? !text.includes(q) : false;
-                            } catch (e) { r.style.display = q ? ( (r.textContent||'').toLowerCase().includes(q) ? '' : 'none') : ''; }
-                        });
-                    } catch (e) {}
+                    const raw = searchInput.value || '';
+                    historyDropdownQuery = raw;
+                    if (!entryButtons.length) {
+                        if (noResults) noResults.style.display = 'none';
+                        return;
+                    }
+                    const q = normalizeForMatching(raw).toLowerCase();
+                    let visible = 0;
+                    entryButtons.forEach(btn => {
+                        const haystack = btn.dataset.filterText || '';
+                        const match = q ? haystack.includes(q) : true;
+                        btn.style.display = match ? 'flex' : 'none';
+                        if (match) visible++;
+                    });
+                    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
                 };
                 searchInput.addEventListener('input', performFilter);
-                // Run initial filter if we had a previous query
-                if (existingQuery) performFilter();
-            } catch (e) { }
+                if (searchInput.value) performFilter();
+
+                applyDropdownHeightClamp(scrollRegion);
+            } catch (e) { console.warn('updateUndoDropdown failed', e); }
         }
 
         function updateToolbarUndoButtons() {
@@ -1099,42 +1385,80 @@
             } catch (e) { console.warn('restorePlaySnapshot failed', e); return false; }
         }
 
-        function newStory() {
-            if (confirm(languages[currentLanguage]['createNewStoryConfirm'] || 'Create a new blank story? Unsaved changes will be lost.')) {
-                // Reset engine and any persisted/opened file references
-                try { if (editorEngine) Module._DestroyEngine(editorEngine); } catch (e) {}
-                editorEngine = Module._CreateEngine();
-                try { localStorage.removeItem('ns2_content'); } catch (e) {}
-                try { fsCurrentHandle = null; fsCurrentName = null; } catch (e) {}
-
-                // Build a minimal default story via API, then reload it via text to satisfy "load from string"
-                try {
-                    // Metadata
-                    Module._SetStoryTitle(editorEngine, allocateUTF8(languages[currentLanguage]['untitled'] || 'Untitled'));
-                    Module._SetStoryDescription(editorEngine, allocateUTF8(''));
-                    // One initial state
-                    const stName = 'start';
-                    const stPtr = allocateUTF8(stName);
-                    Module._AddState(editorEngine, stPtr);
-                    Module._SetStateTitle(editorEngine, stPtr, allocateUTF8('Start'));
-                    Module._SetStateDescription(editorEngine, stPtr, allocateUTF8('Write your story here.'));
-                    Module._SetStartState(editorEngine, stPtr);
-                    Module._free(stPtr);
-                } catch (e) { console.warn('Failed to build default story via API', e); }
-
-                // Generate canonical text and re-load through parser to refresh all views
-                try {
-                    const txt = generateNS2Content();
-                    loadFromString(txt);
-                    // New blank story is clean (no unsaved text changes yet)
-                    markClean(txt, null);
-                } catch (e) {
-                    // Fallback: render directly if generation/loading failed
-                    try { renderEditor(); } catch (ee) {}
+        async function showUniformConfirm(config = {}) {
+            try {
+                const modal = window.__ns2ConfirmModal;
+                if (modal && typeof modal.open === 'function') {
+                    return modal.open(config || {});
                 }
-                setStatus(languages[currentLanguage]['newStoryCreated'] || 'New story created');
-                updateFileIndicator();
-                // Focus editor for immediate typing (fallback to title input if Monaco not ready yet)
+            } catch (e) {}
+            const fallbackMessage = config && config.message
+                ? config.message
+                : (config && config.title) || (languages[currentLanguage]?.confirmDialogFallback || 'Proceed?');
+            const result = typeof window.confirm === 'function' ? window.confirm(fallbackMessage) : true;
+            return Promise.resolve(result);
+        }
+
+        async function resetEditorToBlank(options = {}) {
+            const {
+                skipStatus = false,
+                skipFocus = false
+            } = options;
+            try { if (editorEngine) Module._DestroyEngine(editorEngine); } catch (e) {}
+            try { editorEngine = Module._CreateEngine(); } catch (e) {
+                console.error('Failed to create editor engine', e);
+                return false;
+            }
+            try {
+                const previous = localStorage.getItem('ns2_content');
+                if (previous) localStorage.setItem('ns2_last_session_backup', previous);
+                localStorage.removeItem('ns2_content');
+            } catch (e) {}
+            try { fsCurrentHandle = null; fsCurrentName = null; } catch (e) {}
+            currentFileName = null;
+
+            try {
+                const untitled = languages[currentLanguage]?.untitled || 'Untitled';
+                const defaultStateName = 'start';
+                const defaultStateTitle = languages[currentLanguage]?.defaultStateTitle || 'Start';
+                const defaultStateDescription = languages[currentLanguage]?.defaultStateDescription || 'Write your story here.';
+
+                const titlePtr = allocateUTF8(untitled);
+                Module._SetStoryTitle(editorEngine, titlePtr);
+                Module._free(titlePtr);
+
+                const storyDescPtr = allocateUTF8('');
+                Module._SetStoryDescription(editorEngine, storyDescPtr);
+                Module._free(storyDescPtr);
+
+                const stateNamePtr = allocateUTF8(defaultStateName);
+                Module._AddState(editorEngine, stateNamePtr);
+                const stateTitlePtr = allocateUTF8(defaultStateTitle);
+                Module._SetStateTitle(editorEngine, stateNamePtr, stateTitlePtr);
+                Module._free(stateTitlePtr);
+                const stateDescPtr = allocateUTF8(defaultStateDescription);
+                Module._SetStateDescription(editorEngine, stateNamePtr, stateDescPtr);
+                Module._free(stateDescPtr);
+                Module._SetStartState(editorEngine, stateNamePtr);
+                Module._free(stateNamePtr);
+            } catch (e) {
+                console.warn('Failed to build default story via API', e);
+            }
+
+            try {
+                const txt = generateNS2Content();
+                loadFromString(txt, { suppressStatus: true });
+                markClean(txt, null);
+                clearProgramHistory();
+            } catch (e) {
+                console.warn('Failed to load generated blank story', e);
+                try { renderEditor(); } catch (ee) {}
+            }
+
+            if (!skipStatus) {
+                setStatus(languages[currentLanguage]?.newStoryCreated || 'New story created');
+            }
+            if (!skipFocus) {
                 setTimeout(() => {
                     try {
                         if (textEditor && textEditor.focus) { textEditor.focus(); return; }
@@ -1143,10 +1467,29 @@
                     } catch (e) {}
                 }, 60);
             }
+            updateFileIndicator();
+            return true;
+        }
+
+        async function newStory() {
+            const prompt = languages[currentLanguage]['createNewStoryConfirm'] || 'Create a new blank story? Unsaved changes will be lost.';
+            const ok = await showUniformConfirm({
+                icon: 'fas fa-file',
+                eyebrow: languages[currentLanguage]['file'] || 'File',
+                title: languages[currentLanguage]['newStory'] || 'New Story',
+                message: prompt,
+                warning: languages[currentLanguage]['unsavedWarning'] || 'Unsaved editor changes will be lost.',
+                primaryLabel: languages[currentLanguage]['create'] || 'Create',
+                secondaryLabel: languages[currentLanguage]['cancel'] || 'Cancel',
+                destructive: true
+            });
+            if (!ok) return false;
+            return await resetEditorToBlank({ skipStatus: false, skipFocus: false });
         }
 
         // Helper to load story content from a string (used by FS Access and Electron bridges)
-        function loadFromString(content) {
+        function loadFromString(content, options = {}) {
+            const suppressStatus = !!options.suppressStatus;
             try {
                 Module.FS.writeFile('/story.ns2', content);
                 const pathPtr = allocateUTF8('/story.ns2');
@@ -1155,9 +1498,12 @@
                 if (loaded) {
                     saveToLocalStorage();
                     renderEditor();
-                    setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || 'Story loaded successfully');
+                    if (!suppressStatus) {
+                        setStatus(languages[currentLanguage]['storyLoadedSuccessfully'] || 'Story loaded successfully');
+                    }
                     try { openTab('text'); } catch (e) {}
                     updateFileIndicator();
+                    clearProgramHistory();
                     // After load, ensure clean state (text basis) if this is a direct open/save action
                     try { lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } catch (e) {}
                 } else {
@@ -1502,6 +1848,7 @@
             if (!textEditor || textEditorAutoApplyAttached) return;
             textEditorAutoApplyAttached = true;
             textEditor.onDidChangeModelContent(() => {
+                if (suppressTextEditorApply) return;
                 if (textApplyTimer) clearTimeout(textApplyTimer);
                 textApplyTimer = setTimeout(() => {
                     try {
@@ -1510,8 +1857,7 @@
                 }, 800);
                 // update bracket decorations live
                 try { applyMonacoBracketDecorations(); } catch (e) {}
-                // mark dirty only for text changes
-                try { setDirtyText(true); updateFileIndicator(); } catch (e) {}
+                try { recalcDirty(); } catch (e) {}
             });
             // initial decorations
             try { applyMonacoBracketDecorations(); } catch (e) {}
@@ -1555,7 +1901,7 @@
         
 
         function applyTextChanges() {
-            try { setDirtyText(true); updateFileIndicator(); } catch (e) {}
+            try { recalcDirty(); } catch (e) {}
             const text = textEditor.getValue();
             Module.FS.writeFile('/temp.ns2', text);
             const pathPtr = allocateUTF8('/temp.ns2');
@@ -1568,6 +1914,34 @@
                 } else {
                 setStatus((languages[currentLanguage]['invalidNS2Format'] || "Invalid NS2 format: {err}").replace('{err}', getLastError(editorEngine)));
             }
+        }
+
+        function syncTextEditorFromEngine() {
+            if (!textEditor || !Module || !editorEngine) return;
+            try {
+                const nextContent = generateNS2Content();
+                const current = textEditor.getValue();
+                if (current === nextContent) return;
+                const viewState = textEditor.saveViewState ? textEditor.saveViewState() : null;
+                suppressTextEditorApply = true;
+                textEditor.setValue(nextContent);
+                suppressTextEditorApply = false;
+                if (viewState && textEditor.restoreViewState) {
+                    textEditor.restoreViewState(viewState);
+                }
+                recalcDirty();
+            } catch (e) {
+                suppressTextEditorApply = false;
+                console.warn('syncTextEditorFromEngine failed', e);
+            }
+        }
+
+        function scheduleStoryTextSync() {
+            if (pendingStoryTextSync) return;
+            pendingStoryTextSync = setTimeout(() => {
+                pendingStoryTextSync = null;
+                syncTextEditorFromEngine();
+            }, 120);
         }
 
         function populateStateDatalist() {
@@ -2696,13 +3070,18 @@ function selectState(name) {
             // Electron Save As
             if (window.electronAPI && typeof window.electronAPI.saveAs === 'function') {
                 try {
-                    const res = await window.electronAPI.saveAs(content);
+                    const res = await window.electronAPI.saveAs(content, electronCurrentPath);
                     if (res && res.error) {
                         setStatus((languages[currentLanguage]['errorSavingStory'] || 'Error saving story: {err}').replace('{err}', res.error), true);
                         return false;
                     }
                     if (res && res.path) {
                         electronCurrentPath = res.path;
+                        try {
+                            if (window.electronFile && typeof window.electronFile.setActive === 'function') {
+                                window.electronFile.setActive(electronCurrentPath);
+                            }
+                        } catch (e) {}
                         setStatus(languages[currentLanguage]['storySaved'] || 'Story saved');
                         lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator();
                         return true;
@@ -3884,17 +4263,26 @@ function selectState(name) {
             hideGraphContextMenu();
         }
 
-        function deleteState(name) {
+        async function deleteState(name) {
             if (!name) return;
-            if (confirm((languages[currentLanguage]['confirmDeleteState'] || 'Delete state "{name}"?').replace('{name}', name))) {
-                removeState(name);
-                // Refresh graph view
-                try {
-                    // clear any graph selection referencing the deleted state
-                    if (graphSelectedState === name) graphSelectedState = null;
-                    renderGraph();
-                } catch (e) {}
-            }
+            const message = (languages[currentLanguage]['confirmDeleteState'] || 'Delete state "{name}"?').replace('{name}', name);
+            const ok = await showUniformConfirm({
+                icon: 'fas fa-trash-alt',
+                eyebrow: languages[currentLanguage]['states'] || 'States',
+                title: languages[currentLanguage]['deleteState'] || 'Delete State',
+                message,
+                warning: languages[currentLanguage]['unsavedWarning'] || 'Unsaved editor changes will be lost.',
+                primaryLabel: languages[currentLanguage]['delete'] || 'Delete',
+                secondaryLabel: languages[currentLanguage]['cancel'] || 'Cancel',
+                destructive: true
+            });
+            if (!ok) return;
+            removeState(name);
+            // Refresh graph view
+            try {
+                if (graphSelectedState === name) graphSelectedState = null;
+                renderGraph();
+            } catch (e) {}
         }
 
         function updateTokens() {
@@ -4227,9 +4615,25 @@ function selectState(name) {
             openBtn.dataset.action = 'file-open';
             fileGroup.appendChild(openBtn);
 
+            if (window.electronAPI && typeof window.electronAPI.getRecentStories === 'function') {
+                const recentBtn = makeBtn('<i class="fas fa-history"></i>', languages[currentLanguage]['recentStories'] || 'Recent Stories', (ev) => {
+                    ev.preventDefault();
+                    toggleRecentDropdown(recentBtn);
+                });
+                recentBtn.dataset.action = 'file-recent';
+                fileGroup.appendChild(recentBtn);
+            }
+
             const saveBtn = makeBtn('<i class="fas fa-save"></i>', languages[currentLanguage]['saveStory'] || 'Save Story', () => { try { window.saveFile(); } catch(e) { try { saveFile(); } catch(ee) {} } });
             saveBtn.dataset.action = 'file-save';
             fileGroup.appendChild(saveBtn);
+
+            const saveAsBtn = makeBtn('<i class="fas fa-file-export"></i>', languages[currentLanguage]['saveStoryAs'] || 'Save Story As…', () => {
+                try { window.saveFileAs(); }
+                catch (err) { try { saveFileAs(); } catch (ee) {} }
+            });
+            saveAsBtn.dataset.action = 'file-save-as';
+            fileGroup.appendChild(saveAsBtn);
             addGroupLabel(fileGroup, 'FILE');
             toolbar.appendChild(fileGroup);
 
@@ -4458,36 +4862,43 @@ function selectState(name) {
 
             // If this is the undo dropdown, refresh its contents
             try { if (dropdownId === 'undo-dropdown') updateUndoDropdown(); } catch (e) {}
-            // Position dropdown below anchor
-            const rect = anchorEl.getBoundingClientRect();
+            
+            // Reset dropdown styles before measuring
             dd.style.position = 'fixed';
-            // start hidden state for animation
+            dd.style.left = '0';
+            dd.style.top = '0';
             dd.style.display = 'block';
             dd.style.opacity = '0';
             dd.style.transform = 'translateY(-8px) scale(0.98)';
             dd.style.zIndex = 110;
+            dd.style.visibility = 'hidden';
             dd.dataset.visible = '1';
 
-            // Animate into place. Special case: undo-dropdown uses full viewport height.
+            // Animate into place and keep dropdown within viewport bounds.
             requestAnimationFrame(() => {
-                if (dropdownId === 'undo-dropdown') {
-                    const b0 = dd.getBoundingClientRect();
-                    const left = Math.max(8, Math.min(rect.left, window.innerWidth - b0.width - 8));
-                    dd.style.left = left + 'px';
-                    dd.style.top = '0px';
-                    dd.style.height = window.innerHeight + 'px';
-                    dd.style.maxHeight = window.innerHeight + 'px';
-                    dd.style.overflowY = 'auto';
-                } else {
-                    const b = dd.getBoundingClientRect();
-                    let left = Math.max(8, Math.min(rect.left, window.innerWidth - b.width - 8));
-                    let top = rect.bottom + 8;
-                    if (top + b.height > window.innerHeight - 8) {
-                        top = rect.top - b.height - 8;
-                    }
-                    dd.style.left = left + 'px';
-                    dd.style.top = top + 'px';
+                // Get fresh button position
+                const rect = anchorEl.getBoundingClientRect();
+                
+                // Set minimum width and measure dropdown
+                dd.style.minWidth = Math.max(rect.width, 200) + 'px';
+                const b = dd.getBoundingClientRect();
+                
+                // Calculate position - align left edge, or right if would go off right
+                let left = rect.left;
+                if (left + b.width > window.innerWidth - 8) {
+                    left = rect.right - b.width;
                 }
+                left = Math.max(8, left);
+                
+                // Adjust if dropdown would go off bottom edge
+                if (top + b.height > window.innerHeight - 8) {
+                    top = Math.max(8, rect.top - b.height - 4);
+                }
+                
+                // Apply position and show
+                dd.style.left = left + 'px';
+                dd.style.top = top + 'px';
+                dd.style.visibility = 'visible';
                 dd.style.transition = 'opacity 160ms ease, transform 160ms ease';
                 dd.style.opacity = '1';
                 dd.style.transform = 'translateY(0) scale(1)';
@@ -4507,6 +4918,29 @@ function selectState(name) {
             setTimeout(() => document.addEventListener('click', outsideClick), 0);
         }
 
+        // Override dropdown positioning with standardized VS Code-like behavior
+        function toggleDropdown(dropdownId, anchorEl) {
+            const dd = document.getElementById(dropdownId);
+            if (!dd || !anchorEl) return;
+            if (dd.dataset.visible === '1') { dd.style.display=''; dd.dataset.visible=''; return; }
+            document.querySelectorAll('.dropdown-menu').forEach(other => {
+                if (other !== dd && other.dataset.visible === '1') { other.style.display=''; other.dataset.visible=''; }
+            });
+            try { if (dropdownId === 'undo-dropdown') updateUndoDropdown(); } catch(_) {}
+            dd.style.position='fixed'; dd.style.left='0px'; dd.style.top='0px'; dd.style.display='block'; dd.style.opacity='0'; dd.style.transform='translateY(-4px)'; dd.style.visibility='hidden'; dd.style.zIndex=110; dd.dataset.visible='1';
+            requestAnimationFrame(() => {
+                const rect = anchorEl.getBoundingClientRect();
+                if (!dd.classList.contains('keep-width')) dd.style.minWidth = rect.width + 'px';
+                const b = dd.getBoundingClientRect();
+                let left = rect.left; let top = rect.bottom + 4;
+                if (left + b.width > window.innerWidth - 8) left = window.innerWidth - b.width - 8; if (left < 8) left = 8;
+                if (top + b.height > window.innerHeight - 8) top = rect.top - b.height - 4; if (top < 8) top = 8;
+                dd.style.left = left + 'px'; dd.style.top = top + 'px'; dd.style.visibility='visible'; dd.style.transition='opacity 120ms ease, transform 120ms ease'; dd.style.opacity='1'; dd.style.transform='translateY(0)';
+            });
+            const outsideClick = (e) => { if (!dd.contains(e.target) && !anchorEl.contains(e.target)) { dd.style.display=''; dd.dataset.visible=''; document.removeEventListener('mousedown', outsideClick); } };
+            setTimeout(() => document.addEventListener('mousedown', outsideClick), 0);
+        }
+
         function setupStatusWindow() {
             // Status window is now a dropdown anchored to the toolbar; no dragging needed.
             const windowElement = document.getElementById('status-window');
@@ -4515,105 +4949,277 @@ function selectState(name) {
                 windowElement.dataset.visible = '';
             }
             const copyBtn = document.getElementById('status-copy');
-            if (copyBtn) {
-                copyBtn.onclick = copyStatusContent;
-            }
-        }
+                if (!dd || !anchorEl) return;
 
-        function copyStatusContent() {
-            try {
-                const play = document.getElementById('play-error') ? document.getElementById('play-error').innerText : '';
-                const status = document.getElementById('status-content') ? document.getElementById('status-content').innerText : '';
-                const combined = [play, status].filter(Boolean).join('\n\n');
-                if (!combined) { setStatus(languages[currentLanguage]['nothingToCopy'] || 'Nothing to copy'); return; }
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(combined).then(() => { setStatus(languages[currentLanguage]['copiedToClipboard'] || 'Status copied to clipboard'); }, () => { fallbackCopy(combined); });
-                } else {
-                    fallbackCopy(combined);
+                // If already visible: close and return
+                if (dd.dataset.visible === '1') {
+                    dd.style.display = '';
+                    dd.dataset.visible = '';
+                    return;
                 }
-            } catch (e) { console.warn('copyStatusContent failed', e); setStatus(languages[currentLanguage]['copyFailed'] || 'Copy failed', true); }
-        }
 
-        function fallbackCopy(text) {
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed'; ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            try {
-                document.execCommand('copy');
-                setStatus(languages[currentLanguage]['copiedToClipboard'] || 'Status copied to clipboard');
-            } catch (e) {
-                setStatus(languages[currentLanguage]['copyFailed'] || 'Copy failed', true);
-            }
-            ta.remove();
-        }
+                // Close any other open dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(d => {
+                    if (d !== dd && d.dataset.visible === '1') {
+                        d.style.display = '';
+                        d.dataset.visible = '';
+                    }
+                });
 
-        function makeDraggable(element, handle) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            handle.onmousedown = dragMouseDown;
+                // Refresh dynamic content for specific menus
+                try { if (dropdownId === 'undo-dropdown') updateUndoDropdown(); } catch (_) {}
 
-            function dragMouseDown(e) {
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
+                // Prepare for measurement (fixed positioning like VS Code)
+                dd.style.position = 'fixed';
+                dd.style.left = '0px';
+                dd.style.top = '0px';
+                dd.style.display = 'block';
+                dd.style.opacity = '0';
+                dd.style.transform = 'translateY(-4px)';
+                dd.style.zIndex = 110;
+                dd.style.visibility = 'hidden';
+                dd.dataset.visible = '1';
 
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                element.style.top = (element.offsetTop - pos2) + "px";
-                element.style.left = (element.offsetLeft - pos1) + "px";
-            }
+                requestAnimationFrame(() => {
+                    const rect = anchorEl.getBoundingClientRect();
 
-            function closeDragElement() {
-                document.onmouseup = null;
+                    // Standard VS Code-like alignment: top-left corner below the button
+                    // Minimum width equals button width (unless menu already wider from CSS)
+                    if (!dd.style.width && !dd.classList.contains('keep-width')) {
+                        dd.style.minWidth = rect.width + 'px';
+                    }
+
+                    const b = dd.getBoundingClientRect();
+                    let left = rect.left;
+                    let top = rect.bottom + 4; // small vertical gap
+
+                    // Clamp horizontally: ensure fully visible
+                    if (left + b.width > window.innerWidth - 8) {
+                        left = window.innerWidth - b.width - 8; // shift left to fit
+                    }
+                    if (left < 8) left = 8;
+
+                    // If not enough space below, open above the button
+                    if (top + b.height > window.innerHeight - 8) {
+                        top = rect.top - b.height - 4; // open upward
+                    }
+                    if (top < 8) top = 8; // clamp top
+
+                    // Apply final position & animate in
+                    dd.style.left = left + 'px';
+                    dd.style.top = top + 'px';
+                    dd.style.visibility = 'visible';
+                    dd.style.transition = 'opacity 120ms ease, transform 120ms ease';
+                    dd.style.opacity = '1';
+                    dd.style.transform = 'translateY(0)';
+                });
                 document.onmousemove = null;
             }
-        }
+
+        (function initGenericConfirmModal(){
+            if (window.__ns2ConfirmModalInitialized) return;
+            const root = document.getElementById('ns2-generic-modal');
+            if (!root) { window.__ns2ConfirmModal = null; return; }
+            const iconEl = root.querySelector('[data-modal-icon]');
+            const eyebrowEl = root.querySelector('[data-modal-eyebrow]');
+            const titleEl = root.querySelector('[data-modal-title]');
+            const messageEl = root.querySelector('[data-modal-message]');
+            const warningEl = root.querySelector('[data-modal-warning]');
+            const warningTextEl = root.querySelector('[data-modal-warning-text]');
+            const metaEl = root.querySelector('[data-modal-meta]');
+            const primaryBtn = root.querySelector('[data-modal-primary]');
+            const primaryLabelEl = root.querySelector('[data-modal-primary-label]');
+            const secondaryBtn = root.querySelector('[data-modal-secondary]');
+            const secondaryLabelEl = root.querySelector('[data-modal-secondary-label]');
+            const actionsEl = root.querySelector('[data-modal-actions]') || root.querySelector('.ns2-modal__actions');
+            const closeTargets = root.querySelectorAll('[data-modal-close]');
+            const backdrop = root.querySelector('.ns2-modal__backdrop');
+            let resolver = null;
+            let previousActive = null;
+            let extraButtons = [];
+            let primaryReturnValue = true;
+            let secondaryReturnValue = false;
+
+            const cleanupExtraButtons = () => {
+                if (!extraButtons || extraButtons.length === 0) return;
+                extraButtons.forEach((btn) => {
+                    try { btn.remove(); } catch (e) {}
+                });
+                extraButtons = [];
+            };
+
+            const hide = () => {
+                cleanupExtraButtons();
+                root.classList.remove('is-visible');
+                root.setAttribute('aria-hidden', 'true');
+                root.removeEventListener('keydown', handleKeyDown, true);
+                if (previousActive && typeof previousActive.focus === 'function') {
+                    try { previousActive.focus(); } catch (e) {}
+                }
+            };
+
+            const finish = (result) => {
+                if (!resolver) return;
+                cleanupExtraButtons();
+                const resolveFn = resolver;
+                resolver = null;
+                hide();
+                resolveFn(result);
+            };
+
+            const handleKeyDown = (ev) => {
+                if (ev.key === 'Escape') {
+                    ev.preventDefault();
+                    finish(false);
+                }
+            };
+
+            const applyMeta = (items) => {
+                if (!metaEl) return;
+                metaEl.innerHTML = '';
+                if (!Array.isArray(items) || items.length === 0) {
+                    metaEl.style.display = 'none';
+                    return;
+                }
+                items.forEach(item => {
+                    const row = document.createElement('div');
+                    const labelSpan = document.createElement('span');
+                    labelSpan.className = 'label';
+                    labelSpan.textContent = item && item.label ? item.label : '';
+                    const valueSpan = document.createElement('span');
+                    valueSpan.textContent = item && item.value ? item.value : '';
+                    row.appendChild(labelSpan);
+                    row.appendChild(valueSpan);
+                    metaEl.appendChild(row);
+                });
+                metaEl.style.display = '';
+            };
+
+            const open = (config = {}) => {
+                const {
+                    icon = 'fas fa-wave-square',
+                    eyebrow = languages[currentLanguage]?.confirmDialogEyebrow || 'Confirm',
+                    title = languages[currentLanguage]?.confirmDialogTitle || 'Please confirm',
+                    message = '',
+                    warning = '',
+                    meta = null,
+                    primaryLabel = languages[currentLanguage]?.confirmDialogPrimary || 'Continue',
+                    secondaryLabel = languages[currentLanguage]?.confirmDialogSecondary || 'Cancel',
+                    primaryValue = true,
+                    secondaryValue = false,
+                    hideSecondary = false,
+                    destructive = false,
+                    extraActions = []
+                } = config || {};
+
+                primaryReturnValue = (typeof primaryValue === 'undefined') ? true : primaryValue;
+                secondaryReturnValue = (typeof secondaryValue === 'undefined') ? false : secondaryValue;
+
+                cleanupExtraButtons();
+
+                if (iconEl) iconEl.className = icon || 'fas fa-wave-square';
+                if (eyebrowEl) eyebrowEl.textContent = eyebrow;
+                if (titleEl) titleEl.textContent = title;
+                if (messageEl) messageEl.textContent = message || '';
+
+                if (warningEl) {
+                    if (warning) {
+                        warningEl.style.display = 'flex';
+                        if (warningTextEl) warningTextEl.textContent = warning;
+                    } else {
+                        warningEl.style.display = 'none';
+                        if (warningTextEl) warningTextEl.textContent = '';
+                    }
+                }
+
+                applyMeta(meta);
+
+                if (primaryBtn) {
+                    primaryBtn.classList.toggle('danger', !!destructive);
+                }
+                if (primaryLabelEl) primaryLabelEl.textContent = primaryLabel || '';
+
+                if (secondaryBtn) {
+                    const shouldHide = hideSecondary || !secondaryLabel;
+                    secondaryBtn.style.display = shouldHide ? 'none' : '';
+                    if (secondaryLabelEl) secondaryLabelEl.textContent = secondaryLabel || '';
+                }
+
+                if (actionsEl && Array.isArray(extraActions) && extraActions.length > 0) {
+                    extraActions.forEach(action => {
+                        const btn = document.createElement('button');
+                        const classes = [];
+                        if (action.classes && typeof action.classes === 'string') {
+                            classes.push(action.classes);
+                        } else {
+                            const variant = action.variant || 'ghost';
+                            if (variant === 'primary') {
+                                classes.push('primary');
+                            } else {
+                                classes.push('ghost');
+                            }
+                            if (variant === 'danger') {
+                                classes.push('danger');
+                            }
+                        }
+                        btn.className = classes.join(' ').trim() || 'ghost';
+                        btn.type = 'button';
+                        if (action.title) btn.title = action.title;
+                        const iconName = action.icon || '';
+                        if (iconName) {
+                            const iconNode = document.createElement('i');
+                            iconNode.className = iconName;
+                            btn.appendChild(iconNode);
+                        }
+                        const labelSpan = document.createElement('span');
+                        labelSpan.textContent = action.label || '';
+                        btn.appendChild(labelSpan);
+                        const actionValue = (typeof action.value === 'undefined') ? true : action.value;
+                        btn.addEventListener('click', () => finish(actionValue));
+                        try {
+                            actionsEl.insertBefore(btn, (secondaryBtn && secondaryBtn.parentNode === actionsEl) ? secondaryBtn : null);
+                        } catch (e) {
+                            actionsEl.appendChild(btn);
+                        }
+                        extraButtons.push(btn);
+                    });
+                }
+
+                root.classList.add('is-visible');
+                root.setAttribute('aria-hidden', 'false');
+                previousActive = document.activeElement;
+                root.addEventListener('keydown', handleKeyDown, true);
+
+                return new Promise((resolve) => {
+                    resolver = resolve;
+                    setTimeout(() => {
+                        try {
+                            (primaryBtn || root).focus();
+                        } catch (e) {}
+                    }, 20);
+                });
+            };
+
+            primaryBtn?.addEventListener('click', () => finish(primaryReturnValue));
+            secondaryBtn?.addEventListener('click', () => finish(secondaryReturnValue));
+            closeTargets.forEach(btn => btn.addEventListener('click', (ev) => { ev.preventDefault(); finish(false); }));
+            backdrop?.addEventListener('click', (ev) => { ev.preventDefault(); finish(false); });
+
+            window.__ns2ConfirmModal = { open, close: () => finish(false) };
+            window.__ns2ConfirmModalInitialized = true;
+        })();
 
         // Toolbar mouse tracking removed — toolbar is now static in the header next to Language/Help
 
         (async () => {
+            if (editorBootstrapped) return;
+            editorBootstrapped = true;
             await loadLanguages();
             await initModule();
-            editorEngine = Module._CreateEngine();
-            const savedContent = localStorage.getItem('ns2_content');
-            if (savedContent) {
-                Module.FS.writeFile('/story.ns2', savedContent);
-                const pathPtr = allocateUTF8('/story.ns2');
-                const loaded = Module._LoadFromFile(editorEngine, pathPtr);
-                Module._free(pathPtr);
-                if (loaded) {
-                    renderEditor();
-                    setStatus("Loaded saved story from local storage");
-                } else {
-                    setStatus("Failed to load saved story: " + getLastError(editorEngine));
-                }
-            } else {
-            }
-            renderEditor();
+            await resetEditorToBlank({ skipStatus: true, skipFocus: true });
             openTab('metadata');
             updateGlobalToolbar('metadata');
-            window.addEventListener('storage', (event) => {
-                if (event.key === 'ns2_content' && event.newValue) {
-                    Module.FS.writeFile('/story.ns2', event.newValue);
-                    const pathPtr = allocateUTF8('/story.ns2');
-                    const loaded = Module._LoadFromFile(editorEngine, pathPtr);
-                    Module._free(pathPtr);
-                    if (loaded) {
-                        renderEditor();
-                        setStatus("Story updated from storage");
-                    } else {
-                        setStatus("Failed to update story from storage: " + getLastError(editorEngine));
-                    }
-                }
-            });
+            installStorageSyncBridge();
         })();
         </script>
 
@@ -4625,25 +5231,186 @@ function selectState(name) {
 
             // use global electronCurrentPath declared earlier
 
-            async function electronOpenFile(){
-                try{
-                    const res = await window.electronAPI.openFile();
-                    if(!res) return;
-                    if(res.error){ console.error('openFile error', res.error); return; }
-                    electronCurrentPath = res.path || null;
-                    // If there is a function that accepts the file contents, prefer it
-                    if(typeof window.loadFromString === 'function'){
-                        return window.loadFromString(res.content);
-                    }
-                    if(typeof window.openFromString === 'function'){
-                        return window.openFromString(res.content);
-                    }
-                    // Try to find an editor textarea and populate it
+            const updateElectronWatcher = (filePath) => {
+                if (window.electronFile && typeof window.electronFile.setActive === 'function') {
+                    try { window.electronFile.setActive(filePath || null); } catch (e) { console.warn('Failed to update electron watcher', e); }
+                }
+            };
+
+            const applyElectronOpenResult = (res) => {
+                if (!res) return null;
+                if (res.error) {
+                    console.error('openFile error', res.error);
+                    const failMsg = (languages[currentLanguage]?.failedToLoadStory || 'Failed to load story: {err}').replace('{err}', res.error);
+                    setStatus(failMsg, true);
+                    return null;
+                }
+                electronCurrentPath = res.path || null;
+                updateElectronWatcher(electronCurrentPath);
+                if (typeof window.loadFromString === 'function') {
+                    window.loadFromString(res.content);
+                } else if (typeof window.openFromString === 'function') {
+                    window.openFromString(res.content);
+                } else {
                     const ta = document.querySelector('textarea#file-content') || document.querySelector('textarea.story-text');
-                    if(ta){ ta.value = res.content; ta.dispatchEvent(new Event('input')); return; }
-                    // Fallback: if the app exposes a loader that reads from a hidden file input, create a Blob and try to call existing handler
-                    console.warn('No known loader found in page to accept file content; you may need to expose loadFromString(content)');
-                }catch(err){ console.error('electronOpenFile', err); }
+                    if (ta) {
+                        ta.value = res.content;
+                        ta.dispatchEvent(new Event('input'));
+                    } else {
+                        console.warn('No handler available for story content');
+                    }
+                }
+                refreshRecentStories();
+                return res;
+            };
+
+            const nowFn = () => { try { return performance.now(); } catch (e) { return Date.now(); } };
+            let suppressDiskReloadUntil = 0;
+            const suppressDiskReload = () => { suppressDiskReloadUntil = nowFn() + 1800; };
+            const shouldIgnoreDiskReload = () => nowFn() < suppressDiskReloadUntil;
+
+            const reloadFromPayload = (payload) => {
+                if (!payload || typeof payload.content !== 'string') return;
+                try {
+                    if (typeof window.loadFromString === 'function') {
+                        window.loadFromString(payload.content);
+                        markClean(payload.content, electronCurrentPath ? getBaseName(electronCurrentPath) : null);
+                    } else if (typeof window.openFromString === 'function') {
+                        window.openFromString(payload.content);
+                    } else {
+                        console.warn('Received file change event but no loader available');
+                        return;
+                    }
+                    setStatus('Story reloaded from disk');
+                } catch (err) {
+                    console.error('Failed to apply disk change', err);
+                }
+            };
+
+            const diskChangeModal = (() => {
+                const root = document.getElementById('external-change-modal');
+                if (!root) return null;
+                const nameEl = root.querySelector('[data-change-name]');
+                const timeEl = root.querySelector('[data-change-timestamp]');
+                const msgEl = root.querySelector('[data-change-message]');
+                const warnEl = root.querySelector('[data-change-warning]');
+                const reloadBtn = root.querySelector('[data-change-reload]');
+                const ignoreBtn = root.querySelector('[data-change-ignore]');
+                const closeTargets = root.querySelectorAll('[data-change-close]');
+                let resolver = null;
+                let previousActive = null;
+
+                const hide = () => {
+                    root.classList.remove('is-visible');
+                    root.setAttribute('aria-hidden', 'true');
+                    root.removeEventListener('keydown', handleKeyDown, true);
+                    if (previousActive && typeof previousActive.focus === 'function') {
+                        try { previousActive.focus(); } catch (e) {}
+                    }
+                };
+
+                const finish = (val) => {
+                    if (!resolver) return;
+                    const resolve = resolver;
+                    resolver = null;
+                    hide();
+                    resolve(!!val);
+                };
+
+                const handleKeyDown = (ev) => {
+                    if (ev.key === 'Escape') {
+                        ev.preventDefault();
+                        finish(false);
+                    }
+                };
+
+                const open = ({ fileName, timestamp, dirty, message }) => {
+                    if (nameEl) nameEl.textContent = fileName || 'Untitled';
+                    if (timeEl) timeEl.textContent = timestamp || 'Just now';
+                    if (msgEl) msgEl.textContent = message || 'This story changed outside the editor.';
+                    if (warnEl) warnEl.style.display = dirty ? 'flex' : 'none';
+                    root.classList.add('is-visible');
+                    root.setAttribute('aria-hidden', 'false');
+                    previousActive = document.activeElement;
+                    root.addEventListener('keydown', handleKeyDown, true);
+                    return new Promise((resolve) => {
+                        resolver = resolve;
+                        setTimeout(() => { try { reloadBtn?.focus(); } catch (e) {} }, 15);
+                    });
+                };
+
+                reloadBtn?.addEventListener('click', () => finish(true));
+                ignoreBtn?.addEventListener('click', () => finish(false));
+                closeTargets.forEach(btn => btn.addEventListener('click', (ev) => { ev.preventDefault(); finish(false); }));
+
+                return { open, cancel: () => finish(false) };
+            })();
+
+            const formatDiskTimestamp = (isoString) => {
+                if (!isoString) return 'Just now';
+                try {
+                    const dt = new Date(isoString);
+                    if (!isNaN(dt.getTime())) {
+                        return dt.toLocaleString([], { weekday: 'short', hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
+                    }
+                } catch (e) {}
+                return isoString;
+            };
+
+            const showExternalChangePrompt = (payload) => {
+                const displayName = payload?.path ? getBaseName(payload.path) : (languages[currentLanguage]?.untitled || 'Untitled');
+                const baseMessage = languages[currentLanguage]?.externalChangePrompt || 'The file has changed on disk. Reload it now?';
+                if (!diskChangeModal) {
+                    return showUniformConfirm({
+                        icon: 'fas fa-wave-square',
+                        eyebrow: languages[currentLanguage]?.file || 'File',
+                        title: languages[currentLanguage]?.reloadStory || 'Reload Story',
+                        message: baseMessage,
+                        warning: isDirtyText ? (languages[currentLanguage]?.unsavedWarning || 'Unsaved editor changes will be lost.') : '',
+                        primaryLabel: languages[currentLanguage]?.reload || 'Reload',
+                        secondaryLabel: languages[currentLanguage]?.cancel || 'Cancel',
+                        destructive: true,
+                        meta: [
+                            {
+                                label: languages[currentLanguage]?.file || 'File',
+                                value: displayName
+                            }
+                        ]
+                    });
+                }
+                return diskChangeModal.open({
+                    fileName: displayName,
+                    timestamp: formatDiskTimestamp(payload?.mtime),
+                    dirty: !!isDirtyText,
+                    message: baseMessage
+                });
+            };
+
+            if (window.electronFile && typeof window.electronFile.onFileContentChanged === 'function') {
+                try {
+                    window.electronFile.onFileContentChanged(async (payload) => {
+                        if (!payload || shouldIgnoreDiskReload()) return;
+                        const shouldReload = await showExternalChangePrompt(payload);
+                        if (shouldReload) reloadFromPayload(payload); else setStatus('Ignored external file change');
+                    });
+                } catch (err) {
+                    console.warn('Failed to attach disk change listener', err);
+                }
+            }
+
+            async function electronOpenFile(targetPath){
+                try{
+                    const res = targetPath
+                        ? await window.electronAPI.openRecentStory(targetPath)
+                        : await window.electronAPI.openFile();
+                    return applyElectronOpenResult(res);
+                }catch(err){ console.error('electronOpenFile', err); return null; }
+            }
+
+            async function openRecentStoryDirect(filePath){
+                if (!filePath) return false;
+                const result = await electronOpenFile(filePath);
+                return !!(result && !result.error);
             }
 
             async function electronSaveFile(content){
@@ -4656,16 +5423,32 @@ function selectState(name) {
 
                     if(electronCurrentPath){
                         const res = await window.electronAPI.saveFile(content, electronCurrentPath);
-                        if(res && res.error) console.error('saveFile error', res.error);
-                        // Mark clean after successful save
-                        try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
+                        if(res && res.error) {
+                            console.error('saveFile error', res.error);
+                        } else if (res) {
+                            suppressDiskReload();
+                            // Mark clean after successful save
+                            try {
+                                lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content;
+                                isDirtyText = false;
+                                updateFileIndicator();
+                            } catch(e){}
+                        }
                         return res;
                     }
                     // no current path — open Save As
-                    const res = await window.electronAPI.saveAs(content);
+                    const res = await window.electronAPI.saveAs(content, electronCurrentPath);
                     if(res && res.error) console.error('saveAs error', res.error);
-                    if(res && res.path) electronCurrentPath = res.path;
-                    try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
+                    if(res && res.path){
+                        electronCurrentPath = res.path;
+                        updateElectronWatcher(electronCurrentPath);
+                        suppressDiskReload();
+                        try {
+                            lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content;
+                            isDirtyText = false;
+                            updateFileIndicator();
+                        } catch(e){}
+                    }
                     return res;
                 }catch(err){ console.error('electronSaveFile', err); }
             }
@@ -4676,13 +5459,131 @@ function selectState(name) {
                         const ta = document.querySelector('textarea#file-content') || document.querySelector('textarea.story-text'); if(ta) content = ta.value;
                     }}
                     if(content == null) { console.warn('No content available to save'); return; }
-                    const res = await window.electronAPI.saveAs(content);
-                    if(res && res.path) electronCurrentPath = res.path;
+                    const res = await window.electronAPI.saveAs(content, electronCurrentPath);
+                    if(res && res.path){
+                        electronCurrentPath = res.path;
+                        updateElectronWatcher(electronCurrentPath);
+                        suppressDiskReload();
+                        // Mark clean after Save As and remember new path
+                        try {
+                            lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content;
+                            isDirtyText = false;
+                            updateFileIndicator();
+                        } catch(e){}
+                    }
                     if(res && res.error) console.error('saveAs error', res.error);
-                    // Mark clean after Save As and remember new path
-                    try { if(!res || !res.error){ lastSavedText = (textEditor && textEditor.getValue) ? textEditor.getValue() : content; isDirtyText = false; updateFileIndicator(); } } catch(e){}
                     return res;
                 }catch(err){ console.error('electronSaveAs', err); }
+            }
+
+            const closePromptState = { busy: false };
+
+            const formatSaveFailure = (msg) => {
+                const template = languages[currentLanguage]?.saveFailed || 'Failed to save story: {err}';
+                return template.replace('{err}', msg || 'Unknown error');
+            };
+
+            const saveCancelledMessage = () => languages[currentLanguage]?.saveCancelled || 'Save canceled. Story remains open.';
+
+            async function attemptSaveBeforeClose(mode) {
+                try {
+                    const result = mode === 'save-as' ? await electronSaveAs() : await electronSaveFile();
+                    if (!result) {
+                        setStatus(saveCancelledMessage());
+                        return false;
+                    }
+                    if (result.error) {
+                        setStatus(formatSaveFailure(result.error), true);
+                        return false;
+                    }
+                    return true;
+                } catch (err) {
+                    const message = err && err.message ? err.message : String(err);
+                    setStatus(formatSaveFailure(message), true);
+                    return false;
+                }
+            }
+
+            async function resolveCloseRequest(allow) {
+                if (!window.electronAPI || typeof window.electronAPI.resolveCloseRequest !== 'function') {
+                    if (allow) console.warn('resolveCloseRequest bridge missing; cannot finalize close request');
+                    return;
+                }
+                try {
+                    await window.electronAPI.resolveCloseRequest({ allow: !!allow });
+                } catch (err) {
+                    console.warn('Failed to resolve close request', err);
+                }
+            }
+
+            async function showUnsavedClosePrompt() {
+                const config = {
+                    icon: 'fas fa-exclamation-triangle',
+                    eyebrow: languages[currentLanguage]?.file || 'File',
+                    title: languages[currentLanguage]?.unsavedChanges || 'Unsaved changes detected',
+                    message: languages[currentLanguage]?.unsavedClosePrompt || 'You have unsaved changes. Choose an option before closing.',
+                    warning: languages[currentLanguage]?.unsavedWarning || 'Unsaved editor changes will be lost if you exit without saving.',
+                    primaryLabel: languages[currentLanguage]?.save || 'Save',
+                    secondaryLabel: languages[currentLanguage]?.cancel || 'Cancel',
+                    primaryValue: 'save',
+                    secondaryValue: 'cancel',
+                    extraActions: [
+                        {
+                            label: languages[currentLanguage]?.saveAs || 'Save As',
+                            icon: 'fas fa-file-export',
+                            value: 'save-as'
+                        },
+                        {
+                            label: languages[currentLanguage]?.exit || 'Exit',
+                            icon: 'fas fa-sign-out-alt',
+                            value: 'exit',
+                            variant: 'danger'
+                        }
+                    ]
+                };
+                const selection = await showUniformConfirm(config);
+                if (selection === true) return 'exit';
+                if (selection === false) return 'cancel';
+                return selection;
+            }
+
+            async function handleCloseRequest() {
+                if (!isDirtyText) {
+                    await resolveCloseRequest(true);
+                    return;
+                }
+                const choice = await showUnsavedClosePrompt();
+                switch (choice) {
+                    case 'save': {
+                        const ok = await attemptSaveBeforeClose('save');
+                        await resolveCloseRequest(!!ok);
+                        return;
+                    }
+                    case 'save-as': {
+                        const ok = await attemptSaveBeforeClose('save-as');
+                        await resolveCloseRequest(!!ok);
+                        return;
+                    }
+                    case 'exit':
+                        await resolveCloseRequest(true);
+                        return;
+                    default:
+                        await resolveCloseRequest(false);
+                        return;
+                }
+            }
+
+            function installCloseRequestPrompt() {
+                if (!window.electronWindowEvents || typeof window.electronWindowEvents.onCloseRequest !== 'function') {
+                    console.warn('Electron close-request bridge unavailable; close confirmation disabled');
+                    return;
+                }
+                window.electronWindowEvents.onCloseRequest(() => {
+                    if (closePromptState.busy) return;
+                    closePromptState.busy = true;
+                    Promise.resolve(handleCloseRequest())
+                        .finally(() => { closePromptState.busy = false; });
+                });
             }
 
             // Override existing web functions only when present; otherwise, add minimal wrappers
@@ -4690,15 +5591,21 @@ function selectState(name) {
                 // Also wrap newStory to clear the current electron path when starting fresh
                 if(typeof window.newStory === 'function'){
                     const origNew = window.newStory;
-                    window.newStory = function(){ try{ electronCurrentPath = null; }catch(e){} return origNew.apply(this, arguments); };
+                    window.newStory = function(){
+                        try {
+                            electronCurrentPath = null;
+                            updateElectronWatcher(null);
+                        } catch (e) {}
+                        return origNew.apply(this, arguments);
+                    };
                 }
 
                 if(typeof window.loadFile === 'function'){
                     const webLoad = window.loadFile;
-                    window.loadFile = function(){ return electronOpenFile(); };
+                    window.loadFile = function(){ return electronOpenFile.apply(this, arguments); };
                     window.webLoadFile = webLoad;
                 } else {
-                    window.loadFile = electronOpenFile;
+                    window.loadFile = function(){ return electronOpenFile.apply(this, arguments); };
                 }
 
                 if(typeof window.saveFile === 'function'){
@@ -4712,6 +5619,8 @@ function selectState(name) {
                 // Optional: expose saveAs
                 window.saveFileAs = window.saveFileAs || electronSaveAs;
 
+                window.__openRecentStoryFromElectron = openRecentStoryDirect;
+
                 // Intercept file input clicks (if the page uses a native <input type="file">)
                 const fileInput = document.getElementById('file-input') || document.querySelector('input[type=file]');
                 if(fileInput){
@@ -4722,6 +5631,9 @@ function selectState(name) {
 
                 // Intentionally do not inject any 'Save As' UI; Save As remains available via programmatic APIs only.
             }catch(e){ console.error('Error installing electron overrides', e); }
+
+            installCloseRequestPrompt();
+            refreshRecentStories();
 
         })();
         </script>
