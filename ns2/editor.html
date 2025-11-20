@@ -979,6 +979,9 @@
                 }
             } catch (e) { /* swallow */ }
             programHistory.push(action);
+            try {
+                console.debug('[history] push', action && action.description ? action.description.title : '(no title)', action && action.description ? action.description.detail : '', 'size ->', programHistory.length);
+            } catch (e) { /* ignore */ }
             // enforce limit
             while (programHistory.length > programHistoryLimit) {
                 programHistory.shift();
@@ -2036,21 +2039,46 @@
             return prefix + idx;
         }
 
+        function variableExists(name) {
+            try {
+                const count = Module._GetVariableCount(editorEngine);
+                for (let i = 0; i < count; i++) {
+                    const ptr = Module._GetVariableName(editorEngine, i);
+                    const n = Module.UTF8ToString(ptr); Module._FreeString(ptr);
+                    if (n === name) return true;
+                }
+            } catch (e) { /* ignore */ }
+            return false;
+        }
+
         function generateUniqueStateName() {
-            const prefix = 'state';
-            const existing = new Set();
+            // Desired pattern: State1, State2, ... (case-insensitive uniqueness)
+            const prefix = 'State';
+            const existingLower = new Set();
             try {
                 const count = Module._GetStateCount(editorEngine);
                 for (let i = 0; i < count; i++) {
                     const namePtr = Module._GetStateName(editorEngine, i);
                     const name = Module.UTF8ToString(namePtr);
                     Module._FreeString(namePtr);
-                    existing.add(name);
+                    existingLower.add(name.toLowerCase());
+                }
+            } catch (e) { /* ignore */ }
+            let idx = 1;
+            while (existingLower.has((prefix + idx).toLowerCase())) idx++;
+            return prefix + idx;
+        }
+
+        function stateExists(name) {
+            try {
+                const count = Module._GetStateCount(editorEngine);
+                for (let i = 0; i < count; i++) {
+                    const ptr = Module._GetStateName(editorEngine, i);
+                    const n = Module.UTF8ToString(ptr); Module._FreeString(ptr);
+                    if (n === name) return true;
                 }
             } catch (e) {}
-            let idx = 1;
-            while (existing.has(prefix + idx)) idx++;
-            return prefix + idx;
+            return false;
         }
 
         function filterVariables() {
@@ -2070,46 +2098,55 @@
 
         function addVariable() {
             const name = generateUniqueVariableName();
+            const typePtr = allocateUTF8('string');
             const namePtr = allocateUTF8(name);
-            Module._AddVariable(editorEngine, allocateUTF8('string'), namePtr, allocateUTF8(''), allocateUTF8(''));
-            Module._free(namePtr);
+            const initialPtr = allocateUTF8('');
+            const constraintPtr = allocateUTF8('');
+            Module._AddVariable(editorEngine, typePtr, namePtr, initialPtr, constraintPtr);
+            // Free allocated pointers
+            Module._free(typePtr); Module._free(namePtr); Module._free(initialPtr); Module._free(constraintPtr);
             renderVariables();
             saveToLocalStorage();
             updateTokens();
             populateTokenDatalist();
             const err = getLastError(editorEngine);
-            if (err) {
-                setStatus((languages[currentLanguage]['errorAddingVariable'] || "Error adding variable: {err}").replace('{err}', err));
-            } else {
-                setStatus(languages[currentLanguage]['variableAdded'] || "Variable added successfully");
-                // push undo/redo action for addVariable
+            // Treat stale error string as non-fatal if variable actually exists
+            const ok = variableExists(name);
+            if (ok) setStatus(languages[currentLanguage]['variableAdded'] || "Variable added successfully");
+            else setStatus((languages[currentLanguage]['errorAddingVariable'] || "Error adding variable: {err}").replace('{err}', err || 'unknown'));
+            // Always attempt to push history if creation succeeded
+            if (ok) {
                 try {
                     const action = {
-                        description: { title: `Add variable ${name}`, detail: `name: ${summarizeForHistory(name)}` },
-                        undo: () => { removeVariable(name); },
-                        redo: () => { const nPtr = allocateUTF8(name); Module._AddVariable(editorEngine, allocateUTF8('string'), nPtr, allocateUTF8(''), allocateUTF8('')); Module._free(nPtr); renderVariables(); saveToLocalStorage(); updateTokens(); populateTokenDatalist(); }
+                        description: { title: 'Add Variable', detail: summarizeForHistory(name) },
+                        undo: () => {
+                            try {
+                                const p = allocateUTF8(name);
+                                Module._RemoveVariable(editorEngine, p);
+                                Module._free(p);
+                                renderVariables();
+                                saveToLocalStorage();
+                                updateTokens();
+                                populateTokenDatalist();
+                            } catch (e) { console.warn('undo add variable failed', e); }
+                        },
+                        redo: () => {
+                            try {
+                                const tp = allocateUTF8('string');
+                                const p = allocateUTF8(name);
+                                const ip = allocateUTF8('');
+                                const cp = allocateUTF8('');
+                                Module._AddVariable(editorEngine, tp, p, ip, cp);
+                                Module._free(tp); Module._free(p); Module._free(ip); Module._free(cp);
+                                renderVariables();
+                                saveToLocalStorage();
+                                updateTokens();
+                                populateTokenDatalist();
+                            } catch (e) { console.warn('redo add variable failed', e); }
+                        }
                     };
                     pushProgramAction(action);
-                    // Contextual update: update the corresponding variable row instead of full re-render
-                    try {
-                        const rows = Array.from(document.querySelectorAll('#variables-list tr'));
-                        for (const tr of rows) {
-                            const nameInp = tr.cells[1] && tr.cells[1].querySelector('input');
-                            if (!nameInp) continue;
-                            if (nameInp.value === name) {
-                                if (field === 'type') {
-                                    const sel = tr.querySelector('select'); if (sel) sel.value = value || 'string';
-                                } else if (field === 'initial') {
-                                    const inp = tr.cells[2] && tr.cells[2].querySelector('input'); if (inp) inp.value = value;
-                                } else if (field === 'constraint') {
-                                    const inp = tr.cells[3] && tr.cells[3].querySelector('input'); if (inp) inp.value = value;
-                                }
-                                break;
-                            }
-                        }
-                        try { updateTokens(); populateTokenDatalist(); } catch (e) {}
-                    } catch (e) {}
-                } catch (e) {}
+                } catch (e) { console.warn('push variable add action failed', e); }
             }
         }
 
@@ -2595,24 +2632,67 @@ function selectState(name) {
         function addState() {
             const name = generateUniqueStateName();
             try {
-                Module._AddState(editorEngine, allocateUTF8(name));
+                // Create state and assign a default title/description
+                const namePtr = allocateUTF8(name);
+                Module._AddState(editorEngine, namePtr);
+                try {
+                    // For default title, just use the name itself (StateN)
+                    const title = name;
+                    const desc = (languages[currentLanguage]?.newStateDescription) || '';
+                    const titlePtr = allocateUTF8(title);
+                    Module._SetStateTitle(editorEngine, namePtr, titlePtr);
+                    Module._free(titlePtr);
+                    if (desc) {
+                        const descPtr = allocateUTF8(desc);
+                        Module._SetStateDescription(editorEngine, namePtr, descPtr);
+                        Module._free(descPtr);
+                    }
+                } catch (e) { console.warn('failed to set default state title/description', e); }
+                Module._free(namePtr);
                 renderStates();
                 selectState(name);
                 saveToLocalStorage();
+                // Keep token UI in sync with new state name
+                try { updateTokens(); populateTokenDatalist(); } catch (e) { /* ignore */ }
                 const err = getLastError(editorEngine);
-                if (err) {
-                    setStatus((languages[currentLanguage]['errorAddingState'] || "Error adding state: {err}").replace('{err}', err));
-                } else {
-                    setStatus(languages[currentLanguage]['stateAdded'] || "State added successfully");
+                const ok = stateExists(name);
+                if (ok) setStatus(languages[currentLanguage]['stateAdded'] || "State added successfully");
+                else setStatus((languages[currentLanguage]['errorAddingState'] || "Error adding state: {err}").replace('{err}', err || 'unknown'));
+                if (ok) {
                     // push undo/redo action for addState
                     try {
                         const action = {
-                            description: { title: `Add state ${name}`, detail: `name: ${summarizeForHistory(name)}` },
-                            undo: () => { removeState(name); },
-                            redo: () => { const p = allocateUTF8(name); Module._AddState(editorEngine, p); Module._free(p); renderStates(); selectState(name); saveToLocalStorage(); }
-                            };
+                            description: { title: `Add State ${name}`, detail: summarizeForHistory(name) },
+                            undo: () => {
+                                try {
+                                    const p = allocateUTF8(name);
+                                    Module._RemoveState(editorEngine, p);
+                                    Module._free(p);
+                                    renderStates();
+                                    saveToLocalStorage();
+                                } catch (e) { console.warn('undo add state failed', e); }
+                            },
+                            redo: () => {
+                                try {
+                                    const p = allocateUTF8(name);
+                                    Module._AddState(editorEngine, p);
+                                    // Reapply default title/description on redo for consistency
+                                    try {
+                                        const title = name;
+                                        const desc = (languages[currentLanguage]?.newStateDescription) || '';
+                                        const titlePtr = allocateUTF8(title); Module._SetStateTitle(editorEngine, p, titlePtr); Module._free(titlePtr);
+                                        if (desc) { const descPtr = allocateUTF8(desc); Module._SetStateDescription(editorEngine, p, descPtr); Module._free(descPtr); }
+                                    } catch (e) { /* ignore */ }
+                                    Module._free(p);
+                                    renderStates();
+                                    selectState(name);
+                                    saveToLocalStorage();
+                                    try { updateTokens(); populateTokenDatalist(); } catch (e) { /* ignore */ }
+                                } catch (e) { console.warn('redo add state failed', e); }
+                            }
+                        };
                         pushProgramAction(action);
-                    } catch (e) {}
+                    } catch (e) { console.warn('push state add action failed', e); }
                 }
             } catch (e) { console.warn('addState failed', e); }
         }
