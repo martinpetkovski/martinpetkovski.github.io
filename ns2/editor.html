@@ -943,6 +943,12 @@
                     return '';
                 } catch (e) { return ''; }
             }
+            function __isEditTitle(title) { return title && /^Edit /i.test(title); }
+            function __normalizeEditTitle(title) {
+                try { return String(title || '').toLowerCase().replace(/^edit\s+/,'').replace(/[^a-z0-9]+/g,' ').trim(); } catch (e) { return ''; }
+            }
+            const nowTs = Date.now();
+            if (!action.__ts) action.__ts = nowTs;
             try {
                 const last = programHistory[programHistory.length - 1];
                 const lastNorm = last ? __normalizeDesc(last.description) : '';
@@ -952,11 +958,23 @@
                 // Duplicate by title (collapse repeated edits to same field regardless of detail)
                 const lastTitle = last && last.description && last.description.title ? String(last.description.title).trim() : '';
                 const nextTitle = action && action.description && action.description.title ? String(action.description.title).trim() : '';
-                if (lastTitle && nextTitle && lastTitle === nextTitle) {
-                    // For edit-type actions just update last redo handler
-                    if (/^Edit /i.test(lastTitle)) {
-                        try { if (typeof action.redo === 'function') last.redo = action.redo; } catch (e) {}
-                        return;
+                if (lastTitle && nextTitle) {
+                    // Merge if both are edit actions referring to same logical field after normalization
+                    const lastEditNorm = __isEditTitle(lastTitle) ? __normalizeEditTitle(lastTitle) : '';
+                    const nextEditNorm = __isEditTitle(nextTitle) ? __normalizeEditTitle(nextTitle) : '';
+                    if (lastEditNorm && nextEditNorm && lastEditNorm === nextEditNorm) {
+                        // Time window merge (e.g. rapid successive edits within 2s)
+                        if (nowTs - (last.__ts || nowTs) < 2000) {
+                            try {
+                                if (typeof action.redo === 'function') last.redo = action.redo;
+                                if (last.description && action.description && action.description.detail) {
+                                    // Update detail to newest value summary
+                                    last.description.detail = action.description.detail;
+                                }
+                                last.__ts = nowTs; // refresh timestamp
+                            } catch (e) {}
+                            return;
+                        }
                     }
                 }
             } catch (e) { /* swallow */ }
