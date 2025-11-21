@@ -417,17 +417,11 @@
         // Initialize data
         async function init() {
             try {
-                const [epitetiResponse, imenkiResponse] = await Promise.all([
-                    fetch('https://www.najjak.com/sis/epiteti.json'),
-                    fetch('https://www.najjak.com/sis/imenki.json')
-                ]);
-
-                if (!epitetiResponse.ok || !imenkiResponse.ok) {
-                    throw new Error('Failed to load data');
-                }
-
-                epiteti = await epitetiResponse.json();
-                imenki = await imenkiResponse.json();
+                const resp = await fetch('navredi.json');
+                if (!resp.ok) throw new Error('Failed to load merged data');
+                const data = await resp.json();
+                epiteti = data.epитети || data.epiteti; // handle possible Cyrillic key typo
+                imenki = data.imenki;
             } catch (error) {
                 showError('Грешка при вчитување на податоците. Обидете се повторно.');
                 console.error('Initialization error:', error);
