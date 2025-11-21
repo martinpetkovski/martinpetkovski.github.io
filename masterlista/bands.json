@@ -129,7 +129,7 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/@sashomase/videos"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -566,17 +566,18 @@
     },
     {
       "name": "Чалгија Саунд Систем",
-      "city": "недостигаат податоци",
+      "city": "Скопје",
       "genre": "Етно",
       "soundsLike": "недостигаат податоци",
-      "isActive": "Непознато",
+      "isActive": "Можеби",
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/@chalgiasoundsystem686",
+        "spotify": "https://open.spotify.com/artist/2yGXs2vAf1IEnqlXwMaHZx?si=rnjUow1zSXmqWLg1JWNcBw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
       "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0cf39d717c6b4247b2632f2f43df29ea.png"
     },
     {
       "name": "Чоканче",
@@ -809,7 +810,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
+      "label": "Ново Издание",
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
@@ -1142,17 +1143,18 @@
     },
     {
       "name": "Дуке Бојаџиев",
-      "city": "недостигаат податоци",
+      "city": "Скопје",
       "genre": "недостигаат податоци",
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/@dukeb5434",
+        "spotify": "https://open.spotify.com/artist/502fD1fdYlaVpW3nYHa5nE?si=nP-fh1EYTFqE0zwfG19urg"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
       "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5a3329bb043441b4bfb626a49b538add.png"
     },
     {
       "name": "Дупер",
