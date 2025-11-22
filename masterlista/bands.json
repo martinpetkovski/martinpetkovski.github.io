@@ -4368,6 +4368,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/174s/35b2760293a07608b0a0673b98c051aa.png"
     },
     {
+      "name": "Животни",
+      "city": "Скопје",
+      "genre": "Инди, Алтернативна",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=0eny3VvT3RI"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": "Ново Издание",
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Зијан",
       "city": "Гевгелија",
       "genre": "Рок, Блуз, Етно",
