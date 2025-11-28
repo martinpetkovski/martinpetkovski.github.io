@@ -832,13 +832,14 @@
       "city": "Скопје",
       "genre": "Поп",
       "soundsLike": "недостигаат податоци",
-      "isActive": "Непознато",
+      "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/@bpankovski",
+        "spotify": "https://open.spotify.com/artist/75xMRPhbmRInCeGJYIUZ5u?si=U0pWwEi_QLSAy-LTheqCRA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
+      "label": "Ново Издание",
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
