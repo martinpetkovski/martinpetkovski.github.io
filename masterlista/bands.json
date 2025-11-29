@@ -2129,6 +2129,20 @@
       "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
     },
     {
+      "name": "Лас Веѓас",
+      "city": "Скопје",
+      "genre": "Рап",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=Hg9Evy58wq4&list=PLyZkbmWAyhpV4E_l8gTnjfOXohmtTmhos&index=1"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": "Ново Издание",
+      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+    },
+    {
       "name": "Last Act Of Defiance",
       "city": "Скопје",
       "genre": "Кросовер Треш, Метал",
