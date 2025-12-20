@@ -1,0 +1,3 @@
+C:/Projects/martinpetkovski.github.io/ytcut/cpp/build/CMakeFiles/ytcut.dir
+C:/Projects/martinpetkovski.github.io/ytcut/cpp/build/CMakeFiles/edit_cache.dir
+C:/Projects/martinpetkovski.github.io/ytcut/cpp/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,45 @@
+name: Build ytcut.exe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MSVC dev cmd
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Package ytcut downloads (no-install zip)
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+
+          pwsh -ExecutionPolicy Bypass -File ytcut/cpp/package_windows.ps1 -Configuration Release
+
+      - name: Commit downloads
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add ytcut/downloads/ytcut-win64.zip
+
+          $status = git status --porcelain
+          if (-not $status) {
+            Write-Host 'No changes to commit.'
+            exit 0
+          }
+
+          git commit -m "Build ytcut downloads"
+          git push

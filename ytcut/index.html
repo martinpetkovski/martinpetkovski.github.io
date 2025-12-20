@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ytcut (YouTube Cutter)</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; line-height: 1.4; }
+    main { max-width: 720px; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    p { margin: 8px 0; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 10px; padding: 16px; }
+    .note { font-size: 13px; opacity: .85; }
+    a { color: inherit; }
+    ul { margin: 10px 0 0 18px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ytcut (YouTube Cutter)</h1>
+    <p class="note">Windows console tool that uses <b>yt-dlp</b> + <b>ffmpeg</b> to download and trim a segment.</p>
+
+    <div class="card">
+      <p><b>Downloads</b></p>
+      <ul>
+        <li><a href="./downloads/ytcut-win64.zip">ytcut-win64.zip</a> (includes ytcut + yt-dlp + ffmpeg)</li>
+      </ul>
+
+      <p style="margin-top: 14px"><b>Requirements</b></p>
+      <ul>
+        <li>Windows + internet access</li>
+        <li>No additional installs (everything is bundled)</li>
+      </ul>
+
+      <p style="margin-top: 14px"><b>Usage</b></p>
+      <ul>
+        <li>Interactive: <code>ytcut.exe</code></li>
+        <li>CLI (full download): <code>ytcut.exe --url "https://www.youtube.com/watch?v=..."</code></li>
+        <li>CLI (trim): <code>ytcut.exe --url "https://www.youtube.com/watch?v=..." --start 00:01:23 --end 00:02:10 --out clip.mp4</code></li>
+        <li>Output: if <code>--out</code> is omitted, writes <code>out.mp4</code> next to <code>ytcut.exe</code> (relative paths are also relative to that folder)</li>
+      </ul>
+
+      <p class="note" style="margin-top: 14px">
+        Note: You are responsible for complying with YouTube’s Terms and applicable laws.
+      </p>
+    </div>
+  </main>
+</body>
+</html>
