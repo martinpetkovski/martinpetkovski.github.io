@@ -413,6 +413,31 @@
             gap: 4px;
         }
 
+        .link-list.tags {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .link-list.tags li {
+            flex: 1 1 auto;
+        }
+
+        .link-list.tags .link {
+            justify-content: center;
+            padding: 8px 12px;
+        }
+
+        .link-list.tags .title {
+            margin: 0;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        
+        .link-list.tags .favicon {
+            margin-right: 6px;
+        }
+
         /* Removed media query for two columns to keep one link per row */
 
         footer {
@@ -571,7 +596,6 @@
 
         <main>
             <section aria-labelledby="resume-title">
-                <h2 id="resume-title">Resume</h2>
                 <ul class="link-list compact">
                     <li>
                         <a class="link" href="resume">
@@ -619,7 +643,7 @@
                     <li>
                         <a class="link" href="https://www.angelicthegame.com/">
                             <span class="title">Angelic</span>
-                            <span class="year">2020, 2022 - present</span>
+                            <span class="year">2020 / 2022 - present</span>
                         </a>
                     </li>
                     <li>
@@ -645,28 +669,28 @@
                         <a class="link" href="siotojazz">
                             <span class="title">SIOTO JAZZ</span>
                             <span class="year">2022 - present</span>
-                            <span class="desc">Alternative Rock band I'm playing guitar in.</span>
+                            <span class="desc">Alternative Rock band I'm playing in (guitar).</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="nst">
-                            <span class="title">NST</span>
+                            <span class="title">NST: Nonlinear System Tools</span>
                             <span class="year">2021 - 2023</span>
-                            <span class="desc">My master's thesis project. A tool that help writers write non-linear interactive narratives.</span>
+                            <span class="desc">My master's thesis: A tool for writing non-linear interactive narratives.</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="https://github.com/fiktedu/mkqr">
                             <span class="title">MKQR</span>
                             <span class="year">2021</span>
-                            <span class="desc"> MKQR is a Macedonian open and independent standard proposal for encoding and data transmission for financial transactions using QR codes. It was developed as part of a university project. </span>
+                            <span class="desc"> An open 🇲🇰 standard for financial transactions using QR codes. </span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="https://github.com/martinpetkovski/ImQuick">
                             <span class="title">ImQuick</span>
                             <span class="year">2021</span>
-                            <span class="desc"> ImQuick is a single header ImGui extension library for clearer separation of interface from logic. ImQuick renders ImGui UI elements automagically based only on the variable type. </span>
+                            <span class="desc"> A single header ImGui library for separation of interface from logic.</span>
                         </a>
                     </li>
                     <li>
@@ -688,17 +712,24 @@
                 <h3>Vibecrafted</h3>
                 <ul class="link-list two-col">
                     <li>
+                        <a class="link" href="">
+                            <span class="title">Automata Suite</span>
+                            <span class="year">2025 - present</span>
+                            <span class="desc">It's still a secret</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="link" href="JustNotepad">
                             <span class="title">Just Notepad</span>
                             <span class="year">2025 - present</span>
-                            <span class="desc">I got tired from "certain" companies shoving "AI" into everything, so I created Just Notepad which is just a notepad using 3MB of RAM at startup. Also supports plugins and has some pretty cool ones.</span>
+                            <span class="desc">Just a Notepad. 3Mb RAM with plugins support.</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="Checkmeg">
                             <span class="title">Checkmeg</span>
                             <span class="year">2020 / 2025 - present</span>
-                            <span class="desc">Win32 utility tool for bookmarking text, links, files, images, audio, basically everything in existance. Syncronizes between different machines.</span>
+                            <span class="desc">Win32 utility tool for bookmarking literally anything.</span>
                         </a>
                     </li>
                     <li>
@@ -712,7 +743,7 @@
                         <a class="link" href="makedonski">
                             <span class="title">Makedonski Leksikon</span>
                             <span class="year">2021 - present</span>
-                            <span class="desc">I accidentaly got hold of the full corpus of Macedonian words, so there's that</span>
+                            <span class="desc">All the words in the Macedonian language and more.</span>
                         </a>
                     </li>
                 </ul>
@@ -732,28 +763,28 @@
                         <a class="link" href="n/?code-standard-cpp">
                             <span class="title">C++ Code Standard</span>
                             <span class="year">current</span>
-                            <span class="desc">Coding guidelines and best practices</span>
+                            <span class="desc">Personal coding guidelines and best practices</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?zanaetchiski-raspored">
                             <span class="title">Zanaetchiski Raspored</span>
                             <span class="year">2021</span>
-                            <span class="desc">Craftsman schedule and planning</span>
+                            <span class="desc">Some thoughts on craftsman vs. manager schedules</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?cyberpunk">
                             <span class="title">Cyberpunk</span>
                             <span class="year">2022</span>
-                            <span class="desc">Thoughts on the genre and aesthetic</span>
+                            <span class="desc">Review of the game</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?nomanssky">
                             <span class="title">No Man's Sky</span>
                             <span class="year">2021</span>
-                            <span class="desc">Game analysis and exploration</span>
+                            <span class="desc">Review of the game</span>
                         </a>
                     </li>
                 </ul>
@@ -1126,23 +1157,23 @@
         });
 
         // Inject Favicons
-        // Configuration for Icons
-        // You can use:
-        // 1. A website URL to fetch the favicon from (e.g., "https://github.com")
-        // 2. A direct image URL (e.g., "https://example.com/icon.png")
-        // 3. An emoji or text (e.g., "🎸")
         const iconConfig = {
+            'instagram': 'https://www.instagram.com',
+            'mailto:': '📧',
             'resume': 'https://www.najjak.com/favicon.ico',
-            'siotojazz': 'https://www.siotojazz.com/favicon.ico',
-            'nst': 'https://www.najjak.com/favicon.ico',
-            'sis': 'https://www.najjak.com/favicon.ico',
+            'siotojazz': 'https://siotojazz.com/truestate/favicon.ico',
+            'nst': 'nst/docs/favicon.ico',
+            'sis': 'sis/favicon.ico',
             'justnotepad': 'https://www.najjak.com/favicon.ico',
-            'checkmeg': 'https://www.najjak.com/favicon.ico',
+            'checkmeg': 'archive/checkmeg/favicon.ico',
             'masterlista': 'https://www.najjak.com/favicon.ico',
             'makedonski': 'https://www.najjak.com/favicon.ico',
-            'principles': 'https://www.najjak.com/favicon.ico',
-            'code-standard-cpp': 'https://www.najjak.com/favicon.ico',
-            'zanaetchiski-raspored': 'https://www.najjak.com/favicon.ico',
+            'principles': 'n/docs/assets/images/favicon.png',
+            'code-standard-cpp': 'n/docs/assets/images/favicon.png',
+            'zanaetchiski-raspored': 'n/docs/assets/images/favicon.png',
+            'eats': 'archive/eats/logo.png',
+            'photos': 'photos/thumbnails/DSC00089.JPG',
+            'familytree': '🌳',
             'cyberpunk': 'https://www.cyberpunk.net/us/en/',
             'nomanssky': 'https://www.nomanssky.com/',
             'deezer': 'https://deezer.com',
@@ -1151,19 +1182,19 @@
             'github': 'https://github.com',
             'linkedin': 'https://linkedin.com',
             'twitter': 'https://twitter.com',
-            'email': '📧'
         };
+
+        const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23555'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3C/svg%3E";
 
         document.querySelectorAll('a.link').forEach(link => {
             const href = link.getAttribute('href');
             let iconUrl = null;
-            let iconText = '🔗'; // Default fallback
 
             // Check config
             for (const [key, value] of Object.entries(iconConfig)) {
                 if (href.toLowerCase().includes(key)) {
-                    if (value.startsWith('http') || value.startsWith('/')) {
-                        // It's a URL
+                    // Check if it looks like a path or URL (contains / or .)
+                    if (value.includes('/') || value.includes('.') || value.startsWith('http')) {
                         if (value.match(/\.(jpeg|jpg|gif|png|svg|ico)$/i)) {
                             iconUrl = value; // Direct image
                         } else {
@@ -1176,15 +1207,16 @@
                             }
                         }
                     } else {
-                        // It's an emoji/text
-                        iconText = value;
+                        // It's an emoji/text - convert to SVG data URI
+                        const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${value}</text></svg>`;
+                        iconUrl = `data:image/svg+xml,${encodeURIComponent(svgString)}`;
                     }
                     break; // Stop after first match
                 }
             }
             
             // If no config match found, and it's an external link, try to fetch favicon from href
-            if (!iconUrl && href.startsWith('http') && iconText === '🔗') {
+            if (!iconUrl && href.startsWith('http')) {
                  try {
                     const url = new URL(href);
                     iconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=32`;
@@ -1193,32 +1225,22 @@
                 }
             }
             
+            // Final fallback
+            if (!iconUrl) {
+                iconUrl = fallbackIcon;
+            }
+            
             const title = link.querySelector('.title');
             if (title) {
-                if (iconUrl) {
-                    const img = document.createElement('img');
-                    img.className = 'favicon';
-                    img.src = iconUrl;
-                    img.onerror = () => {
-                        // Fallback to text if image fails
-                        const span = document.createElement('span');
-                        span.className = 'favicon';
-                        span.style.fontSize = '16px';
-                        span.style.lineHeight = '16px';
-                        span.style.filter = 'none';
-                        span.textContent = iconText;
-                        if (img.parentNode) img.parentNode.replaceChild(span, img);
-                    };
-                    title.prepend(img);
-                } else {
-                    const span = document.createElement('span');
-                    span.className = 'favicon';
-                    span.style.fontSize = '16px';
-                    span.style.lineHeight = '16px';
-                    span.style.filter = 'none';
-                    span.textContent = iconText;
-                    title.prepend(span);
-                }
+                const img = document.createElement('img');
+                img.className = 'favicon';
+                img.src = iconUrl;
+                img.onerror = () => {
+                    if (img.src !== fallbackIcon) {
+                        img.src = fallbackIcon;
+                    }
+                };
+                title.prepend(img);
             }
         });
     </script>
