@@ -1,0 +1,1144 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>najjak.com</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Roboto:wght@500&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'FontAwesome5';
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/webfonts/fa-solid-900.ttf');
+        }
+
+        @font-face {
+            font-family: 'FontAwesome5Brands';
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/webfonts/fa-brands-400.ttf');
+        }
+
+        @font-face {
+            font-family: 'Movement';
+            src: url('Movement-Italic.ttf');
+        }
+
+        @font-face {
+            font-family: 'FP2025';
+            src: url('FP2025.ttf');
+        }
+
+        @font-face {
+            font-family: 'Astrella';
+            src: url('Astrella.ttf');
+        }
+
+        @font-face {
+            font-family: Quicksand;
+            src: url('checkmeg/Quicksand.ttf');
+        }
+
+        @font-face {
+            font-family: 'Rektec';
+            src: url('nst/resources/Rektec.otf');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+        }
+
+        html {
+            background: #111;
+            width: 100vw;
+        }
+
+        .fadeToBlack {
+            background-color: #111 !important;
+            opacity: 0;
+            transition: 0.8s;
+        }
+
+        body {
+            background: linear-gradient(0deg, rgba(58, 161, 191, 0.02) 0%, rgba(58, 161, 191, 0.001) 50%, rgba(58, 161, 191, 0.02) 100%);
+            cursor: none;
+            padding: 0;
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        canvas {
+            width: 100vw;
+        }
+
+        td {
+            font-family: FontAwesome5, FontAwesome5Brands, Roboto, Arial Black, Arial;
+            text-align: left;
+        }
+
+        text {
+            font-family: 'FP2025', Roboto, Arial Black, Arial !important;
+        }
+
+        #title,
+        #titleLoading {
+            width: 120vw;
+            position: relative;
+            left: -10vw;
+            transform: skew(10deg);
+        }
+
+        .ct {
+            mix-blend-mode: lighten;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .ct:hover,
+        .cthovered {
+            transform: skew(12deg);
+            box-shadow: 5px 5px 30px #0003;
+            color: #FFFF !important;
+            background: linear-gradient(-90deg, rgba(255, 0, 0, 0.01) 0%, rgba(255, 15, 15, 0.4) 50%, rgba(255, 0, 0, 0.01) 100%) !important;
+            text-shadow: 0px 0px 20px #FFF;
+            border-bottom: 10px #0009 solid !important;
+            width: 99% !important;
+            transition: 0.6s, color 0.1s !important;
+        }
+
+        .cthovered::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            left: -2px;
+            background-color: white;
+            background: url(glitch.gif);
+            mix-blend-mode: lighten;
+            background-size: contain;
+        }
+
+        .leaveLink {
+            border-color: #000 !important;
+            color: #fff !important;
+            background-image: -webkit-linear-gradient(45deg, rgba(255, 0, 0, 0.4) 50%, transparent 50%) !important;
+            background-image: linear-gradient(45deg, rgba(255, 0, 0, 0.4) 50%, transparent 50%) !important;
+            background-position: 100% !important;
+            background-size: 400% !important;
+            transition: 1.4s cubic-bezier(0.68, -1.55, 0.265, 2.55) !important;
+        }
+
+        .regularItem {
+            color: #FFF;
+            font-family: Roboto Condensed, Arial Black, Arial !important;
+        }
+
+        #navigation {
+            text-align: center;
+
+        }
+
+        #navigation input {
+            position: fixed;
+            top: 34px;
+            right: 50px;
+            padding: 10px;
+            margin: 24px auto;
+            width: 50vw;
+            font-size: 44px;
+            color: #AAA;
+            background: linear-gradient(0deg, rgba(78, 121, 136, 0.1) 0%, rgba(78, 121, 136, 0.01) 100%);
+            border: 1px solid rgba(78, 121, 136, 0.15);
+            border-bottom: solid 10px rgba(78, 121, 136, 0.15);
+            transition: 0.3s;
+            text-align: center;
+            width: 64px;
+            border-radius: 100%;
+            z-index: 1000;
+        }
+
+        #navigation input:focus {
+            background: linear-gradient(0deg, rgba(250, 195, 1, 0.8) 0%, rgba(250, 195, 1, 0.5) 100%);
+            border-bottom-color: #fac301;
+            color: #000;
+            outline: none;
+            transition: 0.3s;
+            width: 400px;
+            border-radius: 0px;
+            background-color: #000000 !important;
+            text-align: left;
+        }
+
+        input:focus::placeholder {
+            color: transparent;
+            transition: 1s;
+        }
+
+        a:link,
+        a:visited {
+            display: inline-block;
+        }
+
+        .ct {
+            text-align: center;
+            font-size: 20px;
+            padding: 10px 10px 10px 10px;
+            transition-duration: 0.6s;
+            color: #FFF9;
+            background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+            border-bottom: #1114 10px solid;
+            margin: 0 auto;
+            width: 42%;
+        }
+
+        #title,
+        #titleLoading {
+            font-size: 100px;
+        }
+
+        .item {
+            font-size: 20px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .description {
+            font-size: 12px;
+            margin-top: 2px;
+            color: #FFF6;
+        }
+
+        #navigation img {
+            height: 40px;
+        }
+
+
+        #navigation:hover {
+            border-bottom: 1px solid #0000;
+            box-shadow: 0px -5px 10px #0006 inset;
+            background-color: #0006;
+            transition: 1.0s;
+        }
+
+        .item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .item img {
+            vertical-align: middle;
+        }
+
+        .items {
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .items.inline {
+            max-width: 1200px;
+        }
+
+        .items a {
+            display: block !important;
+            margin: 20px 0px;
+        }
+
+        .items.inline a {
+            display: inline-block !important;
+        }
+
+        a:link,
+        a:visited {
+            position: relative;
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.0) 0%, rgba(0, 102, 170, 0.0) 50%, rgba(0, 102, 170, 0.0) 100%);
+            cursor: none;
+            color: #9CF;
+            border: 1px solid transparent;
+            padding: 10px 25px;
+            margin-right: 10px;
+            text-decoration: none;
+            transition: 0.6s;
+        }
+
+        a:hover {
+            color: #9EF;
+            text-shadow: 0px 0px 20px #FFFF;
+            border: 1px solid #06A;
+            box-shadow: 0px 0px 20px rgba(0, 102, 170, 0.8);
+            background: linear-gradient(-90deg, rgba(0, 102, 170, 0.3) 0%, rgba(0, 102, 170, 0.8) 50%, rgba(0, 102, 170, 0.3) 100%) !important;
+            transition: 0.3s;
+        }
+
+        a:hover::after {
+            content: attr(data-text);
+            mix-blend-mode: soft-light;
+            background-image: url(lightning.gif);
+            background-size: cover;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        a:active {
+            color: #FFF;
+            border: 1px solid #F00;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8) inset;
+            background: linear-gradient(-90deg, rgba(170, 0, 0, 0.3) 0%, rgba(170, 0, 0, 0.8) 50%, rgba(170, 0, 0, 0.3) 100%) !important;
+        }
+
+        .loadingView {
+            width: 100vw;
+            position: absolute;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 1;
+        }
+
+        .loadingViewTransition {
+            opacity: 0 !important;
+            transition: opacity 1s;
+        }
+
+        .mainView {
+            display: block;
+            margin: 0 auto;
+        }
+
+        @keyframes mainVewAnim {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        #loadingEntity {
+            position: absolute;
+            top: 60vh;
+            left: 50vw;
+        }
+
+        .text,
+        .textLoading {
+            fill: none;
+            stroke-width: 1;
+            stroke-linejoin: bevel;
+            stroke-dasharray: 100 300;
+            stroke-dashoffset: 0;
+            animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .textLoading {
+            stroke: #0000;
+            stroke-dashoffset: 400;
+            animation: stroke 0.5s;
+        }
+
+        .text:nth-child(5n + 1) {
+            stroke: #0AF;
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        .text:nth-child(5n + 2) {
+            stroke: #0000;
+            -webkit-animation-delay: -2.0s;
+            animation-delay: -2.0s;
+        }
+
+        .text:nth-child(5n + 3) {
+            stroke: #FF0;
+            -webkit-animation-delay: -3.0s;
+            animation-delay: -3.0s;
+        }
+
+        .text:nth-child(5n + 4) {
+            stroke: #0000;
+            -webkit-animation-delay: -4.0s;
+            animation-delay: -4.0s;
+        }
+
+        .text:nth-child(5n + 5) {
+            stroke: #F00;
+            -webkit-animation-delay: -5s;
+            animation-delay: -5s;
+        }
+
+        @-webkit-keyframes stroke {
+            100% {
+                stroke-dashoffset: -400;
+            }
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: -400;
+            }
+        }
+
+        #cursor {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            border-radius: 100%;
+            background: #FFF;
+            pointer-events: none;
+            z-index: 9;
+            border: 1px solid #000;
+            transition: background .5s, border-radius .5s, border .5s, width .5s, height .5s, box-shadow .5s;
+        }
+
+        #cursor.hovered {
+            mix-blend-mode: color;
+            background: radial-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 0, 0, 0.6) 100%);
+            border-radius: 0%;
+            border: 1px solid #F2385AAA;
+            width: 30px;
+            height: 30px;
+            transition: border 0.6s, width 0.6s, height 0.6s, border-radius 0.6s, background 0.6s;
+            animation: rotate 5s linear infinite;
+        }
+
+        #cursor.active {
+            background: radial-gradient(rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0.4) 20%, rgba(255, 0, 0, 0.5) 100%);
+            border-radius: 5%;
+            border: 1px solid #F5A503AA;
+            width: 20px;
+            height: 20px;
+        }
+
+        #circle {
+            mix-blend-mode: normal;
+            position: absolute;
+            z-index: -1;
+            border: 1px dashed #444;
+            border-radius: 50%;
+            scale: 1;
+            transform-origin: center;
+            width: 100px;
+            height: 100px;
+            transition: .1s, scale 1s;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #circle.hovered {
+            scale: 0;
+            transform: scale(0);
+            border: 1px dashed #F003;
+            transition: border 1s, scale 1s;
+        }
+
+        @keyframes rotate {
+            0% {
+                scale: 1.0;
+                transform: scale(1.0) rotate(0deg) skew(0deg);
+            }
+
+            50% {
+                scale: 0.8;
+                transform: scale(0.8) rotate(180deg) skew(-20deg);
+            }
+
+            100% {
+                scale: 1.0;
+                transform: scale(1.0) rotate(360deg) skew(0deg);
+            }
+        }
+
+        #canvas {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background-color: transparent;
+            z-index: -1;
+            opacity: 1;
+        }
+
+        #music-details {
+            display: inline-block;
+            text-align: left;
+            padding-top: 10px;
+            vertical-align: top;
+        }
+
+        #music-artist {
+            font-size: 24px;
+        }
+
+        #music-track {
+            font-size: 14px;
+        }
+
+        .albumCover {
+            padding: 10px;
+            height: 48px !important;
+        }
+
+        .nowPlaying {
+            font-size: 12px;
+            background: #900;
+            color: #FFF;
+            padding: 2px 10px;
+            border-bottom: 6px solid #700;
+            font-style: italic;
+        }
+
+        .activeProject {
+            background-image: repeating-linear-gradient(-45deg, #6003, #6003 10px, #9003 10px, #9003 20px), linear-gradient(to bottom, rgba(255, 0, 0, 0.3), rgba(0, 0, 0, 0));
+            border: 1px solid #500;
+            border-top: none;
+            padding: 0px 30px;
+        }
+
+        .noLinkPadding {
+            padding: 0 !important;
+        }
+
+        #credits {
+            padding: 50px 0px 50px 0px;
+            text-align: center;
+            font-size: 10px;
+            color: #FFF4;
+        }
+
+        #resume {
+            display: block;
+            text-align: center;
+            text-transform: uppercase;
+            color: #FFFA;
+            width: 300px;
+            margin: 50px auto;
+            letter-spacing: 2px;
+            padding: 10px;
+            background: linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(78, 121, 136, 0.2) 50%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .hiddenText {
+            display: none;
+        }
+
+        .languageContainer {
+            position: relative;
+            z-index: 500;
+        }
+
+        #subtitle {
+            color: #FFF;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: lowercase;
+            opacity: 0.3;
+        }
+
+        .mk,
+        .en {
+            opacity: 0;
+            transition: 0.2s;
+            display: none;
+        }
+
+        .currentLang {
+            opacity: 1;
+            display: block;
+            transition: 0.2s;
+        }
+
+        @-webkit-keyframes load1 {
+
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
+
+        @keyframes load1 {
+
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="canvas"></div>
+
+    <div id="cursor"></div>
+    <div id="circle"></div>
+
+    <div class="loadingView">
+        <div id="titleLoading">
+            <svg viewBox="0 0 1800 180">
+                <symbol id="s-textLoading">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        HAJJAK
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+                <use xlink:href="#s-textLoading" class="textLoading"></use>
+            </svg>
+        </div>
+
+        <div class="loader" id="loadingEntity">Loading...</div>
+    </div>
+
+    <div class="mainView" id="container">
+        <div id="title" style="position: absolute; top: 0;">
+            <svg viewBox="0 0 1800 180">
+                <defs>
+                    <filter id="red-glow" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur5" />
+                    </filter>
+                </defs>
+                <symbol id="s-text" filter="url(#red-glow)" style="stroke-width: 1.5;">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        HAJJAK
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+
+
+            </svg>
+        </div>
+
+        <div id="title">
+            <svg viewBox="0 0 1800 180">
+                <symbol id="s-text1">
+                    <text text-anchor="middle" x="50%" y="50%" dy=".50em">
+                        HAJJAK
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+                <use xlink:href="#s-text1" class="text"></use>
+
+
+            </svg>
+        </div>
+        <div id="subtitle" class="languageContainer"><span class="en currentLang">Martin Petkovski's personal
+                website</span><span class="mk">Личниот вебсајт на Мартин Петковски</span></div>
+        <div id="navigation">
+            <input type="text" id="search-input" placeholder="&#xf002;" />
+        </div>
+        <a href="resume" id="resume" class="languageContainer">
+            <span class="en currentLang searchable">&#xf007; professional resume</span>
+            <span class="mk">&#xf007; професионално резиме</span>
+        </a>
+
+        <div id="navigation">
+            <div class="ct languageContainer"><span class="en currentLang">&#xf023; The Vault</span> <span
+                    class="mk">&#xf023; Трезорот</span></div>
+            <div class="items">
+                <a href="siotojazz">
+                    <div class="item regularItem"
+                        style="line-height: 1;  font-family: 'Astrella', Franklin Gothic Medium, Arial Narrow, Arial, sans-serif !important; font-size:52px !important;">
+                        SIOTO JAZZ
+                        <span class="hiddenText searchable">SIOTO JAZZ</span>
+                        <div class="description languageContainer"><span class="en currentLang">Music band I'm playing
+                                in</span><span class="mk">Музичка група во која моментално свирам</span></div>
+                    </div>
+                </a>
+                <a href="nst">
+                    <img src="nst/resources/icon2.ico" style="height: 64px;" />
+                    <div class="item" style="font-family: Rektec, sans-serif; font-size: 60px; color: white;">NST</div>
+                    <span class="hiddenText searchable">nonlinear system tools nst</span>
+                    <div class="description languageContainer"><span class="en currentLang">Software for writing
+                            interactive novels</span><span class="mk">Софтвер за пишување на интерактивни романи</span>
+                    </div>
+                </a>
+                <a href="masterlista">
+                    <div class="item">
+                        <img src="logo_mmm.png" style="height: 36px;" />
+                        <span class="hiddenText searchable">Македонска Музичка Мастер Листа</span>
+                        <div class="description languageContainer"><span class="en currentLang">Ultimate list of all macedonian music artists</span><span class="mk">Список на сите македонски музички уметници</span></div>
+                    </div>
+                </a>
+                <a href="makedonski">
+                    <div class="item regularItem" style="font-size: 26px; color: #d72034; font-weight: bold;">
+                        Македонски Лексикон
+                        <span class="hiddenText searchable">makedonski leksikon macedonian lexicon</span>
+                        <div class="description languageContainer"><span class="en currentLang">Comprehensive Macedonian language lexicon and more</span><span class="mk">Опсежен лексикон на македонскиот јазик и повеќе</span></div>
+                    </div>
+                </a>
+                <a href="sis\index.html">
+                    <div class="item searchable">Саше Ивановски Симулатор</div>
+                    <div class="description languageContainer"><span class="en currentLang">Creative swearing in
+                            Macedonian, the simulator</span><span class="mk">Креативно пцуење на Македонски,
+                            симулатор</span></div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct languageContainer"><span class="en currentLang">&#xf075; Opinions</span> <span
+                    class="mk">&#xf075; Мислења</span></div>
+            <div class="items">
+                <a href="n/?principles">
+                    <div class="item searchable">Принципи</div>
+                </a>
+                <a href="n/?code-standard-cpp">
+                    <div class="item searchable">C++ Code Standard</div>
+                </a>
+                <a href="n/?zanaetchiski-raspored">
+                    <div class="item searchable">Занаетчиски Распоред</div>
+                </a>
+                <a href="n/?cyberpunk">
+                    <div class="item searchable"><img src="logo_cyberpunk.png" /></div>
+                    <span class="hiddenText">Cyberpunk</span>
+                </a>
+                <a href="n/?nomanssky">
+                    <div class="item searchable"><img src="logo_nms.png" /></div>
+                    <span class="hiddenText">No Man's Sky</span>
+                </a>
+                <!-- <a href="" class="searchable noLinkPadding">
+                    <div class="nowPlaying">&#xf11b; NOW PLAYING</div>
+                    <img class="item activeProject" style="height:64px;" src="logo_fh.png" />
+                    <span class="hiddenText">Forza Horizon</span>
+                </a> -->
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct languageContainer"><span class="en currentLang">&#xf001; Music</span> <span
+                    class="mk">&#xf001; Музика</span></div>
+            <div class="items inline">
+                <a id="musicLink" href="#" class="searchable noLinkPadding">
+                    <div class="nowPlaying">&#xf04b; NOW LISTENING</div>
+                    <div id="music-listeningnow" class="regularItem activeProject">
+
+                    </div>
+                </a>
+
+                <a id="musicLinkHr" href="#" class="searchable noLinkPadding">
+                    <div class="nowPlaying">&#xf2f9; HEAVY ROTATION</div>
+                    <div id="music-heavyrotation" class="regularItem activeProject">
+
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="navigation">
+            <div class="ct languageContainer"><span class="en currentLang">&#xf2bd; Links</span> <span
+                    class="mk">&#xf2bd; Врски</span></div>
+            <div class="items inline">
+                <a href="https://www.deezer.com/en/artist/58205502">
+                    <div class="item">&#xe077;</div>
+                </a>
+                <a href="https://open.spotify.com/artist/1Dg3GBbVGnEV7yBheFdkG8">
+                    <div class="item">&#xf1bc;</div>
+                </a>
+                <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">
+                    <div class="item">&#xf167;</div>
+                </a>
+                <a href="https://github.com/martinpetkovski">
+                    <div class="item">&#xf09b;</div>
+                </a>
+                <a href="https://www.linkedin.com/in/martin-petkovski/">
+                    <div class="item">&#xf08c;</div>
+                </a>
+                <a href="https://twitter.com/nayackom">
+                    <div class="item">&#xf099;</div>
+                </a>
+                <a href="https://twitter.com/OficialZaev">
+                    <div class="item">&#xf630;</div>
+                </a>
+                <a href="mailto:martin@najjak.com">
+                    <div class="item">&#xf0e0;</div>
+                </a>
+            </div>
+        </div>
+
+        <div id="credits" class="languageContainer">
+            <span class="mk">
+                Авторски права© Мартин Петковски 2013-2025.<br>Сите логоа се во сопственост на нивните соодветни
+                сопственици. Сите фонтови имаат лиценца за јавна или лична употреба.
+            </span>
+            <span class="en currentLang">
+                Copyright© Martin Petkovski 2013-2025. <br>All logos belong to their respective owners. All fonts have a
+                public or personal use license.
+            </span>
+        </div>
+    </div>
+    </div>
+
+    <audio id="theme" src="theme.mp3" preload="auto" loop />
+
+    <script type="text/javascript">
+        fetch("https://ws.audioscrobbler.com/2.0/", {
+            method: "POST",
+            body: new URLSearchParams({
+                method: "user.getRecentTracks",
+                user: "martinpetkovski",
+                api_key: "d186251f2ae019335f832db01d96c2f9",
+                format: "json"
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                mostRecentTrack = data.recenttracks.track[0];
+                document.querySelector("#music-listeningnow").innerHTML = '<img class="albumCover" src="' + mostRecentTrack.image[3]["#text"] + '"/><div id="music-details"><div id="music-artist">' + mostRecentTrack.artist["#text"] + '</div> <div id="music-track">' + mostRecentTrack.name + "</div></div>";
+                document.querySelector("#musicLink").href = mostRecentTrack.url;
+            });
+
+        fetch("https://ws.audioscrobbler.com/2.0/", {
+            method: "POST",
+            body: new URLSearchParams({
+                method: "user.getTopAlbums",
+                user: "martinpetkovski",
+                api_key: "d186251f2ae019335f832db01d96c2f9",
+                period: "1month",
+                format: "json"
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                most_listened_album = data.topalbums.album[0];
+                document.querySelector("#music-heavyrotation").innerHTML = '<img class="albumCover" src="' + most_listened_album.image[3]["#text"] + '"/><div id="music-details"><div id="music-artist">' + most_listened_album.artist["name"] + '</div> <div id="music-track">' + most_listened_album.name + "</div></div>";
+                document.querySelector("#musicLinkHr").href = mostRecentTrack.url;
+            });
+    </script>
+
+    <script type="text/javascript">
+        movementStatic = true;
+
+        window.onload = function () {
+            entity = document.querySelector("#loadingEntity");
+            entity.style.display = "none";
+        };
+
+        var a_link = document.querySelectorAll('a');
+        var navigation = document.querySelectorAll('#navigation');
+
+        a_link.forEach(e => e.addEventListener('mouseenter', handleMouseEnter));
+        a_link.forEach(e => e.addEventListener('mouseleave', handleMouseLeave));
+
+        navigation.forEach(e => e.addEventListener('mouseenter', handle_navigationMouseEnter));
+        navigation.forEach(e => e.addEventListener('mouseleave', handle_navigationMouseLeave));
+
+        a_link.forEach(e => e.addEventListener('click', handleClick));
+        a_link.forEach(e => e.addEventListener('mousedown', handleMouseDown));
+        a_link.forEach(e => e.addEventListener('mouseup', handleMouseUp));
+        window.addEventListener('mousemove', handleMouseMove);
+
+        function handleMouseMove(event) {
+            var cursor_top = event.pageY - (cursor.clientHeight / 2);
+            var cursor_left = event.pageX - (cursor.clientWidth / 2);
+            var circle_top = event.pageY - (circle.clientHeight / 2);
+            var circle_left = event.pageX - (circle.clientWidth / 2);
+            cursor.style.top = cursor_top + 'px';
+            cursor.style.left = cursor_left + 'px';
+            circle.style.top = circle_top + 'px';
+            circle.style.left = circle_left + 'px';
+        }
+
+        function handleMouseEnter(e) {
+            cursor.classList.add('hovered');
+            circle.classList.add('hovered');
+            var audio = new Audio('hover.mp3');
+            audio.play();
+        }
+
+        function handleMouseLeave(e) {
+            cursor.classList.remove('hovered');
+            circle.classList.remove('hovered');
+
+            handleMouseUp();
+        }
+
+        function handle_navigationMouseEnter(e) {
+            e.target.querySelector(".ct").classList.add('cthovered');
+            var audio = new Audio('slide.mp3');
+            audio.play();
+        }
+
+        function handle_navigationMouseLeave(e) {
+            e.target.querySelector(".ct").classList.remove('cthovered');
+        }
+
+        function handleMouseDown(e) {
+            cursor.classList.add('active');
+            circle.classList.add('active');
+            var audio = new Audio('select.mp3');
+            audio.play();
+        }
+
+        function handleMouseUp(e) {
+            cursor.classList.remove('active');
+            circle.classList.remove('active');
+        }
+
+        function handleClick(e) {
+            var href = this.href;
+            e.preventDefault();
+
+            if (!this.textContent.toString().includes("ENGAGE")) {
+                this.classList.add('leaveLink');
+                document.querySelector("body").classList.add("fadeToBlack");
+                var audio = new Audio('exit.mp3');
+                audio.play();
+
+                setTimeout(function () {
+                    window.location = href;
+                }, 1200);
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.querySelector("#canvas").appendChild(renderer.domElement);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 20, 5000);
+        camera.position.set(0, 0, 0);
+        camera.lookAt(0, 0, 0);
+
+        const scene = new THREE.Scene();
+        meshes = new Array();
+
+        mouseWorldSpace = new THREE.Vector3(0, 0, 0);
+
+        document.onmousemove = CanvasMouseMove;
+
+        function MapRange(number, inMin, inMax, outMin, outMax) {
+            return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+
+        function RandomFloat(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function Clamp(num, min, max) {
+            return num <= min ? min : num >= max ? max : num;
+        }
+
+        function ClampFlip(num, min, max) {
+            return num <= min ? max : num >= max ? min : num;
+        }
+
+        function CanvasMouseMove(e) {
+            var normalizedX = MapRange(e.clientX, 0, window.innerWidth, -1, 1);
+            var normalizedY = MapRange(e.clientY, 0, window.innerHeight, -1, 1);
+            const modifier = 200;
+
+            camera.position.set(-normalizedX * modifier, normalizedY * modifier, 0);
+            camera.rotation.set(normalizedY * -0.3, normalizedX * -0.3, 0);
+        }
+
+        function DrawLine(p1, p2) {
+            const points = [];
+            points.push(p1);
+            points.push(p2);
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+            const line = new THREE.Line(geometry, material);
+
+            scene.add(line);
+        }
+
+        function DrawTriangle(p1, p2, p3) {
+            const shape = new THREE.Shape();
+
+            shape.lineTo(p1.x, p1.y, p1.z);
+            shape.lineTo(p2.x, p2.y, p2.z);
+            shape.lineTo(p3.x, p3.y, p3.z);
+
+            const geometry = new THREE.ShapeGeometry(shape);
+            const wireframe = new THREE.WireframeGeometry(geometry);
+            const mesh = new THREE.Mesh(wireframe, materialMesh);
+
+            scene.add(mesh);
+        }
+
+
+        function CreateSphere() {
+            var colors = [0x56D9CD, 0xF2385A, 0xF5A503, 0xE9F1DF, 0x56D9CD, 0x3AA1BF];
+
+            var colorIndex = Math.floor(RandomFloat(0, colors.length));
+            var c = colors[colorIndex];
+
+            var mesh = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 1, 1),
+                new THREE.MeshStandardMaterial({
+                    color: c
+                }));
+
+            mesh.scale.x = RandomFloat(1.0, 10.0);
+            mesh.scale.y = RandomFloat(1.0, 10.0);
+            mesh.scale.z = RandomFloat(1.0, 10.0);
+
+            scene.add(mesh);
+            meshes.push({ "mesh": mesh, "velocity": new THREE.Vector3(RandomFloat(-40, 40), RandomFloat(-40, 40), RandomFloat(-40, 40)) });
+        }
+
+        function Initialize() {
+            const color = 0xFFFFFF;
+            const intensity = 1;
+            //light = new THREE.HemisphereLight(0x0000ff, 0xff0000, intensity);
+            //scene.add(light);
+
+            light = new THREE.PointLight(color, intensity)
+            scene.add(light)
+
+            const totalSpheres = 3000;
+
+            for (i = 0; i < totalSpheres; i++) {
+                CreateSphere();
+            }
+        }
+
+        lerpToken = false;
+        startToken = false;
+        dateStart = Date.now();
+        dateOffset = 0;
+
+        function LerpPositions() {
+
+            if (movementStatic && lerpToken)
+                return;
+
+            if (lerpToken && !movementStatic && !startToken) {
+                startToken = true;
+                dateOffset = Date.now() - dateStart;
+            }
+
+            squareSize = Math.sqrt(meshes.length);
+            const spread = 1500;
+            const offsetX = 0;
+            const offsetY = 0;
+            const offsetZ = -1000;
+
+            for (i = 0; i < meshes.length; i++) {
+                meshes[i].mesh.position.x = Math.sin(((Date.now() - dateOffset) + (i * squareSize) * meshes[i].velocity.x) * 0.00008) * meshes[i].velocity.x * 100 + offsetX;
+                meshes[i].mesh.position.y = Math.sin(((Date.now() - dateOffset) + (i * squareSize) * meshes[i].velocity.y) * 0.00003) * meshes[i].velocity.y * 50 + offsetY;
+                meshes[i].mesh.position.z = (i / squareSize) * -spread + offsetZ;
+
+                meshes[i].mesh.rotation.x += meshes[i].velocity.x * 0.005;
+                meshes[i].mesh.rotation.y += meshes[i].velocity.y * 0.005;
+                meshes[i].mesh.rotation.z += meshes[i].velocity.z * 0.005;
+            }
+
+            lerpToken = true;
+            dateStart = Date.now();
+        }
+
+        Initialize();
+
+        function Animate() {
+            LerpPositions();
+
+            requestAnimationFrame(Animate);
+
+            renderer.render(scene, camera);
+        }
+
+        // dynamic cubes
+        movementStatic = false;
+        Animate();
+
+        // search
+        const searchInput = document.getElementById('search-input');
+        const container = document.getElementById('container');
+
+        searchInput.addEventListener('keyup', function () {
+            const searchText = searchInput.value.toLowerCase().trim();
+
+            Array.from(container.querySelectorAll('.searchable')).forEach(function (child) {
+                const childText = child.textContent.toLowerCase().trim();
+
+                console.log(childText + ' == ' + searchText);
+
+                if (childText.includes(searchText)) {
+                    child.closest('a').style.opacity = 1;
+                } else {
+                    child.closest('a').style.opacity = 0.05;
+                }
+            });
+        });
+
+        // change language
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.addEventListener('mouseenter', function (event) {
+                const container = event.target.closest('.languageContainer');
+                if (container && container.querySelector('.mk') && container.querySelector('.en')) {
+                    const mkDiv = container.querySelector('.mk');
+                    const enDiv = container.querySelector('.en');
+
+                    if (mkDiv && enDiv) {
+                        mkDiv.classList.add('currentLang');
+                        enDiv.classList.remove('currentLang');
+                    }
+                }
+            }, true);
+
+            document.body.addEventListener('mouseleave', function (event) {
+                const container = event.target.closest('.languageContainer');
+                if (container && container.querySelector('.mk') && container.querySelector('.en')) {
+                    const mkDiv = container.querySelector('.mk');
+                    const enDiv = container.querySelector('.en');
+
+                    if (mkDiv && enDiv) {
+                        enDiv.classList.add('currentLang');
+                        mkDiv.classList.remove('currentLang');
+                    }
+                }
+            }, true);
+        });
+
+    </script>
+</body>
+
+</html>
