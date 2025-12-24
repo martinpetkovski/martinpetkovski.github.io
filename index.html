@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira Code:wght@400;700&display=swap" rel="stylesheet">
     <script type="importmap">
         {
             "imports": {
@@ -58,8 +59,8 @@
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateZ(0) translateY(40px) skewX(-20deg); }
-            to { opacity: 1; transform: translateZ(0) translateY(0) skewX(0); }
+            from { opacity: 0; transform: perspective(1000px) translate3d(0, 40px, -50px) rotateX(-20deg); }
+            to { opacity: 1; transform: perspective(1000px) translate3d(0, 0, 0) rotateX(0); }
         }
 
         @keyframes text-glow {
@@ -119,7 +120,9 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            opacity: 0.5;
         }
 
         #content-wrapper {
@@ -182,7 +185,7 @@
             width: 100%;
             max-width: 500px;
             transform-style: preserve-3d;
-            padding-bottom: 50px;
+            padding-bottom: 20px;
         }
 
         section {
@@ -245,6 +248,7 @@
             text-align: left;
             box-shadow: none;
             /* Removed text-shadow to fix blur on transparent text */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
             transform: translateZ(10px);
             letter-spacing: 2px;
         }
@@ -304,8 +308,9 @@
         a.link:hover {
             /* Hover State with Rotating Border */
             background: 
+                radial-gradient(45px circle at var(--x) var(--y), rgba(255,255,255,0.12) 0%, transparent 100%) padding-box,
                 linear-gradient(to bottom, #202020, #111) padding-box,
-                radial-gradient(60px circle at var(--x) var(--y), rgba(255,255,255,0.9) 0%, transparent 100%) border-box,
+                radial-gradient(44px circle at var(--x) var(--y), rgba(255,255,255,0.72) 0%, transparent 100%) border-box,
                 linear-gradient(to right, var(--accent-3) 4px, transparent 4px) border-box;
                 
             border: 1px solid transparent;
@@ -350,10 +355,11 @@
             margin-right: auto;
             display: flex;
             align-items: center;
-            text-shadow: 1px 1px 0 #000;
+            text-shadow: var(--shadow-x, 1px) var(--shadow-y, 1px) 2px rgba(0,0,0,0.8);
             z-index: 2;
             pointer-events: none;
             transform: translateZ(5px);
+            transition: text-shadow 0.1s;
         }
 
         .favicon {
@@ -362,11 +368,11 @@
             margin-right: 8px;
             vertical-align: middle;
             border-radius: 2px;
-            filter: grayscale(100%);
+            /* filter: grayscale(100%); removed for full color */
             transition: filter 0.2s;
         }
         a.link:hover .favicon {
-            filter: grayscale(0%);
+            /* filter: grayscale(0%); removed */
         }
 
         a.link .year {
@@ -375,9 +381,10 @@
             opacity: 0.8;
             margin-left: 10px;
             z-index: 2;
-            text-shadow: 1px 1px 0 #000;
+            text-shadow: var(--shadow-x, 1px) var(--shadow-y, 1px) 2px rgba(0,0,0,0.8);
             pointer-events: none;
             transform: translateZ(5px);
+            transition: text-shadow 0.1s;
         }
 
         a.link .desc {
@@ -386,11 +393,12 @@
             width: 100%;
             white-space: normal;
             overflow: hidden;
-            text-shadow: 1px 1px 0 #000;
+            text-shadow: var(--shadow-x, 1px) var(--shadow-y, 1px) 2px rgba(0,0,0,0.8);
             pointer-events: none;
             line-height: 1.2;
             margin-top: 4px;
             transform: translateZ(2px);
+            transition: text-shadow 0.1s;
         }
 
         /* Removed hover expand animation for desc */
@@ -408,9 +416,9 @@
         /* Removed media query for two columns to keep one link per row */
 
         footer {
-            margin-top: 60px;
+            margin-top: 30px;
             color: var(--text-dim);
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             opacity: 0.6;
@@ -444,7 +452,7 @@
             stroke-linejoin: bevel;
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
-            animation: stroke 20s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-family: 'Audiowide', 'Cinzel', sans-serif;
             font-size: 120px;
             font-weight: bold;
@@ -453,31 +461,31 @@
         .text:nth-child(5n + 1) {
             stroke: #0AF;
             filter: drop-shadow(0 0 8px #0AF);
-            animation-delay: -2.0s;
+            animation-delay: -1.0s;
         }
 
         .text:nth-child(5n + 2) {
-            stroke: rgba(255,255,255,0.1);
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
-            animation-delay: -4.0s;
+            stroke: #0F0;
+            filter: drop-shadow(0 0 8px #0F0);
+            animation-delay: -2.0s;
         }
 
         .text:nth-child(5n + 3) {
             stroke: #FF0;
             filter: drop-shadow(0 0 8px #FF0);
-            animation-delay: -6.0s;
+            animation-delay: -3.0s;
         }
 
         .text:nth-child(5n + 4) {
-            stroke: rgba(255,255,255,0.1);
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
-            animation-delay: -8.0s;
+            stroke: #F0F;
+            filter: drop-shadow(0 0 8px #F0F);
+            animation-delay: -4.0s;
         }
 
         .text:nth-child(5n + 5) {
             stroke: #F00;
             filter: drop-shadow(0 0 8px #F00);
-            animation-delay: -10s;
+            animation-delay: -5s;
         }
 
         @keyframes stroke {
@@ -520,6 +528,22 @@
             display: flex;
             align-items: center;
             width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            body { font-size: 23px; }
+            h1 { font-size: 3.9rem; }
+            h2 { font-size: 1.95rem; }
+            h3 { font-size: 0.85rem; }
+            header p { font-size: 1.05rem; }
+            .link .title { font-size: 1.45rem; }
+            .link .desc { font-size: 1.2rem; }
+            .link .year { font-size: 0.85rem; }
+            .favicon { width: 21px; height: 21px; }
+            #content-wrapper { padding: 26px 13px; }
+            header { margin-bottom: 39px; }
+            main { gap: 33px; max-width: 100%; }
+            .link { padding: 16px 20px; }
         }
 	</style>
 </head>
@@ -600,7 +624,7 @@
                     </li>
                     <li>
                         <a class="link" href="https://store.steampowered.com/app/1682400/The_Strange_Story_Of_Brian_Fisher_Chapter_2/">
-                            <span class="title">The Strange Story of Brian Fischer: Chapter 2</span>
+                            <span class="title">The Strange Story of Brian Fisher: Chapter 2</span>
                             <span class="year">2023</span>
                         </a>
                     </li>
@@ -905,12 +929,49 @@
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
 
+        // Wireframe Cubes
+        const cubes = [];
+        const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
+        const cubeMaterial = new THREE.LineBasicMaterial({ color: 0x444444, transparent: true, opacity: 0.15 });
+        
+        for (let i = 0; i < 12; i++) {
+            const edges = new THREE.EdgesGeometry(cubeGeometry);
+            const line = new THREE.LineSegments(edges, cubeMaterial);
+            
+            line.position.x = (Math.random() - 0.5) * 250;
+            line.position.y = (Math.random() - 0.5) * 250;
+            line.position.z = (Math.random() - 0.5) * 100 - 60; // Background
+            
+            line.rotation.x = Math.random() * Math.PI;
+            line.rotation.y = Math.random() * Math.PI;
+            
+            // Store original Y for parallax
+            line.userData = { 
+                originalY: line.position.y,
+                rotationSpeedX: (Math.random() - 0.5) * 0.005,
+                rotationSpeedY: (Math.random() - 0.5) * 0.005
+            };
+
+            scene.add(line);
+            cubes.push(line);
+        }
+
         // Mouse interaction
         let mouseX = 0;
         let mouseY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) * 2 - 1;
             mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        let scrollY = 0;
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            const hue = scrollY * 0.1;
+            const bg = document.getElementById('gradient-bg');
+            if (bg) {
+                bg.style.setProperty('--hue', `${hue}deg`);
+            }
         });
 
         function animate() {
@@ -937,6 +998,16 @@
             particles.rotation.x += (mouseY * 0.05 - particles.rotation.x) * 0.01;
             particles.rotation.y += (mouseX * 0.05 - particles.rotation.y) * 0.01;
 
+            // Animate Cubes
+            cubes.forEach((cube) => {
+                cube.rotation.x += cube.userData.rotationSpeedX;
+                cube.rotation.y += cube.userData.rotationSpeedY;
+                
+                // Scroll Parallax & Rotation
+                cube.position.y = cube.userData.originalY + scrollY * 0.05;
+                cube.rotation.z = scrollY * 0.001;
+            });
+
             composer.render();
         }
         animate();
@@ -948,14 +1019,14 @@
             composer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Scroll Color Shift
-        window.addEventListener('scroll', () => {
+        // Scroll Color Shift (Moved to shared listener above)
+        /* window.addEventListener('scroll', () => {
             const hue = window.scrollY * 0.1;
             const bg = document.getElementById('gradient-bg');
             if (bg) {
                 bg.style.setProperty('--hue', `${hue}deg`);
             }
-        });
+        }); */
     </script>
     <script>
         // Last.fm Fetching
@@ -1036,11 +1107,21 @@
                 const rotateY = ((x - centerX) / centerX) * 10;
                 
                 link.style.transform = `perspective(1000px) translateZ(20px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+                // Shadow calculation (opposite to cursor)
+                // If cursor is top-left (-x, -y), shadow should be bottom-right (+x, +y)
+                const shadowX = ((x - centerX) / centerX) * -4; // Max 4px offset
+                const shadowY = ((y - centerY) / centerY) * -4;
+                
+                link.style.setProperty('--shadow-x', `${shadowX}px`);
+                link.style.setProperty('--shadow-y', `${shadowY}px`);
             });
             
             link.addEventListener('mouseleave', () => {
                 // Reset transform
                 link.style.transform = 'perspective(1000px) translateZ(0) rotateX(0) rotateY(0)';
+                link.style.setProperty('--shadow-x', '1px');
+                link.style.setProperty('--shadow-y', '1px');
             });
         });
 
@@ -1051,17 +1132,17 @@
         // 2. A direct image URL (e.g., "https://example.com/icon.png")
         // 3. An emoji or text (e.g., "🎸")
         const iconConfig = {
-            'resume': 'https://www.najjak.com/resume',
-            'siotojazz': 'https://www.siotojazz.com/',
-            'nst': 'https://www.najjak.com/nst',
-            'sis': 'https://www.najjak.com/sis/index.html',
-            'justnotepad': 'https://www.najjak.com/JustNotepad',
-            'checkmeg': 'https://www.najjak.com/Checkmeg',
-            'masterlista': 'https://www.najjak.com/masterlista',
-            'makedonski': 'https://www.najjak.com/makedonski',
-            'principles': 'https://www.najjak.com/JustNotepad',
-            'code-standard-cpp': 'https://www.najjak.com/JustNotepad',
-            'zanaetchiski-raspored': 'https://www.najjak.com/JustNotepad',
+            'resume': 'https://www.najjak.com/favicon.ico',
+            'siotojazz': 'https://www.siotojazz.com/favicon.ico',
+            'nst': 'https://www.najjak.com/favicon.ico',
+            'sis': 'https://www.najjak.com/favicon.ico',
+            'justnotepad': 'https://www.najjak.com/favicon.ico',
+            'checkmeg': 'https://www.najjak.com/favicon.ico',
+            'masterlista': 'https://www.najjak.com/favicon.ico',
+            'makedonski': 'https://www.najjak.com/favicon.ico',
+            'principles': 'https://www.najjak.com/favicon.ico',
+            'code-standard-cpp': 'https://www.najjak.com/favicon.ico',
+            'zanaetchiski-raspored': 'https://www.najjak.com/favicon.ico',
             'cyberpunk': 'https://www.cyberpunk.net/us/en/',
             'nomanssky': 'https://www.nomanssky.com/',
             'deezer': 'https://deezer.com',
