@@ -2957,11 +2957,11 @@
     {
       "name": "Орион",
       "city": "Битола",
-      "genre": "недостигаат податоци",
+      "genre": "Метал",
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://www.youtube.com/watch?v=zZJg5hxfRlU"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -4103,7 +4103,8 @@
         "youtube": "https://www.youtube.com/@tsarvontime",
         "instagram": "https://www.instagram.com/tsarvontime/",
         "linktree": "https://linktr.ee/tsarvontime",
-        "bandcamp": "https://tsarvontime.bandcamp.com/"
+        "bandcamp": "https://tsarvontime.bandcamp.com/",
+        "spotify": "https://open.spotify.com/artist/5avmvqlQ3XoAmt4w1ZqgKb?si=X38DybdhQLKenTlXmfDUKA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
