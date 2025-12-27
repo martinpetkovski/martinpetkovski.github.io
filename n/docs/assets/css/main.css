@@ -1,6 +1,6 @@
 /* Typography */
 
-@import url('https://fonts.googleapis.com/css?family=Heebo:400,500|Lora:400,400i,700,700i|Libre+Baskerville:400,400i');
+@import url('https://fonts.googleapis.com/css?family=Heebo:400,500|Lora:400,400i,700,700i|Libre+Baskerville:400,400i|Fira+Code:400');
 
 body {
     font-family: 'Lora', serif;
@@ -273,3 +273,74 @@ blockquote {
   .hljs-meta {
     color: #75715e;
   }
+/* Language Switcher */
+.lang-selector {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Heebo', sans-serif;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    backdrop-filter: blur(5px);
+}
+
+.lang-btn {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.lang-btn:hover {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.lang-btn.active {
+    color: #000;
+    font-weight: 600;
+}
+
+.lang-btn .flag {
+    font-size: 1.1em;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover .flag,
+.lang-btn.active .flag {
+    filter: none;
+    opacity: 1;
+}
+
+
+/* Opinion Item Language Tag */
+.opinion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.opinion-lang {
+    font-size: 0.7em;
+    background: #eee;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #555;
+    font-weight: bold;
+}
+

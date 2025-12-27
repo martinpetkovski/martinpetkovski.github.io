@@ -8,7 +8,7 @@
 	<title>najjak.com</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Cinzel:wght@400;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Cormorant+SC:wght@400;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 	<style>
         * { box-sizing: border-box; }
         html, body { width: 100%; overflow-x: hidden; margin: 0; padding: 0; }
@@ -827,7 +827,7 @@
         body {
             background-color: #050505;
             color: var(--text-main);
-            font-family: 'Cinzel', serif;
+            font-family: 'Cormorant SC', serif;
             margin: 0;
             overflow-x: hidden;
             min-height: 100vh;
@@ -1156,7 +1156,7 @@
         }
 
         .hero-title {
-            font-family: 'Audiowide', cursive;
+            font-family: 'Orbitron', sans-serif;
             font-size: clamp(3rem, 10vw, 6rem);
             color: var(--text-main);
             text-transform: uppercase;
@@ -1191,6 +1191,86 @@
             padding: 6px 16px;
             transform: skewX(-20deg);
             box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+        }
+
+
+
+
+
+        .lang-selector {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-family: 'Fira Code', monospace;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            mix-blend-mode: exclusion;
+        }
+
+        .lang-selector.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #666;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            outline: none;
+            letter-spacing: 1px;
+        }
+
+        .lang-btn::before,
+        .lang-btn::after {
+            content: '';
+            position: absolute;
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: var(--accent-2);
+            font-weight: bold;
+        }
+
+        .lang-btn::before { content: '['; left: 0; transform: translateX(10px); }
+        .lang-btn::after { content: ']'; right: 0; transform: translateX(-10px); }
+
+        .lang-btn:hover {
+            color: #fff;
+        }
+
+        .lang-btn.active {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .lang-btn.active::before,
+        .lang-btn.active::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .lang-btn .flag {
+            font-size: 1rem;
+            filter: grayscale(100%) opacity(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn:hover .flag,
+        .lang-btn.active .flag {
+            filter: grayscale(0%) opacity(1);
         }
 
         .scroll-indicator {
@@ -1389,7 +1469,7 @@
 
         h2 {
             margin: 0 0 5px 0;
-            font-family: 'Cinzel', serif;
+            font-family: 'Cormorant SC', serif;
             font-size: 1.2rem;
             text-transform: uppercase;
             font-style: normal;
@@ -1779,7 +1859,7 @@
             stroke-dasharray: 100 300;
             stroke-dashoffset: 0;
             animation: stroke 10s infinite cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-family: 'Audiowide', 'Cinzel', sans-serif;
+            font-family: 'Orbitron', 'Cormorant SC', sans-serif;
             font-size: 120px;
             font-weight: bold;
         }
@@ -2135,6 +2215,20 @@
                 padding-bottom: max(20px, env(safe-area-inset-bottom));
             }
         }
+
+        .lang-tag {
+            font-size: 0.8em;
+            margin-left: 8px;
+            vertical-align: middle;
+            opacity: 0.5;
+            filter: grayscale(0.5);
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+        .lang-tag:hover {
+            opacity: 1;
+            filter: grayscale(0);
+        }
 	</style>
 </head>
 <body>
@@ -2164,6 +2258,17 @@
     <div class="particles" id="particles"></div>
     <div class="frame-counter" id="frame-counter">FRAME: 000000</div>
     
+    <div class="lang-selector">
+        <button onclick="setLanguage('en')" id="lang-en" class="lang-btn active" aria-label="Switch to English">
+            <span class="flag">🇬🇧</span>
+            <span>EN</span>
+        </button>
+        <button onclick="setLanguage('mk')" id="lang-mk" class="lang-btn" aria-label="Switch to Macedonian">
+            <span class="flag">🇲🇰</span>
+            <span>MK</span>
+        </button>
+    </div>
+
     <div id="hero">
         <h1 class="hero-title">
             NAJJAK.COM
@@ -2341,35 +2446,35 @@
                 <ul class="link-list two-col">
                     <li>
                         <a class="link" href="n/?principles">
-                            <span class="title" data-i18n="principles.title">Principles</span>
+                            <span class="title" data-i18n="principles.title">Principles <span class="lang-tag" title="Macedonian">🇲🇰</span></span>
                             <span class="year">current</span>
                             <span class="desc" data-i18n="principles.desc">Core values and beliefs</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?code-standard-cpp">
-                            <span class="title" data-i18n="cpp.title">C++ Code Standard</span>
+                            <span class="title" data-i18n="cpp.title">C++ Code Standard <span class="lang-tag" title="English">🇬🇧</span></span>
                             <span class="year">current</span>
                             <span class="desc" data-i18n="cpp.desc">Personal coding guidelines and best practices</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?zanaetchiski-raspored">
-                            <span class="title" data-i18n="zanaetchiski.title">Zanaetchiski Raspored</span>
+                            <span class="title" data-i18n="zanaetchiski.title">Zanaetchiski Raspored <span class="lang-tag" title="Macedonian">🇲🇰</span></span>
                             <span class="year">2021</span>
                             <span class="desc" data-i18n="zanaetchiski.desc">Some thoughts on craftsman vs. manager schedules</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?cyberpunk">
-                            <span class="title">Cyberpunk</span>
+                            <span class="title">Cyberpunk <span class="lang-tag" title="English">🇬🇧</span></span>
                             <span class="year">2022</span>
                             <span class="desc" data-i18n="cyberpunk.desc">Review of the game</span>
                         </a>
                     </li>
                     <li>
                         <a class="link" href="n/?nomanssky">
-                            <span class="title">No Man's Sky</span>
+                            <span class="title">No Man's Sky <span class="lang-tag" title="English">🇬🇧</span></span>
                             <span class="year">2021</span>
                             <span class="desc" data-i18n="nms.desc">Review of the game</span>
                         </a>
@@ -2465,9 +2570,15 @@
         </footer>
     </div>
 
-    <div id="lang-switcher">
-        <button onclick="setLanguage('en')" id="lang-en" class="lang-btn active">EN</button>
-        <button onclick="setLanguage('mk')" id="lang-mk" class="lang-btn">MK</button>
+    <div class="lang-selector">
+        <button onclick="setLanguage('en')" id="lang-en" class="lang-btn active" aria-label="Switch to English">
+            <span class="flag">🇬🇧</span>
+            <span>EN</span>
+        </button>
+        <button onclick="setLanguage('mk')" id="lang-mk" class="lang-btn" aria-label="Switch to Macedonian">
+            <span class="flag">🇲🇰</span>
+            <span>MK</span>
+        </button>
     </div>
 
     <script src="translations.js"></script>
@@ -2482,6 +2593,26 @@
                     el.style.opacity = '0';
                     setTimeout(() => {
                         el.textContent = translations[lang][key];
+                        // Re-append lang tag if it's an opinion title
+                        if (el.classList.contains('title') && el.closest('section').getAttribute('aria-labelledby') === 'opinions-title') {
+                            const href = el.closest('a').getAttribute('href');
+                            let flagEmoji = '';
+                            let titleText = '';
+                            
+                            if (href.includes('zanaetchiski') || href.includes('principles')) {
+                                flagEmoji = '🇲🇰';
+                                titleText = 'Macedonian';
+                            } else {
+                                flagEmoji = '🇬🇧';
+                                titleText = 'English';
+                            }
+                            
+                            const span = document.createElement('span');
+                            span.className = 'lang-tag';
+                            span.textContent = flagEmoji;
+                            span.title = titleText;
+                            el.appendChild(span);
+                        }
                         el.style.opacity = '1';
                     }, 200);
                 }
@@ -2495,28 +2626,6 @@
             const url = new URL(window.location);
             url.searchParams.set('lang', lang);
             window.history.pushState({}, '', url);
-
-            // Update links to preserve language
-            document.querySelectorAll('a.link').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('n/')) {
-                    let newHref = href;
-                    
-                    // Remove existing lang param (handles ?lang=xx, &lang=xx)
-                    newHref = newHref.replace(/([&?]lang=(en|mk))/, '');
-                    
-                    // If switching to MK, append param
-                    if (lang === 'mk') {
-                        if (newHref.includes('?')) {
-                            newHref += '&lang=mk';
-                        } else {
-                            newHref += '?lang=mk';
-                        }
-                    }
-                    
-                    link.setAttribute('href', newHref);
-                }
-            });
         }
 
         // Initialize Language
@@ -2529,6 +2638,26 @@
             const key = el.getAttribute('data-i18n');
             if (translations[initialLang] && translations[initialLang][key]) {
                 el.textContent = translations[initialLang][key];
+                // Re-append lang tag if it's an opinion title
+                if (el.classList.contains('title') && el.closest('section').getAttribute('aria-labelledby') === 'opinions-title') {
+                    const href = el.closest('a').getAttribute('href');
+                    let flagEmoji = '';
+                    let titleText = '';
+                    
+                    if (href.includes('zanaetchiski') || href.includes('principles')) {
+                        flagEmoji = '🇲🇰';
+                        titleText = 'Macedonian';
+                    } else {
+                        flagEmoji = '🇬🇧';
+                        titleText = 'English';
+                    }
+                    
+                    const span = document.createElement('span');
+                    span.className = 'lang-tag';
+                    span.textContent = flagEmoji;
+                    span.title = titleText;
+                    el.appendChild(span);
+                }
             }
             // Ensure opacity transition is enabled for future changes
             el.style.transition = 'opacity 0.2s ease';
@@ -2537,18 +2666,6 @@
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         const activeBtn = document.getElementById(`lang-${initialLang}`);
         if (activeBtn) activeBtn.classList.add('active');
-        
-        // Run link update for initial state
-        document.querySelectorAll('a.link').forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && href.startsWith('n/')) {
-                let newHref = href.replace(/([&?]lang=(en|mk))/, '');
-                if (initialLang === 'mk') {
-                    newHref += (newHref.includes('?') ? '&' : '?') + 'lang=mk';
-                }
-                link.setAttribute('href', newHref);
-            }
-        });
 
         // Mobile detection and performance optimization
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
@@ -3347,6 +3464,16 @@
             scrollVelocity = Math.abs(currentScrollY - lastScrollY);
             lastScrollY = currentScrollY;
             
+            // Language Selector Visibility
+            const langSelector = document.querySelector('.lang-selector');
+            if (langSelector) {
+                if (currentScrollY > 100) {
+                    langSelector.classList.add('visible');
+                } else {
+                    langSelector.classList.remove('visible');
+                }
+            }
+            
             // Keep wrapper filter off to avoid pointer hitbox glitches on scroll.
             if (contentWrapper) contentWrapper.style.filter = 'none';
             
@@ -3569,3 +3696,4 @@
 </body>
 
 </html>
+
