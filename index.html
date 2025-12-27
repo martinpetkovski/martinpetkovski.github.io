@@ -1861,7 +1861,9 @@
             /* Hide only non-essential heavy visual effects on mobile */
             .depth-layer,
             .cinema-corner,
-            .frame-counter {
+            .frame-counter,
+            .particles,
+            .section-particles {
                 display: none !important;
             }
             
@@ -2538,7 +2540,7 @@
 
         // ========== RIBBON WRAP SYSTEM ==========
         // Add ribbon wrap elements to each link (skip on mobile for performance)
-        if (!shouldReduceEffects) {
+        if (!shouldReduceEffects && !isMobile) {
             document.querySelectorAll('a.link').forEach(link => {
                 // Add the ribbon wrap overlay (shine effect)
                 const ribbonWrap = document.createElement('div');
@@ -2872,7 +2874,7 @@
 
         // ========== SECTION PARTICLE BURST SYSTEM ==========
         // Skip on mobile for performance
-        if (!shouldReduceEffects) {
+        if (!shouldReduceEffects && !isMobile) {
             // Track section reveal states
             const sectionRevealStates = new Map();
             sections.forEach(section => {
@@ -3031,12 +3033,11 @@
         const particlesContainer = document.getElementById('particles');
         const allParticles = [];
         
-        if (particlesContainer && !shouldReduceEffects) {
+        if (particlesContainer && !shouldReduceEffects && !isMobile) {
             const particleTypes = ['', 'golden', 'ember', 'bright'];
             const particleSizes = ['', 'large'];
-            const particleCount = shouldSimplifyEffects ? 15 : 40;
             
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 40; i++) {
                 const particle = document.createElement('div');
                 const type = particleTypes[Math.floor(Math.random() * particleTypes.length)];
                 const size = Math.random() > 0.7 ? 'large' : '';
