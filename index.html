@@ -360,17 +360,18 @@
             height: 100%;
             background: linear-gradient(105deg, 
                 transparent 0%,
-                transparent 35%,
-                rgba(255, 180, 100, 0.15) 42%,
-                rgba(255, 220, 180, 0.4) 48%,
-                rgba(255, 255, 255, 0.95) 50%,
-                rgba(255, 220, 180, 0.4) 52%,
-                rgba(255, 180, 100, 0.15) 58%,
-                transparent 65%,
+                transparent 30%,
+                rgba(255, 200, 150, 0.08) 38%,
+                rgba(255, 220, 180, 0.25) 45%,
+                rgba(255, 255, 255, 0.7) 50%,
+                rgba(255, 220, 180, 0.25) 55%,
+                rgba(255, 200, 150, 0.08) 62%,
+                transparent 70%,
                 transparent 100%
             );
             transform: translateX(-150%);
             opacity: 0;
+            filter: blur(1px);
         }
 
         a.link:hover .ribbon-wrap::before {
@@ -772,9 +773,11 @@
             pointer-events: none;
             z-index: 999;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            opacity: 0.08;
-            mix-blend-mode: overlay;
+            opacity: 0.06;
+            mix-blend-mode: soft-light;
             animation: filmGrain 0.5s steps(10) infinite;
+            mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
         }
 
         /* Light Leak Effect */
@@ -789,14 +792,15 @@
             background: linear-gradient(
                 120deg,
                 transparent 0%,
-                rgba(255, 180, 100, 0.15) 20%,
-                rgba(255, 100, 50, 0.1) 40%,
-                transparent 60%
+                rgba(255, 180, 100, 0.12) 25%,
+                rgba(255, 120, 60, 0.08) 45%,
+                transparent 65%
             );
             opacity: 0;
             mix-blend-mode: screen;
             animation: lightLeak 12s ease-in-out infinite;
             animation-delay: 3s;
+            filter: blur(30px);
         }
 
         /* Anamorphic Lens Flare */
@@ -1146,7 +1150,10 @@
         /* Particle with parallax data attribute */
         .particle {
             --parallax-speed: 0.5;
-            will-change: transform;
+            --cursor-x: 0px;
+            --cursor-y: 0px;
+            will-change: transform, margin;
+            transition: margin 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         body {
@@ -1169,8 +1176,8 @@
             pointer-events: none;
             z-index: -1;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
-            mix-blend-mode: overlay;
-            opacity: 0.5;
+            mix-blend-mode: soft-light;
+            opacity: 0.4;
         }
 
         #hero {
@@ -1534,7 +1541,7 @@
             /* Hover State with Rotating Border */
             background: 
                 radial-gradient(80px circle at var(--x) var(--y), rgba(255,255,255,0.15) 0%, transparent 100%) padding-box,
-                linear-gradient(to bottom, #252525, #151515) padding-box,
+                linear-gradient(to bottom, #252525, #0a0a0a) padding-box,
                 radial-gradient(60px circle at var(--x) var(--y), rgba(255,255,255,0.8) 0%, transparent 100%) border-box,
                 linear-gradient(to right, #ff6b35 4px, transparent 4px) border-box;
                 
@@ -1558,7 +1565,7 @@
             left: -25px;
             right: -20px;
             bottom: -20px;
-            background: radial-gradient(ellipse at left center, rgba(255, 100, 50, 0.4) 0%, rgba(255, 60, 20, 0.2) 30%, transparent 70%);
+            background: radial-gradient(ellipse at left center, rgba(255, 100, 50, 0.2) 0%, rgba(255, 60, 20, 0.05) 30%, transparent 70%);
             opacity: 0;
             z-index: -1;
             pointer-events: none;
@@ -2812,10 +2819,21 @@
 
         // Parallax scroll effect for particles
         let particleScrollY = 0;
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+        let targetCursorX = cursorX;
+        let targetCursorY = cursorY;
         
         function updateParticleParallax() {
             const scrollY = window.pageYOffset;
             const scrollDelta = scrollY * 0.1; // Reduce scroll influence
+            
+            // Smooth cursor interpolation
+            cursorX += (targetCursorX - cursorX) * 0.08;
+            cursorY += (targetCursorY - cursorY) * 0.08;
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
             
             allParticles.forEach((p, index) => {
                 // Calculate spiral X offset based on scroll position
@@ -2825,17 +2843,51 @@
                 // Parallax Y offset - particles move at different rates
                 const parallaxY = scrollY * p.parallaxSpeed * 0.15;
                 
-                // Apply the spiral + parallax transform
+                // Cursor repulsion - particles gently push away from cursor
+                const rect = p.element.getBoundingClientRect();
+                const particleCenterX = rect.left + rect.width / 2;
+                const particleCenterY = rect.top + rect.height / 2;
+                
+                const distX = particleCenterX - cursorX;
+                const distY = particleCenterY - cursorY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+                
+                // Repulsion radius and strength
+                const repulsionRadius = 150;
+                const maxRepulsion = 40 * p.parallaxSpeed;
+                
+                let cursorOffsetX = 0;
+                let cursorOffsetY = 0;
+                
+                if (distance < repulsionRadius && distance > 0) {
+                    const force = (1 - distance / repulsionRadius) * maxRepulsion;
+                    cursorOffsetX = (distX / distance) * force;
+                    cursorOffsetY = (distY / distance) * force;
+                }
+                
+                // Apply the spiral + parallax + cursor transform
                 p.element.style.setProperty('--scroll-x', `${spiralX}px`);
-                p.element.style.marginTop = `${-parallaxY}px`;
-                p.element.style.marginLeft = `${spiralX}px`;
+                p.element.style.marginTop = `${-parallaxY + cursorOffsetY}px`;
+                p.element.style.marginLeft = `${spiralX + cursorOffsetX}px`;
             });
             
             particleScrollY = scrollY;
         }
         
+        // Track cursor movement
+        document.addEventListener('mousemove', (e) => {
+            targetCursorX = e.clientX;
+            targetCursorY = e.clientY;
+        }, { passive: true });
+        
+        // Continuous animation loop for smooth cursor tracking
+        function animateParticles() {
+            updateParticleParallax();
+            requestAnimationFrame(animateParticles);
+        }
+        
         window.addEventListener('scroll', updateParticleParallax, { passive: true });
-        updateParticleParallax(); // Initial call
+        animateParticles(); // Start animation loop
 
         // Frame Counter Animation
         const frameCounter = document.getElementById('frame-counter');
