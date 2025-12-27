@@ -1,3 +1,8 @@
-# Републиката
+# The Republic
 
-[Слобода на говор](?sloboda-na-govor)
+[Freedom of Speech](?sloboda-na-govor)
+
+<div id="hero-opinions">
+    Hover to see latest opinions
+    <div id="opinions-list" style="display:none;"></div>
+</div>
