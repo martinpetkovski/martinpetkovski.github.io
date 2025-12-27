@@ -4,13 +4,15 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="color-scheme" content="dark" />
 	<title>najjak.com</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fira Code:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Cinzel:wght@400;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 	<style>
+        * { box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; margin: 0; padding: 0; }
+        
         @property --angle {
             syntax: '<angle>';
             initial-value: 0deg;
@@ -67,16 +69,8 @@
         }
 
         @keyframes filmGrain {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-1%, -1%); }
-            20% { transform: translate(1%, 1%); }
-            30% { transform: translate(-2%, 1%); }
-            40% { transform: translate(1%, -1%); }
-            50% { transform: translate(-1%, 2%); }
-            60% { transform: translate(2%, -2%); }
-            70% { transform: translate(-1%, -2%); }
-            80% { transform: translate(2%, 1%); }
-            90% { transform: translate(1%, -1%); }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(-1%, -1%, 0); }
         }
 
         @keyframes lightLeak {
@@ -200,16 +194,10 @@
 
         /* Film Reel Shake */
         @keyframes reelShake {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-1px, 0); }
-            20% { transform: translate(1px, -1px); }
-            30% { transform: translate(0, 1px); }
-            40% { transform: translate(1px, 0); }
-            50% { transform: translate(-1px, 1px); }
-            60% { transform: translate(0, -1px); }
-            70% { transform: translate(1px, 1px); }
-            80% { transform: translate(-1px, 0); }
-            90% { transform: translate(0, 1px); }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            25% { transform: translate3d(-1px, 1px, 0); }
+            50% { transform: translate3d(1px, -1px, 0); }
+            75% { transform: translate3d(-1px, -1px, 0); }
         }
 
         /* Ribbon Particle Animation */
@@ -297,15 +285,8 @@
 
         @keyframes glitchNoise {
             0%, 100% { background-position: 0 0; }
-            10% { background-position: -5% -10%; }
-            20% { background-position: -15% 5%; }
-            30% { background-position: 7% -25%; }
-            40% { background-position: 20% 25%; }
-            50% { background-position: -25% 10%; }
-            60% { background-position: 15% 5%; }
-            70% { background-position: 0% 15%; }
-            80% { background-position: 25% 35%; }
-            90% { background-position: -10% 10%; }
+            33% { background-position: -5% -10%; }
+            66% { background-position: 5% 10%; }
         }
 
         /* Footer Reveal Animation */
@@ -652,10 +633,10 @@
             z-index: -2;
             background: radial-gradient(
                 ellipse 600px 400px at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
-                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0.025) 0%,
                 transparent 70%
             );
-            transition: background 0.3s ease;
+            contain: strict;
         }
 
         /* Ambient Orbs - Floating 3D Elements */
@@ -665,8 +646,9 @@
             pointer-events: none;
             z-index: -3;
             filter: blur(60px);
-            opacity: 0.15;
-            animation: ambientDrift 20s ease-in-out infinite;
+            opacity: 0.12;
+            animation: ambientDrift 25s ease-in-out infinite;
+            contain: layout style;
         }
 
         .ambient-orb-1 {
@@ -726,6 +708,7 @@
             transform: perspective(500px) rotateX(60deg);
             transform-origin: center top;
             opacity: 0.5;
+            contain: strict;
         }
 
         /* Volumetric Light Rays */
@@ -741,26 +724,19 @@
             background: conic-gradient(
                 from 180deg at 50% 0%,
                 transparent 0deg,
-                rgba(255,255,255,0.02) 10deg,
+                rgba(255,255,255,0.015) 10deg,
                 transparent 20deg,
                 transparent 40deg,
-                rgba(255,255,255,0.015) 50deg,
+                rgba(255,255,255,0.01) 50deg,
                 transparent 60deg,
-                transparent 80deg,
-                rgba(255,255,255,0.02) 90deg,
-                transparent 100deg,
-                transparent 260deg,
-                rgba(255,255,255,0.015) 270deg,
-                transparent 280deg,
                 transparent 300deg,
-                rgba(255,255,255,0.02) 310deg,
+                rgba(255,255,255,0.015) 310deg,
                 transparent 320deg,
-                transparent 340deg,
-                rgba(255,255,255,0.015) 350deg,
                 transparent 360deg
             );
-            opacity: 0.8;
-            animation: subtleZoom 30s ease-in-out infinite;
+            opacity: 0.7;
+            animation: subtleZoom 40s ease-in-out infinite;
+            contain: strict;
         }
 
         /* Film Grain Overlay - Enhanced */
@@ -772,12 +748,11 @@
             height: 200%;
             pointer-events: none;
             z-index: 999;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
-            opacity: 0.06;
-            mix-blend-mode: soft-light;
-            animation: filmGrain 0.5s steps(10) infinite;
-            mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 100%);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: overlay;
+            animation: filmGrain 1s steps(3) infinite;
+            contain: strict;
         }
 
         /* Light Leak Effect */
@@ -792,15 +767,16 @@
             background: linear-gradient(
                 120deg,
                 transparent 0%,
-                rgba(255, 180, 100, 0.12) 25%,
-                rgba(255, 120, 60, 0.08) 45%,
+                rgba(255, 180, 100, 0.1) 25%,
+                rgba(255, 120, 60, 0.06) 45%,
                 transparent 65%
             );
             opacity: 0;
             mix-blend-mode: screen;
-            animation: lightLeak 12s ease-in-out infinite;
+            animation: lightLeak 15s ease-in-out infinite;
             animation-delay: 3s;
             filter: blur(30px);
+            contain: strict;
         }
 
         /* Anamorphic Lens Flare */
@@ -822,10 +798,8 @@
             );
             filter: blur(2px);
             opacity: 0;
-            box-shadow: 
-                0 0 20px rgba(100, 200, 255, 0.5),
-                0 0 40px rgba(100, 200, 255, 0.3),
-                0 0 60px rgba(100, 200, 255, 0.1);
+            box-shadow: 0 0 30px rgba(100, 200, 255, 0.4);
+            contain: strict;
         }
 
         .lens-flare.active {
@@ -843,15 +817,21 @@
             z-index: 996;
             background: linear-gradient(to bottom, 
                 transparent,
-                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.02),
                 transparent
             );
-            animation: horizontalScan 8s linear infinite;
+            animation: horizontalScan 12s linear infinite;
+            contain: strict;
         }
 
-        /* Projector Flicker Effect on Body */
         body {
-            animation: projectorFlicker 4s infinite;
+            background-color: #050505;
+            color: var(--text-main);
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
         }
 
         /* Depth Layers for Parallax */
@@ -863,6 +843,7 @@
             height: 100%;
             pointer-events: none;
             z-index: -4;
+            contain: strict;
         }
 
         .depth-layer-1 {
@@ -1021,7 +1002,6 @@
             background: #050505;
             background-image: 
                 radial-gradient(circle at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
-            will-change: transform;
         }
 
         /* Cinematic Vignette - Enhanced */
@@ -1036,19 +1016,8 @@
             box-shadow: 
                 inset 0 0 150px rgba(0, 0, 0, 0.8),
                 inset 0 0 300px rgba(0, 0, 0, 0.4);
-            transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: cinematicPulse 8s ease-in-out infinite;
-        }
-
-        .vignette::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%);
-            pointer-events: none;
+            transition: box-shadow 0.5s ease;
+            contain: strict;
         }
 
         /* Cinematic Letterbox Bars */
@@ -1083,7 +1052,7 @@
             pointer-events: none;
             z-index: -3;
             overflow: hidden;
-            perspective: 1000px;
+            contain: strict;
         }
 
         .particle {
@@ -1093,22 +1062,23 @@
             background: rgba(255, 150, 80, 0.7);
             border-radius: 50%;
             animation: float-particle linear infinite;
-            box-shadow: 0 0 6px rgba(255, 100, 50, 0.5), 0 0 12px rgba(255, 80, 30, 0.3);
+            box-shadow: 0 0 6px rgba(255, 100, 50, 0.4);
+            contain: layout style;
         }
 
         .particle.golden {
             background: rgba(255, 130, 60, 0.8);
-            box-shadow: 0 0 10px rgba(255, 100, 30, 0.6), 0 0 20px rgba(255, 60, 20, 0.4);
+            box-shadow: 0 0 8px rgba(255, 100, 30, 0.5);
         }
 
         .particle.ember {
             background: rgba(255, 90, 40, 0.85);
-            box-shadow: 0 0 8px rgba(255, 70, 30, 0.7), 0 0 16px rgba(255, 50, 20, 0.5);
+            box-shadow: 0 0 6px rgba(255, 70, 30, 0.5);
         }
 
         .particle.bright {
             background: rgba(255, 210, 120, 0.95);
-            box-shadow: 0 0 14px rgba(255, 190, 100, 0.7), 0 0 28px rgba(255, 160, 70, 0.5);
+            box-shadow: 0 0 10px rgba(255, 190, 100, 0.5);
         }
 
         .particle.large {
@@ -1152,18 +1122,7 @@
             --parallax-speed: 0.5;
             --cursor-x: 0px;
             --cursor-y: 0px;
-            will-change: transform, margin;
             transition: margin 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        body {
-            background-color: #050505;
-            color: var(--text-main);
-            font-family: 'Cinzel', serif;
-            margin: 0;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
         }
 
         body::before {
@@ -1193,7 +1152,7 @@
             z-index: 10;
             pointer-events: none;
             transform-style: preserve-3d;
-            will-change: transform, opacity, filter;
+            contain: layout style;
         }
 
         .hero-title {
@@ -1312,9 +1271,9 @@
             background: transparent;
             opacity: 0; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            will-change: transform, opacity, filter;
             transition: box-shadow 0.5s ease;
             pointer-events: auto;
+            contain: layout style;
         }
 
         /* Chromatic aberration on reveal */
@@ -1357,13 +1316,13 @@
         }
 
         section.depth-blur {
-            filter: blur(2px) brightness(0.9);
-            transition: filter 0.8s ease;
+            opacity: 0.85;
+            transition: opacity 0.8s ease;
         }
 
         section.in-focus {
-            filter: none;
-            transition: filter 0.3s ease, box-shadow 0.5s ease;
+            opacity: 1;
+            transition: opacity 0.3s ease, box-shadow 0.5s ease;
         }
 
         /* Staggered List Items - Cinematic Cascade */
@@ -1550,10 +1509,8 @@
             
             box-shadow: 
                 0 20px 40px rgba(0,0,0,0.7),
-                0 8px 20px rgba(0,0,0,0.5),
-                inset 0 0 40px rgba(255,255,255,0.05);
+                0 8px 20px rgba(0,0,0,0.5);
             z-index: 2;
-            filter: brightness(1.2) contrast(1.08) saturate(1.1);
             animation: linkHoverPulse 2s ease-in-out infinite;
         }
 
@@ -1565,7 +1522,7 @@
             left: -25px;
             right: -20px;
             bottom: -20px;
-            background: radial-gradient(ellipse at left center, rgba(255, 100, 50, 0.2) 0%, rgba(255, 60, 20, 0.05) 30%, transparent 70%);
+            background: radial-gradient(ellipse at left center, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 30%, transparent 70%);
             opacity: 0;
             z-index: -1;
             pointer-events: none;
@@ -1706,35 +1663,28 @@
         /* Removed media query for two columns to keep one link per row */
 
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            padding: 25px 15px;
-            background: linear-gradient(to top, 
-                rgba(0, 0, 0, 0.98) 0%, 
-                rgba(5, 5, 5, 0.85) 50%,
-                rgba(5, 5, 5, 0.4) 80%,
-                transparent 100%
-            );
+            padding: 50px 15px;
+            background: transparent;
             color: var(--text-dim);
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 5px;
             text-align: center;
-            z-index: 100;
+            z-index: 1;
             backdrop-filter: blur(12px);
             border-top: 1px solid rgba(255, 200, 150, 0.1);
             pointer-events: none;
             /* Hidden by default */
             opacity: 0;
-            transform: translateY(100%) scale(0.98);
-            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: none;
+            transition: opacity 1s ease;
         }
 
         footer.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: none;
         }
 
         footer.visible p {
@@ -1906,20 +1856,282 @@
             width: 100%;
         }
 
-        @media (max-width: 600px) {
-            body { font-size: 23px; }
-            h1 { font-size: 3.9rem; }
-            h2 { font-size: 1.56rem; }
-            h3 { font-size: 0.85rem; }
-            header p { font-size: 1.05rem; }
-            a.link .title { font-size: 1.17rem !important; }
-            a.link .desc { font-size: 0.91rem !important; }
-            a.link .year { font-size: 0.85rem !important; }
-            .favicon { width: 21px; height: 21px; }
-            #content-wrapper { padding: 26px 13px; }
-            header { margin-bottom: 39px; }
-            main { gap: 33px; max-width: 100%; }
-            .link { padding: 16px 20px; }
+        /* ========== MOBILE OPTIMIZATIONS ========== */
+        @media (max-width: 768px) {
+            /* Hide only non-essential heavy visual effects on mobile */
+            .depth-layer,
+            .cinema-corner,
+            .frame-counter {
+                display: none !important;
+            }
+            
+            /* Simplified vignette */
+            .vignette {
+                box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.6) !important;
+            }
+            
+            /* Letterbox adjustments */
+            .letterbox-top,
+            .letterbox-bottom {
+                height: 40px !important;
+            }
+            
+            /* Hero section mobile fit */
+            #hero {
+                padding: 0 15px;
+            }
+            
+            .hero-title {
+                font-size: clamp(2rem, 12vw, 3.5rem) !important;
+                letter-spacing: 2px !important;
+                padding: 0 10px;
+            }
+            
+            /* .hero-title::before/after restored */
+            
+            .hero-desc {
+                font-size: clamp(0.6rem, 2.5vw, 0.85rem) !important;
+                padding: 4px 12px;
+                transform: skewX(-10deg);
+                box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+            }
+            
+            .scroll-indicator {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+            }
+            
+            /* Content wrapper mobile */
+            #content-wrapper {
+                padding: 15px 10px;
+                margin-top: 100vh;
+            }
+            
+            /* Main content mobile */
+            main {
+                gap: 20px;
+                max-width: 100%;
+                padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+            }
+            
+            /* Section styling mobile */
+            section {
+                padding: 12px;
+                margin: 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            }
+            
+            /* section::before restored */
+            
+            /* Headers mobile */
+            h2 {
+                font-size: 1rem;
+                letter-spacing: 1px;
+                margin-bottom: 8px;
+            }
+            
+            h3 {
+                font-size: 0.6rem;
+                margin: 8px 0 4px 0;
+            }
+            
+            /* Links mobile - optimized tap targets */
+            ul {
+                gap: 6px;
+            }
+            
+            a.link {
+                padding: 12px 10px;
+                min-height: 44px; /* iOS tap target minimum */
+                border-left-width: 3px;
+                transform: none !important;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+            }
+            
+            a.link:hover,
+            a.link:active {
+                transform: none !important;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+            }
+            
+            a.link::before,
+            a.link::after {
+                display: none !important;
+            }
+            
+            a.link .title {
+                font-size: 0.85rem !important;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+            }
+            
+            a.link .desc {
+                font-size: 0.7rem !important;
+                margin-top: 2px;
+                line-height: 1.3;
+            }
+            
+            a.link .year {
+                font-size: 0.6rem !important;
+            }
+            
+            .favicon {
+                width: 18px;
+                height: 18px;
+                margin-right: 6px;
+            }
+            
+            /* Ribbon effects restored */
+            
+            /* Music section mobile */
+            .albumCover {
+                width: 40px;
+                height: 40px;
+            }
+            
+            #music-artist {
+                font-size: 0.8rem;
+            }
+            
+            #music-track {
+                font-size: 0.65rem;
+            }
+            
+            /* Footer mobile */
+            footer {
+                padding: 20px 10px;
+                padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+                font-size: 0.6rem;
+                letter-spacing: 2px;
+                backdrop-filter: blur(8px);
+            }
+            
+            /* Scrollbar hidden on mobile */
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 380px) {
+            .hero-title {
+                font-size: clamp(1.8rem, 14vw, 2.5rem) !important;
+                letter-spacing: 1px !important;
+            }
+            
+            .hero-desc {
+                font-size: 0.55rem !important;
+                padding: 3px 8px;
+            }
+            
+            #content-wrapper {
+                padding: 10px 8px;
+            }
+            
+            section {
+                padding: 10px;
+            }
+            
+            h2 {
+                font-size: 0.9rem;
+            }
+            
+            a.link {
+                padding: 10px 8px;
+            }
+            
+            a.link .title {
+                font-size: 0.8rem !important;
+            }
+            
+            a.link .desc {
+                font-size: 0.65rem !important;
+            }
+            
+            .favicon {
+                width: 16px;
+                height: 16px;
+            }
+        }
+        
+        /* Landscape mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            #hero {
+                height: auto;
+                min-height: 100vh;
+                padding: 60px 15px;
+            }
+            
+            .hero-title {
+                font-size: clamp(1.5rem, 8vw, 2.5rem) !important;
+            }
+            
+            .letterbox-top,
+            .letterbox-bottom {
+                height: 30px !important;
+            }
+            
+            #content-wrapper {
+                margin-top: 100vh;
+            }
+        }
+        
+        /* Reduce motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .film-grain,
+            .light-leak,
+            .lens-flare,
+            .scan-line,
+            .particles {
+                display: none !important;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            a.link:hover {
+                background: linear-gradient(to bottom, #222, #111) padding-box !important;
+                border-color: transparent !important;
+                transform: none !important;
+            }
+            
+            a.link:active {
+                background: linear-gradient(to bottom, #1a1a1a, #0a0a0a) padding-box !important;
+                border-left-color: #ff6b35 !important;
+            }
+            
+            /* Disable hover effects that don't work well on touch */
+            section:hover::before {
+                animation-play-state: paused !important;
+            }
+        }
+        
+        /* Safe area insets for notched devices */
+        @supports (padding: max(0px)) {
+            #content-wrapper {
+                padding-left: max(10px, env(safe-area-inset-left));
+                padding-right: max(10px, env(safe-area-inset-right));
+            }
+            
+            main {
+                padding-bottom: max(30px, calc(env(safe-area-inset-bottom) + 20px));
+            }
+            
+            footer {
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+            }
         }
 	</style>
 </head>
@@ -2252,7 +2464,19 @@
     </div>
 
     <script>
-        // Last.fm Fetching
+        // Mobile detection and performance optimization
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+            || window.innerWidth <= 768 
+            || ('ontouchstart' in window);
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isLowPowerMode = navigator.connection?.saveData || false;
+        const shouldReduceEffects = prefersReducedMotion || isLowPowerMode;
+        const shouldSimplifyEffects = isMobile;
+        
+        // Last.fm Fetching - deferred to not block initial render
+        requestIdleCallback ? requestIdleCallback(fetchLastFm) : setTimeout(fetchLastFm, 100);
+        
+        function fetchLastFm() {
         fetch("https://ws.audioscrobbler.com/2.0/", {
             method: "POST",
             body: new URLSearchParams({
@@ -2310,70 +2534,75 @@
             console.error("Last.fm error:", err);
             document.querySelector("#music-heavyrotation").innerHTML = '<span class="title">Failed to load music data</span>';
         });
+        } // end fetchLastFm
 
         // ========== RIBBON WRAP SYSTEM ==========
-        // Add ribbon wrap elements to each link
-        document.querySelectorAll('a.link').forEach(link => {
-            // Add the ribbon wrap overlay (shine effect)
-            const ribbonWrap = document.createElement('div');
-            ribbonWrap.className = 'ribbon-wrap';
-            link.appendChild(ribbonWrap);
+        // Add ribbon wrap elements to each link (skip on mobile for performance)
+        if (!shouldReduceEffects) {
+            document.querySelectorAll('a.link').forEach(link => {
+                // Add the ribbon wrap overlay (shine effect)
+                const ribbonWrap = document.createElement('div');
+                ribbonWrap.className = 'ribbon-wrap';
+                link.appendChild(ribbonWrap);
 
-            // Add the ribbon particle wrapper
-            const ribbonParticleWrap = document.createElement('div');
-            ribbonParticleWrap.className = 'ribbon-particle-wrap';
-            
-            // Add the actual ribbon dot particle
-            const ribbonDot = document.createElement('div');
-            ribbonDot.className = 'ribbon-dot';
-            ribbonParticleWrap.appendChild(ribbonDot);
-            
-            // Add a trailing dot for cinematic effect
-            const ribbonDotTrail = document.createElement('div');
-            ribbonDotTrail.className = 'ribbon-dot-trail';
-            ribbonParticleWrap.appendChild(ribbonDotTrail);
-            
-            link.appendChild(ribbonParticleWrap);
+                // Add the ribbon particle wrapper
+                const ribbonParticleWrap = document.createElement('div');
+                ribbonParticleWrap.className = 'ribbon-particle-wrap';
+                
+                // Add the actual ribbon dot particle
+                const ribbonDot = document.createElement('div');
+                ribbonDot.className = 'ribbon-dot';
+                ribbonParticleWrap.appendChild(ribbonDot);
+                
+                // Add a trailing dot for cinematic effect
+                const ribbonDotTrail = document.createElement('div');
+                ribbonDotTrail.className = 'ribbon-dot-trail';
+                ribbonParticleWrap.appendChild(ribbonDotTrail);
+                
+                link.appendChild(ribbonParticleWrap);
 
-            // Add the glow border trace element
-            const ribbonGlow = document.createElement('div');
-            ribbonGlow.className = 'ribbon-glow';
-            link.appendChild(ribbonGlow);
-        });
-
-        // Cursor-driven link lighting + tilt
-        document.querySelectorAll('a.link').forEach(link => {
-            link.addEventListener('mousemove', (e) => {
-                const rect = link.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                link.style.setProperty('--x', `${x}px`);
-                link.style.setProperty('--y', `${y}px`);
-
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-
-                // Tilt
-                const rotateX = ((y - centerY) / centerY) * -12;
-                const rotateY = ((x - centerX) / centerX) * 12;
-                link.style.setProperty('--rotateX', `${rotateX}deg`);
-                link.style.setProperty('--rotateY', `${rotateY}deg`);
-
-                // Shadow (opposite to cursor)
-                const shadowX = ((x - centerX) / centerX) * -4;
-                const shadowY = ((y - centerY) / centerY) * -4;
-                link.style.setProperty('--shadow-x', `${shadowX}px`);
-                link.style.setProperty('--shadow-y', `${shadowY}px`);
+                // Add the glow border trace element
+                const ribbonGlow = document.createElement('div');
+                ribbonGlow.className = 'ribbon-glow';
+                link.appendChild(ribbonGlow);
             });
+        }
 
-            link.addEventListener('mouseleave', () => {
-                link.style.setProperty('--rotateX', '0deg');
-                link.style.setProperty('--rotateY', '0deg');
-                link.style.setProperty('--shadow-x', '1px');
-                link.style.setProperty('--shadow-y', '1px');
+        // Cursor-driven link lighting + tilt (desktop only)
+        if (!shouldReduceEffects) {
+            document.querySelectorAll('a.link').forEach(link => {
+                link.addEventListener('mousemove', (e) => {
+                    const rect = link.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    link.style.setProperty('--x', `${x}px`);
+                    link.style.setProperty('--y', `${y}px`);
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    // Tilt
+                    const rotateX = ((y - centerY) / centerY) * -12;
+                    const rotateY = ((x - centerX) / centerX) * 12;
+                    link.style.setProperty('--rotateX', `${rotateX}deg`);
+                    link.style.setProperty('--rotateY', `${rotateY}deg`);
+
+                    // Shadow (opposite to cursor)
+                    const shadowX = ((x - centerX) / centerX) * -4;
+                    const shadowY = ((y - centerY) / centerY) * -4;
+                    link.style.setProperty('--shadow-x', `${shadowX}px`);
+                    link.style.setProperty('--shadow-y', `${shadowY}px`);
+                });
+
+                link.addEventListener('mouseleave', () => {
+                    link.style.setProperty('--rotateX', '0deg');
+                    link.style.setProperty('--rotateY', '0deg');
+                    link.style.setProperty('--shadow-x', '1px');
+                    link.style.setProperty('--shadow-y', '1px');
+                });
             });
-        });
+        }
         // ========== END RIBBON WRAP SYSTEM ==========
 
         // Inject Favicons
@@ -2487,13 +2716,13 @@
         // Update layout on load and resize
         window.addEventListener('load', updateLayout);
         window.addEventListener('resize', updateLayout);
-        // Also update periodically in case of dynamic content changes (like Last.fm loading)
-        setInterval(updateLayout, 2000);
+        // Update periodically for dynamic content (throttled)
+        setTimeout(() => setInterval(updateLayout, 5000), 2000);
 
         // Smooth Scroll Variables
         let targetScroll = window.pageYOffset;
         let currentScroll = window.pageYOffset;
-        const lerpFactor = 0.08; // Lower = heavier/smoother
+        const lerpFactor = shouldReduceEffects ? 0.2 : 0.08; // Faster on mobile
 
         function lerp(start, end, t) {
             return start * (1 - t) + end * t;
@@ -2502,8 +2731,10 @@
         function animateScroll() {
             targetScroll = window.pageYOffset;
             
-            // Smooth out the scroll value used for animations
-            if (Math.abs(targetScroll - currentScroll) > 0.1) {
+            // Smooth out the scroll value used for animations (simplified on mobile)
+            if (shouldReduceEffects) {
+                currentScroll = targetScroll; // No smoothing on mobile for better perf
+            } else if (Math.abs(targetScroll - currentScroll) > 0.1) {
                 currentScroll = lerp(currentScroll, targetScroll, lerpFactor);
             } else {
                 currentScroll = targetScroll;
@@ -2512,47 +2743,55 @@
             const viewportHeight = window.innerHeight;
             const viewportBottom = currentScroll + viewportHeight;
 
-            // Hero Animation - Title and Description zoom at different rates
+            // Hero Animation - simplified on mobile
             if (hero) {
-                // 0 to 1 progress as we scroll down one viewport height
                 let heroProgress = currentScroll / viewportHeight;
                 heroProgress = Math.max(0, Math.min(1, heroProgress));
                 
-                const heroOpacity = 1 - (heroProgress * 1.5); // Fade out faster
-                const heroBlur = heroProgress * 20;
-                const heroRotate = heroProgress * 45; // Rotate X
+                const heroOpacity = 1 - (heroProgress * 1.5);
+                
+                if (shouldReduceEffects) {
+                    // Simplified hero animation for mobile
+                    hero.style.opacity = Math.max(0, heroOpacity);
+                    hero.style.filter = 'none';
+                    hero.style.transform = 'none';
+                } else {
+                    const heroBlur = heroProgress * 20;
+                    const heroRotate = heroProgress * 45;
 
-                hero.style.opacity = Math.max(0, heroOpacity);
-                hero.style.filter = `blur(${heroBlur}px)`;
-                hero.style.transform = `rotateX(${heroRotate}deg)`;
+                    hero.style.opacity = Math.max(0, heroOpacity);
+                    
+                    if (shouldSimplifyEffects) {
+                        hero.style.filter = 'none';
+                        hero.style.transform = 'none';
+                    } else {
+                        hero.style.filter = `blur(${heroBlur}px)`;
+                        hero.style.transform = `rotateX(${heroRotate}deg)`;
+                    }
                 
-                // Title zooms faster and moves up
-                const heroTitle = hero.querySelector('.hero-title');
-                if (heroTitle) {
-                    const titleScale = 1 + (heroProgress * 0.8); // Faster zoom
-                    const titleY = heroProgress * -50; // Move up
-                    heroTitle.style.transform = `scale(${titleScale}) translateY(${titleY}px)`;
-                }
+                    // Title zooms faster and moves up
+                    const heroTitle = hero.querySelector('.hero-title');
+                    if (heroTitle) {
+                        const titleScale = 1 + (heroProgress * 0.8);
+                        const titleY = heroProgress * -50;
+                        heroTitle.style.transform = `scale(${titleScale}) translateY(${titleY}px)`;
+                    }
                 
-                // Description zooms slower and moves down slightly
-                const heroDesc = hero.querySelector('.hero-desc');
-                if (heroDesc) {
-                    const descScale = 1 + (heroProgress * 0.3); // Slower zoom
-                    const descY = heroProgress * 30; // Move down
-                    const descSkew = -20 + (heroProgress * 10); // Reduce skew as scrolling
-                    heroDesc.style.transform = `scale(${descScale}) translateY(${descY}px) skewX(${descSkew}deg)`;
+                    // Description zooms slower and moves down slightly
+                    const heroDesc = hero.querySelector('.hero-desc');
+                    if (heroDesc) {
+                        const descScale = 1 + (heroProgress * 0.3);
+                        const descY = heroProgress * 30;
+                        const descSkew = -20 + (heroProgress * 10);
+                        heroDesc.style.transform = `scale(${descScale}) translateY(${descY}px) skewX(${descSkew}deg)`;
+                    }
                 }
             }
 
             // Get section index for alternating effects
             let sectionIndex = 0;
             sectionData.forEach((data, section) => {
-                // Distance from the bottom of the viewport to the top of the section
                 const distFromBottom = viewportBottom - data.top;
-                
-                // Map range: 
-                // Start: data.top = viewportBottom (enters view) -> progress 0
-                // End: data.top = viewportBottom - viewportHeight * 0.25 -> progress 1
                 
                 const start = 0;
                 const end = viewportHeight * 0.25;
@@ -2560,38 +2799,45 @@
                 let progress = (distFromBottom - start) / (end - start);
                 progress = Math.max(0, Math.min(1, progress));
                 
-                // Easing - smoother cubic
-                const ease = progress < 0.5 
-                    ? 4 * progress * progress * progress 
-                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                // Simplified easing on mobile
+                const ease = shouldReduceEffects 
+                    ? Math.min(1, progress * 1.5)
+                    : progress < 0.5 
+                        ? 4 * progress * progress * progress 
+                        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-                // Alternating slide from left/right
-                const slideX = sectionIndex % 2 === 0 ? -60 : 60;
-                const translateX = (1 - ease) * slideX;
-                const translateY = (1 - ease) * 40;
-                const scale = 0.95 + (ease * 0.05);
-                
-                // Keep transforms strictly 2D for reliable hit-testing on links while scrolling.
-                section.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
-                section.style.opacity = ease;
-
-                // Drive border highlight by scroll (ties into section::before conic gradient)
-                section.style.setProperty('--angle', `${ease * 360}deg`);
-
-                // Subtle “spotlight” glow during reveal
-                const glow = Math.sin(ease * Math.PI);
-                section.style.boxShadow = `0 20px 60px rgba(0,0,0,0.6), 0 0 ${12 * glow}px rgba(255, 0, 60, ${0.15 * glow})`;
-
-                // Add revealed class for CSS animations (earlier so links appear sooner)
-                if (ease > 0.15) {
-                    section.classList.add('revealed');
-                } else {
-                    section.classList.remove('revealed');
-                }
-
-                // Reset transform when fully visible
-                if (ease >= 0.99) {
+                if (shouldReduceEffects) {
+                    // Simplified section animation for mobile
                     section.style.transform = 'none';
+                    section.style.opacity = ease;
+                } else {
+                    // Full animation for desktop
+                    const slideX = sectionIndex % 2 === 0 ? -60 : 60;
+                    const translateX = (1 - ease) * slideX;
+                    const translateY = (1 - ease) * 40;
+                    const scale = 0.95 + (ease * 0.05);
+                
+                    section.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`;
+                    section.style.opacity = ease;
+
+                    // Drive border highlight by scroll (ties into section::before conic gradient)
+                    section.style.setProperty('--angle', `${ease * 360}deg`);
+
+                    // Subtle “spotlight” glow during reveal
+                    const glow = Math.sin(ease * Math.PI);
+                    section.style.boxShadow = `0 20px 60px rgba(0,0,0,0.6), 0 0 ${12 * glow}px rgba(255, 0, 60, ${0.15 * glow})`;
+
+                    // Add revealed class for CSS animations (earlier so links appear sooner)
+                    if (ease > 0.15) {
+                        section.classList.add('revealed');
+                    } else {
+                        section.classList.remove('revealed');
+                    }
+
+                    // Reset transform when fully visible
+                    if (ease >= 0.99) {
+                        section.style.transform = 'none';
+                    }
                 }
                 
                 sectionIndex++;
@@ -2625,154 +2871,172 @@
         animateScroll();
 
         // ========== SECTION PARTICLE BURST SYSTEM ==========
-        
-        // Track section reveal states
-        const sectionRevealStates = new Map();
-        sections.forEach(section => {
-            sectionRevealStates.set(section, { revealed: false, hidden: true });
-            
-            // Add particle container to each section
-            const particleContainer = document.createElement('div');
-            particleContainer.className = 'section-particles';
-            section.appendChild(particleContainer);
-        });
-
-        // Create burst particles
-        function createBurstParticles(section, isRevealing) {
-            const container = section.querySelector('.section-particles');
-            if (!container) return;
-
-            const rect = section.getBoundingClientRect();
-            const particleCount = 40 + Math.floor(Math.random() * 30); // Doubled density
-            const types = ['spark', 'ember', 'dust', 'spark', 'dust']; // More sparks and dust
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                const type = types[Math.floor(Math.random() * types.length)];
-                particle.className = `burst-particle ${type}`;
-
-                // Random position along the edges
-                let startX, startY;
-                const edge = Math.floor(Math.random() * 4);
-                
-                if (isRevealing) {
-                    // Particles burst inward from edges when revealing
-                    switch(edge) {
-                        case 0: startX = Math.random() * 100; startY = 0; break; // top
-                        case 1: startX = 100; startY = Math.random() * 100; break; // right
-                        case 2: startX = Math.random() * 100; startY = 100; break; // bottom
-                        case 3: startX = 0; startY = Math.random() * 100; break; // left
-                    }
-                } else {
-                    // Particles burst outward from center when hiding
-                    startX = 40 + Math.random() * 20;
-                    startY = 40 + Math.random() * 20;
-                }
-
-                particle.style.left = `${startX}%`;
-                particle.style.top = `${startY}%`;
-
-                // Random trajectory - doubled distance
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 100 + Math.random() * 200; // Doubled distance
-                const tx = Math.cos(angle) * distance * (isRevealing ? -0.5 : 1);
-                const ty = Math.sin(angle) * distance * (isRevealing ? -0.5 : 1);
-
-                particle.style.setProperty('--tx', `${tx}px`);
-                particle.style.setProperty('--ty', `${ty}px`);
-
-                // Animation - doubled duration
-                const duration = 0.8 + Math.random() * 1.2; // Doubled from 0.4-1.0 to 0.8-2.0
-                const delay = Math.random() * 0.4; // Doubled delay spread
-                
-                particle.style.animation = `${isRevealing ? 'particleBurstIn' : 'particleBurstOut'} ${duration}s ease-out ${delay}s forwards`;
-
-                container.appendChild(particle);
-
-                // Clean up after animation
-                setTimeout(() => {
-                    particle.remove();
-                }, (duration + delay) * 1000 + 100);
-            }
-        }
-
-        // Create edge glow particles (continuous during reveal)
-        function createEdgeGlowParticles(section) {
-            const container = section.querySelector('.section-particles');
-            if (!container) return;
-
-            for (let i = 0; i < 10; i++) { // Doubled from 5 to 10
-                const particle = document.createElement('div');
-                const types = ['spark', 'dust', 'spark'];
-                particle.className = `burst-particle ${types[Math.floor(Math.random() * types.length)]}`;
-                
-                // Random edge position
-                const edge = Math.floor(Math.random() * 4);
-                let x, y;
-                switch(edge) {
-                    case 0: x = Math.random() * 100; y = 0; break;
-                    case 1: x = 100; y = Math.random() * 100; break;
-                    case 2: x = Math.random() * 100; y = 100; break;
-                    case 3: x = 0; y = Math.random() * 100; break;
-                }
-                
-                particle.style.left = `${x}%`;
-                particle.style.top = `${y}%`;
-                particle.style.animation = `particleFadeFloat 2s ease-out forwards`; // Doubled from 1s to 2s
-                
-                container.appendChild(particle);
-                
-                setTimeout(() => particle.remove(), 2000); // Doubled cleanup time
-            }
-        }
-
-        // Observer for section reveal/hide transitions
-        const particleObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const section = entry.target;
-                const state = sectionRevealStates.get(section);
-                
-                if (entry.isIntersecting && entry.intersectionRatio > 0.15) {
-                    if (!state.revealed) {
-                        state.revealed = true;
-                        state.hidden = false;
-                        createBurstParticles(section, true);
-                    }
-                } else if (!entry.isIntersecting || entry.intersectionRatio < 0.05) {
-                    if (state.revealed && !state.hidden) {
-                        state.hidden = true;
-                        state.revealed = false;
-                        createBurstParticles(section, false);
-                    }
-                }
-            });
-        }, { 
-            threshold: [0, 0.05, 0.15, 0.3, 0.5],
-            rootMargin: '-10% 0px -10% 0px'
-        });
-
-        sections.forEach(section => particleObserver.observe(section));
-
-        // Continuous subtle particles on revealed sections
-        setInterval(() => {
+        // Skip on mobile for performance
+        if (!shouldReduceEffects) {
+            // Track section reveal states
+            const sectionRevealStates = new Map();
             sections.forEach(section => {
-                if (section.classList.contains('revealed') && Math.random() > 0.7) {
-                    createEdgeGlowParticles(section);
+                sectionRevealStates.set(section, { revealed: false, hidden: true });
+                
+                // Add particle container to each section
+                const particleContainer = document.createElement('div');
+                particleContainer.className = 'section-particles';
+                section.appendChild(particleContainer);
+            });
+
+            // Create burst particles
+            function createBurstParticles(section, isRevealing) {
+                const container = section.querySelector('.section-particles');
+                if (!container) return;
+
+                const rect = section.getBoundingClientRect();
+                const particleCount = 20 + Math.floor(Math.random() * 15); // Reduced particle count
+                const types = ['spark', 'ember', 'dust'];
+
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    particle.className = `burst-particle ${type}`;
+
+                    // Random position along the edges
+                    let startX, startY;
+                    const edge = Math.floor(Math.random() * 4);
+                    
+                    if (isRevealing) {
+                        // Particles burst inward from edges when revealing
+                        switch(edge) {
+                            case 0: startX = Math.random() * 100; startY = 0; break; // top
+                            case 1: startX = 100; startY = Math.random() * 100; break; // right
+                            case 2: startX = Math.random() * 100; startY = 100; break; // bottom
+                            case 3: startX = 0; startY = Math.random() * 100; break; // left
+                        }
+                    } else {
+                        // Particles burst outward from center when hiding
+                        startX = 40 + Math.random() * 20;
+                        startY = 40 + Math.random() * 20;
+                    }
+
+                    particle.style.left = `${startX}%`;
+                    particle.style.top = `${startY}%`;
+
+                    // Random trajectory - doubled distance
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 100 + Math.random() * 200; // Doubled distance
+                    const tx = Math.cos(angle) * distance * (isRevealing ? -0.5 : 1);
+                    const ty = Math.sin(angle) * distance * (isRevealing ? -0.5 : 1);
+
+                    particle.style.setProperty('--tx', `${tx}px`);
+                    particle.style.setProperty('--ty', `${ty}px`);
+
+                    // Animation - doubled duration
+                    const duration = 0.8 + Math.random() * 1.2; // Doubled from 0.4-1.0 to 0.8-2.0
+                    const delay = Math.random() * 0.4; // Doubled delay spread
+                    
+                    particle.style.animation = `${isRevealing ? 'particleBurstIn' : 'particleBurstOut'} ${duration}s ease-out ${delay}s forwards`;
+
+                    container.appendChild(particle);
+
+                    // Clean up after animation
+                    setTimeout(() => {
+                        particle.remove();
+                    }, (duration + delay) * 1000 + 100);
+                }
+            }
+
+            // Create edge glow particles (continuous during reveal)
+            function createEdgeGlowParticles(section) {
+                const container = section.querySelector('.section-particles');
+                if (!container) return;
+
+                for (let i = 0; i < 5; i++) { // Reduced from 10
+                    const particle = document.createElement('div');
+                    const types = ['spark', 'dust', 'spark'];
+                    particle.className = `burst-particle ${types[Math.floor(Math.random() * types.length)]}`;
+                    
+                    // Random edge position
+                    const edge = Math.floor(Math.random() * 4);
+                    let x, y;
+                    switch(edge) {
+                        case 0: x = Math.random() * 100; y = 0; break;
+                        case 1: x = 100; y = Math.random() * 100; break;
+                        case 2: x = Math.random() * 100; y = 100; break;
+                        case 3: x = 0; y = Math.random() * 100; break;
+                    }
+                    
+                    particle.style.left = `${x}%`;
+                    particle.style.top = `${y}%`;
+                    particle.style.animation = `particleFadeFloat 2s ease-out forwards`; // Doubled from 1s to 2s
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 2000); // Doubled cleanup time
+                }
+            }
+
+            // Observer for section reveal/hide transitions
+            const particleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const section = entry.target;
+                    const state = sectionRevealStates.get(section);
+                    
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.15) {
+                        if (!state.revealed) {
+                            state.revealed = true;
+                            state.hidden = false;
+                            createBurstParticles(section, true);
+                        }
+                    } else if (!entry.isIntersecting || entry.intersectionRatio < 0.05) {
+                        if (state.revealed && !state.hidden) {
+                            state.hidden = true;
+                            state.revealed = false;
+                            createBurstParticles(section, false);
+                        }
+                    }
+                });
+            }, { 
+                threshold: [0, 0.05, 0.15, 0.3, 0.5],
+                rootMargin: '-10% 0px -10% 0px'
+            });
+
+            sections.forEach(section => particleObserver.observe(section));
+
+            // Continuous subtle particles on revealed sections - throttled
+            let particleIntervalId;
+            function startParticleInterval() {
+                if (particleIntervalId) return;
+                particleIntervalId = setInterval(() => {
+                    // Only run if page is visible
+                    if (document.hidden) return;
+                    sections.forEach(section => {
+                        if (section.classList.contains('revealed') && Math.random() > 0.85) {
+                            createEdgeGlowParticles(section);
+                        }
+                    });
+                }, 1000);
+            }
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && particleIntervalId) {
+                    clearInterval(particleIntervalId);
+                    particleIntervalId = null;
+                } else {
+                    startParticleInterval();
                 }
             });
-        }, 500);
+            startParticleInterval();
+        }
 
         // ========== END PARTICLE BURST SYSTEM ==========
 
-        // Generate Enhanced CSS Particles (Fire Embers) with spiral motion
+        // Generate Enhanced CSS Particles (Fire Embers) with spiral motion - desktop only
         const particlesContainer = document.getElementById('particles');
         const allParticles = [];
         
-        if (particlesContainer) {
+        if (particlesContainer && !shouldReduceEffects) {
             const particleTypes = ['', 'golden', 'ember', 'bright'];
             const particleSizes = ['', 'large'];
+            const particleCount = shouldSimplifyEffects ? 15 : 40;
             
-            for (let i = 0; i < 90; i++) {
+            for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 const type = particleTypes[Math.floor(Math.random() * particleTypes.length)];
                 const size = Math.random() > 0.7 ? 'large' : '';
@@ -2817,7 +3081,7 @@
             }
         }
 
-        // Parallax scroll effect for particles
+        // Parallax scroll effect for particles - desktop only
         let particleScrollY = 0;
         let cursorX = window.innerWidth / 2;
         let cursorY = window.innerHeight / 2;
@@ -2825,6 +3089,8 @@
         let targetCursorY = cursorY;
         
         function updateParticleParallax() {
+            if (shouldReduceEffects) return;
+            
             const scrollY = window.pageYOffset;
             const scrollDelta = scrollY * 0.1; // Reduce scroll influence
             
@@ -2874,41 +3140,53 @@
             particleScrollY = scrollY;
         }
         
-        // Track cursor movement
-        document.addEventListener('mousemove', (e) => {
-            targetCursorX = e.clientX;
-            targetCursorY = e.clientY;
-        }, { passive: true });
-        
-        // Continuous animation loop for smooth cursor tracking
-        function animateParticles() {
-            updateParticleParallax();
-            requestAnimationFrame(animateParticles);
+        // Track cursor movement - desktop only
+        if (!shouldReduceEffects) {
+            document.addEventListener('mousemove', (e) => {
+                targetCursorX = e.clientX;
+                targetCursorY = e.clientY;
+            }, { passive: true });
         }
         
-        window.addEventListener('scroll', updateParticleParallax, { passive: true });
-        animateParticles(); // Start animation loop
+        // Particle animation loop for smooth cursor tracking - desktop only
+        function animateParticles() {
+            if (!shouldReduceEffects) {
+                updateParticleParallax();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        if (!shouldReduceEffects) {
+            window.addEventListener('scroll', updateParticleParallax, { passive: true });
+        }
+        animateParticles();
 
-        // Frame Counter Animation
+        // Frame Counter Animation - throttled, desktop only
         const frameCounter = document.getElementById('frame-counter');
         let frameCount = 0;
+        let lastFrameUpdate = 0;
         
-        function updateFrameCounter() {
-            frameCount++;
-            if (frameCounter) {
-                frameCounter.textContent = `FRAME: ${String(frameCount).padStart(6, '0')}`;
+        if (!shouldReduceEffects) {
+            function updateFrameCounter(timestamp) {
+                // Only update display every 100ms for performance
+                if (timestamp - lastFrameUpdate > 100) {
+                    frameCount += 6; // Approximate 6 frames per 100ms at 60fps
+                    if (frameCounter) {
+                        frameCounter.textContent = `FRAME: ${String(frameCount).padStart(6, '0')}`;
+                    }
+                    lastFrameUpdate = timestamp;
+                }
+                requestAnimationFrame(updateFrameCounter);
             }
             requestAnimationFrame(updateFrameCounter);
         }
-        updateFrameCounter();
 
-        // Lens Flare on Scroll Milestones
+        // Lens Flare on Scroll Milestones - desktop only
         const lensFlare = document.getElementById('lens-flare');
         let lastFlareScroll = 0;
         const flareThreshold = window.innerHeight * 1.5;
 
         function triggerLensFlare() {
-            if (lensFlare) {
+            if (lensFlare && !shouldReduceEffects) {
                 lensFlare.classList.remove('active');
                 void lensFlare.offsetWidth; // Force reflow
                 lensFlare.classList.add('active');
@@ -2919,10 +3197,11 @@
             }
         }
 
-        // Depth Layer Parallax
+        // Depth Layer Parallax - desktop only
         const depthLayers = document.querySelectorAll('.depth-layer');
         
         function updateDepthLayers(scrollY) {
+            if (shouldReduceEffects) return;
             depthLayers.forEach((layer, index) => {
                 const speed = (index + 1) * 0.1;
                 const y = scrollY * speed;
@@ -3001,6 +3280,17 @@
             
             // Update section focus
             updateSectionFocus();
+            
+            // Background parallax (consolidated from separate listener)
+            const gridFloor = document.querySelector('.grid-floor');
+            if (gridFloor) {
+                gridFloor.style.bottom = `${-currentScrollY * 0.3}px`;
+            }
+            
+            const lightRays = document.querySelector('.light-rays');
+            if (lightRays) {
+                lightRays.style.top = `${-50 + currentScrollY * 0.015}%`;
+            }
         }
 
         // Hook into scroll animation loop
@@ -3023,82 +3313,69 @@
 
         sections.forEach(section => revealObserver.observe(section));
 
-        // Mouse-based Light Leak Enhancement
-        document.addEventListener('mousemove', (e) => {
-            const lightLeak = document.querySelector('.light-leak');
-            if (lightLeak) {
+        // Mouse-based Light Leak Enhancement - throttled, desktop only
+        let lastLightUpdate = 0;
+        const lightLeak = document.querySelector('.light-leak');
+        const spotlight = document.getElementById('spotlight');
+        const ambientOrbs = document.querySelectorAll('.ambient-orb');
+        const gridFloorEl = document.querySelector('.grid-floor');
+        const lightRaysEl = document.querySelector('.light-rays');
+        
+        if (!shouldReduceEffects) {
+            document.addEventListener('mousemove', (e) => {
+                const now = Date.now();
+                if (now - lastLightUpdate < 32) return; // ~30fps throttle
+                lastLightUpdate = now;
+                
                 const x = e.clientX / window.innerWidth;
                 const y = e.clientY / window.innerHeight;
-                lightLeak.style.background = `linear-gradient(
-                    ${120 + x * 40}deg,
-                    transparent 0%,
-                    rgba(255, ${150 + y * 50}, ${80 + x * 40}, 0.1) ${20 + x * 20}%,
-                    rgba(255, ${80 + y * 40}, ${40 + x * 20}, 0.08) 40%,
-                    transparent 60%
-                )`;
-            }
+                
+                if (lightLeak) {
+                    lightLeak.style.background = `linear-gradient(
+                        ${120 + x * 40}deg,
+                        transparent 0%,
+                        rgba(255, ${150 + y * 50}, ${80 + x * 40}, 0.1) ${20 + x * 20}%,
+                        rgba(255, ${80 + y * 40}, ${40 + x * 20}, 0.08) 40%,
+                        transparent 60%
+                    )`;
+                }
 
-            // Update spotlight position
-            const spotlight = document.getElementById('spotlight');
-            if (spotlight) {
-                spotlight.style.setProperty('--spotlight-x', `${e.clientX}px`);
-                spotlight.style.setProperty('--spotlight-y', `${e.clientY}px`);
-            }
+                // Update spotlight position
+                if (spotlight) {
+                    spotlight.style.setProperty('--spotlight-x', `${e.clientX}px`);
+                    spotlight.style.setProperty('--spotlight-y', `${e.clientY}px`);
+                }
 
-            // Update ambient orbs based on mouse
-            const orbs = document.querySelectorAll('.ambient-orb');
-            orbs.forEach((orb, index) => {
-                const factor = (index + 1) * 0.02;
-                const offsetX = (e.clientX - window.innerWidth / 2) * factor;
-                const offsetY = (e.clientY - window.innerHeight / 2) * factor;
-                orb.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            });
+                // Update ambient orbs based on mouse
+                ambientOrbs.forEach((orb, index) => {
+                    const factor = (index + 1) * 0.02;
+                    const offsetX = (e.clientX - window.innerWidth / 2) * factor;
+                    const offsetY = (e.clientY - window.innerHeight / 2) * factor;
+                    orb.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                });
 
-            // Update grid floor perspective based on mouse
-            const gridFloor = document.querySelector('.grid-floor');
-            if (gridFloor) {
-                const rotateY = ((e.clientX / window.innerWidth) - 0.5) * 10;
-                gridFloor.style.transform = `perspective(500px) rotateX(60deg) rotateY(${rotateY}deg)`;
-            }
+                // Update grid floor perspective based on mouse
+                if (gridFloorEl) {
+                    const rotateY = (x - 0.5) * 10;
+                    gridFloorEl.style.transform = `perspective(500px) rotateX(60deg) rotateY(${rotateY}deg)`;
+                }
 
-            // Update light rays based on mouse
-            const lightRays = document.querySelector('.light-rays');
-            if (lightRays) {
-                const offsetX = ((e.clientX / window.innerWidth) - 0.5) * 20;
-                lightRays.style.transform = `translateX(calc(-50% + ${offsetX}px))`;
-            }
-        });
+                // Update light rays based on mouse
+                if (lightRaysEl) {
+                    const offsetX = (x - 0.5) * 20;
+                    lightRaysEl.style.transform = `translateX(calc(-50% + ${offsetX}px))`;
+                }
+            }, { passive: true });
+        }
 
         // (link tilt handled above)
 
-        // Parallax effect for background elements on scroll
-        window.addEventListener('scroll', () => {
-            const scrollY = window.pageYOffset;
-            
-            // Move grid floor
-            const gridFloor = document.querySelector('.grid-floor');
-            if (gridFloor) {
-                const translateY = scrollY * 0.3;
-                gridFloor.style.bottom = `${-translateY}px`;
-            }
+        // Parallax effect for background elements integrated into updateScrollEffects
 
-            // Move light rays
-            const lightRays = document.querySelector('.light-rays');
-            if (lightRays) {
-                const translateY = scrollY * 0.15;
-                lightRays.style.top = `${-50 + translateY * 0.1}%`;
-            }
-
-            // Move ambient orbs with parallax
-            const orbs = document.querySelectorAll('.ambient-orb');
-            orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.05;
-                orb.style.marginTop = `${scrollY * speed}px`;
-            });
-        }, { passive: true });
-
-        // Initial lens flare on page load
-        setTimeout(triggerLensFlare, 1000);
+        // Initial lens flare on page load - desktop only
+        if (!shouldReduceEffects) {
+            setTimeout(triggerLensFlare, 1000);
+        }
 
         // ========== FOOTER REVEAL SYSTEM ==========
         const footer = document.querySelector('footer');
@@ -3147,7 +3424,7 @@
         const heroTitle = document.querySelector('.hero-title');
         
         function triggerIntenseGlitch() {
-            if (!heroTitle) return;
+            if (!heroTitle || shouldReduceEffects) return;
             
             heroTitle.style.animation = 'none';
             heroTitle.offsetHeight; // Force reflow
@@ -3159,37 +3436,50 @@
             }, 500);
         }
 
-        // Random intense glitch every 8-15 seconds
-        setInterval(() => {
-            if (Math.random() > 0.5) {
-                triggerIntenseGlitch();
-            }
-        }, 8000 + Math.random() * 7000);
+        // Random intense glitch every 10-18 seconds - visibility aware, desktop only
+        if (!shouldReduceEffects) {
+            setInterval(() => {
+                if (document.hidden) return;
+                if (Math.random() > 0.5) {
+                    triggerIntenseGlitch();
+                }
+            }, 10000 + Math.random() * 8000);
+        }
 
-        // Glitch on mouse near title
-        document.addEventListener('mousemove', (e) => {
-            if (!heroTitle) return;
-            const rect = heroTitle.getBoundingClientRect();
-            const distance = Math.sqrt(
-                Math.pow(e.clientX - (rect.left + rect.width / 2), 2) +
-                Math.pow(e.clientY - (rect.top + rect.height / 2), 2)
-            );
-            
-            if (distance < 200 && Math.random() > 0.95) {
-                triggerIntenseGlitch();
-            }
-        });
+        // Glitch on mouse near title - throttled, desktop only
+        let lastGlitchCheck = 0;
+        if (!shouldReduceEffects) {
+            document.addEventListener('mousemove', (e) => {
+                const now = Date.now();
+                if (now - lastGlitchCheck < 200) return; // Throttle to 5 checks/second
+                lastGlitchCheck = now;
+                
+                if (!heroTitle) return;
+                const rect = heroTitle.getBoundingClientRect();
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - (rect.left + rect.width / 2), 2) +
+                    Math.pow(e.clientY - (rect.top + rect.height / 2), 2)
+                );
+                
+                if (distance < 200 && Math.random() > 0.97) {
+                    triggerIntenseGlitch();
+                }
+            }, { passive: true });
+        }
         // ========== END ENHANCED TITLE GLITCH ==========
 
-        // Periodic subtle effects
-        setInterval(() => {
-            // Random flicker for cinematic effect
-            const grain = document.querySelector('.film-grain');
-            if (grain && Math.random() > 0.95) {
-                grain.style.opacity = '0.15';
-                setTimeout(() => { grain.style.opacity = '0.08'; }, 50);
-            }
-        }, 100);
+        // Periodic subtle effects - throttled and visibility aware, desktop only
+        if (!shouldReduceEffects) {
+            let flickerIntervalId = setInterval(() => {
+                if (document.hidden) return;
+                // Random flicker for cinematic effect
+                const grain = document.querySelector('.film-grain');
+                if (grain && Math.random() > 0.97) {
+                    grain.style.opacity = '0.1';
+                    setTimeout(() => { grain.style.opacity = '0.04'; }, 50);
+                }
+            }, 200);
+        }
     </script>
 </body>
 
