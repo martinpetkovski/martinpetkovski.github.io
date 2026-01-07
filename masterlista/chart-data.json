@@ -1,0 +1,173 @@
+{
+  "generatedAt": "2026-01-07T20:00:00.000Z",
+  "totalReleases": 15,
+  "totalArtists": 12,
+  "_note": "Dummy data - will be replaced by GitHub Action when Spotify rate limit resets",
+  "releases": [
+    {
+      "bandName": "Bernays Propaganda",
+      "releaseId": "4TXwvfHJwjcqMEOOtTGDPH",
+      "releaseTitle": "Нов Сингл 2026",
+      "releaseType": "single",
+      "releaseDate": "2026-01-05",
+      "releaseUrl": "https://open.spotify.com/artist/4TXwvfHJwjcqMEOOtTGDPH",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb5f93780d1e9e9a9a68d5b5e8",
+      "followers": 15000,
+      "popularity": 45
+    },
+    {
+      "bandName": "Superhiks",
+      "releaseId": "4E4xU2lJEifXBJBGJKvB8r",
+      "releaseTitle": "Зимска Песна",
+      "releaseType": "single",
+      "releaseDate": "2026-01-03",
+      "releaseUrl": "https://open.spotify.com/artist/4E4xU2lJEifXBJBGJKvB8r",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb7a4c8e9d2b3f4a5c6d7e8f9a",
+      "followers": 12000,
+      "popularity": 42
+    },
+    {
+      "bandName": "Foltin",
+      "releaseId": "6tbjWDEIzxZsxU2hCvuvJU",
+      "releaseTitle": "Јануарски Ден",
+      "releaseType": "single",
+      "releaseDate": "2026-01-01",
+      "releaseUrl": "https://open.spotify.com/artist/6tbjWDEIzxZsxU2hCvuvJU",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb3b4c5d6e7f8a9b0c1d2e3f4a",
+      "followers": 8500,
+      "popularity": 38
+    },
+    {
+      "bandName": "Ljubojna",
+      "releaseId": "2LGq3ooazlOJvqJFMNCQvH",
+      "releaseTitle": "Нова Година",
+      "releaseType": "single",
+      "releaseDate": "2025-12-28",
+      "releaseUrl": "https://open.spotify.com/artist/2LGq3ooazlOJvqJFMNCQvH",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb4c5d6e7f8a9b0c1d2e3f4a5b",
+      "followers": 7200,
+      "popularity": 35
+    },
+    {
+      "bandName": "Anastasia",
+      "releaseId": "1xRMFFoWxOqSGbGX6uUqZr",
+      "releaseTitle": "Зимски Албум",
+      "releaseType": "album",
+      "releaseDate": "2025-12-20",
+      "releaseUrl": "https://open.spotify.com/artist/1xRMFFoWxOqSGbGX6uUqZr",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb5d6e7f8a9b0c1d2e3f4a5b6c",
+      "followers": 6800,
+      "popularity": 33
+    },
+    {
+      "bandName": "Kiril Dzajkovski",
+      "releaseId": "5IJVHkHZ1pnVShRYEWqcsJ",
+      "releaseTitle": "Електронски Ритми",
+      "releaseType": "single",
+      "releaseDate": "2025-12-15",
+      "releaseUrl": "https://open.spotify.com/artist/5IJVHkHZ1pnVShRYEWqcsJ",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb6e7f8a9b0c1d2e3f4a5b6c7d",
+      "followers": 5500,
+      "popularity": 30
+    },
+    {
+      "bandName": "Leb i Sol",
+      "releaseId": "0WHfOqYgwN0iXoLNPwk4kC",
+      "releaseTitle": "Класика Реиздање",
+      "releaseType": "album",
+      "releaseDate": "2025-12-10",
+      "releaseUrl": "https://open.spotify.com/artist/0WHfOqYgwN0iXoLNPwk4kC",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb7f8a9b0c1d2e3f4a5b6c7d8e",
+      "followers": 25000,
+      "popularity": 55
+    },
+    {
+      "bandName": "Toki",
+      "releaseId": "4VJ8EG9Lz4qQmYx8TPDxrV",
+      "releaseTitle": "Нов Почеток",
+      "releaseType": "single",
+      "releaseDate": "2025-12-05",
+      "releaseUrl": "https://open.spotify.com/artist/4VJ8EG9Lz4qQmYx8TPDxrV",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb8a9b0c1d2e3f4a5b6c7d8e9f",
+      "followers": 4200,
+      "popularity": 28
+    },
+    {
+      "bandName": "Mizar",
+      "releaseId": "4EFn8DHYQ4uxDEfJGGFmyc",
+      "releaseTitle": "Космички Звуци",
+      "releaseType": "single",
+      "releaseDate": "2025-11-28",
+      "releaseUrl": "https://open.spotify.com/artist/4EFn8DHYQ4uxDEfJGGFmyc",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb9b0c1d2e3f4a5b6c7d8e9f0a",
+      "followers": 18000,
+      "popularity": 48
+    },
+    {
+      "bandName": "Arhangel",
+      "releaseId": "3Ww8AoVxFpJgQqNXYRnW3K",
+      "releaseTitle": "Метал Бура",
+      "releaseType": "album",
+      "releaseDate": "2025-11-20",
+      "releaseUrl": "https://open.spotify.com/artist/3Ww8AoVxFpJgQqNXYRnW3K",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eba0b1c2d3e4f5a6b7c8d9e0f1",
+      "followers": 3800,
+      "popularity": 25
+    },
+    {
+      "bandName": "Sinonim",
+      "releaseId": "7K8GgTHzjcpJmReBKZNmXz",
+      "releaseTitle": "Ноемвриска Ноќ",
+      "releaseType": "single",
+      "releaseDate": "2025-11-15",
+      "releaseUrl": "https://open.spotify.com/artist/7K8GgTHzjcpJmReBKZNmXz",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5ebb1c2d3e4f5a6b7c8d9e0f1a2",
+      "followers": 3200,
+      "popularity": 22
+    },
+    {
+      "bandName": "Superhiks",
+      "releaseId": "4E4xU2lJEifXBJBGJKvB8r",
+      "releaseTitle": "Есенска Мелодија",
+      "releaseType": "single",
+      "releaseDate": "2025-11-10",
+      "releaseUrl": "https://open.spotify.com/artist/4E4xU2lJEifXBJBGJKvB8r",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb7a4c8e9d2b3f4a5c6d7e8f9a",
+      "followers": 12000,
+      "popularity": 42
+    },
+    {
+      "bandName": "Foltin",
+      "releaseId": "6tbjWDEIzxZsxU2hCvuvJU",
+      "releaseTitle": "Октомвриски Сон",
+      "releaseType": "single",
+      "releaseDate": "2025-10-25",
+      "releaseUrl": "https://open.spotify.com/artist/6tbjWDEIzxZsxU2hCvuvJU",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb3b4c5d6e7f8a9b0c1d2e3f4a",
+      "followers": 8500,
+      "popularity": 38
+    },
+    {
+      "bandName": "Bernays Propaganda",
+      "releaseId": "4TXwvfHJwjcqMEOOtTGDPH",
+      "releaseTitle": "Есен 2025",
+      "releaseType": "album",
+      "releaseDate": "2025-10-15",
+      "releaseUrl": "https://open.spotify.com/artist/4TXwvfHJwjcqMEOOtTGDPH",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb5f93780d1e9e9a9a68d5b5e8",
+      "followers": 15000,
+      "popularity": 45
+    },
+    {
+      "bandName": "Ljubojna",
+      "releaseId": "2LGq3ooazlOJvqJFMNCQvH",
+      "releaseTitle": "Традиција",
+      "releaseType": "album",
+      "releaseDate": "2025-10-01",
+      "releaseUrl": "https://open.spotify.com/artist/2LGq3ooazlOJvqJFMNCQvH",
+      "thumbnail": "https://i.scdn.co/image/ab6761610000e5eb4c5d6e7f8a9b0c1d2e3f4a5b",
+      "followers": 7200,
+      "popularity": 35
+    }
+  ]
+}

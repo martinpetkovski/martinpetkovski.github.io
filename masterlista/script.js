@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalBandsData = [];
     let hasUnsavedChanges = false;
     let isEditMode = false;
+    let cachedAutoLabels = null; // Store auto_labels.json data globally
+    let cachedChartData = null; // Store chart-data.json for releases data
     // Optional: set window.MMM_PR_ENDPOINT globally to override the button data-endpoint/localStorage
-    const lastfmApiKey = 'd186251f2ae019335f832db01d96c2f9';
-    const defaultFallbackImage = 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg';
 
     console.log('Script loaded, initializing...');
 
@@ -275,56 +275,64 @@ document.addEventListener('DOMContentLoaded', () => {
         return `linear-gradient(135deg, ${selectedGradient.start} 0%, ${selectedGradient.end} 100%)`;
     }
 
-    async function getLastfmArtistImage(lastfmName, fallbackName) {
-        const artistName = lastfmName || fallbackName;
-        if (!artistName) {
-            console.warn(`No artist name provided`);
-            return null;
+    // Initialize scroll shadows for scrollable containers
+    function initScrollShadows() {
+        // Table wrapper (vertical scroll)
+        const tableWrapper = document.querySelector('.table-wrapper');
+        if (tableWrapper) {
+            // Create shadow overlay elements
+            const shadowTop = document.createElement('div');
+            shadowTop.className = 'scroll-shadow-top';
+            const shadowBottom = document.createElement('div');
+            shadowBottom.className = 'scroll-shadow-bottom';
+            tableWrapper.appendChild(shadowTop);
+            tableWrapper.appendChild(shadowBottom);
+            
+            const updateTableShadows = () => {
+                const { scrollTop, scrollHeight, clientHeight } = tableWrapper;
+                shadowTop.classList.toggle('visible', scrollTop > 5);
+                shadowBottom.classList.toggle('visible', scrollTop < scrollHeight - clientHeight - 5);
+            };
+            tableWrapper.addEventListener('scroll', updateTableShadows);
+            // Initial check and recheck after content loads
+            updateTableShadows();
+            setTimeout(updateTableShadows, 500);
         }
-        try {
-            const albumsResponse = await fetch(
-                `https://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=${encodeURIComponent(artistName)}&api_key=${lastfmApiKey}&format=json`
-            );
-            const albumsData = await albumsResponse.json();
-            if (albumsData.error) {
-                console.warn(`No albums found for artist ${artistName} (Error: ${albumsData.message})`);
-                return null;
-            }
-            if (albumsData.topalbums && albumsData.topalbums.album && albumsData.topalbums.album.length > 0) {
-                const topAlbum = albumsData.topalbums.album[0];
-                if (topAlbum.image && topAlbum.image.length > 0) {
-                    const sizeDimensions = { small: 34, medium: 64, large: 174, extralarge: 300, mega: 300 };
-                    const targetSize = 120;
-                    let closestImage = null;
-                    let minDifference = Infinity;
-                    topAlbum.image.forEach(image => {
-                        const size = image.size;
-                        const dimension = sizeDimensions[size] || 300;
-                        const difference = Math.abs(dimension - targetSize);
-                        const isValidImage = image['#text'] && image['#text'].trim() !== '';
-                        if (difference < minDifference && isValidImage) {
-                            minDifference = difference;
-                            closestImage = image['#text'];
-                        }
-                    });
-                    if (closestImage) {
-                        console.debug(`Found album image for "${topAlbum.name}" of artist ${artistName}: ${closestImage}`);
-                        return closestImage;
-                    } else {
-                        console.warn(`No valid image found for top album "${topAlbum.name}" of artist ${artistName}`);
-                        return null;
+
+        // New release artists container (horizontal scroll via grid)
+        const releaseContainer = document.getElementById('new-release-artists');
+        if (releaseContainer) {
+            // We need to observe when the grid is added and attach scroll listener
+            const observer = new MutationObserver(() => {
+                const releaseGrid = releaseContainer.querySelector('.new-release-grid');
+                if (releaseGrid && !releaseGrid.dataset.shadowsInit) {
+                    releaseGrid.dataset.shadowsInit = 'true';
+                    
+                    // Create shadow overlay elements for horizontal scroll
+                    let shadowLeft = releaseContainer.querySelector('.scroll-shadow-left');
+                    let shadowRight = releaseContainer.querySelector('.scroll-shadow-right');
+                    if (!shadowLeft) {
+                        shadowLeft = document.createElement('div');
+                        shadowLeft.className = 'scroll-shadow-left';
+                        releaseContainer.appendChild(shadowLeft);
                     }
-                } else {
-                    console.warn(`No images found for top album "${topAlbum.name}" of artist ${artistName}`);
-                    return null;
+                    if (!shadowRight) {
+                        shadowRight = document.createElement('div');
+                        shadowRight.className = 'scroll-shadow-right';
+                        releaseContainer.appendChild(shadowRight);
+                    }
+                    
+                    const updateReleaseShadows = () => {
+                        const { scrollLeft, scrollWidth, clientWidth } = releaseGrid;
+                        shadowLeft.classList.toggle('visible', scrollLeft > 5);
+                        shadowRight.classList.toggle('visible', scrollLeft < scrollWidth - clientWidth - 5);
+                    };
+                    releaseGrid.addEventListener('scroll', updateReleaseShadows);
+                    // Initial check
+                    setTimeout(updateReleaseShadows, 100);
                 }
-            } else {
-                console.warn(`No top albums found for artist ${artistName}`);
-                return null;
-            }
-        } catch (error) {
-            console.error(`Error fetching Last.fm album image for ${artistName}:`, error);
-            return null;
+            });
+            observer.observe(releaseContainer, { childList: true, subtree: true });
         }
     }
 
@@ -369,31 +377,247 @@ document.addEventListener('DOMContentLoaded', () => {
         return { platform: 'none', url: null };
     }
 
+    /**
+     * Load Spotify releases from static chart-data.json file
+     * (Generated daily by GitHub Action)
+     */
+    async function loadChartDataReleases(rawBands, processedBands) {
+        try {
+            console.log('Loading releases from chart-data.json...');
+            
+            const response = await fetch('chart-data.json');
+            if (!response.ok) {
+                throw new Error(`Failed to load chart-data.json: ${response.status}`);
+            }
+            
+            const chartData = await response.json();
+            const releases = chartData.releases || [];
+            
+            if (releases.length === 0) {
+                console.log('No releases found in chart-data.json');
+                return;
+            }
+            
+            // Find most viewed release
+            let mostViewed = null;
+            
+            // Process each release
+            releases.forEach(release => {
+                const bandName = release.bandName;
+                
+                // Update mostViewed
+                if (!mostViewed || release.followers > mostViewed.followers) {
+                    mostViewed = release;
+                }
+                
+                // Update cachedAutoLabels
+                if (!cachedAutoLabels.bands[bandName]) {
+                    cachedAutoLabels.bands[bandName] = {};
+                }
+                cachedAutoLabels.bands[bandName].spotify = {
+                    url: release.releaseUrl,
+                    artistId: release.releaseId,
+                    isGeneralChannel: false,
+                    popular: release.popularity >= 50 || release.followers >= 10000,
+                    maxViewCount: release.followers,
+                    newRelease: true,
+                    latestVideoId: release.releaseId,
+                    latestVideoUrl: release.releaseUrl,
+                    latestVideoPublishedAt: release.releaseDate,
+                    latestVideoViewCount: release.followers,
+                    latestVideoTitle: release.releaseTitle,
+                    latestVideoThumbnail: release.thumbnail,
+                    releaseType: release.releaseType
+                };
+                
+                // Update band's label in bandsData
+                const band = processedBands.find(b => b.name === bandName);
+                if (band) {
+                    const existingLabels = (band.label || '').split(',').map(l => l.trim()).filter(Boolean);
+                    if (!existingLabels.includes('Ново Издание')) {
+                        existingLabels.push('Ново Издание');
+                        band.label = existingLabels.join(', ');
+                    }
+                }
+            });
+            
+            // Update source and most viewed
+            cachedAutoLabels.source = 'spotify';
+            if (mostViewed) {
+                cachedAutoLabels.mostViewedNewRelease = {
+                    bandName: mostViewed.bandName,
+                    videoId: mostViewed.releaseId,
+                    videoUrl: mostViewed.releaseUrl,
+                    videoTitle: mostViewed.releaseTitle,
+                    viewCount: mostViewed.followers,
+                    publishedAt: mostViewed.releaseDate,
+                    thumbnailUrl: mostViewed.thumbnail
+                };
+            }
+            
+            // Re-render new releases section
+            renderNewReleaseArtists(processedBands);
+            
+            console.log(`Loaded ${releases.length} releases from chart-data.json`);
+        } catch (err) {
+            console.warn('Failed to load chart-data.json:', err);
+            // Fall back to Spotify API if available
+            if (typeof spotifyApi !== 'undefined') {
+                console.log('Falling back to Spotify API...');
+                fetchSpotifyReleasesInBackground(rawBands, processedBands);
+            }
+        }
+    }
+
+    /**
+     * Fetch Spotify releases in background and update UI progressively
+     */
+    async function fetchSpotifyReleasesInBackground(rawBands, processedBands) {
+        try {
+            console.log('Background: Fetching Spotify releases...');
+            
+            const newReleases = [];
+            let mostViewed = null;
+            
+            // Progress callback - updates UI as releases are found
+            const onProgress = ({ release, bandName, progress, isNew }) => {
+                if (isNew) {
+                    newReleases.push(release);
+                    
+                    // Update mostViewed
+                    if (!mostViewed || release.artistFollowers > mostViewed.artistFollowers) {
+                        mostViewed = release;
+                    }
+                    
+                    // Update cachedAutoLabels
+                    if (!cachedAutoLabels.bands[bandName]) {
+                        cachedAutoLabels.bands[bandName] = {};
+                    }
+                    cachedAutoLabels.bands[bandName].spotify = {
+                        url: release.artistUrl,
+                        artistId: release.artistId,
+                        isGeneralChannel: false,
+                        popular: release.artistPopularity >= 50 || release.artistFollowers >= 10000,
+                        maxViewCount: release.artistFollowers,
+                        newRelease: release.isNewRelease,
+                        latestVideoId: release.releaseId,
+                        latestVideoUrl: release.releaseUrl,
+                        latestVideoPublishedAt: release.releaseDate,
+                        latestVideoViewCount: release.artistFollowers,
+                        latestVideoTitle: release.releaseTitle,
+                        latestVideoThumbnail: release.thumbnail,
+                        releaseType: release.releaseType,
+                        totalTracks: release.totalTracks,
+                        daysSinceRelease: release.daysSinceRelease
+                    };
+                    
+                    // Update band's label in bandsData
+                    const band = processedBands.find(b => b.name === bandName);
+                    if (band) {
+                        const existingLabels = (band.label || '').split(',').map(l => l.trim()).filter(Boolean);
+                        if (!existingLabels.includes('Ново Издание')) {
+                            existingLabels.push('Ново Издание');
+                            band.label = existingLabels.join(', ');
+                        }
+                    }
+                    
+                    // Re-render new releases section with updated data
+                    cachedAutoLabels.source = 'spotify';
+                    if (mostViewed) {
+                        cachedAutoLabels.mostViewedNewRelease = {
+                            bandName: mostViewed.bandName,
+                            videoId: mostViewed.releaseId,
+                            videoUrl: mostViewed.releaseUrl,
+                            videoTitle: mostViewed.releaseTitle,
+                            viewCount: mostViewed.artistFollowers,
+                            publishedAt: mostViewed.releaseDate,
+                            thumbnailUrl: mostViewed.thumbnail
+                        };
+                    }
+                    
+                    renderNewReleaseArtists(processedBands);
+                }
+            };
+            
+            await spotifyApi.fetchAllNewReleases(rawBands, onProgress);
+            
+            console.log(`Background: Spotify fetch complete. Found ${newReleases.length} new releases.`);
+        } catch (err) {
+            console.warn('Background Spotify fetch error:', err);
+        }
+    }
+
     function renderNewReleaseArtists(bands) {
         console.log('Rendering Ново Издание artists');
         const newReleaseContainer = document.getElementById('new-release-artists');
-        newReleaseContainer.innerHTML = `
-            <div class="new-release-header">
-                <span title="Најнови песни со ознака „Ново Издание“">Ново Издание</span>
-            </div>
-        `;
+        
+        // Clear container - no header, just show releases directly
+        newReleaseContainer.innerHTML = '';
 
         const newReleaseBands = bands.filter(band => {
             if (!band.label || band.label === 'недостигаат податоци') return false;
             const labels = String(band.label).split(',').map(l => l.trim()).filter(Boolean);
             return labels.includes('Ново Издание');
         });
+        
+        // Sort by release date (newest first)
+        newReleaseBands.sort((a, b) => {
+            const aData = cachedAutoLabels?.bands?.[a.name];
+            const bData = cachedAutoLabels?.bands?.[b.name];
+            const aDate = aData?.spotify?.latestVideoPublishedAt || aData?.youtube?.latestVideoPublishedAt || '';
+            const bDate = bData?.spotify?.latestVideoPublishedAt || bData?.youtube?.latestVideoPublishedAt || '';
+            return bDate.localeCompare(aDate); // Descending order (newest first)
+        });
+        
+        // Create content wrapper
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'new-release-content';
+        
         if (newReleaseBands.length === 0) {
-            newReleaseContainer.innerHTML += '<p>Нема артисти со ознака „Ново Издание“.</p>';
+            // Show loading if Spotify is loading
+            const isLoading = cachedAutoLabels?.source === 'none' && typeof spotifyApi !== 'undefined';
+            contentWrapper.innerHTML = isLoading
+                ? '<p class="loading-releases"><i class="fas fa-spinner fa-spin"></i> Се вчитуваат нови изданија...</p>'
+                : '<p>Нема нови изданија во последните 30 дена.</p>';
+            newReleaseContainer.appendChild(contentWrapper);
             return;
         }
 
         const streamingOrder = ['youtube', 'spotify', 'itunes', 'deezer', 'bandcamp', 'soundcloud'];
 
-        const list = document.createElement('ul');
-        list.className = 'new-release-list';
+        // Create a grid/list container for release cards
+        const releaseGrid = document.createElement('div');
+        releaseGrid.className = 'new-release-grid';
+        
+        // Add horizontal scroll wheel support
+        releaseGrid.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                releaseGrid.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+
         newReleaseBands.forEach(band => {
-            const listItem = document.createElement('li');
+            // Get auto_labels data for this band (supports both YouTube and Spotify)
+            const bandData = cachedAutoLabels?.bands?.[band.name];
+            const autoData = bandData?.youtube || bandData?.spotify || null;
+            const hasReleaseData = autoData?.latestVideoId && autoData?.latestVideoTitle;
+            const isSpotify = !!bandData?.spotify;
+            
+            // Filter: skip if band name is not in title for general channels (YouTube only)
+            if (hasReleaseData && !isSpotify) {
+                const releaseTitle = (autoData.latestVideoTitle || '').toLowerCase();
+                const bandNameLower = band.name.toLowerCase();
+                const isGeneralChannel = autoData.isGeneralChannel === true;
+                
+                // Skip if general channel and band name not in title
+                if (isGeneralChannel && !releaseTitle.includes(bandNameLower)) {
+                    return;
+                }
+            }
+            
+            const releaseCard = document.createElement('div');
+            releaseCard.className = 'new-release-card';
 
             // Collect available streaming links in preferred order
             const streamingLinks = streamingOrder
@@ -403,35 +627,189 @@ document.addEventListener('DOMContentLoaded', () => {
                     url: p === 'spotify' ? convertSpotifyUrlToAppUri(band.links[p]) : band.links[p]
                 }));
 
-            // Decide anchor for artist name: first streaming, else preferred generic
-            let nameAnchorHtml = '';
-            if (streamingLinks.length > 0) {
-                const first = streamingLinks[0];
-                nameAnchorHtml = `<a href="${first.url}" target="_blank">${band.name}</a>`;
-            } else {
-                const { url: anyUrl } = getPreferredLink(band);
-                nameAnchorHtml = anyUrl ? `<a href="${anyUrl}" target="_blank">${band.name}</a>` : `${band.name}`;
-            }
-
             // Build icons for all available streaming services
             const iconsHtml = streamingLinks
                 .map(({ platform, url }) => {
                     const platformMeta = socialPlatforms.find(p => p.id === platform);
                     const icon = platformMeta?.icon || 'fa-solid fa-link';
                     const title = platformMeta?.name || platform;
-                    return `<a href="${url}" target="_blank" title="${title}"><i class="${icon}"></i></a>`;
+                    return `<a href="${url}" target="_blank" title="${title}" class="streaming-icon"><i class="${icon}"></i></a>`;
                 })
-                .join(' ');
+                .join('');
 
-            if (nameAnchorHtml) {
-                listItem.innerHTML = `${nameAnchorHtml} ${iconsHtml || ''}`;
+            if (hasReleaseData) {
+                // Show thumbnail and release info
+                const releaseUrl = autoData.latestVideoUrl || '#';
+                const thumbnail = autoData.latestVideoThumbnail || 
+                    (autoData.latestVideoId && !isSpotify ? `https://img.youtube.com/vi/${autoData.latestVideoId}/mqdefault.jpg` : null);
+                const releaseTitle = autoData.latestVideoTitle;
+                const viewCount = autoData.latestVideoViewCount || 0;
+                
+                // Format view/follower count
+                const countLabel = isSpotify ? '' : ' ';
+                const formattedViews = viewCount >= 1000000 
+                    ? (viewCount / 1000000).toFixed(1) + 'М'
+                    : viewCount >= 1000 
+                        ? (viewCount / 1000).toFixed(1) + 'К'
+                        : viewCount.toString();
+                
+                // Format release date
+                let releaseDateHtml = '';
+                if (autoData.latestVideoPublishedAt) {
+                    const pubDate = new Date(autoData.latestVideoPublishedAt);
+                    const day = pubDate.getDate();
+                    const monthNames = ['јан', 'фев', 'мар', 'апр', 'мај', 'јун', 'јул', 'авг', 'сеп', 'окт', 'ное', 'дек'];
+                    const month = monthNames[pubDate.getMonth()];
+                    releaseDateHtml = `<span class="release-date"><i class="fas fa-calendar-alt"></i> ${day} ${month}</span>`;
+                }
+                
+                // Release type badge for Spotify
+                const releaseTypeBadge = isSpotify && autoData.releaseType 
+                    ? `<span class="release-type-badge">${autoData.releaseType === 'single' ? 'Сингл' : autoData.releaseType === 'album' ? 'Албум' : 'EP'}</span>`
+                    : '';
+                
+                // Play overlay icon (different for YouTube vs Spotify)
+                const playIcon = isSpotify ? 'fab fa-spotify' : 'fas fa-play-circle';
+                // Preview button for Spotify releases (plays embed)
+                const spotifyButtonHtml = isSpotify && autoData.latestVideoId 
+                    ? `<button class="preview-btn" data-album-id="${autoData.latestVideoId}" title="Преслушај на Spotify"><i class="fas fa-play"></i></button>`
+                    : '';
+                
+                releaseCard.innerHTML = `
+                    <a href="${releaseUrl}" target="_blank" class="release-thumbnail-link">
+                        <div class="release-thumbnail ${!thumbnail ? 'no-thumb' : ''}">
+                            ${thumbnail ? `<img src="${thumbnail}" alt="${releaseTitle}" loading="lazy">` : `<i class="fab fa-spotify spotify-placeholder"></i>`}
+                            <div class="play-overlay"><i class="${playIcon}"></i></div>
+                        </div>
+                    </a>
+                    <div class="release-info">
+                        <div class="release-artist">${band.name} ${releaseTypeBadge}</div>
+                        <a href="${releaseUrl}" target="_blank" class="release-title" title="${releaseTitle}">${releaseTitle}</a>
+                        <div class="release-meta">
+                            ${releaseDateHtml}
+                            ${!isSpotify ? `<span class="release-views"><i class="fas fa-eye"></i> ${formattedViews}</span>` : ''}
+                            ${isSpotify && viewCount > 0 ? `<span class="release-views"><i class="fas fa-users"></i> ${formattedViews}</span>` : ''}
+                            <span class="release-links">${iconsHtml}${spotifyButtonHtml}</span>
+                        </div>
+                    </div>
+                `;
             } else {
-                listItem.innerHTML = `${band.name} <span class="missing-data"><i class="fas fa-question-circle"></i></span>`;
+                // Fallback: show simple list item style without thumbnail
+                const { url: anyUrl } = getPreferredLink(band);
+                const nameAnchorHtml = anyUrl 
+                    ? `<a href="${anyUrl}" target="_blank">${band.name}</a>` 
+                    : band.name;
+                
+                releaseCard.innerHTML = `
+                    <div class="release-info release-info-compact">
+                        <div class="release-artist">${nameAnchorHtml}</div>
+                        <div class="release-links">${iconsHtml || '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'}</div>
+                    </div>
+                `;
+                releaseCard.classList.add('no-thumbnail');
             }
 
-            list.appendChild(listItem);
+            releaseGrid.appendChild(releaseCard);
         });
-        newReleaseContainer.appendChild(list);
+        contentWrapper.appendChild(releaseGrid);
+        newReleaseContainer.appendChild(contentWrapper);
+        
+        // Add event listeners for preview buttons (lazy-loaded previews)
+        newReleaseContainer.querySelectorAll('.preview-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                await handlePreviewClick(btn);
+            });
+        });
+    }
+    
+    // Handle preview button clicks - shows Spotify embed player
+    async function handlePreviewClick(btn) {
+        const albumId = btn.dataset.albumId;
+        const releaseCard = btn.closest('.new-release-card');
+        const releaseUrl = releaseCard?.querySelector('.release-thumbnail-link')?.href;
+        
+        // Extract Spotify ID and type from URL
+        let spotifyId = albumId;
+        let spotifyType = 'artist'; // default
+        
+        if (releaseUrl && releaseUrl.includes('spotify.com')) {
+            // Parse the URL to get type and ID
+            // Format: https://open.spotify.com/artist/XXXX or /album/XXXX or /track/XXXX
+            const match = releaseUrl.match(/spotify\.com\/(artist|album|track)\/([a-zA-Z0-9]+)/);
+            if (match) {
+                spotifyType = match[1];
+                spotifyId = match[2];
+            }
+        }
+        
+        showSpotifyEmbed(spotifyId, spotifyType);
+    }
+    
+    // Show Spotify embed player in modal
+    function showSpotifyEmbed(spotifyId, type = 'artist') {
+        const modal = document.getElementById('spotify-embed-modal');
+        const container = document.getElementById('spotify-embed-container');
+        
+        if (!modal || !container) return;
+        
+        // Create embed iframe
+        // Spotify embed URL format: https://open.spotify.com/embed/{type}/{id}
+        const embedUrl = `https://open.spotify.com/embed/${type}/${spotifyId}?utm_source=generator&theme=0`;
+        
+        container.innerHTML = `
+            <iframe 
+                src="${embedUrl}" 
+                width="100%" 
+                height="${type === 'track' ? '152' : '352'}" 
+                frameBorder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy"
+            ></iframe>
+        `;
+        
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Close on backdrop click
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                closeSpotifyEmbed();
+            }
+        };
+        
+        // Close on Escape key
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                closeSpotifyEmbed();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+    
+    // Close Spotify embed modal
+    function closeSpotifyEmbed() {
+        const modal = document.getElementById('spotify-embed-modal');
+        const container = document.getElementById('spotify-embed-container');
+        
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        if (container) {
+            container.innerHTML = ''; // Clear iframe to stop playback
+        }
+    }
+    
+    // Initialize Spotify embed modal close button
+    function initializeSpotifyEmbedModal() {
+        const closeBtn = document.querySelector('.spotify-modal-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeSpotifyEmbed);
+        }
     }
 
     async function loadBandsData() {
@@ -442,21 +820,43 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingBar.classList.add('active');
             controls.style.display = 'none';
 
+            // Load chart data first for artist images
+            try {
+                const chartResponse = await fetch('chart-data.json');
+                cachedChartData = await chartResponse.json();
+                console.log('Loaded chart-data.json with', cachedChartData.releases?.length || 0, 'releases');
+            } catch (chartError) {
+                console.warn('Could not load chart-data.json:', chartError);
+                cachedChartData = { releases: [] };
+            }
+
             const response = await fetch('bands.json');
             const data = await response.json();
-            const isCompactView = !document.getElementById('mode-toggle-checkbox').checked;
+            
+            // Initialize without Spotify data - load immediately
+            cachedAutoLabels = { bands: {}, source: 'none' };
+            
+            // Helper to remove "Ново Издание" from manual labels (only use Spotify data)
+            const CONTROLLED_LABELS = ['Ново Издание', '★', 'Ново'];
+            
+            function mergeComputedLabels(existingLabel, computedLabels) {
+                const existing = (!existingLabel || existingLabel === 'недостигаат податоци')
+                    ? []
+                    : String(existingLabel).split(',').map(l => l.trim()).filter(Boolean);
+                const merged = [...existing];
+                computedLabels.forEach(l => { if (!merged.includes(l)) merged.push(l); });
+                return merged.length ? merged.join(', ') : null;
+            }
 
-            bandsData = await Promise.all(
-                data.muzickaMasterLista.map(async (band) => {
-                    let image = band.image || defaultFallbackImage;
-                    if (!isCompactView) {
-                        const lastfmImage = await getLastfmArtistImage(band.lastfmName, band.name);
-                        if (lastfmImage) {
-                            image = lastfmImage;
-                        } else {
-                            console.warn(`No Last.fm image found for ${band.name}, using JSON image: ${image}`);
-                        }
-                    }
+            function removeComputedLabels(existingLabel, labelsToRemove) {
+                const existing = (!existingLabel || existingLabel === 'недостигаат податоци')
+                    ? []
+                    : String(existingLabel).split(',').map(l => l.trim()).filter(Boolean);
+                const filtered = existing.filter(l => !labelsToRemove.includes(l));
+                return filtered.length ? filtered.join(', ') : null;
+            }
+
+            bandsData = data.muzickaMasterLista.map((band) => {
                     let status;
                     if (band.isActive === true) {
                         status = 'Активен';
@@ -465,6 +865,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         status = band.isActive || 'Непознато';
                     }
+                    
+                    // Remove manual "Ново Издание" tags - only Spotify data will add them
+                    let label = band.label || null;
+                    label = removeComputedLabels(label, CONTROLLED_LABELS);
+                    
                     return {
                         name: band.name || 'недостигаат податоци',
                         city: band.city || 'недостигаат податоци',
@@ -473,13 +878,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         isActive: status,
                         links: Object.keys(band.links).length ? band.links : { none: 'недостигаат податоци' },
                         contact: band.contact || 'недостигаат податоци',
-                        image,
                         lastfmName: band.lastfmName || null,
-                        label: band.label || null,
-                        imageFetched: !isCompactView
+                        label
                     };
-                })
-            );
+                });
             bandsData.sort((a, b) => {
                 const nameA = transliterateCyrillicToLatin(a.name);
                 const nameB = transliterateCyrillicToLatin(b.name);
@@ -530,9 +932,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderNewReleaseArtists(bandsData);
             initializeFilters();
             initializeModal();
+            initializeSpotifyEmbedModal();
             initializeCopyData();
             initializeSubmitPR();
             updateSubmitButtonState();
+            initScrollShadows();
+            
+            // Load Spotify data from static JSON (generated by GitHub Action)
+            loadChartDataReleases(data.muzickaMasterLista, bandsData);
         } catch (error) {
             console.error('Error loading bands:', error);
             document.getElementById('band-table-body').innerHTML = '<tr><td colspan="8">Извинете, нешто тргна наопаку.</td></tr>';
@@ -616,28 +1023,184 @@ document.addEventListener('DOMContentLoaded', () => {
             const isActive = controls.classList.contains('active');
             document.getElementById('toggle-filters').innerHTML = `<i class="fas ${isActive ? 'fa-times' : 'fa-filter'}"></i>`;
         });
-        document.getElementById('mode-toggle-checkbox').addEventListener('change', async (e) => {
-            console.log('Mode toggle changed:', e.target.checked);
-            document.body.classList.toggle('compact', !e.target.checked);
-            document.body.classList.toggle('expanded', e.target.checked);
-            if (e.target.checked) {
-                console.log('Fetching Last.fm images for expanded view');
-                bandsData = await Promise.all(
-                    bandsData.map(async (band) => {
-                        if (!band.imageFetched) {
-                            const lastfmImage = await getLastfmArtistImage(band.lastfmName, band.name);
-                            return {
-                                ...band,
-                                image: lastfmImage || band.image || defaultFallbackImage,
-                                imageFetched: true
-                            };
-                        }
-                        return band;
-                    })
-                );
+    }
+
+    // Autocomplete data cache
+    let autocompleteData = {
+        cities: [],
+        genres: [],
+        soundsLike: [],
+        labels: []
+    };
+
+    // Build autocomplete data from bands
+    function buildAutocompleteData() {
+        const cityCounts = {};
+        const genreCounts = {};
+        const soundsLikeCounts = {};
+        const labelCounts = {};
+
+        bandsData.forEach(band => {
+            if (band.city && band.city !== 'недостигаат податоци') {
+                band.city.split(',').map(c => c.trim()).filter(Boolean).forEach(city => {
+                    cityCounts[city] = (cityCounts[city] || 0) + 1;
+                });
             }
-            renderBands(bandsData);
-            renderNewReleaseArtists(bandsData);
+            if (band.genre && band.genre !== 'недостигаат податоци') {
+                band.genre.split(',').map(g => g.trim()).filter(Boolean).forEach(genre => {
+                    genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+                });
+            }
+            if (band.soundsLike && band.soundsLike !== 'недостигаат податоци') {
+                band.soundsLike.split(',').map(s => s.trim()).filter(Boolean).forEach(sound => {
+                    soundsLikeCounts[sound] = (soundsLikeCounts[sound] || 0) + 1;
+                });
+            }
+            if (band.label && band.label !== 'недостигаат податоци') {
+                band.label.split(',').map(l => l.trim()).filter(Boolean).forEach(label => {
+                    labelCounts[label] = (labelCounts[label] || 0) + 1;
+                });
+            }
+        });
+
+        // Sort by count descending, then alphabetically
+        const sortByCountThenAlpha = (counts) => {
+            return Object.entries(counts)
+                .sort((a, b) => b[1] - a[1] || transliterateCyrillicToLatin(a[0]).localeCompare(transliterateCyrillicToLatin(b[0]), 'en'))
+                .map(([name, count]) => ({ name, count }));
+        };
+
+        autocompleteData.cities = sortByCountThenAlpha(cityCounts);
+        autocompleteData.genres = sortByCountThenAlpha(genreCounts);
+        autocompleteData.soundsLike = sortByCountThenAlpha(soundsLikeCounts);
+        autocompleteData.labels = sortByCountThenAlpha(labelCounts);
+    }
+
+    // Initialize autocomplete for form fields
+    function initializeAutocomplete() {
+        buildAutocompleteData();
+
+        const fields = [
+            { inputId: 'band-city', dropdownId: 'band-city-autocomplete', data: () => autocompleteData.cities },
+            { inputId: 'band-genre', dropdownId: 'band-genre-autocomplete', data: () => autocompleteData.genres },
+            { inputId: 'band-sounds-like', dropdownId: 'band-sounds-like-autocomplete', data: () => autocompleteData.soundsLike },
+            { inputId: 'band-label', dropdownId: 'band-label-autocomplete', data: () => autocompleteData.labels }
+        ];
+
+        fields.forEach(({ inputId, dropdownId, data }) => {
+            const input = document.getElementById(inputId);
+            const dropdown = document.getElementById(dropdownId);
+            if (!input || !dropdown) return;
+
+            let selectedIndex = -1;
+
+            // Get the current partial term being typed (after last comma)
+            const getCurrentTerm = () => {
+                const value = input.value;
+                const lastCommaIndex = value.lastIndexOf(',');
+                return lastCommaIndex >= 0 ? value.substring(lastCommaIndex + 1).trim() : value.trim();
+            };
+
+            // Get already selected items
+            const getSelectedItems = () => {
+                const value = input.value;
+                const lastCommaIndex = value.lastIndexOf(',');
+                if (lastCommaIndex < 0) return [];
+                return value.substring(0, lastCommaIndex).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            };
+
+            // Filter and render suggestions
+            const showSuggestions = () => {
+                const term = getCurrentTerm().toLowerCase();
+                const selectedItems = getSelectedItems();
+                const allData = data();
+
+                // Filter: match term and exclude already selected
+                const filtered = allData.filter(item => {
+                    const nameLower = item.name.toLowerCase();
+                    const matchesTerm = term === '' || nameLower.includes(term);
+                    const notAlreadySelected = !selectedItems.includes(nameLower);
+                    return matchesTerm && notAlreadySelected;
+                }).slice(0, 15); // Limit to 15 suggestions
+
+                if (filtered.length === 0) {
+                    dropdown.classList.remove('active');
+                    dropdown.innerHTML = '';
+                    return;
+                }
+
+                dropdown.innerHTML = filtered.map((item, idx) => 
+                    `<div class="autocomplete-item${idx === selectedIndex ? ' selected' : ''}" data-value="${item.name}">${item.name}<span class="count">(${item.count})</span></div>`
+                ).join('');
+
+                dropdown.classList.add('active');
+                selectedIndex = -1;
+            };
+
+            // Select an item
+            const selectItem = (value) => {
+                const currentValue = input.value;
+                const lastCommaIndex = currentValue.lastIndexOf(',');
+                const prefix = lastCommaIndex >= 0 ? currentValue.substring(0, lastCommaIndex + 1) + ' ' : '';
+                input.value = prefix + value + ', ';
+                dropdown.classList.remove('active');
+                dropdown.innerHTML = '';
+                input.focus();
+                // Trigger tag update
+                const event = new Event('input', { bubbles: true });
+                input.dispatchEvent(event);
+            };
+
+            // Input event
+            input.addEventListener('input', () => {
+                showSuggestions();
+            });
+
+            // Focus event
+            input.addEventListener('focus', () => {
+                showSuggestions();
+            });
+
+            // Blur event (delayed to allow click)
+            input.addEventListener('blur', () => {
+                setTimeout(() => {
+                    dropdown.classList.remove('active');
+                }, 200);
+            });
+
+            // Keyboard navigation
+            input.addEventListener('keydown', (e) => {
+                const items = dropdown.querySelectorAll('.autocomplete-item');
+                if (!items.length) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                    items.forEach((item, idx) => item.classList.toggle('selected', idx === selectedIndex));
+                    items[selectedIndex]?.scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    selectedIndex = Math.max(selectedIndex - 1, 0);
+                    items.forEach((item, idx) => item.classList.toggle('selected', idx === selectedIndex));
+                    items[selectedIndex]?.scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                    e.preventDefault();
+                    const selectedItem = items[selectedIndex];
+                    if (selectedItem) {
+                        selectItem(selectedItem.dataset.value);
+                    }
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            // Click on suggestion
+            dropdown.addEventListener('click', (e) => {
+                const item = e.target.closest('.autocomplete-item');
+                if (item) {
+                    selectItem(item.dataset.value);
+                }
+            });
         });
     }
 
@@ -681,7 +1244,10 @@ document.addEventListener('DOMContentLoaded', () => {
             addLinkInput();
         });
 
-        ['band-city', 'band-genre', 'band-sounds-like'].forEach(id => {
+        // Initialize autocomplete for multi-value fields
+        initializeAutocomplete();
+
+        ['band-city', 'band-genre', 'band-sounds-like', 'band-label'].forEach(id => {
             const input = document.getElementById(id);
             input.addEventListener('input', () => updateTags(id));
         });
@@ -705,20 +1271,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function clearTags() {
-            ['band-city-tags', 'band-genre-tags', 'band-sounds-like-tags'].forEach(id => {
-                document.getElementById(id).innerHTML = '';
+            ['band-city-tags', 'band-genre-tags', 'band-sounds-like-tags', 'band-label-tags'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = '';
             });
         }
 
         function updateTags(inputId) {
             const input = document.getElementById(inputId);
             const tagContainer = document.getElementById(`${inputId}-tags`);
+            if (!tagContainer) return;
             const value = input.value.trim();
             tagContainer.innerHTML = '';
             if (value && value !== 'недостигаат податоци') {
                 const items = value.split(',').map(item => item.trim()).filter(item => item);
                 const tagClass = inputId === 'band-city' ? 'city-tag' :
-                                 inputId === 'band-genre' ? 'genre-tag' : 'sounds-like-tag';
+                                 inputId === 'band-genre' ? 'genre-tag' : 
+                                 inputId === 'band-label' ? 'label-tag' : 'sounds-like-tag';
                 items.forEach(item => {
                     const tag = document.createElement('span');
                     tag.className = `tag-item ${tagClass}`;
@@ -802,9 +1371,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (Object.keys(band.links).length === 0) {
                 band.links = { none: 'недостигаат податоци' };
             }
-            const image = await getLastfmArtistImage(band.lastfmName, band.name) || defaultFallbackImage;
-            band.image = image;
-            band.imageFetched = true;
             if (editIndex !== undefined && editIndex !== '') {
                 console.log(`Updating band at index ${editIndex}`);
                 bandsData[parseInt(editIndex)] = band;
@@ -835,9 +1401,29 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Adding link input:', { platform, url });
             const linkGroup = document.createElement('div');
             linkGroup.className = 'link-group';
+            
+            // Create wrapper for select with icon
+            const selectWrapper = document.createElement('div');
+            selectWrapper.className = 'platform-select-wrapper';
+            
+            // Create icon element
+            const iconEl = document.createElement('i');
+            const currentPlatform = socialPlatforms.find(p => p.id === platform);
+            iconEl.className = (currentPlatform?.icon || 'fa-solid fa-link') + ' platform-icon';
+            
             const select = document.createElement('select');
             select.innerHTML = '<option value="none">Избери платформа</option>' +
                 socialPlatforms.map(p => `<option value="${p.id}" ${p.id === platform ? 'selected' : ''}>${p.name}</option>`).join('');
+            
+            // Update icon when platform changes
+            select.addEventListener('change', () => {
+                const selectedPlatform = socialPlatforms.find(p => p.id === select.value);
+                iconEl.className = (selectedPlatform?.icon || 'fa-solid fa-link') + ' platform-icon';
+            });
+            
+            selectWrapper.appendChild(iconEl);
+            selectWrapper.appendChild(select);
+            
             const input = document.createElement('input');
             input.type = 'url';
             input.placeholder = 'Внеси URL';
@@ -848,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Remove link input clicked');
                 linkGroup.remove();
             });
-            linkGroup.appendChild(select);
+            linkGroup.appendChild(selectWrapper);
             linkGroup.appendChild(input);
             linkGroup.appendChild(removeBtn);
             linksContainer.appendChild(linkGroup);
@@ -878,7 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('band-genre').value = band.genre !== 'недостигаат податоци' ? band.genre : '';
                 document.getElementById('band-sounds-like').value = band.soundsLike !== 'недостигаат податоци' ? band.soundsLike : '';
                 document.getElementById('band-status').value = band.isActive || 'Непознато';
-                document.getElementById('band-label').value = band.label || '';
+                document.getElementById('band-label').value = band.label !== 'недостигаат податоци' ? band.label : '';
                 document.getElementById('band-lastfm').value = band.lastfmName || '';
                 document.getElementById('band-contact').value = band.contact !== 'недостигаат податоци' ? band.contact : '';
                 if (band.links && band.links.none !== 'недостигаат податоци') {
@@ -889,7 +1475,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     addLinkInput();
                 }
                 form.dataset.editIndex = index;
-                ['band-city', 'band-genre', 'band-sounds-like'].forEach(id => updateTags(id));
+                ['band-city', 'band-genre', 'band-sounds-like', 'band-label'].forEach(id => updateTags(id));
             }
             modal.style.display = 'block';
             console.log('Modal opened successfully');
@@ -940,8 +1526,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         links: band.links,
                         contact: band.contact,
                         lastfmName: band.lastfmName,
-                        label: band.label,
-                        image: band.image
+                        label: band.label
                     }))
                 };
                 const json = JSON.stringify(exportData, null, 2);
@@ -1036,8 +1621,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         links: band.links,
                         contact: band.contact,
                         lastfmName: band.lastfmName,
-                        label: band.label,
-                        image: band.image
+                        label: band.label
                     }))
                 };
 
@@ -1284,6 +1868,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 generic: 'fa-solid fa-link'
             };
             let linksHtml = '';
+            let playBtnHtml = '';
+            const hasSpotifyLink = band.links?.spotify && band.links.spotify !== 'недостигаат податоци';
             if (band.links.none === 'недостигаат податоци' && band.contact === 'недостигаат податоци') {
                 linksHtml = '<span class="missing-data"><i class="fas fa-question-circle"></i></span>';
             } else {
@@ -1306,6 +1892,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     linksHtml += `<a href="mailto:${band.contact}" class="contact-link"><i class="fa-solid fa-envelope"></i></a>`;
                 }
             }
+            // Play button in separate column
+            if (hasSpotifyLink) {
+                playBtnHtml = `<button class="artist-preview-btn" data-spotify-url="${band.links.spotify}" title="Преслушај"><i class="fas fa-play"></i></button>`;
+            }
             let cityHtml = band.city === 'недостигаат податоци'
                 ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
                 : band.city.split(',').map(c => c.trim()).map(c => `<span class="city-item" data-filter="city" data-value="${c}" style="background: ${generateCityColor(c)}">${c}</span>`).join('');
@@ -1326,12 +1916,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const statusClass = band.isActive === 'Непознато' ? 'missing-data' : '';
             bandRow.innerHTML = `
-                <td data-label="Слика" class="band-image image-column">${document.body.classList.contains('compact') ? '' : `<img src="${band.image}" alt="${band.name}">`}</td>
                 <td data-label="Име" class="name">${nameHtml}</td>
                 <td data-label="Град">${cityHtml}</td>
                 <td data-label="Жанр">${genreHtml}</td>
                 <td data-label="Звучи като">${soundsLikeHtml}</td>
                 <td data-label="Линкови" class="links">${linksHtml}</td>
+                <td data-label="Преслушај" class="play-column">${playBtnHtml}</td>
                 <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">
                     <span class="status-content" data-status-text="${band.isActive}">${band.isActive}</span>
                 </td>
@@ -1396,8 +1986,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     showNotification('Грешка: функцијата за уредување не е достапна.', 'error');
                 }
             });
+            
+            // Add event listener for Spotify preview button
+            const previewBtn = bandRow.querySelector('.artist-preview-btn');
+            if (previewBtn) {
+                previewBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    await handleArtistPreviewClick(previewBtn);
+                });
+            }
+            
             bandTableBody.appendChild(bandRow);
         });
+    }
+    
+    // Handle artist preview button clicks - shows Spotify embed player
+    async function handleArtistPreviewClick(btn) {
+        const spotifyUrl = btn.dataset.spotifyUrl;
+        
+        if (!spotifyUrl) return;
+        
+        // Parse the URL to get type and ID
+        // Format: https://open.spotify.com/artist/XXXX
+        const match = spotifyUrl.match(/spotify\.com\/(artist|album|track)\/([a-zA-Z0-9]+)/);
+        if (match) {
+            const spotifyType = match[1];
+            const spotifyId = match[2];
+            showSpotifyEmbed(spotifyId, spotifyType);
+        } else {
+            // Fallback: open in new tab
+            window.open(spotifyUrl, '_blank');
+        }
     }
 
     loadBandsData();

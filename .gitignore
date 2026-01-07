@@ -1,3 +1,9 @@
+# Local-only script (contains personal API key)
+masterlista/update-auto-labels.ps1
+
+# Spotify credentials (contains secret)
+masterlista/spotify-credentials.json
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

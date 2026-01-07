@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ Панел - Мастер Листа</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-hover: #1f2b47;
+            --text-primary: #eee;
+            --text-secondary: #aaa;
+            --text-muted: #666;
+            --accent-blue: #4da6ff;
+            --accent-green: #1DB954;
+            --accent-red: #ff6b6b;
+            --accent-orange: #ffa500;
+            --border-color: #2a3a5a;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        h1 i { color: var(--accent-orange); }
+        
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .back-link:hover { color: var(--accent-blue); }
+        
+        .admin-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-section h2 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .admin-section h2 i { color: var(--accent-green); }
+        
+        .admin-section p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .action-btn {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s, transform 0.1s;
+        }
+        
+        .action-btn:hover {
+            background: #3d8eeb;
+            transform: translateY(-1px);
+        }
+        
+        .action-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .action-btn.spotify { background: var(--accent-green); }
+        .action-btn.spotify:hover { background: #1ed760; }
+        
+        .progress-container {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .progress-container.active { display: block; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .log-container {
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+        }
+        
+        .log-entry {
+            color: var(--text-secondary);
+            padding: 0.15rem 0;
+        }
+        
+        .log-entry.success { color: var(--accent-green); }
+        .log-entry.error { color: var(--accent-red); }
+        .log-entry.info { color: var(--accent-blue); }
+        
+        .result-container {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .result-container.active { display: block; }
+        
+        .result-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .copy-btn {
+            background: var(--accent-orange);
+        }
+        
+        .copy-btn:hover { background: #e69500; }
+        
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        
+        .status-message.active { display: block; }
+        .status-message.success { background: rgba(29, 185, 84, 0.2); color: var(--accent-green); }
+        .status-message.error { background: rgba(255, 107, 107, 0.2); color: var(--accent-red); }
+        
+        .warning-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid var(--accent-orange);
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: var(--accent-orange);
+        }
+        
+        .warning-box i { margin-right: 0.3rem; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header>
+            <h1><i class="fas fa-cogs"></i> Админ Панел</h1>
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Назад кон листата</a>
+        </header>
+        
+        <div class="admin-section">
+            <h2><i class="fab fa-spotify"></i> Вчитај слики од Spotify</h2>
+            <p>
+                Оваа функција го вчитува <code>bands.json</code>, ги зема сликите на артистите од Spotify API 
+                за сите бендови кои имаат Spotify линк, и го копира резултатот во clipboard.
+                Потоа можеш да го замениш постоечкиот <code>bands.json</code> со новиот.
+            </p>
+            
+            <div class="warning-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                Потребни се валидни Spotify API credentials во <code>spotify-credentials.json</code>
+            </div>
+            
+            <button id="fetch-images-btn" class="action-btn spotify">
+                <i class="fab fa-spotify"></i> Вчитај слики
+            </button>
+            
+            <div id="progress-container" class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="progress-text" class="progress-text">Подготвување...</div>
+            </div>
+            
+            <div id="log-container" class="log-container" style="display: none;"></div>
+            
+            <div id="result-container" class="result-container">
+                <div class="result-stats">
+                    <div class="stat">
+                        <div id="stat-total" class="stat-value">0</div>
+                        <div class="stat-label">Вкупно бендови</div>
+                    </div>
+                    <div class="stat">
+                        <div id="stat-updated" class="stat-value">0</div>
+                        <div class="stat-label">Ажурирани слики</div>
+                    </div>
+                    <div class="stat">
+                        <div id="stat-skipped" class="stat-value">0</div>
+                        <div class="stat-label">Прескокнати</div>
+                    </div>
+                </div>
+                
+                <button id="copy-result-btn" class="action-btn copy-btn">
+                    <i class="fas fa-copy"></i> Копирај JSON во clipboard
+                </button>
+            </div>
+            
+            <div id="status-message" class="status-message"></div>
+        </div>
+        
+        <div class="admin-section">
+            <h2><i class="fas fa-info-circle"></i> Информации</h2>
+            <p>
+                <strong>Spotify API:</strong> Користи Client Credentials flow за автентикација.<br>
+                <strong>Rate Limits:</strong> Spotify дозволува ~180 барања/минута. Скриптата користи batch барања (50 артисти одеднаш).<br>
+                <strong>Слики:</strong> Се преземаат слики со резолуција ~300x300px (ако е достапна).
+            </p>
+        </div>
+    </div>
+
+    <script src="spotify-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fetchBtn = document.getElementById('fetch-images-btn');
+            const progressContainer = document.getElementById('progress-container');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            const logContainer = document.getElementById('log-container');
+            const resultContainer = document.getElementById('result-container');
+            const copyBtn = document.getElementById('copy-result-btn');
+            const statusMessage = document.getElementById('status-message');
+            
+            let resultBands = null;
+            
+            function log(message, type = '') {
+                const entry = document.createElement('div');
+                entry.className = 'log-entry' + (type ? ` ${type}` : '');
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logContainer.appendChild(entry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = `status-message active ${type}`;
+                setTimeout(() => {
+                    statusMessage.classList.remove('active');
+                }, 5000);
+            }
+            
+            fetchBtn.addEventListener('click', async () => {
+                fetchBtn.disabled = true;
+                progressContainer.classList.add('active');
+                logContainer.style.display = 'block';
+                resultContainer.classList.remove('active');
+                logContainer.innerHTML = '';
+                
+                try {
+                    log('Вчитување bands.json...', 'info');
+                    const response = await fetch('bands.json');
+                    const bands = await response.json();
+                    log(`Вчитани ${bands.length} бендови`, 'success');
+                    
+                    log('Проверка на Spotify credentials...', 'info');
+                    const credentials = await spotifyApi.loadCredentials();
+                    if (!credentials) {
+                        throw new Error('Spotify credentials не се конфигурирани');
+                    }
+                    log('Spotify credentials во ред', 'success');
+                    
+                    let updated = 0;
+                    let skipped = 0;
+                    
+                    log('Започнување на вчитување слики...', 'info');
+                    
+                    const images = await spotifyApi.fetchArtistImages(bands, (progress) => {
+                        const percent = Math.round(progress.processed / progress.total * 100);
+                        progressFill.style.width = `${percent}%`;
+                        progressText.textContent = `${progress.processed}/${progress.total} - ${progress.bandName}`;
+                        
+                        if (progress.hasImage) {
+                            updated++;
+                            log(`✓ ${progress.bandName}`, 'success');
+                        } else {
+                            skipped++;
+                        }
+                    });
+                    
+                    log(`Завршено! Ажурирани: ${updated}, Прескокнати: ${skipped}`, 'success');
+                    
+                    // Update bands with new images
+                    resultBands = bands.map(band => {
+                        if (images[band.name]) {
+                            return { ...band, imageUrl: images[band.name] };
+                        }
+                        return band;
+                    });
+                    
+                    // Update stats
+                    document.getElementById('stat-total').textContent = bands.length;
+                    document.getElementById('stat-updated').textContent = updated;
+                    document.getElementById('stat-skipped').textContent = bands.length - updated;
+                    
+                    resultContainer.classList.add('active');
+                    
+                } catch (err) {
+                    log(`Грешка: ${err.message}`, 'error');
+                    showStatus(`Грешка: ${err.message}`, 'error');
+                } finally {
+                    fetchBtn.disabled = false;
+                }
+            });
+            
+            copyBtn.addEventListener('click', async () => {
+                if (!resultBands) return;
+                
+                try {
+                    const json = JSON.stringify(resultBands, null, 2);
+                    await navigator.clipboard.writeText(json);
+                    showStatus('JSON е копиран во clipboard!', 'success');
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Копирано!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Копирај JSON во clipboard';
+                    }, 2000);
+                } catch (err) {
+                    showStatus('Не може да се копира: ' + err.message, 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

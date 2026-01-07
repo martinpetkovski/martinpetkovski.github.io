@@ -1,0 +1,35 @@
+name: Generate Spotify Chart Data
+
+on:
+  schedule:
+    # Run daily at 20:00 CET (19:00 UTC)
+    - cron: '0 19 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-chart-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Generate chart data
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: |
+          node masterlista/scripts/generate-chart-data.js
+          
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add masterlista/chart-data.json
+          git diff --staged --quiet || git commit -m "📊 Auto-update chart data ($(date +'%Y-%m-%d'))"
+          git push

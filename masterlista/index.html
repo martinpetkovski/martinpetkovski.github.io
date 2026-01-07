@@ -17,7 +17,6 @@
                 <span class="site-logo-text">MMM</span>
                 <div class="title-group">
                     <h1>Македонска Музичка Мастер Листа</h1>
-                    <p>напојувано од <a class="xotel-link" href="https://discord.gg/fj6dJGhM" target="_blank">Xotel</a></p>
                 </div>
             </div>
             <div class="header-buttons">
@@ -29,16 +28,13 @@
                 <button id="submit-pr-btn" class="header-btn request-change edit-hidden" title="Испрати барање за промена како PR" data-endpoint="https://muzichka-master-lista.deeeeelay.workers.dev">
                     <i class="fas fa-paper-plane"></i> Побарај промена
                 </button>
+                <a href="chart.html" class="header-btn chart-btn"><i class="fas fa-trophy"></i> Топ Листа</a>
                 <a href="guide.html" class="header-btn guide-btn"><i class="fas fa-book"></i>Упатство</a>
             </div>
         </div>
     </header>
     <main>
-        <div id="new-release-artists" class="new-release-artists">
-            <h2 title="Најнови песни со ознака „Ново Издание“">
-                Ново Издание <i class="fas fa-star new-release-icon"></i>
-            </h2>
-        </div>
+        <div id="new-release-artists" class="new-release-artists"></div>
         <div class="controls">
             <input type="text" id="search-name" placeholder="Пребарај по име...">
             <select id="filter-city"></select>
@@ -46,10 +42,6 @@
             <select id="filter-sounds-like"></select>
             <select id="filter-status"></select>
             <select id="filter-label"></select>
-            <label class="mode-toggle desktop-only">
-                <input type="checkbox" id="mode-toggle-checkbox" title="Промени во проширен приказ">
-                <i class="fas fa-expand-alt"></i>
-            </label>
             <button id="clear-filters" class="clear-filters-btn" title="Исчисти филтри"><i class="fas fa-times"></i></button>
         </div>
         <div id="loading-bar" class="loading-bar">
@@ -59,18 +51,24 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="image-column"></th>
                         <th>Име</th>
                         <th>Град</th>
                         <th>Жанр</th>
                         <th>Звучи како</th>
                         <th>Линкови</th>
+                        <th class="play-column"></th>
                         <th><i class="fas fa-circle status-header-icon"></i></th>
                         <th class="edit-hidden">Акции</th>
                     </tr>
                 </thead>
                 <tbody id="band-table-body"></tbody>
             </table>
+        </div>
+
+        <div class="meta-strip" aria-label="Информации">
+            <span>Вкупно: <strong id="total-bands">0</strong></span>
+            <span>Последна промена: <span id="last-modified">непознато</span></span>
+            <span>напојувано од <a class="xotel-link" href="https://discord.gg/fj6dJGhM" target="_blank">Xotel</a></span>
         </div>
     </main>
     <div id="band-modal" class="modal">
@@ -84,17 +82,26 @@
                 </div>
                 <div class="form-group">
                     <label for="band-city">Град (одделени со запирки)</label>
-                    <input type="text" id="band-city">
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="band-city" autocomplete="off">
+                        <div id="band-city-autocomplete" class="autocomplete-dropdown"></div>
+                    </div>
                     <div id="band-city-tags" class="tag-container"></div>
                 </div>
                 <div class="form-group">
                     <label for="band-genre">Жанр (одделени со запирки)</label>
-                    <input type="text" id="band-genre">
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="band-genre" autocomplete="off">
+                        <div id="band-genre-autocomplete" class="autocomplete-dropdown"></div>
+                    </div>
                     <div id="band-genre-tags" class="tag-container"></div>
                 </div>
                 <div class="form-group">
                     <label for="band-sounds-like">Звучи како (одделени со запирки)</label>
-                    <input type="text" id="band-sounds-like">
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="band-sounds-like" autocomplete="off">
+                        <div id="band-sounds-like-autocomplete" class="autocomplete-dropdown"></div>
+                    </div>
                     <div id="band-sounds-like-tags" class="tag-container"></div>
                 </div>
                 <div class="form-group">
@@ -107,8 +114,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="band-label">Ознака</label>
-                    <input type="text" id="band-label">
+                    <label for="band-label">Ознака (одделени со запирки)</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="band-label" autocomplete="off">
+                        <div id="band-label-autocomplete" class="autocomplete-dropdown"></div>
+                    </div>
+                    <div id="band-label-tags" class="tag-container"></div>
                 </div>
                 <div class="form-group">
                     <label for="band-lastfm">Last.fm име</label>
@@ -157,15 +168,18 @@
             </div>
         </div>
     </div>
+    <!-- Spotify Embed Player Modal -->
+    <div id="spotify-embed-modal" class="modal spotify-modal">
+        <div class="spotify-modal-content">
+            <button class="spotify-modal-close" title="Затвори"><i class="fas fa-times"></i></button>
+            <div id="spotify-embed-container"></div>
+        </div>
+    </div>
     <!-- Notification Area -->
     <div id="notification-area" class="notification-area"></div>
-    <footer>
-        <div class="footer-content">
-            <p>напојувано од <a class="xotel-link" href="https://discord.gg/fj6dJGhM" target="_blank">Xotel</a> | Вкупно бендови: <span id="total-bands">0</span> | Последна промена: <span id="last-modified">непознато</span></p>
-        </div>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="spotify-api.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

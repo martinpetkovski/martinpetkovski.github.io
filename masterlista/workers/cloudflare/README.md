@@ -1,29 +1,35 @@
-# MMM PR Worker
+# MMM Cloudflare Worker
 
-Cloudflare Worker that receives a full `bands.json` payload from the Master List UI and opens a GitHub Pull Request with the updated file.
+**PR Worker** (`pr-worker.js`) - Creates GitHub PRs from the Master List UI when users submit changes.
 
-## Deploy
+> **Note:** Spotify chart data is now generated via GitHub Actions instead of a Cloudflare Worker.
+> See `.github/workflows/generate-chart-data.yml`
 
-1) Install wrangler
+---
+
+## Deploy PR Worker
+
+```powershell
+wrangler deploy --config wrangler.toml
+```
+
+## Setup
+
+### Install wrangler
 
 ```powershell
 npm i -g wrangler
 ```
 
-2) Create `wrangler.toml` in this folder (example below), or adapt to your account.
-
-3) Set secrets:
+### Set GitHub credentials
 
 ```powershell
 wrangler secret put GITHUB_TOKEN
-wrangler secret put GITHUB_OWNER
-wrangler secret put GITHUB_REPO
-wrangler secret put GITHUB_DEFAULT_BRANCH
 ```
 
 At minimum, `GITHUB_TOKEN` is required (PAT with `repo` scope). The others have defaults: owner `martinpetkovski`, repo `martinpetkovski.github.io`, base branch `master`.
 
-4) (Optional) Switch to GitHub App authentication instead of PAT.
+### (Optional) Switch to GitHub App authentication instead of PAT.
 
 ### GitHub App Auth
 Instead of `GITHUB_TOKEN` you can set these secrets/vars:
