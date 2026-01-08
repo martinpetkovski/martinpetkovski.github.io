@@ -404,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Find most viewed release
             let mostViewed = null;
             
-            // Process each release
+            // Process each release - only keep the most recent release per artist
             releases.forEach(release => {
                 const bandName = release.bandName;
                 
@@ -413,25 +413,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     mostViewed = release;
                 }
                 
-                // Update cachedAutoLabels
+                // Update cachedAutoLabels - only if this release is newer than existing
                 if (!cachedAutoLabels.bands[bandName]) {
                     cachedAutoLabels.bands[bandName] = {};
                 }
-                cachedAutoLabels.bands[bandName].spotify = {
-                    url: release.releaseUrl,
-                    artistId: release.releaseId,
-                    isGeneralChannel: false,
-                    popular: release.popularity >= 50 || release.followers >= 10000,
-                    maxViewCount: release.followers,
-                    newRelease: true,
-                    latestVideoId: release.releaseId,
-                    latestVideoUrl: release.releaseUrl,
-                    latestVideoPublishedAt: release.releaseDate,
-                    latestVideoViewCount: release.followers,
-                    latestVideoTitle: release.releaseTitle,
-                    latestVideoThumbnail: release.thumbnail,
-                    releaseType: release.releaseType
-                };
+                
+                const existingDate = cachedAutoLabels.bands[bandName]?.spotify?.latestVideoPublishedAt;
+                const newDate = release.releaseDate;
+                
+                // Only update if no existing data or this release is newer
+                if (!existingDate || newDate > existingDate) {
+                    cachedAutoLabels.bands[bandName].spotify = {
+                        url: release.releaseUrl,
+                        artistId: release.releaseId,
+                        isGeneralChannel: false,
+                        popular: release.popularity >= 50 || release.followers >= 10000,
+                        maxViewCount: release.followers,
+                        newRelease: true,
+                        latestVideoId: release.releaseId,
+                        latestVideoUrl: release.releaseUrl,
+                        latestVideoPublishedAt: release.releaseDate,
+                        latestVideoViewCount: release.followers,
+                        latestVideoTitle: release.releaseTitle,
+                        latestVideoThumbnail: release.thumbnail,
+                        releaseType: release.releaseType
+                    };
+                }
                 
                 // Update band's label in bandsData
                 const band = processedBands.find(b => b.name === bandName);
@@ -557,10 +564,26 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear container - no header, just show releases directly
         newReleaseContainer.innerHTML = '';
 
+        // Calculate date one month ago
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        oneMonthAgo.setHours(0, 0, 0, 0); // Start of day for fair comparison
+
+        // Filter by "Ново Издание" label and release date within past month
         const newReleaseBands = bands.filter(band => {
             if (!band.label || band.label === 'недостигаат податоци') return false;
             const labels = String(band.label).split(',').map(l => l.trim()).filter(Boolean);
-            return labels.includes('Ново Издание');
+            if (!labels.includes('Ново Издание')) return false;
+            
+            // Filter by release date - only show releases from the past month
+            const bandData = cachedAutoLabels?.bands?.[band.name];
+            const releaseDate = bandData?.spotify?.latestVideoPublishedAt || bandData?.youtube?.latestVideoPublishedAt;
+            
+            // If no release date available, exclude from new releases bar
+            if (!releaseDate) return false;
+            
+            const releaseDateObj = new Date(releaseDate);
+            return releaseDateObj >= oneMonthAgo;
         });
         
         // Sort by release date (newest first)

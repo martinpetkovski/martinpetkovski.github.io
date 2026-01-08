@@ -38,24 +38,40 @@ function extractArtistId(spotifyUrl) {
   return match ? match[1] : null;
 }
 
-async function fetchWithRetry(url, options, retries = 3) {
+async function fetchWithRetry(url, options, retries = 3, timeout = 10000) {
   for (let i = 0; i < retries; i++) {
-    const response = await fetch(url, options);
-    
-    if (response.status === 429) {
-      const retryAfter = parseInt(response.headers.get('Retry-After') || '5', 10);
-      console.log(`Rate limited, waiting ${retryAfter}s...`);
-      await new Promise(r => setTimeout(r, retryAfter * 1000));
-      continue;
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeout);
+      
+      const response = await fetch(url, { 
+        ...options, 
+        signal: controller.signal 
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (response.status === 429) {
+        const retryAfter = parseInt(response.headers.get('Retry-After') || '3', 10);
+        console.log(`Rate limited, waiting ${retryAfter}s...`);
+        await new Promise(r => setTimeout(r, retryAfter * 1000));
+        continue;
+      }
+      
+      if (!response.ok && i < retries - 1) {
+        console.log(`Request failed (${response.status}), retrying...`);
+        await new Promise(r => setTimeout(r, 500));
+        continue;
+      }
+      
+      return response;
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        console.log(`Request timed out, retrying (${i + 1}/${retries})...`);
+        if (i < retries - 1) continue;
+      }
+      throw err;
     }
-    
-    if (!response.ok && i < retries - 1) {
-      console.log(`Request failed (${response.status}), retrying...`);
-      await new Promise(r => setTimeout(r, 1000));
-      continue;
-    }
-    
-    return response;
   }
   throw new Error(`Failed after ${retries} retries`);
 }
@@ -156,10 +172,10 @@ async function main() {
   const artistsInfo = await getArtistsBatch(artistIds, spotifyToken);
   console.log(`Got info for ${Object.keys(artistsInfo).length} artists`);
   
-  // Fetch albums with rate limiting
+  // Fetch albums with rate limiting - increased batch size for speed
   const releases = [];
-  const BATCH_SIZE = 10; // Process 10 artists at a time
-  const BATCH_DELAY = 500; // 500ms between batches
+  const BATCH_SIZE = 20; // Process 20 artists at a time (up from 10)
+  const BATCH_DELAY = 300; // 300ms between batches (down from 500ms)
   
   for (let i = 0; i < artistIds.length; i += BATCH_SIZE) {
     const batch = artistIds.slice(i, i + BATCH_SIZE);
