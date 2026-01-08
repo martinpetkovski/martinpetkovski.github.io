@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
         oneMonthAgo.setHours(0, 0, 0, 0); // Start of day for fair comparison
 
         // Filter by "Ново Издание" label and release date within past month
-        const newReleaseBands = bands.filter(band => {
+        let newReleaseBands = bands.filter(band => {
             if (!band.label || band.label === 'недостигаат податоци') return false;
             const labels = String(band.label).split(',').map(l => l.trim()).filter(Boolean);
             if (!labels.includes('Ново Издание')) return false;
