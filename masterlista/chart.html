@@ -120,12 +120,12 @@
         
         .chart-list-wrapper::before {
             top: 0;
-            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 100%);
         }
         
         .chart-list-wrapper::after {
             bottom: 0;
-            background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+            background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 100%);
         }
         
         .chart-list-wrapper.scroll-top::before { opacity: 1; }
@@ -536,11 +536,6 @@
                     const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
                     const itemClass = rank <= 3 ? `rank-${rank}` : '';
                     
-                    const releaseTypeLabel = release.releaseType === 'single' ? 'S' 
-                        : release.releaseType === 'album' ? 'A' : 'EP';
-                    const releaseTypeClass = release.releaseType === 'album' ? 'album' 
-                        : release.releaseType === 'single' ? '' : 'ep';
-                    
                     const formattedFollowers = release.followers >= 1000000 
                         ? (release.followers / 1000000).toFixed(1) + 'М'
                         : release.followers >= 1000 
@@ -555,13 +550,13 @@
                             <span class="chart-rank ${rankClass}">${rank}</span>
                             <div class="chart-cover">
                                 ${release.thumbnail 
-                                    ? `<img src="${release.thumbnail}" alt="${release.releaseTitle}" loading="lazy">`
+                                    ? `<img src="${release.thumbnail}" alt="${release.releaseTitle}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'placeholder\\'><i class=\\'fab fa-spotify\\'></i></div>'">`
                                     : '<div class="placeholder"><i class="fab fa-spotify"></i></div>'
                                 }
                             </div>
                             <div class="chart-info">
                                 <div class="chart-title">${release.releaseTitle}</div>
-                                <div class="chart-artist">${release.bandName} <span class="chart-release-type ${releaseTypeClass}">${releaseTypeLabel}</span></div>
+                                <div class="chart-artist">${release.bandName}</div>
                             </div>
                             <div class="chart-meta">
                                 <span class="chart-stat"><i class="fas fa-calendar-alt"></i> ${dateStr}</span>

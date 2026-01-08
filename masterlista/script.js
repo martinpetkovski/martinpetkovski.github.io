@@ -279,8 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function initScrollShadows() {
         // Table wrapper (vertical scroll)
         const tableWrapper = document.querySelector('.table-wrapper');
-        if (tableWrapper) {
+        const scrollContainer = document.querySelector('.table-scroll-container');
+
+        if (tableWrapper && scrollContainer) {
             // Create shadow overlay elements
+            // IMPORTANT: Shadows appended to wrapper (fixed), listener attached to container (scrolling)
             const shadowTop = document.createElement('div');
             shadowTop.className = 'scroll-shadow-top';
             const shadowBottom = document.createElement('div');
@@ -289,11 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
             tableWrapper.appendChild(shadowBottom);
             
             const updateTableShadows = () => {
-                const { scrollTop, scrollHeight, clientHeight } = tableWrapper;
+                const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
                 shadowTop.classList.toggle('visible', scrollTop > 5);
                 shadowBottom.classList.toggle('visible', scrollTop < scrollHeight - clientHeight - 5);
             };
-            tableWrapper.addEventListener('scroll', updateTableShadows);
+            scrollContainer.addEventListener('scroll', updateTableShadows);
             // Initial check and recheck after content loads
             updateTableShadows();
             setTimeout(updateTableShadows, 500);
@@ -663,11 +666,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     releaseDateHtml = `<span class="release-date"><i class="fas fa-calendar-alt"></i> ${day} ${month}</span>`;
                 }
                 
-                // Release type badge for Spotify
-                const releaseTypeBadge = isSpotify && autoData.releaseType 
-                    ? `<span class="release-type-badge">${autoData.releaseType === 'single' ? 'Сингл' : autoData.releaseType === 'album' ? 'Албум' : 'EP'}</span>`
-                    : '';
-                
                 // Play overlay icon (different for YouTube vs Spotify)
                 const playIcon = isSpotify ? 'fab fa-spotify' : 'fas fa-play-circle';
                 // Preview button for Spotify releases (plays embed)
@@ -678,12 +676,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 releaseCard.innerHTML = `
                     <a href="${releaseUrl}" target="_blank" class="release-thumbnail-link">
                         <div class="release-thumbnail ${!thumbnail ? 'no-thumb' : ''}">
-                            ${thumbnail ? `<img src="${thumbnail}" alt="${releaseTitle}" loading="lazy">` : `<i class="fab fa-spotify spotify-placeholder"></i>`}
+                            ${thumbnail ? `<img src="${thumbnail}" alt="${releaseTitle}" loading="lazy" onerror="this.onerror=null; this.style.display='none'; this.parentElement.classList.add('no-thumb'); this.insertAdjacentHTML('afterend', '<i class=\\'fab fa-spotify spotify-placeholder\\'></i>');">` : `<i class="fab fa-spotify spotify-placeholder"></i>`}
                             <div class="play-overlay"><i class="${playIcon}"></i></div>
                         </div>
                     </a>
                     <div class="release-info">
-                        <div class="release-artist">${band.name} ${releaseTypeBadge}</div>
+                        <div class="release-artist">${band.name}</div>
                         <a href="${releaseUrl}" target="_blank" class="release-title" title="${releaseTitle}">${releaseTitle}</a>
                         <div class="release-meta">
                             ${releaseDateHtml}
