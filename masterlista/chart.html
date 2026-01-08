@@ -357,7 +357,7 @@
     
     <div class="chart-container">
         <div class="chart-header">
-            <h1><i class="fas fa-trophy"></i> Топ Листа</h1>
+            <h1></h1>
             <div class="chart-header-actions">
                 <span class="cache-info" id="cache-info"></span>
             </div>
@@ -455,7 +455,7 @@
             function updateDataInfo(generatedAt) {
                 const cacheInfo = document.getElementById('cache-info');
                 const age = formatDataAge(generatedAt);
-                cacheInfo.textContent = age || '';
+                cacheInfo.textContent = "Ажурирано " + age || '';
             }
             
             // Scroll shadow detection
