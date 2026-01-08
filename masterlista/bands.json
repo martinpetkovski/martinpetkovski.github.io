@@ -14,8 +14,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "21 Век",
@@ -29,50 +28,46 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "21 Vek",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/c81b15e6ad052f10acf92814a2a24807.png"
+      "label": null
     },
     {
       "name": "333foenem",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
-      "soundsLike": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Трап",
+      "soundsLike": "Kico Praskata",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/2EAyanzlgweVWwUQ9MYT7v?si=SUleVl3JRNKXX3cvpX_Nvg"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "350Teric",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
-      "soundsLike": "недостигаат податоци",
+      "city": "Велес",
+      "genre": "Синтвејв",
+      "soundsLike": "Mitch Murder, Com Truise",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/509BihQnvmfvoSB0hKwxsF?si=RI9K9hQ6ReOKNBn58wK62g"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "500ok",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Рап, Бум Бап, Трип Хоп",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/0OtTNgHnj14bWtA30tL56A?si=JiLeqKRrTw2hLpo-FC_E1g"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Абракадабра",
@@ -85,8 +80,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Афективен Набој",
@@ -99,8 +93,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Afektiven Naboj",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Against Them All",
@@ -114,8 +107,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Against Them All",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Agni Kai",
@@ -129,8 +121,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Александар Гулевски",
@@ -146,8 +137,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Александар Македонски",
@@ -157,12 +147,12 @@
       "isActive": false,
       "links": {
         "youtube": "https://www.youtube.com/watch?v=4bveTY7Z0Ag",
-        "lastfm": "https://www.last.fm/music/Aleksandar+Makedonski"
+        "lastfm": "https://www.last.fm/music/Aleksandar+Makedonski",
+        "spotify": "https://open.spotify.com/artist/1a4kFMZWsAvmkypL24U2mf?si=ROcwjPO2TG6U_LSWlfLEew"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Aleksandar Makedonski",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/fd4a88d665f34e46ce40ec7b8c3ef97b.png"
+      "label": null
     },
     {
       "name": "Александар Масевски",
@@ -175,22 +165,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Александар Ордев",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Експериментална",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "youtube": "https://www.youtube.com/channel/UCVPFsjO8wU6eatzUq162NEw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Александар Велики",
@@ -204,8 +192,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Aleksandar Veliki",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/3cc321e9e91dda78de2aa1617d29026a.png"
+      "label": null
     },
     {
       "name": "Алембик",
@@ -222,22 +209,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "alone in a crowded room",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
-      "soundsLike": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Инди Рок, Авант Фолк, Експериментален Рок",
+      "soundsLike": "The Microphones",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "bandcamp": "https://aloneinacrowdedroom.bandcamp.com"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Amaneth",
@@ -250,22 +235,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Amaneth",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Amplidyne Effect",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
-      "soundsLike": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Амбиентална, Експериментална",
+      "soundsLike": "Boards of Canada",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/4o0ELWB8VspQ9HUqj5wSrw?si=4CuKLrUxS1e0X00jvJYNVA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Анастасија",
@@ -276,12 +259,12 @@
       "links": {
         "wikipedia": "https://en.wikipedia.org/wiki/Anastasia_(band)",
         "lastfm": "https://www.last.fm/music/Anastasia",
-        "youtube": "https://www.youtube.com/watch?v=3KJHoQ3Ly6s"
+        "youtube": "https://www.youtube.com/watch?v=3KJHoQ3Ly6s",
+        "spotify": "https://open.spotify.com/artist/29LwpryNhy0RRRVGIkd9Ll?si=t_XvnnjBRQOCnRBeq15Izw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Anastasia",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/68193e3c2e2746f9b9dda3a3d95e18eb.png"
+      "label": null
     },
     {
       "name": "Антониа Гиговска",
@@ -296,8 +279,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Antonia Gigovska",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/991369bcac32ec074015e161a042ea04.png"
+      "label": null
     },
     {
       "name": "Апансас",
@@ -311,8 +293,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Апореа",
@@ -326,8 +307,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Aporea",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
+    },
+    {
+      "name": "Ареа",
+      "city": "Тетово",
+      "genre": "Софт Рок, Алтернативен Рок, Поп-Рок, Поп",
+      "soundsLike": "недостигаат податоци",
+      "isActive": true,
+      "links": {
+        "spotify": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null
     },
     {
       "name": "Архангел",
@@ -341,8 +334,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Arhangel",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/29075a4248ee4521abbe7ddde67a9e7d.png"
+      "label": null
     },
     {
       "name": "Arrested Army",
@@ -355,8 +347,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Arrested Army",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0277a26b444e4356ae6fc001000bce8c.png"
+      "label": null
     },
     {
       "name": "Арсов и Неговиот Најјак Бенд",
@@ -370,22 +361,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Aspirin Moon",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Џез, Поезија",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "bandcamp": "https://pmgjazz.bandcamp.com/album/entropy"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Астероид",
@@ -398,8 +387,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "аТа",
@@ -414,22 +402,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "B.o.r.g.",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Електронска, Транс, Техно",
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "bandcamp": "https://kritikamk.bandcamp.com/album/b-o-r-g"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Бадмингтонс",
@@ -443,8 +429,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Badmintons",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/e6493736f9b13e986e83fd61f7c4fe28.png"
+      "label": null
+    },
+    {
+      "name": "Багаж",
+      "city": "Скопје, Кавадарци",
+      "genre": "Рок, Поп-Рок",
+      "soundsLike": "недостигаат податоци",
+      "isActive": false,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=Ijqy82iU3z4"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": null,
+      "label": null
     },
     {
       "name": "Баклава",
@@ -459,8 +457,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Baklava",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/c1705a2872304a358871c69e45128896.png"
+      "label": null
     },
     {
       "name": "Basement Cult",
@@ -477,23 +474,22 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Бастион",
       "city": "Скопје",
-      "genre": "Синти-Поп",
+      "genre": "Синт-Поп",
       "soundsLike": "недостигаат податоци",
       "isActive": false,
       "links": {
         "wikipedia": "https://en.wikipedia.org/wiki/Bastion_(band)",
-        "youtube": "https://www.youtube.com/watch?v=aIbuN__WOYQ"
+        "youtube": "https://www.youtube.com/watch?v=aIbuN__WOYQ",
+        "spotify": "https://open.spotify.com/artist/5L3w2NRLkMFmvL9MnDBDWE?si=sjnhpeAOQnie0qG6oLVD8w"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Bastion",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5228c80c24180d1e10bea046a60bb97e.png"
+      "label": null
     },
     {
       "name": "Bernays Propaganda",
@@ -508,8 +504,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": "Ново Издание",
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/030fa556be1446e08482bb145be356f1.png"
+      "label": "Ново Издание"
     },
     {
       "name": "Beyond The Horizon",
@@ -523,22 +518,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Billy Esteban",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Музика од светот",
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Бис-Без",
@@ -552,22 +545,20 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Bis-Bez",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
-      "name": "Blagojche Tomevski",
-      "city": "недостигаат податоци",
+      "name": "Благојче Томевски",
+      "city": "Скопје,",
       "genre": "Џез",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "bandcamp": "https://pmgjazz.bandcamp.com/album/sveti-nikole-session-vol-1-2"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Blla Blla Blla",
@@ -577,12 +568,12 @@
       "isActive": true,
       "links": {
         "wikipedia": "https://en.wikipedia.org/wiki/Blla_Blla_Blla",
-        "youtube": "https://www.youtube.com/@idrizameti6394"
+        "youtube": "https://www.youtube.com/@idrizameti6394",
+        "spotify": "https://open.spotify.com/artist/25AbJ0NMoidXI9XxOLLdgY?si=lio9zClfSV-eDSdRwAm76A"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Бодан Арсовски",
@@ -591,12 +582,12 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/4q78Ii99PjaWxUihMjUq2b?si=3mbToEHLRueh-2VjPW1H3w",
+        "youtube": "https://www.youtube.com/watch?v=PEua5FwI5dc&list=PL1204EF30715513C7"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Бојана Арсовска",
@@ -610,8 +601,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Bon Praskiza",
@@ -626,8 +616,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Born For Slaughter",
@@ -642,8 +631,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Born For Slaughter",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/4fffa4f9d87e925e217cd5f21ea21027.png"
+      "label": null
     },
     {
       "name": "Брејк",
@@ -652,12 +640,12 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/5JVo9UjA40fMnaVE8M2mQl?si=JoVn6kTrQMKurj74xL8xcA",
+        "youtube": "https://www.youtube.com/@darkogelevbrejk"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Cassato",
@@ -673,8 +661,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/b0d2e5b7adbe96cb7bf6a7ccd9aadfd6.png"
+      "label": null
     },
     {
       "name": "Чалгија Саунд Систем",
@@ -688,8 +675,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0cf39d717c6b4247b2632f2f43df29ea.png"
+      "label": null
     },
     {
       "name": "ChiefO",
@@ -702,8 +688,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Чоканче",
@@ -716,8 +701,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Cokance",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Chromatic Point",
@@ -733,8 +717,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Chromatic Point",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/73c597e2b8f5447689ea9b2330de2f0f.png"
+      "label": null
     },
     {
       "name": "Цилиндар",
@@ -748,8 +731,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Cilindar",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Code 369",
@@ -764,8 +746,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Conquering Lion",
@@ -781,8 +762,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/65227b5a7a4f43a3a0030f89ca8e7155.png"
+      "label": null
     },
     {
       "name": "Conspiracy",
@@ -798,8 +778,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/891e52879f6c423692dc6ae5e0ce4e5b.png"
+      "label": null
     },
     {
       "name": "Contact 59",
@@ -814,8 +793,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Corrosion",
@@ -831,8 +809,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "corrosion.",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/ccce4ef841801b540be1ac2644acb9f6.png"
+      "label": null
     },
     {
       "name": "Crystal Disco",
@@ -845,8 +822,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Culture Development",
@@ -862,8 +838,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Culture Development",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/61918a25b9a74fb8b0a387b01ab47956.png"
+      "label": null
     },
     {
       "name": "Cut Your Nipple",
@@ -877,8 +852,7 @@
       },
       "contact": "cutyournipple@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/092479e65e8a45341c9771e96c7843b6.png"
+      "label": null
     },
     {
       "name": "Д.Н.К",
@@ -891,8 +865,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Д.Н.О.",
@@ -905,8 +878,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Д’ Далтонс",
@@ -920,8 +892,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "D' Daltons",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Да Џака Накот",
@@ -935,8 +906,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Da Dzaka Nakot",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/a10af24dafcbe281a1fe945f164d0bae.png"
+      "label": null
     },
     {
       "name": "Damage Control",
@@ -949,8 +919,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дани Димитровска",
@@ -964,8 +933,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дарио и МИГ 21",
@@ -978,8 +946,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дарио Панковски",
@@ -993,8 +960,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дарко Димитров",
@@ -1007,8 +973,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Давид Ангелевски",
@@ -1021,8 +986,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Deadshot",
@@ -1036,8 +1000,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Deadshot",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Decadence",
@@ -1051,8 +1014,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Decadence (MK)",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/82c31fdc23f05890b5a9386c84ef8bab.png"
+      "label": null
     },
     {
       "name": "Дејан Нашоку",
@@ -1065,8 +1027,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дејан Спасовиќ",
@@ -1079,8 +1040,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дејание",
@@ -1093,8 +1053,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Dementor",
@@ -1107,8 +1066,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Deni Omeragich",
@@ -1121,8 +1079,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дени те чува",
@@ -1136,8 +1093,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Denny Te Chuva",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Димиш",
@@ -1156,8 +1112,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Dimish",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Димитар Додовски",
@@ -1172,8 +1127,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Димитар Масевски",
@@ -1186,8 +1140,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дина Јашари",
@@ -1202,8 +1155,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Dina Jashari",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Dionisaf",
@@ -1216,8 +1168,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Discops",
@@ -1230,8 +1181,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дивоградба",
@@ -1246,8 +1196,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Divogradba",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "DJ Stock Photo",
@@ -1260,8 +1209,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Dobrila & Dorian Duo",
@@ -1275,8 +1223,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/d1cba0e3b88ecbe4e0ad7831b90b5789.png"
+      "label": null
     },
     {
       "name": "Don't! Who? One.",
@@ -1289,8 +1236,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Donplaya",
@@ -1305,8 +1251,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/a3753fa3e2bf42a605dde97c41766b03.png"
+      "label": null
     },
     {
       "name": "Dorian Jovanovikj",
@@ -1319,8 +1264,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Драган Дутовски Квартет",
@@ -1335,8 +1279,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Dragan Dautovski Quartet",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5b99131dfea546139c193ef6e216dee5.png"
+      "label": null
     },
     {
       "name": "Драган Ѓаконовски Шпато",
@@ -1349,8 +1292,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Драган Мијалковски",
@@ -1363,8 +1305,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Драги Иванов",
@@ -1377,8 +1318,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Druggy",
@@ -1391,8 +1331,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Dubnotic",
@@ -1405,8 +1344,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Дуке Бојаџиев",
@@ -1420,8 +1358,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5a3329bb043441b4bfb626a49b538add.png"
+      "label": null
     },
     {
       "name": "Дупер",
@@ -1436,8 +1373,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "duper",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/fe7b1c71a4aedb53be1aba7ac4ff4424.png"
+      "label": null
     },
     {
       "name": "Elektro Kultura",
@@ -1450,8 +1386,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Elena Baklava",
@@ -1464,8 +1399,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Елена Ристеска",
@@ -1480,8 +1414,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Elena Risteska",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/93595d9a3bddeb0114e0bf8ba2267449.png"
+      "label": null
     },
     {
       "name": "Ена Веко",
@@ -1494,8 +1427,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ендемски Вид",
@@ -1509,8 +1441,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ерзана",
@@ -1523,8 +1454,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/a5eb2a6286c1a3ab62b30f319d155752.png"
+      "label": null
     },
     {
       "name": "Eye Cue",
@@ -1539,8 +1469,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/3ed3cdec482e349f7a2bd1a9c74f7f34.png"
+      "label": null
     },
     {
       "name": "Felucia",
@@ -1557,8 +1486,7 @@
       },
       "contact": "felucia.official@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/8394fdb27e79e009fd7a8c359d974802.png"
+      "label": null
     },
     {
       "name": "Filip Bukrshliev",
@@ -1571,8 +1499,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "FIN Project",
@@ -1585,8 +1512,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "ФК Баскет",
@@ -1600,8 +1526,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Фолтин",
@@ -1618,8 +1543,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Foltin",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/59b4f252de3a443fc47ce0bbcb8245d9.png"
+      "label": null
     },
     {
       "name": "Фонија",
@@ -1637,8 +1561,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Fonija",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/dd94eb54599649869a8808073b3af764.png"
+      "label": null
     },
     {
       "name": "Фосфен",
@@ -1653,8 +1576,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Fosfen",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/b95796abcffd067c4d4451479799d678.png"
+      "label": null
     },
     {
       "name": "Frontal Cortex",
@@ -1667,8 +1589,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Fundament",
@@ -1681,8 +1602,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Funk Shui",
@@ -1698,8 +1618,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/345f4cf5dc4c9baa2e45191999587d7d.png"
+      "label": null
     },
     {
       "name": "Furion",
@@ -1713,8 +1632,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Furion",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/618b16fadbd84213bfe95dbe725874db.png"
+      "label": null
     },
     {
       "name": "fydhws",
@@ -1727,8 +1645,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Galoski",
@@ -1746,8 +1663,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Galoski",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/64e3680f0b4cf93d306cdb780d0f5aa6.png"
+      "label": null
     },
     {
       "name": "Garameth",
@@ -1761,8 +1677,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Gargoyles",
@@ -1776,8 +1691,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Gargoyles",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/68d06f7a9e7443558fde131cb3166c53.png"
+      "label": null
     },
     {
       "name": "Ѓокица Зафировски",
@@ -1790,8 +1704,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ѓоко Ѓорчев",
@@ -1804,8 +1717,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ѓоко Таневски",
@@ -1818,8 +1730,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ѓорѓи Крстевски",
@@ -1832,8 +1743,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Gligor Kondovski",
@@ -1846,8 +1756,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Големата Вода",
@@ -1860,8 +1769,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "GORA$",
@@ -1874,8 +1782,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Горан Трајкоски",
@@ -1888,8 +1795,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0b90de8ab529778053790dd382830d15.png"
+      "label": null
     },
     {
       "name": "Goreiju",
@@ -1902,8 +1808,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Green Grass Dreams",
@@ -1916,8 +1821,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Green Out",
@@ -1932,8 +1836,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Green Out",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/eb66d26811f24c45cc4914b70099bb5b.png"
+      "label": null
     },
     {
       "name": "GURUVOODOO",
@@ -1946,8 +1849,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "GWASS",
@@ -1960,8 +1862,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Хаос Ин Лаос",
@@ -1974,8 +1875,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Hardfaced",
@@ -1988,8 +1888,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Herzel",
@@ -2007,8 +1906,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/444656f9a976820c065893eb0a3b425f.png"
+      "label": null
     },
     {
       "name": "In Fuse",
@@ -2021,8 +1919,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Iron Fang",
@@ -2036,8 +1933,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Iron Fang",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Искра",
@@ -2050,8 +1946,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Искра Трпева",
@@ -2064,8 +1959,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "ИВЛ",
@@ -2078,8 +1972,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Јана Бурческа",
@@ -2094,8 +1987,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Jana Burčeska",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/bb1ea01310e479472918a6e6cacebb41.png"
+      "label": null
     },
     {
       "name": "Jeff Bahami",
@@ -2109,8 +2001,7 @@
       },
       "contact": "martin@najjak.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Johnny Larry",
@@ -2126,8 +2017,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Јован Милошевски",
@@ -2140,8 +2030,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Јулија",
@@ -2154,8 +2043,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кактус",
@@ -2168,8 +2056,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/10e0b667df5a4545c5915bbd63f57951.png"
+      "label": null
     },
     {
       "name": "Kala",
@@ -2182,8 +2069,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Калдрма",
@@ -2196,8 +2082,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Калико",
@@ -2214,8 +2099,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Калиопи",
@@ -2230,8 +2114,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kaliopi",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/4a3b7694a7735d15089fd207bb242282.png"
+      "label": null
     },
     {
       "name": "Карамела",
@@ -2244,8 +2127,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Карла Левински",
@@ -2258,8 +2140,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Karma Scale",
@@ -2275,8 +2156,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Каролина Гочева",
@@ -2289,8 +2169,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Kazan",
@@ -2303,8 +2182,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кем",
@@ -2320,8 +2198,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кенопсија",
@@ -2336,8 +2213,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kenopsija",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кентаур",
@@ -2350,8 +2226,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Kepurdhat",
@@ -2367,8 +2242,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Kiborg",
@@ -2381,8 +2255,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кирил Џајковски",
@@ -2395,8 +2268,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Kismet",
@@ -2409,8 +2281,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/4a7d85178d496450da7123513fea0d13.png"
+      "label": null
     },
     {
       "name": "Клержо",
@@ -2423,8 +2294,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Климе Ковачески",
@@ -2437,8 +2307,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Кочани Оркестар",
@@ -2453,8 +2322,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kocani Orkestar",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/f0b941ce370b4300b075e2adccdc3fab.png"
+      "label": null
     },
     {
       "name": "Кокиче",
@@ -2467,8 +2335,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Конкорд",
@@ -2481,8 +2348,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Корка",
@@ -2498,8 +2364,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Korka",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Kostadin Delinikolov",
@@ -2512,8 +2377,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Крсто Роџевски",
@@ -2527,8 +2391,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kristo Rodzevski",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/35c9ed9c138f125c1b44be7005e62451.png"
+      "label": null
     },
     {
       "name": "Куку Леле",
@@ -2541,8 +2404,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Културно Уметнички Работници",
@@ -2559,8 +2421,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Kulturno Umetnicki Rabotnici",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/993bc4d486c53ab5f6f3af7e3500cad2.png"
+      "label": null
     },
     {
       "name": "KungFoolish",
@@ -2573,8 +2434,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Land",
@@ -2587,8 +2447,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Лас Веѓас",
@@ -2601,8 +2460,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Last Act Of Defiance",
@@ -2616,8 +2474,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Last Act Of Defiance",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/43981a49df304294a68c777e14d89c10.png"
+      "label": null
     },
     {
       "name": "Last Expedition",
@@ -2631,8 +2488,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Last Expedition",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/80d1dd152fe9482c9ee6b28b8501d457.png"
+      "label": null
     },
     {
       "name": "Ластовица",
@@ -2645,8 +2501,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Лазар Дарковски",
@@ -2660,8 +2515,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Лазар Нелковски",
@@ -2675,8 +2529,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "LD Pistolero",
@@ -2689,8 +2542,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Леб и Сол",
@@ -2707,8 +2559,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Leb i Sol",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/f61fbf5a859949990221055438500748.png"
+      "label": null
     },
     {
       "name": "Lefterna",
@@ -2721,8 +2572,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Легијата",
@@ -2738,8 +2588,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Legijata",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/53e73d7e713d54d55d57898eb31c8ea4.png"
+      "label": null
     },
     {
       "name": "Лева Патика",
@@ -2752,8 +2601,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Љубојна",
@@ -2766,8 +2614,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Lola V. Stein",
@@ -2780,8 +2627,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Lucent",
@@ -2796,8 +2642,7 @@
       },
       "contact": "bandlucent@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Lufthansa",
@@ -2813,8 +2658,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/9d23ede219052e11c5ebdb1e553f4895.png"
+      "label": null
     },
     {
       "name": "Маја Панчева",
@@ -2827,8 +2671,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Маја Вукичевиќ",
@@ -2841,8 +2684,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Maki Hachiya",
@@ -2855,8 +2697,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mallard",
@@ -2869,8 +2710,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mамут",
@@ -2887,8 +2727,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "MANAS",
@@ -2903,8 +2742,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Мариналеда",
@@ -2918,8 +2756,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mark Purpose",
@@ -2932,8 +2769,7 @@
       },
       "contact": "markpurpose79@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Мартин Џорлев",
@@ -2946,8 +2782,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Мартин Ѓаконовски",
@@ -2960,8 +2795,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Martix",
@@ -2974,8 +2808,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "МаЗНо, аМа Не е",
@@ -2990,8 +2823,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Ma3Ho, aMa He e",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/579c800759f84cdccc13f5fdb9579c81.png"
+      "label": null
     },
     {
       "name": "Медуза",
@@ -3004,8 +2836,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Melissa",
@@ -3019,8 +2850,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/32eddb194ade0c22d2362da68fe8f3ca.png"
+      "label": null
     },
     {
       "name": "Меморија",
@@ -3036,8 +2866,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Memorija",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "МЕНКА",
@@ -3050,8 +2879,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mev",
@@ -3064,8 +2892,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Миа Перевска",
@@ -3082,8 +2909,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mila and the Heartbreakers",
@@ -3096,8 +2922,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": "Издвојуваме",
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": "Издвојуваме"
     },
     {
       "name": "Милица Ризо",
@@ -3111,8 +2936,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mindless Violence",
@@ -3127,8 +2951,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Mindless Violence",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Misanthrope",
@@ -3141,8 +2964,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/7fb7a7622e68457fb96d5f5206bd9fc8.png"
+      "label": null
     },
     {
       "name": "Мизар",
@@ -3156,8 +2978,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Mizar",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/98451f4791117880fb35cf656edfaaf2.png"
+      "label": null
     },
     {
       "name": "Mnemonic45",
@@ -3170,8 +2991,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/db44bbef134be60d14d91c77cd20d40d.png"
+      "label": null
     },
     {
       "name": "Moira",
@@ -3185,8 +3005,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/7d5df58308e0a5765f682d54d43b282d.png"
+      "label": null
     },
     {
       "name": "Molokai",
@@ -3201,8 +3020,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Molokai",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/4313e9907ffa54bac1452e9ed1d2e7a2.png"
+      "label": null
     },
     {
       "name": "Морал",
@@ -3215,8 +3033,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Mosaique",
@@ -3229,8 +3046,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Mosaique",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/82cb4e7c1040fe1a4b970cf7c54d9bcf.png"
+      "label": null
     },
     {
       "name": "Мугер Фугер",
@@ -3243,8 +3059,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/2e07e57fed923f1ed13c9f92b46b7c47.png"
+      "label": null
     },
     {
       "name": "Музак",
@@ -3257,8 +3072,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "My Tear",
@@ -3271,8 +3085,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Nascor San",
@@ -3285,8 +3098,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Наско",
@@ -3300,8 +3112,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Небо",
@@ -3314,8 +3125,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/d8f6849ca16e9d98cbba8dd73d73c212.png"
+      "label": null
     },
     {
       "name": "Нема лабаво",
@@ -3328,8 +3138,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "New Police State",
@@ -3342,8 +3151,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Next Time",
@@ -3360,8 +3168,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Next Time",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Nickarth",
@@ -3374,8 +3181,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ние Запирка Другарите",
@@ -3388,8 +3194,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Никеја",
@@ -3402,8 +3207,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Николче Мицевски",
@@ -3416,8 +3220,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ninoslav Spirovski",
@@ -3430,8 +3233,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Нискоградба",
@@ -3444,8 +3246,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "No Name Nation",
@@ -3460,8 +3261,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "No Name Nation",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Нокаут",
@@ -3476,8 +3276,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Nokaut",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/7ab8ad43c9e2c1ff5cf4e14eb1259698.png"
+      "label": null
     },
     {
       "name": "Nora",
@@ -3490,8 +3289,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Новиот Почеток",
@@ -3509,8 +3307,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Noviot Pochetok",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/34c5eebb6aef349fed457948c5c73b98.png"
+      "label": null
     },
     {
       "name": "Новоградска",
@@ -3523,8 +3320,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Нулта Позитив",
@@ -3539,8 +3335,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Nulta Pozitiv",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Огнен Здравковски",
@@ -3554,8 +3349,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Ognen Zdravkovski",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Оливер Димитров",
@@ -3568,8 +3362,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Орион",
@@ -3582,8 +3375,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/9f5c880100ae417e9f7b7685b46739b4.png"
+      "label": null
     },
     {
       "name": "Пајак",
@@ -3596,8 +3388,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Паркети",
@@ -3611,8 +3402,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Parketi",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Павел Ренџов",
@@ -3625,8 +3415,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Peach Vice",
@@ -3641,8 +3430,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5cea5270a5286fad7f4eb8ef8706ec49.png"
+      "label": null
     },
     {
       "name": "Педро Хоризонте",
@@ -3655,8 +3443,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Пијан Славеј",
@@ -3671,8 +3458,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Pijan Slavej",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0261b4ebe40d07d7dff835de92dacd0b.png"
+      "label": null
     },
     {
       "name": "Пики",
@@ -3685,8 +3471,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Pikolomini",
@@ -3699,8 +3484,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Плава",
@@ -3714,8 +3498,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Pluto's Doubts",
@@ -3730,8 +3513,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/61c5a559a82e78a6669633a94028a0ba.png"
+      "label": null
     },
     {
       "name": "ПМГ Колектив",
@@ -3746,8 +3528,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "PMG Kolektiv",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/9db6794584ae47e28302f616943e83c2.png"
+      "label": null
     },
     {
       "name": "PMGJazz",
@@ -3760,8 +3541,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Poetronika",
@@ -3774,8 +3554,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Пресен Зрак",
@@ -3789,8 +3568,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Presen Zrak",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Prince$$ Donatsu",
@@ -3804,8 +3582,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Project Zlust",
@@ -3821,8 +3598,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Project Zlust",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Промашена Инвестиција",
@@ -3836,8 +3612,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Raven",
@@ -3851,8 +3626,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Raven",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/f49be54f234e553b4a4359a24151ad3d.png"
+      "label": null
     },
     {
       "name": "Ребека",
@@ -3865,8 +3639,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Red 18",
@@ -3881,8 +3654,7 @@
       },
       "contact": "red18band@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5015c8b939c0448290e75314b6fb047f.png"
+      "label": null
     },
     {
       "name": "Red Sails Below",
@@ -3895,8 +3667,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ристо Бомбата",
@@ -3910,8 +3681,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Risto Bombata",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ристо Самарџиев",
@@ -3924,8 +3694,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Роботек",
@@ -3938,8 +3707,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Royal Albert Hall",
@@ -3953,8 +3721,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Royal Albert Hall",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Ruststained",
@@ -3969,8 +3736,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/3c53fd00d276772353fe99df6459b4b4.png"
+      "label": null
     },
     {
       "name": "С.А.М.",
@@ -3983,8 +3749,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Saidon",
@@ -3997,8 +3762,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Санаториум",
@@ -4013,8 +3777,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Sanatorium",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/eb0b0e17e2abbd53ac420420b6228966.png"
+      "label": null
     },
     {
       "name": "Сарацени",
@@ -4027,8 +3790,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Сашка Петковска",
@@ -4041,8 +3803,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Sasho Uzun",
@@ -4055,8 +3816,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Saso Popovski Trio",
@@ -4075,8 +3835,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Saso Recyd",
@@ -4089,8 +3848,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Satanhord",
@@ -4103,8 +3861,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Scattered",
@@ -4117,8 +3874,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Schoiroideairis",
@@ -4131,8 +3887,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Serpentine Fire",
@@ -4146,8 +3901,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Serpentine Fire",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/dcf6149eb1b7d60e2cfb2dad8abeb173.png"
+      "label": null
     },
     {
       "name": "Sinful Glare",
@@ -4160,8 +3914,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Siniac",
@@ -4175,8 +3928,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Siniac",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/402e087485944067986bd9876e6e72fd.png"
+      "label": null
     },
     {
       "name": "Синтезис",
@@ -4190,8 +3942,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Sintezis",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5705fce7aa9f43d9849f542814343122.png"
+      "label": null
     },
     {
       "name": "Sioto Jazz",
@@ -4208,8 +3959,7 @@
       },
       "contact": "siotojazz@gmail.com",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/38d7561c7cb2d580208de209933fa2f9.png"
+      "label": null
     },
     {
       "name": "SIZ",
@@ -4222,8 +3972,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Skrit",
@@ -4236,8 +3985,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Slavco Kocev",
@@ -4250,8 +3998,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Славе Димитров",
@@ -4264,8 +4011,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Smoke Shakers",
@@ -4281,8 +4027,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Smoke Shakers",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Смут",
@@ -4298,8 +4043,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Smut",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/65f9d6af2b3565fbd5b4a353aead9d9c.png"
+      "label": null
     },
     {
       "name": "Soulmental",
@@ -4312,8 +4056,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Sound Waves",
@@ -4327,8 +4070,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Sound_00",
@@ -4341,8 +4083,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Spank",
@@ -4356,8 +4097,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "SPECTRAL NERVE",
@@ -4370,8 +4110,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Steel Temple",
@@ -4384,8 +4123,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Steel Thunder",
@@ -4398,8 +4136,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Steel Thunder",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/520c20d61d564a6b90fda1c144e1ff1b.png"
+      "label": null
     },
     {
       "name": "Stefan Petenovski",
@@ -4412,8 +4149,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Стих Наумов",
@@ -4426,8 +4162,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Стиховен Калибар",
@@ -4440,8 +4175,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Стој, После!",
@@ -4458,8 +4192,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Stoj, Posle!",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/16893226a1f53432a6ea0efcc5622c1f.png"
+      "label": null
     },
     {
       "name": "Страјк",
@@ -4472,8 +4205,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "String Forces",
@@ -4488,8 +4220,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/52a31653b1c6493f9766c9b0638e43aa.png"
+      "label": null
     },
     {
       "name": "Студени Нозе",
@@ -4502,8 +4233,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Suns",
@@ -4517,8 +4247,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Suns",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/788ad5a79f194d0384ca9921f2b454dc.png"
+      "label": null
     },
     {
       "name": "Sunset Cruise",
@@ -4531,8 +4260,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Sunset Cruise",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Супер Нова",
@@ -4546,8 +4274,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Super Nova",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Суперхикс",
@@ -4563,8 +4290,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Superhiks",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/d8667067ab374cc4490240d6c839c19c.png"
+      "label": null
     },
     {
       "name": "Svirci Vardarci",
@@ -4577,8 +4303,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Sweet Rapscalions",
@@ -4593,8 +4318,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Syned Brain",
@@ -4607,8 +4331,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Т.Б. Трачери",
@@ -4621,8 +4344,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "TA$AK",
@@ -4635,8 +4357,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Тамара Стојковска",
@@ -4651,8 +4372,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Тамара Тодевска",
@@ -4665,8 +4385,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Tamara Todevska",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/906a8fe394be5f6d34161f445c9bccfd.png"
+      "label": null
     },
     {
       "name": "Тања Царовска",
@@ -4679,8 +4398,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Taxi Consilium",
@@ -4695,8 +4413,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Телемама",
@@ -4711,8 +4428,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Telemama",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/5f8b815501d20f75cd391591776a06bf.png"
+      "label": null
     },
     {
       "name": "Тело Наука Совршена",
@@ -4726,8 +4442,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Telonauka Sovrsena",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Темпера",
@@ -4741,8 +4456,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Tempera",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/1b28a968b97d44868d79dab834978dd5.png"
+      "label": null
     },
     {
       "name": "The Government",
@@ -4757,8 +4471,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/d77552d56dbd2d64e8956761c9912a5c.png"
+      "label": null
     },
     {
       "name": "The Hip",
@@ -4771,8 +4484,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "The Hounds",
@@ -4786,8 +4498,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/c9df79639710eca2d1eb6ad640bf500f.png"
+      "label": null
     },
     {
       "name": "The John",
@@ -4802,8 +4513,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "The Ooz",
@@ -4816,8 +4526,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "The Protagonist",
@@ -4830,8 +4539,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "The Protagonist",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/a62d9a2c4e8d44bca20de3e0c7ad7281.png"
+      "label": null
     },
     {
       "name": "The Wise Shouldn't Stay Quiet",
@@ -4845,8 +4553,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "This Home Is Prepared",
@@ -4860,8 +4567,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "This Home Is Prepared",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/0ab85aa29e8d4c2a963dc001ed73a783.png"
+      "label": null
     },
     {
       "name": "this would save us",
@@ -4874,8 +4580,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Three Minutes in the Rain",
@@ -4888,8 +4593,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Toni Dimitrov",
@@ -4902,8 +4606,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Тони Китановски",
@@ -4916,8 +4619,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Тони Зен",
@@ -4930,8 +4632,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Toni Zen",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/b1c6add3ace04eb695a5e222205ac3a5.png"
+      "label": null
     },
     {
       "name": "Тонио Сан",
@@ -4944,8 +4645,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Tonyo San",
@@ -4958,8 +4658,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Тоше Проески",
@@ -4972,8 +4671,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Trapostol",
@@ -4986,8 +4684,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Trendkill",
@@ -5001,8 +4698,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/42b56b589bfc2bb3a7bf2d87d5eb3c78.png"
+      "label": null
     },
     {
       "name": "Трето Колено",
@@ -5015,8 +4711,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Трипнотик",
@@ -5029,8 +4724,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Trold",
@@ -5043,8 +4737,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Tsar Von Time",
@@ -5061,8 +4754,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Two Sides",
@@ -5076,8 +4768,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Two Sides",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Überzeitung",
@@ -5090,8 +4781,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Убиј Дедо",
@@ -5104,8 +4794,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Vagina Corporation",
@@ -5121,8 +4810,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/21c0f549e9dc6a7b056f7c8b4c648b03.png"
+      "label": null
     },
     {
       "name": "Vehementor",
@@ -5136,8 +4824,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "ВЕЛ",
@@ -5154,8 +4841,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "В Е Л",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Венко Серафимов",
@@ -5168,8 +4854,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Верка",
@@ -5184,8 +4869,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Verka",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/27554ec1d9bd408ca0278fe23ce6549f.png"
+      "label": null
     },
     {
       "name": "Визија",
@@ -5201,8 +4885,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Vizija",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Влатко Стефановски",
@@ -5215,8 +4898,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Vlatko Stefanovski",
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/156e971b390246bcbe8dc4fa3ebf4c0c.png"
+      "label": null
     },
     {
       "name": "Водолија",
@@ -5229,8 +4911,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Warm Hands",
@@ -5243,8 +4924,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Will Discuss",
@@ -5257,8 +4937,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Xajka",
@@ -5274,8 +4953,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/bc07e5e0eda55e07d3a3dce05793e681.png"
+      "label": null
     },
     {
       "name": "XARAKIRI",
@@ -5292,8 +4970,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Xavier Acid",
@@ -5306,8 +4983,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Yordan Kostov",
@@ -5320,8 +4996,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Young Dadi",
@@ -5336,8 +5011,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Yudhisthira",
@@ -5350,8 +5024,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Zanadu",
@@ -5370,8 +5043,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Зарина Првасевда",
@@ -5386,8 +5058,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "ZEE",
@@ -5403,8 +5074,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/174s/35b2760293a07608b0a0673b98c051aa.png"
+      "label": null
     },
     {
       "name": "Zhabata",
@@ -5417,8 +5087,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Животни",
@@ -5431,8 +5100,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Зијан",
@@ -5445,8 +5113,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "Zol Jad",
@@ -5459,8 +5126,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     },
     {
       "name": "ΚΑЛБУЛА",
@@ -5473,8 +5139,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": null,
-      "image": "https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.jpg"
+      "label": null
     }
   ]
 }
