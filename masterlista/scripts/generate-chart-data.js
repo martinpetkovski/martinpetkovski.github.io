@@ -119,6 +119,48 @@ async function getArtistAlbums(artistId, token, limit = 10) {
   return data.items || [];
 }
 
+async function getAlbumTracks(albumId, token) {
+  const response = await fetchWithRetry(
+    `https://api.spotify.com/v1/albums/${albumId}/tracks?market=MK&limit=50`,
+    { headers: { 'Authorization': `Bearer ${token}` } }
+  );
+  
+  if (!response.ok) return [];
+  
+  const data = await response.json();
+  return data.items || [];
+}
+
+async function getTracksBatch(trackIds, token) {
+  const results = {};
+  const BATCH_SIZE = 50;
+  
+  for (let i = 0; i < trackIds.length; i += BATCH_SIZE) {
+    const batch = trackIds.slice(i, i + BATCH_SIZE);
+    
+    const response = await fetchWithRetry(
+      `https://api.spotify.com/v1/tracks?ids=${batch.join(',')}`,
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    
+    if (response.ok) {
+      const data = await response.json();
+      for (const track of (data.tracks || [])) {
+        if (track) {
+          results[track.id] = track;
+        }
+      }
+    }
+    
+    // Small delay between batches
+    if (i + BATCH_SIZE < trackIds.length) {
+      await new Promise(r => setTimeout(r, 200));
+    }
+  }
+  
+  return results;
+}
+
 async function main() {
   console.log('Starting chart data generation...');
   
@@ -172,10 +214,10 @@ async function main() {
   const artistsInfo = await getArtistsBatch(artistIds, spotifyToken);
   console.log(`Got info for ${Object.keys(artistsInfo).length} artists`);
   
-  // Fetch albums with rate limiting - increased batch size for speed
+  // Fetch albums and their track popularity with rate limiting
   const releases = [];
-  const BATCH_SIZE = 20; // Process 20 artists at a time (up from 10)
-  const BATCH_DELAY = 300; // 300ms between batches (down from 500ms)
+  const BATCH_SIZE = 10; // Process 10 artists at a time (reduced for more API calls)
+  const BATCH_DELAY = 400; // 400ms between batches
   
   for (let i = 0; i < artistIds.length; i += BATCH_SIZE) {
     const batch = artistIds.slice(i, i + BATCH_SIZE);
@@ -191,20 +233,66 @@ async function main() {
           const albums = await getArtistAlbums(artistId, spotifyToken, 10);
           if (!albums?.length) return null;
           
-          return albums.map(album => ({
-            bandName: band.name,
-            artistId,
-            releaseId: album.id,
-            releaseTitle: album.name,
-            releaseType: album.album_type,
-            releaseDate: album.release_date,
-            releaseUrl: album.external_urls?.spotify,
-            thumbnail: album.images?.[0]?.url || album.images?.[1]?.url,
-            totalTracks: album.total_tracks,
-            popularity: artistInfo?.popularity || 0,
-            followers: artistInfo?.followers?.total || 0,
-            spotifyUrl: band.links.spotify
-          }));
+          // For each album, get tracks to find max track popularity
+          const albumsWithPopularity = await Promise.all(
+            albums.map(async (album) => {
+              try {
+                const tracks = await getAlbumTracks(album.id, spotifyToken);
+                // Get full track info to get popularity
+                const trackIds = tracks.map(t => t.id).filter(Boolean);
+                let maxTrackPopularity = 0;
+                let topTrackName = null;
+                let topTrackId = null;
+                
+                if (trackIds.length > 0) {
+                  const tracksInfo = await getTracksBatch(trackIds, spotifyToken);
+                  for (const track of Object.values(tracksInfo)) {
+                    if (track.popularity > maxTrackPopularity) {
+                      maxTrackPopularity = track.popularity;
+                      topTrackName = track.name;
+                      topTrackId = track.id;
+                    }
+                  }
+                }
+                
+                return {
+                  bandName: band.name,
+                  artistId,
+                  releaseId: album.id,
+                  releaseTitle: album.name,
+                  releaseType: album.album_type,
+                  releaseDate: album.release_date,
+                  releaseUrl: album.external_urls?.spotify,
+                  thumbnail: album.images?.[0]?.url || album.images?.[1]?.url,
+                  totalTracks: album.total_tracks,
+                  popularity: maxTrackPopularity, // Use max track popularity
+                  topTrackName,
+                  topTrackId,
+                  topTrackUrl: topTrackId ? `https://open.spotify.com/track/${topTrackId}` : null,
+                  followers: artistInfo?.followers?.total || 0,
+                  spotifyUrl: band.links.spotify
+                };
+              } catch (err) {
+                // Fallback to artist popularity if track fetch fails
+                return {
+                  bandName: band.name,
+                  artistId,
+                  releaseId: album.id,
+                  releaseTitle: album.name,
+                  releaseType: album.album_type,
+                  releaseDate: album.release_date,
+                  releaseUrl: album.external_urls?.spotify,
+                  thumbnail: album.images?.[0]?.url || album.images?.[1]?.url,
+                  totalTracks: album.total_tracks,
+                  popularity: artistInfo?.popularity || 0,
+                  followers: artistInfo?.followers?.total || 0,
+                  spotifyUrl: band.links.spotify
+                };
+              }
+            })
+          );
+          
+          return albumsWithPopularity;
         } catch (err) {
           console.warn(`Error for ${artistMap.get(artistId)?.name}: ${err.message}`);
           return null;

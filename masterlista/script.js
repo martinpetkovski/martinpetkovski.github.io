@@ -408,8 +408,8 @@ document.addEventListener('DOMContentLoaded', () => {
             releases.forEach(release => {
                 const bandName = release.bandName;
                 
-                // Update mostViewed
-                if (!mostViewed || release.followers > mostViewed.followers) {
+                // Update mostViewed (now based on popularity)
+                if (!mostViewed || (release.popularity || 0) > (mostViewed.popularity || 0)) {
                     mostViewed = release;
                 }
                 
@@ -427,16 +427,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         url: release.releaseUrl,
                         artistId: release.releaseId,
                         isGeneralChannel: false,
-                        popular: release.popularity >= 50 || release.followers >= 10000,
-                        maxViewCount: release.followers,
+                        popular: (release.popularity || 0) >= 30 || release.followers >= 10000,
+                        maxViewCount: release.popularity || release.followers,
                         newRelease: true,
                         latestVideoId: release.releaseId,
-                        latestVideoUrl: release.releaseUrl,
+                        latestVideoUrl: release.topTrackUrl || release.releaseUrl,
                         latestVideoPublishedAt: release.releaseDate,
-                        latestVideoViewCount: release.followers,
+                        latestVideoViewCount: release.popularity || 0, // Use track popularity
                         latestVideoTitle: release.releaseTitle,
                         latestVideoThumbnail: release.thumbnail,
-                        releaseType: release.releaseType
+                        releaseType: release.releaseType,
+                        topTrackName: release.topTrackName
                     };
                 }
                 
@@ -457,9 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 cachedAutoLabels.mostViewedNewRelease = {
                     bandName: mostViewed.bandName,
                     videoId: mostViewed.releaseId,
-                    videoUrl: mostViewed.releaseUrl,
+                    videoUrl: mostViewed.topTrackUrl || mostViewed.releaseUrl,
                     videoTitle: mostViewed.releaseTitle,
-                    viewCount: mostViewed.followers,
+                    viewCount: mostViewed.popularity || 0,
                     publishedAt: mostViewed.releaseDate,
                     thumbnailUrl: mostViewed.thumbnail
                 };
@@ -709,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="release-meta">
                             ${releaseDateHtml}
                             ${!isSpotify ? `<span class="release-views"><i class="fas fa-eye"></i> ${formattedViews}</span>` : ''}
-                            ${isSpotify && viewCount > 0 ? `<span class="release-views"><i class="fas fa-users"></i> ${formattedViews}</span>` : ''}
+                            ${isSpotify && viewCount > 0 ? `<span class="release-views" title="Популарност"><i class="fas fa-fire"></i> ${viewCount}</span>` : ''}
                             <span class="release-links">${iconsHtml}${spotifyButtonHtml}</span>
                         </div>
                     </div>
@@ -1916,6 +1917,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Play button in separate column
             if (hasSpotifyLink) {
                 playBtnHtml = `<button class="artist-preview-btn" data-spotify-url="${band.links.spotify}" title="Преслушај"><i class="fas fa-play"></i></button>`;
+            } else {
+                playBtnHtml = `<button class="artist-preview-btn" disabled title="Нема преслушување"><i class="fas fa-play"></i></button>`;
             }
             let cityHtml = band.city === 'недостигаат податоци'
                 ? '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'
@@ -1940,7 +1943,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td data-label="Име" class="name">${nameHtml}</td>
                 <td data-label="Град">${cityHtml}</td>
                 <td data-label="Жанр">${genreHtml}</td>
-                <td data-label="Звучи като">${soundsLikeHtml}</td>
+                <td data-label="Звучи како">${soundsLikeHtml}</td>
                 <td data-label="Линкови" class="links">${linksHtml}</td>
                 <td data-label="Преслушај" class="play-column">${playBtnHtml}</td>
                 <td data-label="Статус" data-status="${band.isActive}" class="${statusClass}">

@@ -506,24 +506,24 @@
                     new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
                 );
                 
-                // Top Singles: 20 most recent singles, then sorted by followers
+                // Top Singles: 20 most recent singles, then sorted by track popularity
                 const topSingles = releasesSortedByDate
                     .filter(r => r.releaseType === 'single')
                     .slice(0, 20)
-                    .sort((a, b) => b.followers - a.followers);
+                    .sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
                 
-                // Top Albums: 20 most recent albums/compilations, then sorted by followers
+                // Top Albums: 20 most recent albums/compilations, then sorted by track popularity
                 const topAlbums = releasesSortedByDate
                     .filter(r => r.releaseType === 'album' || r.releaseType === 'compilation')
                     .slice(0, 20)
-                    .sort((a, b) => b.followers - a.followers);
+                    .sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
                 
-                // This Year: 20 most recent releases from this year, then sorted by followers
+                // This Year: 20 most recent releases from this year, then sorted by track popularity
                 const startOfYearTime = startOfYear.getTime();
                 const thisYearReleases = releasesSortedByDate
                     .filter(r => new Date(r.releaseDate).getTime() >= startOfYearTime)
                     .slice(0, 20)
-                    .sort((a, b) => b.followers - a.followers);
+                    .sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
                 
                 renderChart('singles-chart', topSingles);
                 renderChart('albums-chart', topAlbums);
@@ -551,11 +551,7 @@
                     const rankClass = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
                     const itemClass = rank <= 3 ? `rank-${rank}` : '';
                     
-                    const formattedFollowers = release.followers >= 1000000 
-                        ? (release.followers / 1000000).toFixed(1) + 'М'
-                        : release.followers >= 1000 
-                            ? (release.followers / 1000).toFixed(1) + 'К'
-                            : release.followers.toString();
+                    const popularity = release.popularity || 0;
                     
                     const releaseDate = new Date(release.releaseDate);
                     const dateStr = `${releaseDate.getDate()} ${monthNames[releaseDate.getMonth()]}`;
@@ -575,10 +571,10 @@
                             </div>
                             <div class="chart-meta">
                                 <span class="chart-stat"><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
-                                <span class="chart-stat followers"><i class="fas fa-users"></i> ${formattedFollowers}</span>
+                                <span class="chart-stat followers" title="Популарност на песна"><i class="fas fa-fire"></i> ${popularity}</span>
                             </div>
                             <div class="chart-play-col">
-                                <a href="${release.releaseUrl}" target="_blank" class="chart-play-btn" title="Слушај">
+                                <a href="${release.topTrackUrl || release.releaseUrl}" target="_blank" class="chart-play-btn" title="Слушај">
                                     <i class="fas fa-play"></i>
                                 </a>
                             </div>

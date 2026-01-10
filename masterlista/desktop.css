@@ -66,6 +66,7 @@ header {
     font-family: 'Bungee', sans-serif;
     font-size: 1.5rem;
     background: linear-gradient(135deg, #fa5252, #fd7e14);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1;
@@ -479,8 +480,14 @@ tr:hover .name { color: var(--accent-blue); }
 }
 
 .artist-preview-btn:disabled {
-    opacity: 0.7;
-    cursor: wait;
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: var(--border-color);
+}
+
+.artist-preview-btn:disabled:hover {
+    transform: none;
+    background: var(--border-color);
 }
 
 .missing-data { color: var(--text-muted); opacity: 0.4; }

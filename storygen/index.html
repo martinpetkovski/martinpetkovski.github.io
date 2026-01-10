@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <title>Story Generator Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Anton&family=Bangers&family=Barlow:wght@400;700&family=Bebas+Neue&family=Cinzel:wght@400;700&family=Comfortaa:wght@400;700&family=Dancing+Script:wght@400;700&family=Expletus+Sans:ital,wght@0,400;0,700;1,400&family=Fira+Sans:wght@400;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&family=Kanit:wght@400;700&family=Lato:wght@400;700&family=Lobster&family=Lora:wght@400;600;700&family=Merriweather:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Nunito:wght@400;500;700&family=Open+Sans:wght@400;700&family=Oswald:wght@400;500;600;700&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@400;500;600;700;800&family=PT+Sans:wght@400;700&family=Quicksand:wght@400;500;700&family=Raleway:wght@400;700&family=Righteous&family=Roboto:wght@400;500;700&family=Rubik:wght@400;700&family=Shadows+Into+Light&family=Source+Serif+Pro:wght@400;600;700&family=Ubuntu:wght@400;700&family=Work+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/lib/marked.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Pickr Color Picker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+</head>
+<body>
+  <main class="app">
+    <!-- Sidebar: Layers & Properties -->
+    <aside class="sidebar">
+      <!-- Top Actions -->
+      <div class="sidebar-header">
+        <div class="logo">StoryGen</div>
+        <div class="header-actions">
+          <button id="btn-undo" class="btn-icon" title="Undo (Ctrl+Z)" disabled>↶</button>
+          <button id="btn-redo" class="btn-icon" title="Redo (Ctrl+Y)" disabled>↷</button>
+          <button id="btn-export" class="btn-primary desktop-only">Export</button>
+        </div>
+      </div>
+      
+      <!-- Export Dialog -->
+      <div id="export-dialog" class="dialog-overlay" style="display:none">
+        <div class="dialog-box">
+          <h3>Export Story</h3>
+          <!-- Desktop options -->
+          <div id="export-desktop" class="dialog-options">
+            <button id="export-copy" class="export-option">📋 Copy to Clipboard</button>
+            <button id="export-png" class="export-option">📷 Download PNG</button>
+            <button id="export-jpg" class="export-option">🖼️ Download JPG</button>
+          </div>
+          <!-- Mobile option -->
+          <div id="export-mobile" class="dialog-options" style="display:none">
+            <button id="export-instagram" class="export-option instagram-btn">📸 Share to Instagram Story</button>
+          </div>
+          <button id="export-cancel" class="btn-xs" style="margin-top:12px">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Tabs/Tool Switcher -->
+      <div class="tools-nav">
+        <button class="tool-btn active" data-view="layers">Elements</button>
+        <button class="tool-btn" data-view="presets">Presets</button>
+        <button class="tool-btn" data-view="background">Background</button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- View: Elements (Layers) -->
+        <div id="view-layers" class="panel-view active">
+          <div class="layer-actions">
+            <button id="add-text" class="btn-sm"><span class="icon">𝐓</span> Text</button>
+            <button id="add-image" class="btn-sm"><span class="icon">🖼</span> Image</button>
+            <button id="add-video" class="btn-sm"><span class="icon">🎬</span> Video</button>
+            <button id="add-audio" class="btn-sm"><span class="icon">🎵</span> Audio</button>
+            <input type="file" id="file-upload-hidden" accept="image/*,video/*" style="display:none" />
+            <input type="file" id="audio-upload-hidden" accept="audio/*" style="display:none" />
+          </div>
+          <div style="font-size:10px; color:#666; padding:0 4px 4px 4px">Drag items to reorder</div>
+          
+          <div id="layer-list" class="layer-list">
+            <!-- Layers injected here -->
+          </div>
+        </div>
+
+        <!-- View: Presets -->
+        <div id="view-presets" class="panel-view">
+          <!-- Preset Slots for Selected Element -->
+          <div id="element-preset-slots" class="preset-slots-panel" style="display:none">
+            <div class="slots-header">Applied Presets</div>
+            <div class="slot-row">
+              <span class="slot-label">Style</span>
+              <div class="slot-box" data-slot="style" title="Drop style preset here">
+                <span class="slot-empty">+ Style</span>
+              </div>
+            </div>
+            <div class="slot-row">
+              <span class="slot-label">Filter</span>
+              <div class="slot-box" data-slot="filter" title="Drop filter preset here">
+                <span class="slot-empty">+ Filter</span>
+              </div>
+            </div>
+            <div class="slot-row">
+              <span class="slot-label">Animation</span>
+              <div class="slot-box" data-slot="animation" title="Drop animation preset here">
+                <span class="slot-empty">+ Animation</span>
+              </div>
+            </div>
+            <button id="clear-all-slots" class="btn-xs" style="width:100%; margin-top:8px">Clear All</button>
+          </div>
+          
+          <div class="preset-search-bar">
+            <input type="text" id="preset-search" placeholder="Search presets..." />
+          </div>
+          <div class="preset-filters" id="preset-filters">
+            <button class="preset-filter active" data-filter="all">All</button>
+            <button class="preset-filter" data-filter="text">Text</button>
+            <button class="preset-filter" data-filter="paragraph">Paragraph</button>
+            <button class="preset-filter" data-filter="image">Image</button>
+            <button class="preset-filter" data-filter="animation">Animation</button>
+          </div>
+          <div id="preset-info" class="prop-group" style="font-size:11px; color:#888; margin-bottom:8px">
+            Select an element to see relevant presets.
+          </div>
+          <div id="unified-preset-list" class="preset-grid">
+            <!-- All presets injected by JS -->
+          </div>
+        </div>
+
+        <!-- View: Background Settings -->
+        <div id="view-background" class="panel-view">
+          <div class="prop-group">
+            <label>Background Type</label>
+            <select id="bg-type">
+              <option value="color">Solid Color</option>
+              <option value="gradient">Gradient</option>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select>
+          </div>
+
+          <div id="bg-controls-color" class="bg-control-group">
+            <div class="prop-group">
+              <label>Background Color</label>
+              <div class="color-picker-row">
+                <div id="pickr-bg-color"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="bg-controls-gradient" class="bg-control-group" style="display:none">
+            <div class="prop-group">
+               <label>Gradient Type</label>
+               <select id="bg-grad-type">
+                 <option value="linear">Linear</option>
+                 <option value="radial">Radial</option>
+                 <option value="conic">Conic</option>
+               </select>
+            </div>
+            <div class="prop-group">
+               <label>Quick Presets</label>
+               <div class="row" style="flex-wrap:wrap; gap:4px">
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">Purple</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(120deg, #f093fb 0%, #f5576c 100%)">Pink</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(to right, #4facfe 0%, #00f2fe 100%)">Ocean</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)">Mist</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%)">Grass</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(to right, #fa709a 0%, #fee140 100%)">Sunset</button>
+                 <button class="btn-xs grad-preset" data-g="linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)">Night</button>
+                 <button class="btn-xs grad-preset" data-g="radial-gradient(circle, #667eea 0%, #764ba2 100%)">Radial</button>
+                 <button class="btn-xs grad-preset" data-g="conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0000)">Rainbow</button>
+               </div>
+            </div>
+            <div class="prop-group">
+               <label>Custom Gradient</label>
+               <div class="row">
+                 <label>Angle <span class="input-unit"><input type="number" id="bg-grad-angle" value="135" min="0" max="360"><span class="unit">°</span></span></label>
+               </div>
+               <div class="gradient-stops-editor">
+                 <div class="gradient-preview" id="gradient-preview"></div>
+                 <div class="gradient-stop-list" id="gradient-stop-list">
+                   <!-- Stops injected by JS -->
+                 </div>
+                 <button id="add-gradient-stop" class="btn-xs" style="width:100%; margin-top:4px">+ Add Stop</button>
+               </div>
+               <div class="row" style="margin-top:8px">
+                 <label>Start <input type="color" id="bg-grad-start" value="#667eea"></label>
+                 <label>End <input type="color" id="bg-grad-end" value="#764ba2"></label>
+               </div>
+               <button id="apply-gradient" class="btn-primary" style="margin-top:8px; width:100%">Apply Custom Gradient</button>
+            </div>
+          </div>
+
+          <div id="bg-controls-image" class="bg-control-group" style="display:none">
+            <div class="prop-group">
+               <label>Background Image</label>
+               <div class="row">
+                   <label for="global-bg-img" class="btn-sm" style="flex:1; text-align:center; cursor:pointer">📷 Choose Image...</label>
+                   <input type="file" id="global-bg-img" accept="image/*" style="display:none">
+               </div>
+               <div id="bg-image-preview" class="bg-media-preview" style="margin-top:8px; display:none">
+                 <img id="bg-image-thumb" style="width:100%; height:120px; object-fit:cover; border-radius:4px">
+               </div>
+            </div>
+            <div class="prop-group">
+               <label>Image Fit</label>
+               <select id="bg-image-fit">
+                 <option value="cover">Cover (Fill)</option>
+                 <option value="contain">Contain (Fit)</option>
+                 <option value="stretch">Stretch</option>
+                 <option value="tile">Tile/Repeat</option>
+               </select>
+            </div>
+            <div class="prop-group">
+               <label>Position</label>
+               <select id="bg-image-position">
+                 <option value="center">Center</option>
+                 <option value="top">Top</option>
+                 <option value="bottom">Bottom</option>
+                 <option value="left">Left</option>
+                 <option value="right">Right</option>
+               </select>
+            </div>
+            <div class="prop-group">
+               <label>Overlay</label>
+               <div class="row">
+                 <label><input type="checkbox" id="bg-overlay-enabled"> Enable Overlay</label>
+               </div>
+               <div id="bg-overlay-controls" style="display:none; margin-top:8px">
+                 <div class="row">
+                   <label>Color <input type="color" id="bg-overlay-color" value="#000000"></label>
+                   <label>Opacity <input type="range" id="bg-overlay-opacity" min="0" max="100" value="50"></label>
+                 </div>
+               </div>
+            </div>
+            <button id="clear-global-bg" class="btn-xs" style="width:100%; margin-top:8px">Clear Background</button>
+          </div>
+
+          <div id="bg-controls-video" class="bg-control-group" style="display:none">
+            <div class="prop-group">
+               <label>Background Video</label>
+               <div class="row">
+                   <label for="global-bg-video" class="btn-sm" style="flex:1; text-align:center; cursor:pointer">🎬 Choose Video...</label>
+                   <input type="file" id="global-bg-video" accept="video/*" style="display:none">
+               </div>
+               <div id="bg-video-preview" class="bg-media-preview" style="margin-top:8px; display:none">
+                 <video id="bg-video-thumb" style="width:100%; height:120px; object-fit:cover; border-radius:4px" muted loop autoplay></video>
+               </div>
+            </div>
+            <div class="prop-group">
+               <label>Video Fit</label>
+               <select id="bg-video-fit">
+                 <option value="cover">Cover (Fill)</option>
+                 <option value="contain">Contain (Fit)</option>
+               </select>
+            </div>
+            <button id="clear-global-bg-video" class="btn-xs" style="width:100%; margin-top:8px">Clear Video</button>
+          </div>
+
+        </div>
+      </div>
+    </aside>
+    
+    <div id="sidebar-resizer" class="sidebar-resizer"></div>
+
+    <!-- Main Workspace -->
+    <section class="workspace">
+      <div class="viewport" id="viewport">
+        <!-- The Stage: 1080x1920 logical size, scaled via CSS -->
+        <div id="stage-scaler">
+          <div id="stage" class="stage">
+            <!-- Elements injected here -->
+            <!-- Center Guides (Photoshop-style) -->
+            <div id="guide-h" class="guide guide-horizontal" style="display:none"></div>
+            <div id="guide-v" class="guide guide-vertical" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button id="zoom-out" title="Zoom Out">−</button>
+        <button id="zoom-fit" title="Fit to Screen">Fit</button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-in" title="Zoom In">+</button>
+      </div>
+    </section>
+    
+    <!-- Mobile Backdrop -->
+    <div class="mobile-backdrop" id="mobile-backdrop"></div>
+    
+    <!-- Mobile Bottom Toolbar -->
+    <div class="mobile-toolbar">
+      <button class="mobile-tool-btn" data-action="elements"><span>☰</span>Elements</button>
+      <button class="mobile-tool-btn" data-action="presets"><span>✨</span>Presets</button>
+      <button class="mobile-tool-btn" data-action="background"><span>🎨</span>BG</button>
+      <button class="mobile-tool-btn" data-action="share"><span>📸</span>Share</button>
+    </div>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
