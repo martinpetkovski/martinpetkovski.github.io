@@ -73,7 +73,7 @@
       "name": "Абракадабра",
       "city": "Битола",
       "genre": "Метал",
-      "soundsLike": "недостигаат податоци",
+      "soundsLike": "Rainbow",
       "isActive": false,
       "links": {
         "youtube": "https://www.youtube.com/watch?v=BYgDJUu7dNg"
@@ -504,7 +504,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": "Ново Издание"
+      "label": null
     },
     {
       "name": "Beyond The Horizon",
