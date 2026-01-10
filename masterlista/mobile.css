@@ -121,7 +121,8 @@ header h1, header p { display: none; }
 .header-btn.chart-btn { background: #FFD700; border-color: #FFD700; color: #333; }
 .header-btn.guide-btn { background: var(--accent-pink); border-color: var(--accent-pink); color: #fff; }
 .header-btn.toggle-filters-btn { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
-.header-btn.master-edit, .header-btn.copy-data, .header-btn.request-change { display: none; }
+.header-btn.request-change { background: var(--accent-purple, #9b59b6); border-color: var(--accent-purple, #9b59b6); color: #fff; }
+.header-btn.master-edit, .header-btn.copy-data { display: none; }
 .header-btn i { font-size: 0.85rem; }
 
 /* Hide button text on mobile - show icons only */

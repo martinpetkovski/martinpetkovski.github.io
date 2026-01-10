@@ -451,6 +451,51 @@ const TEXT_PRESETS = [
   }
 ];
 
+// Paragraph Presets (30 body text styles)
+const PARAGRAPH_PRESETS = [
+  // --- CLEAN & MODERN ---
+  { name: 'Modern Clean', category: 'paragraph', text: 'This is your paragraph text. Write your story here with clarity and purpose.', fontFamily: 'Inter', fontSize: 28, fontWeight: '400', color: '#ffffff', textAlign: 'left', lineHeight: 1.7 },
+  { name: 'Sans Pro', category: 'paragraph', text: 'Clean, professional text for any story.', fontFamily: 'Open Sans', fontSize: 26, fontWeight: '400', color: '#e0e0e0', textAlign: 'left', lineHeight: 1.75 },
+  { name: 'Soft Round', category: 'paragraph', text: 'Friendly and approachable text style.', fontFamily: 'Nunito', fontSize: 28, fontWeight: '400', color: '#ffffff', textAlign: 'left', lineHeight: 1.7 },
+  { name: 'Tech Mono', category: 'paragraph', text: 'const message = "Code-style text";', fontFamily: 'JetBrains Mono', fontSize: 24, fontWeight: '400', color: '#00ff88', textAlign: 'left', lineHeight: 1.6 },
+  { name: 'Geometric', category: 'paragraph', text: 'Modern geometric sans-serif style.', fontFamily: 'Poppins', fontSize: 26, fontWeight: '400', color: '#ffffff', textAlign: 'left', lineHeight: 1.65 },
+  
+  // --- ELEGANT & CLASSIC ---
+  { name: 'Classic Serif', category: 'paragraph', text: 'Timeless elegance in every word you write.', fontFamily: 'Merriweather', fontSize: 26, fontWeight: '400', color: '#f5f5f5', textAlign: 'left', lineHeight: 1.8 },
+  { name: 'Editorial', category: 'paragraph', text: 'Magazine-quality typography for storytelling.', fontFamily: 'Playfair Display', fontSize: 28, fontWeight: '400', color: '#ffffff', textAlign: 'left', lineHeight: 1.75 },
+  { name: 'Literary', category: 'paragraph', text: 'For words that deserve to be savored slowly.', fontFamily: 'Lora', fontSize: 26, fontWeight: '400', color: '#f0f0f0', textAlign: 'justify', lineHeight: 1.8 },
+  { name: 'Vintage Type', category: 'paragraph', text: 'Old-world charm meets modern storytelling.', fontFamily: 'Source Serif Pro', fontSize: 26, fontWeight: '400', color: '#f5e6d3', textAlign: 'left', lineHeight: 1.75 },
+  { name: 'Royal', category: 'paragraph', text: 'Elegant text befitting grand narratives.', fontFamily: 'Cinzel', fontSize: 24, fontWeight: '400', color: '#ffd700', textAlign: 'center', lineHeight: 1.7 },
+  
+  // --- BOLD & IMPACTFUL ---
+  { name: 'Bold Statement', category: 'paragraph', text: 'Words that demand attention.', fontFamily: 'Montserrat', fontSize: 30, fontWeight: '700', color: '#ffffff', textAlign: 'center', lineHeight: 1.5 },
+  { name: 'Heavy Impact', category: 'paragraph', text: 'MAKE YOUR POINT CLEAR.', fontFamily: 'Oswald', fontSize: 32, fontWeight: '600', color: '#ffffff', textAlign: 'center', lineHeight: 1.4 },
+  { name: 'Loud', category: 'paragraph', text: 'TEXT THAT SCREAMS FOR ATTENTION!', fontFamily: 'Bebas Neue', fontSize: 36, fontWeight: '400', color: '#ff4444', textAlign: 'center', lineHeight: 1.3 },
+  { name: 'Strong Voice', category: 'paragraph', text: 'Powerful words for powerful messages.', fontFamily: 'Kanit', fontSize: 28, fontWeight: '700', color: '#ffffff', textAlign: 'left', lineHeight: 1.55 },
+  { name: 'Chunky', category: 'paragraph', text: 'Bold and chunky for maximum visibility.', fontFamily: 'Anton', fontSize: 34, fontWeight: '400', color: '#ffffff', textAlign: 'center', lineHeight: 1.4 },
+  
+  // --- CASUAL & FUN ---
+  { name: 'Playful', category: 'paragraph', text: 'Fun and friendly vibes only! ✨', fontFamily: 'Quicksand', fontSize: 28, fontWeight: '500', color: '#ffffff', textAlign: 'center', lineHeight: 1.6 },
+  { name: 'Handwritten', category: 'paragraph', text: 'Like a note from a friend...', fontFamily: 'Shadows Into Light', fontSize: 32, fontWeight: '400', color: '#ffffff', textAlign: 'left', lineHeight: 1.7 },
+  { name: 'Cursive Flow', category: 'paragraph', text: 'Elegant script for special moments', fontFamily: 'Dancing Script', fontSize: 34, fontWeight: '400', color: '#ffb6c1', textAlign: 'center', lineHeight: 1.6 },
+  { name: 'Marker Style', category: 'paragraph', text: 'Like writing with a marker!', fontFamily: 'Permanent Marker', fontSize: 30, fontWeight: '400', color: '#ffcc00', textAlign: 'left', lineHeight: 1.5 },
+  { name: 'Comic', category: 'paragraph', text: 'POW! ZAP! WHOOSH!', fontFamily: 'Bangers', fontSize: 36, fontWeight: '400', color: '#ff6b6b', textAlign: 'center', lineHeight: 1.4 },
+  
+  // --- SPECIAL EFFECTS ---
+  { name: 'Neon Glow', category: 'paragraph', text: 'Glowing text for the night owls.', fontFamily: 'Righteous', fontSize: 28, fontWeight: '400', color: '#00ffff', textAlign: 'center', lineHeight: 1.5, textShadow: '0 0 10px #00ffff, 0 0 20px #00ffff' },
+  { name: 'Pink Neon', category: 'paragraph', text: 'Hot pink glowing vibes.', fontFamily: 'Righteous', fontSize: 28, fontWeight: '400', color: '#ff00ff', textAlign: 'center', lineHeight: 1.5, textShadow: '0 0 10px #ff00ff, 0 0 20px #ff00ff' },
+  { name: 'Retro Outline', category: 'paragraph', text: 'RETRO VIBES FOREVER', fontFamily: 'Bebas Neue', fontSize: 40, fontWeight: '400', color: '#ffcc00', textAlign: 'center', lineHeight: 1.3, textStroke: '2px #000000' },
+  { name: 'Shadow Pop', category: 'paragraph', text: 'Text that pops off the screen!', fontFamily: 'Poppins', fontSize: 30, fontWeight: '700', color: '#ffffff', textAlign: 'center', lineHeight: 1.5, textShadow: '4px 4px 0px #ff6b6b' },
+  { name: 'Long Shadow', category: 'paragraph', text: 'Dramatic shadow effect.', fontFamily: 'Oswald', fontSize: 32, fontWeight: '600', color: '#ffffff', textAlign: 'center', lineHeight: 1.4, textShadow: '2px 2px 0 #333, 4px 4px 0 #333, 6px 6px 0 #333' },
+  
+  // --- THEMED STYLES ---
+  { name: 'Minimal Light', category: 'paragraph', text: 'Less is more. Simple and clean.', fontFamily: 'Inter', fontSize: 24, fontWeight: '300', color: '#cccccc', textAlign: 'center', lineHeight: 1.8 },
+  { name: 'Dark Mode', category: 'paragraph', text: 'Perfect for dark backgrounds.', fontFamily: 'Roboto', fontSize: 26, fontWeight: '400', color: '#e0e0e0', textAlign: 'left', lineHeight: 1.7 },
+  { name: 'Warm Cream', category: 'paragraph', text: 'Soft, warm tones for cozy stories.', fontFamily: 'Georgia', fontSize: 26, fontWeight: '400', color: '#fff5e6', textAlign: 'left', lineHeight: 1.75 },
+  { name: 'Cool Blue', category: 'paragraph', text: 'Cool and calming text style.', fontFamily: 'Inter', fontSize: 26, fontWeight: '400', color: '#a8d8ff', textAlign: 'left', lineHeight: 1.7 },
+  { name: 'Nature Green', category: 'paragraph', text: 'Fresh and natural vibes.', fontFamily: 'Quicksand', fontSize: 26, fontWeight: '500', color: '#a8ffb0', textAlign: 'left', lineHeight: 1.7 }
+];
+
 // Animation Presets (CSS animation classes)
 const ANIMATION_PRESETS = [
   { name: 'Fade In', category: 'animation', icon: '🌅', animation: 'fadeIn 0.8s ease-out forwards' },
@@ -703,11 +748,28 @@ function renderStage() {
          // Stop propagation to prevent drag on both mouse and touch
          area.addEventListener('mousedown', e => e.stopPropagation());
          area.addEventListener('touchstart', e => e.stopPropagation());
-         area.addEventListener('blur', () => {
+         
+         const finishEditing = () => {
              updateLayer(layer.id, { text: area.value });
              state.editingId = null;
              renderAll();
+         };
+         
+         area.addEventListener('blur', finishEditing);
+         
+         // Keyboard shortcuts for editing
+         area.addEventListener('keydown', (e) => {
+             if (e.key === 'Escape') {
+                 // Cancel editing (revert to original)
+                 state.editingId = null;
+                 renderAll();
+             } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                 // Finish editing with Ctrl+Enter
+                 e.preventDefault();
+                 finishEditing();
+             }
          });
+         
          // Auto expand or fixed size? Let's fill the box or min size
          el.appendChild(area);
          setTimeout(() => area.focus(), 50);
@@ -2615,6 +2677,17 @@ function renderPresets() {
         preset
       });
     });
+    
+    // Add paragraph presets
+    PARAGRAPH_PRESETS.forEach((preset, idx) => {
+      allPresets.push({
+        type: 'paragraph',
+        category: 'paragraph',
+        index: idx,
+        name: preset.name,
+        preset
+      });
+    });
   }
   
   // Add image/filter presets (only if image/video selected or no selection)
@@ -2694,6 +2767,15 @@ function renderPresets() {
           <div class="name">${preset.name}</div>
         </div>
       `;
+    } else if (item.type === 'paragraph') {
+      const preset = item.preset;
+      return `
+        <div class="preset-item text-preset paragraph-preset" draggable="true" data-type="paragraph" data-index="${item.index}" data-preset-name="${preset.name}">
+          <span class="preset-badge paragraph">¶</span>
+          <div class="preview" style="font-family: ${preset.fontFamily}; font-size: 11px; font-weight: ${preset.fontWeight}; color: ${preset.color}; ${preset.textShadow ? `text-shadow: ${preset.textShadow};` : ''}">${preset.text.slice(0, 16)}</div>
+          <div class="name">${preset.name}</div>
+        </div>
+      `;
     } else if (item.type === 'image') {
       const preset = item.preset;
       return `
@@ -2765,6 +2847,55 @@ function renderPresets() {
             ...preset,
             x: STAGE_W / 2 - 200,
             y: STAGE_H / 2 - 50,
+            appliedPreset_style: preset.name
+          });
+        }
+        // Stay in presets view
+        renderAll();
+        
+      } else if (type === 'paragraph') {
+        const preset = PARAGRAPH_PRESETS[index];
+        const selectedLayer = state.layers.find(l => l.id === state.selectedId);
+        
+        if (selectedLayer && selectedLayer.type === 'text') {
+          // Apply paragraph preset to selected text layer (keep position and content)
+          const updates = {
+            fontFamily: preset.fontFamily,
+            fontSize: preset.fontSize,
+            fontWeight: preset.fontWeight,
+            color: preset.color,
+            textAlign: preset.textAlign,
+            lineHeight: preset.lineHeight,
+            textShadow: preset.textShadow || '',
+            textStroke: preset.textStroke || '',
+            textGradient: preset.textGradient || '',
+            bgColor: preset.bgColor || '',
+            padding: preset.padding || 16,
+            borderRadius: preset.borderRadius || 12,
+            // Clear markdown-specific properties for paragraphs
+            h1Font: '', h1Color: '', h1Size: 0, h1Weight: '',
+            h2Font: '', h2Color: '', h2Size: 0, h2Weight: '',
+            h3Font: '', h3Color: '', h3Size: 0, h3Weight: ''
+          };
+          updateLayer(selectedLayer.id, updates);
+          pushHistory();
+          // Track applied preset in slot
+          updateLayer(selectedLayer.id, { appliedPreset_style: preset.name });
+        } else {
+          // Create new text layer with preset
+          addLayer('text', {
+            text: preset.text,
+            fontFamily: preset.fontFamily,
+            fontSize: preset.fontSize,
+            fontWeight: preset.fontWeight,
+            color: preset.color,
+            textAlign: preset.textAlign,
+            lineHeight: preset.lineHeight,
+            textShadow: preset.textShadow || '',
+            textStroke: preset.textStroke || '',
+            x: 100,
+            y: STAGE_H / 2 - 50,
+            width: STAGE_W - 200,
             appliedPreset_style: preset.name
           });
         }
@@ -2944,9 +3075,9 @@ function applyPresetToSlot(presetType, presetIndex, presetName, slotType) {
   
   let isValidDrop = false;
   
-  if (slotType === 'style' && presetType === 'text' && selectedLayer.type === 'text') {
-    // Apply text preset to style slot
-    const preset = TEXT_PRESETS[presetIndex];
+  if (slotType === 'style' && (presetType === 'text' || presetType === 'paragraph') && selectedLayer.type === 'text') {
+    // Apply text or paragraph preset to style slot
+    const preset = presetType === 'text' ? TEXT_PRESETS[presetIndex] : PARAGRAPH_PRESETS[presetIndex];
     const updates = {
       fontFamily: preset.fontFamily,
       fontSize: preset.fontSize,
@@ -3416,7 +3547,7 @@ document.querySelectorAll('.mobile-tool-btn').forEach(btn => {
 document.getElementById('btn-undo')?.addEventListener('click', undo);
 document.getElementById('btn-redo')?.addEventListener('click', redo);
 
-// Keyboard shortcuts for undo/redo
+// Keyboard shortcuts for undo/redo, delete, and paste
 document.addEventListener('keydown', (e) => {
   // Ignore if typing in an input
   if (e.target.matches('input, textarea, [contenteditable]')) return;
@@ -3427,6 +3558,112 @@ document.addEventListener('keydown', (e) => {
   } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
     e.preventDefault();
     redo();
+  } else if ((e.key === 'Delete' || e.key === 'Backspace') && state.selectedId && !state.editingId) {
+    // Delete selected element
+    e.preventDefault();
+    removeLayer(state.selectedId);
+  }
+});
+
+// Ctrl+V paste handler for text, images, and videos
+document.addEventListener('paste', async (e) => {
+  // Ignore if typing in an input
+  if (e.target.matches('input, textarea, [contenteditable]')) return;
+  
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  
+  e.preventDefault();
+  
+  // Check for files (images, videos)
+  for (const item of items) {
+    if (item.kind === 'file') {
+      const file = item.getAsFile();
+      if (!file) continue;
+      
+      if (file.type.startsWith('image/')) {
+        // Paste as image element
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            // Calculate dimensions to fit nicely
+            let w = img.width;
+            let h = img.height;
+            const maxDim = 600;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = (h / w) * maxDim;
+                w = maxDim;
+              } else {
+                w = (w / h) * maxDim;
+                h = maxDim;
+              }
+            }
+            addLayer({
+              type: 'image',
+              src: ev.target.result,
+              x: (STAGE_W - w) / 2,
+              y: (STAGE_H - h) / 2,
+              width: w,
+              height: h,
+              scale: 1,
+              rotation: 0,
+              opacity: 1,
+              mode: 'cover',
+              filter: 'none'
+            });
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+        return; // Handle one file at a time
+      } else if (file.type.startsWith('video/')) {
+        // Paste as video element
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          addLayer({
+            type: 'video',
+            src: ev.target.result,
+            x: STAGE_W / 2 - 300,
+            y: STAGE_H / 2 - 300,
+            width: 600,
+            height: 600,
+            scale: 1,
+            rotation: 0,
+            opacity: 1,
+            mode: 'cover',
+            filter: 'none'
+          });
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+    }
+  }
+  
+  // Check for text
+  const text = e.clipboardData?.getData('text/plain');
+  if (text && text.trim()) {
+    addLayer({
+      type: 'text',
+      text: text.trim(),
+      x: 100,
+      y: STAGE_H / 2 - 100,
+      width: STAGE_W - 200,
+      scale: 1,
+      rotation: 0,
+      fontFamily: 'Inter',
+      fontSize: 32,
+      fontWeight: '400',
+      color: '#ffffff',
+      textAlign: 'left',
+      lineHeight: 1.5,
+      opacity: 1,
+      bgColor: '',
+      padding: 16,
+      borderRadius: 12
+    });
   }
 });
 
