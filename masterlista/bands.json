@@ -504,7 +504,7 @@
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
-      "label": "Ново Издание"
+      "label": null
     },
     {
       "name": "Beyond The Horizon",
@@ -2185,7 +2185,7 @@
       "label": null
     },
     {
-      "name": "Кем",
+      "name": "КЕМ",
       "city": "Скопје",
       "genre": "Рап, Фанк",
       "soundsLike": "недостигаат податоци",
