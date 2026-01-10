@@ -441,15 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     };
                 }
                 
-                // Update band's label in bandsData
-                const band = processedBands.find(b => b.name === bandName);
-                if (band) {
-                    const existingLabels = (band.label || '').split(',').map(l => l.trim()).filter(Boolean);
-                    if (!existingLabels.includes('Ново Издание')) {
-                        existingLabels.push('Ново Издание');
-                        band.label = existingLabels.join(', ');
-                    }
-                }
+                // Note: We no longer automatically add 'Ново Издание' label to band data
+                // The new release section handles display based on cachedAutoLabels
             });
             
             // Update source and most viewed
@@ -522,16 +515,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         daysSinceRelease: release.daysSinceRelease
                     };
                     
-                    // Update band's label in bandsData
-                    const band = processedBands.find(b => b.name === bandName);
-                    if (band) {
-                        const existingLabels = (band.label || '').split(',').map(l => l.trim()).filter(Boolean);
-                        if (!existingLabels.includes('Ново Издание')) {
-                            existingLabels.push('Ново Издание');
-                            band.label = existingLabels.join(', ');
-                        }
-                    }
-                    
+                    // Note: We no longer automatically add 'Ново Издание' label to band data
+                    // The new release section handles display based on cachedAutoLabels
+
                     // Re-render new releases section with updated data
                     cachedAutoLabels.source = 'spotify';
                     if (mostViewed) {
@@ -571,18 +557,16 @@ document.addEventListener('DOMContentLoaded', () => {
         oneMonthAgo.setHours(0, 0, 0, 0); // Start of day for fair comparison
 
         // Filter by "Ново Издание" label and release date within past month
+        // Filter bands that have new release data in cachedAutoLabels (within past month)
         let newReleaseBands = bands.filter(band => {
-            if (!band.label || band.label === 'недостигаат податоци') return false;
-            const labels = String(band.label).split(',').map(l => l.trim()).filter(Boolean);
-            if (!labels.includes('Ново Издание')) return false;
-            
-            // Filter by release date - only show releases from the past month
+            // Check cachedAutoLabels for release data
             const bandData = cachedAutoLabels?.bands?.[band.name];
-            const releaseDate = bandData?.spotify?.latestVideoPublishedAt || bandData?.youtube?.latestVideoPublishedAt;
+            const autoData = bandData?.spotify || bandData?.youtube;
             
-            // If no release date available, exclude from new releases bar
-            if (!releaseDate) return false;
+            // Must have release data with newRelease flag or recent release date
+            if (!autoData?.latestVideoPublishedAt) return false;
             
+            const releaseDate = autoData.latestVideoPublishedAt;
             const releaseDateObj = new Date(releaseDate);
             return releaseDateObj >= oneMonthAgo;
         });
