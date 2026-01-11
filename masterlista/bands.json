@@ -3724,6 +3724,22 @@
       "label": null
     },
     {
+      "name": "Ruda Vega",
+      "city": "Скопје",
+      "genre": "Хип Хоп, Џез,",
+      "soundsLike": "Dj Krush, Jon Hassel",
+      "isActive": true,
+      "links": {
+        "youtube": "https://www.youtube.com/watch?v=KcxJZMsRwtk&list=PLN0HPc6nzi9jVzxq100yvnsKH8EQR6lWw",
+        "bandcamp": "https://soulmental.bandcamp.com/album/meshugaas-2023",
+        "lastfm": "https://www.last.fm/music/Ruda+Vega",
+        "spotify": "https://open.spotify.com/artist/6hqV2N9WDOfB7A0atIttYk?si=sWT3efc8SfKsy75dn5AERQ"
+      },
+      "contact": "недостигаат податоци",
+      "lastfmName": "Ruda Vega",
+      "label": null
+    },
+    {
       "name": "Ruststained",
       "city": "Скопје",
       "genre": "Метал",
