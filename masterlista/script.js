@@ -459,9 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
             
-            // Re-render new releases section
-            renderNewReleaseArtists(processedBands);
-            
             console.log(`Loaded ${releases.length} releases from chart-data.json`);
         } catch (err) {
             console.warn('Failed to load chart-data.json:', err);
@@ -531,8 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             thumbnailUrl: mostViewed.thumbnail
                         };
                     }
-                    
-                    renderNewReleaseArtists(processedBands);
                 }
             };
             
@@ -542,192 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.warn('Background Spotify fetch error:', err);
         }
-    }
-
-    function renderNewReleaseArtists(bands) {
-        console.log('Rendering Ново Издание artists');
-        const newReleaseContainer = document.getElementById('new-release-artists');
-        
-        // Clear container - no header, just show releases directly
-        newReleaseContainer.innerHTML = '';
-
-        // Calculate date one month ago
-        const oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-        oneMonthAgo.setHours(0, 0, 0, 0); // Start of day for fair comparison
-
-        // Filter by "Ново Издание" label and release date within past month
-        // Filter bands that have new release data in cachedAutoLabels (within past month)
-        let newReleaseBands = bands.filter(band => {
-            // Check cachedAutoLabels for release data
-            const bandData = cachedAutoLabels?.bands?.[band.name];
-            const autoData = bandData?.spotify || bandData?.youtube;
-            
-            // Must have release data with newRelease flag or recent release date
-            if (!autoData?.latestVideoPublishedAt) return false;
-            
-            const releaseDate = autoData.latestVideoPublishedAt;
-            const releaseDateObj = new Date(releaseDate);
-            return releaseDateObj >= oneMonthAgo;
-        });
-        
-        // Sort by release date (newest first)
-        newReleaseBands.sort((a, b) => {
-            const aData = cachedAutoLabels?.bands?.[a.name];
-            const bData = cachedAutoLabels?.bands?.[b.name];
-            const aDate = aData?.spotify?.latestVideoPublishedAt || aData?.youtube?.latestVideoPublishedAt || '';
-            const bDate = bData?.spotify?.latestVideoPublishedAt || bData?.youtube?.latestVideoPublishedAt || '';
-            return bDate.localeCompare(aDate); // Descending order (newest first)
-        });
-        
-        // Create content wrapper
-        const contentWrapper = document.createElement('div');
-        contentWrapper.className = 'new-release-content';
-        
-        if (newReleaseBands.length === 0) {
-            // Show loading if Spotify is loading
-            const isLoading = cachedAutoLabels?.source === 'none' && typeof spotifyApi !== 'undefined';
-            contentWrapper.innerHTML = isLoading
-                ? '<p class="loading-releases"><i class="fas fa-spinner fa-spin"></i> Се вчитуваат нови изданија...</p>'
-                : '<p>Нема нови изданија во последните 30 дена.</p>';
-            newReleaseContainer.appendChild(contentWrapper);
-            return;
-        }
-
-        const streamingOrder = ['youtube', 'spotify', 'itunes', 'deezer', 'bandcamp', 'soundcloud'];
-
-        // Create a grid/list container for release cards
-        const releaseGrid = document.createElement('div');
-        releaseGrid.className = 'new-release-grid';
-        
-        // Add horizontal scroll wheel support
-        releaseGrid.addEventListener('wheel', (e) => {
-            if (e.deltaY !== 0) {
-                e.preventDefault();
-                releaseGrid.scrollLeft += e.deltaY;
-            }
-        }, { passive: false });
-
-        newReleaseBands.forEach(band => {
-            // Get auto_labels data for this band (supports both YouTube and Spotify)
-            const bandData = cachedAutoLabels?.bands?.[band.name];
-            const autoData = bandData?.youtube || bandData?.spotify || null;
-            const hasReleaseData = autoData?.latestVideoId && autoData?.latestVideoTitle;
-            const isSpotify = !!bandData?.spotify;
-            
-            // Filter: skip if band name is not in title for general channels (YouTube only)
-            if (hasReleaseData && !isSpotify) {
-                const releaseTitle = (autoData.latestVideoTitle || '').toLowerCase();
-                const bandNameLower = band.name.toLowerCase();
-                const isGeneralChannel = autoData.isGeneralChannel === true;
-                
-                // Skip if general channel and band name not in title
-                if (isGeneralChannel && !releaseTitle.includes(bandNameLower)) {
-                    return;
-                }
-            }
-            
-            const releaseCard = document.createElement('div');
-            releaseCard.className = 'new-release-card';
-
-            // Collect available streaming links in preferred order
-            const streamingLinks = streamingOrder
-                .filter(p => band.links && band.links[p] && band.links[p] !== 'недостигаат податоци')
-                .map(p => ({
-                    platform: p,
-                    url: p === 'spotify' ? convertSpotifyUrlToAppUri(band.links[p]) : band.links[p]
-                }));
-
-            // Build icons for all available streaming services
-            const iconsHtml = streamingLinks
-                .map(({ platform, url }) => {
-                    const platformMeta = socialPlatforms.find(p => p.id === platform);
-                    const icon = platformMeta?.icon || 'fa-solid fa-link';
-                    const title = platformMeta?.name || platform;
-                    return `<a href="${url}" target="_blank" title="${title}" class="streaming-icon"><i class="${icon}"></i></a>`;
-                })
-                .join('');
-
-            if (hasReleaseData) {
-                // Show thumbnail and release info
-                const releaseUrl = autoData.latestVideoUrl || '#';
-                const thumbnail = autoData.latestVideoThumbnail || 
-                    (autoData.latestVideoId && !isSpotify ? `https://img.youtube.com/vi/${autoData.latestVideoId}/mqdefault.jpg` : null);
-                const releaseTitle = autoData.latestVideoTitle;
-                const viewCount = autoData.latestVideoViewCount || 0;
-                
-                // Format view/follower count
-                const countLabel = isSpotify ? '' : ' ';
-                const formattedViews = viewCount >= 1000000 
-                    ? (viewCount / 1000000).toFixed(1) + 'М'
-                    : viewCount >= 1000 
-                        ? (viewCount / 1000).toFixed(1) + 'К'
-                        : viewCount.toString();
-                
-                // Format release date
-                let releaseDateHtml = '';
-                if (autoData.latestVideoPublishedAt) {
-                    const pubDate = new Date(autoData.latestVideoPublishedAt);
-                    const day = pubDate.getDate();
-                    const monthNames = ['јан', 'фев', 'мар', 'апр', 'мај', 'јун', 'јул', 'авг', 'сеп', 'окт', 'ное', 'дек'];
-                    const month = monthNames[pubDate.getMonth()];
-                    releaseDateHtml = `<span class="release-date"><i class="fas fa-calendar-alt"></i> ${day} ${month}</span>`;
-                }
-                
-                // Play overlay icon (different for YouTube vs Spotify)
-                const playIcon = isSpotify ? 'fab fa-spotify' : 'fas fa-play-circle';
-                // Preview button for Spotify releases (plays embed)
-                const spotifyButtonHtml = isSpotify && autoData.latestVideoId 
-                    ? `<button class="preview-btn" data-album-id="${autoData.latestVideoId}" title="Преслушај на Spotify"><i class="fas fa-play"></i></button>`
-                    : '';
-                
-                releaseCard.innerHTML = `
-                    <a href="${releaseUrl}" target="_blank" class="release-thumbnail-link">
-                        <div class="release-thumbnail ${!thumbnail ? 'no-thumb' : ''}">
-                            ${thumbnail ? `<img src="${thumbnail}" alt="${releaseTitle}" loading="lazy" onerror="this.onerror=null; this.style.display='none'; this.parentElement.classList.add('no-thumb'); this.insertAdjacentHTML('afterend', '<i class=\\'fab fa-spotify spotify-placeholder\\'></i>');">` : `<i class="fab fa-spotify spotify-placeholder"></i>`}
-                            <div class="play-overlay"><i class="${playIcon}"></i></div>
-                        </div>
-                    </a>
-                    <div class="release-info">
-                        <div class="release-artist">${band.name}</div>
-                        <a href="${releaseUrl}" target="_blank" class="release-title" title="${releaseTitle}">${releaseTitle}</a>
-                        <div class="release-meta">
-                            ${releaseDateHtml}
-                            ${!isSpotify ? `<span class="release-views"><i class="fas fa-eye"></i> ${formattedViews}</span>` : ''}
-                            ${isSpotify && viewCount > 0 ? `<span class="release-views" title="Популарност"><i class="fas fa-fire"></i> ${viewCount}</span>` : ''}
-                            <span class="release-links">${iconsHtml}${spotifyButtonHtml}</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                // Fallback: show simple list item style without thumbnail
-                const { url: anyUrl } = getPreferredLink(band);
-                const nameAnchorHtml = anyUrl 
-                    ? `<a href="${anyUrl}" target="_blank">${band.name}</a>` 
-                    : band.name;
-                
-                releaseCard.innerHTML = `
-                    <div class="release-info release-info-compact">
-                        <div class="release-artist">${nameAnchorHtml}</div>
-                        <div class="release-links">${iconsHtml || '<span class="missing-data"><i class="fas fa-question-circle"></i></span>'}</div>
-                    </div>
-                `;
-                releaseCard.classList.add('no-thumbnail');
-            }
-
-            releaseGrid.appendChild(releaseCard);
-        });
-        contentWrapper.appendChild(releaseGrid);
-        newReleaseContainer.appendChild(contentWrapper);
-        
-        // Add event listeners for preview buttons (lazy-loaded previews)
-        newReleaseContainer.querySelectorAll('.preview-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                await handlePreviewClick(btn);
-            });
-        });
     }
     
     // Handle preview button clicks - shows Spotify embed player
@@ -935,7 +744,6 @@ document.addEventListener('DOMContentLoaded', () => {
             originalBandsData = JSON.parse(JSON.stringify(bandsData));
             populateFilters(bandsData);
             renderBands(bandsData);
-            renderNewReleaseArtists(bandsData);
             initializeFilters();
             initializeModal();
             initializeSpotifyEmbedModal();
@@ -1392,7 +1200,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('total-bands').textContent = bandsData.length;
             populateFilters(bandsData);
             filterBands();
-            renderNewReleaseArtists(bandsData);
             modal.style.display = 'none';
             form.reset();
             linksContainer.innerHTML = '';
@@ -1499,7 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('total-bands').textContent = bandsData.length;
                 populateFilters(bandsData);
                 filterBands();
-                renderNewReleaseArtists(bandsData);
                 hasUnsavedChanges = true;
                 updateSubmitButtonState();
             }
@@ -1696,7 +1502,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<i class="fas fa-edit"></i> Уреди';
             console.log('Edit mode:', isEditMode);
             renderBands(bandsData);
-            renderNewReleaseArtists(bandsData);
         });
     }
 
@@ -1835,7 +1640,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesName && matchesCity && matchesGenre && matchesSoundsLike && matchesStatus && matchesLabel;
         });
         renderBands(filteredBands);
-        renderNewReleaseArtists(bandsData);
     }
 
     function renderBands(bands) {
@@ -2027,6 +1831,327 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(spotifyUrl, '_blank');
         }
     }
+
+    // ==================== TOUR FUNCTIONALITY ====================
+    const tourSteps = [
+        {
+            element: null,
+            title: 'Здраво! 👋',
+            description: 'Ова е <strong>Македонска Музичка Мастер Листа</strong> - место каде ги собираме сите домашни артисти на едно место. Проектот е отворен, секој може да помогне.<br><br>Ајде да ти покажам како работи ова.',
+            position: 'center'
+        },
+        {
+            element: '#search-name',
+            title: 'Пребарување',
+            description: 'Тука пишуваш име и веднаш ти се појавуваат резултати. Работи и на кирилица и на латиница, така да не мора да се мачиш.',
+            position: 'bottom'
+        },
+        {
+            element: '.controls',
+            title: 'Филтри',
+            description: 'Ако сакаш да видиш само бендови од Скопје, или само рок, или само активни - тука ги имаш сите филтри. Комбинирај ги како сакаш.',
+            position: 'bottom'
+        },
+        {
+            element: 'table thead',
+            title: 'Листа на артисти',
+            description: 'Еве ги сите артисти. Секој ред има име, град, жанр, и линкови до профилите.',
+            position: 'bottom'
+        },
+        {
+            element: '.link-icon',
+            title: 'Линкови',
+            description: 'Кликни на иконата и директно те носи на профилот - Spotify, YouTube, Instagram, што има.',
+            position: 'bottom'
+        },
+        {
+            element: '.artist-preview-btn',
+            title: 'Преслушај',
+            description: 'Ова зелено копче <i class="fas fa-play" style="color: #1DB954;"></i> ти пушта песна директно тука, без да одиш на друг сајт. Практично за брзо да чуеш како звучи некој.',
+            position: 'bottom'
+        },
+        {
+            element: '.status-indicator',
+            title: 'Статус',
+            description: 'Боичките значат:<br><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#40c057;margin-right:4px;"></span> активен (свири, снима)<br><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#fa5252;margin-right:4px;"></span> неактивен (не свири повеќе)<br><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#fd7e14;margin-right:4px;"></span> можеби (не сме сигурни)<br><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#868e96;margin-right:4px;"></span> непознато',
+            position: 'left'
+        },
+        {
+            element: '#add-band-btn',
+            title: 'Додај артист',
+            description: 'Знаеш за бенд што го нема тука? Кликни овде и додај го. Ќе се отвори формулар каде внесуваш име, град, жанр, линкови...',
+            position: 'bottom'
+        },
+        {
+            element: '#band-modal .modal-content',
+            title: 'Формулар за артист',
+            description: 'Тука ги внесуваш податоците. Не мора сè да биде пополнето - ако не знаеш нешто, остави го празно. Подоцна некој друг може да додаде.',
+            position: 'right',
+            beforeShow: () => {
+                document.getElementById('band-modal').style.display = 'block';
+            },
+            afterHide: () => {
+                document.getElementById('band-modal').style.display = 'none';
+            }
+        },
+        {
+            element: '#copy-data-btn',
+            title: 'Копирај податоци',
+            description: 'Ова ти го копира целиот JSON со сите артисти. Корисно ако сакаш да направиш бекап или да ги користиш податоците за нешто друго.',
+            position: 'bottom',
+            beforeShow: () => {
+                document.getElementById('band-modal').style.display = 'none';
+            }
+        },
+        {
+            element: '#submit-pr-btn',
+            title: 'Побарај промена',
+            description: 'Кога ќе завршиш со промени, кликни тука. Ќе се отвори прозорец каде опишуваш што си сменил, и потоа се праќа на преглед.',
+            position: 'bottom'
+        },
+        {
+            element: '#pr-form-container',
+            title: 'Испрати на преглед',
+            description: 'Тука опишуваш што направи - додаде нов бенд, поправи грешка, итн. Може и контакт да оставиш ако сакаш. Промената оди на GitHub и некој ја прегледува.',
+            position: 'bottom',
+            beforeShow: () => {
+                document.getElementById('custom-dialog-modal').style.display = 'block';
+                document.getElementById('pr-form-container').style.display = 'block';
+                document.getElementById('dialog-message').style.display = 'none';
+            },
+            afterHide: () => {
+                document.getElementById('custom-dialog-modal').style.display = 'none';
+                document.getElementById('pr-form-container').style.display = 'none';
+            }
+        },
+        {
+            element: '.chart-btn',
+            title: 'Топ листа',
+            description: 'Тука се најновите синглови и албуми од македонски артисти. Се ажурира автоматски секој ден.',
+            position: 'bottom',
+            beforeShow: () => {
+                document.getElementById('custom-dialog-modal').style.display = 'none';
+            }
+        },
+        {
+            element: null,
+            title: 'Тоа е сè!',
+            description: 'Ако сакаш да помогнеш:<br><br>• Додај артист што го нема<br>• Поправи ако нешто не е точно<br>• Јави се на <a href="https://discord.gg/fj6dJGhM" target="_blank">Xotel Discord</a> ако имаш прашања<br><br>Фала што помагаш! 🎸',
+            position: 'center'
+        }
+    ];
+
+    let currentTourStep = 0;
+    let tourActive = false;
+
+    function initTour() {
+        const tourBtn = document.getElementById('start-tour-btn');
+        const overlay = document.getElementById('tour-overlay');
+        const highlight = overlay.querySelector('.tour-highlight');
+        const tooltip = overlay.querySelector('.tour-tooltip');
+        const titleEl = tooltip.querySelector('.tour-title');
+        const descEl = tooltip.querySelector('.tour-description');
+        const progressEl = tooltip.querySelector('.tour-progress');
+        const prevBtn = tooltip.querySelector('.tour-btn-prev');
+        const nextBtn = tooltip.querySelector('.tour-btn-next');
+        const skipBtn = tooltip.querySelector('.tour-btn-skip');
+
+        if (!tourBtn || !overlay) return;
+
+        tourBtn.addEventListener('click', startTour);
+        prevBtn.addEventListener('click', prevStep);
+        nextBtn.addEventListener('click', nextStep);
+        skipBtn.addEventListener('click', endTour);
+
+        // Close on overlay click (outside tooltip)
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay || e.target.classList.contains('tour-highlight')) {
+                endTour();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!tourActive) return;
+            if (e.key === 'Escape') endTour();
+            if (e.key === 'ArrowRight' || e.key === 'Enter') nextStep();
+            if (e.key === 'ArrowLeft') prevStep();
+        });
+    }
+
+    function startTour() {
+        tourActive = true;
+        currentTourStep = 0;
+        document.getElementById('tour-overlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        showTourStep(currentTourStep);
+    }
+
+    function endTour() {
+        // Call afterHide on current step if exists
+        const currentStep = tourSteps[currentTourStep];
+        if (currentStep && currentStep.afterHide) {
+            currentStep.afterHide();
+        }
+        tourActive = false;
+        document.getElementById('tour-overlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function prevStep() {
+        if (currentTourStep > 0) {
+            // Call afterHide on current step
+            const currentStep = tourSteps[currentTourStep];
+            if (currentStep && currentStep.afterHide) {
+                currentStep.afterHide();
+            }
+            currentTourStep--;
+            showTourStep(currentTourStep);
+        }
+    }
+
+    function nextStep() {
+        if (currentTourStep < tourSteps.length - 1) {
+            // Call afterHide on current step
+            const currentStep = tourSteps[currentTourStep];
+            if (currentStep && currentStep.afterHide) {
+                currentStep.afterHide();
+            }
+            currentTourStep++;
+            showTourStep(currentTourStep);
+        } else {
+            endTour();
+        }
+    }
+
+    function showTourStep(stepIndex) {
+        const step = tourSteps[stepIndex];
+        const overlay = document.getElementById('tour-overlay');
+        const highlight = overlay.querySelector('.tour-highlight');
+        const tooltip = overlay.querySelector('.tour-tooltip');
+        const titleEl = tooltip.querySelector('.tour-title');
+        const descEl = tooltip.querySelector('.tour-description');
+        const progressEl = tooltip.querySelector('.tour-progress');
+        const prevBtn = tooltip.querySelector('.tour-btn-prev');
+        const nextBtn = tooltip.querySelector('.tour-btn-next');
+
+        // Call beforeShow if exists
+        if (step.beforeShow) {
+            step.beforeShow();
+        }
+
+        // Update content
+        titleEl.textContent = step.title;
+        descEl.innerHTML = step.description;
+        progressEl.textContent = `${stepIndex + 1} / ${tourSteps.length}`;
+
+        // Update buttons
+        prevBtn.disabled = stepIndex === 0;
+        nextBtn.innerHTML = stepIndex === tourSteps.length - 1 
+            ? 'Заврши <i class="fas fa-check"></i>' 
+            : 'Следно <i class="fas fa-arrow-right"></i>';
+
+        // Remove old arrow classes
+        tooltip.classList.remove('arrow-top', 'arrow-bottom', 'arrow-left', 'arrow-right', 'tour-center');
+
+        if (step.position === 'center' || !step.element) {
+            // Centered step (welcome/outro)
+            highlight.style.display = 'none';
+            tooltip.classList.add('tour-center');
+            tooltip.style.top = '';
+            tooltip.style.left = '';
+            tooltip.style.right = '';
+            tooltip.style.bottom = '';
+        } else {
+            // Element-targeted step
+            const targetEl = document.querySelector(step.element);
+            if (!targetEl) {
+                // Skip to next if element not found
+                if (stepIndex < tourSteps.length - 1) {
+                    currentTourStep++;
+                    showTourStep(currentTourStep);
+                }
+                return;
+            }
+
+            // Scroll element into view if needed
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Small delay for scroll to complete
+            setTimeout(() => {
+                positionHighlight(targetEl, highlight);
+                positionTooltip(targetEl, tooltip, step.position);
+            }, 100);
+        }
+    }
+
+    function positionHighlight(element, highlight) {
+        const rect = element.getBoundingClientRect();
+        const padding = 4;
+        
+        highlight.style.display = 'block';
+        highlight.style.top = (rect.top - padding + window.scrollY) + 'px';
+        highlight.style.left = (rect.left - padding + window.scrollX) + 'px';
+        highlight.style.width = (rect.width + padding * 2) + 'px';
+        highlight.style.height = (rect.height + padding * 2) + 'px';
+    }
+
+    function positionTooltip(element, tooltip, position) {
+        const rect = element.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const gap = 16;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        // Check if mobile (tooltip is fixed at bottom on mobile via CSS)
+        if (viewportWidth <= 600) {
+            tooltip.classList.add('arrow-top');
+            return;
+        }
+
+        let top, left;
+        let arrowClass = '';
+
+        switch (position) {
+            case 'bottom':
+                top = rect.bottom + gap;
+                left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+                arrowClass = 'arrow-top';
+                break;
+            case 'top':
+                top = rect.top - tooltipRect.height - gap;
+                left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+                arrowClass = 'arrow-bottom';
+                break;
+            case 'left':
+                top = rect.top + rect.height / 2 - tooltipRect.height / 2;
+                left = rect.left - tooltipRect.width - gap;
+                arrowClass = 'arrow-right';
+                break;
+            case 'right':
+                top = rect.top + rect.height / 2 - tooltipRect.height / 2;
+                left = rect.right + gap;
+                arrowClass = 'arrow-left';
+                break;
+        }
+
+        // Keep tooltip within viewport
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > viewportWidth - 10) {
+            left = viewportWidth - tooltipRect.width - 10;
+        }
+        if (top < 10) top = 10;
+        if (top + tooltipRect.height > viewportHeight - 10) {
+            top = viewportHeight - tooltipRect.height - 10;
+        }
+
+        tooltip.style.top = top + 'px';
+        tooltip.style.left = left + 'px';
+        tooltip.classList.add(arrowClass);
+    }
+
+    // Initialize tour
+    initTour();
 
     loadBandsData();
 });

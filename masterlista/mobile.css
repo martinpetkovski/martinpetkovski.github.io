@@ -119,7 +119,7 @@ header h1, header p { display: none; }
 
 .header-btn.add-band { background: var(--accent-green); border-color: var(--accent-green); color: #fff; }
 .header-btn.chart-btn { background: #FFD700; border-color: #FFD700; color: #333; }
-.header-btn.guide-btn { background: var(--accent-pink); border-color: var(--accent-pink); color: #fff; }
+.header-btn.tour-btn { background: linear-gradient(135deg, #FFD700, #FF8C00); border-color: #FFD700; color: #1a1a1a; }
 .header-btn.toggle-filters-btn { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
 .header-btn.request-change { background: var(--accent-purple, #9b59b6); border-color: var(--accent-purple, #9b59b6); color: #fff; }
 .header-btn.master-edit, .header-btn.copy-data { display: none; }
@@ -1348,3 +1348,166 @@ th.edit-hidden { display: table-cell; }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 .notification.fade-out { animation: fadeOut 0.2s ease-out forwards; }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; transform: translateX(100%); } }
+
+/* Tour Overlay - Mobile */
+.tour-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3000;
+    pointer-events: none;
+}
+
+.tour-overlay.active {
+    display: block;
+}
+
+.tour-overlay::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    pointer-events: auto;
+}
+
+.tour-highlight {
+    position: absolute;
+    box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 3001;
+}
+
+.tour-highlight::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 2px solid #FFD700;
+    border-radius: 5px;
+    animation: tour-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes tour-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.tour-tooltip {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    transform: none !important;
+    background: var(--bg-primary);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+    max-width: none;
+    min-width: auto;
+    z-index: 3002;
+    pointer-events: auto;
+    animation: tour-slide-up 0.3s ease;
+}
+
+@keyframes tour-slide-up {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tour-tooltip::before {
+    display: none;
+}
+
+.tour-tooltip-content {
+    padding: 1rem;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.tour-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.tour-description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.tour-description strong {
+    color: var(--text-primary);
+}
+
+.tour-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.tour-progress {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.tour-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tour-btn-skip,
+.tour-btn-prev,
+.tour-btn-next {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    min-height: 38px;
+}
+
+.tour-btn-skip {
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.tour-btn-prev {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.tour-btn-prev:disabled {
+    opacity: 0.4;
+}
+
+.tour-btn-next {
+    background: linear-gradient(135deg, #FFD700, #FF8C00);
+    color: #1a1a1a;
+}
+
+.tour-btn-next i {
+    color: inherit;
+    margin-left: 0.25rem;
+}
+
+.tour-btn-prev i {
+    margin-right: 0.25rem;
+}
