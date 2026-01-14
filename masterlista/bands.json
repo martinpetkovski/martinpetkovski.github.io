@@ -869,12 +869,12 @@
     },
     {
       "name": "Д.Н.О.",
-      "city": "недостигаат податоци",
-      "genre": "недостигаат податоци",
+      "city": "Скопје",
+      "genre": "Алтернативен Рок, Инди",
       "soundsLike": "недостигаат податоци",
-      "isActive": "Непознато",
+      "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/1uz2RCAHq5pnXIH8mLlrAh?si=7rMjhFkQSx2K4iJ_qMaHdg"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
