@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-01-13T18:26:52.830Z",
-  "totalReleases": 598,
-  "totalArtists": 116,
+  "generatedAt": "2026-01-14T21:22:05.535Z",
+  "totalReleases": 599,
+  "totalArtists": 117,
   "releases": [
     {
       "bandName": "Johnny Larry",
@@ -13,7 +13,7 @@
       "releaseUrl": "https://open.spotify.com/album/7zdJvSyXMo8aZ2DmUS1P29",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27390f346f7ac5935c6253b7038",
       "totalTracks": 1,
-      "popularity": 4,
+      "popularity": 6,
       "topTrackName": "Dijagonala",
       "topTrackId": "5SLqqwvjg3RRQrByRr7QAD",
       "topTrackUrl": "https://open.spotify.com/track/5SLqqwvjg3RRQrByRr7QAD",
@@ -34,7 +34,7 @@
       "topTrackName": "Marija - Live",
       "topTrackId": "7amskXqE1nfdD22VUTxSrb",
       "topTrackUrl": "https://open.spotify.com/track/7amskXqE1nfdD22VUTxSrb",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -85,7 +85,7 @@
       "topTrackName": "Nedelja x Ja Bih Te Sanjala - Medley @ Grand Production",
       "topTrackId": "3dJO0fDSVJYYpPB2ALfFM4",
       "topTrackUrl": "https://open.spotify.com/track/3dJO0fDSVJYYpPB2ALfFM4",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -98,11 +98,11 @@
       "releaseUrl": "https://open.spotify.com/album/6U7VYSbIEx3rPzqo2SBubn",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2731311b60b9d7a841649b5163f",
       "totalTracks": 1,
-      "popularity": 2,
+      "popularity": 3,
       "topTrackName": "Bitula Moj Roden Kraj - Uzivo @ Grand Production",
       "topTrackId": "6s29I055w4sG9sfmOVTFEL",
       "topTrackUrl": "https://open.spotify.com/track/6s29I055w4sG9sfmOVTFEL",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -187,7 +187,7 @@
       "topTrackName": "Charged Up",
       "topTrackId": "75WuAYb0aTjl9AF1pCGwPO",
       "topTrackUrl": "https://open.spotify.com/track/75WuAYb0aTjl9AF1pCGwPO",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -255,7 +255,7 @@
       "topTrackName": "Desert Flame - Mixed",
       "topTrackId": "2vJTciilaQzR3Uscz7YTZA",
       "topTrackUrl": "https://open.spotify.com/track/2vJTciilaQzR3Uscz7YTZA",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -269,9 +269,9 @@
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2730d1e2d2ee4b4bfd95a982113",
       "totalTracks": 10,
       "popularity": 21,
-      "topTrackName": "Stari Pjer",
-      "topTrackId": "2LNCpzsQQJzkKiVlUoULzw",
-      "topTrackUrl": "https://open.spotify.com/track/2LNCpzsQQJzkKiVlUoULzw",
+      "topTrackName": "Ostala si uvijek ista",
+      "topTrackId": "50WGDdNM4rLPl7vqugHNTb",
+      "topTrackUrl": "https://open.spotify.com/track/50WGDdNM4rLPl7vqugHNTb",
       "followers": 15358,
       "spotifyUrl": "https://open.spotify.com/artist/5ekFgfk58KqyjN2dIVcZ1V?si=eIVxKPvyQGmvW5p5yEFDwA"
     },
@@ -306,7 +306,7 @@
       "topTrackName": "mozhe mozhe mozhe",
       "topTrackId": "4U2kaBoAFoWZNZJYFh8cUX",
       "topTrackUrl": "https://open.spotify.com/track/4U2kaBoAFoWZNZJYFh8cUX",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -323,7 +323,7 @@
       "topTrackName": "Borojó - Lagartijeando Remix - Mixed",
       "topTrackId": "59WETKc7SY2vxanzClDrDW",
       "topTrackUrl": "https://open.spotify.com/track/59WETKc7SY2vxanzClDrDW",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -340,7 +340,7 @@
       "topTrackName": "Rhythm",
       "topTrackId": "5vdWGSrGnnhApZqVB6Hb8Q",
       "topTrackUrl": "https://open.spotify.com/track/5vdWGSrGnnhApZqVB6Hb8Q",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -391,7 +391,7 @@
       "topTrackName": "Tamam Ashkhar - Mixed",
       "topTrackId": "1sIxHueRAbvbDZ5jx0VkvP",
       "topTrackUrl": "https://open.spotify.com/track/1sIxHueRAbvbDZ5jx0VkvP",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -408,7 +408,7 @@
       "topTrackName": "Oci Angelski",
       "topTrackId": "0HfqLkjqQdjXCHkriAWqvZ",
       "topTrackUrl": "https://open.spotify.com/track/0HfqLkjqQdjXCHkriAWqvZ",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -455,11 +455,11 @@
       "releaseUrl": "https://open.spotify.com/album/4iZTRsfdHznAPVr9oHkalA",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2738c33d83983cbef86e62e71dd",
       "totalTracks": 1,
-      "popularity": 30,
+      "popularity": 31,
       "topTrackName": "Ritual Obsession",
       "topTrackId": "1vNdRfweYGyFKadGsJ0QwY",
       "topTrackUrl": "https://open.spotify.com/track/1vNdRfweYGyFKadGsJ0QwY",
-      "followers": 560,
+      "followers": 570,
       "spotifyUrl": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
     },
     {
@@ -493,7 +493,7 @@
       "topTrackName": "Pismo",
       "topTrackId": "1mQZnYJax6fQP8DLF4tK8b",
       "topTrackUrl": "https://open.spotify.com/track/1mQZnYJax6fQP8DLF4tK8b",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -510,7 +510,7 @@
       "topTrackName": "Oda - Mixed",
       "topTrackId": "1fDqFCynW2SoCRI1pLkWWd",
       "topTrackUrl": "https://open.spotify.com/track/1fDqFCynW2SoCRI1pLkWWd",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -523,10 +523,10 @@
       "releaseUrl": "https://open.spotify.com/album/6sd6ijjFK2tE15m88QBGT9",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2733f7977cc106c6e3ea2c56a43",
       "totalTracks": 7,
-      "popularity": 2,
-      "topTrackName": "Sacral Chakra (Svadhishthana)",
-      "topTrackId": "2RicweAvtzPwGnTheNOwX1",
-      "topTrackUrl": "https://open.spotify.com/track/2RicweAvtzPwGnTheNOwX1",
+      "popularity": 1,
+      "topTrackName": "Root Chakra (Muladhara)",
+      "topTrackId": "32aYjA5XEZz0JByWP8exe2",
+      "topTrackUrl": "https://open.spotify.com/track/32aYjA5XEZz0JByWP8exe2",
       "followers": 1588,
       "spotifyUrl": "https://open.spotify.com/artist/502fD1fdYlaVpW3nYHa5nE?si=nP-fh1EYTFqE0zwfG19urg"
     },
@@ -561,7 +561,7 @@
       "topTrackName": "Pay The Price",
       "topTrackId": "0n0eT33iW62cDxDfHgpBjd",
       "topTrackUrl": "https://open.spotify.com/track/0n0eT33iW62cDxDfHgpBjd",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -578,7 +578,7 @@
       "topTrackName": "Duper zvezda",
       "topTrackId": "1g0ZBk0v7fzltqZpPoXFRj",
       "topTrackUrl": "https://open.spotify.com/track/1g0ZBk0v7fzltqZpPoXFRj",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -595,7 +595,7 @@
       "topTrackName": "Prolet",
       "topTrackId": "4hoO0DegkQu1joNoMv7e2C",
       "topTrackUrl": "https://open.spotify.com/track/4hoO0DegkQu1joNoMv7e2C",
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -663,7 +663,7 @@
       "topTrackName": "Fever Shock",
       "topTrackId": "60XMm5oPL2VgQLOzLVZL6Q",
       "topTrackUrl": "https://open.spotify.com/track/60XMm5oPL2VgQLOzLVZL6Q",
-      "followers": 560,
+      "followers": 570,
       "spotifyUrl": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
     },
     {
@@ -693,11 +693,11 @@
       "releaseUrl": "https://open.spotify.com/album/11csJRGO7bpqGJ6Z5skC8y",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27301e19d27039d5b91c6ab6705",
       "totalTracks": 9,
-      "popularity": 9,
+      "popularity": 8,
       "topTrackName": "SI ZALJUBIV EDNO MOME",
       "topTrackId": "21vrGzyzH8SJQb6kOHukHL",
       "topTrackUrl": "https://open.spotify.com/track/21vrGzyzH8SJQb6kOHukHL",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -714,7 +714,7 @@
       "topTrackName": "Move",
       "topTrackId": "6cUX5QNP8x7tEZDDRWuwdH",
       "topTrackUrl": "https://open.spotify.com/track/6cUX5QNP8x7tEZDDRWuwdH",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -731,7 +731,7 @@
       "topTrackName": "Si Zaljubiv",
       "topTrackId": "5sc8HvYx9B6H7iFKODtKem",
       "topTrackUrl": "https://open.spotify.com/track/5sc8HvYx9B6H7iFKODtKem",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -782,7 +782,7 @@
       "topTrackName": "Specijalista",
       "topTrackId": "7JScsKb0WvPvXRoxW8b6k3",
       "topTrackUrl": "https://open.spotify.com/track/7JScsKb0WvPvXRoxW8b6k3",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -816,7 +816,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -867,7 +867,7 @@
       "topTrackName": "La Vida",
       "topTrackId": "2N69WpOjTkytWC76BrOVxm",
       "topTrackUrl": "https://open.spotify.com/track/2N69WpOjTkytWC76BrOVxm",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -918,7 +918,7 @@
       "topTrackName": "Night Experience",
       "topTrackId": "2dNDfnjN3VF3gvQtbHZsGI",
       "topTrackUrl": "https://open.spotify.com/track/2dNDfnjN3VF3gvQtbHZsGI",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -935,7 +935,7 @@
       "topTrackName": "Ridak - Mixed",
       "topTrackId": "2Hx2MHxefPkOLPeN33Dklx",
       "topTrackUrl": "https://open.spotify.com/track/2Hx2MHxefPkOLPeN33Dklx",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -952,7 +952,7 @@
       "topTrackName": "Together We Shine - EYOF Skopje 2025",
       "topTrackId": "5y1SKVQ1GD4FOK8orgU2Po",
       "topTrackUrl": "https://open.spotify.com/track/5y1SKVQ1GD4FOK8orgU2Po",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -1003,7 +1003,7 @@
       "topTrackName": "Nekazhano",
       "topTrackId": "5FBrl4CXJaXj8awFY3yJJQ",
       "topTrackUrl": "https://open.spotify.com/track/5FBrl4CXJaXj8awFY3yJJQ",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -1020,7 +1020,7 @@
       "topTrackName": "Blow Cash",
       "topTrackId": "5LEFNrDdUUt6KlpNMyoqIe",
       "topTrackUrl": "https://open.spotify.com/track/5LEFNrDdUUt6KlpNMyoqIe",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -1037,7 +1037,7 @@
       "topTrackName": "Want It",
       "topTrackId": "3blquDGvtwXhf8xAoeYBet",
       "topTrackUrl": "https://open.spotify.com/track/3blquDGvtwXhf8xAoeYBet",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -1071,7 +1071,7 @@
       "topTrackName": "Nikoj osven tebe",
       "topTrackId": "4c1ClrneUzS3YmLy2jhCns",
       "topTrackUrl": "https://open.spotify.com/track/4c1ClrneUzS3YmLy2jhCns",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -1139,7 +1139,7 @@
       "topTrackName": "Taya Tere - Mixed",
       "topTrackId": "520ilxfdpjve7GC4T6BPVU",
       "topTrackUrl": "https://open.spotify.com/track/520ilxfdpjve7GC4T6BPVU",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -1156,7 +1156,7 @@
       "topTrackName": "Trouble So Hard - VIP Mix",
       "topTrackId": "5CJz21mIMnSWBLyC7gdU4Z",
       "topTrackUrl": "https://open.spotify.com/track/5CJz21mIMnSWBLyC7gdU4Z",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -1190,7 +1190,7 @@
       "topTrackName": "Desert Nomad - Mixed",
       "topTrackId": "17D9eNzoYGPP0iyRBQhLPz",
       "topTrackUrl": "https://open.spotify.com/track/17D9eNzoYGPP0iyRBQhLPz",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -1207,7 +1207,7 @@
       "topTrackName": "Lavirint",
       "topTrackId": "5Y16YmNWmyANVFQNnvXhKZ",
       "topTrackUrl": "https://open.spotify.com/track/5Y16YmNWmyANVFQNnvXhKZ",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -1224,7 +1224,7 @@
       "topTrackName": "Ludilo Bez Stop",
       "topTrackId": "27yvlrTwcm4RI9k7YTUbTx",
       "topTrackUrl": "https://open.spotify.com/track/27yvlrTwcm4RI9k7YTUbTx",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -1326,7 +1326,7 @@
       "topTrackName": "Till the beat comes down",
       "topTrackId": "7qZhYJVIqyTK2izyBdjEp4",
       "topTrackUrl": "https://open.spotify.com/track/7qZhYJVIqyTK2izyBdjEp4",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -1343,7 +1343,7 @@
       "topTrackName": "Navika",
       "topTrackId": "0NfpVhzCHIXTbYnbFJT7Rr",
       "topTrackUrl": "https://open.spotify.com/track/0NfpVhzCHIXTbYnbFJT7Rr",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -1373,7 +1373,7 @@
       "releaseUrl": "https://open.spotify.com/album/58oHbs284iF0WAN3IJ1XAp",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273dcfab7b2c02288e8e65326ff",
       "totalTracks": 1,
-      "popularity": 3,
+      "popularity": 2,
       "topTrackName": "Dynamite",
       "topTrackId": "6VNdwM3Hof07qM06BXGlog",
       "topTrackUrl": "https://open.spotify.com/track/6VNdwM3Hof07qM06BXGlog",
@@ -1394,7 +1394,7 @@
       "topTrackName": "A Solas - Mixed",
       "topTrackId": "3wufGJs148uySNyrvoGcAF",
       "topTrackUrl": "https://open.spotify.com/track/3wufGJs148uySNyrvoGcAF",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -1411,7 +1411,7 @@
       "topTrackName": "Rastenija bez koren",
       "topTrackId": "4ZrdRNPYHDELxk6QUrNM89",
       "topTrackUrl": "https://open.spotify.com/track/4ZrdRNPYHDELxk6QUrNM89",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -1462,7 +1462,7 @@
       "topTrackName": "Emotion",
       "topTrackId": "6km94DcXqnA55Zue9mhF5D",
       "topTrackUrl": "https://open.spotify.com/track/6km94DcXqnA55Zue9mhF5D",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -1530,7 +1530,7 @@
       "topTrackName": "Vreme Za Plačenje",
       "topTrackId": "4IDPm2u4FY4OMznrYNrYCN",
       "topTrackUrl": "https://open.spotify.com/track/4IDPm2u4FY4OMznrYNrYCN",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -1547,7 +1547,7 @@
       "topTrackName": "Road to Istanbul - Mixed",
       "topTrackId": "1f3SOMy8VFB0H1dKmLLNA5",
       "topTrackUrl": "https://open.spotify.com/track/1f3SOMy8VFB0H1dKmLLNA5",
-      "followers": 19069,
+      "followers": 19075,
       "spotifyUrl": "https://open.spotify.com/artist/0nyKVqkATGrYXA98ieTJr0?si=rovLgRpqTrmiy_OtTnfKbw"
     },
     {
@@ -1577,11 +1577,11 @@
       "releaseUrl": "https://open.spotify.com/album/4au5E3tKvOgsaem643DYH1",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273edee92ec28827698b4b7eb86",
       "totalTracks": 6,
-      "popularity": 9,
+      "popularity": 8,
       "topTrackName": "Врева",
       "topTrackId": "2EX9srpW3OlDzPePsIBqk5",
       "topTrackUrl": "https://open.spotify.com/track/2EX9srpW3OlDzPePsIBqk5",
-      "followers": 182,
+      "followers": 184,
       "spotifyUrl": "https://open.spotify.com/artist/4pZIjf5zskiwXshcwWqrJ3?si=jcVard4nQYOk8X81ltc3mw"
     },
     {
@@ -1598,7 +1598,7 @@
       "topTrackName": "Ja Budala?!",
       "topTrackId": "0hlz6nG2EFdiHxVOgUNBDe",
       "topTrackUrl": "https://open.spotify.com/track/0hlz6nG2EFdiHxVOgUNBDe",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -1615,7 +1615,7 @@
       "topTrackName": "Aman",
       "topTrackId": "0An34Wn1aIFjRCdepFWW0I",
       "topTrackUrl": "https://open.spotify.com/track/0An34Wn1aIFjRCdepFWW0I",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -1632,7 +1632,7 @@
       "topTrackName": "Gradot",
       "topTrackId": "02kMzCJBObREHVkOxd9fAk",
       "topTrackUrl": "https://open.spotify.com/track/02kMzCJBObREHVkOxd9fAk",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -1836,7 +1836,7 @@
       "topTrackName": "Kakusei",
       "topTrackId": "1LRFnhUyl2BgUrIDRpXDS6",
       "topTrackUrl": "https://open.spotify.com/track/1LRFnhUyl2BgUrIDRpXDS6",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -1938,7 +1938,7 @@
       "topTrackName": "Euforija",
       "topTrackId": "0knWBeHb4fyXpdfNG6ZnKY",
       "topTrackUrl": "https://open.spotify.com/track/0knWBeHb4fyXpdfNG6ZnKY",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -2142,7 +2142,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -2227,7 +2227,7 @@
       "topTrackName": "Žimi Se",
       "topTrackId": "41t9GyQ2YWX6jcLhnMtttZ",
       "topTrackUrl": "https://open.spotify.com/track/41t9GyQ2YWX6jcLhnMtttZ",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -2244,7 +2244,7 @@
       "topTrackName": "Srebreni Krilja",
       "topTrackId": "1tk36pSUTHde0zKtguytzR",
       "topTrackUrl": "https://open.spotify.com/track/1tk36pSUTHde0zKtguytzR",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -2261,7 +2261,7 @@
       "topTrackName": "Haram - Serbian Version",
       "topTrackId": "29RftGfsmEgne6jxuuWUKl",
       "topTrackUrl": "https://open.spotify.com/track/29RftGfsmEgne6jxuuWUKl",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -2295,7 +2295,7 @@
       "topTrackName": "Noke i Denski",
       "topTrackId": "6O4sCiu57f5YWww6j2foue",
       "topTrackUrl": "https://open.spotify.com/track/6O4sCiu57f5YWww6j2foue",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -2312,7 +2312,7 @@
       "topTrackName": "MUKA MI JE",
       "topTrackId": "3lq8NKAPBaN4n6PnaTgpnx",
       "topTrackUrl": "https://open.spotify.com/track/3lq8NKAPBaN4n6PnaTgpnx",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -2397,7 +2397,7 @@
       "topTrackName": "EYES - prod. flocenflo x itssaince",
       "topTrackId": "1pyUHI3TrgM3yybZh44LDp",
       "topTrackUrl": "https://open.spotify.com/track/1pyUHI3TrgM3yybZh44LDp",
-      "followers": 2631,
+      "followers": 2632,
       "spotifyUrl": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF"
     },
     {
@@ -2414,7 +2414,7 @@
       "topTrackName": "Nema Koj",
       "topTrackId": "4r0AjlbwbtNz7THU6ZpZbz",
       "topTrackUrl": "https://open.spotify.com/track/4r0AjlbwbtNz7THU6ZpZbz",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -2516,7 +2516,7 @@
       "topTrackName": "Zena",
       "topTrackId": "6TaLvIunm3rawpinlL2V6R",
       "topTrackUrl": "https://open.spotify.com/track/6TaLvIunm3rawpinlL2V6R",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -2567,7 +2567,7 @@
       "topTrackName": "ME BOLI ZA SE",
       "topTrackId": "7E05A5ZzLMLNGLhsnZAvFh",
       "topTrackUrl": "https://open.spotify.com/track/7E05A5ZzLMLNGLhsnZAvFh",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -2584,7 +2584,7 @@
       "topTrackName": "Tu Tu Tu",
       "topTrackId": "2qj1P2ElJ1WVDykvMGPYLW",
       "topTrackUrl": "https://open.spotify.com/track/2qj1P2ElJ1WVDykvMGPYLW",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -2601,7 +2601,7 @@
       "topTrackName": "VIP",
       "topTrackId": "60jp6veU2hB1mbDMMsngEK",
       "topTrackUrl": "https://open.spotify.com/track/60jp6veU2hB1mbDMMsngEK",
-      "followers": 560,
+      "followers": 570,
       "spotifyUrl": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
     },
     {
@@ -2618,7 +2618,7 @@
       "topTrackName": "Stranecot",
       "topTrackId": "1cYBb8uCJRen4faj9UXMUR",
       "topTrackUrl": "https://open.spotify.com/track/1cYBb8uCJRen4faj9UXMUR",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -2686,7 +2686,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2788,7 +2788,7 @@
       "topTrackName": "Doviduvanje tago - Tamara & Just RB Remix",
       "topTrackId": "4svoXUh7p5ISJJ5ktqU5WP",
       "topTrackUrl": "https://open.spotify.com/track/4svoXUh7p5ISJJ5ktqU5WP",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -2805,7 +2805,7 @@
       "topTrackName": "Hollywood",
       "topTrackId": "38LiHNx2zXh183XL4a5y2r",
       "topTrackUrl": "https://open.spotify.com/track/38LiHNx2zXh183XL4a5y2r",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -2822,7 +2822,7 @@
       "topTrackName": "Svetot e",
       "topTrackId": "6DlyN7XiQc5gsnyEQisBxz",
       "topTrackUrl": "https://open.spotify.com/track/6DlyN7XiQc5gsnyEQisBxz",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -2856,7 +2856,7 @@
       "topTrackName": "It’s a Date",
       "topTrackId": "4lb1gLms7N0i31k5GBKE0d",
       "topTrackUrl": "https://open.spotify.com/track/4lb1gLms7N0i31k5GBKE0d",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2873,7 +2873,7 @@
       "topTrackName": "Brotche",
       "topTrackId": "5KfypjGczUBPKGIW0iGZqm",
       "topTrackUrl": "https://open.spotify.com/track/5KfypjGczUBPKGIW0iGZqm",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2890,7 +2890,7 @@
       "topTrackName": "Teresa",
       "topTrackId": "7jp8A9ANBWgp9D8XbaJ4Nm",
       "topTrackUrl": "https://open.spotify.com/track/7jp8A9ANBWgp9D8XbaJ4Nm",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2907,7 +2907,7 @@
       "topTrackName": "Archimed",
       "topTrackId": "1r0E6Lb5WIjJOmtltPO4v3",
       "topTrackUrl": "https://open.spotify.com/track/1r0E6Lb5WIjJOmtltPO4v3",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2924,7 +2924,7 @@
       "topTrackName": "Simultan Baknezh",
       "topTrackId": "4p3DN0xC5glvLqLLcpTqHT",
       "topTrackUrl": "https://open.spotify.com/track/4p3DN0xC5glvLqLLcpTqHT",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2941,7 +2941,7 @@
       "topTrackName": "Slobodnata Ljubov",
       "topTrackId": "5qtSYNbcWFXRllDnVHtDl4",
       "topTrackUrl": "https://open.spotify.com/track/5qtSYNbcWFXRllDnVHtDl4",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -2958,7 +2958,7 @@
       "topTrackName": "Milion Leta",
       "topTrackId": "4WFTriKlaaoQhecUzLuNzD",
       "topTrackUrl": "https://open.spotify.com/track/4WFTriKlaaoQhecUzLuNzD",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -2975,7 +2975,7 @@
       "topTrackName": "Doviduvanje Tago - Remix",
       "topTrackId": "4VlAh5D8CYeFi68OYd78pu",
       "topTrackUrl": "https://open.spotify.com/track/4VlAh5D8CYeFi68OYd78pu",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -2992,7 +2992,7 @@
       "topTrackName": "В и С",
       "topTrackId": "0P2kgJXuxOiZ7cNcbZKPUH",
       "topTrackUrl": "https://open.spotify.com/track/0P2kgJXuxOiZ7cNcbZKPUH",
-      "followers": 2631,
+      "followers": 2632,
       "spotifyUrl": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF"
     },
     {
@@ -3060,7 +3060,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -3094,7 +3094,7 @@
       "topTrackName": "Zovi me Lena - Remake",
       "topTrackId": "1SflCUcwCamxmTj5t0Mih0",
       "topTrackUrl": "https://open.spotify.com/track/1SflCUcwCamxmTj5t0Mih0",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -3111,7 +3111,7 @@
       "topTrackName": "Без белья",
       "topTrackId": "4NurhgXB82H2m8Hyx1r9HV",
       "topTrackUrl": "https://open.spotify.com/track/4NurhgXB82H2m8Hyx1r9HV",
-      "followers": 2631,
+      "followers": 2632,
       "spotifyUrl": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF"
     },
     {
@@ -3141,11 +3141,11 @@
       "releaseUrl": "https://open.spotify.com/album/3H1CDvr8Wo0P6Pt78MsjHN",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273cf01711e483170db1513229c",
       "totalTracks": 1,
-      "popularity": 1,
-      "topTrackName": "Hypnotized - Extended Mix",
-      "topTrackId": "2klgkSuG0luBVNMRHriQza",
-      "topTrackUrl": "https://open.spotify.com/track/2klgkSuG0luBVNMRHriQza",
-      "followers": 7538,
+      "popularity": 0,
+      "topTrackName": null,
+      "topTrackId": null,
+      "topTrackUrl": null,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -3162,7 +3162,7 @@
       "topTrackName": "Hypnotized",
       "topTrackId": "5hDt0PaWpcCwgRtxW31I6e",
       "topTrackUrl": "https://open.spotify.com/track/5hDt0PaWpcCwgRtxW31I6e",
-      "followers": 7538,
+      "followers": 7539,
       "spotifyUrl": "https://open.spotify.com/artist/19gU7Hvep0G37JeiLf3TNB?si=y-Fv2pDqTG6KeZpRO5zu9w"
     },
     {
@@ -3179,7 +3179,7 @@
       "topTrackName": "Ninanajna",
       "topTrackId": "0OdzzwFOn9OvZW6irHpwj8",
       "topTrackUrl": "https://open.spotify.com/track/0OdzzwFOn9OvZW6irHpwj8",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -3213,7 +3213,7 @@
       "topTrackName": "So tebe ne gledam saat (bejbe)",
       "topTrackId": "5xY9HzfaK06QgC6ZC58fbL",
       "topTrackUrl": "https://open.spotify.com/track/5xY9HzfaK06QgC6ZC58fbL",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -3230,7 +3230,7 @@
       "topTrackName": "Chaj - Live At Crna Soba",
       "topTrackId": "54SCWEIQagqYrDvEPSzl1D",
       "topTrackUrl": "https://open.spotify.com/track/54SCWEIQagqYrDvEPSzl1D",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -3243,11 +3243,11 @@
       "releaseUrl": "https://open.spotify.com/album/5UIcjYxYzl30UMbd1DBGwA",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273cb5d147980fd563116279496",
       "totalTracks": 1,
-      "popularity": 5,
+      "popularity": 4,
       "topTrackName": "Skopje-Barcelona",
       "topTrackId": "6mf81Bf3Lw27zbSkJjxzE8",
       "topTrackUrl": "https://open.spotify.com/track/6mf81Bf3Lw27zbSkJjxzE8",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -3281,7 +3281,7 @@
       "topTrackName": "МЕСТО",
       "topTrackId": "6VX9hpgDk7km3CEs5cU9A4",
       "topTrackUrl": "https://open.spotify.com/track/6VX9hpgDk7km3CEs5cU9A4",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -3298,7 +3298,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -3315,7 +3315,7 @@
       "topTrackName": "On a flight to Ibiza",
       "topTrackId": "1SFCcHe7BkPlnlfNyKdL8c",
       "topTrackUrl": "https://open.spotify.com/track/1SFCcHe7BkPlnlfNyKdL8c",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -3332,7 +3332,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -3383,7 +3383,7 @@
       "topTrackName": "Znam",
       "topTrackId": "0XFy3OrTPqGCY9Sdd3XfYr",
       "topTrackUrl": "https://open.spotify.com/track/0XFy3OrTPqGCY9Sdd3XfYr",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -3404,7 +3404,7 @@
       "spotifyUrl": "https://open.spotify.com/artist/2dwwKIq1hRzDwTq4bJHuvG?si=gNl2hZ-FR8ucgSc1d4cpQg"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "6zNXFizGxRoiWmJGh3NJ9Y",
       "releaseTitle": "Kamen Plamen Tatko",
@@ -3421,7 +3421,7 @@
       "spotifyUrl": "https://open.spotify.com/artist/1W9XjIEaekxBUns5CSww6O?si=gT_WLljzTw2LdicEOT-e-w"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "19qpw02lFpPuZCiSUjGJoz",
       "releaseTitle": "Taxi Driver Flow",
@@ -3451,7 +3451,7 @@
       "topTrackName": "loves1ck",
       "topTrackId": "0cRIlnIGUYVCcJK6F28lrt",
       "topTrackUrl": "https://open.spotify.com/track/0cRIlnIGUYVCcJK6F28lrt",
-      "followers": 560,
+      "followers": 570,
       "spotifyUrl": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
     },
     {
@@ -3502,7 +3502,7 @@
       "topTrackName": "Ego",
       "topTrackId": "3mvbNA8eesVPm54OI1Q4n4",
       "topTrackUrl": "https://open.spotify.com/track/3mvbNA8eesVPm54OI1Q4n4",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -3519,7 +3519,7 @@
       "topTrackName": "Sila i nervoza (feat. Foltin)",
       "topTrackId": "2FHwrWxWmSKdf3PO2IcUCE",
       "topTrackUrl": "https://open.spotify.com/track/2FHwrWxWmSKdf3PO2IcUCE",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -3570,7 +3570,7 @@
       "topTrackName": "Лет",
       "topTrackId": "502l0MdxvRZpgNkD3a0rFz",
       "topTrackUrl": "https://open.spotify.com/track/502l0MdxvRZpgNkD3a0rFz",
-      "followers": 2663,
+      "followers": 2665,
       "spotifyUrl": "https://open.spotify.com/artist/34XhnXv5AtZTH48hn16V8Y?si=M6hZvMtTTTqtTtMCT38CbQ"
     },
     {
@@ -3587,7 +3587,7 @@
       "topTrackName": "Tie mesta",
       "topTrackId": "6dtzWwL4HdUIiFkm8DUztr",
       "topTrackUrl": "https://open.spotify.com/track/6dtzWwL4HdUIiFkm8DUztr",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -3621,7 +3621,7 @@
       "topTrackName": "Kriva sam",
       "topTrackId": "3v2cC7Z21zvEc33XHpWwLh",
       "topTrackUrl": "https://open.spotify.com/track/3v2cC7Z21zvEc33XHpWwLh",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -3638,7 +3638,7 @@
       "topTrackName": "Bali, Argentina",
       "topTrackId": "3cMrvQgOD9eHoQVv2SI2Vl",
       "topTrackUrl": "https://open.spotify.com/track/3cMrvQgOD9eHoQVv2SI2Vl",
-      "followers": 1973,
+      "followers": 1975,
       "spotifyUrl": "https://open.spotify.com/artist/2CGvAUieb36608d4zDaBKq"
     },
     {
@@ -3672,7 +3672,7 @@
       "topTrackName": "On The Phone",
       "topTrackId": "2s8sLymSZef2afCQICziy0",
       "topTrackUrl": "https://open.spotify.com/track/2s8sLymSZef2afCQICziy0",
-      "followers": 560,
+      "followers": 570,
       "spotifyUrl": "https://open.spotify.com/artist/7hGziGqlEfhP2w2h7GrlfR?si=7jcM1ytsQXm9zWYaJHS9Gg"
     },
     {
@@ -3757,7 +3757,7 @@
       "topTrackName": "Mrazam sto te sakam",
       "topTrackId": "6O9O26CMQJX4RZVzMiY3d4",
       "topTrackUrl": "https://open.spotify.com/track/6O9O26CMQJX4RZVzMiY3d4",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -3774,7 +3774,7 @@
       "topTrackName": "Meseceviot sjaj",
       "topTrackId": "1jEu2ZzSXO4QxXxuNPFvTE",
       "topTrackUrl": "https://open.spotify.com/track/1jEu2ZzSXO4QxXxuNPFvTE",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -3808,7 +3808,7 @@
       "topTrackName": "Kazhi mi vo lice",
       "topTrackId": "3nIyFi4D0y8hv1NRIp2jZD",
       "topTrackUrl": "https://open.spotify.com/track/3nIyFi4D0y8hv1NRIp2jZD",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -3825,7 +3825,7 @@
       "topTrackName": "Osama",
       "topTrackId": "4cqQlgiekeLfsQVniLbzfw",
       "topTrackUrl": "https://open.spotify.com/track/4cqQlgiekeLfsQVniLbzfw",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -3855,7 +3855,7 @@
       "releaseUrl": "https://open.spotify.com/album/3KVMQZw5psyFl4lvOniItm",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273a59d36b389f0c01627cac451",
       "totalTracks": 1,
-      "popularity": 15,
+      "popularity": 14,
       "topTrackName": "Nalej Nalej",
       "topTrackId": "5Wv5pHUg98PyLCdiogeBNI",
       "topTrackUrl": "https://open.spotify.com/track/5Wv5pHUg98PyLCdiogeBNI",
@@ -3876,7 +3876,7 @@
       "topTrackName": "BOMBOKLAT PLES",
       "topTrackId": "79s0aH2LVjQNjRrfK0SquT",
       "topTrackUrl": "https://open.spotify.com/track/79s0aH2LVjQNjRrfK0SquT",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -3893,7 +3893,7 @@
       "topTrackName": "Awakening",
       "topTrackId": "0OKA3GI2WpbKek7DmVTro2",
       "topTrackUrl": "https://open.spotify.com/track/0OKA3GI2WpbKek7DmVTro2",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -3906,10 +3906,10 @@
       "releaseUrl": "https://open.spotify.com/album/4oMOdakWEp33i38of0ck92",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273c05fd5ec256d49aeb15d5bf2",
       "totalTracks": 1,
-      "popularity": 0,
-      "topTrackName": null,
-      "topTrackId": null,
-      "topTrackUrl": null,
+      "popularity": 1,
+      "topTrackName": "ЗБОР",
+      "topTrackId": "2zrbkflrc9c5ytirfs1JPt",
+      "topTrackUrl": "https://open.spotify.com/track/2zrbkflrc9c5ytirfs1JPt",
       "followers": 388,
       "spotifyUrl": "https://open.spotify.com/artist/1uxwv0e6ewfvnvCI2NN3Nf?si=24z-p9E4SySpL80-yt1DyQ"
     },
@@ -3923,10 +3923,10 @@
       "releaseUrl": "https://open.spotify.com/album/0J3c1JcEouUvolEuWykrbn",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273ce1cec0d397146449b848baa",
       "totalTracks": 1,
-      "popularity": 1,
-      "topTrackName": "Vetuvam Nema Da Molcham",
-      "topTrackId": "5MQIe5XFatRqPn2eUJuSbT",
-      "topTrackUrl": "https://open.spotify.com/track/5MQIe5XFatRqPn2eUJuSbT",
+      "popularity": 0,
+      "topTrackName": null,
+      "topTrackId": null,
+      "topTrackUrl": null,
       "followers": 514,
       "spotifyUrl": "https://open.spotify.com/artist/0M4zJ08W2SJWr8sgwq1lMX?si=J3V2G_fSRZmuVoBnWW6bXg"
     },
@@ -3944,7 +3944,7 @@
       "topTrackName": "Briga Me",
       "topTrackId": "1GRE8pKIiPNs8R2U2Dbqmc",
       "topTrackUrl": "https://open.spotify.com/track/1GRE8pKIiPNs8R2U2Dbqmc",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -3961,11 +3961,11 @@
       "topTrackName": "Ne Sum Tvoj Son",
       "topTrackId": "4OpyRWupXLQ7n5kO4KixHb",
       "topTrackUrl": "https://open.spotify.com/track/4OpyRWupXLQ7n5kO4KixHb",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "1FDuOs3iCvO7517OsWhEIY",
       "releaseTitle": "Live at Xotel",
@@ -4148,7 +4148,7 @@
       "topTrackName": "Tazna ljubov srekjna pesna",
       "topTrackId": "6ePhFz9JyqGs793gwPFA15",
       "topTrackUrl": "https://open.spotify.com/track/6ePhFz9JyqGs793gwPFA15",
-      "followers": 3568,
+      "followers": 3575,
       "spotifyUrl": "https://open.spotify.com/artist/1Typw0HezT717bgUtWbH43"
     },
     {
@@ -4220,6 +4220,23 @@
       "spotifyUrl": "https://open.spotify.com/artist/5Nx3CHdbm41V16y5Ew7353?si=cyJXfYjRTjWDcMtjwHySlQ"
     },
     {
+      "bandName": "Ruda Vega",
+      "artistId": "6hqV2N9WDOfB7A0atIttYk",
+      "releaseId": "6RZxW7IWVHMJAgQGruAyOo",
+      "releaseTitle": "Meshugaas",
+      "releaseType": "album",
+      "releaseDate": "2023-08-13",
+      "releaseUrl": "https://open.spotify.com/album/6RZxW7IWVHMJAgQGruAyOo",
+      "thumbnail": "https://i.scdn.co/image/ab67616d0000b2732a36056643292b81d9cae81b",
+      "totalTracks": 13,
+      "popularity": 0,
+      "topTrackName": null,
+      "topTrackId": null,
+      "topTrackUrl": null,
+      "followers": 18,
+      "spotifyUrl": "https://open.spotify.com/artist/6hqV2N9WDOfB7A0atIttYk?si=sWT3efc8SfKsy75dn5AERQ"
+    },
+    {
       "bandName": "Corrosion",
       "artistId": "0FaXK45sVB78p09S5wVvgc",
       "releaseId": "1f7wJkC93RtdTR4IfbQyNd",
@@ -4250,7 +4267,7 @@
       "topTrackName": "Do Tebe",
       "topTrackId": "4JK72uC5R52PqXu29qfQF7",
       "topTrackUrl": "https://open.spotify.com/track/4JK72uC5R52PqXu29qfQF7",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -4386,7 +4403,7 @@
       "topTrackName": "Me Boli",
       "topTrackId": "7Lyd5lxF1fz3BNqwmFe7vA",
       "topTrackUrl": "https://open.spotify.com/track/7Lyd5lxF1fz3BNqwmFe7vA",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -4573,7 +4590,7 @@
       "topTrackName": "Isti - 4Music Remix",
       "topTrackId": "6gFgiD7pRc6jQovHkIgVPL",
       "topTrackUrl": "https://open.spotify.com/track/6gFgiD7pRc6jQovHkIgVPL",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -4675,7 +4692,7 @@
       "topTrackName": "Ne Vreme",
       "topTrackId": "0k7jchNwc9cQM5b6vInH8A",
       "topTrackUrl": "https://open.spotify.com/track/0k7jchNwc9cQM5b6vInH8A",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -4709,7 +4726,7 @@
       "topTrackName": "Molitva",
       "topTrackId": "6F0RaNvzeorQ1vYtIdRBMQ",
       "topTrackUrl": "https://open.spotify.com/track/6F0RaNvzeorQ1vYtIdRBMQ",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -4811,7 +4828,7 @@
       "topTrackName": "Magla",
       "topTrackId": "4XJGw286TUltMAXP0LC2bV",
       "topTrackUrl": "https://open.spotify.com/track/4XJGw286TUltMAXP0LC2bV",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -4828,7 +4845,7 @@
       "topTrackName": "Црно-бело / Black-White",
       "topTrackId": "6efs2w141vuvb9vSXaWOxJ",
       "topTrackUrl": "https://open.spotify.com/track/6efs2w141vuvb9vSXaWOxJ",
-      "followers": 778,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -4845,7 +4862,7 @@
       "topTrackName": "Мека Машина",
       "topTrackId": "4HH5h6AfmVcuO7ryG8jMLj",
       "topTrackUrl": "https://open.spotify.com/track/4HH5h6AfmVcuO7ryG8jMLj",
-      "followers": 494,
+      "followers": 495,
       "spotifyUrl": "https://open.spotify.com/artist/4LyzF6Dp7nTJnh1TSsT1uG"
     },
     {
@@ -4866,7 +4883,7 @@
       "spotifyUrl": "https://open.spotify.com/artist/5Nx3CHdbm41V16y5Ew7353?si=cyJXfYjRTjWDcMtjwHySlQ"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "3t3IoSYSd9i7AzkvPjay8U",
       "releaseTitle": "ZAVIST",
@@ -4875,7 +4892,7 @@
       "releaseUrl": "https://open.spotify.com/album/3t3IoSYSd9i7AzkvPjay8U",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273e20af9603d8e84b7101d85af",
       "totalTracks": 1,
-      "popularity": 6,
+      "popularity": 5,
       "topTrackName": "ZAVIST",
       "topTrackId": "0HYFlYNgqdDw0xf2YvCv2i",
       "topTrackUrl": "https://open.spotify.com/track/0HYFlYNgqdDw0xf2YvCv2i",
@@ -4930,7 +4947,7 @@
       "topTrackName": "Habibi",
       "topTrackId": "19hiLgilGYdmgYkoHHAaGU",
       "topTrackUrl": "https://open.spotify.com/track/19hiLgilGYdmgYkoHHAaGU",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -4964,7 +4981,7 @@
       "topTrackName": "dadada",
       "topTrackId": "7Fdyl3xMT4YTufaj3JscRt",
       "topTrackUrl": "https://open.spotify.com/track/7Fdyl3xMT4YTufaj3JscRt",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -4998,7 +5015,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -5066,7 +5083,7 @@
       "topTrackName": "Outerveles Flow - Remix",
       "topTrackId": "5RRHi9K0t89ctcF0x5x7pz",
       "topTrackUrl": "https://open.spotify.com/track/5RRHi9K0t89ctcF0x5x7pz",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -5087,7 +5104,7 @@
       "spotifyUrl": "https://open.spotify.com/artist/3ch8xMEWLNzIwFGlvjQ8EN"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "1WDJnBT75BM1XIohJ72JKN",
       "releaseTitle": "Columba Noachi",
@@ -5151,7 +5168,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -5168,11 +5185,11 @@
       "topTrackName": "Цвејче",
       "topTrackId": "6StHdq6IBRyXgLFcX4VWYt",
       "topTrackUrl": "https://open.spotify.com/track/6StHdq6IBRyXgLFcX4VWYt",
-      "followers": 2663,
+      "followers": 2665,
       "spotifyUrl": "https://open.spotify.com/artist/34XhnXv5AtZTH48hn16V8Y?si=M6hZvMtTTTqtTtMCT38CbQ"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "431ub104JQrWkqWpM2YRNP",
       "releaseTitle": "TRAGIKOMEDIJA",
@@ -5189,7 +5206,7 @@
       "spotifyUrl": "https://open.spotify.com/artist/1W9XjIEaekxBUns5CSww6O?si=gT_WLljzTw2LdicEOT-e-w"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "0pUvFbNeBZ26D4xm6KYGt8",
       "releaseTitle": "ANTEDELUVIAN",
@@ -5287,11 +5304,11 @@
       "topTrackName": "Dosada",
       "topTrackId": "1E84c3ZVCd6toZoEmYs0Cw",
       "topTrackUrl": "https://open.spotify.com/track/1E84c3ZVCd6toZoEmYs0Cw",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
-      "bandName": "Кем",
+      "bandName": "КЕМ",
       "artistId": "1W9XjIEaekxBUns5CSww6O",
       "releaseId": "70VYhhz05NIM69vCQEvP34",
       "releaseTitle": "NE SI SAM",
@@ -5321,7 +5338,7 @@
       "topTrackName": "Znaesh li?",
       "topTrackId": "1SB2MixgIzeJeqV4OinPZv",
       "topTrackUrl": "https://open.spotify.com/track/1SB2MixgIzeJeqV4OinPZv",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -5338,7 +5355,7 @@
       "topTrackName": "Navika",
       "topTrackId": "2MboywqWqpxGoKLJgYaBMn",
       "topTrackUrl": "https://open.spotify.com/track/2MboywqWqpxGoKLJgYaBMn",
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -5355,7 +5372,7 @@
       "topTrackName": "Zavedi me",
       "topTrackId": "6HTVc1HqcmI5DyF5LYmiLO",
       "topTrackUrl": "https://open.spotify.com/track/6HTVc1HqcmI5DyF5LYmiLO",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -5389,7 +5406,7 @@
       "topTrackName": "Denzig",
       "topTrackId": "3RtqnPBZ5SzrHcecXBifse",
       "topTrackUrl": "https://open.spotify.com/track/3RtqnPBZ5SzrHcecXBifse",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -5457,7 +5474,7 @@
       "topTrackName": "Jave ili son",
       "topTrackId": "5VXKTOSYoknG9hVFek6Tap",
       "topTrackUrl": "https://open.spotify.com/track/5VXKTOSYoknG9hVFek6Tap",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -5474,7 +5491,7 @@
       "topTrackName": "Oko moje",
       "topTrackId": "6LHs1HM5MCMD5TYpIuvH75",
       "topTrackUrl": "https://open.spotify.com/track/6LHs1HM5MCMD5TYpIuvH75",
-      "followers": 3708,
+      "followers": 3714,
       "spotifyUrl": "https://open.spotify.com/artist/1P0DXnsIm6pMkUgq0aHsKa"
     },
     {
@@ -5491,7 +5508,7 @@
       "topTrackName": "Zboruvaj, zamizhi, pobegni",
       "topTrackId": "5wN1panwmW2pLHBtUdKQ2Y",
       "topTrackUrl": "https://open.spotify.com/track/5wN1panwmW2pLHBtUdKQ2Y",
-      "followers": 327,
+      "followers": 328,
       "spotifyUrl": "https://open.spotify.com/artist/6KvF23QdpyDYqpSrxxIzdV"
     },
     {
@@ -5797,7 +5814,7 @@
       "topTrackName": "Medley - Live At Esns",
       "topTrackId": "1P5H7ZlzNOm35tkldTrKYd",
       "topTrackUrl": "https://open.spotify.com/track/1P5H7ZlzNOm35tkldTrKYd",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -5814,7 +5831,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -5861,11 +5878,11 @@
       "releaseUrl": "https://open.spotify.com/album/0fVA2i8HXHTjDZx6E9JYq2",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273da0b906dfeed65765cce2e09",
       "totalTracks": 1,
-      "popularity": 19,
+      "popularity": 20,
       "topTrackName": "Ubav den",
       "topTrackId": "2nW1xOx7Tq8npH4PacAkhG",
       "topTrackUrl": "https://open.spotify.com/track/2nW1xOx7Tq8npH4PacAkhG",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -5882,7 +5899,7 @@
       "topTrackName": "Krik - Live",
       "topTrackId": "6MmatVgYU7Ab8pWVCIvH7J",
       "topTrackUrl": "https://open.spotify.com/track/6MmatVgYU7Ab8pWVCIvH7J",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -5950,7 +5967,7 @@
       "topTrackName": "Цигла",
       "topTrackId": "0U6FW8dgeOvVLOtGgzhKDN",
       "topTrackUrl": "https://open.spotify.com/track/0U6FW8dgeOvVLOtGgzhKDN",
-      "followers": 2663,
+      "followers": 2665,
       "spotifyUrl": "https://open.spotify.com/artist/34XhnXv5AtZTH48hn16V8Y?si=M6hZvMtTTTqtTtMCT38CbQ"
     },
     {
@@ -5984,7 +6001,7 @@
       "topTrackName": "Origi",
       "topTrackId": "09AqWQ62KXyEK1MILOBKs4",
       "topTrackUrl": "https://open.spotify.com/track/09AqWQ62KXyEK1MILOBKs4",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -6001,7 +6018,7 @@
       "topTrackName": "Toa",
       "topTrackId": "0EHHt2pRV0OQE2cfS6QhZF",
       "topTrackUrl": "https://open.spotify.com/track/0EHHt2pRV0OQE2cfS6QhZF",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -6171,7 +6188,7 @@
       "topTrackName": "Сакам...",
       "topTrackId": "2UTHOW9l9N0wJaaWUoOMen",
       "topTrackUrl": "https://open.spotify.com/track/2UTHOW9l9N0wJaaWUoOMen",
-      "followers": 2663,
+      "followers": 2665,
       "spotifyUrl": "https://open.spotify.com/artist/34XhnXv5AtZTH48hn16V8Y?si=M6hZvMtTTTqtTtMCT38CbQ"
     },
     {
@@ -6205,7 +6222,7 @@
       "topTrackName": "Ne sum tvoj tip",
       "topTrackId": "0GXQlmIErR1GS0NX03RrkQ",
       "topTrackUrl": "https://open.spotify.com/track/0GXQlmIErR1GS0NX03RrkQ",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -6256,7 +6273,7 @@
       "topTrackName": "Kopnezhi",
       "topTrackId": "1y4OSfE0QP3RHwPvuW1Ymc",
       "topTrackUrl": "https://open.spotify.com/track/1y4OSfE0QP3RHwPvuW1Ymc",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -6273,7 +6290,7 @@
       "topTrackName": "Sabota Satan, Nedela Svetec",
       "topTrackId": "3zMwqxR5MzTBscFK9gMRXM",
       "topTrackUrl": "https://open.spotify.com/track/3zMwqxR5MzTBscFK9gMRXM",
-      "followers": 494,
+      "followers": 495,
       "spotifyUrl": "https://open.spotify.com/artist/4LyzF6Dp7nTJnh1TSsT1uG"
     },
     {
@@ -6307,7 +6324,7 @@
       "topTrackName": "Otsekogas",
       "topTrackId": "4OzyNchrNdlgdSr9B6HIjO",
       "topTrackUrl": "https://open.spotify.com/track/4OzyNchrNdlgdSr9B6HIjO",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -6320,11 +6337,11 @@
       "releaseUrl": "https://open.spotify.com/album/3JnwdFNZ4o2HwoR3e9I6aI",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2739e8251ed4d4c14ed7514d8b1",
       "totalTracks": 10,
-      "popularity": 16,
+      "popularity": 17,
       "topTrackName": "Временска Подморница",
       "topTrackId": "1d1bpYtbkZdE6uyKxoHmp9",
       "topTrackUrl": "https://open.spotify.com/track/1d1bpYtbkZdE6uyKxoHmp9",
-      "followers": 2663,
+      "followers": 2665,
       "spotifyUrl": "https://open.spotify.com/artist/34XhnXv5AtZTH48hn16V8Y?si=M6hZvMtTTTqtTtMCT38CbQ"
     },
     {
@@ -6341,7 +6358,7 @@
       "topTrackName": "Ne Vreme",
       "topTrackId": "3YVbWhTUanv0ZeP3vj51kX",
       "topTrackUrl": "https://open.spotify.com/track/3YVbWhTUanv0ZeP3vj51kX",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -6443,7 +6460,7 @@
       "topTrackName": "Posledna Minuta - Live",
       "topTrackId": "1gRcZpHnFn5eymbSTDiwub",
       "topTrackUrl": "https://open.spotify.com/track/1gRcZpHnFn5eymbSTDiwub",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -6545,7 +6562,7 @@
       "topTrackName": "Boi",
       "topTrackId": "0ydE9qUxggSmn52Gssq1Me",
       "topTrackUrl": "https://open.spotify.com/track/0ydE9qUxggSmn52Gssq1Me",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -6613,7 +6630,7 @@
       "topTrackName": "Edinstven Nachin",
       "topTrackId": "4so5BHXqZEZI8qxs4OlqHT",
       "topTrackUrl": "https://open.spotify.com/track/4so5BHXqZEZI8qxs4OlqHT",
-      "followers": 4289,
+      "followers": 4296,
       "spotifyUrl": "https://open.spotify.com/artist/3MgabjdhjMZu4qF91PUvLw?si=zBxAIcjjTuSI3g10w3mGrg"
     },
     {
@@ -6647,7 +6664,7 @@
       "topTrackName": "Hoodrich",
       "topTrackId": "45rmgBCmJfPQKhmQ8afjIV",
       "topTrackUrl": "https://open.spotify.com/track/45rmgBCmJfPQKhmQ8afjIV",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -6732,7 +6749,7 @@
       "topTrackName": "Meteori - Alek Soltirov Remix",
       "topTrackId": "3yO41fIR5OvNW2fqNeWeis",
       "topTrackUrl": "https://open.spotify.com/track/3yO41fIR5OvNW2fqNeWeis",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -6800,7 +6817,7 @@
       "topTrackName": "Meteori",
       "topTrackId": "6pHDPgYENRlInTAoVtbvEc",
       "topTrackUrl": "https://open.spotify.com/track/6pHDPgYENRlInTAoVtbvEc",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -6868,7 +6885,7 @@
       "topTrackName": "Ke bide vo red",
       "topTrackId": "4TLYe6scB4it0EDWE0hv3w",
       "topTrackUrl": "https://open.spotify.com/track/4TLYe6scB4it0EDWE0hv3w",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -6902,7 +6919,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 494,
+      "followers": 495,
       "spotifyUrl": "https://open.spotify.com/artist/4LyzF6Dp7nTJnh1TSsT1uG"
     },
     {
@@ -6919,7 +6936,7 @@
       "topTrackName": "Keva Brat",
       "topTrackId": "4QbFRvlvHl4efERKb4rAcg",
       "topTrackUrl": "https://open.spotify.com/track/4QbFRvlvHl4efERKb4rAcg",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -6970,7 +6987,7 @@
       "topTrackName": "Toterina",
       "topTrackId": "1JN5AIcBDmxxVpsQAuY1pv",
       "topTrackUrl": "https://open.spotify.com/track/1JN5AIcBDmxxVpsQAuY1pv",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -7038,7 +7055,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -7089,7 +7106,7 @@
       "topTrackName": "Zborovi",
       "topTrackId": "3Tekgl2lHCApn1uQOcpfSE",
       "topTrackUrl": "https://open.spotify.com/track/3Tekgl2lHCApn1uQOcpfSE",
-      "followers": 1971,
+      "followers": 1972,
       "spotifyUrl": "https://open.spotify.com/artist/11DoOamFdhVAfy3tlRl1aM"
     },
     {
@@ -7106,7 +7123,7 @@
       "topTrackName": "Retki bilki",
       "topTrackId": "7tjamPKtrdDXsoXV4dZTpS",
       "topTrackUrl": "https://open.spotify.com/track/7tjamPKtrdDXsoXV4dZTpS",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -7140,7 +7157,7 @@
       "topTrackName": "Koan",
       "topTrackId": "2bPMlJ3Py8a1tXJadr1dEn",
       "topTrackUrl": "https://open.spotify.com/track/2bPMlJ3Py8a1tXJadr1dEn",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -7157,7 +7174,7 @@
       "topTrackName": "To 6o Sakam",
       "topTrackId": "3lAWy1ChRYwDvIOMVi5y6q",
       "topTrackUrl": "https://open.spotify.com/track/3lAWy1ChRYwDvIOMVi5y6q",
-      "followers": 2059,
+      "followers": 2060,
       "spotifyUrl": "https://open.spotify.com/artist/0DRQgCopHOdZ0qcmFhNWSf"
     },
     {
@@ -7174,7 +7191,7 @@
       "topTrackName": "Dvete sestri",
       "topTrackId": "486CdYAvhQ5cfYLa7byF3b",
       "topTrackUrl": "https://open.spotify.com/track/486CdYAvhQ5cfYLa7byF3b",
-      "followers": 412,
+      "followers": 413,
       "spotifyUrl": "https://open.spotify.com/artist/2yGXs2vAf1IEnqlXwMaHZx?si=rnjUow1zSXmqWLg1JWNcBw"
     },
     {
@@ -7208,7 +7225,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -7221,7 +7238,7 @@
       "releaseUrl": "https://open.spotify.com/album/7rJHkyVHJHcuYlILjbkzzX",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2733e964cacc40f09912b8f732d",
       "totalTracks": 1,
-      "popularity": 2,
+      "popularity": 3,
       "topTrackName": "Nemir I Valium",
       "topTrackId": "6LFEeKJ6yft4IKn2CoeHQX",
       "topTrackUrl": "https://open.spotify.com/track/6LFEeKJ6yft4IKn2CoeHQX",
@@ -7289,11 +7306,11 @@
       "releaseUrl": "https://open.spotify.com/album/1pyZ89xW08OFawwjkACVBg",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27360d313164dacf7c0330719ab",
       "totalTracks": 1,
-      "popularity": 10,
+      "popularity": 9,
       "topTrackName": "Deca",
       "topTrackId": "6MBM21v4b5mjIVKaF8jiUi",
       "topTrackUrl": "https://open.spotify.com/track/6MBM21v4b5mjIVKaF8jiUi",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -7310,7 +7327,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -7323,11 +7340,11 @@
       "releaseUrl": "https://open.spotify.com/album/35H1RiWeJUSLTJYR4HikFo",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273279295477dc81def43ca62f4",
       "totalTracks": 1,
-      "popularity": 3,
+      "popularity": 2,
       "topTrackName": "Krik",
       "topTrackId": "2KBulBiqmelVgv1IjUyDVA",
       "topTrackUrl": "https://open.spotify.com/track/2KBulBiqmelVgv1IjUyDVA",
-      "followers": 5145,
+      "followers": 5148,
       "spotifyUrl": "https://open.spotify.com/artist/728GwHEF4RySqLnbRgxzww"
     },
     {
@@ -7344,7 +7361,7 @@
       "topTrackName": "Snage Za Kraj",
       "topTrackId": "0flzAGYq9ilWVPAjXUg8It",
       "topTrackUrl": "https://open.spotify.com/track/0flzAGYq9ilWVPAjXUg8It",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -7412,7 +7429,7 @@
       "topTrackName": "Lost & Found (Going Deeper Remix)",
       "topTrackId": "5SbpVzJ4G1CEYjoTMdtPfD",
       "topTrackUrl": "https://open.spotify.com/track/5SbpVzJ4G1CEYjoTMdtPfD",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -7497,7 +7514,7 @@
       "topTrackName": "Lost & Found",
       "topTrackId": "1aQUbknhtId3OClzPXG4LA",
       "topTrackUrl": "https://open.spotify.com/track/1aQUbknhtId3OClzPXG4LA",
-      "followers": 1475,
+      "followers": 1477,
       "spotifyUrl": "https://open.spotify.com/artist/2ybuHt32Qk1nOfpKVvxZtO?si=zFkTmlWAREKumUklZGyCkw"
     },
     {
@@ -7633,7 +7650,7 @@
       "topTrackName": "Tequila & Lemon",
       "topTrackId": "2oMEeBRBtPgppSDlacn8Oi",
       "topTrackUrl": "https://open.spotify.com/track/2oMEeBRBtPgppSDlacn8Oi",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -7667,7 +7684,7 @@
       "topTrackName": "Tequila & Lemon (Beverly Pills Remix)",
       "topTrackId": "21qKg98F3BRyFfLB9f5PyI",
       "topTrackUrl": "https://open.spotify.com/track/21qKg98F3BRyFfLB9f5PyI",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -7769,7 +7786,7 @@
       "topTrackName": "Rampararam",
       "topTrackId": "2iDI5NJv5eoBkK4uO6qzxX",
       "topTrackUrl": "https://open.spotify.com/track/2iDI5NJv5eoBkK4uO6qzxX",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -7854,7 +7871,7 @@
       "topTrackName": "Lie to Me, Lie to Me",
       "topTrackId": "5Phbuc3428HciI1MfHk35n",
       "topTrackUrl": "https://open.spotify.com/track/5Phbuc3428HciI1MfHk35n",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -7888,7 +7905,7 @@
       "topTrackName": "Laži me, laži me",
       "topTrackId": "54JSYoKmdKvwNqQ1KjnWgb",
       "topTrackUrl": "https://open.spotify.com/track/54JSYoKmdKvwNqQ1KjnWgb",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -7905,7 +7922,7 @@
       "topTrackName": "Početok i kraj",
       "topTrackId": "3jWAn35ET8vCbBrCGjDnd6",
       "topTrackUrl": "https://open.spotify.com/track/3jWAn35ET8vCbBrCGjDnd6",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -7973,7 +7990,7 @@
       "topTrackName": "Kako da Se Raduvam",
       "topTrackId": "1lBfmkJDO7l9aUovFqir33",
       "topTrackUrl": "https://open.spotify.com/track/1lBfmkJDO7l9aUovFqir33",
-      "followers": 1890,
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -8024,7 +8041,7 @@
       "topTrackName": "Lebedot Bel",
       "topTrackId": "3BGouszfF5glV6FSxt4F8D",
       "topTrackUrl": "https://open.spotify.com/track/3BGouszfF5glV6FSxt4F8D",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -8037,7 +8054,7 @@
       "releaseUrl": "https://open.spotify.com/album/6RXiZdbcIUMR7vUqiZ0mXt",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2733fd3294c8fc2306bd7a54ab4",
       "totalTracks": 12,
-      "popularity": 12,
+      "popularity": 13,
       "topTrackName": "Gola Mi Sleche",
       "topTrackId": "6PBfDMVj1Pt06zyss8rE8N",
       "topTrackUrl": "https://open.spotify.com/track/6PBfDMVj1Pt06zyss8rE8N",
@@ -8105,11 +8122,8 @@
       "releaseUrl": "https://open.spotify.com/album/1sEuCscztItlXhD1yLQ2fS",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273d3928cc0099009a52ac18f14",
       "totalTracks": 12,
-      "popularity": 4,
-      "topTrackName": "Otrov",
-      "topTrackId": "07CKIIg5Gn9QaBIbU6F2Yf",
-      "topTrackUrl": "https://open.spotify.com/track/07CKIIg5Gn9QaBIbU6F2Yf",
-      "followers": 778,
+      "popularity": 7,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -8143,7 +8157,7 @@
       "topTrackName": "Zelba",
       "topTrackId": "0QjNNUKU1Ttkm8TkDdLXKA",
       "topTrackUrl": "https://open.spotify.com/track/0QjNNUKU1Ttkm8TkDdLXKA",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -8207,11 +8221,11 @@
       "releaseUrl": "https://open.spotify.com/album/7DY1It4uSQDw328fjY3KMq",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27375a9f97846c6279f89a61201",
       "totalTracks": 1,
-      "popularity": 7,
+      "popularity": 6,
       "topTrackName": "Dobro utro budenje",
       "topTrackId": "5er4WVgSmrOL6pp1tMBcUj",
       "topTrackUrl": "https://open.spotify.com/track/5er4WVgSmrOL6pp1tMBcUj",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -8245,7 +8259,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -8279,7 +8293,7 @@
       "topTrackName": "Tango",
       "topTrackId": "0t6TUK61b2J60OTZfeH7SH",
       "topTrackUrl": "https://open.spotify.com/track/0t6TUK61b2J60OTZfeH7SH",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -8343,10 +8357,10 @@
       "releaseUrl": "https://open.spotify.com/album/5JnjS7O5n1JO7SLe4wNTGa",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2737056652a0d13a043905d00da",
       "totalTracks": 10,
-      "popularity": 0,
-      "topTrackName": null,
-      "topTrackId": null,
-      "topTrackUrl": null,
+      "popularity": 1,
+      "topTrackName": "Verba, Nadež, Ljubov",
+      "topTrackId": "4j6wfb4TtWwmMFCT2tGQV0",
+      "topTrackUrl": "https://open.spotify.com/track/4j6wfb4TtWwmMFCT2tGQV0",
       "followers": 15358,
       "spotifyUrl": "https://open.spotify.com/artist/5ekFgfk58KqyjN2dIVcZ1V?si=eIVxKPvyQGmvW5p5yEFDwA"
     },
@@ -8381,7 +8395,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -8445,10 +8459,10 @@
       "releaseUrl": "https://open.spotify.com/album/7vT10HPG7yu3sI30ipWzHr",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27353f9763b10c76f283400a754",
       "totalTracks": 8,
-      "popularity": 0,
-      "topTrackName": null,
-      "topTrackId": null,
-      "topTrackUrl": null,
+      "popularity": 1,
+      "topTrackName": "Maleshevska Rechenica",
+      "topTrackId": "0XMUS5IL2TJOxcucopwcsW",
+      "topTrackUrl": "https://open.spotify.com/track/0XMUS5IL2TJOxcucopwcsW",
       "followers": 145,
       "spotifyUrl": "https://open.spotify.com/artist/0WRpxCiRLgGYUkEDBctfuK?si=qhHP26GQQ26W3tJV84DmHA"
     },
@@ -8483,7 +8497,7 @@
       "topTrackName": "Da si tuka vecerva",
       "topTrackId": "2hVqMxRnxBxvN3dzrpTuHA",
       "topTrackUrl": "https://open.spotify.com/track/2hVqMxRnxBxvN3dzrpTuHA",
-      "followers": 840,
+      "followers": 842,
       "spotifyUrl": "https://open.spotify.com/artist/0dUlRb8l5iis3klttz9bzX"
     },
     {
@@ -8500,7 +8514,7 @@
       "topTrackName": "Jas i ti (feat. Tamara Todevska)",
       "topTrackId": "4o9FlaofaAd3I5CA6C1dfy",
       "topTrackUrl": "https://open.spotify.com/track/4o9FlaofaAd3I5CA6C1dfy",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -8534,7 +8548,7 @@
       "topTrackName": "Kauch Kral",
       "topTrackId": "7qtbxQAovbJeaog3nxQSFc",
       "topTrackUrl": "https://open.spotify.com/track/7qtbxQAovbJeaog3nxQSFc",
-      "followers": 778,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -8551,7 +8565,7 @@
       "topTrackName": "Melem",
       "topTrackId": "2FiJKB26EpwnjvCWmLESOy",
       "topTrackUrl": "https://open.spotify.com/track/2FiJKB26EpwnjvCWmLESOy",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -8568,7 +8582,7 @@
       "topTrackName": "Pogrešno zname",
       "topTrackId": "6XpoTNR8nauo1tqIBUmuXv",
       "topTrackUrl": "https://open.spotify.com/track/6XpoTNR8nauo1tqIBUmuXv",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -8602,7 +8616,7 @@
       "topTrackName": "Afrika",
       "topTrackId": "3Pid3QKwyRJ5uzumeG05OW",
       "topTrackUrl": "https://open.spotify.com/track/3Pid3QKwyRJ5uzumeG05OW",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -8670,7 +8684,7 @@
       "topTrackName": "Tamu Zhiveam",
       "topTrackId": "6ioa2obu8VWsCE8Eiix6Nn",
       "topTrackUrl": "https://open.spotify.com/track/6ioa2obu8VWsCE8Eiix6Nn",
-      "followers": 778,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -8687,7 +8701,7 @@
       "topTrackName": "Kontakt Je Skup",
       "topTrackId": "22WrDif773rTHA6xV3k4Ve",
       "topTrackUrl": "https://open.spotify.com/track/22WrDif773rTHA6xV3k4Ve",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -8704,7 +8718,7 @@
       "topTrackName": "Čukni Vo Drvo",
       "topTrackId": "6RYhH70Hww5sTLupoNMBqm",
       "topTrackUrl": "https://open.spotify.com/track/6RYhH70Hww5sTLupoNMBqm",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -8721,7 +8735,7 @@
       "topTrackName": "Čuvam Noć Od Budnih",
       "topTrackId": "3QZeTahwEGd6Hn5u2JQk6J",
       "topTrackUrl": "https://open.spotify.com/track/3QZeTahwEGd6Hn5u2JQk6J",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -8738,7 +8752,7 @@
       "topTrackName": "Bistra Voda",
       "topTrackId": "0wJVNo5XpyLZWGFw8vBOpP",
       "topTrackUrl": "https://open.spotify.com/track/0wJVNo5XpyLZWGFw8vBOpP",
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -8755,7 +8769,7 @@
       "topTrackName": "Bez Prevod - Bei The Fish ft. Ida Prester",
       "topTrackId": "0TI29epus8DqxUeBu4dvBJ",
       "topTrackUrl": "https://open.spotify.com/track/0TI29epus8DqxUeBu4dvBJ",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -8772,7 +8786,7 @@
       "topTrackName": "Kiradji mladi jabandji",
       "topTrackId": "5Cf6poXWGsqvuyDrXDX7yo",
       "topTrackUrl": "https://open.spotify.com/track/5Cf6poXWGsqvuyDrXDX7yo",
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -8819,10 +8833,10 @@
       "releaseUrl": "https://open.spotify.com/album/1zzStNLGlr6V3secDcsj9v",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2730a6ad5c58c47bf313451353a",
       "totalTracks": 10,
-      "popularity": 1,
-      "topTrackName": "Fire",
-      "topTrackId": "7s3AIrnbNZneRoozyvWne1",
-      "topTrackUrl": "https://open.spotify.com/track/7s3AIrnbNZneRoozyvWne1",
+      "popularity": 0,
+      "topTrackName": null,
+      "topTrackId": null,
+      "topTrackUrl": null,
       "followers": 409,
       "spotifyUrl": "https://open.spotify.com/artist/66mXT8eViET9W5YZdvnifb"
     },
@@ -8836,7 +8850,7 @@
       "releaseUrl": "https://open.spotify.com/album/40nalyLsrKmbBpZUX2QT70",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2730c088790a9936536906ff761",
       "totalTracks": 6,
-      "popularity": 4,
+      "popularity": 3,
       "topTrackName": "Kujt i bije",
       "topTrackId": "16OoCPwIgHv3YwsMGFTn05",
       "topTrackUrl": "https://open.spotify.com/track/16OoCPwIgHv3YwsMGFTn05",
@@ -8857,7 +8871,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -8874,7 +8888,7 @@
       "topTrackName": "Gypsy Sahara",
       "topTrackId": "3J5Pu11iuU9JRR3QgEeqox",
       "topTrackUrl": "https://open.spotify.com/track/3J5Pu11iuU9JRR3QgEeqox",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -8891,7 +8905,7 @@
       "topTrackName": "To Whom Do You Belong Now?",
       "topTrackId": "3BNtjXq6ZoL3E8gLvT9JQT",
       "topTrackUrl": "https://open.spotify.com/track/3BNtjXq6ZoL3E8gLvT9JQT",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -8925,7 +8939,7 @@
       "topTrackName": "Bas",
       "topTrackId": "59ta2glYds9N1HWGa99o9l",
       "topTrackUrl": "https://open.spotify.com/track/59ta2glYds9N1HWGa99o9l",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -8959,7 +8973,7 @@
       "topTrackName": "Ti",
       "topTrackId": "6mWHlToGwAtwfmOmoCW560",
       "topTrackUrl": "https://open.spotify.com/track/6mWHlToGwAtwfmOmoCW560",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -8993,7 +9007,7 @@
       "topTrackName": "Dojdi",
       "topTrackId": "3xnxHdDPO7BEAIaFHIZwU7",
       "topTrackUrl": "https://open.spotify.com/track/3xnxHdDPO7BEAIaFHIZwU7",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9010,7 +9024,7 @@
       "topTrackName": "Tvojte ochi Leno",
       "topTrackId": "2skdAWLO4RXmWw5ib0RnGP",
       "topTrackUrl": "https://open.spotify.com/track/2skdAWLO4RXmWw5ib0RnGP",
-      "followers": 412,
+      "followers": 413,
       "spotifyUrl": "https://open.spotify.com/artist/2yGXs2vAf1IEnqlXwMaHZx?si=rnjUow1zSXmqWLg1JWNcBw"
     },
     {
@@ -9044,7 +9058,7 @@
       "topTrackName": "Ovoj den da pomine",
       "topTrackId": "4YkVQZrLpuD5b03KhSWD4N",
       "topTrackUrl": "https://open.spotify.com/track/4YkVQZrLpuD5b03KhSWD4N",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -9095,7 +9109,7 @@
       "topTrackName": "Spušti se dole (feat. Slatkaristika)",
       "topTrackId": "50jZl0Dy9JxZvnBNcMEJ2j",
       "topTrackUrl": "https://open.spotify.com/track/50jZl0Dy9JxZvnBNcMEJ2j",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -9108,11 +9122,11 @@
       "releaseUrl": "https://open.spotify.com/album/35IFSpXQNXKzxHablmtRSX",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b2730dee8e0889237cd5b56519d3",
       "totalTracks": 11,
-      "popularity": 1,
-      "topTrackName": "A boy named Hiroshima",
-      "topTrackId": "0709D7qMPOlaxZoENyFzVZ",
-      "topTrackUrl": "https://open.spotify.com/track/0709D7qMPOlaxZoENyFzVZ",
-      "followers": 12339,
+      "popularity": 0,
+      "topTrackName": null,
+      "topTrackId": null,
+      "topTrackUrl": null,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9163,7 +9177,7 @@
       "topTrackName": "Agnozija",
       "topTrackId": "0TPckNOJjKrpHhaEzZenvT",
       "topTrackUrl": "https://open.spotify.com/track/0TPckNOJjKrpHhaEzZenvT",
-      "followers": 778,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -9197,7 +9211,7 @@
       "topTrackName": "Kill Me!",
       "topTrackId": "0tS6Bm4fZjYEau4puAgl6F",
       "topTrackUrl": "https://open.spotify.com/track/0tS6Bm4fZjYEau4puAgl6F",
-      "followers": 2842,
+      "followers": 2844,
       "spotifyUrl": "https://open.spotify.com/artist/5XTkVAbzbtMNHmgTfzjU7r"
     },
     {
@@ -9214,7 +9228,7 @@
       "topTrackName": "The Circle is Not Round (Live)",
       "topTrackId": "5Uzv4T2RNuOQmSyOF2Q8ch",
       "topTrackUrl": "https://open.spotify.com/track/5Uzv4T2RNuOQmSyOF2Q8ch",
-      "followers": 1717,
+      "followers": 1718,
       "spotifyUrl": "https://open.spotify.com/artist/29LwpryNhy0RRRVGIkd9Ll?si=t_XvnnjBRQOCnRBeq15Izw"
     },
     {
@@ -9248,7 +9262,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9282,7 +9296,7 @@
       "topTrackName": "Papigo",
       "topTrackId": "17sWZ1PqTA27cH1SnUnjq1",
       "topTrackUrl": "https://open.spotify.com/track/17sWZ1PqTA27cH1SnUnjq1",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -9299,7 +9313,7 @@
       "topTrackName": "Frekfencija Na Ljibovta",
       "topTrackId": "2VPNVi9p11DXs13fPd6X5u",
       "topTrackUrl": "https://open.spotify.com/track/2VPNVi9p11DXs13fPd6X5u",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -9333,7 +9347,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -9350,7 +9364,7 @@
       "topTrackName": "Toa Ne Sum Jas (feat. Neletronic Guru)",
       "topTrackId": "7JcqBs2Tpm6kjxJcdExmIA",
       "topTrackUrl": "https://open.spotify.com/track/7JcqBs2Tpm6kjxJcdExmIA",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -9367,7 +9381,7 @@
       "topTrackName": "Crne Ruže",
       "topTrackId": "3QvZZeSYKIHyCnXmjvJqNL",
       "topTrackUrl": "https://open.spotify.com/track/3QvZZeSYKIHyCnXmjvJqNL",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9414,7 +9428,7 @@
       "releaseUrl": "https://open.spotify.com/album/3s0WrdZDB2OTHdhXewA4q9",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273f625bf1f5931cb494d77f5d7",
       "totalTracks": 15,
-      "popularity": 16,
+      "popularity": 15,
       "topTrackName": "Eden Baknez",
       "topTrackId": "0RYB9ytg9rEky8Y08nPHt6",
       "topTrackUrl": "https://open.spotify.com/track/0RYB9ytg9rEky8Y08nPHt6",
@@ -9435,7 +9449,7 @@
       "topTrackName": "Bela Petkana",
       "topTrackId": "4Pv5A72mSBaiGho3ES9cPc",
       "topTrackUrl": "https://open.spotify.com/track/4Pv5A72mSBaiGho3ES9cPc",
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9452,7 +9466,7 @@
       "topTrackName": "Goceva 3",
       "topTrackId": "1PekTAK7StGSAueZa3xEUv",
       "topTrackUrl": "https://open.spotify.com/track/1PekTAK7StGSAueZa3xEUv",
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9503,7 +9517,7 @@
       "topTrackName": "Mi casa es su casa (feat. Slatkaristika)",
       "topTrackId": "6MRtS284pfinZLEEFuS3ZE",
       "topTrackUrl": "https://open.spotify.com/track/6MRtS284pfinZLEEFuS3ZE",
-      "followers": 4717,
+      "followers": 4811,
       "spotifyUrl": "https://open.spotify.com/artist/60FD0FRdAcg8eSoEdZWegN"
     },
     {
@@ -9520,7 +9534,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 778,
+      "followers": 779,
       "spotifyUrl": "https://open.spotify.com/artist/1zh325ExvsVAMnfMLtIwVb"
     },
     {
@@ -9571,7 +9585,7 @@
       "topTrackName": "Milice",
       "topTrackId": "7yVPzLh3rq70O4JpSUPcGn",
       "topTrackUrl": "https://open.spotify.com/track/7yVPzLh3rq70O4JpSUPcGn",
-      "followers": 4932,
+      "followers": 4931,
       "spotifyUrl": "https://open.spotify.com/artist/0rXnfWL0gCATJTjiQlH3M7"
     },
     {
@@ -9622,7 +9636,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9636,10 +9650,10 @@
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b27320ddef6bb9c010006ee455df",
       "totalTracks": 11,
       "popularity": 2,
-      "topTrackName": "Leptir",
-      "topTrackId": "2tPPVb7wVGGioDOTmJRt5J",
-      "topTrackUrl": "https://open.spotify.com/track/2tPPVb7wVGGioDOTmJRt5J",
-      "followers": 1538,
+      "topTrackName": "Hvala ti",
+      "topTrackId": "7KnxsYi0hxfh07FSk7DCAP",
+      "topTrackUrl": "https://open.spotify.com/track/7KnxsYi0hxfh07FSk7DCAP",
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -9656,7 +9670,7 @@
       "topTrackName": "Vo nashe selo",
       "topTrackId": "2Dy8dsX2jl5GnL38V8eLq4",
       "topTrackUrl": "https://open.spotify.com/track/2Dy8dsX2jl5GnL38V8eLq4",
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9673,7 +9687,7 @@
       "topTrackName": "OJ Devojche",
       "topTrackId": "5Udlvb2wLvarqdIjGoEuwa",
       "topTrackUrl": "https://open.spotify.com/track/5Udlvb2wLvarqdIjGoEuwa",
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9690,7 +9704,7 @@
       "topTrackName": "Dari Dari Dam",
       "topTrackId": "0iwdDIG9uUC1PEeDPesQDz",
       "topTrackUrl": "https://open.spotify.com/track/0iwdDIG9uUC1PEeDPesQDz",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9707,7 +9721,7 @@
       "topTrackName": "Edno leto",
       "topTrackId": "2AIMKMU64F9vPYC276LL6W",
       "topTrackUrl": "https://open.spotify.com/track/2AIMKMU64F9vPYC276LL6W",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -9720,11 +9734,11 @@
       "releaseUrl": "https://open.spotify.com/album/1AILqxHvHYzz9obQZVcRDt",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273da1f2b21446118a6c458794c",
       "totalTracks": 9,
-      "popularity": 6,
-      "topTrackName": "Den i Nok",
-      "topTrackId": "3Mvd6QEHedICmqCw7q6i81",
-      "topTrackUrl": "https://open.spotify.com/track/3Mvd6QEHedICmqCw7q6i81",
-      "followers": 1890,
+      "popularity": 7,
+      "topTrackName": "Ona Drugoto",
+      "topTrackId": "0ZdGjHRlTekvXDb8Ne7Wgz",
+      "topTrackUrl": "https://open.spotify.com/track/0ZdGjHRlTekvXDb8Ne7Wgz",
+      "followers": 1891,
       "spotifyUrl": "https://open.spotify.com/artist/16FDymswtcT1ZQj3keHWiQ?si=L120OHYiSGOsTcFOxnNB-g"
     },
     {
@@ -9741,7 +9755,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 851,
+      "followers": 853,
       "spotifyUrl": "https://open.spotify.com/artist/2dkAbwBLa20UmpE0iWnl7v"
     },
     {
@@ -9775,7 +9789,7 @@
       "topTrackName": "Dali me sakaš - Live",
       "topTrackId": "4gGCCp2hWiHXXaaO0K9a9e",
       "topTrackUrl": "https://open.spotify.com/track/4gGCCp2hWiHXXaaO0K9a9e",
-      "followers": 12339,
+      "followers": 12346,
       "spotifyUrl": "https://open.spotify.com/artist/6eBSucvYWxXNHDQ4eh8Dd9"
     },
     {
@@ -9809,7 +9823,7 @@
       "topTrackName": "Siki, Siki Baba",
       "topTrackId": "2IHJzDNShejY2PE1nDY7b6",
       "topTrackUrl": "https://open.spotify.com/track/2IHJzDNShejY2PE1nDY7b6",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -9843,7 +9857,7 @@
       "topTrackName": "Kolku Mi Znacis",
       "topTrackId": "0losxM7PdwBHd86hrJHZZe",
       "topTrackUrl": "https://open.spotify.com/track/0losxM7PdwBHd86hrJHZZe",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -9860,7 +9874,7 @@
       "topTrackName": "Glupavi pesni",
       "topTrackId": "5NFG3BDBmWsjHZykJ0yMWS",
       "topTrackUrl": "https://open.spotify.com/track/5NFG3BDBmWsjHZykJ0yMWS",
-      "followers": 2132,
+      "followers": 2135,
       "spotifyUrl": "https://open.spotify.com/artist/0HlrnJ63cm4YeHPeFgjBOo"
     },
     {
@@ -9877,7 +9891,7 @@
       "topTrackName": "Site Moi Sliki",
       "topTrackId": "5DHOkXBbJP7x2zMviMbFVD",
       "topTrackUrl": "https://open.spotify.com/track/5DHOkXBbJP7x2zMviMbFVD",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
@@ -9894,7 +9908,7 @@
       "topTrackName": "Ladno Oruzje",
       "topTrackId": "37BRcSV6gJeGSIraPr8oRr",
       "topTrackUrl": "https://open.spotify.com/track/37BRcSV6gJeGSIraPr8oRr",
-      "followers": 2631,
+      "followers": 2632,
       "spotifyUrl": "https://open.spotify.com/artist/6qiM7BconkUsCsdFghQ5XF"
     },
     {
@@ -9962,7 +9976,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -9979,7 +9993,7 @@
       "topTrackName": "Seik oro",
       "topTrackId": "2y09PqYNER9ky8goQjUu32",
       "topTrackUrl": "https://open.spotify.com/track/2y09PqYNER9ky8goQjUu32",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -9996,7 +10010,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -10013,7 +10027,7 @@
       "topTrackName": "O, Sea, Swallow Me",
       "topTrackId": "6TnafmfNT5I5WFLW9q2vtb",
       "topTrackUrl": "https://open.spotify.com/track/6TnafmfNT5I5WFLW9q2vtb",
-      "followers": 1717,
+      "followers": 1718,
       "spotifyUrl": "https://open.spotify.com/artist/29LwpryNhy0RRRVGIkd9Ll?si=t_XvnnjBRQOCnRBeq15Izw"
     },
     {
@@ -10030,7 +10044,7 @@
       "topTrackName": "Burkan Cocek",
       "topTrackId": "21zeTY4CFoRKIswcfhlzn0",
       "topTrackUrl": "https://open.spotify.com/track/21zeTY4CFoRKIswcfhlzn0",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -10043,11 +10057,11 @@
       "releaseUrl": "https://open.spotify.com/album/41YN9jMEXGkRfKfU5DpGxc",
       "thumbnail": "https://i.scdn.co/image/ab67616d0000b273ebd4521d6ea517b9b9f8de4b",
       "totalTracks": 8,
-      "popularity": 9,
+      "popularity": 10,
       "topTrackName": "Na Rekah Vavilonskih",
       "topTrackId": "0idjJPcGPKEsqrRglsgQlf",
       "topTrackUrl": "https://open.spotify.com/track/0idjJPcGPKEsqrRglsgQlf",
-      "followers": 1717,
+      "followers": 1718,
       "spotifyUrl": "https://open.spotify.com/artist/29LwpryNhy0RRRVGIkd9Ll?si=t_XvnnjBRQOCnRBeq15Izw"
     },
     {
@@ -10081,7 +10095,7 @@
       "topTrackName": "Solo Tapan",
       "topTrackId": "0FWpvqbyV0VznMGbjK6gEK",
       "topTrackUrl": "https://open.spotify.com/track/0FWpvqbyV0VznMGbjK6gEK",
-      "followers": 12858,
+      "followers": 12860,
       "spotifyUrl": "https://open.spotify.com/artist/06U9gEjzsN4vYJvBDa2Hhz?si=kjPu1BqERR-R02sCsC5Nhg"
     },
     {
@@ -10098,7 +10112,7 @@
       "topTrackName": null,
       "topTrackId": null,
       "topTrackUrl": null,
-      "followers": 28016,
+      "followers": 28017,
       "spotifyUrl": "https://open.spotify.com/artist/5hNernryMZIWE1Nrygbxp0?si=CsX7vM-KT66QmzH-FSYytA"
     },
     {
@@ -10132,7 +10146,7 @@
       "topTrackName": "Ne Sme Slucajno Tuka",
       "topTrackId": "04ShVGv1v82B5HsAPdWZsJ",
       "topTrackUrl": "https://open.spotify.com/track/04ShVGv1v82B5HsAPdWZsJ",
-      "followers": 1538,
+      "followers": 1539,
       "spotifyUrl": "https://open.spotify.com/artist/34OqvzJbM6tiqnrfsJ98MO?si=MPTMFQj8RfmRMTl4sZv9AA"
     },
     {
