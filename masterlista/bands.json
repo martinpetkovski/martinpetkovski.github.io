@@ -834,7 +834,8 @@
         "lastfm": "https://www.last.fm/music/Culture+Development",
         "youtube": "https://www.youtube.com/@culturedevelopmentmk",
         "facebook": "https://www.facebook.com/culturedevelopmentmk",
-        "bandcamp": "https://culturedevelopment.bandcamp.com/"
+        "bandcamp": "https://culturedevelopment.bandcamp.com/",
+        "spotify": "https://open.spotify.com/artist/7faeT7W5XoqeYh4HLm0nPG?si=P_XiC3PjQ6ic7vrqGAJzLA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Culture Development",
@@ -861,7 +862,7 @@
       "soundsLike": "недостигаат податоци",
       "isActive": false,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/1RkwPT2wRa0k8cMdCsUCal?si=ID4SkD05TpCL-sH_BR_2ww"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -870,11 +871,11 @@
     {
       "name": "Д.Н.О.",
       "city": "Скопје",
-      "genre": "Алтернативен Рок, Инди",
+      "genre": "Алтернативен Рок, Инди, Инди Рок",
       "soundsLike": "недостигаат податоци",
-      "isActive": true,
+      "isActive": "Непознато",
       "links": {
-        "spotify": "https://open.spotify.com/artist/1uz2RCAHq5pnXIH8mLlrAh?si=7rMjhFkQSx2K4iJ_qMaHdg"
+        "spotify": "https://open.spotify.com/artist/1uz2RCAHq5pnXIH8mLlrAh?si=aicWNNaGSASrZtqzBGeFOw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -902,7 +903,8 @@
       "isActive": true,
       "links": {
         "lastfm": "https://www.last.fm/music/Da+Dzaka+Nakot",
-        "youtube": "https://www.youtube.com/watch?v=oRtbH3kkD0M"
+        "youtube": "https://www.youtube.com/watch?v=oRtbH3kkD0M",
+        "spotify": "https://open.spotify.com/artist/2rgCG9oFZLfSXNHcr3CdY5?si=N--O3YtHQ3msiupd8KZEKQ"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Da Dzaka Nakot",
@@ -910,12 +912,12 @@
     },
     {
       "name": "Damage Control",
-      "city": "недостигаат податоци",
+      "city": "Скопје",
       "genre": "недостигаат податоци",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/1YNMKmPz8BBUCtFRwoyxki?si=7BYse3hfRtqvM_wnhP7O9w"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -942,7 +944,7 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/75xMRPhbmRInCeGJYIUZ5u?si=a-8qGNAMRtq1Hg5xSkKyEw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -969,7 +971,7 @@
       "soundsLike": "недостигаат податоци",
       "isActive": "Непознато",
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/6HyCn5pF5YnCRNQvWbSbAM?si=1UPVz7fFS8OVYXXOaIfWBQ"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -1089,7 +1091,8 @@
       "isActive": "Можеби",
       "links": {
         "lastfm": "https://www.last.fm/music/Denny+Te+Chuva",
-        "youtube": "https://www.youtube.com/watch?v=FZY28EAkmfc"
+        "youtube": "https://www.youtube.com/watch?v=FZY28EAkmfc",
+        "spotify": "https://open.spotify.com/artist/0WcWKCf8bPRqkLEgqYgZ4B?si=stnFT5R1T9K0O5p33z_n_Q"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Denny Te Chuva",
@@ -1309,12 +1312,12 @@
     },
     {
       "name": "Драги Иванов",
-      "city": "недостигаат податоци",
+      "city": "Скопје",
       "genre": "недостигаат податоци",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/5DN6OqMKOvnAVrE66rvD80?si=YGh0oWXcT_iJ2U8xei6HGg"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -1437,7 +1440,8 @@
       "isActive": true,
       "links": {
         "youtube": "https://www.youtube.com/channel/UCTQF-xbHyFnZTIqYRkOOVnw",
-        "instagram": "https://www.instagram.com/endemskivid/"
+        "instagram": "https://www.instagram.com/endemskivid/",
+        "spotify": "https://open.spotify.com/artist/0wBKeaoJoTMqPYYXG9gXjH?si=4RExVNc8S8yUhWrHJw2JeA"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -1572,7 +1576,8 @@
       "links": {
         "facebook": "https://www.facebook.com/fosfenband/",
         "youtube": "https://www.youtube.com/@fosfen3093",
-        "instagram": "https://www.instagram.com/fosfeniziraj/"
+        "instagram": "https://www.instagram.com/fosfeniziraj/",
+        "spotify": "https://open.spotify.com/artist/1fSzjKjyiT7bCxYihHs4Ra?si=6J-ByoEPR8Wmdre7LGHV0w"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Fosfen",
@@ -1765,7 +1770,8 @@
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "instagram": "https://www.instagram.com/golematavoda/"
+        "instagram": "https://www.instagram.com/golematavoda/",
+        "spotify": "https://open.spotify.com/artist/0SQ8FWJpRMi5PJUt1ZPPg4?si=2zk7IigiRBu5oDDSgtu3Gg"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -1853,12 +1859,12 @@
     },
     {
       "name": "GWASS",
-      "city": "недостигаат податоци",
+      "city": "Охрид",
       "genre": "недостигаат податоци",
       "soundsLike": "недостигаат податоци",
       "isActive": true,
       "links": {
-        "none": "недостигаат податоци"
+        "spotify": "https://open.spotify.com/artist/6vGEnSMDnNsN69zH566SPd?si=ZJf8X-CKT_i06Jk1eAmg_Q"
       },
       "contact": "недостигаат податоци",
       "lastfmName": null,
@@ -2971,10 +2977,11 @@
       "city": "Скопје",
       "genre": "Готик Рок, Дарк Вејв, Пост-панк",
       "soundsLike": "The Sisters of Mercy, Bauhaus",
-      "isActive": "Можеби",
+      "isActive": true,
       "links": {
         "wikipedia": "https://en.wikipedia.org/wiki/Mizar_(band)",
-        "youtube": "https://www.youtube.com/channel/UCpIcIunY6aWCsl8WZjkcOgw"
+        "youtube": "https://www.youtube.com/channel/UCpIcIunY6aWCsl8WZjkcOgw",
+        "spotify": "https://open.spotify.com/artist/6uQDv41alNlfSZuSuJuGJt?si=XufhRvOuQjSBD1KU5sTNaw"
       },
       "contact": "недостигаат податоци",
       "lastfmName": "Mizar",
