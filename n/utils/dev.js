@@ -59,27 +59,6 @@ marked.setOptions({
         }
     }
 })();
-        const pRes = await fetch(`./pages/${principlesFile}.md`);
-        if (pRes.ok) {
-            const pText = await pRes.text();
-            const opinions = extractOpinions(pText);
-            
-            // Sort by date descending
-            opinions.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            const listHtml = opinions.map(op => `<div><small>${op.date}</small> ${op.title}</div>`).join('');
-            opinionsList.innerHTML = listHtml;
-            
-            const hero = document.getElementById('hero-opinions');
-            hero.addEventListener('mouseenter', () => {
-                opinionsList.style.display = 'block';
-            });
-            hero.addEventListener('mouseleave', () => {
-                opinionsList.style.display = 'none';
-            });
-        }
-    }
-})();
 
 function extractOpinions(markdown) {
     const lines = markdown.split('\n');
