@@ -25,7 +25,7 @@ h2{background-color:#6699cc;background-image:url("data:image/svg+xml,%3Csvg%20xm
 
 h1{font-family:"Bebas Neue",Impact,Haettenschweiler,"Arial Black",sans-serif;font-size:38px;border:0;padding:0;margin:0;letter-spacing:1.5px;color:#FFF;text-shadow:none;line-height:1}
 
-.sub{font-family:Inter,Georgia,"Times New Roman",serif;color:#EEE;font-size:13px;margin:4px 0 0}
+.sub{font-family:Inter,Georgia,"Times New Roman",serif;background-color: #071b47; color:#EEE;font-size:13px;margin:4px 0 0; max-width: 160px;}
 
 h2{font-size:14px}
 
@@ -39,11 +39,12 @@ a:visited{color:#551A8B}
 a:hover{color:#cc0000; text-decoration:none}
 a:active{color:#f00}
 
-.construction{color:#c60;font-weight:bold}
+.construction{color:#777;}
 
 .l-bar{background:transparent;border:0;font-size:11px}
 .l-bar a{text-decoration:none;margin:0 4px;color:#000;padding:2px 4px}
 .l-bar a:hover{color:#00e;background:transparent;text-decoration:underline}
+.link-item{white-space:nowrap}
 
 .update{font-size:10px;color:#64748b;font-style:italic;}
 
@@ -59,18 +60,18 @@ hr{border:0;height:1px;background:#cbd5e1;margin:16px 0}
 
 @media(max-width:600px){
 body{margin:0;font-size:16px}
-.sub {background-color: #4a7fc4;}
+.sub{margin:0;overflow:hidden;white-space:nowrap}
+.sub-inner{display:inline-block;}
 .page{border-width:0;max-width:100%}
 .content{margin:12px}
-.hdr{padding:8px}
-.hdr{padding:0}
-.hdr-text{padding:8px}
 h1{font-size:28px}
-.sub{font-size:12px}
-h2{font-size:16px;padding:4px 6px}
-h3{font-size:14px;font-weight: bold;}
-.l-bar{padding:8px;font-size:14px}
-.l-bar a{display:inline;margin:0 2px}
+.hdr{padding:0;flex-wrap:wrap}
+.hdr-text{padding:8px;min-width:0;overflow:hidden}
+h2{font-size:16px;padding:4px 6px;margin-left:0;margin-right:0}
+h3{font-size:14px;font-weight:bold;margin-left:0;margin-right:0}
+.l-bar{padding:8px 12px;font-size:14px;display:flex;flex-wrap:wrap;gap:4px 8px}
+.l-bar a{margin:0}
+footer{margin:0 12px}
 }
 </style>
 </head>
@@ -80,13 +81,18 @@ h3{font-size:14px;font-weight: bold;}
 <img class="hdr-logo" src="header.png" alt="" aria-hidden="true">
 <div class="hdr-text">
 <h1>NAJJAK.COM</h1>
-<div class="sub">Welcome to Martin Petkovski's personal website.</div>
+
+<div class="sub"><span class="sub-inner">
+    <marquee behavior="scroll" direction="left" scrollamount="5"  > 
+    Welcome to Martin Petkovski's personal website. Here you'll find my projects, resume, and various thoughts on random topics that interest me.
+    </marquee>
+</span></div>
 </div>
 </div>
 <div class="content">
 <p><b>» <a href="resume">Professional Resume</a></b> (2017 - present)<br>
 <small>Mostly engineering stuff in 3D space.</small></p>
-<h2>My Code Has Powered</h2>
+<h2><marquee behavior="slide" direction="left" scrollamount="100" >My Code Has Powered</marquee></h2>
 <ul>
 <li><a href="https://kamaikamai.com">Sonder</a> (2015)</li>
 <li><a href="https://www.huntshowdown.com/">Hunt: Showdown</a> (2017-2018)</li>
@@ -97,7 +103,7 @@ h3{font-size:14px;font-weight: bold;}
 <li><a href="https://store.steampowered.com/app/1682400/The_Strange_Story_Of_Brian_Fisher_Chapter_2/">Strange Story: Chapter 2</a> (2023)</li>
 <li><a href="https://historikal.com/">Historikal</a> (2025) <span class="new-tag">NEW!</span></li>
 </ul>
-<h2>The Vault</h2>
+<h2><marquee behavior="slide" direction="left" scrollamount="100" >The Vault</marquee></h2>
 <h3>Handcrafted</h3>
 <ul>
 <li><a href="siotojazz">Sioto Jazz</a> (2022-present) - <span>Alternative Rock band I'm playing in (guitar).</span></li>
@@ -115,7 +121,7 @@ h3{font-size:14px;font-weight: bold;}
 <li><a href="masterlista">Makedonska Muzicka Master Lista</a> (2025-present) - <span>Macedonian music database.</span></li>
 <li><a href="makedonski">Makedonski Leksikon</a> (2021-present) - <span>All the words in the Macedonian language.</span></li>
 </ul>
-<h2>Opinions</h2>
+<h2><marquee behavior="slide" direction="left" scrollamount="100" >Opinions</marquee></h2>
 <ul>
 <li><a href="n/?principles">Principles</a> <span class="lang">MK</span> - <span>Core values and beliefs</span></li>
 <li><a href="n/?code-standard-cpp">C++ Code Standard</a> <span class="lang">EN</span> - <span>Personal coding guidelines</span></li>
@@ -123,16 +129,16 @@ h3{font-size:14px;font-weight: bold;}
 <li><a href="n/?cyberpunk">Cyberpunk</a> <span class="lang">EN</span> (2022) - <span>Review of the game</span></li>
 <li><a href="n/?nomanssky">No Man's Sky</a> <span class="lang">EN</span> (2021) - <span>Review of the game</span></li>
 </ul>
-<h2>Links</h2>
+<h2><marquee behavior="slide" direction="left" scrollamount="100" >Links</marquee></h2>
 <div class="l-bar">
-[ <a href="https://open.spotify.com/user/31mf67wrbng5tnj4lpgteudoygze">Spotify</a> ]
-[ <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">YouTube</a> ]
-[ <a href="https://github.com/martinpetkovski">GitHub</a> ]
-[ <a href="https://www.linkedin.com/in/martin-petkovski/">LinkedIn</a> ]
-[ <a href="https://twitter.com/misteriozen">Twitter</a> ]
-[ <a href="https://twitter.com/OficialZaev">Twitter (goofy)</a> ]
-[ <a href="https://www.instagram.com/najnajjak/">Instagram</a> ]
-[ <a href="mailto:martin@najjak.com" class="email">Email</a> ]
+<span class="link-item">[ <a href="https://open.spotify.com/user/31mf67wrbng5tnj4lpgteudoygze">Spotify</a> ]</span>
+<span class="link-item">[ <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">YouTube</a> ]</span>
+<span class="link-item">[ <a href="https://github.com/martinpetkovski">GitHub</a> ]</span>
+<span class="link-item">[ <a href="https://www.linkedin.com/in/martin-petkovski/">LinkedIn</a> ]</span>
+<span class="link-item">[ <a href="https://twitter.com/misteriozen">Twitter</a> ]</span>
+<span class="link-item">[ <a href="https://twitter.com/OficialZaev">Twitter (goofy)</a> ]</span>
+<span class="link-item">[ <a href="https://www.instagram.com/najnajjak/">Instagram</a> ]</span>
+<span class="link-item">[ <a href="mailto:martin@najjak.com" class="email">Email</a> ]</span>
 </div>
 <footer>
 <p>Copyright © Martin Petkovski 2013-2026 // Last updated: January 2026</p>
