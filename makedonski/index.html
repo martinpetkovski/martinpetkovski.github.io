@@ -1,1569 +1,210 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="mk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Македонски Лексикон – Речник и Игри</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0f1115;
-      --bg-alt: #181b21;
-      --border: #2a3039;
-      --accent: #3d7cff;
-      --accent-glow: #3d7cff55;
-      --text: #eef2f7;
-      --text-dim: #9aa4b1;
-      --danger: #ff4d61;
-      --radius-sm: 4px;
-      --radius: 8px;
-      --transition: .15s ease;
-      --macedonian-red: #d72034;
-      --macedonian-yellow: #f9ba30;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      position: relative;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, 
-        var(--macedonian-red) 0%, 
-        var(--macedonian-red) 33%, 
-        var(--macedonian-yellow) 33%, 
-        var(--macedonian-yellow) 66%, 
-        var(--macedonian-red) 66%, 
-        var(--macedonian-red) 100%);
-      z-index: 1000;
-      box-shadow: 0 2px 8px rgba(215, 32, 52, 0.3);
-    }
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(circle at 20% 50%, rgba(215, 32, 52, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(249, 186, 48, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: -1;
-    }
-    header {
-      padding: 1.2rem 1.6rem .6rem;
-      display: flex;
-      flex-direction: column;
-      gap: .75rem;
-      background: linear-gradient(#14171c,#0f1115 60%);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(6px);
-      border-bottom: 2px solid rgba(215, 32, 52, 0.2);
-    }
-    @media (max-width: 600px) {
-      header {
-        padding: 1rem;
-      }
-      h1 {
-        font-size: 1.3rem;
-        margin: 0;
-      }
-      .tagline {
-        font-size: .75rem;
-        min-width: 100%;
-      }
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(1.4rem,2.5vw,1.9rem);
-      font-weight: 600;
-      letter-spacing: .5px;
-      position: relative;
-      padding-bottom: .5rem;
-    }
-    h1::after {
-      content: '✦';
-      color: var(--macedonian-yellow);
-      font-size: .8em;
-      margin-left: .5rem;
-      opacity: 0.7;
-    }
-    .tagline { 
-      font-size: .9rem; 
-      color: var(--text-dim);
-      font-style: italic;
-      opacity: 0.5;
-    }
-    .search-row { display: flex; gap: .75rem; align-items: center; }
-    @media (max-width: 600px) {
-      #q {
-        width: 100%;
-      }
-    }
-    #q {
-      flex: 1;
-      padding: .75rem .95rem;
-      font: inherit;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: var(--radius);
-      outline: none;
-      transition: var(--transition);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    #q:focus { 
-      border-color: var(--macedonian-red); 
-      box-shadow: 0 0 0 3px rgba(215, 32, 52, 0.2), 0 4px 12px rgba(215, 32, 52, 0.1);
-    }
-    main {
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-      padding: .4rem 1.4rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    @media (max-width: 600px) {
-      main {
-        padding: .4rem .8rem 2rem;
-      }
-    }
-    .panel {
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      position: relative;
-      overflow: hidden;
-    }
-    .panel::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, 
-        transparent 0%, 
-        var(--macedonian-red) 20%, 
-        var(--macedonian-yellow) 50%, 
-        var(--macedonian-red) 80%, 
-        transparent 100%);
-      opacity: 0.4;
-    }
-    .panel-header {
-      padding: .6rem .9rem .55rem;
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      color: var(--text-dim);
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(to right, rgba(215, 32, 52, 0.05), transparent);
-    }
-    .panel-header::before {
-      content: '◆';
-      color: var(--macedonian-yellow);
-      margin-right: .5rem;
-      font-size: .9em;
-      opacity: 0.6;
-    }
-    .results {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: .8rem;
-      font-size: .95rem;
-    }
-    .results li {
-      padding: .9rem 1rem;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-      transition: var(--transition);
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      min-width: 200px;
-      flex: 1 1 calc(33.333% - .8rem);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    @media (max-width: 1200px) {
-      .results li { flex: 1 1 calc(50% - .8rem); }
-    }
-    @media (max-width: 700px) {
-      .results li { flex: 1 1 100%; }
-    }
-    .results li:hover { background: #20242b; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(215, 32, 52, 0.2); }
-    .results li.active { 
-      background: linear-gradient(135deg, var(--macedonian-red) 0%, var(--macedonian-yellow) 100%); 
-      color: #fff;
-      border: 2px solid var(--macedonian-yellow);
-      transform: translateY(-2px);
-    }
-    .results li.active .score {
-      background: rgba(255, 255, 255, 0.25);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-    .results li.active mark {
-      color: #fff;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-    }
-    .results li strong {
-      color: var(--text);
-    }
-    .results li.active strong {
-      color: #fff;
-    }
-    .meta { font-size: .65rem; letter-spacing: .5px; font-weight: 600; color: var(--macedonian-yellow); }
-    .results li.active .meta { color: #fff; }
-    .score { 
-      font-size:.65rem; 
-      font-weight:600; 
-      padding:2px 6px; 
-      border-radius:4px; 
-      margin-right:.4rem; 
-      display:inline-block; 
-      min-width:42px; 
-      text-align:center;
-      border: 1px solid currentColor;
-    }
-    .results li.active .score { background:rgba(255,255,255,.25); color:#fff; border-color: rgba(255, 255, 255, 0.3); }
-    body.light .score { background:#e3e8ef; color:#5d6b7c; }
-    .syl-wrap { display:inline-flex; gap:4px; margin-left:.4rem; flex-wrap:wrap; }
-    .syl { 
-      background: linear-gradient(135deg, #262c33 0%, rgba(215, 32, 52, 0.1) 100%); 
-      padding:2px 6px; 
-      border-radius:4px; 
-      font-size:.65rem; 
-      font-weight:500; 
-      letter-spacing:.3px;
-      border: 1px solid rgba(215, 32, 52, 0.2);
-    }
-    body.light .syl { background:#e2e8ef; color:#1c242e; border: 1px solid #ccc; }
-    mark { background: transparent; color: var(--macedonian-yellow); font-weight: 600; text-shadow: 0 0 8px rgba(249, 186, 48, 0.3); }
-    .detail {
-      padding: .8rem .95rem 1.1rem;
-      overflow: auto;
-      font-size: .9rem;
-      line-height: 1.4;
-    }
-    .empty { 
-      color: var(--text-dim); 
-      font-style: italic;
-      padding: 2rem 1rem;
-      text-align: center;
-      border: 1px dashed rgba(215, 32, 52, 0.2);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(215, 32, 52, 0.02), rgba(249, 186, 48, 0.02));
-    }
-    .empty::before {
-      content: '◆';
-      display: block;
-      font-size: 1.5rem;
-      color: var(--macedonian-yellow);
-      margin-bottom: .5rem;
-    }
-    /* Styled key/value property list */
-    .props { display:grid; grid-template-columns:max-content 1fr; gap:.5rem 1rem; }
-    .props .k { 
-      font-size:.65rem; 
-      font-weight:600; 
-      text-transform:uppercase; 
-      letter-spacing:.5px; 
-      color: var(--macedonian-yellow);
-    }
-    .props .k::before {
-      content: '▸';
-      color: var(--macedonian-red);
-      margin-right: .3rem;
-      font-size: .9em;
-    }
-    .props .v { font-size:.85rem; line-height:1.3; }
-    .props .v code { 
-      font-family:monospace; 
-      background: linear-gradient(135deg, #1d2229 0%, rgba(215, 32, 52, 0.05) 100%); 
-      padding:2px 5px; 
-      border-radius:4px; 
-      font-size:.7rem;
-      border: 1px solid rgba(215, 32, 52, 0.2);
-    }
-    body.light .props .v code { background:#eef3f9; border: 1px solid #ccc; }
-    .stats-bar {
-      display: flex;
-      gap: 1rem;
-      padding: .55rem .9rem;
-      font-size: .7rem;
-      color: var(--text-dim);
-      border-top: 1px solid var(--border);
-      background: linear-gradient(to right, rgba(215, 32, 52, 0.02), transparent, rgba(249, 186, 48, 0.02));
-    }
-    .stats-bar::before {
-      content: '◈';
-      color: var(--macedonian-yellow);
-      margin-right: .3rem;
-      font-size: .9em;
-      opacity: 0.5;
-    }
-    .loader { padding: .9rem; font-size: .8rem; color: var(--text-dim); }
-    .error { color: var(--danger); font-weight: 600; }
-    .mode-toggle {
-      position: absolute; right: 1.2rem; top: 1.2rem;
-      background: linear-gradient(135deg, var(--bg-alt) 0%, rgba(215, 32, 52, 0.05) 100%); 
-      border: 1px solid var(--border);
-      color: var(--text-dim); font: inherit; padding: .45rem .7rem;
-      border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
-    }
-    .mode-toggle:hover { 
-      color: var(--text); 
-      border-color: var(--macedonian-yellow);
-      box-shadow: 0 2px 8px rgba(249, 186, 48, 0.2);
-    }
-    .modes { display:flex; gap:.4rem; flex-wrap:wrap; }
-    @media (max-width: 600px) {
-      .modes {
-        gap: .3rem;
-      }
-      .mode-btn {
-        font-size: .65rem;
-        padding: .4rem .6rem;
-      }
-    }
-    .mode-btn { 
-      background: var(--bg-alt); 
-      border:1px solid var(--border); 
-      color:var(--text-dim); 
-      padding:.45rem .75rem; 
-      font-size:.7rem; 
-      font-weight:600; 
-      letter-spacing:.5px; 
-      border-radius: var(--radius-sm); 
-      cursor:pointer; 
-      transition:var(--transition); 
-      text-transform:uppercase;
-      position: relative;
-      overflow: hidden;
-    }
-    .mode-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(215, 32, 52, 0.2), transparent);
-      transition: left 0.3s ease;
-    }
-    .mode-btn:hover::before {
-      left: 100%;
-    }
-    .mode-btn:hover { 
-      color:var(--text); 
-      border-color:var(--macedonian-red);
-      box-shadow: 0 2px 8px rgba(215, 32, 52, 0.2);
-    }
-    .mode-btn.active { 
-      background: linear-gradient(135deg, var(--macedonian-red) 0%, var(--macedonian-yellow) 100%); 
-      color:#fff; 
-      border-color: var(--macedonian-red); 
-      box-shadow:0 0 0 3px rgba(215, 32, 52, 0.3);
-    }
-    .wotd-card { 
-      background: linear-gradient(135deg, var(--bg-alt) 0%, rgba(215, 32, 52, 0.05) 100%); 
-      border:1px solid var(--border); 
-      padding:.9rem 1.1rem; 
-      border-radius:var(--radius); 
-      margin-top:.6rem; 
-      display:flex; 
-      flex-direction:column; 
-      gap:.45rem;
-      box-shadow: 0 2px 8px rgba(215, 32, 52, 0.1);
-      border-left: 3px solid var(--macedonian-yellow);
-    }
-    .wotd-title { 
-      font-size:.7rem; 
-      text-transform:uppercase; 
-      letter-spacing:1px; 
-      font-weight:600; 
-      color: var(--macedonian-yellow);
-    }
-    .wotd-title::before {
-      content: '★';
-      margin-right: .4rem;
-      color: var(--macedonian-red);
-    }
-    .wotd-word { font-size:1.25rem; font-weight:600; letter-spacing:.5px; color: var(--text); }
-    .wotd-extra { font-size:.65rem; color:var(--text-dim); display:flex; gap:.8rem; flex-wrap:wrap; }
-    .badge { 
-      background: linear-gradient(135deg, #22262c 0%, rgba(215, 32, 52, 0.1) 100%); 
-      color:var(--text-dim); 
-      padding:2px 6px; 
-      border-radius:4px; 
-      font-size:.6rem; 
-      font-weight:600; 
-      letter-spacing:.5px;
-      border: 1px solid rgba(215, 32, 52, 0.2);
-    }
-    body.light .badge { background:#e3e8ef; color:#1c242e; border: 1px solid #ccc; }
-    /* Game overlay */
-    #gameOverlay { position:fixed; inset:0; background:rgba(15,17,21,.92); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; z-index:200; }
-    #gameOverlay.active { display:flex; }
-    .game-box { 
-      width: min(460px,90%); 
-      max-width: 90vw;
-      background: var(--bg-alt); 
-      border:2px solid var(--macedonian-red); 
-      border-radius:var(--radius); 
-      padding:1.2rem 1.4rem 1.4rem; 
-      display:flex; 
-      flex-direction:column; 
-      gap:1rem;
-      box-shadow: 0 8px 32px rgba(215, 32, 52, 0.3), 0 0 0 1px rgba(249, 186, 48, 0.2);
-      position: relative;
-      overflow-x: hidden;
-    }
-    @media (max-width: 600px) {
-      .game-box {
-        padding: 1rem;
-        width: 95%;
-      }
-      .game-box h2 {
-        font-size: .95rem;
-      }
-    }
-    .game-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, 
-        var(--macedonian-red) 0%, 
-        var(--macedonian-yellow) 50%, 
-        var(--macedonian-red) 100%);
-    }
-    .game-box h2 {
-      border-bottom: 1px solid rgba(215, 32, 52, 0.3);
-      padding-bottom: .5rem;
-    }
-    .game-box h2::before {
-      content: '★';
-      color: var(--macedonian-yellow);
-      margin-right: .5rem;
-    }
-    .game-grid { display:grid; grid-template-columns: repeat(5,1fr); gap:.4rem; }
-    .cell { 
-      aspect-ratio:1/1; 
-      display:flex; 
-      align-items:center; 
-      justify-content:center; 
-      font-weight:600; 
-      font-size:1.05rem; 
-      border:2px solid #2a3039; 
-      border-radius:6px; 
-      background:#1d2229; 
-      color:var(--text);
-      transition: all 0.3s ease;
-    }
-    .cell.state-correct { background:#2d7d46; border-color:#2d7d46; box-shadow: 0 2px 8px rgba(45, 125, 70, 0.4); }
-    .cell.state-present { background:#b08519; border-color:#b08519; box-shadow: 0 2px 8px rgba(176, 133, 25, 0.4); }
-    .cell.state-miss { background:#20242b; color:#5a636e; }
-    .game-row { display:contents; }
-    .game-actions { display:flex; gap:.6rem; }
-    .game-actions input { 
-      flex:1; 
-      padding:.7rem .85rem; 
-      background:#1d2229; 
-      border:2px solid #2a3039; 
-      border-radius:6px; 
-      color:var(--text); 
-      outline:none; 
-      font:inherit;
-      transition: all 0.3s ease;
-    }
-    .game-actions input:focus { 
-      border-color:var(--macedonian-yellow); 
-      box-shadow:0 0 0 3px rgba(249, 186, 48, 0.2);
-    }
-    .game-actions button { 
-      background: linear-gradient(135deg, var(--macedonian-red) 0%, var(--macedonian-yellow) 100%); 
-      border:none; 
-      color:#fff; 
-      padding:.7rem 1.1rem; 
-      font:inherit; 
-      font-weight:600; 
-      border-radius:6px; 
-      cursor:pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(215, 32, 52, 0.3);
-      white-space: nowrap;
-    }
-    .game-actions button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(215, 32, 52, 0.4);
-    }
-    @media (max-width: 600px) {
-      .game-actions {
-        flex-direction: column;
-      }
-      .game-actions button {
-        width: 100%;
-        padding: .6rem .8rem;
-      }
-    }
-    .game-close { 
-      position:absolute; 
-      top:10px; 
-      right:14px; 
-      background:none; 
-      border:none; 
-      color:var(--macedonian-red); 
-      font-size:1.4rem; 
-      cursor:pointer;
-      transition: all 0.2s ease;
-      font-weight: bold;
-    }
-    .game-close:hover {
-      color: var(--text);
-      transform: rotate(90deg);
-    }
-    .game-status { 
-      font-size:.75rem; 
-      color:var(--macedonian-yellow); 
-      min-height:1.2rem;
-      font-weight: 500;
-    }
-    body.light {
-      --bg: #f5f7fa; --bg-alt: #ffffff; --border: #d9e0e7; --text: #1c242e; --text-dim: #5d6b7c; --accent: #0b57d0; --accent-glow: #0b57d055; --danger:#d9213d;
-    }
-    body.light .results li:hover { background: #eef3f9; }
-    body.light .panel {
-      box-shadow: 0 4px 12px rgba(215, 32, 52, 0.1);
-    }
-    body.light mark {
-      color: var(--macedonian-red);
-      text-shadow: none;
-    }
-    body.light h1::after {
-      color: var(--macedonian-red);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Македонски Лексикон  Речник и Игри</title>
+<link rel="icon" type="image/jpg" href="../favicon.jpg">
+<style>
+*{box-sizing:border-box}
+body{font-family:Verdana,Tahoma,Arial,sans-serif;font-size:13px;background:#f4f7ff;color:#0b1020;padding:0;margin:0;line-height:1.45}
+.page{background:transparent;border:0;padding:0;max-width:640px;margin:0 auto}
+.hdr{background-color:#4a7fc4;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='320'%20height='80'%20viewBox='0%200%20320%2080'%20shape-rendering='crispEdges'%3E%3Cdefs%3E%3ClinearGradient%20id='m'%20x1='0%2525'%20y1='0%2525'%20x2='100%2525'%20y2='0%2525'%3E%3Cstop%20offset='0%2525'%20stop-color='%23000'%20stop-opacity='0'/%3E%3Cstop%20offset='48%2525'%20stop-color='%23000'%20stop-opacity='0'/%3E%3Cstop%20offset='78%2525'%20stop-color='%23fff'%20stop-opacity='1'/%3E%3Cstop%20offset='100%2525'%20stop-color='%23fff'%20stop-opacity='1'/%3E%3C/linearGradient%3E%3Cmask%20id='fade'%3E%3Crect%20width='320'%20height='80'%20fill='url(%23m)'/%3E%3C/mask%3E%3C/defs%3E%3Cg%20mask='url(%23fade)'%3E%3Crect%20x='128'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='144'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.09'/%3E%3Crect%20x='160'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.1'/%3E%3Crect%20x='176'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.17'/%3E%3Crect%20x='192'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.34'/%3E%3Crect%20x='208'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.28'/%3E%3Crect%20x='224'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.49'/%3E%3Crect%20x='240'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.36'/%3E%3Crect%20x='256'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.63'/%3E%3Crect%20x='272'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.15'/%3E%3Crect%20x='288'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.91'/%3E%3Crect%20x='304'%20y='0'%20width='16'%20height='16'%20fill='%23fff'%20opacity='1'/%3E%3Crect%20x='128'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='144'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.05'/%3E%3Crect%20x='160'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.18'/%3E%3Crect%20x='176'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.15'/%3E%3Crect%20x='192'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.28'/%3E%3Crect%20x='208'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.3'/%3E%3Crect%20x='224'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.55'/%3E%3Crect%20x='240'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.51'/%3E%3Crect%20x='256'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.44'/%3E%3Crect%20x='272'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.47'/%3E%3Crect%20x='288'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.81'/%3E%3Crect%20x='304'%20y='16'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.78'/%3E%3Crect%20x='128'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='144'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.04'/%3E%3Crect%20x='160'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.16'/%3E%3Crect%20x='176'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.27'/%3E%3Crect%20x='192'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.36'/%3E%3Crect%20x='208'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.44'/%3E%3Crect%20x='224'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.55'/%3E%3Crect%20x='240'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.44'/%3E%3Crect%20x='256'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.61'/%3E%3Crect%20x='272'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.34'/%3E%3Crect%20x='288'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.89'/%3E%3Crect%20x='304'%20y='32'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.88'/%3E%3Crect%20x='128'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='144'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.04'/%3E%3Crect%20x='160'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.15'/%3E%3Crect%20x='176'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.2'/%3E%3Crect%20x='192'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.25'/%3E%3Crect%20x='208'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.3'/%3E%3Crect%20x='224'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.35'/%3E%3Crect%20x='240'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.6'/%3E%3Crect%20x='256'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.73'/%3E%3Crect%20x='272'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.6'/%3E%3Crect%20x='288'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.59'/%3E%3Crect%20x='304'%20y='48'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.88'/%3E%3Crect%20x='128'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='144'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.04'/%3E%3Crect%20x='160'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.17'/%3E%3Crect%20x='176'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.27'/%3E%3Crect%20x='192'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.32'/%3E%3Crect%20x='208'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.27'/%3E%3Crect%20x='224'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.29'/%3E%3Crect%20x='240'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.43'/%3E%3Crect%20x='256'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.61'/%3E%3Crect%20x='272'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.55'/%3E%3Crect%20x='288'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.65'/%3E%3Crect%20x='304'%20y='64'%20width='16'%20height='16'%20fill='%23fff'%20opacity='0.95'/%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right top;background-size:auto 100%;color:#FFF;padding:0;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.hdr-text{min-width:0;padding:8px 10px;flex:1}
+.hdr-back{color:#fff;opacity:.8;font-size:11px;text-decoration:none;padding:8px 10px;white-space:nowrap}.hdr-back:hover{opacity:1;text-decoration:underline}
+h1{font-family:Impact,Haettenschweiler,"Arial Black",sans-serif;font-size:32px;border:0;padding:0;margin:0;letter-spacing:1px;color:#FFF;text-shadow:none;line-height:1}
+.sub{font-family:'Trebuchet MS',Arial,sans-serif;background-color:#1a3f77;color:#EEE;font-size:12px;margin:4px 0 0;padding:2px 6px;display:inline-block}
+h2{font-family:"Trebuchet MS",Tahoma,Arial,sans-serif;background-color:#6699cc;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='224'%20height='24'%20viewBox='0%200%20224%2024'%20shape-rendering='crispEdges'%3E%3Cdefs%3E%3ClinearGradient%20id='m'%20x1='0%2525'%20y1='0%2525'%20x2='100%2525'%20y2='0%2525'%3E%3Cstop%20offset='0%2525'%20stop-color='%23000'%20stop-opacity='0'/%3E%3Cstop%20offset='46%2525'%20stop-color='%23000'%20stop-opacity='0'/%3E%3Cstop%20offset='78%2525'%20stop-color='%23fff'%20stop-opacity='1'/%3E%3Cstop%20offset='100%2525'%20stop-color='%23fff'%20stop-opacity='1'/%3E%3C/linearGradient%3E%3Cmask%20id='fade'%3E%3Crect%20width='224'%20height='24'%20fill='url(%23m)'/%3E%3C/mask%3E%3C/defs%3E%3Cg%20mask='url(%23fade)'%3E%3Crect%20x='88'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='96'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.05'/%3E%3Crect%20x='104'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='112'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.04'/%3E%3Crect%20x='120'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.18'/%3E%3Crect%20x='128'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.31'/%3E%3Crect%20x='136'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.25'/%3E%3Crect%20x='144'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.27'/%3E%3Crect%20x='152'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.38'/%3E%3Crect%20x='160'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.43'/%3E%3Crect%20x='168'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.5'/%3E%3Crect%20x='176'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.48'/%3E%3Crect%20x='184'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.74'/%3E%3Crect%20x='192'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.5'/%3E%3Crect%20x='200'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.5'/%3E%3Crect%20x='208'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.82'/%3E%3Crect%20x='216'%20y='0'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.65'/%3E%3Crect%20x='88'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='96'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.06'/%3E%3Crect%20x='104'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.12'/%3E%3Crect%20x='112'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.16'/%3E%3Crect%20x='120'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.23'/%3E%3Crect%20x='128'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.26'/%3E%3Crect%20x='136'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.28'/%3E%3Crect%20x='144'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.12'/%3E%3Crect%20x='152'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.5'/%3E%3Crect%20x='160'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.36'/%3E%3Crect%20x='168'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.58'/%3E%3Crect%20x='176'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.6'/%3E%3Crect%20x='184'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.67'/%3E%3Crect%20x='192'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.74'/%3E%3Crect%20x='200'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.78'/%3E%3Crect%20x='208'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.59'/%3E%3Crect%20x='216'%20y='8'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.7'/%3E%3Crect%20x='88'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.02'/%3E%3Crect%20x='96'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.06'/%3E%3Crect%20x='104'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.1'/%3E%3Crect%20x='112'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.19'/%3E%3Crect%20x='120'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.25'/%3E%3Crect%20x='128'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.17'/%3E%3Crect%20x='136'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.34'/%3E%3Crect%20x='144'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.44'/%3E%3Crect%20x='152'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.36'/%3E%3Crect%20x='160'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.44'/%3E%3Crect%20x='168'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.45'/%3E%3Crect%20x='176'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.69'/%3E%3Crect%20x='184'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.71'/%3E%3Crect%20x='192'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.72'/%3E%3Crect%20x='200'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.79'/%3E%3Crect%20x='208'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.9'/%3E%3Crect%20x='216'%20y='16'%20width='8'%20height='8'%20fill='%23fff'%20opacity='0.33'/%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right top;background-size:auto 100%;border:0;padding:3px 6px;color:#FFF;margin:16px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:1px}
+h3{font-family:Tahoma,Verdana,sans-serif;font-size:11px;font-weight:bold;margin:12px 0 6px;text-transform:uppercase;letter-spacing:1px;color:#333}
+a{color:#1d4ed8;text-decoration:underline}a:visited{color:#551A8B}a:hover{color:#cc0000;text-decoration:none}
+hr{border:0;height:1px;background:#cbd5e1;margin:16px 0}
+footer{font-size:10px;border:0;padding:10px 0;color:#64748b}
+#q{width:100%;padding:6px 10px;font:inherit;font-size:13px;border:1px solid #94a3b8;background:#fff;color:#0b1020;margin:10px 0}
+#q:focus{outline:2px solid #4a7fc4;border-color:#4a7fc4}
+.modes{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}
+.mode-btn{background:#e2e8f0;border:1px solid #94a3b8;color:#0b1020;padding:4px 8px;font-size:11px;font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:.5px}
+.mode-btn:hover{background:#cbd5e1}
+.mode-btn.active{background:#4a7fc4;color:#fff;border-color:#4a7fc4}
+.results{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.results li{padding:8px 10px;cursor:pointer;background:#fff;border:1px solid #cbd5e1;min-width:180px;flex:1 1 calc(33.333% - 8px)}
+.results li:hover{background:#e2e8f0}
+.results li.active{background:#4a7fc4;color:#fff;border-color:#4a7fc4}
+.results li.active .score{background:rgba(255,255,255,.3);color:#fff}
+.results li.active mark{color:#fff;background:transparent}
+.results li strong{color:#0b1020;font-size:14px}
+.results li.active strong{color:#fff}
+.desc{color:#555;font-size:11px;margin-top:4px;font-style:italic}
+.results li.active .desc{color:rgba(255,255,255,.85)}
+mark{background:transparent;color:#cc0000;font-weight:bold}
+.score{font-size:10px;font-weight:bold;padding:2px 5px;background:#e2e8f0;margin-right:6px;display:inline-block;min-width:36px;text-align:center}
+.syl-wrap{display:inline-flex;gap:3px;margin-left:6px;flex-wrap:wrap}
+.syl{background:#e2e8f0;padding:2px 5px;font-size:10px;font-weight:bold}
+.badge{background:#e2e8f0;color:#64748b;padding:2px 5px;font-size:10px;font-weight:bold}
+.meta{font-size:10px;color:#64748b;font-weight:bold}
+.stats-bar{font-size:11px;color:#64748b;padding:8px 0;border-top:1px solid #cbd5e1;margin-top:10px}
+.loader{padding:10px;font-size:12px;color:#64748b}
+.error{color:#b91c1c;font-weight:bold}
+.empty{color:#64748b;font-style:italic;padding:20px;text-align:center;border:1px dashed #cbd5e1;background:#fff}
+.wotd{background:#fff;border:1px solid #cbd5e1;padding:10px;margin:10px 0;display:inline-block}
+.wotd-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:bold;color:#64748b}
+.wotd-word{font-size:18px;font-weight:bold;color:#0b1020}
+.wotd-extra{font-size:11px;color:#64748b}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200}
+.overlay.active{display:flex}
+.game-box{width:min(420px,90%);background:#fff;border:2px solid #4a7fc4;padding:16px;position:relative}
+.game-box h2{margin:0 0 12px;font-size:16px;background:none;color:#0b1020;padding:0}
+.game-close{position:absolute;top:8px;right:12px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;font-weight:bold}
+.game-close:hover{color:#b91c1c}
+.game-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px}
+.cell{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:16px;border:2px solid #cbd5e1;background:#fff;color:#0b1020}
+.cell.state-correct{background:#22c55e;border-color:#22c55e;color:#fff}
+.cell.state-present{background:#eab308;border-color:#eab308;color:#fff}
+.cell.state-miss{background:#94a3b8;color:#fff;border-color:#94a3b8}
+.game-actions{display:flex;gap:6px;margin-bottom:8px}
+.game-actions input{flex:1;padding:6px 8px;border:1px solid #94a3b8;font:inherit;font-size:13px}
+.game-actions input:focus{outline:2px solid #4a7fc4;border-color:#4a7fc4}
+.game-actions button{background:#4a7fc4;border:none;color:#fff;padding:6px 12px;font:inherit;font-weight:bold;cursor:pointer}
+.game-actions button:hover{background:#3b6ba8}
+.game-status{font-size:12px;color:#64748b;min-height:18px;font-weight:bold}
+.game-hint{font-size:10px;color:#94a3b8;margin-top:8px}
+@media(max-width:700px){.results li{flex:1 1 calc(50% - 8px)}h1{font-size:24px}.hdr{flex-wrap:wrap}.hdr-logo{height:60px;width:60px;font-size:24px}.content{margin:12px 8px}}
+@media(max-width:500px){.results li{flex:1 1 100%}.game-actions{flex-direction:column}.modes{gap:3px}.mode-btn{padding:3px 6px;font-size:10px}}
+</style>
 </head>
 <body>
-  <button class="mode-toggle" id="modeToggle" title="Смени тема">Светло</button>
-  <header>
-    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-      <h1 style="margin: 0;">Македонски Лексикон</h1>
-      <div class="tagline" style="flex: 1; min-width: 200px;">Истражувајте го богатството на македонскиот јазик</div>
-    </div>
-    <div class="search-row">
-      <input id="q" type="text" placeholder="Пребарувај збор…" autocomplete="off" autofocus />
-    </div>
-    <div class="modes" id="modes" role="tablist" aria-label="Модови">
-      <button class="mode-btn active" data-mode="search" role="tab" aria-selected="true">Пребарување</button>
-      <button class="mode-btn" data-mode="startswith" role="tab" aria-selected="false">Почнува со</button>
-      <button class="mode-btn" data-mode="endswith" role="tab" aria-selected="false">Завршува со</button>
-      <button class="mode-btn" data-mode="contains" role="tab" aria-selected="false">Содржи</button>
-      <button class="mode-btn" data-mode="rhyme" role="tab" aria-selected="false">Рима</button>
-      <button class="mode-btn" data-mode="anagram" role="tab" aria-selected="false">Анаграми</button>
-      <button class="mode-btn" data-mode="syllable" role="tab" aria-selected="false">Слогови</button>
-      <button class="mode-btn" data-mode="zborle" id="zborleBtn" type="button">Зборле</button>
-      <button class="mode-btn" data-mode="hangman" id="hangmanBtn" type="button">Бесилка</button>
-      <button class="mode-btn" data-mode="resle" id="resleBtn" type="button">Решле</button>
-    </div>
-  </header>
-  <main>
-    <section class="panel" aria-label="Резултати">
-      <div class="panel-header">Резултати <span id="count"></span></div>
-      <div id="listWrap" style="flex:1; display:flex; flex-direction:column; min-height:0; padding: 1rem;">
-        <div class="loader" id="loader">Го вчитуваме корпусот…</div>
-        <ul class="results" id="results" hidden></ul>
-      </div>
-      <div class="stats-bar" id="stats" hidden></div>
-    </section>
-  </main>
-  <footer style="text-align: center; padding: 2rem 1rem; color: var(--text-dim); font-size: .75rem; border-top: 1px solid var(--border); margin-top: 2rem; background: linear-gradient(to top, rgba(215, 32, 52, 0.03), transparent);">
-    <div id="wotdFooter" style="margin-bottom: 1.5rem; display: flex; justify-content: center;">
-      <div id="wotdCard" style="display: none; padding: .9rem 1rem; background: var(--bg-alt); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; max-width: 300px; text-align: left; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-        <div style="display: flex; align-items: center; gap: .5rem; margin-bottom: .3rem;">
-          <span style="font-size: .65rem; color: var(--text-dim);">Збор на денот</span>
-          <strong style="font-size: 1.1rem; color: var(--text);" id="wotdWord"></strong>
-        </div>
-        <div id="wotdExtra" style="font-size: .7rem; color: var(--text-dim);"></div>
-      </div>
-    </div>
-    <div style="margin-bottom: .5rem; font-size: 1.2rem; color: var(--macedonian-yellow);">◆ ✦ ◆</div>
-    <div>Македонски Лексикон – Алатка за истражување на македонскиот јазик</div>
-    <div style="margin-top: .3rem; opacity: .7;">Направено со ❤️ за македонскиот јазик</div>
-  </footer>
-
-  <script>
-  (function() {
-    const input = document.getElementById('q');
-    const resultsEl = document.getElementById('results');
-    const loader = document.getElementById('loader');
-    const countEl = document.getElementById('count');
-    const statsEl = document.getElementById('stats');
-    const modeToggle = document.getElementById('modeToggle');
-
-    let DATA = [];
-    let INDEX = [];
-    let lastSelected = null;
-    let loadedAt = performance.now();
-
-    function normalize(raw) {
-      // Accept: Array<string>, Array<object>, Object<word -> props>
-      if (!raw) return [];
-      if (Array.isArray(raw)) {
-        if (raw.length === 0) return [];
-        if (typeof raw[0] === 'string') {
-          return raw.map(w => ({ word: w, props: {} }));
-        }
-        // try to detect key holding word
-        const first = raw[0];
-        let keyCandidate = Object.keys(first).find(k => /^(word|lemma|forma|zbor)$/i.test(k));
-        if (!keyCandidate) keyCandidate = Object.keys(first)[0];
-        return raw.map(o => ({ word: String(o[keyCandidate]), props: o }));
-      }
-      if (typeof raw === 'object') {
-        return Object.keys(raw).map(k => ({ word: k, props: raw[k] }));
-      }
-      return [];
-    }
-
-    function buildIndex(items) {
-      INDEX = items.map(it => ({
-        w: it.word,
-        wl: it.word.toLowerCase(),
-        props: it.props
-      }));
-    }
-
-    function highlight(word, query) {
-      if (!query) return escapeHtml(word);
-      const re = new RegExp('(' + escapeRegex(query) + ')', 'ig');
-      return escapeHtml(word).replace(re, '<mark>$1</mark>');
-    }
-
-    function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
-    function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, r => '\\' + r); }
-    let CURRENT_MODE = 'search';
-    let SIG_INDEX = new Map();
-    let RHYME_INDEX = new Map();
-    let WORD_MAP = new Map();
-    let SUFFIX2 = new Map();
-    let SUFFIX3 = new Map();
-
-    function variantsForRhyme(word) {
-      const w = word.toLowerCase();
-      const variants = new Set([w]);
-      // Feminine form from masculine (add 'а') if ends with consonant
-      if (!w.endsWith('а')) variants.add(w + 'а');
-      // Masculine root from feminine (remove trailing 'а')
-      if (w.endsWith('а') && w.length > 3) variants.add(w.slice(0, -1));
-      // Definite articles
-      variants.add(w + 'от');
-      variants.add(w + 'та');
-      variants.add(w + 'те');
-      variants.add(w + 'ите');
-      // Common plural suffixes
-      variants.add(w + 'ови');
-      variants.add(w + 'еви');
-      return Array.from(variants);
-    }
-
-    function buildAdvancedIndexes() {
-      SIG_INDEX.clear(); RHYME_INDEX.clear(); WORD_MAP.clear(); SUFFIX2.clear(); SUFFIX3.clear();
-      for (const rec of INDEX) {
-        WORD_MAP.set(rec.w.toLowerCase(), rec);
-        const sig = signature(rec.w);
-        if (!SIG_INDEX.has(sig)) SIG_INDEX.set(sig, []);
-        SIG_INDEX.get(sig).push(rec.w);
-        // Rhyme: include variants to broaden matches
-        const varList = variantsForRhyme(rec.w);
-        for (const v of varList) {
-          const rk = rhymeKey(v);
-          if (!RHYME_INDEX.has(rk)) RHYME_INDEX.set(rk, new Set());
-          RHYME_INDEX.get(rk).add(rec.w); // store canonical word
-        }
-        const wl = rec.w.toLowerCase();
-        if (wl.length >= 2) {
-          const s2 = wl.slice(-2);
-          if (!SUFFIX2.has(s2)) SUFFIX2.set(s2, new Set());
-          SUFFIX2.get(s2).add(rec.w);
-        }
-        if (wl.length >= 3) {
-          const s3 = wl.slice(-3);
-          if (!SUFFIX3.has(s3)) SUFFIX3.set(s3, new Set());
-          SUFFIX3.get(s3).add(rec.w);
-        }
-      }
-      // Sort arrays
-      for (const [k, arrSet] of RHYME_INDEX.entries()) {
-        const arr = Array.from(arrSet);
-        arr.sort((a,b)=>a.length-b.length||a.localeCompare(b,'mk'));
-        RHYME_INDEX.set(k, arr);
-      }
-      for (const arr of SIG_INDEX.values()) arr.sort((a,b)=>a.length-b.length||a.localeCompare(b,'mk'));
-      // Normalize suffix maps to arrays
-      for (const [k, set] of SUFFIX2.entries()) SUFFIX2.set(k, Array.from(set));
-      for (const [k, set] of SUFFIX3.entries()) SUFFIX3.set(k, Array.from(set));
-    }
-
-    const vowels = 'аеоиуАЕОИУ';
-    function rhymeKey(word) {
-      const w = word.toLowerCase();
-      for (let i=w.length-1;i>=0;i--) {
-        if (vowels.includes(w[i])) return w.slice(i);
-      }
-      return w;
-    }
-    function signature(word) {
-      const cleaned = word.toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');
-      return [...cleaned].sort().join('');
-    }
-
-    function syllables(word) {
-      // Macedonian syllabification with maximal onset + special 'с' handling and syllabic 'р'.
-      const raw = (word||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');
-      const n = raw.length; if (!n) return [];
-      const baseVowels = new Set(['а','е','и','о','у']);
-      const isVowelAt = (i) => {
-        const ch = raw[i];
-        if (baseVowels.has(ch)) return true;
-        if (ch === 'р') {
-          const prev = i>0 ? raw[i-1] : '';
-          const next = i<n-1 ? raw[i+1] : '';
-          const prevCons = prev && !baseVowels.has(prev) && prev !== 'р';
-          const nextCons = next && !baseVowels.has(next) && next !== 'р';
-          if (prevCons && nextCons) return true; // syllabic 'р'
-        }
-        return false;
-      };
-      const vowelIdx = [];
-      for (let i=0;i<n;i++) if (isVowelAt(i)) vowelIdx.push(i);
-      if (vowelIdx.length===0) return [raw];
-      const parts = [];
-      let start = 0;
-      for (let k=0; k<vowelIdx.length-1; k++) {
-        const v1 = vowelIdx[k];
-        const v2 = vowelIdx[k+1];
-        const between = raw.slice(v1+1, v2); // consonant cluster between nuclei
-        if (between.length === 0) {
-          parts.push(raw.slice(start, v1+1));
-          start = v1+1;
-          continue;
-        }
-        // choose onset for next syllable (max 2), prefer not starting with 'с'
-        const b = [...between];
-        let onsetLen = 1; // at least one consonant goes to onset
-        const candidate2 = b.slice(-2).join('');
-        const candidate1 = b.slice(-1).join('');
-        const isAllowed2 = candidate2.length===2 && (candidate2[1]==='р' || candidate2[1]==='л');
-        if (isAllowed2 && candidate2[0] !== 'с') onsetLen = 2;
-        // boundary before onset
-        const cut = v2 - onsetLen;
-        parts.push(raw.slice(start, cut));
-        start = cut;
-      }
-      if (start < n) parts.push(raw.slice(start));
-      return parts;
-    }
-
-    function levenshtein(a,b) {
-      if (a===b) return 0;
-      const al=a.length, bl=b.length;
-      if(!al) return bl; if(!bl) return al;
-      let prev=new Array(bl+1), cur=new Array(bl+1);
-      for(let j=0;j<=bl;j++) prev[j]=j;
-      for(let i=1;i<=al;i++) {
-        cur[0]=i;
-        const ac=a[i-1];
-        let minRow=cur[0];
-        for(let j=1;j<=bl;j++) {
-          const cost = ac===b[j-1]?0:1;
-          cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+cost);
-          if (cur[j]<minRow) minRow=cur[j];
-        }
-        prev=cur.slice();
-      }
-      return prev[bl];
-    }
-
-    function similarityPct(query, word) {
-      const maxLen = Math.max(query.length, word.length);
-      if (!maxLen) return 0;
-      const dist = levenshtein(query, word.toLowerCase());
-      return Math.round((1 - dist / maxLen) * 100);
-    }
-
-    function suffixMatchPct(query, word) {
-      let i=query.length-1, j=word.length-1, match=0;
-      const ql=query.toLowerCase(), wl=word.toLowerCase();
-      while(i>=0 && j>=0 && ql[i]===wl[j]) { match++; i--; j--; }
-      return Math.round((match / Math.max(ql.length, wl.length))*100);
-    }
-
-    function search(q) {
-      const t0 = performance.now();
-      const query = q.trim().toLowerCase();
-      if (!query) {
-        return { q: query, time: 0, total: 0, hits: [] };
-      }
-      let subset = [];
-      if (CURRENT_MODE === 'search') {
-        subset = INDEX.map(rec => {
-          const pos = rec.wl.indexOf(query);
-          const sim = similarityPct(query, rec.wl);
-          const posBonus = pos === -1 ? 0 : Math.max(0, 30 - pos*2); // earlier position bonus
-          const lengthPenalty = Math.max(0, rec.wl.length - query.length) * 0.5;
-          const composite = sim + posBonus - lengthPenalty;
-          return { rec, simPct: sim, composite };
-        }).filter(x => x.simPct > 40 || query.length < 3 && x.rec.wl.includes(query))
-          .sort((a,b)=>b.composite - a.composite)
-          .slice(0,150);
-      } else if (CURRENT_MODE === 'startswith') {
-        subset = INDEX.filter(rec => rec.wl.startsWith(query))
-          .map(rec => ({ rec, simPct: 100, composite: 100 - rec.wl.length }))
-          .sort((a,b)=>b.composite - a.composite)
-          .slice(0,150);
-      } else if (CURRENT_MODE === 'endswith') {
-        subset = INDEX.filter(rec => rec.wl.endsWith(query))
-          .map(rec => ({ rec, simPct: 100, composite: 100 - rec.wl.length }))
-          .sort((a,b)=>b.composite - a.composite)
-          .slice(0,150);
-      } else if (CURRENT_MODE === 'contains') {
-        subset = INDEX.filter(rec => rec.wl.includes(query))
-          .map(rec => {
-            const pos = rec.wl.indexOf(query);
-            const posBonus = Math.max(0, 30 - pos*2);
-            const lengthPenalty = (rec.wl.length - query.length) * 0.5;
-            const composite = 100 + posBonus - lengthPenalty;
-            return { rec, simPct: 100, composite };
-          })
-          .sort((a,b)=>b.composite - a.composite)
-          .slice(0,150);
-      } else if (CURRENT_MODE === 'anagram') {
-        const sig = signature(query);
-        const words = SIG_INDEX.get(sig) || [];
-        subset = words.map(w => {
-          const rec = INDEX.find(r=>r.w===w);
-          return { rec, simPct: 100, composite: 100 };
-        });
-      } else if (CURRENT_MODE === 'rhyme') {
-        const base = query.split(/\s+/).pop();
-        const rk = rhymeKey(base);
-        const candSet = new Set(RHYME_INDEX.get(rk) || []);
-        if (candSet.size < 12) {
-          const b3 = base.slice(-3);
-          const b2 = base.slice(-2);
-          if (b3 && SUFFIX3.has(b3)) SUFFIX3.get(b3).forEach(w=>candSet.add(w));
-          if (candSet.size < 12 && b2 && SUFFIX2.has(b2)) SUFFIX2.get(b2).forEach(w=>candSet.add(w));
-        }
-        const candidates = Array.from(candSet);
-        subset = candidates.map(w => {
-          const rec = WORD_MAP.get(w.toLowerCase());
-          // Evaluate across variants
-          const vars = variantsForRhyme(rec.w);
-          let bestPct = 0;
-            for (const v of vars) {
-              const pct = suffixMatchPct(base, v);
-              if (pct > bestPct) bestPct = pct;
-            }
-          const rkMatch = rec.w.toLowerCase().endsWith(rk) ? 15 : 0;
-          const composite = bestPct + rkMatch;
-          return { rec, simPct: bestPct, composite };
-        }).filter(x => x.simPct > 0)
-          .sort((a,b)=> {
-            if (b.simPct !== a.simPct) return b.simPct - a.simPct; // primary: match %
-            return b.composite - a.composite; // secondary: composite (includes rhyme key bonus)
-          })
-          .slice(0,120);
-      } else if (CURRENT_MODE === 'syllable') {
-        // Base word for syllable analysis (ignore spaces, take first token)
-        const base = query.split(/\s+/)[0];
-        const baseSyl = syllables(base);
-        const count = baseSyl.length;
-        // Collect words with same syllable count for comparative list
-        const pool = INDEX.filter(r => {
-          if (r.w === base) return false;
-          return syllables(r.w).length === count;
-        }).slice(0,150);
-        subset = [
-          { rec: { w: base, wl: base.toLowerCase(), props: { } }, simPct: 100, composite: 100, syl: baseSyl }
-        ].concat(pool.map(r => ({ rec: r, simPct: 100, composite: 100, syl: syllables(r.w) })));
-      }
-      // Normalize subset to hits with rec & simPct if not already
-      const hits = subset.map(item => item.rec ? item : { rec: item, simPct: 0 });
-      const time = (performance.now() - t0).toFixed(2);
-      return { q: query, time, total: hits.length, hits };
-    }
-
-    function renderResults(q) {
-      const { hits, total, time } = search(q);
-      resultsEl.innerHTML = hits.map(h => {
-        const rec = h.rec || h;
-        const pct = (h.simPct ?? 0);
-        
-        if (CURRENT_MODE === 'syllable') {
-          const syl = h.syl || syllables(rec.w);
-          const sylMarkup = syl.map(s => `<span class="syl">${escapeHtml(s)}</span>`).join('');
-          const { type, description } = renderCardProps(rec.props);
-          return `<li data-w="${encodeURIComponent(rec.w)}">
-            <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:.3rem; flex-wrap:wrap;">
-              ${rec.w === q.trim().toLowerCase()?'<span class="score">основа</span>':'<span class="score">'+syl.length+' сл.</span>'} 
-              <strong style="font-size:1.1rem;">${highlight(rec.w, q)}</strong>
-              ${type ? `<span class="badge" style="font-size:.65rem;">${escapeHtml(type)}</span>` : ''}
-            </div>
-            <div class="syl-wrap">${sylMarkup}</div>
-            ${description ? `<div style="font-size:.75rem; color:var(--text-dim); margin-top:.4rem; line-height:1.3;">${escapeHtml(description)}</div>` : ''}
-          </li>`;
-        }
-        
-        const { type, description } = renderCardProps(rec.props);
-        return `<li data-w="${encodeURIComponent(rec.w)}">
-          <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:.3rem; flex-wrap:wrap;">
-            <span class="score">${pct}%</span>
-            <strong style="font-size:1.1rem;">${highlight(rec.w, q)}</strong>
-            ${type ? `<span class="badge" style="font-size:.65rem;">${escapeHtml(type)}</span>` : ''}
-          </div>
-          ${description ? `<div style="font-size:.75rem; color:var(--text-dim); margin-top:.4rem; line-height:1.3;">${escapeHtml(description)}</div>` : ''}
-        </li>`;
-      }).join('');
-      resultsEl.hidden = false;
-      countEl.textContent = q ? `(${total})` : '';
-      statsEl.hidden = false;
-      let msgBase = CURRENT_MODE==='search'?'Резултати':(CURRENT_MODE==='startswith'?'Почнува со':(CURRENT_MODE==='endswith'?'Завршува со':(CURRENT_MODE==='contains'?'Содржи':(CURRENT_MODE==='rhyme'?'Рими':(CURRENT_MODE==='anagram'?'Анаграми':'Слогови')))));
-      statsEl.textContent = q ? `${msgBase}: ${total} · Време: ${time}ms` : `Внесете збор…`;
-    }
-
-    function renderMeta(props) {
-      if (!props || typeof props !== 'object') return '';
-      const keys = Object.keys(props);
-      if (!keys.length) return '';
-      // Attempt to surface POS or frequency like fields
-      const posKey = keys.find(k => /^(pos|tag|вид|кат)$/i.test(k));
-      const freqKey = keys.find(k => /^(freq|frek|count)$/i.test(k));
-      const parts = [];
-      if (posKey) parts.push(String(props[posKey]).slice(0,12));
-      if (freqKey) parts.push(String(props[freqKey]));
-      if (!parts.length) return '';
-      return `<span class="meta">${parts.join(' • ')}</span>`;
-    }
-
-    function renderCardProps(props) {
-      if (!props || typeof props !== 'object' || !Object.keys(props).length) {
-        return { type: '', description: '' };
-      }
-      
-      // Find type/category field
-      const typeKey = Object.keys(props).find(k => /^(pos|tag|вид|кат|type|category)$/i.test(k));
-      const type = typeKey ? String(props[typeKey]) : '';
-      
-      // Find description field
-      const descKey = Object.keys(props).find(k => /^(desc|description|опис|дефиниција|значење)$/i.test(k));
-      const description = descKey ? String(props[descKey]) : '';
-      
-      return { type, description };
-    }
-
-    function showDetail(word) {
-      const entry = INDEX.find(r => r.w === word);
-      if (!entry) return;
-      lastSelected = word;
-      Array.from(resultsEl.children).forEach(li => li.classList.toggle('active', li.dataset.w === word));
-    }
-
-    function renderProps(props) {
-      if (!props || typeof props !== 'object' || !Object.keys(props).length) {
-        return '<div class="empty">Нема дополнителни атрибути.</div>';
-      }
-      const rows = Object.keys(props).sort().map(k => {
-        let val = props[k];
-        if (val === null) val = 'null';
-        if (Array.isArray(val)) val = val.join(', ');
-        else if (typeof val === 'object') {
-          try { val = JSON.stringify(val); } catch(_) { val = '[object]'; }
-        }
-        const display = escapeHtml(String(val));
-        return `<div class="k">${escapeHtml(k)}</div><div class="v">${display.length < 60 ? display : '<code>'+display+'</code>'}</div>`;
-      }).join('');
-      return `<div class="props">${rows}</div>`;
-    }
-
-    function attemptHashSelect() {
-      const h = decodeURIComponent(location.hash.replace('#',''));
-      if (h && INDEX.some(x => x.w === h)) {
-        // Do NOT overwrite the current query in the search bar; only show detail.
-        showDetail(h);
-      }
-    }
-
-    let debounceTimer = null;
-    input.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      const v = input.value;
-      debounceTimer = setTimeout(() => {
-        renderResults(v);
-      }, 35);
-    });
-
-    resultsEl.addEventListener('click', e => {
-      const li = e.target.closest('li');
-      if (!li) return;
-      showDetail(decodeURIComponent(li.dataset.w));
-    });
-
-    // Mode toggle
-    modeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      modeToggle.textContent = document.body.classList.contains('light') ? 'Темно' : 'Светло';
-    });
-
-    document.getElementById('modes').addEventListener('click', e => {
-      const btn = e.target.closest('.mode-btn');
-      if (!btn) return;
-      const newMode = btn.dataset.mode;
-      if (!newMode) return;
-      
-      // Handle game modes
-      if (newMode === 'zborle') {
-        openGame();
-        return;
-      }
-      if (newMode === 'hangman') {
-        openHangman();
-        return;
-      }
-      if (newMode === 'resle') {
-        openResle();
-        return;
-      }
-      
-      if (newMode === CURRENT_MODE) return;
-      CURRENT_MODE = newMode;
-      Array.from(document.querySelectorAll('.mode-btn')).forEach(b => b.classList.toggle('active', b===btn));
-      input.placeholder = newMode === 'search'
-        ? 'Пребарувај збор…'
-        : newMode === 'startswith'
-          ? 'Внеси почеток на збор…'
-          : newMode === 'endswith'
-            ? 'Внеси крај на збор…'
-            : newMode === 'contains'
-              ? 'Внеси дел од збор…'
-              : newMode === 'rhyme'
-                ? 'Внеси збор или наставка за рима…'
-                : newMode === 'anagram'
-                  ? 'Внеси збор за анаграм…'
-                  : 'Внеси збор за слогови…';
-      resultsEl.innerHTML=''; countEl.textContent=''; statsEl.textContent='Внесете збор…';
-      input.focus();
-      if (input.value.trim()) renderResults(input.value);
-    });
-
-    fetch('korpus.json')
-      .then(r => r.json())
-      .then(raw => {
-        DATA = normalize(raw);
-        buildIndex(DATA);
-        buildAdvancedIndexes();
-        loader.remove();
-        attemptHashSelect();
-        input.focus();
-        loadedAt = performance.now();
-        statsEl.hidden = false;
-        statsEl.textContent = `Вчитани ${INDEX.length} зборови · ${Math.round(loadedAt)}ms`;
-        initWordOfDay();
-        initGame();
-      })
-      .catch(err => {
-        loader.innerHTML = `<span class="error">Неуспешно вчитување: ${escapeHtml(err.message)}</span>`;
-      });
-
-    window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const first = resultsEl.querySelector('li');
-        if (first) first.click();
-      }
-    });
-
-    window.addEventListener('hashchange', attemptHashSelect);
-
-    // Word of Day
-    function initWordOfDay() {
-      const key = 'mk_wotd_' + new Date().toISOString().slice(0,10);
-      let w = localStorage.getItem(key);
-      if (!w) {
-        const pool = INDEX.filter(r => r.w.length >= 5 && r.w.length <= 10);
-        w = pool[Math.floor(Math.random()*pool.length)]?.w || INDEX[0].w;
-        localStorage.setItem(key, w);
-      }
-      const card = document.getElementById('wotdCard');
-      const wordEl = document.getElementById('wotdWord');
-      const extraEl = document.getElementById('wotdExtra');
-      if (!card || !wordEl || !extraEl) return;
-      wordEl.textContent = w;
-      const entry = INDEX.find(r => r.w === w);
-      const { type, description } = entry ? renderCardProps(entry.props) : { type: '', description: '' };
-      const syls = syllables(w);
-      let extras = [];
-      if (type) extras.push(type);
-      extras.push(`${syls.length} слогови`);
-      extraEl.textContent = extras.join(' • ');
-      card.style.display = 'block';
-    }
-
-    // Game (Wordle-like)
-    let GAME_TARGET = '';
-    let GAME_ATTEMPTS = [];
-    let GAME_ACTIVE = false;
-    const MAX_ROWS = 6;
-
-    function initGame() {
-      buildGameOverlay(); chooseGameTarget();
-      buildHangmanOverlay(); chooseHangmanTarget();
-      buildResleOverlay(); initResleCandidates();
-    }
-
-    function buildGameOverlay() {
-      if (document.getElementById('gameOverlay')) return;
-      const overlay = document.createElement('div');
-      overlay.id = 'gameOverlay';
-      overlay.innerHTML = `<div class="game-box"><button class="game-close" id="gameClose" aria-label="Затвори">×</button><h2 style="margin:0;font-size:1.1rem;font-weight:600;">Зборле – Погодете го зборот</h2><div class="game-grid" id="gameGrid"></div><div class="game-actions"><input id="gameInput" type="text" maxlength="10" placeholder="Внеси збор" /><button id="gameSubmit">Потврди</button></div><div class="game-status" id="gameStatus"></div><div style="font-size:.6rem; opacity:.55;">Зелено: точна буква и позиција · Жолто: буква постои друга позиција · Сиво: нема буква</div></div>`;
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closeGame(); });
-      document.getElementById('gameClose').addEventListener('click', closeGame);
-      document.getElementById('gameSubmit').addEventListener('click', submitGameGuess);
-      document.getElementById('gameInput').addEventListener('keydown', e => { if (e.key==='Enter') submitGameGuess(); });
-      renderGameGrid();
-    }
-
-    function validGameWords() {
-      return INDEX.filter(r => r.w.length === 5 && /^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]+$/i.test(r.w));
-    }
-
-    function chooseGameTarget() {
-      const pool = validGameWords();
-      GAME_TARGET = pool[Math.floor(Math.random()*pool.length)]?.w.toLowerCase() || 'збори';
-      GAME_ATTEMPTS = [];
-      updateGameStatus('Почни со погодување.');
-      renderGameGrid();
-    }
-
-    function openGame() {
-      GAME_ACTIVE = true;
-      document.getElementById('gameOverlay').classList.add('active');
-      document.getElementById('gameInput').focus();
-    }
-    function closeGame() {
-      GAME_ACTIVE = false;
-      document.getElementById('gameOverlay').classList.remove('active');
-    }
-
-    function renderGameGrid() {
-      const grid = document.getElementById('gameGrid');
-      if (!grid) return;
-      grid.innerHTML = '';
-      for (let row=0; row<MAX_ROWS; row++) {
-        const attempt = GAME_ATTEMPTS[row] || '';
-        for (let col=0; col<5; col++) {
-          const ch = attempt[col] || '';
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          cell.textContent = ch.toUpperCase();
-          if (attempt && ch) {
-            if (GAME_TARGET[col] === ch) cell.classList.add('state-correct');
-            else if (GAME_TARGET.includes(ch)) cell.classList.add('state-present');
-            else cell.classList.add('state-miss');
-          }
-          grid.appendChild(cell);
-        }
-      }
-    }
-
-    function submitGameGuess() {
-      const inp = document.getElementById('gameInput');
-      let g = inp.value.trim().toLowerCase();
-      if (!g) return;
-      if (!/^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]{5}$/i.test(g)) {
-        updateGameStatus('Треба 5 букви (македонски).');
-        return;
-      }
-      if (GAME_ATTEMPTS.includes(g)) {
-        updateGameStatus('Веќе пробано.');
-        return;
-      }
-      const pool = validGameWords().map(r=>r.w.toLowerCase());
-      if (!pool.includes(g)) {
-        updateGameStatus('Зборот не е во листата.');
-        return;
-      }
-      GAME_ATTEMPTS.push(g);
-      renderGameGrid();
-      inp.value='';
-      if (g === GAME_TARGET) {
-        updateGameStatus('Браво! Погоден збор.');
-      } else if (GAME_ATTEMPTS.length >= MAX_ROWS) {
-        updateGameStatus('Крај. Зборот беше: ' + GAME_TARGET.toUpperCase());
-      } else {
-        updateGameStatus('Погодоци: ' + GAME_ATTEMPTS.length + '/' + MAX_ROWS);
-      }
-    }
-
-    function updateGameStatus(msg) {
-      const el = document.getElementById('gameStatus');
-      if (el) el.textContent = msg;
-    }
-
-    // Hangman (Висица)
-    let HANG_TARGET = '';
-    let HANG_GUESSED = new Set();
-    let HANG_WRONG = new Set();
-    const HANG_MAX = 6;
-
-    function buildHangmanOverlay() {
-      if (document.getElementById('hangOverlay')) return;
-      const overlay = document.createElement('div');
-      overlay.id = 'hangOverlay';
-      overlay.innerHTML = `<div class="game-box"><button class="game-close" id="hangClose" aria-label="Затвори">×</button><h2 style="margin:0;font-size:1.1rem;font-weight:600;">Бесилка – Погодете букви</h2><div id="hangWord" style="display:flex; gap:.4rem; flex-wrap:wrap; font-weight:600; letter-spacing:2px;"></div><div class="game-actions"><input id="hangInput" type="text" maxlength="1" placeholder="Буква" /><button id="hangSubmit">Погоди</button></div><div class="game-status" id="hangStatus"></div><div style="font-size:.7rem; opacity:.6;">Грешки: <span id="hangWrongCnt">0</span>/<span>${HANG_MAX}</span> · Погрешни: <span id="hangWrongList"></span></div></div>`;
-      overlay.style.position='fixed'; overlay.style.inset='0'; overlay.style.background='rgba(15,17,21,.92)'; overlay.style.display='none'; overlay.style.alignItems='center'; overlay.style.justifyContent='center'; overlay.style.zIndex='200';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closeHangman(); });
-      document.getElementById('hangClose').addEventListener('click', closeHangman);
-      document.getElementById('hangSubmit').addEventListener('click', submitHangGuess);
-      document.getElementById('hangInput').addEventListener('keydown', e => { if (e.key==='Enter') submitHangGuess(); });
-      renderHangman();
-    }
-    function openHangman() {
-      document.getElementById('hangOverlay').style.display='flex';
-      document.getElementById('hangInput').focus();
-    }
-    function closeHangman() {
-      document.getElementById('hangOverlay').style.display='none';
-    }
-    function validHangWords() {
-      return INDEX.filter(r => r.w.length>=5 && r.w.length<=8 && /^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]+$/i.test(r.w));
-    }
-    function chooseHangmanTarget() {
-      const pool = validHangWords();
-      HANG_TARGET = (pool[Math.floor(Math.random()*pool.length)]?.w || 'зборови').toLowerCase();
-      HANG_GUESSED = new Set();
-      HANG_WRONG = new Set();
-      renderHangman();
-      updateHangStatus('Почни со буква.');
-    }
-    function renderHangman() {
-      const cont = document.getElementById('hangWord'); if (!cont) return;
-      cont.innerHTML = '';
-      for (const ch of HANG_TARGET) {
-        const box = document.createElement('div');
-        box.className='cell'; box.style.width='48px'; box.style.height='48px'; box.style.aspectRatio='unset';
-        box.textContent = (/[абвгдѓежзѕијклљмнњопрстќуфхцчџш]/.test(ch) && !HANG_GUESSED.has(ch)) ? '' : ch.toUpperCase();
-        cont.appendChild(box);
-      }
-      const wc=document.getElementById('hangWrongCnt'); if (wc) wc.textContent = String(HANG_WRONG.size);
-      const wl=document.getElementById('hangWrongList'); if (wl) wl.textContent = Array.from(HANG_WRONG).map(x=>x.toUpperCase()).join(' ');
-    }
-    function submitHangGuess() {
-      const inp = document.getElementById('hangInput');
-      const ch = (inp.value||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');
-      inp.value='';
-      if (!ch) return;
-      if (HANG_GUESSED.has(ch) || HANG_WRONG.has(ch)) { updateHangStatus('Веќе пробано.'); return; }
-      if (HANG_TARGET.includes(ch)) {
-        HANG_GUESSED.add(ch);
-        updateHangStatus('Добро!');
-      } else {
-        HANG_WRONG.add(ch);
-        updateHangStatus('Нема таква буква.');
-      }
-      renderHangman();
-      const solved = [...HANG_TARGET].every(c => !/[абвгдѓежзѕијклљмнњопрстќуфхцчџш]/.test(c) || HANG_GUESSED.has(c));
-      if (solved) updateHangStatus('Победа! Зборот е: ' + HANG_TARGET.toUpperCase());
-      else if (HANG_WRONG.size >= HANG_MAX) updateHangStatus('Крај. Зборот беше: ' + HANG_TARGET.toUpperCase());
-    }
-    function updateHangStatus(msg) {
-      const el = document.getElementById('hangStatus'); if (el) el.textContent = msg;
-    }
-
-    // Решле – обрнат Зборле (solver)
-
-    let RESLE_HISTORY = [];
-    let RESLE_CAND = [];
-
-    function buildResleOverlay() {
-      if (document.getElementById('resleOverlay')) return;
-      const overlay = document.createElement('div');
-      overlay.id = 'resleOverlay';
-      overlay.innerHTML = `
-      <div class="game-box">
-        <button class="game-close" id="resleClose" aria-label="Затвори">×</button>
-        <h2 style="margin:0;font-size:1.1rem;font-weight:600;">Решле – Асистент за Зборле</h2>
-        <div id="resleRow" style="display:grid; grid-template-columns:repeat(5,1fr); gap:.4rem;"></div>
-        <div class="game-actions" style="display:grid; grid-template-columns: 1fr auto auto; gap:.6rem;">
-          <input id="resleInput" type="text" maxlength="5" placeholder="Внеси обид (5 букви)" style="min-width:0;" />
-          <button id="resleApply" style="padding:.7rem .8rem;">Примени</button>
-          <button id="resleReset" style="padding:.7rem .8rem;">Ресетирај</button>
-        </div>
-        <div class="game-status" id="resleStatus"></div>
-        <div id="resleInfo" style="font-size:.75rem; color:var(--text-dim);">
-          Клик на буква: сиво → жолто → зелено. Користи ги состојбите за да се филтрира листата.
-        </div>
-        <div id="resleCount" style="font-size:.8rem; font-weight:600;"></div>
-        <div id="resleSuggest" style="display:flex; gap:.4rem; flex-wrap:wrap; overflow-x: auto; max-width: 100%;"></div>
-      </div>`;
-      overlay.style.position='fixed'; overlay.style.inset='0'; overlay.style.background='rgba(15,17,21,.92)'; overlay.style.display='none'; overlay.style.alignItems='center'; overlay.style.justifyContent='center'; overlay.style.zIndex='200';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closeResle(); });
-      document.getElementById('resleClose').addEventListener('click', closeResle);
-      document.getElementById('resleApply').addEventListener('click', applyResleStep);
-      document.getElementById('resleReset').addEventListener('click', initResleCandidates);
-      document.getElementById('resleInput').addEventListener('input', syncResleInputToCells);
-      // create 5 cells
-      const row = document.getElementById('resleRow');
-      for (let i=0;i<5;i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.dataset.state = '0'; // 0 gray, 1 orange, 2 green
-        cell.addEventListener('click', () => {
-          const s = (parseInt(cell.dataset.state,10)+1)%3; cell.dataset.state=String(s);
-          applyCellStateClass(cell);
-        });
-        row.appendChild(cell);
-      }
-    }
-
-    function openResle(){ const el=document.getElementById('resleOverlay'); if (el){ el.style.display='flex'; const i=document.getElementById('resleInput'); if (i) i.focus(); renderResle(); } }
-    function closeResle(){ const el=document.getElementById('resleOverlay'); if (el) el.style.display='none'; }
-    function initResleCandidates(){ RESLE_HISTORY=[]; RESLE_CAND = validGameWords().map(r=>r.w.toLowerCase()); renderResle(); updateResleStatus('Внеси обид и означи бои.'); clearResleRow(); }
-    function clearResleRow(){ const row=document.getElementById('resleRow'); if (!row) return; [...row.children].forEach(c=>{ c.textContent=''; c.dataset.state='0'; applyCellStateClass(c); }); const inp=document.getElementById('resleInput'); if (inp) inp.value=''; }
-    function applyCellStateClass(cell){ cell.classList.remove('state-correct','state-present','state-miss'); const s=parseInt(cell.dataset.state,10); if (s===2) cell.classList.add('state-correct'); else if (s===1) cell.classList.add('state-present'); else cell.classList.add('state-miss'); }
-    function syncResleInputToCells(){ const v=(document.getElementById('resleInput').value||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'').slice(0,5); const row=document.getElementById('resleRow'); if (!row) return; for (let i=0;i<5;i++){ const ch=v[i]||''; const cell=row.children[i]; cell.textContent=ch.toUpperCase(); } }
-
-    function applyResleStep(){
-      const row=document.getElementById('resleRow'); if (!row) return;
-      const letters=[]; const states=[];
-      for (let i=0;i<5;i++){ const cell=row.children[i]; letters.push((cell.textContent||'').toLowerCase()); states.push(parseInt(cell.dataset.state,10)||0); }
-      if (letters.join('').length!==5 || letters.some(ch=>!ch)) { updateResleStatus('Внеси 5 букви.'); return; }
-      const word = letters.join('');
-      RESLE_HISTORY.push({ word, states });
-      RESLE_CAND = filterResleCandidates(RESLE_HISTORY);
-      renderResle();
-      clearResleRow();
-    }
-
-    function renderResle(){
-      const cnt=document.getElementById('resleCount'); if (cnt) cnt.textContent = 'Преостанати кандидати: ' + RESLE_CAND.length;
-      const sug=document.getElementById('resleSuggest'); if (!sug) return; sug.innerHTML='';
-      const ranked = rankResleSuggestions(RESLE_CAND).slice(0,10);
-      for (const w of ranked){ const b=document.createElement('div'); b.className='badge'; b.textContent=w.toUpperCase(); sug.appendChild(b); }
-    }
-    function updateResleStatus(msg){ const el=document.getElementById('resleStatus'); if (el) el.textContent=msg; }
-
-    function filterResleCandidates(history){
-      let pool = validGameWords().map(r=>r.w.toLowerCase());
-      // Aggregate constraints across all steps
-      const minCount = new Map();
-      const maxCount = new Map();
-      const posFixed = Array(5).fill(null);
-      const posExclude = Array.from({length:5},()=>new Set());
-      const letterSeen = new Map(); // { gray: n, color: n }
-
-      for (const step of history){
-        const localMin = new Map();
-        const localGray = new Map();
-        // first pass: collect per-step
-        for (let i=0;i<5;i++){
-          const ch = step.word[i]; const s = step.states[i];
-          if (s===2){ posFixed[i]=ch; localMin.set(ch, (localMin.get(ch)||0)+1); }
-          else if (s===1){ posExclude[i].add(ch); localMin.set(ch, (localMin.get(ch)||0)+1); }
-          else { localGray.set(ch, (localGray.get(ch)||0)+1); if (!posFixed[i]) posExclude[i].add(ch); }
-        }
-        // update global min/max based on grays
-        for (const [ch, cnt] of localMin.entries()){
-          minCount.set(ch, Math.max(minCount.get(ch)||0, cnt));
-        }
-        for (const [ch, cnt] of localGray.entries()){
-          const hasMin = localMin.has(ch) || (minCount.get(ch)||0)>0;
-          if (!hasMin){ maxCount.set(ch, 0); }
-          else { maxCount.set(ch, Math.min(maxCount.has(ch)?maxCount.get(ch):Infinity, minCount.get(ch))); }
-        }
-        // track seen
-        for (const [ch, c] of localMin.entries()) letterSeen.set(ch, { gray:(letterSeen.get(ch)?.gray||0), color:(letterSeen.get(ch)?.color||0)+c });
-        for (const [ch, c] of localGray.entries()) letterSeen.set(ch, { gray:(letterSeen.get(ch)?.gray||0)+c, color:(letterSeen.get(ch)?.color||0) });
-      }
-
-      // filter pool
-      pool = pool.filter(w => {
-        for (let i=0;i<5;i++){
-          if (posFixed[i] && w[i]!==posFixed[i]) return false;
-          if (posExclude[i].has(w[i]) && (!posFixed[i] || posFixed[i]!==w[i])) return false;
-        }
-        // count letters
-        const counts = new Map(); for (const ch of w){ counts.set(ch, (counts.get(ch)||0)+1); }
-        for (const [ch, need] of minCount.entries()){ if ((counts.get(ch)||0) < need) return false; }
-        for (const [ch, cap] of maxCount.entries()){ if (cap===0 && (counts.get(ch)||0)>0) return false; if (cap!==0 && cap!==Infinity && (counts.get(ch)||0) > cap) return false; }
-        return true;
-      });
-      return pool;
-    }
-
-    function rankResleSuggestions(pool){
-      if (pool.length<=1) return pool;
-      // build frequency maps
-      const posFreq = Array.from({length:5},()=>new Map());
-      const globFreq = new Map();
-      for (const w of pool){
-        const seen = new Set();
-        for (let i=0;i<5;i++){ const ch=w[i]; posFreq[i].set(ch,(posFreq[i].get(ch)||0)+1); if (!seen.has(ch)){ globFreq.set(ch,(globFreq.get(ch)||0)+1); seen.add(ch);} }
-      }
-      return pool.slice().sort((a,b)=> scoreWord(b) - scoreWord(a));
-      function scoreWord(w){
-        let posScore=0, uniqScore=0; const used=new Set();
-        for (let i=0;i<5;i++){ const ch=w[i]; posScore += (posFreq[i].get(ch)||0); if (!used.has(ch)){ uniqScore += (globFreq.get(ch)||0); used.add(ch);} }
-        return posScore + 0.5*uniqScore - (5-used.size)*2; // penalize repeats
-      }
-    }
-
-    // Rhyme game (Рими)
-    let RG_TARGET = '';
-    let RG_SCORE = 0;
-    let RG_USED = new Set();
-    function buildRhymeGameOverlay() {
-      if (document.getElementById('rhymeOverlay')) return;
-      const overlay = document.createElement('div');
-      overlay.id = 'rhymeOverlay';
-      overlay.innerHTML = `<div class="game-box"><button class="game-close" id="rhymeClose" aria-label="Затвори">×</button><h2 style="margin:0;font-size:1.1rem;font-weight:600;">Рими – Внеси збор што римува</h2><div id="rhymeTarget" style="font-weight:700; font-size:1.2rem;"></div><div class="game-actions"><input id="rhymeInput" type="text" maxlength="20" placeholder="Римски збор" /><button id="rhymeSubmit">Потврди</button><button id="rhymeNew">Ново</button></div><div class="game-status" id="rhymeStatus"></div><div style="font-size:.7rem; opacity:.6;">Поени: <span id="rhymeScore">0</span></div></div>`;
-      overlay.style.position='fixed'; overlay.style.inset='0'; overlay.style.background='rgba(15,17,21,.92)'; overlay.style.display='none'; overlay.style.alignItems='center'; overlay.style.justifyContent='center'; overlay.style.zIndex='200';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closeRhymeGame(); });
-      document.getElementById('rhymeClose').addEventListener('click', closeRhymeGame);
-      document.getElementById('rhymeSubmit').addEventListener('click', submitRhymeGuess);
-      document.getElementById('rhymeNew').addEventListener('click', ()=>{ chooseRhymeGameTarget(true); });
-      document.getElementById('rhymeInput').addEventListener('keydown', e => { if (e.key==='Enter') submitRhymeGuess(); });
-    }
-    function openRhymeGame() { const el=document.getElementById('rhymeOverlay'); if (el) { el.style.display='flex'; const i=document.getElementById('rhymeInput'); if (i) i.focus(); } }
-    function closeRhymeGame() { const el=document.getElementById('rhymeOverlay'); if (el) el.style.display='none'; }
-    function chooseRhymeGameTarget(reset=false) {
-      const pool = INDEX.filter(r => r.w.length>=4);
-      RG_TARGET = (pool[Math.floor(Math.random()*pool.length)]?.w || 'збор').toLowerCase();
-      RG_USED = new Set([RG_TARGET]);
-      if (reset) RG_SCORE = 0;
-      const t=document.getElementById('rhymeTarget'); if (t) t.textContent = RG_TARGET.toUpperCase();
-      const s=document.getElementById('rhymeScore'); if (s) s.textContent = String(RG_SCORE);
-      updateRhymeStatus('Пробај со рима.');
-    }
-    function submitRhymeGuess() {
-      const inp = document.getElementById('rhymeInput');
-      const guess = (inp && inp.value ? inp.value : '').toLowerCase().trim();
-      if (!guess) return;
-      if (RG_USED.has(guess)) { updateRhymeStatus('Веќе го внесе тоа.'); if (inp) inp.value=''; return; }
-      const exists = WORD_MAP.has(guess);
-      let ok = false;
-      if (exists) {
-        const vars = variantsForRhyme(guess);
-        let best=0; for (const v of vars) { const pct = suffixMatchPct(RG_TARGET, v); if (pct>best) best=pct; }
-        ok = best>=50;
-      }
-      if (ok) { RG_SCORE++; RG_USED.add(guess); updateRhymeStatus('Точно!'); }
-      else updateRhymeStatus('Не римува доволно или нема таков збор.');
-      const s=document.getElementById('rhymeScore'); if (s) s.textContent = String(RG_SCORE);
-      if (inp) inp.value='';
-    }
-    function updateRhymeStatus(msg){ const el=document.getElementById('rhymeStatus'); if (el) el.textContent=msg; }
-
-    // Syllable count game (Слогомет)
-    let SY_TARGET = '';
-    function buildSyllGameOverlay(){
-      if (document.getElementById('syllOverlay')) return;
-      const overlay=document.createElement('div'); overlay.id='syllOverlay';
-      overlay.innerHTML=`<div class=\"game-box\"><button class=\"game-close\" id=\"syllClose\" aria-label=\"Затвори\">×</button><h2 style=\"margin:0;font-size:1.1rem;font-weight:600;\">Слогомет – Избери број на слогови</h2><div id=\"syllTarget\" style=\"font-weight:700; font-size:1.2rem;\"></div><div style=\"display:flex; gap:.45rem; flex-wrap:wrap;\" id=\"syllOptions\"></div><div class=\"game-status\" id=\"syllStatus\"></div><div><button id=\"syllNew\">Ново</button></div></div>`;
-      overlay.style.position='fixed'; overlay.style.inset='0'; overlay.style.background='rgba(15,17,21,.92)'; overlay.style.display='none'; overlay.style.alignItems='center'; overlay.style.justifyContent='center'; overlay.style.zIndex='200';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closeSyllGame(); });
-      document.getElementById('syllClose').addEventListener('click', closeSyllGame);
-      document.getElementById('syllNew').addEventListener('click', ()=>chooseSyllGameTarget());
-    }
-    function openSyllGame(){ const el=document.getElementById('syllOverlay'); if (el){ el.style.display='flex'; } }
-    function closeSyllGame(){ const el=document.getElementById('syllOverlay'); if (el){ el.style.display='none'; } }
-    function chooseSyllGameTarget(){
-      const pool=INDEX.filter(r=>r.w.length>=4);
-      SY_TARGET=(pool[Math.floor(Math.random()*pool.length)]?.w||'збор').toLowerCase();
-      const t=document.getElementById('syllTarget'); if (t) t.textContent=SY_TARGET.toUpperCase();
-      const count=syllables(SY_TARGET).length;
-      const optsEl=document.getElementById('syllOptions'); if (optsEl){
-        optsEl.innerHTML='';
-        const candidates=new Set([count]);
-        while(candidates.size<4){ candidates.add(Math.max(1,Math.min(6, count + (Math.floor(Math.random()*5)-2)))); }
-        const list=Array.from(candidates).sort((a,b)=>a-b);
-        for (const n of list){
-          const btn=document.createElement('button'); btn.textContent=String(n); btn.className='mode-btn';
-          btn.addEventListener('click', ()=>{ if(n===count){ updateSyllStatus('Точно!'); chooseSyllGameTarget(); } else { updateSyllStatus('Неточно. Бројот е '+count+'.'); } });
-          optsEl.appendChild(btn);
-        }
-      }
-      updateSyllStatus('Кој е бројот на слогови?');
-    }
-    function updateSyllStatus(msg){ const el=document.getElementById('syllStatus'); if (el) el.textContent=msg; }
-
-    // Prefix game (Префикс)
-    let PX_PREFIX='';
-    function buildPrefixGameOverlay(){
-      if (document.getElementById('prefixOverlay')) return;
-      const overlay=document.createElement('div'); overlay.id='prefixOverlay';
-      overlay.innerHTML=`<div class=\"game-box\"><button class=\"game-close\" id=\"prefixClose\" aria-label=\"Затвори\">×</button><h2 style=\"margin:0;font-size:1.1rem;font-weight:600;\">Префикс – Внеси збор што почнува на</h2><div id=\"prefixLabel\" style=\"font-weight:700; font-size:1.2rem;\"></div><div class=\"game-actions\"><input id=\"prefixInput\" type=\"text\" maxlength=\"20\" placeholder=\"Збор со префикс\" /><button id=\"prefixSubmit\">Потврди</button><button id=\"prefixNew\">Ново</button></div><div class=\"game-status\" id=\"prefixStatus\"></div></div>`;
-      overlay.style.position='fixed'; overlay.style.inset='0'; overlay.style.background='rgba(15,17,21,.92)'; overlay.style.display='none'; overlay.style.alignItems='center'; overlay.style.justifyContent='center'; overlay.style.zIndex='200';
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', e => { if (e.target === overlay) closePrefixGame(); });
-      document.getElementById('prefixClose').addEventListener('click', closePrefixGame);
-      document.getElementById('prefixSubmit').addEventListener('click', submitPrefixGuess);
-      document.getElementById('prefixNew').addEventListener('click', ()=>choosePrefixTarget());
-      document.getElementById('prefixInput').addEventListener('keydown', e => { if (e.key==='Enter') submitPrefixGuess(); });
-    }
-    function openPrefixGame(){ const el=document.getElementById('prefixOverlay'); if (el){ el.style.display='flex'; const i=document.getElementById('prefixInput'); if(i) i.focus(); } }
-    function closePrefixGame(){ const el=document.getElementById('prefixOverlay'); if (el){ el.style.display='none'; } }
-    function choosePrefixTarget(){
-      // choose a 2-letter prefix that has enough matches
-      const rand = INDEX[Math.floor(Math.random()*INDEX.length)]?.w.toLowerCase() || 'за';
-      PX_PREFIX = rand.slice(0,2);
-      const label=document.getElementById('prefixLabel'); if (label) label.textContent = PX_PREFIX.toUpperCase();
-      updatePrefixStatus('Внеси било кој валиден збор со префиксот.');
-    }
-    function submitPrefixGuess(){
-      const inp=document.getElementById('prefixInput'); const g=(inp && inp.value ? inp.value : '').toLowerCase().trim();
-      if (!g) return;
-      const ok = g.startsWith(PX_PREFIX) && WORD_MAP.has(g);
-      updatePrefixStatus(ok?'Точно!':'Не важи или не постои.');
-      if (ok) choosePrefixTarget();
-      if (inp) inp.value='';
-    }
-    function updatePrefixStatus(msg){ const el=document.getElementById('prefixStatus'); if (el) el.textContent=msg; }
-
-  })();
-  </script>
+<div class="page">
+<div class="hdr">
+<div class="hdr-text">
+<h1>Македонски Лексикон</h1>
+<div class="sub">Истражувајте го богатството на македонскиот јазик</div>
+</div>
+<a href="../" class="hdr-back">« Назад кон почетна</a>
+</div>
+<div class="content">
+<input id="q" type="text" placeholder="Пребарувај збор…" autocomplete="off" autofocus>
+<div class="modes" id="modes">
+<button class="mode-btn active" data-mode="search">Пребарување</button>
+<button class="mode-btn" data-mode="startswith">Почнува со</button>
+<button class="mode-btn" data-mode="endswith">Завршува со</button>
+<button class="mode-btn" data-mode="contains">Содржи</button>
+<button class="mode-btn" data-mode="rhyme">Рима</button>
+<button class="mode-btn" data-mode="anagram">Анаграми</button>
+<button class="mode-btn" data-mode="syllable">Слогови</button>
+<button class="mode-btn" data-mode="zborle">Зборле</button>
+<button class="mode-btn" data-mode="hangman">Бесилка</button>
+<button class="mode-btn" data-mode="resle">Решле</button>
+</div>
+<h2><marquee behavior="slide" direction="left" scrollamount="100">Резултати</marquee> <span id="count"></span></h2>
+<div id="loader" class="loader">Го вчитуваме корпусот…</div>
+<ul class="results" id="results" hidden></ul>
+<div class="stats-bar" id="stats" hidden></div>
+<div id="wotdCard" class="wotd" hidden>
+<div class="wotd-title"> Збор на денот</div>
+<div class="wotd-word" id="wotdWord"></div>
+<div class="wotd-extra" id="wotdExtra"></div>
+</div>
+<hr>
+<footer>Македонски Лексикон  Алатка за истражување на македонскиот јазик</footer>
+</div>
+</div>
+<div class="overlay" id="gameOverlay">
+<div class="game-box">
+<button class="game-close" id="gameClose"></button>
+<h2>Зборле  Погодете го зборот</h2>
+<div class="game-grid" id="gameGrid"></div>
+<div class="game-actions">
+<input id="gameInput" type="text" maxlength="10" placeholder="Внеси збор (5 букви)">
+<button id="gameSubmit">Потврди</button>
+</div>
+<div class="game-status" id="gameStatus"></div>
+<div class="game-hint">Зелено: точна позиција  Жолто: друга позиција  Сиво: нема</div>
+</div>
+</div>
+<div class="overlay" id="hangOverlay">
+<div class="game-box">
+<button class="game-close" id="hangClose"></button>
+<h2>Бесилка  Погодете букви</h2>
+<div id="hangWord" style="display:flex;gap:4px;flex-wrap:wrap;font-weight:bold;letter-spacing:2px;margin-bottom:10px"></div>
+<div class="game-actions">
+<input id="hangInput" type="text" maxlength="1" placeholder="Буква">
+<button id="hangSubmit">Погоди</button>
+</div>
+<div class="game-status" id="hangStatus"></div>
+<div class="game-hint">Грешки: <span id="hangWrongCnt">0</span>/6  Погрешни: <span id="hangWrongList"></span></div>
+</div>
+</div>
+<div class="overlay" id="resleOverlay">
+<div class="game-box">
+<button class="game-close" id="resleClose"></button>
+<h2>Решле  Асистент за Зборле</h2>
+<div id="resleRow" style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:10px"></div>
+<div class="game-actions">
+<input id="resleInput" type="text" maxlength="5" placeholder="Внеси обид (5 букви)">
+<button id="resleApply">Примени</button>
+<button id="resleReset">Ресетирај</button>
+</div>
+<div class="game-status" id="resleStatus"></div>
+<div class="game-hint">Клик на буква: сиво  жолто  зелено</div>
+<div id="resleCount" style="font-weight:bold;margin:8px 0"></div>
+<div id="resleSuggest" style="display:flex;gap:4px;flex-wrap:wrap"></div>
+</div>
+</div>
+<script>
+(function(){
+const input=document.getElementById('q'),resultsEl=document.getElementById('results'),loader=document.getElementById('loader'),countEl=document.getElementById('count'),statsEl=document.getElementById('stats');
+let DATA=[],INDEX=[],CURRENT_MODE='search',SIG_INDEX=new Map,RHYME_INDEX=new Map,WORD_MAP=new Map,SUFFIX2=new Map,SUFFIX3=new Map;
+const vowels='аеоиуАЕОИУ';
+function normalize(raw){if(!raw)return[];if(Array.isArray(raw)){if(!raw.length)return[];if(typeof raw[0]==='string')return raw.map(w=>({word:w,props:{}}));const first=raw[0];let keyCandidate=Object.keys(first).find(k=>/^(word|lemma|forma|zbor)$/i.test(k));if(!keyCandidate)keyCandidate=Object.keys(first)[0];return raw.map(o=>({word:String(o[keyCandidate]),props:o}))}if(typeof raw==='object')return Object.keys(raw).map(k=>({word:k,props:raw[k]}));return[]}
+function buildIndex(items){INDEX=items.map(it=>({w:it.word,wl:it.word.toLowerCase(),props:it.props}))}
+function buildAdvancedIndexes(){SIG_INDEX.clear();RHYME_INDEX.clear();WORD_MAP.clear();SUFFIX2.clear();SUFFIX3.clear();for(const rec of INDEX){WORD_MAP.set(rec.w.toLowerCase(),rec);const sig=signature(rec.w);if(!SIG_INDEX.has(sig))SIG_INDEX.set(sig,[]);SIG_INDEX.get(sig).push(rec.w);const varList=variantsForRhyme(rec.w);for(const v of varList){const rk=rhymeKey(v);if(!RHYME_INDEX.has(rk))RHYME_INDEX.set(rk,new Set);RHYME_INDEX.get(rk).add(rec.w)}const wl=rec.w.toLowerCase();if(wl.length>=2){const s2=wl.slice(-2);if(!SUFFIX2.has(s2))SUFFIX2.set(s2,new Set);SUFFIX2.get(s2).add(rec.w)}if(wl.length>=3){const s3=wl.slice(-3);if(!SUFFIX3.has(s3))SUFFIX3.set(s3,new Set);SUFFIX3.get(s3).add(rec.w)}}for(const[k,arrSet]of RHYME_INDEX.entries()){const arr=Array.from(arrSet);arr.sort((a,b)=>a.length-b.length||a.localeCompare(b,'mk'));RHYME_INDEX.set(k,arr)}for(const arr of SIG_INDEX.values())arr.sort((a,b)=>a.length-b.length||a.localeCompare(b,'mk'));for(const[k,set]of SUFFIX2.entries())SUFFIX2.set(k,Array.from(set));for(const[k,set]of SUFFIX3.entries())SUFFIX3.set(k,Array.from(set))}
+function variantsForRhyme(word){const w=word.toLowerCase(),variants=new Set([w]);if(!w.endsWith('а'))variants.add(w+'а');if(w.endsWith('а')&&w.length>3)variants.add(w.slice(0,-1));variants.add(w+'от');variants.add(w+'та');variants.add(w+'те');variants.add(w+'ите');variants.add(w+'ови');variants.add(w+'еви');return Array.from(variants)}
+function rhymeKey(word){const w=word.toLowerCase();for(let i=w.length-1;i>=0;i--)if(vowels.includes(w[i]))return w.slice(i);return w}
+function signature(word){const cleaned=word.toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');return[...cleaned].sort().join('')}
+function syllables(word){const raw=(word||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');const n=raw.length;if(!n)return[];const baseVowels=new Set(['а','е','и','о','у']);const isVowelAt=i=>{const ch=raw[i];if(baseVowels.has(ch))return true;if(ch==='р'){const prev=i>0?raw[i-1]:'';const next=i<n-1?raw[i+1]:'';const prevCons=prev&&!baseVowels.has(prev)&&prev!=='р';const nextCons=next&&!baseVowels.has(next)&&next!=='р';if(prevCons&&nextCons)return true}return false};const vowelIdx=[];for(let i=0;i<n;i++)if(isVowelAt(i))vowelIdx.push(i);if(!vowelIdx.length)return[raw];const parts=[];let start=0;for(let k=0;k<vowelIdx.length-1;k++){const v1=vowelIdx[k],v2=vowelIdx[k+1],between=raw.slice(v1+1,v2);if(!between.length){parts.push(raw.slice(start,v1+1));start=v1+1;continue}const b=[...between];let onsetLen=1;const candidate2=b.slice(-2).join('');const isAllowed2=candidate2.length===2&&(candidate2[1]==='р'||candidate2[1]==='л');if(isAllowed2&&candidate2[0]!=='с')onsetLen=2;const cut=v2-onsetLen;parts.push(raw.slice(start,cut));start=cut}if(start<n)parts.push(raw.slice(start));return parts}
+function levenshtein(a,b){if(a===b)return 0;const al=a.length,bl=b.length;if(!al)return bl;if(!bl)return al;let prev=new Array(bl+1),cur=new Array(bl+1);for(let j=0;j<=bl;j++)prev[j]=j;for(let i=1;i<=al;i++){cur[0]=i;const ac=a[i-1];for(let j=1;j<=bl;j++){const cost=ac===b[j-1]?0:1;cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+cost)}prev=cur.slice()}return prev[bl]}
+function similarityPct(query,word){const maxLen=Math.max(query.length,word.length);if(!maxLen)return 0;return Math.round((1-levenshtein(query,word.toLowerCase())/maxLen)*100)}
+function suffixMatchPct(query,word){let i=query.length-1,j=word.length-1,match=0;const ql=query.toLowerCase(),wl=word.toLowerCase();while(i>=0&&j>=0&&ql[i]===wl[j]){match++;i--;j--}return Math.round((match/Math.max(ql.length,wl.length))*100)}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]))}
+function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,r=>'\\'+r)}
+function highlight(word,query){if(!query)return escapeHtml(word);const re=new RegExp('('+escapeRegex(query)+')','ig');return escapeHtml(word).replace(re,'<mark>$1</mark>')}
+function search(q){const t0=performance.now(),query=q.trim().toLowerCase();if(!query)return{q:query,time:0,total:0,hits:[]};let subset=[];if(CURRENT_MODE==='search'){subset=INDEX.map(rec=>{const pos=rec.wl.indexOf(query),sim=similarityPct(query,rec.wl),posBonus=pos===-1?0:Math.max(0,30-pos*2),lengthPenalty=Math.max(0,rec.wl.length-query.length)*0.5,composite=sim+posBonus-lengthPenalty;return{rec,simPct:sim,composite}}).filter(x=>x.simPct>40||query.length<3&&x.rec.wl.includes(query)).sort((a,b)=>b.composite-a.composite).slice(0,150)}else if(CURRENT_MODE==='startswith'){subset=INDEX.filter(rec=>rec.wl.startsWith(query)).map(rec=>({rec,simPct:100,composite:100-rec.wl.length})).sort((a,b)=>b.composite-a.composite).slice(0,150)}else if(CURRENT_MODE==='endswith'){subset=INDEX.filter(rec=>rec.wl.endsWith(query)).map(rec=>({rec,simPct:100,composite:100-rec.wl.length})).sort((a,b)=>b.composite-a.composite).slice(0,150)}else if(CURRENT_MODE==='contains'){subset=INDEX.filter(rec=>rec.wl.includes(query)).map(rec=>{const pos=rec.wl.indexOf(query),posBonus=Math.max(0,30-pos*2),lengthPenalty=(rec.wl.length-query.length)*0.5,composite=100+posBonus-lengthPenalty;return{rec,simPct:100,composite}}).sort((a,b)=>b.composite-a.composite).slice(0,150)}else if(CURRENT_MODE==='anagram'){const sig=signature(query),words=SIG_INDEX.get(sig)||[];subset=words.map(w=>{const rec=INDEX.find(r=>r.w===w);return{rec,simPct:100,composite:100}})}else if(CURRENT_MODE==='rhyme'){const base=query.split(/\s+/).pop(),rk=rhymeKey(base),candSet=new Set(RHYME_INDEX.get(rk)||[]);if(candSet.size<12){const b3=base.slice(-3),b2=base.slice(-2);if(b3&&SUFFIX3.has(b3))SUFFIX3.get(b3).forEach(w=>candSet.add(w));if(candSet.size<12&&b2&&SUFFIX2.has(b2))SUFFIX2.get(b2).forEach(w=>candSet.add(w))}const candidates=Array.from(candSet);subset=candidates.map(w=>{const rec=WORD_MAP.get(w.toLowerCase()),vars=variantsForRhyme(rec.w);let bestPct=0;for(const v of vars){const pct=suffixMatchPct(base,v);if(pct>bestPct)bestPct=pct}const rkMatch=rec.w.toLowerCase().endsWith(rk)?15:0,composite=bestPct+rkMatch;return{rec,simPct:bestPct,composite}}).filter(x=>x.simPct>0).sort((a,b)=>b.simPct!==a.simPct?b.simPct-a.simPct:b.composite-a.composite).slice(0,120)}else if(CURRENT_MODE==='syllable'){const base=query.split(/\s+/)[0],baseSyl=syllables(base),count=baseSyl.length;const pool=INDEX.filter(r=>r.w!==base&&syllables(r.w).length===count).slice(0,150);subset=[{rec:{w:base,wl:base.toLowerCase(),props:{}},simPct:100,composite:100,syl:baseSyl}].concat(pool.map(r=>({rec:r,simPct:100,composite:100,syl:syllables(r.w)})))}const hits=subset.map(item=>item.rec?item:{rec:item,simPct:0});return{q:query,time:(performance.now()-t0).toFixed(2),total:hits.length,hits}}
+function renderCardProps(props){if(!props||typeof props!=='object'||!Object.keys(props).length)return{type:'',description:''};const typeKey=Object.keys(props).find(k=>/^(pos|tag|вид|кат|type|category)$/i.test(k));const type=typeKey?String(props[typeKey]):'';const descKey=Object.keys(props).find(k=>/^(desc|description|опис|дефиниција|значење)$/i.test(k));const description=descKey?String(props[descKey]):'';return{type,description}}
+function renderResults(q){const wotdCard=document.getElementById('wotdCard');if(!q.trim()){resultsEl.innerHTML='';resultsEl.hidden=true;countEl.textContent='';statsEl.textContent='Внесете збор…';if(wotdCard)wotdCard.hidden=false;return}if(wotdCard)wotdCard.hidden=true;const{hits,total,time}=search(q);resultsEl.innerHTML=hits.map(h=>{const rec=h.rec||h,pct=h.simPct??0;const{type,description}=renderCardProps(rec.props);if(CURRENT_MODE==='syllable'){const syl=h.syl||syllables(rec.w);const sylMarkup=syl.map(s=>'<span class="syl">'+escapeHtml(s)+'</span>').join('');return'<li data-w="'+encodeURIComponent(rec.w)+'"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span class="score">'+syl.length+' сл.</span><strong>'+highlight(rec.w,q)+'</strong>'+(type?'<span class="badge">'+escapeHtml(type)+'</span>':'')+'</div><div class="syl-wrap">'+sylMarkup+'</div>'+(description?'<div class="desc">'+escapeHtml(description)+'</div>':'')+'</li>'}return'<li data-w="'+encodeURIComponent(rec.w)+'"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span class="score">'+pct+'%</span><strong>'+highlight(rec.w,q)+'</strong>'+(type?'<span class="badge">'+escapeHtml(type)+'</span>':'')+'</div>'+(description?'<div class="desc">'+escapeHtml(description)+'</div>':'')+'</li>'}).join('');resultsEl.hidden=false;countEl.textContent='('+total+')';statsEl.hidden=false;const msgBase=CURRENT_MODE==='search'?'Резултати':CURRENT_MODE==='startswith'?'Почнува со':CURRENT_MODE==='endswith'?'Завршува со':CURRENT_MODE==='contains'?'Содржи':CURRENT_MODE==='rhyme'?'Рими':CURRENT_MODE==='anagram'?'Анаграми':'Слогови';statsEl.textContent=msgBase+': '+total+'  '+time+'ms'}
+function showDetail(word){Array.from(resultsEl.children).forEach(li=>li.classList.toggle('active',decodeURIComponent(li.dataset.w)===word))}
+let debounceTimer=null;
+input.addEventListener('input',()=>{clearTimeout(debounceTimer);debounceTimer=setTimeout(()=>renderResults(input.value),35)});
+resultsEl.addEventListener('click',e=>{const li=e.target.closest('li');if(li)showDetail(decodeURIComponent(li.dataset.w))});
+document.getElementById('modes').addEventListener('click',e=>{const btn=e.target.closest('.mode-btn');if(!btn)return;const newMode=btn.dataset.mode;if(!newMode)return;if(newMode==='zborle'){openGame();return}if(newMode==='hangman'){openHangman();return}if(newMode==='resle'){openResle();return}if(newMode===CURRENT_MODE)return;CURRENT_MODE=newMode;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b===btn));input.placeholder=newMode==='search'?'Пребарувај збор…':newMode==='startswith'?'Внеси почеток…':newMode==='endswith'?'Внеси крај…':newMode==='contains'?'Внеси дел…':newMode==='rhyme'?'Внеси збор за рима…':newMode==='anagram'?'Внеси збор за анаграм…':'Внеси збор за слогови…';resultsEl.innerHTML='';countEl.textContent='';statsEl.textContent='Внесете збор…';input.focus();if(input.value.trim())renderResults(input.value)});
+fetch('korpus.json').then(r=>r.json()).then(raw=>{DATA=normalize(raw);buildIndex(DATA);buildAdvancedIndexes();loader.remove();input.focus();statsEl.hidden=false;statsEl.textContent='Вчитани '+INDEX.length+' зборови';initWordOfDay();initGames()}).catch(err=>{loader.innerHTML='<span class="error">Грешка: '+escapeHtml(err.message)+'</span>'});
+function initWordOfDay(){const key='mk_wotd_'+new Date().toISOString().slice(0,10);let w=localStorage.getItem(key);if(!w){const pool=INDEX.filter(r=>r.w.length>=5&&r.w.length<=10);w=pool[Math.floor(Math.random()*pool.length)]?.w||INDEX[0].w;localStorage.setItem(key,w)}const card=document.getElementById('wotdCard'),wordEl=document.getElementById('wotdWord'),extraEl=document.getElementById('wotdExtra');if(!card||!wordEl||!extraEl)return;wordEl.textContent=w;const entry=INDEX.find(r=>r.w===w);const{type}=entry?renderCardProps(entry.props):{type:''};const syls=syllables(w);extraEl.textContent=[type,syls.length+' слогови'].filter(Boolean).join('  ');card.hidden=false}
+let GAME_TARGET='',GAME_ATTEMPTS=[];const MAX_ROWS=6;let HANG_TARGET='',HANG_GUESSED=new Set,HANG_WRONG=new Set;const HANG_MAX=6;let RESLE_HISTORY=[],RESLE_CAND=[];
+function initGames(){chooseGameTarget();chooseHangmanTarget();initResleCandidates();document.getElementById('gameClose').onclick=closeGame;document.getElementById('gameSubmit').onclick=submitGameGuess;document.getElementById('gameInput').onkeydown=e=>{if(e.key==='Enter')submitGameGuess()};document.getElementById('hangClose').onclick=closeHangman;document.getElementById('hangSubmit').onclick=submitHangGuess;document.getElementById('hangInput').onkeydown=e=>{if(e.key==='Enter')submitHangGuess()};document.getElementById('resleClose').onclick=closeResle;document.getElementById('resleApply').onclick=applyResleStep;document.getElementById('resleReset').onclick=initResleCandidates;document.getElementById('resleInput').oninput=syncResleInputToCells;const row=document.getElementById('resleRow');for(let i=0;i<5;i++){const cell=document.createElement('div');cell.className='cell';cell.dataset.state='0';cell.onclick=()=>{const s=(parseInt(cell.dataset.state,10)+1)%3;cell.dataset.state=String(s);applyCellStateClass(cell)};row.appendChild(cell)}document.getElementById('gameOverlay').onclick=e=>{if(e.target.id==='gameOverlay')closeGame()};document.getElementById('hangOverlay').onclick=e=>{if(e.target.id==='hangOverlay')closeHangman()};document.getElementById('resleOverlay').onclick=e=>{if(e.target.id==='resleOverlay')closeResle()}}
+function validGameWords(){return INDEX.filter(r=>r.w.length===5&&/^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]+$/i.test(r.w))}
+function chooseGameTarget(){const pool=validGameWords();GAME_TARGET=pool[Math.floor(Math.random()*pool.length)]?.w.toLowerCase()||'збори';GAME_ATTEMPTS=[];updateGameStatus('Почни со погодување.');renderGameGrid()}
+function openGame(){document.getElementById('gameOverlay').classList.add('active');document.getElementById('gameInput').focus()}
+function closeGame(){document.getElementById('gameOverlay').classList.remove('active')}
+function renderGameGrid(){const grid=document.getElementById('gameGrid');grid.innerHTML='';for(let row=0;row<MAX_ROWS;row++){const attempt=GAME_ATTEMPTS[row]||'';for(let col=0;col<5;col++){const ch=attempt[col]||'';const cell=document.createElement('div');cell.className='cell';cell.textContent=ch.toUpperCase();if(attempt&&ch){if(GAME_TARGET[col]===ch)cell.classList.add('state-correct');else if(GAME_TARGET.includes(ch))cell.classList.add('state-present');else cell.classList.add('state-miss')}grid.appendChild(cell)}}}
+function submitGameGuess(){const inp=document.getElementById('gameInput');let g=inp.value.trim().toLowerCase();if(!g)return;if(!/^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]{5}$/i.test(g)){updateGameStatus('Треба 5 букви (македонски).');return}if(GAME_ATTEMPTS.includes(g)){updateGameStatus('Веќе пробано.');return}const pool=validGameWords().map(r=>r.w.toLowerCase());if(!pool.includes(g)){updateGameStatus('Зборот не е во листата.');return}GAME_ATTEMPTS.push(g);renderGameGrid();inp.value='';if(g===GAME_TARGET)updateGameStatus('Браво! Погоден збор.');else if(GAME_ATTEMPTS.length>=MAX_ROWS)updateGameStatus('Крај. Зборот беше: '+GAME_TARGET.toUpperCase());else updateGameStatus('Погодоци: '+GAME_ATTEMPTS.length+'/'+MAX_ROWS)}
+function updateGameStatus(msg){document.getElementById('gameStatus').textContent=msg}
+function validHangWords(){return INDEX.filter(r=>r.w.length>=5&&r.w.length<=8&&/^[абвгдѓежзѕијклљмнњопрстќуфхцчџш]+$/i.test(r.w))}
+function chooseHangmanTarget(){const pool=validHangWords();HANG_TARGET=(pool[Math.floor(Math.random()*pool.length)]?.w||'зборови').toLowerCase();HANG_GUESSED=new Set;HANG_WRONG=new Set;renderHangman();updateHangStatus('Почни со буква.')}
+function openHangman(){document.getElementById('hangOverlay').classList.add('active');document.getElementById('hangInput').focus()}
+function closeHangman(){document.getElementById('hangOverlay').classList.remove('active')}
+function renderHangman(){const cont=document.getElementById('hangWord');cont.innerHTML='';for(const ch of HANG_TARGET){const box=document.createElement('div');box.className='cell';box.style.width='40px';box.style.height='40px';box.style.aspectRatio='unset';box.textContent=(/[абвгдѓежзѕијклљмнњопрстќуфхцчџш]/.test(ch)&&!HANG_GUESSED.has(ch))?'':ch.toUpperCase();cont.appendChild(box)}document.getElementById('hangWrongCnt').textContent=String(HANG_WRONG.size);document.getElementById('hangWrongList').textContent=Array.from(HANG_WRONG).map(x=>x.toUpperCase()).join(' ')}
+function submitHangGuess(){const inp=document.getElementById('hangInput');const ch=(inp.value||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'');inp.value='';if(!ch)return;if(HANG_GUESSED.has(ch)||HANG_WRONG.has(ch)){updateHangStatus('Веќе пробано.');return}if(HANG_TARGET.includes(ch)){HANG_GUESSED.add(ch);updateHangStatus('Добро!')}else{HANG_WRONG.add(ch);updateHangStatus('Нема таква буква.')}renderHangman();const solved=[...HANG_TARGET].every(c=>!/[абвгдѓежзѕијклљмнњопрстќуфхцчџш]/.test(c)||HANG_GUESSED.has(c));if(solved)updateHangStatus('Победа! Зборот е: '+HANG_TARGET.toUpperCase());else if(HANG_WRONG.size>=HANG_MAX)updateHangStatus('Крај. Зборот беше: '+HANG_TARGET.toUpperCase())}
+function updateHangStatus(msg){document.getElementById('hangStatus').textContent=msg}
+function openResle(){document.getElementById('resleOverlay').classList.add('active');document.getElementById('resleInput').focus();renderResle()}
+function closeResle(){document.getElementById('resleOverlay').classList.remove('active')}
+function initResleCandidates(){RESLE_HISTORY=[];RESLE_CAND=validGameWords().map(r=>r.w.toLowerCase());renderResle();updateResleStatus('Внеси обид и означи бои.');clearResleRow()}
+function clearResleRow(){const row=document.getElementById('resleRow');[...row.children].forEach(c=>{c.textContent='';c.dataset.state='0';applyCellStateClass(c)});document.getElementById('resleInput').value=''}
+function applyCellStateClass(cell){cell.classList.remove('state-correct','state-present','state-miss');const s=parseInt(cell.dataset.state,10);if(s===2)cell.classList.add('state-correct');else if(s===1)cell.classList.add('state-present');else cell.classList.add('state-miss')}
+function syncResleInputToCells(){const v=(document.getElementById('resleInput').value||'').toLowerCase().replace(/[^абвгдѓежзѕијклљмнњопрстќуфхцчџш]/g,'').slice(0,5);const row=document.getElementById('resleRow');for(let i=0;i<5;i++){row.children[i].textContent=(v[i]||'').toUpperCase()}}
+function applyResleStep(){const row=document.getElementById('resleRow');const letters=[],states=[];for(let i=0;i<5;i++){letters.push((row.children[i].textContent||'').toLowerCase());states.push(parseInt(row.children[i].dataset.state,10)||0)}if(letters.join('').length!==5||letters.some(ch=>!ch)){updateResleStatus('Внеси 5 букви.');return}RESLE_HISTORY.push({word:letters.join(''),states});RESLE_CAND=filterResleCandidates(RESLE_HISTORY);renderResle();clearResleRow()}
+function renderResle(){document.getElementById('resleCount').textContent='Преостанати: '+RESLE_CAND.length;const sug=document.getElementById('resleSuggest');sug.innerHTML='';rankResleSuggestions(RESLE_CAND).slice(0,10).forEach(w=>{const b=document.createElement('span');b.className='badge';b.textContent=w.toUpperCase();sug.appendChild(b)})}
+function updateResleStatus(msg){document.getElementById('resleStatus').textContent=msg}
+function filterResleCandidates(history){let pool=validGameWords().map(r=>r.w.toLowerCase());const minCount=new Map,maxCount=new Map,posFixed=Array(5).fill(null),posExclude=Array.from({length:5},()=>new Set);for(const step of history){const localMin=new Map,localGray=new Map;for(let i=0;i<5;i++){const ch=step.word[i],s=step.states[i];if(s===2){posFixed[i]=ch;localMin.set(ch,(localMin.get(ch)||0)+1)}else if(s===1){posExclude[i].add(ch);localMin.set(ch,(localMin.get(ch)||0)+1)}else{localGray.set(ch,(localGray.get(ch)||0)+1);if(!posFixed[i])posExclude[i].add(ch)}}for(const[ch,cnt]of localMin.entries())minCount.set(ch,Math.max(minCount.get(ch)||0,cnt));for(const[ch]of localGray.entries()){const hasMin=localMin.has(ch)||(minCount.get(ch)||0)>0;if(!hasMin)maxCount.set(ch,0);else maxCount.set(ch,Math.min(maxCount.has(ch)?maxCount.get(ch):Infinity,minCount.get(ch)))}}pool=pool.filter(w=>{for(let i=0;i<5;i++){if(posFixed[i]&&w[i]!==posFixed[i])return false;if(posExclude[i].has(w[i])&&(!posFixed[i]||posFixed[i]!==w[i]))return false}const counts=new Map;for(const ch of w)counts.set(ch,(counts.get(ch)||0)+1);for(const[ch,need]of minCount.entries())if((counts.get(ch)||0)<need)return false;for(const[ch,cap]of maxCount.entries()){if(cap===0&&(counts.get(ch)||0)>0)return false;if(cap!==0&&cap!==Infinity&&(counts.get(ch)||0)>cap)return false}return true});return pool}
+function rankResleSuggestions(pool){if(pool.length<=1)return pool;const posFreq=Array.from({length:5},()=>new Map),globFreq=new Map;for(const w of pool){const seen=new Set;for(let i=0;i<5;i++){const ch=w[i];posFreq[i].set(ch,(posFreq[i].get(ch)||0)+1);if(!seen.has(ch)){globFreq.set(ch,(globFreq.get(ch)||0)+1);seen.add(ch)}}}return pool.slice().sort((a,b)=>scoreWord(b)-scoreWord(a));function scoreWord(w){let posScore=0,uniqScore=0;const used=new Set;for(let i=0;i<5;i++){const ch=w[i];posScore+=posFreq[i].get(ch)||0;if(!used.has(ch)){uniqScore+=globFreq.get(ch)||0;used.add(ch)}}return posScore+0.5*uniqScore-(5-used.size)*2}}
+})();
+</script>
 </body>
 </html>
