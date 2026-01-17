@@ -1,4 +1,4 @@
-import {marked} from './lib/marked-es6.js';
+﻿import {marked} from './lib/marked-es6.js';
 import {hljs} from './lib/highlight-es6.js';
 
 marked.setOptions({
@@ -31,7 +31,21 @@ marked.setOptions({
     const text = await response.text();
 
     // Replace this page's content with the converted markdown to html
-    document.body.innerHTML = marked(text);
+    // Wrap in main-page-like containers for consistent styling/alignment
+    // Add a persistent back-to-home button on every page
+    document.body.innerHTML = `
+        <div class="page">
+            <div class="content">
+                <div class="topbar">
+                    <a class="home-btn" href="../">[ ← Back to NAJJAK.COM ]</a>
+                </div>
+                <div id="toc" class="toc" aria-label="Contents" hidden></div>
+                ${marked(text)}
+            </div>
+        </div>
+    `;
+
+    buildContentsTable();
 
     // Hero Opinions Logic
     const opinionsList = document.getElementById('opinions-list');
@@ -59,6 +73,94 @@ marked.setOptions({
         }
     }
 })();
+
+function buildContentsTable() {
+    const content = document.querySelector('.content');
+    const toc = document.getElementById('toc');
+    if (!content || !toc) return;
+
+    const headings = Array.from(content.querySelectorAll('h1, h2'));
+    if (headings.length === 0) return;
+
+    const usedIds = new Set(Array.from(document.querySelectorAll('[id]')).map(el => el.id));
+
+    function slugify(text) {
+        return text
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    }
+
+    function ensureUniqueId(el) {
+        let base = el.id && el.id.trim() ? el.id.trim() : slugify(el.textContent || 'section');
+        if (!base) base = 'section';
+
+        let candidate = base;
+        let i = 2;
+        while (usedIds.has(candidate)) {
+            candidate = `${base}-${i}`;
+            i++;
+        }
+
+        el.id = candidate;
+        usedIds.add(candidate);
+        return candidate;
+    }
+
+    const items = headings
+        .map(h => ({
+            level: h.tagName.toLowerCase(),
+            id: ensureUniqueId(h),
+            title: (h.textContent || '').trim(),
+        }))
+        .filter(x => x.title.length > 0);
+
+    if (items.length === 0) return;
+
+    const header = document.createElement('div');
+    header.className = 'toc-header';
+
+    const title = document.createElement('div');
+    title.className = 'toc-title';
+    title.textContent = 'Contents';
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'toc-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = '[ + ]';
+
+    header.append(title, toggle);
+
+    const list = document.createElement('ul');
+    for (const item of items) {
+        const li = document.createElement('li');
+        li.className = item.level === 'h2' ? 'toc-h2' : 'toc-h1';
+
+        const a = document.createElement('a');
+        a.href = `#${item.id}`;
+        a.textContent = item.title;
+
+        li.appendChild(a);
+        list.appendChild(li);
+    }
+
+    // collapsed by default
+    list.hidden = true;
+    toc.classList.add('collapsed');
+
+    toggle.addEventListener('click', () => {
+        const isCollapsed = toc.classList.toggle('collapsed');
+        list.hidden = isCollapsed;
+        toggle.setAttribute('aria-expanded', String(!isCollapsed));
+        toggle.textContent = isCollapsed ? '[ + ]' : '[ - ]';
+    });
+
+    toc.replaceChildren(header, list);
+    toc.hidden = false;
+}
 
 function extractOpinions(markdown) {
     const lines = markdown.split('\n');
