@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <title>Curriculum Vitae - Martin Petkovski</title>
     <style>
         body {
-            font-family: 'Source Serif 4', Georgia, serif;
-            line-height: 1.6;
+            font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+            line-height: 1.5;
             margin: 0 auto;
             max-width: 600px;
-            padding: 20px 15px;
+            padding: 12px 15px;
             color: #1a1a1a;
             background-color: #fff;
         }
@@ -22,10 +22,10 @@
         }
         .descSection {
             display: inline-block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            padding: 4px 8px;
-            margin: 6px 8px 6px 0;
+            padding: 3px 6px;
+            margin: 4px 6px 4px 0;
             background-color: #f8fafc;
             border: 1px solid #d1d5db;
             border-radius: 4px;
@@ -40,10 +40,10 @@
         }
         .skill-box, .interest-box, .language-box {
             display: inline-block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            padding: 4px 8px;
-            margin: 6px 8px 6px 0;
+            padding: 3px 6px;
+            margin: 4px 6px 4px 0;
             background-color: #f8fafc;
             border: 1px solid #d1d5db;
             border-radius: 4px;
@@ -57,17 +57,17 @@
             text-decoration: underline;
         }
         .job {
-            margin: 20px 0;
+            margin: 12px 0;
         }
         .jobTitle {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             text-transform: uppercase;
         }
         .company, .company a {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #002b5b;
             text-decoration: none;
@@ -76,21 +76,21 @@
             text-decoration: underline;
         }
         .timespan {
-            font-size: 12px;
+            font-size: 11px;
             font-style: italic;
             color: #4b5563;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .jobDescription {
-            font-size: 12px;
-            margin: 6px 0 0 12px;
+            font-size: 11px;
+            margin: 4px 0 0 12px;
             color: #1a1a1a;
             text-align: justify;
         }
         .jobSubtitle {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 8px;
             color: #1a1a1a;
         }
         .jobSubtitle span {
@@ -98,28 +98,28 @@
             color: #4b5563;
         }
         .subJob {
-            margin-top: 12px;
+            margin-top: 8px;
         }
         .subJobDescription {
             margin-left: 12px;
-            font-size: 12px;
+            font-size: 11px;
             color: #1a1a1a;
         }
         h1 {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
             color: #1a1a1a;
-            margin: 0 0 6px;
+            margin: 0 0 4px;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
         h2 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: #1a1a1a;
             border-bottom: 1px solid #002b5b;
-            padding-bottom: 3px;
-            margin: 25px 0 12px;
+            padding-bottom: 2px;
+            margin: 16px 0 8px;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
@@ -135,15 +135,44 @@
             text-align: justify;
         }
         section {
-            padding: 12px 0;
+            padding: 4px 0;
         }
         .education-details {
-            font-size: 12px;
-            margin: 6px 0 0 12px;
+            font-size: 11px;
+            margin: 4px 0 0 12px;
             color: #1a1a1a;
         }
         .personal-project {
-            margin: 20px 0;
+            margin: 12px 0;
+        }
+        .craft-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            vertical-align: middle;
+        }
+        .craft-badge.hand-crafted {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .craft-badge.vibe-coded {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+            border: 1px solid #c4b5fd;
+        }
+        .year-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+            vertical-align: middle;
         }
         @media print {
             body {
@@ -156,33 +185,41 @@
                 background-color: transparent;
                 border: 1px solid #999;
             }
+            .craft-badge, .year-badge {
+                background-color: transparent;
+                border: 1px solid #999;
+            }
             header {
                 border-bottom: 1px solid #999;
             }
         }
         @media (max-width: 550px) {
             body {
-                padding: 12px 8px;
+                padding: 8px 6px;
             }
             h1 {
-                font-size: 22px;
+                font-size: 18px;
             }
             h2 {
-                font-size: 14px;
-            }
-            .jobTitle {
-                font-size: 14px;
-            }
-            .descSection, .skill-box, .interest-box, .language-box {
-                font-size: 11px;
-                padding: 3px 6px;
-                margin: 4px 6px 4px 0;
-            }
-            .company, .jobSubtitle {
                 font-size: 12px;
             }
-            .timespan, .jobDescription, .subJobDescription, .education-details {
+            .jobTitle {
+                font-size: 12px;
+            }
+            .descSection, .skill-box, .interest-box, .language-box {
+                font-size: 10px;
+                padding: 2px 5px;
+                margin: 3px 4px 3px 0;
+            }
+            .company, .jobSubtitle {
                 font-size: 11px;
+            }
+            .timespan, .jobDescription, .subJobDescription, .education-details {
+                font-size: 10px;
+            }
+            .craft-badge, .year-badge {
+                font-size: 9px;
+                padding: 1px 4px;
             }
         }
     </style>
@@ -199,7 +236,7 @@
 
     <section>
         <h2>Summary</h2>
-        <p>Well-versed C++ engineer with specialized expertise in Unreal Engine, focusing on gameplay programming within 3D environments. Expertise spans across multiple game engines, including Unreal Engine, Unity and CryEngine and multiple disciplines including game mechanics and player interactions. Passionate about developing tools to aid in game development.</p>
+        <p>Well-versed low-level engineer with specialized expertise in video games, focusing on gameplay programming within 3D environments. Expertise spans across multiple game engines, including Unreal Engine, Unity and CryEngine and multiple disciplines ranging from low-level systems to high-level game mechanics. Passionate about developing tools to aid in game development.</p>
     </section>
 
     <section>
@@ -226,13 +263,19 @@
                 <span class="skill-box"><a href="https://www.audiokinetic.com/products/wwise" target="_blank">Wwise</a></span>
                 <span class="skill-box"><a href="https://juce.com" target="_blank">JUCE</a></span>
                 <span class="skill-box"><a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-1-features" target="_blank">HLSL</a></span>
-                <span class="skill-box">SQL</span>
+                <span class="skill-box"><a href="https://www.google.com/search?client=firefox-b-d&q=sql" target="_blank">SQL</a></span>
                 <span class="skill-box"><a href="https://firebase.google.com" target="_blank">Firebase</a></span>
+                <span class="skill-box"><a href="https://supabase.com/" target="_blank">Supabase</a></span>
                 <span class="skill-box"><a href="https://www.mongodb.com" target="_blank">MongoDB</a></span>
                 <span class="skill-box"><a href="https://www.perforce.com" target="_blank">Perforce</a></span>
                 <span class="skill-box"><a href="https://git-scm.com" target="_blank">GIT</a></span>
                 <span class="skill-box"><a href="https://subversion.apache.org" target="_blank">SVN</a></span>
                 <span class="skill-box"><a href="https://github.com/google/googletest" target="_blank">gtest</a></span>
+                <span class="skill-box"><a href="https://www.steamworks.net" target="_blank">Steamworks</a></span>
+                <span class="skill-box"><a href="https://sentry.io" target="_blank">Sentry</a></span>
+                <span class="skill-box"><a href="https://openclaw.ai/" target="_blank">OpenClaw</a></span>
+                <span class="skill-box"><a href="https://claude.com/product/claude-code" target="_blank">Claude Code</a></span>
+                <span class="skill-box"><a href="https://copilot.github.com" target="_blank">Copilot</a></span>
             </div>
             <div><strong>Game Engines:</strong>
                 <span class="skill-box"><a href="https://www.unrealengine.com" target="_blank">Unreal Engine</a></span>
@@ -342,39 +385,24 @@
     <section>
         <h2>Personal Projects</h2>
         <div class="personal-project">
+            <div class="timespan">proprietary game development tools <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2020 - 2023</span></div>
             <div class="jobTitle">Nonlinear System Tools</div>
-            <div class="timespan">proprietary game development tools</div>
             <div class="company"><a href="https://www.najjak.com/nst/" target="_blank">Website</a> • <a href="https://store.steampowered.com/app/1772160/NST/" target="_blank">Steam</a></div>
             <div class="jobDescription">
                 NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of <a href="https://www.steamworks.net" target="_blank">Steamworks</a>, <a href="https://sentry.io" target="_blank">Sentry</a>, <a href="https://github.com/catchorg/Catch2" target="_blank">Catch Tests</a>, Chromium Renderer and much more.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">Checkmeg</div>
-            <div class="timespan">open-source utility software</div>
-            <div class="company"><a href="https://www.najjak.com/Checkmeg/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/Checkmeg" target="_blank">Source</a></div>
+            <div class="jobTitle">toplista.mk</div>
+            <div class="timespan">Website about Macedonian music <span class="craft-badge vibe-coded">vibe-coded</span> <span class="year-badge">2025 - present</span></div>
+            <div class="company"><a href="https://toplista.mk/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/toplista.mk" target="_blank">Source</a></div>
             <div class="jobDescription">
-                Checkmeg is a tool for Windows which allows you to bookmark and categorize any text, link or image that you can select or copy.
-            </div>
-        </div><div class="personal-project">
-            <div class="jobTitle">Just Notepad</div>
-            <div class="timespan">open-source utility software</div>
-            <div class="company"><a href="https://www.najjak.com/JustNotepad/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/Checkmeg" target="_blank">Source</a></div>
-            <div class="jobDescription">
-                Just Notepad is a lightweight notepad application for Windows with plugin support. It supports syntax highlighting for multiple programming languages, tabbed editing, and various customization options. It is built using the Win32 API and is designed to be fast and efficient.
-            </div>
-        </div>
-        <div class="personal-project">
-            <div class="jobTitle">ImQuick</div>
-            <div class="timespan">open-source extension</div>
-            <div class="company"><a href="https://github.com/martinpetkovski/ImQuick" target="_blank">Source</a></div>
-            <div class="jobDescription">
-                ImQuick is a single header ImGui extension library for clearer separation of interface from logic. ImQuick renders ImGui UI elements automagically based only on the variable type.
+                Toplista.mk is a website about Macedonian music, featuring charts, news, and artist information.
             </div>
         </div>
         <div class="personal-project">
             <div class="jobTitle">MKQR</div>
-            <div class="timespan">open standard proposal (university collaboration)</div>
+            <div class="timespan">open standard proposal (university collaboration) <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2021</span></div>
             <div class="company"><a href="https://github.com/fiktedu/mkqr" target="_blank">Source</a></div>
             <div class="jobDescription">
                 MKQR is a Macedonian open and independent standard proposal for encoding and data transmission for financial transactions. The types of transactions include payment of utilities, payment of invoices, donations, etc. It contains the full implementation of the standard in C++, along with bindings for other languages. It was developed as part of a university project.
@@ -382,7 +410,7 @@
         </div>
         <div class="personal-project">
             <div class="jobTitle">qlib</div>
-            <div class="timespan">fork of <a href="https://qmk.fm/" target="_blank">qmk</a></div>
+            <div class="timespan">fork of <a href="https://qmk.fm/" target="_blank">qmk</a> <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2022</span></div>
             <div class="company"><a href="https://github.com/martinpetkovski/qlib" target="_blank">Source</a></div>
             <div class="jobDescription">
                 QLIB is a single-header library which contains common utility functions for custom keyboard firmwares. It's based on the QMK framework.
@@ -390,7 +418,7 @@
         </div>
         <div class="personal-project">
             <div class="jobTitle">Global Game Jam</div>
-            <div class="timespan">various projects from the past 10 years</div>
+            <div class="timespan">various projects from the past 10 years <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2013 - 2023</span></div>
             <div class="company"><a href="https://v3.globalgamejam.org/users/petkovski" target="_blank">Repository</a></div>
             <div class="jobDescription">
                 I've done a lot of weekend projects during the Global Game Jam in the past 10 years.

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Macedonia Economic Analytics Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+    --bg:#0f172a;
+    --panel:#111827;
+    --card:#1f2937;
+    --accent:#3b82f6;
+    --accent2:#10b981;
+    --text:#e5e7eb;
+    --muted:#9ca3af;
+    --border:#374151;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+    background:var(--bg);
+    color:var(--text);
+}
+header{
+    padding:22px 32px;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(90deg,#111827,#0f172a);
+}
+header h1{
+    margin:0;
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:.3px;
+}
+header p{
+    margin:6px 0 0 0;
+    font-size:13px;
+    color:var(--muted);
+}
+.container{
+    max-width:1500px;
+    margin:24px auto;
+    padding:0 24px;
+}
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    margin-bottom:24px;
+}
+.control-group{
+    display:flex;
+    flex-direction:column;
+    font-size:12px;
+    min-width:180px;
+}
+select, button, input{
+    margin-top:4px;
+    padding:7px 10px;
+    font-size:13px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+}
+button{
+    cursor:pointer;
+    background:var(--accent);
+    border:none;
+}
+button.secondary{
+    background:var(--accent2);
+}
+button.danger{
+    background:#ef4444;
+}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-bottom:28px;
+}
+.card{
+    background:var(--card);
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+.card h3{
+    margin:0;
+    font-size:12px;
+    color:var(--muted);
+    font-weight:500;
+}
+.card .value{
+    margin-top:6px;
+    font-size:20px;
+    font-weight:600;
+}
+.charts{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+}
+.chart-card{
+    background:var(--card);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+canvas{
+    max-height:420px;
+}
+footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    padding:24px;
+}
+@media(min-width:1100px){
+    .charts{
+        grid-template-columns:1fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Macedonia Economic Analytics Dashboard</h1>
+    <p>Regional GDP Analysis • Comparisons • Growth • Distribution</p>
+</header>
+
+<div class="container">
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Indicator</label>
+            <select id="measureSelect"></select>
+        </div>
+
+        <div class="control-group">
+            <label>Year</label>
+            <select id="yearSelect"></select>
+        </div>
+
+        <div class="control-group">
+            <label>Compare Regions</label>
+            <select id="regionCompare" multiple size="4"></select>
+        </div>
+
+        <div class="control-group">
+            <label>Quick Compare</label>
+            <button onclick="selectTop3()" class="secondary">Top 3</button>
+            <button onclick="selectBottom3()" class="secondary">Bottom 3</button>
+            <button onclick="clearCompare()" class="danger">Clear</button>
+        </div>
+
+        <div class="control-group">
+            <label>Display Mode</label>
+            <button onclick="togglePerCapita()">Toggle Per Capita</button>
+            <button onclick="toggleGrowthMode()">Toggle Growth View</button>
+        </div>
+
+        <div class="control-group">
+            <label>Export</label>
+            <button onclick="exportCSV()">Download CSV</button>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card"><h3>Total</h3><div class="value" id="totalValue">–</div></div>
+        <div class="card"><h3>Average Region</h3><div class="value" id="avgValue">–</div></div>
+        <div class="card"><h3>Highest Region</h3><div class="value" id="topRegion">–</div></div>
+        <div class="card"><h3>Lowest Region</h3><div class="value" id="bottomRegion">–</div></div>
+        <div class="card"><h3>YoY Growth</h3><div class="value" id="growthRate">–</div></div>
+        <div class="card"><h3>Regional Gap (Max/Min)</h3><div class="value" id="inequality">–</div></div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-card"><canvas id="barChart"></canvas></div>
+        <div class="chart-card"><canvas id="lineChart"></canvas></div>
+        <div class="chart-card"><canvas id="compareChart"></canvas></div>
+        <div class="chart-card"><canvas id="shareChart"></canvas></div>
+    </div>
+
+</div>
+
+<footer>Data source: makstat.stat.gov.mk</footer>
+
+<script>
+
+const apiUrl="https://makstat.stat.gov.mk/PXWeb/api/v1/en/MakStat/BDP/BDPInvesGodisni/GodisniBDPsporedESS2010/675_NacSmA_Reg_BDPreg_ml.px";
+
+let regionDim,yearDim,measureDim;
+let regionCodes,yearCodes,measureCodes;
+let values;
+let numRegions,numYears,numMeasures;
+
+let perCapita=false;
+let growthMode=false;
+
+let barChart,lineChart,compareChart,shareChart;
+
+fetch(apiUrl,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json"},
+    body:JSON.stringify({query:[],response:{format:"json-stat"}})
+})
+.then(r=>r.json())
+.then(raw=>{
+
+    const dataset=raw.dataset?raw.dataset:raw;
+    const dims=dataset.dimension;
+    const keys=dataset.id?dataset.id:Object.keys(dims).filter(k=>dims[k].category);
+
+    regionDim=dims[keys[0]];
+    yearDim=dims[keys[1]];
+    measureDim=dims[keys[2]];
+
+    regionCodes=Object.keys(regionDim.category.index)
+        .sort((a,b)=>regionDim.category.index[a]-regionDim.category.index[b]);
+
+    // Remove national total if present
+    regionCodes=regionCodes.filter(code=>{
+        const label=regionDim.category.label[code].toLowerCase();
+        return !label.includes("republic");
+    });
+
+    yearCodes=Object.keys(yearDim.category.index)
+        .sort((a,b)=>yearDim.category.index[a]-yearDim.category.index[b]);
+
+    measureCodes=Object.keys(measureDim.category.index)
+        .sort((a,b)=>measureDim.category.index[a]-measureDim.category.index[b]);
+
+    values=dataset.value;
+    numRegions=regionCodes.length;
+    numYears=yearCodes.length;
+    numMeasures=measureCodes.length;
+
+    populateControls();
+    initCharts();
+})
+.catch(()=>alert("Error loading data"));
+
+function populateControls(){
+    const mSel=document.getElementById("measureSelect");
+    const ySel=document.getElementById("yearSelect");
+    const rSel=document.getElementById("regionCompare");
+
+    measureCodes.forEach(code=>{
+        let o=document.createElement("option");
+        o.value=code;
+        o.textContent=measureDim.category.label[code];
+        mSel.appendChild(o);
+    });
+
+    yearCodes.forEach(code=>{
+        let o=document.createElement("option");
+        o.value=code;
+        o.textContent=code;
+        ySel.appendChild(o);
+    });
+
+    regionCodes.forEach(code=>{
+        let o=document.createElement("option");
+        o.value=code;
+        o.textContent=regionDim.category.label[code];
+        rSel.appendChild(o);
+    });
+
+    ySel.value=yearCodes[yearCodes.length-1];
+    document.querySelectorAll("select").forEach(el=>el.addEventListener("change",updateDashboard));
+}
+
+function getIndex(r,y,m){
+    return r*(yearCodes.length*measureCodes.length)+y*measureCodes.length+m;
+}
+
+function initCharts(){
+    barChart=new Chart(barChartCanvas(),{type:"bar",data:{labels:[],datasets:[{data:[]}]}});
+    lineChart=new Chart(lineChartCanvas(),{type:"line",data:{labels:[],datasets:[{data:[],tension:.2}]}});
+    compareChart=new Chart(compareChartCanvas(),{type:"line",data:{labels:[],datasets:[]}});
+    shareChart=new Chart(shareChartCanvas(),{type:"doughnut",data:{labels:[],datasets:[{data:[]}]}});
+    updateDashboard();
+}
+
+function barChartCanvas(){return document.getElementById("barChart");}
+function lineChartCanvas(){return document.getElementById("lineChart");}
+function compareChartCanvas(){return document.getElementById("compareChart");}
+function shareChartCanvas(){return document.getElementById("shareChart");}
+
+function updateDashboard(){
+
+    const mCode=document.getElementById("measureSelect").value;
+    const yCode=document.getElementById("yearSelect").value;
+
+    const mIdx=measureCodes.indexOf(mCode);
+    const yIdx=yearCodes.indexOf(yCode);
+
+    let regionValues=[];
+    let total=0;
+
+    regionCodes.forEach((code,r)=>{
+        let originalIndex=Object.keys(regionDim.category.index).indexOf(code);
+        let val=parseFloat(values[getIndex(originalIndex,yIdx,mIdx)])||0;
+
+        if(perCapita) val/=1000;
+
+        if(growthMode && yIdx>0){
+            let prev=parseFloat(values[getIndex(originalIndex,yIdx-1,mIdx)])||0;
+            val=((val-prev)/prev)*100;
+        }
+
+        regionValues.push(val);
+        total+=val;
+    });
+
+    const labels=regionCodes.map(c=>regionDim.category.label[c]);
+
+    barChart.data.labels=labels;
+    barChart.data.datasets[0].label="Regional View";
+    barChart.data.datasets[0].data=regionValues;
+    barChart.update();
+
+    lineChart.data.labels=yearCodes;
+    lineChart.data.datasets[0].label="National Trend";
+    lineChart.data.datasets[0].data=yearCodes.map((_,y)=>{
+        let sum=0;
+        regionCodes.forEach((code,r)=>{
+            let originalIndex=Object.keys(regionDim.category.index).indexOf(code);
+            sum+=parseFloat(values[getIndex(originalIndex,y,mIdx)])||0;
+        });
+        return perCapita?sum/1000:sum;
+    });
+    lineChart.update();
+
+    shareChart.data.labels=labels;
+    shareChart.data.datasets[0].data=regionValues;
+    shareChart.update();
+
+    updateKPIs(regionValues,total,yIdx,mIdx);
+}
+
+function updateKPIs(regionValues,total,yIdx,mIdx){
+
+    document.getElementById("totalValue").textContent=total.toLocaleString();
+    document.getElementById("avgValue").textContent=(total/regionValues.length).toFixed(2);
+
+    const maxVal=Math.max(...regionValues);
+    const minVal=Math.min(...regionValues);
+
+    document.getElementById("topRegion").textContent=
+        regionDim.category.label[regionCodes[regionValues.indexOf(maxVal)]];
+    document.getElementById("bottomRegion").textContent=
+        regionDim.category.label[regionCodes[regionValues.indexOf(minVal)]];
+    document.getElementById("inequality").textContent=(maxVal/minVal).toFixed(2);
+
+    if(yIdx>0){
+        document.getElementById("growthRate").textContent="Calculated in growth mode";
+    }else{
+        document.getElementById("growthRate").textContent="–";
+    }
+}
+
+function togglePerCapita(){perCapita=!perCapita;updateDashboard();}
+function toggleGrowthMode(){growthMode=!growthMode;updateDashboard();}
+
+function selectTop3(){
+    const rSel=document.getElementById("regionCompare");
+    [...rSel.options].forEach(o=>o.selected=false);
+    let valuesArray=[...barChart.data.datasets[0].data];
+    let sorted=[...valuesArray].sort((a,b)=>b-a).slice(0,3);
+    sorted.forEach(val=>{
+        let idx=valuesArray.indexOf(val);
+        rSel.options[idx].selected=true;
+    });
+}
+
+function selectBottom3(){
+    const rSel=document.getElementById("regionCompare");
+    [...rSel.options].forEach(o=>o.selected=false);
+    let valuesArray=[...barChart.data.datasets[0].data];
+    let sorted=[...valuesArray].sort((a,b)=>a-b).slice(0,3);
+    sorted.forEach(val=>{
+        let idx=valuesArray.indexOf(val);
+        rSel.options[idx].selected=true;
+    });
+}
+
+function clearCompare(){
+    const rSel=document.getElementById("regionCompare");
+    [...rSel.options].forEach(o=>o.selected=false);
+}
+
+function exportCSV(){
+    let csv="Year,"+regionCodes.map(c=>regionDim.category.label[c]).join(",")+"\n";
+    yearCodes.forEach((year,y)=>{
+        let row=[year];
+        regionCodes.forEach(code=>{
+            let originalIndex=Object.keys(regionDim.category.index).indexOf(code);
+            row.push(parseFloat(values[getIndex(originalIndex,y,0)])||0);
+        });
+        csv+=row.join(",")+"\n";
+    });
+    const blob=new Blob([csv],{type:"text/csv"});
+    const link=document.createElement("a");
+    link.href=URL.createObjectURL(blob);
+    link.download="macedonia_data.csv";
+    link.click();
+}
+
+</script>
+
+</body>
+</html>
