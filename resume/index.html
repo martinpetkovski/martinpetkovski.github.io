@@ -10,25 +10,36 @@
     <style>
         body {
             font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
             line-height: 1.5;
             margin: 0 auto;
             max-width: 600px;
             padding: 12px 15px;
             color: #1a1a1a;
             background-color: #fff;
+            text-align: justify;
+        }
+        .favicon {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 3px;
         }
         header {
             text-align: center;
         }
+        #info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: center;
+        }
         .descSection {
-            display: inline-block;
-            font-size: 11px;
+            flex: 1 0 auto;
+            text-align: center;
             font-weight: 600;
             padding: 3px 6px;
-            margin: 4px 6px 4px 0;
-            background-color: #f8fafc;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
+            background-color: #ecf6ff;
             box-sizing: border-box;
         }
         .descSection a {
@@ -38,13 +49,17 @@
         .descSection a:hover {
             text-decoration: underline;
         }
+        .tag-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
         .skill-box, .interest-box, .language-box {
-            display: inline-block;
-            font-size: 11px;
+            flex: 1 0 auto;
+            text-align: center;
             font-weight: 600;
             padding: 3px 6px;
-            margin: 4px 0 4px 0;
-            background-color: #dfe8f1;
+            background-color: #edf5fc;
             box-sizing: border-box;
         }
         .skill-box a, .interest-box a, .language-box a {
@@ -54,19 +69,32 @@
         .skill-box a:hover, .interest-box a:hover, .language-box a:hover {
             text-decoration: underline;
         }
-        .job {
-            margin: 12px 0;
+        .job:not(:first-of-type) {
+            margin-top: 42px;
         }
         .jobTitle {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 700;
             color: #1a1a1a;
             margin-bottom: 2px;
             margin-top: 6px;
             text-transform: uppercase;
         }
+        .project-link {
+            margin-left: 16px;
+            display: inline-block;
+            font-size: 0em;
+            vertical-align: middle;
+        }
+        .project-link img {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            top: -2px;
+            border-radius: 16px;
+        }
+
         .company, .company a {
-            font-size: 12px;
             font-weight: 600;
             color: #002b5b;
             text-decoration: none;
@@ -75,19 +103,16 @@
             text-decoration: underline;
         }
         .timespan {
-            font-size: 11px;
             font-style: italic;
             color: #4b5563;
             margin-bottom: 4px;
+            font-size: 0.9em;
         }
         .jobDescription {
-            font-size: 11px;
-            margin: 4px 0 0 12px;
+            margin: 4px 0 0 0px;
             color: #1a1a1a;
-            text-align: justify;
         }
         .jobSubtitle {
-            font-size: 11px;
             font-weight: 600;
             margin-top: 8px;
             color: #1a1a1a;
@@ -98,27 +123,27 @@
         }
         .subJob {
             margin-top: 8px;
+            margin-left: 32px;
         }
         .subJobDescription {
             margin-left: 12px;
-            font-size: 11px;
             color: #1a1a1a;
         }
         h1 {
-            font-size: 22px;
+            font-size: 32px;
             font-weight: 700;
-            color: #1a1a1a;
-            margin: 0 0 4px;
-            letter-spacing: 0.3px;
+            color: #000;
+            margin: 0 0 6px;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
         h2 {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 700;
             color: #1a1a1a;
             border-bottom: 1px solid #002b5b;
             padding-bottom: 2px;
-            margin: 16px 0 8px;
+            margin: 20px 0 8px;
             letter-spacing: 0.3px;
             text-transform: uppercase;
         }
@@ -130,18 +155,21 @@
             text-decoration: underline;
             color: #001a3d;
         }
-        p {
-            text-align: justify;
-        }
         section {
             padding: 4px 0;
         }
         .skills-section {
-            margin: 18px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 12px 0;
+        }
+        .skills-section strong {
+            width: 100%;
+            margin-bottom: 2px;
         }
         .education-details {
-            font-size: 11px;
-            margin: 4px 0 0 12px;
+            margin: 4px 0 0 0px;
             color: #1a1a1a;
         }
         .personal-project {
@@ -149,7 +177,7 @@
         }
         .craft-badge {
             display: inline-block;
-            font-size: 10px;
+            font-size: 13px;
             font-weight: 600;
             padding: 2px 6px;
             vertical-align: middle;
@@ -162,13 +190,12 @@
         }
         .year-badge {
             display: inline-block;
-            font-size: 10px;
+            font-size: 13px;
             font-weight: 600;
             padding: 2px 6px;
             background-color: #f1f5f9;
             color: #475569;
             border: 1px solid #cbd5e1;
-            border-radius: 3px;
             vertical-align: middle;
         }
         @media print {
@@ -193,30 +220,29 @@
         @media (max-width: 550px) {
             body {
                 padding: 8px 6px;
+                font-size: 14px;
+                max-width: 90%;
             }
             h1 {
-                font-size: 18px;
+                font-size: 42px;
             }
             h2 {
-                font-size: 12px;
+                font-size: 17px;
             }
             .jobTitle {
-                font-size: 12px;
+                font-size: 17px;
             }
             .descSection, .skill-box, .interest-box, .language-box {
-                font-size: 10px;
                 padding: 2px 5px;
-                margin: 3px 4px 3px 0;
-            }
-            .company, .jobSubtitle {
-                font-size: 11px;
-            }
-            .timespan, .jobDescription, .subJobDescription, .education-details {
-                font-size: 10px;
             }
             .craft-badge, .year-badge {
-                font-size: 9px;
+                font-size: 12px;
                 padding: 1px 4px;
+            }
+            .favicon {
+                width: 12px;
+                height: 12px;
+                margin-right: 2px;
             }
         }
     </style>
@@ -225,7 +251,7 @@
     <header>
         <h1>Martin Petkovski</h1>
         <div id="info">
-            <span class="descSection"><a href="https://maps.app.goo.gl/Afmw8nfwpHwDcBbu6" target="_blank">Macedonia</a></span>
+            <span class="descSection"><a href="https://maps.app.goo.gl/Afmw8nfwpHwDcBbu6" target="_blank">🇲🇰 Macedonia</a></span>
             <span class="descSection"><a href="tel:+38978306501" target="_blank">+389 78 306 501</a></span>
             <span class="descSection"><a href="mailto:martin@najjak.com" target="_blank">martin@najjak.com</a></span>
         </div>
@@ -239,7 +265,7 @@
     <section>
         <h2>Skills</h2>
         <div>
-            <div class="skills-section"><strong>Programming Languages:</strong>
+            <div class="skills-section"><strong>Programming Languages</strong>
                 <span class="skill-box">C++</span>
                 <span class="skill-box">C</span>
                 <span class="skill-box">C#</span>
@@ -248,7 +274,7 @@
                 <span class="skill-box">PHP</span>
                 <span class="skill-box">various scripting languages</span>
             </div>
-            <div class="skills-section"><strong>Technologies:</strong>
+            <div class="skills-section"><strong>Technologies</strong>
                  <span class="skill-box"><a href="https://en.wikipedia.org/wiki/DirectX" target="_blank">DirectX</a></span>
                 <span class="skill-box"><a href="https://learn.microsoft.com/en-us/windows/win32/api" target="_blank">Win32</a></span>
                 <span class="skill-box"><a href="https://docs.unrealengine.com/5.4/en-US/blueprints-visual-scripting-in-unreal-engine" target="_blank">Unreal Engine Blueprints</a></span>
@@ -268,27 +294,26 @@
                 <span class="skill-box"><a href="https://git-scm.com" target="_blank">GIT</a></span>
                 <span class="skill-box"><a href="https://subversion.apache.org" target="_blank">SVN</a></span>
                 <span class="skill-box"><a href="https://github.com/google/googletest" target="_blank">gtest</a></span>
-                <span class="skill-box"><a href="https://www.steamworks.net" target="_blank">Steamworks</a></span>
+                <span class="skill-box"><a href="https://partner.steamgames.com/doc/api" target="_blank">Steamworks</a></span>
                 <span class="skill-box"><a href="https://sentry.io" target="_blank">Sentry</a></span>
                 <span class="skill-box"><a href="https://openclaw.ai/" target="_blank">OpenClaw</a></span>
                 <span class="skill-box"><a href="https://claude.com/product/claude-code" target="_blank">Claude Code</a></span>
-                <span class="skill-box"><a href="https://copilot.github.com" target="_blank">Copilot</a></span>
+                <span class="skill-box"><a href="https://visualstudio.microsoft.com/github-copilot/" target="_blank">Copilot</a></span>
             </div>
-            <div class="skills-section"><strong>Game Engines:</strong>
+            <div class="skills-section"><strong>Game Engines</strong>
                 <span class="skill-box"><a href="https://www.unrealengine.com" target="_blank">Unreal Engine</a></span>
                 <span class="skill-box"><a href="https://www.cryengine.com" target="_blank">CryEngine</a></span>
                 <span class="skill-box"><a href="https://unity.com" target="_blank">Unity</a></span>
                 <span class="skill-box"><a href="https://www.yoyogames.com/gamemaker" target="_blank">Game Maker</a></span>
                 <span class="skill-box">various proprietary engines</span>
             </div>
-            <div class="skills-section"><strong>Software:</strong>
+            <div class="skills-section"><strong>Software</strong>
                 <span class="skill-box"><a href="https://www.unrealengine.com" target="_blank">Unreal Engine Editor</a></span>
                 <span class="skill-box"><a href="https://visualstudio.microsoft.com" target="_blank">Visual Studio</a></span>
                 <span class="skill-box"><a href="https://www.fmod.com" target="_blank">FMOD Studio</a></span>
                 <span class="skill-box"><a href="https://www.image-line.com/flstudio" target="_blank">FL Studio</a></span>
                 <span class="skill-box"><a href="https://www.perforce.com/products/helix-core" target="_blank">P4V</a></span>
                 <span class="skill-box"><a href="https://www.adobe.com/products/photoshop.html" target="_blank">Photoshop</a></span>
-                <span class="skill-box"><a href="https://sentry.io" target="_blank">Sentry</a></span>
             </div>
         </div>
     </section>
@@ -382,49 +407,43 @@
     <section>
         <h2>Personal Projects</h2>
         <div class="personal-project">
-            <div class="jobTitle">Nonlinear System Tools</div>
+            <div class="jobTitle">Nonlinear System Tools<div class="project-link"><a href="https://www.najjak.com/nst/" target="_blank">Website</a> • <a href="https://store.steampowered.com/app/1772160/NST/" target="_blank">Steam</a></div></div>
             <div class="timespan">proprietary game development tools <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2020 - 2023</span></div>
-            <div class="company"><a href="https://www.najjak.com/nst/" target="_blank">Website</a> • <a href="https://store.steampowered.com/app/1772160/NST/" target="_blank">Steam</a></div>
             <div class="jobDescription">
-                NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of <a href="https://www.steamworks.net" target="_blank">Steamworks</a>, <a href="https://sentry.io" target="_blank">Sentry</a>, <a href="https://github.com/catchorg/Catch2" target="_blank">Catch Tests</a>, Chromium Renderer and much more.
+                NST is a self-published software on Steam including a complete suite of tools for interactive and nonlinear story editing. It has a custom scripting language aimed at designers and artists. It's split into libraries that can be integrated into external engines. In it, it has integration of <a href="https://partner.steamgames.com/doc/api" target="_blank">Steamworks</a>, <a href="https://sentry.io" target="_blank">Sentry</a>, <a href="https://github.com/catchorg/Catch2" target="_blank">Catch Tests</a>, Chromium Renderer and much more.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">toplista.mk</div>
+            <div class="jobTitle">toplista.mk<div class="project-link"><a href="https://toplista.mk/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/toplista.mk" target="_blank">Source</a></div></div>
             <div class="timespan">website about macedonian music <span class="craft-badge vibe-coded">vibe-coded</span> <span class="year-badge">2025 - present</span></div>
-            <div class="company"><a href="https://toplista.mk/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/toplista.mk" target="_blank">Source</a></div>
             <div class="jobDescription">
                 Toplista.mk is a website about Macedonian music, featuring charts, news, and artist information.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">MKQR</div>
+            <div class="jobTitle">MKQR<div class="project-link"><a href="https://github.com/fiktedu/mkqr" target="_blank">Source</a></div></div>
             <div class="timespan">open standard proposal (university collaboration) <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2021</span></div>
-            <div class="company"><a href="https://github.com/fiktedu/mkqr" target="_blank">Source</a></div>
             <div class="jobDescription">
                 MKQR is a Macedonian open and independent standard proposal for encoding and data transmission for financial transactions. The types of transactions include payment of utilities, payment of invoices, donations, etc. It contains the full implementation of the standard in C++, along with bindings for other languages. It was developed as part of a university project.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">qlib</div>
+            <div class="jobTitle">qlib<div class="project-link"><a href="https://github.com/martinpetkovski/qlib" target="_blank">Source</a></div></div>
             <div class="timespan">fork of <a href="https://qmk.fm/" target="_blank">qmk</a> <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2022</span></div>
-            <div class="company"><a href="https://github.com/martinpetkovski/qlib" target="_blank">Source</a></div>
             <div class="jobDescription">
                 QLIB is a single-header library which contains common utility functions for custom keyboard firmwares. It's based on the QMK framework.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">Just Notepad</div>
+            <div class="jobTitle">Just Notepad<div class="project-link"><a href="https://www.najjak.com/JustNotepad/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/JustNotepad" target="_blank">Source</a></div></div>
             <div class="timespan">win32 utility software <span class="craft-badge vibe-coded">vibe-coded</span> <span class="year-badge">2025 - present</span></div>
-            <div class="company"><a href="https://www.najjak.com/JustNotepad/" target="_blank">Website</a> • <a href="https://github.com/martinpetkovski/JustNotepad" target="_blank">Source</a></div>
             <div class="jobDescription">
                 Just Notepad is a simple Notepad application with plugin support, designed to be lightweight and free of unnecessary features.
             </div>
         </div>
         <div class="personal-project">
-            <div class="jobTitle">Global Game Jam</div>
+            <div class="jobTitle">Global Game Jam<div class="project-link"><a href="https://v3.globalgamejam.org/users/petkovski" target="_blank">Repository</a></div></div>
             <div class="timespan">various projects from the past 10 years <span class="craft-badge hand-crafted">hand-crafted</span> <span class="year-badge">2013 - 2023</span></div>
-            <div class="company"><a href="https://v3.globalgamejam.org/users/petkovski" target="_blank">Repository</a></div>
             <div class="jobDescription">
                 I've done a lot of weekend projects during the Global Game Jam in the past 10 years.
             </div>
@@ -433,26 +452,44 @@
 
     <section>
         <h2>Interests</h2>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Video_game_design" target="_blank">Video Game Design</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Linear_algebra" target="_blank">Linear Algebra</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Computer_graphics" target="_blank">Computer Graphics</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Virtual_reality" target="_blank">Virtual Reality</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Augmented_reality" target="_blank">Augmented Reality</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/High-concept" target="_blank">High-Concept Video Games</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Interactive_narrative" target="_blank">Interactive Narratives</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Sound_design" target="_blank">Audio Design</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Digital_signal_processing" target="_blank">Audio DSP</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Aviation" target="_blank">Aviation</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Space_exploration" target="_blank">Space Exploration</a></div>
-        <div class="interest-box"><a href="https://en.wikipedia.org/wiki/History" target="_blank">History</a></div>
+        <div class="tag-wrap">
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Video_game_design" target="_blank">Video Game Design</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Linear_algebra" target="_blank">Linear Algebra</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Computer_graphics" target="_blank">Computer Graphics</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Virtual_reality" target="_blank">Virtual Reality</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Augmented_reality" target="_blank">Augmented Reality</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/High-concept" target="_blank">High-Concept Video Games</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Interactive_narrative" target="_blank">Interactive Narratives</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Sound_design" target="_blank">Audio Design</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Digital_signal_processing" target="_blank">Audio DSP</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Aviation" target="_blank">Aviation</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/Space_exploration" target="_blank">Space Exploration</a></div>
+            <div class="interest-box"><a href="https://en.wikipedia.org/wiki/History" target="_blank">History</a></div>
+        </div>
     </section>
 
     <section>
         <h2>Languages</h2>
-        <div class="language-box">English - Excellent</div>
-        <div class="language-box">Macedonian - Native</div>
-        <div class="language-box">Serbian - Excellent</div>
-        <div class="language-box">French - Essentials</div>
+        <div class="tag-wrap">
+            <div class="language-box">English - Excellent</div>
+            <div class="language-box">Macedonian - Native</div>
+            <div class="language-box">Serbian - Excellent</div>
+            <div class="language-box">French - Essentials</div>
+        </div>
     </section>
+
+    <script>
+        document.querySelectorAll('.skill-box a, .company a, .project-link a, .jobSubtitle a').forEach(a => {
+            try {
+                const url = new URL(a.href);
+                if (!url.protocol.startsWith('http')) return;
+                const img = document.createElement('img');
+                img.src = 'https://www.google.com/s2/favicons?domain=' + url.hostname + '&sz=16';
+                img.className = 'favicon';
+                img.alt = '';
+                a.prepend(img);
+            } catch(e) {}
+        });
+    </script>
 </body>
 </html>
