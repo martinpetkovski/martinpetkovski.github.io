@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Martin Petkovski">
+<title>LeetCode in C/C++</title>
+<link rel="icon" type="image/jpg" href="../favicon.jpg">
+<link rel="stylesheet" href="../core.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+<script src="main.js" defer></script>
+</head>
+<body>
+<div class="page">
+<div class="hdr">
+<img class="hdr-logo" src="../header.gif" alt="" aria-hidden="true">
+<div class="hdr-text">
+<h1>LeetCode</h1>
+
+<div class="sub"><span class="sub-inner">
+    <marquee behavior="scroll" direction="left" scrollamount="5">LeetCode problems solved in C/C++.</marquee>
+</span></div>
+</div>
+</div>
+<div class="content">
+<p><b>» <a href="../">Back to NAJJAK.COM</a></b></p>
+
+<div class="solution-controls">
+<label class="solution-search-label" for="solutionSearch">Search</label>
+<input id="solutionSearch" class="solution-search" type="search" placeholder="problem, difficulty, tag..." autocomplete="off">
+</div>
+<div id="solutionStatus" class="leet-status" role="status">Loading solutions...</div>
+<div id="solutionTableWrap" class="solution-table-wrap">
+<table class="solution-table" aria-describedby="solutionStatus">
+<thead>
+<tr>
+<th scope="col">Problem</th>
+<th scope="col">Difficulty</th>
+<th scope="col">Tags</th>
+<th scope="col">Time</th>
+<th scope="col">Space</th>
+<th scope="col">Open</th>
+</tr>
+</thead>
+<tbody id="solutionRows"></tbody>
+</table>
+</div>
+<div id="solutionDetail" class="solution-detail" aria-live="polite"></div>
+
+<footer>
+<p>Copyright © Martin Petkovski 2013-2026</p>
+</footer>
+</div>
+</div>
+</body>
+</html>

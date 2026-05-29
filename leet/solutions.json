@@ -1,0 +1,6 @@
+{
+    "solutions": [
+        "solutions/fizz-buzz.cpp",
+        "solutions/valid-palindrome.cpp"
+    ]
+}
