@@ -1,5 +1,6 @@
 (function () {
     const manifestPath = 'solutions.json';
+    const testResultsPath = 'test-results.json';
     const requiredFields = ['title', 'leetcode', 'difficulty', 'approach', 'time', 'space'];
     const fieldAliases = {
         'problem': 'title',
@@ -29,7 +30,11 @@
                 return;
             }
 
-            const solutions = await Promise.all(solutionPaths.map(loadSolution));
+            const testResults = await loadTestResults();
+            const solutions = (await Promise.all(solutionPaths.map(loadSolution))).map(solution => ({
+                ...solution,
+                testResults: testResults.solutions[solution.path] || []
+            }));
             renderSolutionTable(refs, solutions);
             refs.searchElement.addEventListener('input', () => {
                 renderSolutionTable(refs, filterSolutions(solutions, refs.searchElement.value));
@@ -54,6 +59,17 @@
         }
 
         return entries.map(resolveSolutionPath).filter(Boolean);
+    }
+
+    async function loadTestResults() {
+        const response = await fetch(testResultsPath);
+
+        if (!response.ok) {
+            return { solutions: {} };
+        }
+
+        const results = await response.json();
+        return results && results.solutions ? results : { solutions: {} };
     }
 
     function resolveSolutionPath(entry) {
@@ -107,7 +123,7 @@
         let activeField = '';
 
         metadataBlock.split('\n').forEach(line => {
-            const cleanLine = line.replace(/^\s*\*\s?/, '').trimEnd();
+            const cleanLine = cleanMetadataLine(line);
             const fieldMatch = cleanLine.match(/^([A-Za-z][A-Za-z0-9/+ .-]*):\s*(.*)$/);
 
             if (fieldMatch) {
@@ -127,8 +143,36 @@
         });
 
         return Object.fromEntries(
-            Object.entries(values).map(([fieldName, fieldValues]) => [fieldName, trimBlankLines(fieldValues).join('\n')])
+            Object.entries(values).map(([fieldName, fieldValues]) => [fieldName, formatMetadataValue(fieldValues)])
         );
+    }
+
+    function cleanMetadataLine(line) {
+        return line.replace(/^\s*\* ?/, '').trimEnd();
+    }
+
+    function formatMetadataValue(lines) {
+        const paragraphs = [];
+        let paragraphLines = [];
+
+        trimBlankLines(lines).forEach(line => {
+            if (line.trim() === '') {
+                if (paragraphLines.length > 0) {
+                    paragraphs.push(paragraphLines.join(' '));
+                    paragraphLines = [];
+                }
+
+                return;
+            }
+
+            paragraphLines.push(line.trim());
+        });
+
+        if (paragraphLines.length > 0) {
+            paragraphs.push(paragraphLines.join(' '));
+        }
+
+        return paragraphs.join('\n\n');
     }
 
     function normalizeFieldName(fieldName) {
@@ -171,6 +215,7 @@
             metadata.tags,
             metadata.time,
             metadata.space,
+            solution.testResults.map(testResult => `${testResult.case} ${testResult.result}`).join(' '),
             solution.path
         ].filter(Boolean).join(' ').toLowerCase();
     }
@@ -278,6 +323,7 @@
         appendComplexity(article, metadata.time, metadata.space);
         appendTextSection(article, 'Notes', metadata.notes);
         article.appendChild(renderCodePanel(solution));
+        article.appendChild(renderTestResults(solution.testResults));
 
         wrapper.appendChild(article);
         return wrapper;
@@ -361,6 +407,41 @@
         pre.appendChild(code);
         wrapper.appendChild(pre);
         return wrapper;
+    }
+
+    function renderTestResults(testResults) {
+        const section = createElement('section', 'test-results-panel');
+        const header = createElement('div', 'test-results-header');
+        const passedCount = testResults.filter(testResult => testResult.status === 'pass').length;
+        const failedCount = testResults.filter(testResult => testResult.status !== 'pass').length;
+
+        header.appendChild(createElement('h4', '', 'Verified Tests'));
+        header.appendChild(createElement('span', failedCount === 0 ? 'test-summary is-pass' : 'test-summary is-fail', `${passedCount}/${testResults.length} passing`));
+        section.appendChild(header);
+
+        if (testResults.length === 0) {
+            section.appendChild(createElement('p', 'test-results-empty', 'No local test results have been generated yet.'));
+            return section;
+        }
+
+        const list = createElement('ul', 'test-results-list');
+        testResults.forEach(testResult => {
+            list.appendChild(renderTestResult(testResult));
+        });
+        section.appendChild(list);
+        return section;
+    }
+
+    function renderTestResult(testResult) {
+        const item = createElement('li', testResult.status === 'pass' ? 'test-result is-pass' : 'test-result is-fail');
+        const icon = document.createElement('i');
+        const label = createElement('span', 'test-case-label', testResult.case);
+        const result = createElement('span', 'test-case-result', testResult.status === 'pass' ? testResult.result : `expected ${testResult.expected}, got ${testResult.result}`);
+
+        icon.className = testResult.status === 'pass' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark';
+        icon.setAttribute('aria-hidden', 'true');
+        item.append(icon, label, result);
+        return item;
     }
 
     function highlightCodeBlocks(parent) {

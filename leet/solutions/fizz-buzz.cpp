@@ -23,7 +23,7 @@ public:
     std::vector<std::string> fizzBuzz(int n) {
         std::vector<std::string> answer;
 
-        for (int i = 1; i <= n; ++i) {
+        for (int i = 1; i <= n; i++) {
             if (i % 15 == 0) {
                 answer.push_back("FizzBuzz");
             } else if (i % 3 == 0) {
@@ -46,7 +46,7 @@ private:
         while (number > 0) {
             digits[length] = static_cast<char>('0' + number % 10);
             number /= 10;
-            ++length;
+            length++;
         }
 
         std::string result;

@@ -21,19 +21,19 @@ public:
 
         while (left < right) {
             while (left < right && !isAlphanumeric(s[left])) {
-                ++left;
+                left++;
             }
 
             while (left < right && !isAlphanumeric(s[right])) {
-                --right;
+                right--;
             }
 
             if (normalizeCharacter(s[left]) != normalizeCharacter(s[right])) {
                 return false;
             }
 
-            ++left;
-            --right;
+            left++;
+            right--;
         }
 
         return true;

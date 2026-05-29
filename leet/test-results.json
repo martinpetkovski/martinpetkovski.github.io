@@ -1,0 +1,133 @@
+{
+    "generatedAt":  "2026-05-29T14:56:48.1942390Z",
+    "minimumRequired":  20,
+    "total":  20,
+    "passed":  20,
+    "failed":  0,
+    "solutions":  {
+                      "solutions/fizz-buzz.cpp":  [
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 1",
+                                                          "result":  "[\"1\"]",
+                                                          "expected":  "[\"1\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 2",
+                                                          "result":  "[\"1\",\"2\"]",
+                                                          "expected":  "[\"1\",\"2\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 3",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 4",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 5",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 6",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 10",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 11",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 15",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\"]"
+                                                      },
+                                                      {
+                                                          "status":  "pass",
+                                                          "case":  "n = 16",
+                                                          "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\",\"16\"]",
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\",\"16\"]"
+                                                      }
+                                                  ],
+                      "solutions/valid-palindrome.cpp":  [
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"A man, a plan, a canal: Panama\"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"race a car\"",
+                                                                 "result":  "false",
+                                                                 "expected":  "false"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \" \"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"0P\"",
+                                                                 "result":  "false",
+                                                                 "expected":  "false"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"No lemon, no melon\"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"Madam\"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"ab_a\"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"abc\"",
+                                                                 "result":  "false",
+                                                                 "expected":  "false"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"12321\"",
+                                                                 "result":  "true",
+                                                                 "expected":  "true"
+                                                             },
+                                                             {
+                                                                 "status":  "pass",
+                                                                 "case":  "s = \"1a2\"",
+                                                                 "result":  "false",
+                                                                 "expected":  "false"
+                                                             }
+                                                         ]
+                  }
+}
