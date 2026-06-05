@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="mk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Искуства со примена на LLMs во индустријата на видео игри</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Arial'],
+          },
+          colors: {
+            neonBlue: '#38bdf8',
+            neonViolet: '#a78bfa',
+            neonGreen: '#39ff88',
+            danger: '#ff3b6b',
+            ink: '#070916',
+          },
+          boxShadow: {
+            glowBlue: '0 0 36px rgba(56, 189, 248, 0.35)',
+            glowGreen: '0 0 36px rgba(57, 255, 136, 0.25)',
+            glowViolet: '0 0 42px rgba(167, 139, 250, 0.35)',
+            glowRed: '0 0 32px rgba(255, 59, 107, 0.28)',
+          },
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --grid: rgba(148, 163, 184, 0.08);
+      --blue: rgba(56, 189, 248, 0.82);
+      --violet: rgba(167, 139, 250, 0.8);
+      --green: rgba(57, 255, 136, 0.82);
+      --red: rgba(255, 59, 107, 0.9);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: #070916;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.22), transparent 32%),
+        radial-gradient(circle at 82% 18%, rgba(167, 139, 250, 0.18), transparent 34%),
+        radial-gradient(circle at 70% 82%, rgba(57, 255, 136, 0.13), transparent 34%),
+        #070916;
+      background-size: 54px 54px, 54px 54px, auto, auto, auto, auto;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0 35%, rgba(56, 189, 248, 0.09) 36%, transparent 38% 64%, rgba(167, 139, 250, 0.08) 65%, transparent 67%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 7px);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .deck {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-items: center;
+      min-height: 100vh;
+      padding: clamp(1.25rem, 4vw, 5rem);
+      opacity: 0;
+      transform: translate3d(5vw, 0, 0) scale(0.985);
+      transition: opacity 650ms ease, transform 650ms ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .slide.prev {
+      transform: translate3d(-5vw, 0, 0) scale(0.985);
+    }
+
+    .shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 3;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: #bae6fd;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      font-weight: 800;
+      font-size: clamp(0.75rem, 1vw, 0.95rem);
+    }
+
+    .title {
+      margin-top: 0.85rem;
+      font-weight: 950;
+      letter-spacing: 0;
+      line-height: 0.98;
+      font-size: clamp(2.65rem, 7.4vw, 6.95rem);
+    }
+
+    .slide-title {
+      font-size: clamp(2.35rem, 5.8vw, 5.4rem);
+      line-height: 1;
+      letter-spacing: 0;
+      font-weight: 950;
+    }
+
+    .sub {
+      color: #cbd5e1;
+      font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+      line-height: 1.45;
+    }
+
+    .glow-text {
+      text-shadow:
+        0 0 24px rgba(56, 189, 248, 0.35),
+        0 0 42px rgba(167, 139, 250, 0.25);
+    }
+
+    .neon-border {
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.84), rgba(9, 12, 28, 0.66)),
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 42%);
+      backdrop-filter: blur(16px);
+    }
+
+    .mini-card {
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 8px;
+      backdrop-filter: blur(14px);
+    }
+
+    .orbital {
+      position: absolute;
+      width: min(58vw, 620px);
+      aspect-ratio: 1;
+      right: -9vw;
+      top: 50%;
+      translate: 0 -50%;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      box-shadow: inset 0 0 42px rgba(56, 189, 248, 0.18), 0 0 58px rgba(167, 139, 250, 0.15);
+      opacity: 0.58;
+    }
+
+    .orbital::before,
+    .orbital::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border-radius: inherit;
+      border: 1px dashed rgba(57, 255, 136, 0.32);
+      transform: rotate(18deg);
+    }
+
+    .orbital::after {
+      inset: 28%;
+      border-style: solid;
+      border-color: rgba(167, 139, 250, 0.34);
+      transform: rotate(-28deg);
+    }
+
+    .pixel {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: var(--green);
+      box-shadow: 0 0 22px var(--green);
+      animation: blink 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 0.25; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
+
+    .stat-number {
+      font-size: clamp(2.55rem, 6vw, 5.7rem);
+      font-weight: 950;
+      line-height: 0.9;
+    }
+
+    .progress-wrap {
+      position: fixed;
+      left: clamp(1rem, 3vw, 2rem);
+      right: clamp(1rem, 3vw, 2rem);
+      bottom: clamp(0.8rem, 2vw, 1.35rem);
+      height: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 999px;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #a78bfa, #39ff88);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+      transition: width 450ms ease;
+    }
+
+    .counter {
+      position: fixed;
+      right: clamp(1rem, 3vw, 2rem);
+      top: clamp(0.8rem, 2vw, 1.35rem);
+      z-index: 21;
+      color: #e2e8f0;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-hint {
+      position: fixed;
+      left: clamp(1rem, 3vw, 2rem);
+      top: clamp(0.8rem, 2vw, 1.35rem);
+      z-index: 21;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      background: rgba(15, 23, 42, 0.62);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 8px;
+      padding: 0.45rem 0.7rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .code-lines {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      color: #bae6fd;
+    }
+
+    .danger-item {
+      border-color: rgba(255, 59, 107, 0.45);
+      box-shadow: 0 0 28px rgba(255, 59, 107, 0.12);
+    }
+
+    .good-item {
+      border-color: rgba(57, 255, 136, 0.42);
+      box-shadow: 0 0 28px rgba(57, 255, 136, 0.12);
+    }
+
+    .pogon-logo-wrap {
+      display: grid;
+      place-items: center;
+      height: clamp(3.25rem, 6vw, 5.25rem);
+      aspect-ratio: 1;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 8px;
+      background: #000;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.18);
+      overflow: hidden;
+    }
+
+    .pogon-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .list-stack {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: clamp(0.85rem, 1.6vw, 1.25rem);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 8px;
+      padding: clamp(0.9rem, 1.8vw, 1.25rem);
+      backdrop-filter: blur(14px);
+    }
+
+    .list-icon {
+      display: grid;
+      place-items: center;
+      width: clamp(2.7rem, 5vw, 3.8rem);
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.36);
+      background: rgba(2, 6, 23, 0.68);
+      color: #38bdf8;
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.16);
+      font-size: clamp(1.15rem, 2vw, 1.65rem);
+    }
+
+    .list-row.good .list-icon {
+      border-color: rgba(57, 255, 136, 0.42);
+      color: #39ff88;
+      box-shadow: 0 0 22px rgba(57, 255, 136, 0.14);
+    }
+
+    .list-row.bad .list-icon {
+      border-color: rgba(255, 59, 107, 0.46);
+      color: #ff3b6b;
+      box-shadow: 0 0 22px rgba(255, 59, 107, 0.14);
+    }
+
+    .list-title {
+      font-size: clamp(1.25rem, 2.3vw, 2rem);
+      font-weight: 950;
+      line-height: 1.1;
+    }
+
+    .list-copy {
+      margin-top: 0.25rem;
+      color: #cbd5e1;
+      font-size: clamp(0.98rem, 1.45vw, 1.2rem);
+      line-height: 1.35;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: minmax(5.8rem, 8.5rem) 1fr;
+      align-items: center;
+      gap: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 8px;
+      padding: clamp(0.62rem, 0.95vw, 0.82rem);
+    }
+
+    .metric-number {
+      font-size: clamp(1.8rem, 3.4vw, 3.35rem);
+      font-weight: 950;
+      line-height: 0.9;
+      color: #39ff88;
+    }
+
+    .metric-number.wide {
+      font-size: clamp(1.5rem, 2.7vw, 2.65rem);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .metrics-grid .metric-row:nth-child(3) {
+      grid-column: auto;
+    }
+
+    .source-link {
+      color: #7dd3fc;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @media (max-width: 760px) {
+      .slide {
+        padding: 4.4rem 1rem 3.8rem;
+        overflow-y: auto;
+      }
+      .orbital { opacity: 0.24; right: -40vw; width: 92vw; }
+      .nav-hint { display: none; }
+      .compact-grid { grid-template-columns: 1fr !important; }
+      .metric-row { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .mini-card { padding: 1rem !important; }
+    }
+  </style>
+</head>
+<body class="text-slate-50">
+  <main id="deck" class="deck" aria-live="polite">
+    <div class="counter"><span id="current">01</span>/<span id="total">12</span></div>
+
+    <section class="slide active" data-slide>
+      <div class="orbital"></div>
+      <span class="pixel left-[8%] top-[18%]"></span>
+      <span class="pixel left-[18%] bottom-[24%] bg-neonBlue" style="animation-delay:.35s"></span>
+      <span class="pixel right-[26%] top-[22%] bg-neonViolet" style="animation-delay:.8s"></span>
+      <div class="shell">
+        <div class="flex flex-wrap items-center gap-4">
+          <span class="pogon-logo-wrap"><img src="pogon-logo.jpg" alt="ПОГОН" class="pogon-logo" /></span>
+          <p class="kicker"><i class="fa-solid fa-microchip"></i> ПОГОН 2026 <span class="text-neonGreen">/ Мартин Петковски</span></p>
+        </div>
+        <h1 class="title glow-text max-w-5xl">
+          Искуства со примена на <span class="text-neonBlue">LLMs</span> во индустријата на видео игри
+        </h1>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker"><i class="fa-solid fa-user-gear"></i> Кратко претставување</p>
+        <h2 class="slide-title glow-text">Кој сум јас?</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row"><span class="list-icon"><i class="fa-solid fa-code"></i></span><div><p class="list-title">Програмер во <span class="text-neonBlue">KAMAi MEDIA</span> од 2017</p></div></div>
+          <div class="list-row"><span class="list-icon"><i class="fa-solid fa-cube"></i></span><div><p class="list-title">3D видео игри</p></div></div>
+          <div class="list-row"><span class="list-icon"><i class="fa-solid fa-graduation-cap"></i></span><div><p class="list-title">Магистер по Компјутерски науки и инженерство</p></div></div>
+          <div class="list-row"><span class="list-icon"><i class="fa-solid fa-bolt"></i></span><div><p class="list-title">Мој код напојува игри на Angelicore, Crytek, Star Stable и други</p></div></div>
+          <div class="list-row"><span class="list-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span><div><p class="list-title">Unreal Engine, Unity, CryEngine, C++, C#</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker"><i class="fa-solid fa-chart-line"></i> Зошто е важно сега?</p>
+        <h2 class="slide-title glow-text">Усвојување во тимови</h2>
+        <div class="mt-5 max-w-5xl">
+          <div class="metrics-grid">
+            <article class="metric-row"><p class="metric-number text-neonBlue">87%</p><div><p class="list-title">гејм девелопери користат агенти со вештачка интелигенција</p><p class="list-copy">Google Cloud / Harris Poll, 2025</p></div></article>
+            <article class="metric-row"><p class="metric-number">90%</p><div><p class="list-title">веќе користат вештачка интелигенција во работниот процес</p><p class="list-copy">Google Cloud, Devcom 2025</p></div></article>
+            <article class="metric-row"><p class="metric-number text-neonBlue">36%</p><div><p class="list-title">директно користат генеративна вештачка интелигенција</p><p class="list-copy">GDC State of the Game Industry 2026</p></div></article>
+          </div>
+        </div>
+        <p class="mt-4 text-xs md:text-sm text-slate-400">
+          Извори: <a class="source-link" href="https://gamesbeat.com/90-of-games-devs-are-using-ai-in-workflows-google-cloud/">Google Cloud / GamesBeat</a>,
+          <a class="source-link" href="https://investgame.net/wp-content/uploads/2026/01/2026-01-29-dec052f4_d88e_48ce_9f83_a18ce2f2a6e5_541400_GDC26_PDF_SOTI_Report.pdf">GDC 2026 SOTI</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker"><i class="fa-solid fa-chart-pie"></i> Зошто е важно сега?</p>
+        <h2 class="slide-title glow-text">Пазар и објавени игри</h2>
+        <div class="mt-5 max-w-5xl">
+          <div class="metrics-grid">
+            <article class="metric-row"><p class="metric-number wide text-neonViolet">$22.6B</p><div><p class="list-title">проектиран пазар на вештачка интелигенција во игри до 2034</p><p class="list-copy">$4.8B во 2025, DataIntelo</p></div></article>
+            <article class="metric-row"><p class="metric-number">20%</p><div><p class="list-title">нови Steam игри пријавуваат генеративна вештачка интелигенција</p><p class="list-copy">Steam анализи на објави, 2025</p></div></article>
+          </div>
+        </div>
+        <p class="mt-4 text-xs md:text-sm text-slate-400">
+          Извори: <a class="source-link" href="https://dataintelo.com/report/ai-in-games-market">DataIntelo</a>, Steam анализи на објави
+        </p>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-red-200"><i class="fa-solid fa-triangle-exclamation"></i> Лоши употреби</p>
+        <h2 class="slide-title glow-text">Не препуштај цела функционалност</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-xmark"></i></span><div><p class="list-title">Целосна функционалност од почеток до крај</p><p class="list-copy">LLM може да ја промаши намерата на дизајнот, граничните случаи и деталите за интеграција.</p></div></div>
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-bug"></i></span><div><p class="list-title">Зошто е опасно во гејмдев?</p><p class="list-copy">Една мала механика може да скрши контроли, кориснички интерфејс, зачувување на игра или мрежна синхронизација.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-red-200"><i class="fa-solid fa-triangle-exclamation"></i> Лоши употреби</p>
+        <h2 class="slide-title glow-text">Код за продукција без ревизија</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-user-shield"></i></span><div><p class="list-title">Без сериозна човечка проверка</p><p class="list-copy">Кодот може да изгледа точно, а да крие проблеми со паралелно извршување, меморија или безбедност.</p></div></div>
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-lock"></i></span><div><p class="list-title">Системи што мора да бидат детерминистички</p><p class="list-copy">Физика, мрежна логика со враќање на состојба и системи за повторување бараат предвидливо однесување секој пат.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-red-200"><i class="fa-solid fa-triangle-exclamation"></i> Лоши употреби</p>
+        <h2 class="slide-title glow-text">Големи кодбази не простуваат</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-code-branch"></i></span><div><p class="list-title">Код што треба да живее со години</p><p class="list-copy">Заедничките системи имаат правила, историја и компромиси што не се гледаат во едно барање.</p></div></div>
+          <div class="list-row bad"><span class="list-icon"><i class="fa-solid fa-diagram-project"></i></span><div><p class="list-title">Големи рефакторирања и архитектура</p><p class="list-copy">Моделот лесно прави локално добри измени што глобално го заматуваат проектот.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-emerald-200"><i class="fa-solid fa-circle-check"></i> Добри употреби</p>
+        <h2 class="slide-title glow-text">Брз старт, помал отпор</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-file-code"></i></span><div><p class="list-title">Основен шаблонски код</p><p class="list-copy">Компонента за контроли, структура за зачувување, поврзување на кориснички интерфејс.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-folder-tree"></i></span><div><p class="list-title">Почетна структура на проект</p><p class="list-copy">Распоред на папки за Unreal приклучок или Unity пакет.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-flask"></i></span><div><p class="list-title">Прототип што побрзо се игра</p><p class="list-copy">Помалку време на механички код, повеќе време на чувството при играње.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-emerald-200"><i class="fa-solid fa-circle-check"></i> Добри употреби</p>
+        <h2 class="slide-title glow-text">Квалитет околу кодот</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-book"></i></span><div><p class="list-title">Документација и привремени коментари</p><p class="list-copy">README за алатка, насоки за дизајнери, објаснување на систем.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-vial-circle-check"></i></span><div><p class="list-title">Генерирање тестови</p><p class="list-copy">Состојби на задачи, правила за инвентар, математика за борба.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-broom"></i></span><div><p class="list-title">Автоматска проверка на стил</p><p class="list-copy">Ист формат и исти правила низ целиот тим.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell">
+        <p class="kicker text-emerald-200"><i class="fa-solid fa-circle-check"></i> Добри употреби</p>
+        <h2 class="slide-title glow-text">Учење и автоматизација</h2>
+        <div class="mt-10 list-stack max-w-5xl">
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><div><p class="list-title">Мали рефакторирања</p><p class="list-copy">Преименување, вадење помошна функција, чистење увози.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-gears"></i></span><div><p class="list-title">Инфраструктура и конфигурации</p><p class="list-copy">Скрипти за градење, CI правила, профили за објавување.</p></div></div>
+          <div class="list-row good"><span class="list-icon"><i class="fa-solid fa-lightbulb"></i></span><div><p class="list-title">Учење нови работи</p><p class="list-copy">LLM предлага код, инженерот го чита, менува и разбира.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="orbital"></div>
+      <div class="shell">
+        <p class="kicker"><i class="fa-solid fa-brain"></i> Дали кодирањето е „cooked“?</p>
+        <h2 class="slide-title glow-text max-w-5xl">Треба ли да се занимаваш со STEM?</h2>
+        <p class="mt-8 text-6xl md:text-8xl font-black text-neonGreen drop-shadow-[0_0_28px_rgba(57,255,136,.45)]">ДА.</p>
+        <div class="mt-8 max-w-4xl neon-border rounded-lg p-6">
+          <p class="text-2xl md:text-4xl font-black leading-tight">
+            LLMs се моќна алатка. Но инженерите се тие што знаат
+            <span class="text-neonBlue">што</span> да побараат,
+            <span class="text-neonViolet">како</span> да проверат
+            и <span class="text-neonGreen">зошто</span> нешто функционира.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="shell text-center">
+        <p class="kicker justify-center"><i class="fa-solid fa-comments"></i> Прашања</p>
+        <h2 class="title glow-text">Благодарам!</h2>
+        <p class="mt-8 text-3xl md:text-5xl font-black text-neonGreen">Мартин Петковски</p>
+        <div class="mx-auto mt-10 grid h-28 w-28 place-items-center rounded-lg border border-neonBlue/50 bg-slate-950/70 text-5xl text-neonBlue shadow-glowBlue">
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+      </div>
+    </section>
+
+    <div class="progress-wrap" aria-hidden="true">
+      <div id="progress" class="progress"></div>
+    </div>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('[data-slide]'));
+    const currentEl = document.getElementById('current');
+    const totalEl = document.getElementById('total');
+    const progressEl = document.getElementById('progress');
+    let index = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    totalEl.textContent = String(slides.length).padStart(2, '0');
+
+    function showSlide(nextIndex) {
+      const clamped = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      if (clamped === index) return;
+
+      slides[index].classList.remove('active');
+      slides[index].classList.toggle('prev', clamped > index);
+
+      index = clamped;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+        slide.classList.toggle('prev', i < index);
+      });
+
+      updateChrome();
+    }
+
+    function updateChrome() {
+      currentEl.textContent = String(index + 1).padStart(2, '0');
+      progressEl.style.width = `${((index + 1) / slides.length) * 100}%`;
+      document.title = `${index + 1}/${slides.length} · Искуства со примена на LLMs`;
+    }
+
+    document.addEventListener('keydown', (event) => {
+      const nextKeys = ['ArrowRight', 'ArrowDown', 'PageDown', ' '];
+      const prevKeys = ['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'];
+
+      if (nextKeys.includes(event.key)) {
+        event.preventDefault();
+        showSlide(index + 1);
+      }
+
+      if (prevKeys.includes(event.key)) {
+        event.preventDefault();
+        showSlide(index - 1);
+      }
+
+      if (event.key === 'Home') showSlide(0);
+      if (event.key === 'End') showSlide(slides.length - 1);
+    });
+
+    document.addEventListener('touchstart', (event) => {
+      touchStartX = event.changedTouches[0].screenX;
+      touchStartY = event.changedTouches[0].screenY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (event) => {
+      const dx = event.changedTouches[0].screenX - touchStartX;
+      const dy = event.changedTouches[0].screenY - touchStartY;
+      const mainAxis = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+
+      if (Math.abs(mainAxis) < 48) return;
+      showSlide(mainAxis < 0 ? index + 1 : index - 1);
+    }, { passive: true });
+
+    updateChrome();
+  </script>
+  <!-- Generated for Martin Petkovski – Погон 2026 -->
+</body>
+</html>
