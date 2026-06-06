@@ -394,6 +394,36 @@
       text-underline-offset: 3px;
     }
 
+    .game-shot-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      grid-template-rows: 1fr 1fr;
+      gap: clamp(0.7rem, 1.6vw, 1.15rem);
+      height: min(76vh, 760px);
+      width: min(1320px, 100%);
+      margin: 0 auto;
+    }
+
+    .game-shot {
+      min-height: 0;
+      border: 1px solid rgba(148, 163, 184, 0.26);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(2, 6, 23, 0.72);
+      box-shadow: 0 0 34px rgba(56, 189, 248, 0.14);
+    }
+
+    .game-shot:first-child {
+      grid-row: span 2;
+    }
+
+    .game-shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     @media (max-width: 760px) {
       .slide {
         padding: 4.4rem 1rem 3.8rem;
@@ -405,6 +435,12 @@
       .metric-row { grid-template-columns: 1fr; }
       .metrics-grid { grid-template-columns: 1fr; }
       .mini-card { padding: 1rem !important; }
+      .game-shot-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, minmax(13.5rem, 1fr));
+        height: auto;
+      }
+      .game-shot:first-child { grid-row: auto; }
     }
   </style>
 </head>
@@ -439,6 +475,20 @@
           <div class="list-row"><span class="list-icon"><i class="fa-solid fa-bolt"></i></span><div><p class="list-title">Мој код напојува игри на Angelicore, Crytek, Star Stable и други</p></div></div>
           <div class="list-row"><span class="list-icon"><i class="fa-solid fa-screwdriver-wrench"></i></span><div><p class="list-title">Unreal Engine, Unity, CryEngine, C++, C#</p></div></div>
         </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="game-shot-grid" aria-label="Game screenshots">
+        <figure class="game-shot">
+          <img src="games/1080_CVG-4427_Hunt_Update_2.0_Store_Shots_River_Trio_vs_Trio_Final_1.jpg" alt="Game screenshot from Hunt update" />
+        </figure>
+        <figure class="game-shot">
+          <img src="games/1779196280-759_brabant_iae_images_1920x1080.jpg" alt="Game screenshot from Brabant" />
+        </figure>
+        <figure class="game-shot">
+          <img src="games/Angelic-Crew-Shot-optimized.jpg" alt="Game screenshot from Angelic" />
+        </figure>
       </div>
     </section>
 
