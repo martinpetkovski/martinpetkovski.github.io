@@ -1,6 +1,7 @@
 (function () {
     const manifestPath = 'solutions.json';
     const testResultsPath = 'test-results.json';
+    const executionTracesPath = 'execution-traces.json';
     const requiredFields = ['title', 'leetcode', 'difficulty', 'statement', 'time', 'space'];
     const fieldAliases = {
         'problem': 'title',
@@ -21,7 +22,9 @@
             searchElement: document.querySelector('#solutionSearch'),
             tableWrapElement: document.querySelector('#solutionTableWrap'),
             tableBodyElement: document.querySelector('#solutionRows'),
-            detailElement: document.querySelector('#solutionDetail')
+            detailElement: document.querySelector('#solutionDetail'),
+            footerElement: document.querySelector('footer'),
+            debuggerResizeHandler: null
         };
 
         try {
@@ -32,10 +35,14 @@
                 return;
             }
 
-            const testResults = await loadTestResults();
+            const [testResults, executionTraces] = await Promise.all([
+                loadTestResults(),
+                loadExecutionTraces()
+            ]);
             const solutions = (await Promise.all(solutionPaths.map(loadSolution))).map(solution => ({
                 ...solution,
-                testResults: testResults.solutions[solution.path] || []
+                testResults: testResults.solutions[solution.path] || [],
+                executionTraces: executionTraces.solutions[solution.path] || []
             }));
             renderSolutionTable(refs, solutions);
             refs.searchElement.addEventListener('input', () => {
@@ -74,6 +81,17 @@
         return results && results.solutions ? results : { solutions: {} };
     }
 
+    async function loadExecutionTraces() {
+        const response = await fetch(executionTracesPath);
+
+        if (!response.ok) {
+            return { solutions: {} };
+        }
+
+        const traces = await response.json();
+        return traces && traces.solutions ? traces : { solutions: {} };
+    }
+
     function resolveSolutionPath(entry) {
         if (typeof entry === 'string') {
             return entry;
@@ -102,10 +120,12 @@
         const commentMatch = normalizedSource.match(/^\s*\/\*([\s\S]*?)\*\//);
         const metadata = {};
         let code = normalizedSource;
+        let codeStartLine = 1;
 
         if (commentMatch) {
             Object.assign(metadata, parseMetadata(commentMatch[1]));
             code = normalizedSource.slice(commentMatch[0].length).replace(/^\s*\n/, '');
+            codeStartLine = normalizedSource.slice(0, normalizedSource.indexOf(code)).split('\n').length;
         }
 
         const warnings = requiredFields
@@ -114,6 +134,7 @@
 
         return {
             code,
+            codeStartLine,
             metadata,
             path: solutionPath,
             warnings
@@ -292,7 +313,7 @@
             refs.detailElement.replaceChildren();
         } else {
             activeSolutionPath = solution.path;
-            refs.detailElement.replaceChildren(renderSolution(solution));
+            refs.detailElement.replaceChildren(renderSolution(refs, solution));
             highlightCodeBlocks(refs.detailElement);
         }
 
@@ -306,10 +327,11 @@
         row.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     }
 
-    function renderSolution(solution) {
+    function renderSolution(refs, solution) {
         const wrapper = createElement('section', 'solution-detail-panel');
         const article = createElement('article', 'solution-entry');
         const metadata = solution.metadata;
+        const codePanel = renderCodePanel(solution);
 
         article.appendChild(renderTitle(metadata, solution.path));
         appendTextSection(article, 'Problem statement', metadata.statement);
@@ -320,12 +342,99 @@
         }
 
         appendComplexity(article, metadata.time, metadata.space);
-        article.appendChild(renderCodePanel(solution));
-        article.appendChild(renderTestResults(solution.testResults));
+        article.appendChild(codePanel.element);
+        article.appendChild(renderTestResults(
+            solution.testResults,
+            solution.executionTraces,
+            (testResult, traceCase) => openDebugger(refs, solution, testResult, traceCase)
+        ));
         appendTextSection(article, 'Note', metadata.note);
 
         wrapper.appendChild(article);
         return wrapper;
+    }
+
+    function openDebugger(refs, solution, testResult, traceCase) {
+        const debuggerView = renderDebugger(refs, solution, testResult, traceCase);
+        const controlsElement = refs.searchElement.closest('.solution-controls');
+
+        refs.tableWrapElement.hidden = true;
+        refs.detailElement.classList.add('is-debugging');
+
+        if (controlsElement) {
+            controlsElement.hidden = true;
+        }
+
+        if (refs.footerElement) {
+            refs.footerElement.hidden = true;
+        }
+
+        refs.detailElement.replaceChildren(debuggerView);
+        refs.detailElement.scrollIntoView({ block: 'start' });
+        fitDebuggerToViewport(refs);
+        refs.debuggerResizeHandler = () => fitDebuggerToViewport(refs);
+        window.addEventListener('resize', refs.debuggerResizeHandler);
+    }
+
+    function closeDebugger(refs, solution) {
+        const controlsElement = refs.searchElement.closest('.solution-controls');
+
+        if (refs.debuggerResizeHandler) {
+            window.removeEventListener('resize', refs.debuggerResizeHandler);
+            refs.debuggerResizeHandler = null;
+        }
+
+        refs.tableWrapElement.hidden = false;
+        refs.detailElement.classList.remove('is-debugging');
+
+        if (controlsElement) {
+            controlsElement.hidden = false;
+        }
+
+        if (refs.footerElement) {
+            refs.footerElement.hidden = false;
+        }
+
+        refs.detailElement.replaceChildren(renderSolution(refs, solution));
+        highlightCodeBlocks(refs.detailElement);
+        refs.detailElement.scrollIntoView({ block: 'start' });
+    }
+
+    function fitDebuggerToViewport(refs) {
+        const shell = refs.detailElement.querySelector('.solution-debugger-shell');
+
+        if (!shell) {
+            return;
+        }
+
+        const top = Math.max(0, shell.getBoundingClientRect().top);
+        const availableHeight = Math.max(240, window.innerHeight - top - 8);
+        shell.style.setProperty('--debugger-height', `${availableHeight}px`);
+    }
+
+    function renderDebugger(refs, solution, testResult, traceCase) {
+        const shell = createElement('div', 'solution-debugger-shell');
+        const wrapper = createElement('section', 'solution-detail-panel solution-debugger-view');
+        const header = createElement('header', 'solution-debugger-header');
+        const headingGroup = createElement('div', 'solution-debugger-heading');
+        const backButton = createElement('button', 'solution-debugger-back', `Back to ${solution.metadata.title || 'problem'}`);
+        const title = createElement('h3', '', `${solution.metadata.title || solution.path} debugger`);
+        const caseLabel = createElement('p', 'solution-debugger-case', testResult.case);
+        const result = createElement(
+            'span',
+            testResult.status === 'pass' ? 'solution-debugger-result is-pass' : 'solution-debugger-result is-fail',
+            `${testResult.status === 'pass' ? 'Passing' : 'Failing'} · ${formatDuration(testResult.durationNs)}`
+        );
+        const codePanel = renderCodePanel(solution);
+
+        backButton.type = 'button';
+        backButton.addEventListener('click', () => closeDebugger(refs, solution));
+        headingGroup.append(title, caseLabel);
+        header.append(headingGroup, result);
+        wrapper.append(header, codePanel.element);
+        shell.append(backButton, wrapper);
+        codePanel.selectTrace(testResult, traceCase);
+        return shell;
     }
 
     function renderTitle(metadata, solutionPath) {
@@ -397,18 +506,205 @@
 
     function renderCodePanel(solution) {
         const wrapper = createElement('div', 'code-panel');
+        const toolbar = createElement('div', 'code-debug-toolbar');
+        const debugInfo = createElement('div', 'code-debug-info');
+        const selectedCase = createElement('strong', 'code-debug-case');
+        const stepStatus = createElement('span', 'code-debug-status');
+        const controls = createElement('div', 'code-debug-controls');
+        const resetButton = createElement('button', '', 'Reset');
+        const previousButton = createElement('button', '', 'Previous step');
+        const nextButton = createElement('button', '', 'Next step');
+        const allStepsButton = createElement('button', '', 'View all steps');
+        const runtimePanel = createElement('section', 'code-debug-runtime');
+        const stackPanel = createElement('div', 'code-debug-runtime-section');
+        const heapPanel = createElement('div', 'code-debug-runtime-section');
+        const allStepsPanel = createElement('section', 'code-debug-all-steps');
         const pre = createElement('pre', 'solution-code');
         const code = document.createElement('code');
+        const sourceLines = solution.code.replace(/\n$/, '').split('\n');
+        let activeSteps = [];
+        let activeStepIndex = 0;
 
         code.className = 'language-cpp';
         code.textContent = solution.code;
+        toolbar.hidden = true;
+        resetButton.type = 'button';
+        previousButton.type = 'button';
+        nextButton.type = 'button';
+        allStepsButton.type = 'button';
+        allStepsButton.setAttribute('aria-expanded', 'false');
+        runtimePanel.hidden = true;
+        allStepsPanel.hidden = true;
 
+        function updateAllStepSelection() {
+            allStepsPanel.querySelectorAll('.code-debug-step').forEach((stepButton, index) => {
+                const isCurrent = index === activeStepIndex;
+
+                stepButton.classList.toggle('is-current', isCurrent);
+                stepButton.setAttribute('aria-current', isCurrent ? 'step' : 'false');
+            });
+        }
+
+        function renderAllSteps() {
+            const list = createElement('ol', 'code-debug-step-list');
+
+            activeSteps.forEach((step, index) => {
+                const item = document.createElement('li');
+                const stepButton = createElement('button', 'code-debug-step');
+                const variables = Object.entries(step.variables || {})
+                    .map(([name, value]) => `${name} = ${value}`)
+                    .join(' · ');
+                const metrics = `${formatDuration(step.durationNs)} · ${formatMemory(step.heapBytes)} heap (${formatSignedMemory(step.heapDeltaBytes)})`;
+
+                stepButton.type = 'button';
+                stepButton.setAttribute('aria-label', `Step ${index + 1}, line ${step.line}`);
+                stepButton.append(
+                    createElement('span', 'code-debug-step-number', String(index + 1)),
+                    createElement('span', 'code-debug-step-line', String(step.line)),
+                    createElement('span', 'code-debug-step-values', variables || 'No variables'),
+                    createElement('span', 'code-debug-step-metrics', metrics)
+                );
+                stepButton.addEventListener('click', () => {
+                    activeStepIndex = index;
+                    renderActiveStep();
+                });
+                item.appendChild(stepButton);
+                list.appendChild(item);
+            });
+
+            allStepsPanel.replaceChildren(list);
+            updateAllStepSelection();
+        }
+
+        function renderRuntimeState(activeStep) {
+            const stackValues = createElement('dl', 'code-debug-runtime-values');
+            const variableEntries = Object.entries(activeStep.stackVariables || activeStep.variables || {});
+
+            stackPanel.replaceChildren(createElement('h4', '', 'Stack'));
+            if (variableEntries.length === 0) {
+                stackPanel.appendChild(createElement('p', 'code-debug-runtime-empty', 'No variables'));
+            } else {
+                variableEntries.forEach(([name, value]) => {
+                    const row = createElement('div', 'code-debug-runtime-row');
+
+                    row.append(
+                        createElement('dt', '', name),
+                        createElement('dd', '', String(value))
+                    );
+                    stackValues.appendChild(row);
+                });
+                stackPanel.appendChild(stackValues);
+            }
+
+            const heapValues = createElement('dl', 'code-debug-runtime-values');
+            const liveHeapRow = createElement('div', 'code-debug-runtime-row');
+            const heapDeltaRow = createElement('div', 'code-debug-runtime-row');
+
+            liveHeapRow.append(
+                createElement('dt', '', 'Live'),
+                createElement('dd', '', formatMemory(activeStep.heapBytes))
+            );
+            heapDeltaRow.append(
+                createElement('dt', '', 'Change'),
+                createElement('dd', '', formatSignedMemory(activeStep.heapDeltaBytes))
+            );
+            heapValues.append(liveHeapRow, heapDeltaRow);
+            heapPanel.replaceChildren(
+                createElement('h4', '', 'Heap'),
+                heapValues
+            );
+        }
+
+        function renderActiveStep() {
+            const activeStep = activeSteps[activeStepIndex];
+            const fragment = document.createDocumentFragment();
+
+            sourceLines.forEach((sourceLine, index) => {
+                const sourceLineNumber = solution.codeStartLine + index;
+                const line = createElement('span', 'solution-code-line');
+                const lineNumber = createElement('span', 'solution-code-line-number', String(sourceLineNumber));
+                const lineText = createElement('span', 'solution-code-line-text', sourceLine || ' ');
+
+                line.append(lineNumber, lineText);
+
+                if (sourceLineNumber === Number(activeStep.line)) {
+                    line.classList.add('is-active');
+                }
+
+                fragment.appendChild(line);
+            });
+
+            code.className = 'solution-code-debug';
+            code.replaceChildren(fragment);
+            stepStatus.textContent = `Step ${activeStepIndex + 1} of ${activeSteps.length} · line ${activeStep.line} · ${formatDuration(activeStep.durationNs)} · ${formatMemory(activeStep.heapBytes)} heap (${formatSignedMemory(activeStep.heapDeltaBytes)})`;
+            renderRuntimeState(activeStep);
+            resetButton.disabled = activeStepIndex === 0;
+            previousButton.disabled = activeStepIndex === 0;
+            nextButton.disabled = activeStepIndex === activeSteps.length - 1;
+            updateAllStepSelection();
+
+            const activeLine = code.querySelector('.solution-code-line.is-active');
+
+            if (activeLine) {
+                activeLine.scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+        function selectTrace(testResult, traceCase) {
+            if (!traceCase || !Array.isArray(traceCase.steps) || traceCase.steps.length === 0) {
+                return;
+            }
+
+            const stackVariables = {};
+            activeSteps = traceCase.steps.map(step => {
+                Object.assign(stackVariables, step.variables || {});
+                return {
+                    ...step,
+                    stackVariables: { ...stackVariables }
+                };
+            });
+            activeStepIndex = 0;
+            selectedCase.textContent = testResult.case;
+            toolbar.hidden = false;
+            runtimePanel.hidden = false;
+            allStepsPanel.hidden = true;
+            allStepsButton.textContent = 'View all steps';
+            allStepsButton.setAttribute('aria-expanded', 'false');
+            pre.classList.add('is-debugging');
+            renderAllSteps();
+            renderActiveStep();
+        }
+
+        resetButton.addEventListener('click', () => {
+            activeStepIndex = 0;
+            renderActiveStep();
+        });
+        previousButton.addEventListener('click', () => {
+            activeStepIndex = Math.max(0, activeStepIndex - 1);
+            renderActiveStep();
+        });
+        nextButton.addEventListener('click', () => {
+            activeStepIndex = Math.min(activeSteps.length - 1, activeStepIndex + 1);
+            renderActiveStep();
+        });
+        allStepsButton.addEventListener('click', () => {
+            const isOpening = allStepsPanel.hidden;
+
+            allStepsPanel.hidden = !isOpening;
+            allStepsButton.textContent = isOpening ? 'Hide all steps' : 'View all steps';
+            allStepsButton.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+        });
+
+        debugInfo.append(selectedCase, stepStatus);
+        controls.append(resetButton, previousButton, nextButton, allStepsButton);
+        toolbar.append(debugInfo, controls);
+        runtimePanel.append(stackPanel, heapPanel);
         pre.appendChild(code);
-        wrapper.appendChild(pre);
-        return wrapper;
+        wrapper.append(toolbar, runtimePanel, allStepsPanel, pre);
+        return { element: wrapper, selectTrace };
     }
 
-    function renderTestResults(testResults) {
+    function renderTestResults(testResults, executionTraces, openTrace) {
         const section = createElement('section', 'test-results-panel');
         const header = createElement('div', 'test-results-header');
         const passedCount = testResults.filter(testResult => testResult.status === 'pass').length;
@@ -417,6 +713,9 @@
             .map(testResult => Number(testResult.durationNs))
             .filter(Number.isFinite);
         const totalDurationNs = measuredDurations.reduce((sum, durationNs) => sum + durationNs, 0);
+        const hasPlayableTrace = executionTraces.some(
+            traceCase => Array.isArray(traceCase.steps) && traceCase.steps.length > 0
+        );
 
         header.appendChild(createElement('h4', '', 'Verified Tests'));
         const summaryText = measuredDurations.length > 0
@@ -425,21 +724,47 @@
         header.appendChild(createElement('span', failedCount === 0 ? 'test-summary is-pass' : 'test-summary is-fail', summaryText));
         section.appendChild(header);
 
+        if (hasPlayableTrace) {
+            section.appendChild(createElement(
+                'p',
+                'test-results-debug-hint',
+                'Click any verified test to see how I would debug it.'
+            ));
+        }
+
         if (testResults.length === 0) {
             section.appendChild(createElement('p', 'test-results-empty', 'No local test results have been generated yet.'));
             return section;
         }
 
         const list = createElement('ul', 'test-results-list');
+        const traceByCase = new Map(executionTraces.map(traceCase => [traceCase.case, traceCase]));
+        let selectedTestItem = null;
+
+        list.setAttribute('role', 'listbox');
         testResults.forEach(testResult => {
-            list.appendChild(renderTestResult(testResult));
+            const traceCase = traceByCase.get(testResult.case);
+            const testItem = renderTestResult(testResult, traceCase, () => {
+                if (selectedTestItem) {
+                    selectedTestItem.classList.remove('is-selected');
+                    selectedTestItem.setAttribute('aria-selected', 'false');
+                }
+
+                selectedTestItem = testItem;
+                testItem.classList.add('is-selected');
+                testItem.setAttribute('aria-selected', 'true');
+                openTrace(testResult, traceCase);
+            });
+
+            list.appendChild(testItem);
         });
         section.appendChild(list);
         return section;
     }
 
-    function renderTestResult(testResult) {
+    function renderTestResult(testResult, traceCase, selectTest) {
         const item = createElement('li', testResult.status === 'pass' ? 'test-result is-pass' : 'test-result is-fail');
+        const summary = createElement('div', 'test-result-summary');
         const icon = document.createElement('i');
         const label = createElement('span', 'test-case-label', testResult.case);
         const result = createElement('span', 'test-case-result', testResult.status === 'pass' ? testResult.result : `expected ${testResult.expected}, got ${testResult.result}`);
@@ -449,18 +774,43 @@
 
         icon.className = testResult.status === 'pass' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark';
         icon.setAttribute('aria-hidden', 'true');
-        item.append(icon, label);
+        summary.append(icon, label);
 
         if (duration) {
-            item.appendChild(duration);
+            summary.appendChild(duration);
         }
 
-        item.appendChild(result);
+        summary.appendChild(result);
+        item.appendChild(summary);
+
+        if (traceCase && Array.isArray(traceCase.steps) && traceCase.steps.length > 0) {
+            item.classList.add('is-selectable');
+            item.tabIndex = 0;
+            item.setAttribute('role', 'option');
+            item.setAttribute('aria-selected', 'false');
+            item.addEventListener('click', selectTest);
+            item.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    selectTest();
+                }
+            });
+        }
+
         return item;
     }
 
     function formatDuration(durationNs) {
-        return `${(durationNs / 1000000).toFixed(6)} ms`;
+        return `${Math.round(Number(durationNs) || 0)} ns`;
+    }
+
+    function formatMemory(bytes) {
+        return `${Math.round(Number(bytes) || 0)} B`;
+    }
+
+    function formatSignedMemory(bytes) {
+        const value = Math.round(Number(bytes) || 0);
+        return `${value > 0 ? '+' : ''}${value} B`;
     }
 
     function highlightCodeBlocks(parent) {

@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$OutputPath = ""
+    [string]$OutputPath = "",
+    [string]$TraceOutputPath = ""
 )
 
 Set-StrictMode -Version Latest
@@ -13,6 +14,11 @@ $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 if([string]::IsNullOrWhiteSpace($OutputPath))
 {
     $OutputPath = Join-Path $ScriptRoot 'test-results.json'
+}
+
+if([string]::IsNullOrWhiteSpace($TraceOutputPath))
+{
+    $TraceOutputPath = Join-Path $ScriptRoot 'execution-traces.json'
 }
 
 function Write-TextFile
@@ -89,11 +95,17 @@ bool AreEqual(const std::vector<std::string>& Left, const std::vector<std::strin
 
 void RunTest(Solution& SolutionInstance, int Input, const std::vector<std::string>& Expected, int& Passed, int& Failed)
 {
+    const std::string Label = "n = " + std::to_string(Input);
+#ifdef LEET_TRACE
+    LeetTrace::Begin("solutions/fizz-buzz.cpp", Label);
+#endif
     const auto StartedAt = std::chrono::steady_clock::now();
     const std::vector<std::string> Actual = SolutionInstance.fizzBuzz(Input);
+#ifdef LEET_TRACE
+    LeetTrace::End();
+#endif
     const auto FinishedAt = std::chrono::steady_clock::now();
     const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
-    const std::string Label = "n = " + std::to_string(Input);
     const std::string ActualText = FormatVector(Actual);
     const std::string ExpectedText = FormatVector(Expected);
 
@@ -152,11 +164,17 @@ std::string FormatBool(bool Value)
 
 void RunTest(Solution& SolutionInstance, const std::string& Input, bool Expected, int& Passed, int& Failed)
 {
+    const std::string Label = "s = \"" + Input + "\"";
+#ifdef LEET_TRACE
+    LeetTrace::Begin("solutions/valid-palindrome.cpp", Label);
+#endif
     const auto StartedAt = std::chrono::steady_clock::now();
     const bool Actual = SolutionInstance.isPalindrome(Input);
+#ifdef LEET_TRACE
+    LeetTrace::End();
+#endif
     const auto FinishedAt = std::chrono::steady_clock::now();
     const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
-    const std::string Label = "s = \"" + Input + "\"";
     const std::string ActualText = FormatBool(Actual);
     const std::string ExpectedText = FormatBool(Expected);
 
@@ -240,11 +258,17 @@ bool IsValidAnswer(const std::vector<int>& Input, int Target, const std::vector<
 
 void RunTest(Solution& SolutionInstance, std::vector<int> Input, int Target, const std::vector<int>& Expected, int& Passed, int& Failed)
 {
+    const std::string Label = "nums = " + FormatVector(Input) + ", target = " + std::to_string(Target);
+#ifdef LEET_TRACE
+    LeetTrace::Begin("solutions/two-sum.cpp", Label);
+#endif
     const auto StartedAt = std::chrono::steady_clock::now();
     const std::vector<int> Actual = SolutionInstance.twoSum(Input, Target);
+#ifdef LEET_TRACE
+    LeetTrace::End();
+#endif
     const auto FinishedAt = std::chrono::steady_clock::now();
     const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
-    const std::string Label = "nums = " + FormatVector(Input) + ", target = " + std::to_string(Target);
     const std::string ActualText = FormatVector(Actual);
     const std::string ExpectedText = FormatVector(Expected);
 
@@ -284,15 +308,86 @@ int main()
     Write-TextFile -Path $HarnessPath -Content $Harness
 }
 
+function Write-ValidParenthesesHarness
+{
+    param([string]$HarnessPath, [string]$SolutionPath)
+
+    $IncludePath = Convert-ToIncludePath $SolutionPath
+    $Harness = @"
+#include <chrono>
+#include <iostream>
+#include <string>
+
+#include "$IncludePath"
+
+std::string FormatBool(bool Value)
+{
+    return Value ? "true" : "false";
+}
+
+void RunTest(Solution& SolutionInstance, const std::string& Input, bool Expected, int& Passed, int& Failed)
+{
+    const std::string Label = "s = \"" + Input + "\"";
+#ifdef LEET_TRACE
+    LeetTrace::Begin("solutions/valid-parentheses.cpp", Label);
+#endif
+    const auto StartedAt = std::chrono::steady_clock::now();
+    const bool Actual = SolutionInstance.isValid(Input);
+#ifdef LEET_TRACE
+    LeetTrace::End();
+#endif
+    const auto FinishedAt = std::chrono::steady_clock::now();
+    const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
+    const std::string ActualText = FormatBool(Actual);
+    const std::string ExpectedText = FormatBool(Expected);
+
+    if(Actual == Expected)
+    {
+        std::cout << "PASS|solutions/valid-parentheses.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
+        Passed++;
+    }
+    else
+    {
+        std::cout << "FAIL|solutions/valid-parentheses.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
+        Failed++;
+    }
+}
+
+int main()
+{
+    Solution SolutionInstance;
+    int Passed = 0;
+    int Failed = 0;
+
+    RunTest(SolutionInstance, "()", true, Passed, Failed);
+    RunTest(SolutionInstance, "()[]{}", true, Passed, Failed);
+    RunTest(SolutionInstance, "(]", false, Passed, Failed);
+    RunTest(SolutionInstance, "([])", true, Passed, Failed);
+    RunTest(SolutionInstance, "([)]", false, Passed, Failed);
+    RunTest(SolutionInstance, "{[]}", true, Passed, Failed);
+    RunTest(SolutionInstance, ")", false, Passed, Failed);
+    RunTest(SolutionInstance, "((", false, Passed, Failed);
+    RunTest(SolutionInstance, "({[]})", true, Passed, Failed);
+    RunTest(SolutionInstance, "(){}}{", false, Passed, Failed);
+
+    return Failed == 0 ? 0 : 1;
+}
+"@
+
+    Write-TextFile -Path $HarnessPath -Content $Harness
+}
+
 function Compile-Harness
 {
     param(
         [System.Management.Automation.CommandInfo]$Compiler,
         [string]$HarnessPath,
-        [string]$ExecutablePath
+        [string]$ExecutablePath,
+        [string[]]$AdditionalArguments = @()
     )
 
-    $Output = & $Compiler.Source -std=c++17 $HarnessPath -o $ExecutablePath 2>&1
+    $Arguments = @('-std=c++17') + $AdditionalArguments + @($HarnessPath, '-o', $ExecutablePath)
+    $Output = & $Compiler.Source $Arguments 2>&1
 
     if($LASTEXITCODE -ne 0)
     {
@@ -348,12 +443,23 @@ function Invoke-SolutionTests
     )
 
     $HarnessPath = Join-Path $TempRoot ($Name + '-tests.cpp')
+    $TraceHarnessPath = Join-Path $TempRoot ($Name + '-trace-tests.cpp')
     $ExecutablePath = Join-Path $TempRoot ($Name + '-tests.exe')
+    $TraceExecutablePath = Join-Path $TempRoot ($Name + '-trace.exe')
     $SolutionPath = Join-Path $ScriptRoot $RelativePath.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
+    $TraceSolutionPath = Join-Path $ScriptRoot ('trace-sources/' + $Name + '.trace.cpp').Replace('/', [System.IO.Path]::DirectorySeparatorChar)
 
     & $HarnessWriter $HarnessPath $SolutionPath
     Compile-Harness -Compiler $Compiler -HarnessPath $HarnessPath -ExecutablePath $ExecutablePath
-    return Convert-TestOutput -Lines (Invoke-Harness -ExecutablePath $ExecutablePath)
+    $Results = Convert-TestOutput -Lines (Invoke-Harness -ExecutablePath $ExecutablePath)
+    & $HarnessWriter $TraceHarnessPath $TraceSolutionPath
+    Compile-Harness `
+        -Compiler $Compiler `
+        -HarnessPath $TraceHarnessPath `
+        -ExecutablePath $TraceExecutablePath `
+        -AdditionalArguments @('-g', '-O2', '-DLEET_TRACE', '-D_CRT_SECURE_NO_WARNINGS')
+    $null = Invoke-Harness -ExecutablePath $TraceExecutablePath
+    return $Results
 }
 
 function Write-TestResultsJson
@@ -378,7 +484,7 @@ function Write-TestResultsJson
 
     $Document = [ordered]@{
         generatedAt = (Get-Date).ToUniversalTime().ToString('o')
-        minimumRequired = 30
+        minimumRequired = 40
         total = $Results.Count
         passed = $PassedCount
         failed = $FailedCount
@@ -389,7 +495,101 @@ function Write-TestResultsJson
     Write-TextFile -Path $OutputPath -Content ($Json + [Environment]::NewLine)
 }
 
+function Apply-TraceDurations
+{
+    param(
+        [object[]]$Results,
+        [string]$TraceLinesPath
+    )
+
+    $TraceDurations = @{}
+    $TraceRecords = @(Get-Content -Path $TraceLinesPath |
+        Where-Object { ![string]::IsNullOrWhiteSpace($_) } |
+        ForEach-Object { $_ | ConvertFrom-Json })
+
+    $TraceRecords | Group-Object solution, case | ForEach-Object {
+        $Record = $_.Group[0]
+        $Key = "$($Record.solution)`0$($Record.case)"
+        $TraceDurations[$Key] = [long](($_.Group | Measure-Object durationNs -Sum).Sum)
+    }
+
+    foreach($Result in $Results)
+    {
+        $Key = "$($Result.Path)`0$($Result.Case)"
+
+        if(!$TraceDurations.ContainsKey($Key))
+        {
+            throw "No trace duration was recorded for $($Result.Path): $($Result.Case)."
+        }
+
+        $Result.DurationNs = $TraceDurations[$Key]
+    }
+}
+
+function Write-ExecutionTracesJson
+{
+    param([string]$TraceLinesPath)
+
+    $Solutions = [ordered]@{}
+    $SourceHashes = [ordered]@{}
+    $TraceLines = @(Get-Content -Path $TraceLinesPath | Where-Object { ![string]::IsNullOrWhiteSpace($_) })
+    $Records = @($TraceLines | ForEach-Object { $_ | ConvertFrom-Json })
+
+    $Records | Group-Object solution | ForEach-Object {
+        $SolutionPath = Join-Path $ScriptRoot $_.Name.Replace('/', [System.IO.Path]::DirectorySeparatorChar)
+        $SourceLines = @(Get-Content -Path $SolutionPath)
+
+        $_.Group | Group-Object line, statement | ForEach-Object {
+            $Record = $_.Group[0]
+            $LineIndex = [int]$Record.line - 1
+
+            if($LineIndex -lt 0 -or $LineIndex -ge $SourceLines.Count)
+            {
+                throw "Trace line $($Record.line) is outside $($Record.solution)."
+            }
+
+            if($SourceLines[$LineIndex].Trim() -ne $Record.statement)
+            {
+                throw "Trace statement mismatch at $($Record.solution):$($Record.line). Expected '$($SourceLines[$LineIndex].Trim())', recorded '$($Record.statement)'."
+            }
+        }
+
+        $Cases = @($_.Group | Group-Object case | ForEach-Object {
+            [ordered]@{
+                case = $_.Name
+                steps = @($_.Group | Sort-Object step | ForEach-Object {
+                    [ordered]@{
+                        step = $_.step
+                        line = $_.line
+                        durationNs = $_.durationNs
+                        heapBytes = $_.heapBytes
+                        heapDeltaBytes = $_.heapDeltaBytes
+                        statement = $_.statement
+                        variables = $_.variables
+                    }
+                })
+            }
+        })
+
+        $Solutions[$_.Name] = $Cases
+        $SourceHashes[$_.Name] = (Get-FileHash -Path $SolutionPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    }
+
+    $Document = [ordered]@{
+        generatedAt = (Get-Date).ToUniversalTime().ToString('o')
+        mode = 'instrumented-debug-build'
+        sourceHashes = $SourceHashes
+        solutions = $Solutions
+    }
+
+    $Json = $Document | ConvertTo-Json -Depth 20
+    Write-TextFile -Path $TraceOutputPath -Content ($Json + [Environment]::NewLine)
+}
+
 New-Item -ItemType Directory -Path $TempRoot | Out-Null
+$TraceLinesPath = Join-Path $TempRoot 'execution-traces.ndjson'
+$OriginalTraceOutput = [Environment]::GetEnvironmentVariable('LEET_TRACE_OUTPUT', 'Process')
+[Environment]::SetEnvironmentVariable('LEET_TRACE_OUTPUT', $TraceLinesPath, 'Process')
 
 try
 {
@@ -398,22 +598,26 @@ try
     $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'fizz-buzz' -RelativePath 'solutions/fizz-buzz.cpp' -HarnessWriter ${function:Write-FizzBuzzHarness}
     $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'two-sum' -RelativePath 'solutions/two-sum.cpp' -HarnessWriter ${function:Write-TwoSumHarness}
     $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'valid-palindrome' -RelativePath 'solutions/valid-palindrome.cpp' -HarnessWriter ${function:Write-ValidPalindromeHarness}
+    $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'valid-parentheses' -RelativePath 'solutions/valid-parentheses.cpp' -HarnessWriter ${function:Write-ValidParenthesesHarness}
 
+    Apply-TraceDurations -Results $Results -TraceLinesPath $TraceLinesPath
     Write-TestResultsJson -Results $Results
+    Write-ExecutionTracesJson -TraceLinesPath $TraceLinesPath
 
     $PassedCount = @($Results | Where-Object { $_.Status -eq 'pass' }).Count
     $Failures = @($Results | Where-Object { $_.Status -ne 'pass' })
 
     Write-Output "Wrote $($Results.Count) test results to $OutputPath."
+    Write-Output "Wrote execution traces to $TraceOutputPath."
 
-    if($Results.Count -lt 30)
+    if($Results.Count -lt 40)
     {
-        throw "Expected at least 30 tests, but only $($Results.Count) were run."
+        throw "Expected at least 40 tests, but only $($Results.Count) were run."
     }
 
-    if($PassedCount -lt 30)
+    if($PassedCount -lt 40)
     {
-        throw "Expected at least 30 passing tests, but only $PassedCount passed."
+        throw "Expected at least 40 passing tests, but only $PassedCount passed."
     }
 
     if($Failures.Count -gt 0)
@@ -426,6 +630,8 @@ try
 }
 finally
 {
+    [Environment]::SetEnvironmentVariable('LEET_TRACE_OUTPUT', $OriginalTraceOutput, 'Process')
+
     if(Test-Path $TempRoot)
     {
         Remove-Item -Path $TempRoot -Recurse -Force
