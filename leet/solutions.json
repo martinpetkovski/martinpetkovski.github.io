@@ -1,6 +1,7 @@
 {
     "solutions": [
         "solutions/fizz-buzz.cpp",
+        "solutions/two-sum.cpp",
         "solutions/valid-palindrome.cpp"
     ]
 }

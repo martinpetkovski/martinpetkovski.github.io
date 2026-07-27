@@ -48,6 +48,7 @@ function Write-FizzBuzzHarness
 
     $IncludePath = Convert-ToIncludePath $SolutionPath
     $Harness = @"
+#include <chrono>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -88,19 +89,22 @@ bool AreEqual(const std::vector<std::string>& Left, const std::vector<std::strin
 
 void RunTest(Solution& SolutionInstance, int Input, const std::vector<std::string>& Expected, int& Passed, int& Failed)
 {
+    const auto StartedAt = std::chrono::steady_clock::now();
     const std::vector<std::string> Actual = SolutionInstance.fizzBuzz(Input);
+    const auto FinishedAt = std::chrono::steady_clock::now();
+    const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
     const std::string Label = "n = " + std::to_string(Input);
     const std::string ActualText = FormatVector(Actual);
     const std::string ExpectedText = FormatVector(Expected);
 
     if(AreEqual(Actual, Expected))
     {
-        std::cout << "PASS|solutions/fizz-buzz.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "\n";
+        std::cout << "PASS|solutions/fizz-buzz.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
         Passed++;
     }
     else
     {
-        std::cout << "FAIL|solutions/fizz-buzz.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "\n";
+        std::cout << "FAIL|solutions/fizz-buzz.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
         Failed++;
     }
 }
@@ -135,6 +139,7 @@ function Write-ValidPalindromeHarness
 
     $IncludePath = Convert-ToIncludePath $SolutionPath
     $Harness = @"
+#include <chrono>
 #include <iostream>
 #include <string>
 
@@ -147,19 +152,22 @@ std::string FormatBool(bool Value)
 
 void RunTest(Solution& SolutionInstance, const std::string& Input, bool Expected, int& Passed, int& Failed)
 {
+    const auto StartedAt = std::chrono::steady_clock::now();
     const bool Actual = SolutionInstance.isPalindrome(Input);
+    const auto FinishedAt = std::chrono::steady_clock::now();
+    const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
     const std::string Label = "s = \"" + Input + "\"";
     const std::string ActualText = FormatBool(Actual);
     const std::string ExpectedText = FormatBool(Expected);
 
     if(Actual == Expected)
     {
-        std::cout << "PASS|solutions/valid-palindrome.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "\n";
+        std::cout << "PASS|solutions/valid-palindrome.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
         Passed++;
     }
     else
     {
-        std::cout << "FAIL|solutions/valid-palindrome.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "\n";
+        std::cout << "FAIL|solutions/valid-palindrome.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
         Failed++;
     }
 }
@@ -180,6 +188,94 @@ int main()
     RunTest(SolutionInstance, "abc", false, Passed, Failed);
     RunTest(SolutionInstance, "12321", true, Passed, Failed);
     RunTest(SolutionInstance, "1a2", false, Passed, Failed);
+
+    return Failed == 0 ? 0 : 1;
+}
+"@
+
+    Write-TextFile -Path $HarnessPath -Content $Harness
+}
+
+function Write-TwoSumHarness
+{
+    param([string]$HarnessPath, [string]$SolutionPath)
+
+    $IncludePath = Convert-ToIncludePath $SolutionPath
+    $Harness = @"
+#include <chrono>
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "$IncludePath"
+
+std::string FormatVector(const std::vector<int>& Values)
+{
+    std::string Output = "[";
+
+    for(int Index = 0; Index < static_cast<int>(Values.size()); Index++)
+    {
+        if(Index > 0)
+            Output += ",";
+
+        Output += std::to_string(Values[Index]);
+    }
+
+    Output += "]";
+    return Output;
+}
+
+bool IsValidAnswer(const std::vector<int>& Input, int Target, const std::vector<int>& Answer)
+{
+    if(Answer.size() != 2 || Answer[0] == Answer[1])
+        return false;
+
+    if(Answer[0] < 0 || Answer[1] < 0 ||
+        Answer[0] >= static_cast<int>(Input.size()) ||
+        Answer[1] >= static_cast<int>(Input.size()))
+        return false;
+
+    return Input[Answer[0]] + Input[Answer[1]] == Target;
+}
+
+void RunTest(Solution& SolutionInstance, std::vector<int> Input, int Target, const std::vector<int>& Expected, int& Passed, int& Failed)
+{
+    const auto StartedAt = std::chrono::steady_clock::now();
+    const std::vector<int> Actual = SolutionInstance.twoSum(Input, Target);
+    const auto FinishedAt = std::chrono::steady_clock::now();
+    const auto DurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(FinishedAt - StartedAt).count();
+    const std::string Label = "nums = " + FormatVector(Input) + ", target = " + std::to_string(Target);
+    const std::string ActualText = FormatVector(Actual);
+    const std::string ExpectedText = FormatVector(Expected);
+
+    if(IsValidAnswer(Input, Target, Actual))
+    {
+        std::cout << "PASS|solutions/two-sum.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
+        Passed++;
+    }
+    else
+    {
+        std::cout << "FAIL|solutions/two-sum.cpp|" << Label << "|" << ActualText << "|" << ExpectedText << "|" << DurationNs << "\n";
+        Failed++;
+    }
+}
+
+int main()
+{
+    Solution SolutionInstance;
+    int Passed = 0;
+    int Failed = 0;
+
+    RunTest(SolutionInstance, { 2, 7, 11, 15 }, 9, { 0, 1 }, Passed, Failed);
+    RunTest(SolutionInstance, { 3, 2, 4 }, 6, { 1, 2 }, Passed, Failed);
+    RunTest(SolutionInstance, { 3, 3 }, 6, { 0, 1 }, Passed, Failed);
+    RunTest(SolutionInstance, { -1, -2, -3, -4, -5 }, -8, { 2, 4 }, Passed, Failed);
+    RunTest(SolutionInstance, { 0, 4, 3, 0 }, 0, { 0, 3 }, Passed, Failed);
+    RunTest(SolutionInstance, { 1, 5, 3, 7 }, 8, { 0, 3 }, Passed, Failed);
+    RunTest(SolutionInstance, { 10, -10, 20, -20 }, 0, { 0, 1 }, Passed, Failed);
+    RunTest(SolutionInstance, { 5, 1, 5 }, 10, { 0, 2 }, Passed, Failed);
+    RunTest(SolutionInstance, { 100, 200, 300, 400 }, 700, { 2, 3 }, Passed, Failed);
+    RunTest(SolutionInstance, { -10, 20, 30, 40 }, 10, { 0, 1 }, Passed, Failed);
 
     return Failed == 0 ? 0 : 1;
 }
@@ -226,7 +322,7 @@ function Convert-TestOutput
     return $Lines | ForEach-Object {
         $Parts = $_ -split '\|'
 
-        if($Parts.Count -lt 5)
+        if($Parts.Count -lt 6)
         {
             throw "Invalid test output: $_"
         }
@@ -237,6 +333,7 @@ function Convert-TestOutput
             Case = $Parts[2]
             Result = $Parts[3]
             Expected = $Parts[4]
+            DurationNs = [long]$Parts[5]
         }
     }
 }
@@ -274,13 +371,14 @@ function Write-TestResultsJson
                 case = $_.Case
                 result = $_.Result
                 expected = $_.Expected
+                durationNs = $_.DurationNs
             }
         })
     }
 
     $Document = [ordered]@{
         generatedAt = (Get-Date).ToUniversalTime().ToString('o')
-        minimumRequired = 20
+        minimumRequired = 30
         total = $Results.Count
         passed = $PassedCount
         failed = $FailedCount
@@ -298,6 +396,7 @@ try
     $Compiler = Get-CppCompiler
     $Results = @()
     $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'fizz-buzz' -RelativePath 'solutions/fizz-buzz.cpp' -HarnessWriter ${function:Write-FizzBuzzHarness}
+    $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'two-sum' -RelativePath 'solutions/two-sum.cpp' -HarnessWriter ${function:Write-TwoSumHarness}
     $Results += Invoke-SolutionTests -Compiler $Compiler -Name 'valid-palindrome' -RelativePath 'solutions/valid-palindrome.cpp' -HarnessWriter ${function:Write-ValidPalindromeHarness}
 
     Write-TestResultsJson -Results $Results
@@ -307,14 +406,14 @@ try
 
     Write-Output "Wrote $($Results.Count) test results to $OutputPath."
 
-    if($Results.Count -lt 20)
+    if($Results.Count -lt 30)
     {
-        throw "Expected at least 20 tests, but only $($Results.Count) were run."
+        throw "Expected at least 30 tests, but only $($Results.Count) were run."
     }
 
-    if($PassedCount -lt 20)
+    if($PassedCount -lt 30)
     {
-        throw "Expected at least 20 passing tests, but only $PassedCount passed."
+        throw "Expected at least 30 passing tests, but only $PassedCount passed."
     }
 
     if($Failures.Count -gt 0)

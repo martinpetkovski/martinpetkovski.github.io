@@ -1,11 +1,13 @@
 (function () {
     const manifestPath = 'solutions.json';
     const testResultsPath = 'test-results.json';
-    const requiredFields = ['title', 'leetcode', 'difficulty', 'approach', 'time', 'space'];
+    const requiredFields = ['title', 'leetcode', 'difficulty', 'statement', 'time', 'space'];
     const fieldAliases = {
         'problem': 'title',
+        'problem statement': 'statement',
         'leetcode url': 'leetcode',
         'url': 'leetcode',
+        'notes': 'note',
         'time complexity': 'time',
         'space complexity': 'space'
     };
@@ -241,6 +243,8 @@
 
     function renderSolutionRow(refs, solution) {
         const metadata = solution.metadata;
+        const passedTests = solution.testResults.filter(testResult => testResult.status === 'pass').length;
+        const totalTests = solution.testResults.length;
         const row = document.createElement('tr');
 
         row.className = 'solution-row';
@@ -263,7 +267,7 @@
             renderTableCell('Tags', metadata.tags || ''),
             renderTableCell('Time', metadata.time || ''),
             renderTableCell('Space', metadata.space || ''),
-            renderTableCell('Open', 'View', 'solution-open-cell')
+            renderTableCell('Passing', `${passedTests}/${totalTests}`, 'solution-passing-cell')
         );
         updateRowState(row);
 
@@ -297,14 +301,9 @@
 
     function updateRowState(row) {
         const isActive = row.dataset.path === activeSolutionPath;
-        const openCell = row.querySelector('.solution-open-cell');
 
         row.classList.toggle('is-active', isActive);
         row.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-
-        if (openCell) {
-            openCell.textContent = isActive ? 'Close' : 'View';
-        }
     }
 
     function renderSolution(solution) {
@@ -313,17 +312,17 @@
         const metadata = solution.metadata;
 
         article.appendChild(renderTitle(metadata, solution.path));
+        appendTextSection(article, 'Problem statement', metadata.statement);
         article.appendChild(renderMetadata(metadata, solution.path));
 
         if (solution.warnings.length > 0) {
             article.appendChild(createElement('div', 'solution-warning', solution.warnings.join(' ')));
         }
 
-        appendTextSection(article, 'Approach', metadata.approach);
         appendComplexity(article, metadata.time, metadata.space);
-        appendTextSection(article, 'Notes', metadata.notes);
         article.appendChild(renderCodePanel(solution));
         article.appendChild(renderTestResults(solution.testResults));
+        appendTextSection(article, 'Note', metadata.note);
 
         wrapper.appendChild(article);
         return wrapper;
@@ -414,9 +413,16 @@
         const header = createElement('div', 'test-results-header');
         const passedCount = testResults.filter(testResult => testResult.status === 'pass').length;
         const failedCount = testResults.filter(testResult => testResult.status !== 'pass').length;
+        const measuredDurations = testResults
+            .map(testResult => Number(testResult.durationNs))
+            .filter(Number.isFinite);
+        const totalDurationNs = measuredDurations.reduce((sum, durationNs) => sum + durationNs, 0);
 
         header.appendChild(createElement('h4', '', 'Verified Tests'));
-        header.appendChild(createElement('span', failedCount === 0 ? 'test-summary is-pass' : 'test-summary is-fail', `${passedCount}/${testResults.length} passing`));
+        const summaryText = measuredDurations.length > 0
+            ? `${passedCount}/${testResults.length} passing · ${formatDuration(totalDurationNs)} total`
+            : `${passedCount}/${testResults.length} passing`;
+        header.appendChild(createElement('span', failedCount === 0 ? 'test-summary is-pass' : 'test-summary is-fail', summaryText));
         section.appendChild(header);
 
         if (testResults.length === 0) {
@@ -437,11 +443,24 @@
         const icon = document.createElement('i');
         const label = createElement('span', 'test-case-label', testResult.case);
         const result = createElement('span', 'test-case-result', testResult.status === 'pass' ? testResult.result : `expected ${testResult.expected}, got ${testResult.result}`);
+        const duration = Number.isFinite(Number(testResult.durationNs))
+            ? createElement('span', 'test-case-duration', formatDuration(Number(testResult.durationNs)))
+            : null;
 
         icon.className = testResult.status === 'pass' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark';
         icon.setAttribute('aria-hidden', 'true');
-        item.append(icon, label, result);
+        item.append(icon, label);
+
+        if (duration) {
+            item.appendChild(duration);
+        }
+
+        item.appendChild(result);
         return item;
+    }
+
+    function formatDuration(durationNs) {
+        return `${(durationNs / 1000000).toFixed(6)} ms`;
     }
 
     function highlightCodeBlocks(parent) {

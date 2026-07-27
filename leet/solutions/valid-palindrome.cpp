@@ -1,56 +1,59 @@
 /*
  * title: Valid Palindrome
+ * statement:
+ * Determine whether a string is a palindrome after converting uppercase letters to lowercase and removing
+ * every character that is not a letter or number.
+ *
  * leetcode: https://leetcode.com/problems/valid-palindrome/
  * difficulty: Easy
  * tags: Two Pointers, String
- * approach:
- * Keep one pointer at each end of the string. Move each pointer inward until it points at an alphanumeric character,
- * then compare manually lowercased characters. If any pair differs, the string is not a palindrome.
- *
  * time: O(n)
  * space: O(1)
+ * note:
  */
 
 #include <string>
 
-class Solution {
+class Solution
+{
 public:
-    bool isPalindrome(std::string s) {
-        int left = 0;
-        int right = static_cast<int>(s.size()) - 1;
+	bool isPalindrome(std::string S)
+	{
+		bool bIsPalindrome = true;
+		int Left = 0;
+		int Right = static_cast<int>(S.size()) - 1;
 
-        while (left < right) {
-            while (left < right && !isAlphanumeric(s[left])) {
-                left++;
-            }
+		while (Left < Right && bIsPalindrome)
+		{
+			while (Left < Right && !IsAlphanumeric(S[Left]))
+				Left++;
 
-            while (left < right && !isAlphanumeric(s[right])) {
-                right--;
-            }
+			while (Left < Right && !IsAlphanumeric(S[Right]))
+				Right--;
 
-            if (normalizeCharacter(s[left]) != normalizeCharacter(s[right])) {
-                return false;
-            }
+			bIsPalindrome = NormalizeCharacter(S[Left]) == NormalizeCharacter(S[Right]);
+			Left++;
+			Right--;
+		}
 
-            left++;
-            right--;
-        }
-
-        return true;
-    }
+		return bIsPalindrome;
+	}
 
 private:
-    bool isAlphanumeric(char value) {
-        return ('0' <= value && value <= '9') ||
-            ('a' <= value && value <= 'z') ||
-            ('A' <= value && value <= 'Z');
-    }
+	bool IsAlphanumeric(char Value) const
+	{
+		return ('0' <= Value && Value <= '9') ||
+			('a' <= Value && Value <= 'z') ||
+			('A' <= Value && Value <= 'Z');
+	}
 
-    char normalizeCharacter(char value) {
-        if ('A' <= value && value <= 'Z') {
-            return static_cast<char>(value - 'A' + 'a');
-        }
+	char NormalizeCharacter(char Value) const
+	{
+		char Result = Value;
 
-        return value;
-    }
+		if ('A' <= Value && Value <= 'Z')
+			Result = static_cast<char>(Value - 'A' + 'a');
+
+		return Result;
+	}
 };

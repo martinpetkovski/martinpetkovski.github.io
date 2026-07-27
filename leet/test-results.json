@@ -1,8 +1,8 @@
 {
-    "generatedAt":  "2026-05-29T14:56:48.1942390Z",
-    "minimumRequired":  20,
-    "total":  20,
-    "passed":  20,
+    "generatedAt":  "2026-07-27T17:08:29.2719598Z",
+    "minimumRequired":  30,
+    "total":  30,
+    "passed":  30,
     "failed":  0,
     "solutions":  {
                       "solutions/fizz-buzz.cpp":  [
@@ -10,123 +10,215 @@
                                                           "status":  "pass",
                                                           "case":  "n = 1",
                                                           "result":  "[\"1\"]",
-                                                          "expected":  "[\"1\"]"
+                                                          "expected":  "[\"1\"]",
+                                                          "durationNs":  800
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 2",
                                                           "result":  "[\"1\",\"2\"]",
-                                                          "expected":  "[\"1\",\"2\"]"
+                                                          "expected":  "[\"1\",\"2\"]",
+                                                          "durationNs":  400
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 3",
                                                           "result":  "[\"1\",\"2\",\"Fizz\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\"]",
+                                                          "durationNs":  700
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 4",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\"]",
+                                                          "durationNs":  900
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 5",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\"]",
+                                                          "durationNs":  1200
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 6",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\"]",
+                                                          "durationNs":  1200
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 10",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\"]",
+                                                          "durationNs":  2300
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 11",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\"]",
+                                                          "durationNs":  2200
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 15",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\"]",
+                                                          "durationNs":  3000
                                                       },
                                                       {
                                                           "status":  "pass",
                                                           "case":  "n = 16",
                                                           "result":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\",\"16\"]",
-                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\",\"16\"]"
+                                                          "expected":  "[\"1\",\"2\",\"Fizz\",\"4\",\"Buzz\",\"Fizz\",\"7\",\"8\",\"Fizz\",\"Buzz\",\"11\",\"Fizz\",\"13\",\"14\",\"FizzBuzz\",\"16\"]",
+                                                          "durationNs":  2800
                                                       }
                                                   ],
+                      "solutions/two-sum.cpp":  [
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [2,7,11,15], target = 9",
+                                                        "result":  "[0,1]",
+                                                        "expected":  "[0,1]",
+                                                        "durationNs":  4600
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [3,2,4], target = 6",
+                                                        "result":  "[1,2]",
+                                                        "expected":  "[1,2]",
+                                                        "durationNs":  1400
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [3,3], target = 6",
+                                                        "result":  "[0,1]",
+                                                        "expected":  "[0,1]",
+                                                        "durationNs":  900
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [-1,-2,-3,-4,-5], target = -8",
+                                                        "result":  "[2,4]",
+                                                        "expected":  "[2,4]",
+                                                        "durationNs":  1200
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [0,4,3,0], target = 0",
+                                                        "result":  "[0,3]",
+                                                        "expected":  "[0,3]",
+                                                        "durationNs":  1000
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [1,5,3,7], target = 8",
+                                                        "result":  "[1,2]",
+                                                        "expected":  "[0,3]",
+                                                        "durationNs":  900
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [10,-10,20,-20], target = 0",
+                                                        "result":  "[0,1]",
+                                                        "expected":  "[0,1]",
+                                                        "durationNs":  800
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [5,1,5], target = 10",
+                                                        "result":  "[0,2]",
+                                                        "expected":  "[0,2]",
+                                                        "durationNs":  700
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [100,200,300,400], target = 700",
+                                                        "result":  "[2,3]",
+                                                        "expected":  "[2,3]",
+                                                        "durationNs":  900
+                                                    },
+                                                    {
+                                                        "status":  "pass",
+                                                        "case":  "nums = [-10,20,30,40], target = 10",
+                                                        "result":  "[0,1]",
+                                                        "expected":  "[0,1]",
+                                                        "durationNs":  600
+                                                    }
+                                                ],
                       "solutions/valid-palindrome.cpp":  [
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"A man, a plan, a canal: Panama\"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  1000
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"race a car\"",
                                                                  "result":  "false",
-                                                                 "expected":  "false"
+                                                                 "expected":  "false",
+                                                                 "durationNs":  200
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \" \"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  0
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"0P\"",
                                                                  "result":  "false",
-                                                                 "expected":  "false"
+                                                                 "expected":  "false",
+                                                                 "durationNs":  100
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"No lemon, no melon\"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  400
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"Madam\"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  100
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"ab_a\"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  200
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"abc\"",
                                                                  "result":  "false",
-                                                                 "expected":  "false"
+                                                                 "expected":  "false",
+                                                                 "durationNs":  0
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"12321\"",
                                                                  "result":  "true",
-                                                                 "expected":  "true"
+                                                                 "expected":  "true",
+                                                                 "durationNs":  100
                                                              },
                                                              {
                                                                  "status":  "pass",
                                                                  "case":  "s = \"1a2\"",
                                                                  "result":  "false",
-                                                                 "expected":  "false"
+                                                                 "expected":  "false",
+                                                                 "durationNs":  100
                                                              }
                                                          ]
                   }
