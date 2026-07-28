@@ -4,6 +4,35 @@
     const supportedPaperPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
     const minimumContentsHeadings = 8;
     const minimumContentsWords = 4500;
+    const localizedText = {
+        en: {
+            untitled: 'Untitled paper',
+            unknownAuthor: 'Unknown author',
+            defaultStatus: 'Preprint · This paper has not been peer reviewed',
+            collectionTitle: 'Draft Papers',
+            reference: 'Reference',
+            authorSeparator: 'and',
+            abstract: 'Abstract',
+            references: 'References',
+            contents: 'Contents',
+            contentsContinuation: 'Contents — continued',
+            page: 'Page'
+        },
+        mk: {
+            untitled: 'Неименуван труд',
+            unknownAuthor: 'Непознат автор',
+            defaultStatus: 'Предобјава · Трудот не е рецензиран',
+            collectionTitle: 'Научни трудови',
+            reference: 'Референца',
+            authorSeparator: 'и',
+            abstract: 'Апстракт',
+            references: 'Литература',
+            contents: 'Содржина',
+            contentsContinuation: 'Содржина — продолжение',
+            page: 'Страница'
+        }
+    };
+    let text = localizedText.en;
 
     document.addEventListener('DOMContentLoaded', initialize);
 
@@ -13,7 +42,7 @@
         const slug = parameters.get('paper') || '';
 
         if (!supportedPaperPattern.test(slug)) {
-            renderError(reader, 'Трудот не е пронајден.');
+            renderError(reader, 'The paper was not found.');
             return;
         }
 
@@ -23,14 +52,15 @@
             const response = await fetch(sourcePath);
 
             if (!response.ok) {
-                throw new Error('Не може да се вчита изворниот LaTeX документ.');
+                throw new Error('The source LaTeX document could not be loaded.');
             }
 
             const source = await response.text();
             const paper = parseLatexPaper(source);
             const stagingPaper = renderStagingPaper(paper);
 
-            document.title = `${paper.title} — Научни трудови`;
+            document.documentElement.lang = paper.language;
+            document.title = `${paper.title} — ${text.collectionTitle}`;
             reader.replaceChildren(stagingPaper);
 
             if (document.fonts && document.fonts.ready) {
@@ -58,10 +88,12 @@
         const normalized = source.replace(/\r\n?/g, '\n');
         const cleanSource = stripComments(normalized);
         const bodyMatch = cleanSource.match(/\\begin\{document\}([\s\S]*?)\\end\{document\}/);
-        const title = readCommand(cleanSource, 'title') || 'Неименуван труд';
-        const author = readCommand(cleanSource, 'author') || 'Непознат автор';
+        const language = readCommand(cleanSource, 'paperlanguage') === 'mk' ? 'mk' : 'en';
+        text = localizedText[language];
+        const title = readCommand(cleanSource, 'title') || text.untitled;
+        const author = readCommand(cleanSource, 'author') || text.unknownAuthor;
         const date = readCommand(cleanSource, 'date') || '';
-        const status = readCommand(cleanSource, 'paperstatus') || 'Предобјава · Трудот не е рецензиран';
+        const status = readCommand(cleanSource, 'paperstatus') || text.defaultStatus;
         let body = bodyMatch ? bodyMatch[1] : cleanSource;
         const abstractMatch = body.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
         const abstract = abstractMatch ? abstractMatch[1].trim() : '';
@@ -77,6 +109,7 @@
             title,
             author,
             date,
+            language,
             status,
             abstract,
             content: renderDocumentBody(body, bibliography.citations),
@@ -274,7 +307,7 @@
                 `<a class="paper-citation" href="#ref-${escapeAttribute(cleanKey)}"`,
                 ` data-reference="${referenceText}"`,
                 ` title="${referenceText}"`,
-                ` aria-label="Референца ${reference.number}: ${referenceText}">`,
+                ` aria-label="${text.reference} ${reference.number}: ${referenceText}">`,
                 `${reference.number}</a>`
             ].join('');
         });
@@ -324,7 +357,7 @@
         title.textContent = paper.title;
         authors.className = 'paper-authors';
         authors.innerHTML = renderInline(paper.author, new Map())
-            .replace(/\\and/g, '<span class="author-separator">и</span>');
+            .replace(/\\and/g, `<span class="author-separator">${text.authorSeparator}</span>`);
         date.className = 'paper-date';
         date.textContent = paper.date;
         header.append(manuscriptStatus, title, authors, date);
@@ -337,7 +370,7 @@
         const abstractBody = document.createElement('p');
 
         abstract.className = 'paper-abstract';
-        abstractTitle.textContent = 'Апстракт';
+        abstractTitle.textContent = text.abstract;
         abstractBody.innerHTML = renderInline(abstractText, new Map());
         abstract.append(abstractTitle, abstractBody);
         return abstract;
@@ -350,7 +383,7 @@
 
         const title = document.createElement('h2');
         title.className = 'paper-references-title';
-        title.textContent = 'Литература';
+        title.textContent = text.references;
         flow.appendChild(title);
 
         references.forEach(reference => {
@@ -460,9 +493,9 @@
         const title = document.createElement('h2');
 
         flow.className = 'paper-toc-flow';
-        flow.setAttribute('aria-label', 'Содржина');
+        flow.setAttribute('aria-label', text.contents);
         title.className = 'paper-toc-title';
-        title.textContent = continuation ? 'Содржина — продолжение' : 'Содржина';
+        title.textContent = continuation ? text.contentsContinuation : text.contents;
         flow.appendChild(title);
         page.querySelector('.paper-page-main').appendChild(flow);
         return page;
@@ -746,7 +779,7 @@
 
         page.className = `paper-sheet paper-page paper-style-ieee ${extraClass}`;
         page.dataset.pageNumber = String(pageNumber);
-        page.setAttribute('aria-label', `Страница ${pageNumber}`);
+        page.setAttribute('aria-label', `${text.page} ${pageNumber}`);
 
         main.className = 'paper-page-main';
         page.appendChild(main);

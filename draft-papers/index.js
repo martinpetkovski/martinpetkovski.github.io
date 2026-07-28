@@ -11,14 +11,14 @@
             const response = await fetch('/draft-papers/papers.json');
 
             if (!response.ok) {
-                throw new Error('Не може да се вчита списокот на трудови.');
+                throw new Error('The paper list could not be loaded.');
             }
 
             const manifest = await response.json();
             const papers = Array.isArray(manifest.papers) ? manifest.papers : [];
 
             list.replaceChildren(...papers.map(renderPaper));
-            status.textContent = papers.length === 0 ? 'Сè уште нема објавени трудови.' : '';
+            status.textContent = papers.length === 0 ? 'No papers have been published yet.' : '';
         } catch (error) {
             status.classList.add('is-error');
             status.textContent = error.message;
@@ -42,20 +42,20 @@
         title.appendChild(link);
 
         metadata.className = 'draft-card-meta';
-        metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Работна верзија'} · ${paper.format || 'Научен труд'}`;
+        metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Working paper'} · ${paper.format || 'Research paper'}`;
         abstract.className = 'draft-card-abstract';
         abstract.textContent = paper.abstract || '';
 
         actions.className = 'draft-card-actions';
         readLink.href = link.href;
-        readLink.textContent = 'Прочитај го трудот';
+        readLink.textContent = 'Read the paper';
         sourceLink.href = `/draft-papers/papers/${encodeURIComponent(paper.slug)}.tex`;
-        sourceLink.textContent = 'Погледни го LaTeX изворот';
+        sourceLink.textContent = 'View LaTeX source';
         actions.append(readLink, ' · ', sourceLink);
 
         if (paper.pdf) {
             pdfLink.href = paper.pdf;
-            pdfLink.textContent = 'Изворен PDF';
+            pdfLink.textContent = 'Original PDF';
             actions.append(' · ', pdfLink);
         }
 

@@ -2,12 +2,13 @@
   "papers": [
     {
       "slug": "masters-thesis",
-      "title": "Анализа и примена на машини на состојби при дизајнирање на разгранувачки системи, со посебен осврт на видео игри",
-      "author": "Мартин Петковски",
-      "updated": "Септември 2022",
-      "status": "Магистерски труд",
-      "format": "Формат на научен труд",
-      "abstract": "Трудот анализира имплементации на машини на состојби за разгранувачки системи, предлага метод и алатки за нелинеарни наративи насочени кон авторите и го демонстрира пристапот преку видео игра со разгранувачки дијалози интегрирана во Unreal Engine 5.",
+      "title": "Analysis and Application of State Machines in the Design of Branching Systems, with Special Emphasis on Video Games",
+      "author": "Martin Petkovski",
+      "updated": "September 2022",
+      "status": "Master's Thesis",
+      "format": "Journal Paper Format",
+      "language": "Macedonian",
+      "abstract": "This thesis analyzes state-machine implementations for branching systems, proposes author-oriented methods and tools for nonlinear narratives, and demonstrates the approach through a branching-dialogue video game integrated with Unreal Engine 5.",
       "pdf": "/MartinPetkovski-Master.pdf"
     }
   ]
