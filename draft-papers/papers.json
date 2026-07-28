@@ -1,0 +1,13 @@
+{
+  "papers": [
+    {
+      "slug": "lorem-ipsum",
+      "title": "Lorem Ipsum as a Placeholder Corpus for Scientific Typesetting",
+      "author": "Martin Petkovski",
+      "updated": "July 2026",
+      "status": "Draft",
+      "format": "IEEE-style",
+      "abstract": "A deliberately unserious test paper for validating the typography, structure, mathematics, citations, and print layout of the Draft Papers section."
+    }
+  ]
+}

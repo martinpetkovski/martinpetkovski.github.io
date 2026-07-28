@@ -1,0 +1,406 @@
+.draft-index-page {
+    max-width: 760px;
+}
+
+.draft-introduction h2 {
+    margin-bottom: 6px;
+}
+
+.draft-status {
+    color: #64748b;
+    font-size: 11px;
+    margin: 10px 0;
+}
+
+.draft-status:empty {
+    display: none;
+}
+
+.draft-status.is-error {
+    color: #b91c1c;
+    font-weight: bold;
+}
+
+.draft-list {
+    display: grid;
+    gap: 10px;
+}
+
+.draft-card {
+    background: #fff;
+    border: 1px solid #4a7fc4;
+    border-left-width: 5px;
+    padding: 10px 12px;
+}
+
+.draft-card h3 {
+    font-size: 13px;
+    margin: 0 0 4px;
+    text-transform: none;
+}
+
+.draft-card-meta {
+    color: #64748b;
+    font-size: 10px;
+    margin: 0 0 7px;
+    text-transform: uppercase;
+}
+
+.draft-card-abstract {
+    margin: 0 0 7px;
+}
+
+.draft-card-actions {
+    font-size: 11px;
+    margin: 0;
+}
+
+.paper-reader-body {
+    background: #dfe3e8;
+    color: #111;
+    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern Serif", Georgia, "Times New Roman", serif;
+    margin: 0;
+}
+
+.paper-reader-body *,
+.paper-reader-body *::before,
+.paper-reader-body *::after {
+    box-sizing: border-box;
+}
+
+.paper-reader {
+    padding: 24px 12px 48px;
+}
+
+.paper-loading,
+.paper-error {
+    background: #fff;
+    border: 1px solid #94a3b8;
+    font-family: Verdana, Tahoma, Arial, sans-serif;
+    margin: 30px auto;
+    max-width: 680px;
+    padding: 14px;
+}
+
+.paper-error {
+    color: #b91c1c;
+}
+
+.paper-sheet {
+    background: #fff;
+    box-shadow: 0 2px 18px rgba(15, 23, 42, .2);
+    font-size: 11pt;
+    line-height: 1.34;
+    margin: 0 auto;
+    min-height: 297mm;
+    padding: 20mm 23mm 24mm;
+    width: 210mm;
+}
+
+.paper-title-block {
+    margin-bottom: 20pt;
+    position: relative;
+    text-align: center;
+}
+
+.paper-manuscript-status {
+    color: #555;
+    font-family: Arial, sans-serif;
+    font-size: 7pt;
+    letter-spacing: .04em;
+    margin: 0 0 7pt;
+    text-transform: uppercase;
+}
+
+.paper-title-block h1 {
+    color: #111;
+    font-family: inherit;
+    font-size: 17pt;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.18;
+    margin: 0 auto 12pt;
+    max-width: 88%;
+    text-transform: none;
+}
+
+.paper-authors {
+    font-size: 11pt;
+    margin-bottom: 4pt;
+}
+
+.author-separator {
+    margin: 0 1em;
+}
+
+.paper-date {
+    font-size: 10pt;
+}
+
+.paper-abstract {
+    font-size: 9.5pt;
+    margin: 0 auto 18pt;
+    max-width: 86%;
+}
+
+.paper-abstract > strong {
+    display: block;
+    font-size: 10pt;
+    margin-bottom: 3pt;
+    text-align: center;
+}
+
+.paper-abstract p {
+    margin: 0;
+    text-align: justify;
+}
+
+.paper-content h2,
+.paper-references h2 {
+    background: transparent;
+    color: #111;
+    font-family: inherit;
+    font-size: 12pt;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.25;
+    margin: 16pt 0 6pt;
+    padding: 0;
+    text-transform: none;
+}
+
+.paper-content h3 {
+    color: #111;
+    font-family: inherit;
+    font-size: 11pt;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin: 12pt 0 5pt;
+    text-transform: none;
+}
+
+.paper-content h4 {
+    display: inline;
+    font-size: 11pt;
+    font-style: italic;
+    margin: 0;
+}
+
+.paper-content p {
+    margin: 0;
+    text-align: justify;
+    text-indent: 1.5em;
+}
+
+.paper-content h2 + p,
+.paper-content h3 + p,
+.paper-content .paper-equation + p,
+.paper-content ul + p,
+.paper-content ol + p {
+    text-indent: 0;
+}
+
+.paper-content ul,
+.paper-content ol {
+    margin: 6pt 0 8pt 2.2em;
+    padding: 0;
+}
+
+.paper-content ul {
+    list-style: disc;
+}
+
+.paper-content li {
+    margin: 2pt 0;
+}
+
+.paper-equation {
+    margin: 9pt 0;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.paper-citation {
+    color: #111;
+    text-decoration: none;
+}
+
+.latex-logo {
+    white-space: nowrap;
+}
+
+.latex-logo sup {
+    font-size: .66em;
+    margin-left: -.12em;
+    margin-right: -.18em;
+    vertical-align: .45em;
+}
+
+.latex-logo sub {
+    font-size: .66em;
+    margin-left: -.12em;
+    margin-right: -.08em;
+    vertical-align: -.15em;
+}
+
+.paper-references {
+    font-size: 9pt;
+}
+
+.paper-references ol {
+    margin: 0;
+    padding-left: 2em;
+}
+
+.paper-references li {
+    margin: 3pt 0;
+    padding-left: .3em;
+}
+
+.paper-style-ieee {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    line-height: 1.08;
+    padding: 19mm 16mm 24mm;
+}
+
+.paper-style-ieee .paper-title-block {
+    margin-bottom: 10pt;
+}
+
+.paper-style-ieee .paper-title-block h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 24pt;
+    font-weight: normal;
+    line-height: 1.05;
+    margin-bottom: 10pt;
+    max-width: 92%;
+}
+
+.paper-style-ieee .paper-authors {
+    font-size: 11pt;
+}
+
+.paper-style-ieee .paper-date {
+    display: none;
+}
+
+.paper-style-ieee .paper-abstract {
+    font-size: 9pt;
+    margin: 0 0 8pt;
+    max-width: none;
+}
+
+.paper-style-ieee .paper-abstract > strong {
+    display: inline;
+    font-style: italic;
+}
+
+.paper-style-ieee .paper-abstract > strong::after {
+    content: "—";
+}
+
+.paper-style-ieee .paper-abstract p {
+    display: inline;
+    font-weight: bold;
+}
+
+.paper-style-ieee .paper-content {
+    column-count: 2;
+    column-gap: 6mm;
+}
+
+.paper-style-ieee .paper-content h2 {
+    break-after: avoid;
+    break-inside: avoid;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    font-weight: normal;
+    margin: 10pt 0 4pt;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.paper-style-ieee .paper-content h3 {
+    break-after: avoid;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    font-style: italic;
+    margin: 7pt 0 3pt;
+}
+
+.paper-style-ieee .paper-content p {
+    text-indent: 1em;
+}
+
+.paper-style-ieee .paper-equation,
+.paper-style-ieee .paper-content li {
+    break-inside: avoid;
+}
+
+.paper-style-ieee .paper-references {
+    column-count: 2;
+    column-gap: 6mm;
+    font-size: 8pt;
+}
+
+.paper-style-ieee .paper-references h2 {
+    column-span: all;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+@media (max-width: 850px) {
+    .paper-reader {
+        overflow-x: auto;
+        padding: 12px 0 32px;
+    }
+
+    .paper-sheet {
+        box-shadow: none;
+        min-height: 0;
+        padding: 14mm 12mm 18mm;
+        width: min(100%, 210mm);
+    }
+
+    .paper-style-ieee .paper-content,
+    .paper-style-ieee .paper-references {
+        column-count: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .paper-sheet {
+        font-size: 10.5pt;
+    }
+
+    .paper-title-block h1 {
+        max-width: none;
+    }
+}
+
+@page {
+    margin: 20mm 23mm 24mm;
+    size: A4;
+}
+
+@media print {
+    .paper-reader-body {
+        background: #fff;
+    }
+
+    .paper-reader {
+        padding: 0;
+    }
+
+    .paper-sheet {
+        box-shadow: none;
+        margin: 0;
+        min-height: 0;
+        padding: 0;
+        width: auto;
+    }
+}
