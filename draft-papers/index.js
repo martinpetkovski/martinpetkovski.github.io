@@ -11,14 +11,14 @@
             const response = await fetch('/draft-papers/papers.json');
 
             if (!response.ok) {
-                throw new Error('Could not load the draft paper list.');
+                throw new Error('Не може да се вчита списокот на трудови.');
             }
 
             const manifest = await response.json();
             const papers = Array.isArray(manifest.papers) ? manifest.papers : [];
 
             list.replaceChildren(...papers.map(renderPaper));
-            status.textContent = papers.length === 0 ? 'No draft papers yet.' : '';
+            status.textContent = papers.length === 0 ? 'Сè уште нема објавени трудови.' : '';
         } catch (error) {
             status.classList.add('is-error');
             status.textContent = error.message;
@@ -34,6 +34,7 @@
         const actions = document.createElement('p');
         const readLink = document.createElement('a');
         const sourceLink = document.createElement('a');
+        const pdfLink = document.createElement('a');
 
         article.className = 'draft-card';
         link.href = `/draft-papers/paper.html?paper=${encodeURIComponent(paper.slug)}`;
@@ -41,16 +42,22 @@
         title.appendChild(link);
 
         metadata.className = 'draft-card-meta';
-        metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Draft'} · ${paper.format || 'Journal article'}`;
+        metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Работна верзија'} · ${paper.format || 'Научен труд'}`;
         abstract.className = 'draft-card-abstract';
         abstract.textContent = paper.abstract || '';
 
         actions.className = 'draft-card-actions';
         readLink.href = link.href;
-        readLink.textContent = 'Read paper';
+        readLink.textContent = 'Прочитај го трудот';
         sourceLink.href = `/draft-papers/papers/${encodeURIComponent(paper.slug)}.tex`;
-        sourceLink.textContent = 'View LaTeX source';
+        sourceLink.textContent = 'Погледни го LaTeX изворот';
         actions.append(readLink, ' · ', sourceLink);
+
+        if (paper.pdf) {
+            pdfLink.href = paper.pdf;
+            pdfLink.textContent = 'Изворен PDF';
+            actions.append(' · ', pdfLink);
+        }
 
         article.append(title, metadata, abstract, actions);
         return article;

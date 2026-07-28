@@ -1,13 +1,14 @@
 {
   "papers": [
     {
-      "slug": "lorem-ipsum",
-      "title": "Lorem Ipsum as a Placeholder Corpus for Scientific Typesetting",
-      "author": "Martin Petkovski",
-      "updated": "July 2026",
-      "status": "Draft",
-      "format": "IEEE-style",
-      "abstract": "A deliberately unserious test paper for validating the typography, structure, mathematics, citations, and print layout of the Draft Papers section."
+      "slug": "masters-thesis",
+      "title": "Анализа и примена на машини на состојби при дизајнирање на разгранувачки системи, со посебен осврт на видео игри",
+      "author": "Мартин Петковски",
+      "updated": "Септември 2022",
+      "status": "Магистерски труд",
+      "format": "Формат на научен труд",
+      "abstract": "Трудот анализира имплементации на машини на состојби за разгранувачки системи, предлага метод и алатки за нелинеарни наративи насочени кон авторите и го демонстрира пристапот преку видео игра со разгранувачки дијалози интегрирана во Unreal Engine 5.",
+      "pdf": "/MartinPetkovski-Master.pdf"
     }
   ]
 }

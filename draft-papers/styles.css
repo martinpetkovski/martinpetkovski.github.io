@@ -56,10 +56,11 @@
 }
 
 .paper-reader-body {
-    background: #dfe3e8;
+    background: #cfd4da;
     color: #111;
-    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern Serif", Georgia, "Times New Roman", serif;
+    font-family: "CMU Serif", "Computer Modern Serif", serif;
     margin: 0;
+    overflow-x: auto;
 }
 
 .paper-reader-body *,
@@ -69,14 +70,22 @@
 }
 
 .paper-reader {
-    padding: 24px 12px 48px;
+    min-width: calc(210mm + 32px);
+    padding: 24px 16px 48px;
+}
+
+.paper-document {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .paper-loading,
 .paper-error {
     background: #fff;
     border: 1px solid #94a3b8;
-    font-family: Verdana, Tahoma, Arial, sans-serif;
+    font-family: "CMU Serif", "Computer Modern Serif", serif;
     margin: 30px auto;
     max-width: 680px;
     padding: 14px;
@@ -86,26 +95,51 @@
     color: #b91c1c;
 }
 
-.paper-sheet {
-    background: #fff;
-    box-shadow: 0 2px 18px rgba(15, 23, 42, .2);
-    font-size: 11pt;
-    line-height: 1.34;
-    margin: 0 auto;
-    min-height: 297mm;
-    padding: 20mm 23mm 24mm;
+.paper-staging {
+    left: -200vw;
+    padding: 19mm 16mm 18mm;
+    pointer-events: none;
+    position: absolute;
+    visibility: hidden;
     width: 210mm;
 }
 
+.paper-sheet {
+    background: #fff;
+    box-shadow: 0 3px 20px rgba(15, 23, 42, .24);
+    height: 297mm;
+    margin: 0 auto;
+    max-height: 297mm;
+    min-height: 297mm;
+    overflow: hidden;
+    padding: 19mm 16mm 18mm;
+    position: relative;
+    width: 210mm;
+}
+
+.paper-style-ieee {
+    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-size: 10pt;
+    line-height: 1.12;
+}
+
+.paper-page-main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .paper-title-block {
-    margin-bottom: 20pt;
+    margin: 0 0 10pt;
     position: relative;
     text-align: center;
 }
 
 .paper-manuscript-status {
     color: #555;
-    font-family: Arial, sans-serif;
+    font-family: inherit;
     font-size: 7pt;
     letter-spacing: .04em;
     margin: 0 0 7pt;
@@ -114,19 +148,19 @@
 
 .paper-title-block h1 {
     color: #111;
-    font-family: inherit;
-    font-size: 17pt;
-    font-weight: bold;
+    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-size: 24pt;
+    font-weight: normal;
     letter-spacing: 0;
-    line-height: 1.18;
-    margin: 0 auto 12pt;
-    max-width: 88%;
+    line-height: 1.08;
+    margin: 0 auto 11pt;
+    max-width: 94%;
     text-transform: none;
 }
 
 .paper-authors {
     font-size: 11pt;
-    margin-bottom: 4pt;
+    margin-bottom: 3pt;
 }
 
 .author-separator {
@@ -134,95 +168,279 @@
 }
 
 .paper-date {
-    font-size: 10pt;
+    font-size: 9.5pt;
 }
 
 .paper-abstract {
-    font-size: 9.5pt;
-    margin: 0 auto 18pt;
-    max-width: 86%;
+    font-size: 9pt;
+    margin: 0 0 10pt;
 }
 
 .paper-abstract > strong {
-    display: block;
-    font-size: 10pt;
-    margin-bottom: 3pt;
-    text-align: center;
+    font-style: normal;
+}
+
+.paper-abstract > strong::after {
+    content: "—";
+    margin-right: .35em;
 }
 
 .paper-abstract p {
-    margin: 0;
-    text-align: justify;
-}
-
-.paper-content h2,
-.paper-references h2 {
-    background: transparent;
-    color: #111;
-    font-family: inherit;
-    font-size: 12pt;
-    font-weight: bold;
-    letter-spacing: 0;
-    line-height: 1.25;
-    margin: 16pt 0 6pt;
-    padding: 0;
-    text-transform: none;
-}
-
-.paper-content h3 {
-    color: #111;
-    font-family: inherit;
-    font-size: 11pt;
-    font-weight: bold;
-    letter-spacing: 0;
-    margin: 12pt 0 5pt;
-    text-transform: none;
-}
-
-.paper-content h4 {
     display: inline;
-    font-size: 11pt;
-    font-style: italic;
-    margin: 0;
-}
-
-.paper-content p {
+    font-weight: bold;
     margin: 0;
     text-align: justify;
-    text-indent: 1.5em;
 }
 
-.paper-content h2 + p,
-.paper-content h3 + p,
-.paper-content .paper-equation + p,
-.paper-content ul + p,
-.paper-content ol + p {
+.paper-page-flow {
+    column-count: 2;
+    column-fill: auto;
+    column-gap: 6mm;
+    flex: 1;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    widows: 2;
+}
+
+.paper-last-content-page .paper-page-flow {
+    column-fill: balance;
+}
+
+.paper-page-flow h2 {
+    -webkit-column-break-after: avoid;
+    break-after: avoid-column;
+    break-inside: avoid;
+    color: #111;
+    font-family: inherit;
+    font-size: 10pt;
+    font-weight: normal;
+    letter-spacing: 0;
+    line-height: 1.2;
+    margin: 10pt 0 4pt;
+    padding: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.paper-page-flow h2:first-child {
+    margin-top: 0;
+}
+
+.paper-page-flow h3 {
+    -webkit-column-break-after: avoid;
+    break-after: avoid-column;
+    break-inside: avoid;
+    color: #111;
+    font-family: inherit;
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: 0;
+    line-height: 1.2;
+    margin: 7pt 0 3pt;
+    text-transform: none;
+}
+
+.paper-page-flow h4 {
+    -webkit-column-break-after: avoid;
+    break-after: avoid-column;
+    break-inside: avoid;
+    color: #111;
+    display: inline;
+    font-size: 9.5pt;
+    font-style: normal;
+    font-weight: normal;
+    margin: 0;
+}
+
+.paper-page-flow h4::after {
+    content: ": ";
+}
+
+.paper-page-flow p {
+    margin: 0;
+    orphans: 2;
+    text-align: justify;
+    text-indent: 1em;
+    widows: 2;
+}
+
+.paper-page-flow p.paper-continuation {
     text-indent: 0;
 }
 
-.paper-content ul,
-.paper-content ol {
-    margin: 6pt 0 8pt 2.2em;
+.paper-page-flow h2 + p,
+.paper-page-flow h3 + p,
+.paper-page-flow h4 + p,
+.paper-page-flow .paper-equation + p,
+.paper-page-flow ul + p,
+.paper-page-flow ol + p {
+    text-indent: 0;
+}
+
+.paper-page-flow h4 + p {
+    display: inline;
+}
+
+.paper-page-flow ul,
+.paper-page-flow ol {
+    margin: 5pt 0 7pt 2em;
     padding: 0;
 }
 
-.paper-content ul {
+.paper-page-flow ul {
     list-style: disc;
 }
 
-.paper-content li {
+.paper-page-flow li {
+    break-inside: auto;
     margin: 2pt 0;
 }
 
+.paper-page-flow ul.paper-continuation,
+.paper-page-flow ol.paper-continuation {
+    margin-top: 0;
+}
+
+.paper-page-flow code {
+    font-family: "CMU Typewriter Text", "Computer Modern Typewriter", monospace;
+    font-size: .92em;
+}
+
 .paper-equation {
-    margin: 9pt 0;
+    break-inside: avoid;
+    margin: 8pt 0;
     overflow-x: auto;
     text-align: center;
 }
 
+.paper-reference-entry {
+    font-size: 8pt;
+    line-height: 1.08;
+    margin-bottom: 3pt !important;
+    padding-left: 1.7em;
+    text-indent: -1.7em !important;
+}
+
+.paper-reference-entry.paper-continuation {
+    padding-left: 0;
+    text-indent: 0 !important;
+}
+
+.paper-reference-number {
+    white-space: nowrap;
+}
+
 .paper-citation {
     color: #111;
+    cursor: help;
+    position: relative;
     text-decoration: none;
+}
+
+.paper-citation::after {
+    background: #111827;
+    border-radius: 2px;
+    bottom: calc(100% + 7px);
+    color: #fff;
+    content: attr(data-reference);
+    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-size: 8pt;
+    font-style: normal;
+    font-weight: normal;
+    left: 50%;
+    line-height: 1.35;
+    max-width: min(78vw, 420px);
+    opacity: 0;
+    padding: 7px 9px;
+    pointer-events: none;
+    position: absolute;
+    text-align: left;
+    text-indent: 0;
+    text-transform: none;
+    transform: translate(-50%, 3px);
+    transition: opacity .12s ease, transform .12s ease;
+    visibility: hidden;
+    white-space: normal;
+    width: max-content;
+    z-index: 20;
+}
+
+.paper-citation:hover::after,
+.paper-citation:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    visibility: visible;
+}
+
+.paper-title-block em,
+.paper-title-block i,
+.paper-abstract em,
+.paper-abstract i,
+.paper-page-flow em,
+.paper-page-flow i,
+.paper-toc-flow em,
+.paper-toc-flow i {
+    font-style: normal;
+}
+
+.paper-toc-flow {
+    height: 100%;
+    overflow: hidden;
+}
+
+.paper-toc-title {
+    font-size: 10pt;
+    font-weight: normal;
+    margin: 0 0 8pt;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.paper-toc-entry {
+    align-items: baseline;
+    color: #111;
+    display: flex;
+    font-size: 9.5pt;
+    gap: .45em;
+    line-height: 1.25;
+    margin: 0 0 3.5pt;
+    text-decoration: none;
+}
+
+.paper-toc-entry:hover .paper-toc-label,
+.paper-toc-entry:focus-visible .paper-toc-label {
+    text-decoration: underline;
+}
+
+.paper-toc-level-2 {
+    font-weight: bold;
+    margin-top: 5pt;
+}
+
+.paper-toc-level-3 {
+    padding-left: 1.4em;
+}
+
+.paper-toc-level-4 {
+    font-size: 9pt;
+    padding-left: 2.8em;
+}
+
+.paper-toc-label {
+    max-width: 88%;
+}
+
+.paper-toc-leader {
+    border-bottom: 1px dotted #777;
+    flex: 1;
+    min-width: 1.5em;
+}
+
+.paper-toc-page-number {
+    min-width: 2.2em;
+    text-align: right;
 }
 
 .latex-logo {
@@ -243,147 +461,23 @@
     vertical-align: -.15em;
 }
 
-.paper-references {
-    font-size: 9pt;
-}
-
-.paper-references ol {
-    margin: 0;
-    padding-left: 2em;
-}
-
-.paper-references li {
-    margin: 3pt 0;
-    padding-left: .3em;
-}
-
-.paper-style-ieee {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 10pt;
-    line-height: 1.08;
-    padding: 19mm 16mm 24mm;
-}
-
-.paper-style-ieee .paper-title-block {
-    margin-bottom: 10pt;
-}
-
-.paper-style-ieee .paper-title-block h1 {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 24pt;
-    font-weight: normal;
-    line-height: 1.05;
-    margin-bottom: 10pt;
-    max-width: 92%;
-}
-
-.paper-style-ieee .paper-authors {
-    font-size: 11pt;
-}
-
-.paper-style-ieee .paper-date {
-    display: none;
-}
-
-.paper-style-ieee .paper-abstract {
-    font-size: 9pt;
-    margin: 0 0 8pt;
-    max-width: none;
-}
-
-.paper-style-ieee .paper-abstract > strong {
-    display: inline;
-    font-style: italic;
-}
-
-.paper-style-ieee .paper-abstract > strong::after {
-    content: "—";
-}
-
-.paper-style-ieee .paper-abstract p {
-    display: inline;
-    font-weight: bold;
-}
-
-.paper-style-ieee .paper-content {
-    column-count: 2;
-    column-gap: 6mm;
-}
-
-.paper-style-ieee .paper-content h2 {
-    break-after: avoid;
-    break-inside: avoid;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 10pt;
-    font-weight: normal;
-    margin: 10pt 0 4pt;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.paper-style-ieee .paper-content h3 {
-    break-after: avoid;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 10pt;
-    font-style: italic;
-    margin: 7pt 0 3pt;
-}
-
-.paper-style-ieee .paper-content p {
-    text-indent: 1em;
-}
-
-.paper-style-ieee .paper-equation,
-.paper-style-ieee .paper-content li {
-    break-inside: avoid;
-}
-
-.paper-style-ieee .paper-references {
-    column-count: 2;
-    column-gap: 6mm;
-    font-size: 8pt;
-}
-
-.paper-style-ieee .paper-references h2 {
-    column-span: all;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 10pt;
-    font-weight: normal;
-    text-align: center;
-    text-transform: uppercase;
-}
-
 @media (max-width: 850px) {
     .paper-reader {
-        overflow-x: auto;
-        padding: 12px 0 32px;
+        padding-bottom: 32px;
+        padding-top: 12px;
+    }
+
+    .paper-document {
+        gap: 12px;
     }
 
     .paper-sheet {
-        box-shadow: none;
-        min-height: 0;
-        padding: 14mm 12mm 18mm;
-        width: min(100%, 210mm);
-    }
-
-    .paper-style-ieee .paper-content,
-    .paper-style-ieee .paper-references {
-        column-count: 1;
-    }
-}
-
-@media (max-width: 600px) {
-    .paper-sheet {
-        font-size: 10.5pt;
-    }
-
-    .paper-title-block h1 {
-        max-width: none;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, .2);
     }
 }
 
 @page {
-    margin: 20mm 23mm 24mm;
+    margin: 0;
     size: A4;
 }
 
@@ -393,14 +487,21 @@
     }
 
     .paper-reader {
+        min-width: 0;
         padding: 0;
     }
 
+    .paper-document {
+        display: block;
+    }
+
     .paper-sheet {
+        break-after: page;
         box-shadow: none;
         margin: 0;
-        min-height: 0;
-        padding: 0;
-        width: auto;
+    }
+
+    .paper-sheet:last-child {
+        break-after: auto;
     }
 }
