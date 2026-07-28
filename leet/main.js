@@ -522,6 +522,7 @@
         const pre = createElement('pre', 'solution-code');
         const code = document.createElement('code');
         const sourceLines = solution.code.replace(/\n$/, '').split('\n');
+        const highlightedSourceLines = highlightSourceLines(solution.code.replace(/\n$/, ''));
         let activeSteps = [];
         let activeStepIndex = 0;
 
@@ -623,7 +624,13 @@
                 const sourceLineNumber = solution.codeStartLine + index;
                 const line = createElement('span', 'solution-code-line');
                 const lineNumber = createElement('span', 'solution-code-line-number', String(sourceLineNumber));
-                const lineText = createElement('span', 'solution-code-line-text', sourceLine || ' ');
+                const lineText = createElement('span', 'solution-code-line-text');
+
+                if (highlightedSourceLines) {
+                    lineText.innerHTML = highlightedSourceLines[index] || '&nbsp;';
+                } else {
+                    lineText.textContent = sourceLine || ' ';
+                }
 
                 line.append(lineNumber, lineText);
 
@@ -634,7 +641,7 @@
                 fragment.appendChild(line);
             });
 
-            code.className = 'solution-code-debug';
+            code.className = 'solution-code-debug hljs';
             code.replaceChildren(fragment);
             stepStatus.textContent = `Step ${activeStepIndex + 1} of ${activeSteps.length} · line ${activeStep.line} · ${formatDuration(activeStep.durationNs)} · ${formatMemory(activeStep.heapBytes)} heap (${formatSignedMemory(activeStep.heapDeltaBytes)})`;
             renderRuntimeState(activeStep);
@@ -702,6 +709,33 @@
         pre.appendChild(code);
         wrapper.append(toolbar, runtimePanel, allStepsPanel, pre);
         return { element: wrapper, selectTrace };
+    }
+
+    function highlightSourceLines(source) {
+        if (!window.hljs) {
+            return null;
+        }
+
+        const highlighted = window.hljs.highlight(source, {
+            language: 'cpp',
+            ignoreIllegals: true
+        }).value;
+        const activeSpans = [];
+
+        return highlighted.split('\n').map(line => {
+            const openingSpans = activeSpans.join('');
+            const tags = line.match(/<span class="[^"]+">|<\/span>/g) || [];
+
+            tags.forEach(tag => {
+                if (tag === '</span>') {
+                    activeSpans.pop();
+                } else {
+                    activeSpans.push(tag);
+                }
+            });
+
+            return openingSpans + line + '</span>'.repeat(activeSpans.length);
+        });
     }
 
     function renderTestResults(testResults, executionTraces, openTrace) {
