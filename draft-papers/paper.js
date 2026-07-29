@@ -13,9 +13,9 @@
             reference: 'Reference',
             authorSeparator: 'and',
             abstract: 'Abstract',
+            indexTerms: 'Index Terms',
             references: 'References',
             contents: 'Contents',
-            contentsContinuation: 'Contents — continued',
             page: 'Page'
         },
         mk: {
@@ -26,9 +26,9 @@
             reference: 'Референца',
             authorSeparator: 'и',
             abstract: 'Апстракт',
+            indexTerms: 'Клучни зборови',
             references: 'Литература',
             contents: 'Содржина',
-            contentsContinuation: 'Содржина — продолжение',
             page: 'Страница'
         }
     };
@@ -94,6 +94,7 @@
         const author = readCommand(cleanSource, 'author') || text.unknownAuthor;
         const date = readCommand(cleanSource, 'date') || '';
         const status = readCommand(cleanSource, 'paperstatus') || text.defaultStatus;
+        const keywords = readCommand(cleanSource, 'paperkeywords');
         let body = bodyMatch ? bodyMatch[1] : cleanSource;
         const abstractMatch = body.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
         const abstract = abstractMatch ? abstractMatch[1].trim() : '';
@@ -112,6 +113,7 @@
             language,
             status,
             abstract,
+            keywords,
             content: renderDocumentBody(body, bibliography.citations),
             references: bibliography.items
         };
@@ -338,6 +340,7 @@
         article.append(
             createTitleBlock(paper),
             createAbstract(paper.abstract),
+            createKeywords(paper.keywords),
             flow
         );
 
@@ -346,21 +349,15 @@
 
     function createTitleBlock(paper) {
         const header = document.createElement('header');
-        const manuscriptStatus = document.createElement('p');
         const title = document.createElement('h1');
         const authors = document.createElement('div');
-        const date = document.createElement('div');
 
         header.className = 'paper-title-block';
-        manuscriptStatus.className = 'paper-manuscript-status';
-        manuscriptStatus.textContent = paper.status;
         title.textContent = paper.title;
         authors.className = 'paper-authors';
         authors.innerHTML = renderInline(paper.author, new Map())
             .replace(/\\and/g, `<span class="author-separator">${text.authorSeparator}</span>`);
-        date.className = 'paper-date';
-        date.textContent = paper.date;
-        header.append(manuscriptStatus, title, authors, date);
+        header.append(title, authors);
         return header;
     }
 
@@ -374,6 +371,18 @@
         abstractBody.innerHTML = renderInline(abstractText, new Map());
         abstract.append(abstractTitle, abstractBody);
         return abstract;
+    }
+
+    function createKeywords(keywordsText) {
+        const keywords = document.createElement('section');
+        const keywordsTitle = document.createElement('strong');
+        const keywordsBody = document.createElement('p');
+
+        keywords.className = 'paper-keywords';
+        keywordsTitle.textContent = text.indexTerms;
+        keywordsBody.innerHTML = renderInline(keywordsText, new Map());
+        keywords.append(keywordsTitle, keywordsBody);
+        return keywords;
     }
 
     function appendReferenceBlocks(flow, references) {
@@ -411,9 +420,11 @@
     function paginatePaper(paper, stagingPaper, reader) {
         const documentView = document.createElement('div');
         const sourceFlow = stagingPaper.querySelector('.paper-flow-source');
-        const headings = Array.from(sourceFlow.querySelectorAll('h2, h3, h4'));
+        const headings = Array.from(sourceFlow.querySelectorAll(':scope > h2'));
         const showContents = shouldShowContents(sourceFlow, headings);
         const pages = [];
+        const abstractSection = stagingPaper.querySelector('.paper-abstract');
+        const keywordsSection = stagingPaper.querySelector('.paper-keywords');
         let nextPageNumber = 1;
 
         documentView.className = 'paper-document';
@@ -421,33 +432,49 @@
         documentView.setAttribute('aria-label', paper.title);
         reader.appendChild(documentView);
 
-        const firstPage = createPage(paper, nextPageNumber++, 'paper-first-page');
-        const firstMain = firstPage.querySelector('.paper-page-main');
-        firstMain.append(
-            stagingPaper.querySelector('.paper-title-block'),
-            stagingPaper.querySelector('.paper-abstract')
-        );
-        pages.push(firstPage);
-        documentView.appendChild(firstPage);
-
         if (showContents) {
+            const titlePage = createPage(paper, nextPageNumber++, 'paper-title-page');
+            titlePage.querySelector('.paper-page-main').appendChild(
+                stagingPaper.querySelector('.paper-title-block')
+            );
+            pages.push(titlePage);
+            documentView.appendChild(titlePage);
+
             const contentsResult = paginateContents(
                 documentView,
                 paper,
                 headings,
-                nextPageNumber
+                nextPageNumber,
+                [abstractSection, keywordsSection]
             );
 
             pages.push(...contentsResult.pages);
             nextPageNumber = contentsResult.nextPageNumber;
         }
 
+        const articleOpeningPage = createPage(
+            paper,
+            nextPageNumber++,
+            showContents ? 'paper-article-opening-page' : 'paper-first-page paper-article-opening-page'
+        );
+        const articleOpeningMain = articleOpeningPage.querySelector('.paper-page-main');
+
+        if (!showContents) {
+            articleOpeningMain.appendChild(stagingPaper.querySelector('.paper-title-block'));
+        }
+
+        if (!showContents) {
+            articleOpeningMain.append(abstractSection, keywordsSection);
+        }
+        pages.push(articleOpeningPage);
+        documentView.appendChild(articleOpeningPage);
+
         const contentResult = paginateFlow(
             documentView,
             paper,
             Array.from(sourceFlow.children),
             nextPageNumber,
-            showContents ? null : firstPage
+            articleOpeningPage
         );
 
         pages.push(...contentResult.pages);
@@ -461,10 +488,16 @@
         return headings.length >= minimumContentsHeadings && wordCount >= minimumContentsWords;
     }
 
-    function paginateContents(documentView, paper, headings, startingPageNumber) {
+    function paginateContents(
+        documentView,
+        paper,
+        headings,
+        startingPageNumber,
+        openingSections
+    ) {
         const pages = [];
         let pageNumber = startingPageNumber;
-        let page = createContentsPage(paper, pageNumber++, false);
+        let page = createContentsPage(paper, pageNumber++, false, openingSections);
         let flow = page.querySelector('.paper-toc-flow');
 
         documentView.appendChild(page);
@@ -476,7 +509,7 @@
 
             if (isVerticallyOverflowing(flow)) {
                 flow.removeChild(entry);
-                page = createContentsPage(paper, pageNumber++, true);
+                page = createContentsPage(paper, pageNumber++, true, []);
                 flow = page.querySelector('.paper-toc-flow');
                 flow.appendChild(entry);
                 documentView.appendChild(page);
@@ -487,17 +520,20 @@
         return { pages, nextPageNumber: pageNumber };
     }
 
-    function createContentsPage(paper, pageNumber, continuation) {
+    function createContentsPage(paper, pageNumber, continuation, openingSections) {
         const page = createPage(paper, pageNumber, 'paper-contents-page');
+        const main = page.querySelector('.paper-page-main');
         const flow = document.createElement('nav');
         const title = document.createElement('h2');
 
         flow.className = 'paper-toc-flow';
         flow.setAttribute('aria-label', text.contents);
         title.className = 'paper-toc-title';
-        title.textContent = continuation ? text.contentsContinuation : text.contents;
+        title.textContent = continuation
+            ? `${text.contents} — ${paper.language === 'mk' ? 'продолжение' : 'continued'}`
+            : text.contents;
         flow.appendChild(title);
-        page.querySelector('.paper-page-main').appendChild(flow);
+        main.append(...openingSections, flow);
         return page;
     }
 
@@ -506,9 +542,7 @@
         const label = document.createElement('span');
         const leader = document.createElement('span');
         const pageNumber = document.createElement('span');
-        const level = Number(heading.tagName.slice(1));
-
-        link.className = `paper-toc-entry paper-toc-level-${level}`;
+        link.className = 'paper-toc-entry paper-toc-level-1';
         link.href = `#${heading.id}`;
         link.dataset.target = heading.id;
         label.className = 'paper-toc-label';

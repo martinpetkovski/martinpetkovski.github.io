@@ -1,3 +1,27 @@
+@font-face {
+    font-display: block;
+    font-family: "Computer Modern";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/draft-papers/fonts/cmu-serif-500-roman.woff2") format("woff2");
+}
+
+@font-face {
+    font-display: block;
+    font-family: "Computer Modern";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/draft-papers/fonts/cmu-serif-700-roman.woff2") format("woff2");
+}
+
+@font-face {
+    font-display: block;
+    font-family: "Computer Modern Typewriter";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/draft-papers/fonts/cmu-typewriter-text-500-roman.woff2") format("woff2");
+}
+
 .draft-index-page {
     max-width: 760px;
 }
@@ -58,7 +82,8 @@
 .paper-reader-body {
     background: #cfd4da;
     color: #111;
-    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-family: "Computer Modern", serif;
+    font-synthesis: none;
     margin: 0;
     overflow-x: auto;
 }
@@ -85,7 +110,7 @@
 .paper-error {
     background: #fff;
     border: 1px solid #94a3b8;
-    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-family: "Computer Modern", serif;
     margin: 30px auto;
     max-width: 680px;
     padding: 14px;
@@ -97,7 +122,7 @@
 
 .paper-staging {
     left: -200vw;
-    padding: 19mm 16mm 18mm;
+    padding: 19mm 14.32mm 43mm;
     pointer-events: none;
     position: absolute;
     visibility: hidden;
@@ -112,15 +137,16 @@
     max-height: 297mm;
     min-height: 297mm;
     overflow: hidden;
-    padding: 19mm 16mm 18mm;
+    padding: 19mm 14.32mm 43mm;
     position: relative;
     width: 210mm;
 }
 
 .paper-style-ieee {
-    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-family: "Computer Modern", serif;
     font-size: 10pt;
-    line-height: 1.12;
+    font-synthesis: none;
+    line-height: 1.05;
 }
 
 .paper-page-main {
@@ -132,48 +158,43 @@
 }
 
 .paper-title-block {
-    margin: 0 0 10pt;
+    margin: 0 0 13pt;
     position: relative;
     text-align: center;
 }
 
-.paper-manuscript-status {
-    color: #555;
-    font-family: inherit;
-    font-size: 7pt;
-    letter-spacing: .04em;
-    margin: 0 0 7pt;
-    text-transform: uppercase;
-}
-
 .paper-title-block h1 {
     color: #111;
-    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-family: "Computer Modern", serif;
     font-size: 24pt;
     font-weight: normal;
     letter-spacing: 0;
     line-height: 1.08;
-    margin: 0 auto 11pt;
+    margin: 0 auto 12pt;
     max-width: 94%;
     text-transform: none;
 }
 
 .paper-authors {
     font-size: 11pt;
-    margin-bottom: 3pt;
+    margin: 0;
 }
 
 .author-separator {
     margin: 0 1em;
 }
 
-.paper-date {
-    font-size: 9.5pt;
+.paper-title-page .paper-page-main {
+    justify-content: center;
+}
+
+.paper-title-page .paper-title-block {
+    margin: 0;
 }
 
 .paper-abstract {
     font-size: 9pt;
-    margin: 0 0 10pt;
+    margin: 0 0 7pt;
 }
 
 .paper-abstract > strong {
@@ -187,15 +208,45 @@
 
 .paper-abstract p {
     display: inline;
-    font-weight: bold;
+    font-weight: normal;
     margin: 0;
     text-align: justify;
+}
+
+.paper-keywords {
+    font-size: 9pt;
+    margin: 0;
+    text-align: justify;
+}
+
+.paper-keywords strong::after {
+    content: "—";
+    margin-right: .35em;
+}
+
+.paper-keywords p {
+    display: inline;
+    margin: 0;
+}
+
+.paper-article-opening-page .paper-keywords {
+    margin-bottom: 10pt;
+}
+
+.paper-contents-page .paper-keywords {
+    margin-bottom: 14pt;
+}
+
+.paper-contents-page .paper-toc-flow {
+    flex: 1;
+    height: auto;
+    min-height: 0;
 }
 
 .paper-page-flow {
     column-count: 2;
     column-fill: auto;
-    column-gap: 6mm;
+    column-gap: 4.2mm;
     flex: 1;
     height: 100%;
     min-height: 0;
@@ -262,7 +313,7 @@
     margin: 0;
     orphans: 2;
     text-align: justify;
-    text-indent: 1em;
+    text-indent: 5.1mm;
     widows: 2;
 }
 
@@ -304,7 +355,7 @@
 }
 
 .paper-page-flow code {
-    font-family: "CMU Typewriter Text", "Computer Modern Typewriter", monospace;
+    font-family: "Computer Modern Typewriter", monospace;
     font-size: .92em;
 }
 
@@ -345,7 +396,7 @@
     bottom: calc(100% + 7px);
     color: #fff;
     content: attr(data-reference);
-    font-family: "CMU Serif", "Computer Modern Serif", serif;
+    font-family: "Computer Modern", serif;
     font-size: 8pt;
     font-style: normal;
     font-weight: normal;
@@ -414,18 +465,9 @@
     text-decoration: underline;
 }
 
-.paper-toc-level-2 {
+.paper-toc-level-1 {
     font-weight: bold;
     margin-top: 5pt;
-}
-
-.paper-toc-level-3 {
-    padding-left: 1.4em;
-}
-
-.paper-toc-level-4 {
-    font-size: 9pt;
-    padding-left: 2.8em;
 }
 
 .paper-toc-label {
