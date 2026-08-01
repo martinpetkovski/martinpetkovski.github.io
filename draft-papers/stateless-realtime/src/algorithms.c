@@ -20,16 +20,11 @@ SR_NOINLINE void sr_game_recompute_entity(const sr_game_input *input,
                                            uint32_t work_rounds,
                                            sr_game_output *output) {
     sr_vec3f value = input->seed;
+    const sr_vec3f scale = {0.999991f, 0.999987f, 0.999983f};
     uint32_t round;
     for (round = 0U; round < work_rounds; round++) {
-        /* A stable, game-style vector transform. The perturbation stops the
-         * loop from collapsing to a single closed-form expression. */
-        const float phase = (float)(round & 7U) * 0.000001f;
-        const sr_vec3f scale = {
-            0.999991f + phase,
-            0.999987f - phase,
-            0.999983f + phase
-        };
+        /* Strict floating-point semantics preserve the repeated rounding of
+         * this stable game-style transform without auxiliary arithmetic. */
         value.x = value.x * scale.x + input->bias.x;
         value.y = value.y * scale.y + input->bias.y;
         value.z = value.z * scale.z + input->bias.z;

@@ -9,13 +9,13 @@
 \maketitle
 
 \begin{abstract}
-Video-game systems continuously derive transforms, steering vectors, animation parameters, visibility values, and other transient outputs from entity data. Three implementation styles are common. A fully stateless Tick rebuilds every output from canonical inputs. A stateful event-driven component updates cached output in dispatchers outside Tick. A hybrid---often described informally as \lq\lq stateless with events''---marks changed inputs outside Tick, scans versions inside Tick, and recomputes only dirty entities. The last model is not literally stateless because it retains a cache and version metadata; the label is kept only to connect the experiment to common production terminology.
+Video-game systems continuously derive transforms, steering vectors, animation parameters, visibility values, and other transient outputs from entity data. Three implementation styles are common. A fully stateless Tick rebuilds every output from canonical inputs. A stateful event-driven component updates cached output in dispatchers outside Tick. A hybrid (often described informally as "stateless with events") marks changed inputs outside Tick, scans versions inside Tick, and recomputes only dirty entities. The last model is not literally stateless because it retains a cache and version metadata; the label is kept only to connect the experiment to common production terminology.
 
 This paper compares the three models using only a video-game workload. Each entity derives a three-dimensional gameplay vector. One configurable work round performs one component-wise vec3 multiplication and one vec3 addition, exactly three scalar multiplications and three scalar additions at source level. Entity count, change density, and rounds per entity are varied independently. Equivalent portable C11 implementations, fault-injection tests, 11 repeated measurements, direct allocation sizes, source call paths, and a reproducible analysis package are provided.
 
-On an AMD Ryzen 7 8845HS laptop, with 4,096 entities and 16 rounds, full recomputation averaged 83.1 microseconds when nothing changed, selective Tick evaluation 4.78 microseconds, and the cached stateful Tick 0.030 microseconds for total measured frame work. At one-percent change, the means were 81.2, 5.66, and 1.15 microseconds. At 100-percent change the ordering reversed: full recomputation averaged 89.8 microseconds, selective Tick evaluation 98.6 microseconds, and event dispatch 115.3 microseconds. The deeper per-event call path becomes overhead when every entity is dirty.
+On an AMD Ryzen 7 8845HS laptop, with 4,096 entities and 16 rounds, full recomputation averaged 39.3 microseconds when nothing changed, selective Tick evaluation 5.42 microseconds, and the cached stateful path 0.024 microseconds for total measured frame work. At one-percent change, the means were 40.5, 6.22, and 1.18 microseconds. At 100-percent change the ordering reversed: full recomputation averaged 50.5 microseconds, selective evaluation 63.1, and event dispatch 128.0. The deeper per-event call path becomes overhead when every entity is dirty.
 
-For a practical calibration, a p99 increase reaching 1 ms is defined as a noticeable subsystem spike proxy. It is an engineering threshold, not a universal human-perception boundary. All total-frame paths remained below this p99 proxy at 655,360 vec3 multiplications plus 655,360 vec3 additions (3,932,160 scalar arithmetic operations), and crossed it at the next sampled point: 786,432 of each vector operation, or 4,718,592 scalar operations. Event-driven work stayed outside the critical Tick, but still consumed the frame's CPU time. Working memory at 4,096 entities ranged from 144 KiB for full recomputation, through 144--256 KiB for event-driven state, to 176--288 KiB for the selective hybrid as active event storage grew. The evidence favors event-driven state for sparse changes, full recomputation for small or densely changing sets, and the hybrid when bounded Tick placement and simpler change handling justify an entity scan.
+For practical calibration, p99 reaching 1 ms is defined as a noticeable subsystem spike proxy. It is an engineering threshold, not a universal perception boundary. All total paths remained below it at 262,144 vec3 multiplications plus 262,144 vec3 additions (1,572,864 scalar operations). Event dispatch first crossed at 393,216 of each vector operation (2,359,296 scalar operations); full and selective recomputation first crossed at 524,288 of each (3,145,728 scalar operations). Event work stayed outside critical Tick but still consumed frame CPU time. Working memory at 4,096 entities ranged from 144 KiB for full recomputation, through 144--256 KiB for event state, to 176--288 KiB for the selective hybrid.
 \end{abstract}
 
 \section{1 Introduction}
@@ -98,7 +98,7 @@ Real-time suitability requires deadlines, not averages alone \cite{liu1973,butta
 
 The density matrix uses \(E=\{64,256,1024,4096\}\), \(C/E=\{0,1,10,100\}\) percent, and \(K=16\). Calibration fixes \(E=4096,C=E\), and samples \(K=\{1,4,16,64,96,128,160,192,256,1024\}\). Lists are deterministic and entities unique. Input generation is untimed.
 
-All variants use the same single-precision structures, operation order, and evaluator. S calls it for every entity in Tick, E through dispatch for changed entities before Tick, and H from the version scan. Allocation, I/O, initialization, checksums, and formatting are untimed. Updates allocate nothing.
+All variants use the same portable ISO C11 single-precision structures, operation order, and evaluator \cite{c11}. S calls it for every entity in Tick, E through dispatch for changed entities before Tick, and H from the version scan. Allocation, I/O, initialization, checksums, and formatting are untimed. Updates allocate nothing. Compiler behavior and flags are recorded using the Clang command-line interface \cite{clangdocs}.
 
 \subsection{5.2 Phases, timing, and practical threshold}
 
@@ -229,24 +229,24 @@ The process was not pinned, boost was not locked, and Windows was not isolated. 
 \begin{tabular}{lrrrrr}
 Changed & Model & Mean us & p99 us & Max us & Ratio to E \\
 \hline
-0\% & E & 0.030 & 0.100 & 12.6 & 1.00 \\
-0\% & H & 4.781 & 4.700 & 25.0 & 161.03 \\
-0\% & S & 83.073 & 99.200 & 163.7 & 2797.89 \\
-1\% & E & 1.153 & 1.200 & 21.1 & 1.00 \\
-1\% & H & 5.660 & 9.400 & 46.1 & 4.91 \\
-1\% & S & 81.233 & 97.700 & 146.4 & 70.46 \\
-10\% & E & 11.382 & 20.300 & 70.4 & 1.00 \\
-10\% & H & 13.195 & 23.300 & 62.9 & 1.16 \\
-10\% & S & 83.814 & 102.900 & 262.3 & 7.36 \\
-100\% & E & 115.306 & 139.500 & 308.5 & 1.00 \\
-100\% & H & 98.558 & 137.200 & 1188.1 & 0.85 \\
-100\% & S & 89.780 & 120.300 & 225.1 & 0.78 \\
+0\% & E & 0.024 & 0.100 & 0.100 & 1.00 \\
+0\% & H & 5.417 & 8.900 & 48.4 & 228.24 \\
+0\% & S & 39.294 & 59.900 & 113.1 & 1655.54 \\
+1\% & E & 1.178 & 1.400 & 26.7 & 1.00 \\
+1\% & H & 6.225 & 9.700 & 56.3 & 5.28 \\
+1\% & S & 40.539 & 64.300 & 129.7 & 34.41 \\
+10\% & E & 14.880 & 53.000 & 1161.0 & 1.00 \\
+10\% & H & 17.786 & 73.300 & 964.8 & 1.20 \\
+10\% & S & 59.047 & 261.300 & 2132.5 & 3.97 \\
+100\% & E & 128.026 & 144.900 & 4187.6 & 1.00 \\
+100\% & H & 63.105 & 98.300 & 899.3 & 0.49 \\
+100\% & S & 50.473 & 65.700 & 2439.2 & 0.39 \\
 \end{tabular}
 \end{table}
 
 Sparse changes strongly favor E. At zero change, S is almost 2,800 times slower by ratio, yet its absolute mean is only 0.083 ms. H's scan costs 0.0048 ms. Ratios alone exaggerate practical harm.
 
-At ten-percent change, H is within 16 percent of E while S remains 7.36 times slower. At full change, H and S are faster than E. The mathematics is identical; the difference is dispatch and scanning overhead. The assumption that event-driven state is always fastest is rejected for this dense case.
+At ten-percent change, H is within 20 percent of E while S is 3.97 times slower. At full change, H and S are faster than E; S is about 61 percent faster by elapsed-time ratio. The mathematics is identical, so the dense-case difference comes from dispatch and version protocol overhead.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/change-density-frame-total.svg}
@@ -260,22 +260,22 @@ At ten-percent change, H is within 16 percent of E while S remains 7.36 times sl
 \begin{tabular}{lrrrr}
 Changed & Model & Mean us & p99 us & Max us \\
 \hline
-0\% & E & 0.022 & 0.100 & 0.100 \\
-0\% & H & 4.990 & 7.900 & 28.4 \\
-0\% & S & 82.239 & 105.400 & 160.0 \\
-1\% & E & 0.023 & 0.100 & 0.100 \\
-1\% & H & 5.581 & 6.700 & 30.3 \\
-1\% & S & 82.221 & 96.400 & 135.8 \\
-10\% & E & 0.024 & 0.100 & 0.200 \\
-10\% & H & 12.532 & 23.100 & 47.5 \\
-10\% & S & 83.739 & 107.800 & 251.3 \\
-100\% & E & 0.033 & 0.100 & 0.500 \\
-100\% & H & 86.883 & 112.600 & 412.5 \\
-100\% & S & 84.240 & 117.300 & 218.9 \\
+0\% & E & 0.023 & 0.100 & 0.200 \\
+0\% & H & 5.170 & 8.700 & 40.1 \\
+0\% & S & 39.438 & 64.300 & 115.2 \\
+1\% & E & 0.024 & 0.100 & 0.200 \\
+1\% & H & 6.198 & 10.500 & 34.0 \\
+1\% & S & 41.200 & 64.000 & 241.4 \\
+10\% & E & 0.041 & 0.100 & 21.7 \\
+10\% & H & 34.188 & 142.100 & 27811.2 \\
+10\% & S & 56.679 & 259.500 & 1283.6 \\
+100\% & E & 0.044 & 0.200 & 0.600 \\
+100\% & H & 56.301 & 82.200 & 1402.5 \\
+100\% & S & 45.385 & 63.900 & 624.8 \\
 \end{tabular}
 \end{table}
 
-E's Tick is nearly constant because arithmetic already ran. This is valuable when a Tick group has a strict allowance, but it is not a CPU saving: at full change E spent 115.3 microseconds total. H intentionally places selective repair in Tick. S has the most predictable change-independent Tick mean.
+E's Tick is nearly constant because arithmetic already ran. This is valuable when a Tick group has a strict allowance, but it is not a CPU saving: at full change E spent 128.0 microseconds total. H intentionally places selective repair in Tick. The unusually large H maximum at ten-percent change is an observed scheduling outlier, not a WCET claim.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/change-density-tick-p99.svg}
@@ -284,7 +284,7 @@ E's Tick is nearly constant because arithmetic already ran. This is valuable whe
 
 \subsection{9.3 Entity-count scaling}
 
-At \(E=1024,K=16\), no-change total means were 0.026 microseconds for E, 1.324 for H, and 21.701 for S. At one-percent change they were 0.324, 1.428, and 21.435. At full change they were 28.384, 23.530, and 21.519. The same crossover appears: sparse scenes favor E; full change favors the shallow S loop.
+At \(E=1024,K=16\), no-change total means were 0.023 microseconds for E, 1.300 for H, and 9.640 for S. At one-percent change they were 0.331, 1.594, and 9.744. At full change they were 40.021, 17.717, and 15.719. The same crossover appears.
 
 \section{10 Arithmetic Threshold and Frame-Time Interpretation}
 
@@ -295,19 +295,19 @@ At \(E=1024,K=16\), no-change total means were 0.026 microseconds for E, 1.324 f
 \begin{tabular}{rrrrrr}
 Rounds & Vec3 mults & Vec3 adds & Scalar ops & Model p99 us & Mean us \\
 \hline
-128 & 524,288 & 524,288 & 3,145,728 & E: 783.8 & 753.3 \\
-128 & 524,288 & 524,288 & 3,145,728 & H: 762.4 & 726.5 \\
-128 & 524,288 & 524,288 & 3,145,728 & S: 745.3 & 719.3 \\
-160 & 655,360 & 655,360 & 3,932,160 & E: 992.4 & 956.7 \\
-160 & 655,360 & 655,360 & 3,932,160 & H: 956.6 & 915.4 \\
-160 & 655,360 & 655,360 & 3,932,160 & S: 937.2 & 918.2 \\
-192 & 786,432 & 786,432 & 4,718,592 & E: 1164.6 & 1126.9 \\
-192 & 786,432 & 786,432 & 4,718,592 & H: 1152.4 & 1094.7 \\
-192 & 786,432 & 786,432 & 4,718,592 & S: 1144.9 & 1092.3 \\
+64 & 262,144 & 262,144 & 1,572,864 & E: 462.9 & 477.3 \\
+64 & 262,144 & 262,144 & 1,572,864 & H: 392.5 & 391.0 \\
+64 & 262,144 & 262,144 & 1,572,864 & S: 365.0 & 329.3 \\
+96 & 393,216 & 393,216 & 2,359,296 & E: 1201.2 & 781.5 \\
+96 & 393,216 & 393,216 & 2,359,296 & H: 670.0 & 650.9 \\
+96 & 393,216 & 393,216 & 2,359,296 & S: 591.1 & 591.9 \\
+128 & 524,288 & 524,288 & 3,145,728 & E: 1289.7 & 950.9 \\
+128 & 524,288 & 524,288 & 3,145,728 & H: 1480.8 & 861.6 \\
+128 & 524,288 & 524,288 & 3,145,728 & S: 1340.1 & 910.8 \\
 \end{tabular}
 \end{table}
 
-RQ4 is interval-censored but practical. The p99 total path remained below 1 ms at 3,932,160 scalar calculations and crossed at 4,718,592. In game vocabulary, the first sampled crossing is 786,432 vec3 component-wise multiplications plus 786,432 vec3 additions in one frame.
+RQ4 has a model-specific answer. All paths stayed below the proxy at 1,572,864 scalar operations. E first crossed at 2,359,296 operations (393,216 vec3 multiplications plus 393,216 additions). S and H first crossed at 3,145,728 operations (524,288 of each vector operation). The practical transition is therefore a measured band, not one processor constant.
 
 This is not a processor-wide arithmetic limit. Calls, branches, loads, stores, event writes, compiler lowering, and OS interference are included. Other kernels may use SIMD, fused operations, different dependencies, or different cache footprints.
 
@@ -318,7 +318,7 @@ This is not a processor-wide arithmetic limit. Calls, branches, loads, stores, e
 
 \subsection{10.2 Work moved outside Tick}
 
-At 192 rounds, Tick-only p99 was 1.149 ms for S, 1.138 ms for H, and 0.0002 ms for E. E's total p99 was still 1.165 ms because dispatch ran before Tick. Event placement can protect a callback or distribute work across phases, but a single thread does not recover the consumed frame budget.
+At 128 rounds, Tick-only p99 was 1.474 ms for S, 1.257 ms for H, and 0.0002 ms for E. E's total p99 was 1.290 ms because dispatch ran before Tick. Event placement can protect a callback or distribute work across phases, but a single thread does not recover the consumed frame budget.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/arithmetic-calibration-tick-p99.svg}
@@ -369,11 +369,11 @@ Condition & Fastest total & Best Tick placement & Dominant cost \\
 \end{tabular}
 \end{table}
 
-H1--H4 are supported for this workload. H5 is partly supported: S uses the least persistent memory, but E ties S's working allocation when no events are active. H6 is supported by extreme ratios with small absolute cost. The no-change S/E ratio is 2,798, but the difference is only 0.083 ms.
+H1--H4 are supported for this workload. H5 is partly supported: S uses the least persistent memory, but E ties S's working allocation when no events are active. H6 is supported by extreme ratios with small absolute cost. The no-change S/E ratio is 1,656, but the difference is only 0.039 ms.
 
-At 160 rounds, median repetition p99 remained just under 1 ms for all models, although some raw samples exceeded it: 12.61 percent for E, 2.64 percent for S, and 0.88 percent for H in the total phase. At 192 rounds, the 1-ms miss rate was 100 percent for all three. Thus 160 is marginal and 192 is a robust sampled failure point for this proxy.
+At 64 rounds, median repetition p99 remained below 1 ms for every model, although rare E and H samples exceeded it. At 96 rounds, E's p99 reached 1.201 ms while S and H remained at 0.591 and 0.670 ms. At 128 rounds all three p99 values exceeded 1 ms. The 64--128 interval is the defensible transition region.
 
-Maximum observations are noisier. S at 96 rounds had a 1.165-ms maximum despite 0.585-ms p99. Normal-priority Windows interruption can create rare spikes. Shipping tests should use complete-frame traces over longer sessions and multiple target machines.
+Maximum observations are much noisier: S at 128 rounds had a 39.494-ms maximum despite 1.340-ms p99. Normal-priority Windows interruption can create rare spikes. Shipping tests should use complete-frame traces over longer sessions and multiple target machines.
 
 \section{13 Debugging and Maintainability Analysis}
 
@@ -417,9 +417,9 @@ Debug validation & S oracle + E/H & catches divergence & oracle is always on \\
 
 For sparse gameplay changes, E is the rational default here. It should be paired with whole-value construction, entity-generation checks, observable cache state, and tests that reject mutations bypassing dispatch.
 
-H is useful when many producers change inputs but evaluation should be centralized and coalesced. Its zero-change scan costs 4.78 microseconds at 4,096 entities. That is cheap here but can grow with larger worlds, scattered components, and multiple systems.
+H is useful when many producers change inputs but evaluation should be centralized and coalesced. Its zero-change scan costs 5.42 microseconds at 4,096 entities. That is cheap here but can grow with larger worlds, scattered components, and multiple systems.
 
-S is rational when the set is small and bounded, computation cheap, most entities change, stale derived state costly, or snapshot testing valuable. At 4,096 entities and 16 rounds it stayed below 0.1 ms mean at every density. Avoid repeating the pattern across expensive systems near the 160--192-round boundary.
+S is rational when the set is small and bounded, computation cheap, most entities change, stale derived state costly, or snapshot testing valuable. At 4,096 entities and 16 rounds it stayed below 0.1 ms mean at every density. Avoid repeating the pattern across expensive systems near the 64--128-round transition.
 
 A mixed production architecture is often strongest: explicit canonical ownership; event caches for expensive sparse systems; selective Tick repair where coalescing helps; and periodic full recomputation as a debug oracle or sampled integrity check.
 
@@ -441,13 +441,13 @@ The 1-ms proxy is a declared convention, not a measured perception threshold. It
 
 \section{16 Conclusions}
 
-The answer is conditional. At 4,096 entities and one-percent change, E averaged 1.15 microseconds, H 5.66, and S 81.23. At ten-percent change E still led, while H was within 16 percent. At 100-percent change, S became fastest at 89.78 microseconds; H took 98.56 and E 115.31. Stateless is not always slower, and event-driven state is not always faster.
+The answer is conditional. At 4,096 entities and one-percent change, E averaged 1.18 microseconds, H 6.22, and S 40.54. At ten-percent change E still led, while H was within 20 percent. At 100-percent change, S became fastest at 50.47 microseconds; H took 63.10 and E 128.03. Stateless is not always slower, and event-driven state is not always faster.
 
 Formally, S costs \(\Theta(EK)\) inside Tick. E costs \(\Theta(CK)\) outside Tick and constant consumption inside. H costs \(\Theta(E+CK)\) in Tick. Small \(C\) favors E. At \(C=E\), identical arithmetic leaves S's shorter uniform path ahead.
 
 At 4,096 entities, S uses 96 KiB persistent input plus 48 KiB temporary output. E uses 144 KiB persistent state, growing to 256 KiB with 4,096 active events. H uses 176 KiB persistent input/cache/version storage and grows to 288 KiB. S eliminates stale derived output but not stale canonical input; both cached models can become stale after a missed notification.
 
-The measured arithmetic boundary is between 3,932,160 and 4,718,592 scalar calculations. The first sampled p99 crossing used 786,432 vec3 multiplications plus 786,432 vec3 additions. E moved them outside Tick, leaving Tick-only p99 near timer resolution, but total p99 still exceeded 1 ms. Placement changes scheduling risk, not total CPU demand.
+The measured arithmetic transition lies between 1,572,864 and 3,145,728 scalar calculations. E first crossed p99 1 ms at 393,216 vec3 multiplications plus the same additions; S and H first crossed at 524,288 of each. E moved them outside Tick, leaving Tick-only p99 near timer resolution, but total p99 still exceeded 1 ms. Placement changes scheduling risk, not total CPU demand.
 
 The plain function stack is three named frames for S Tick, four for E update plus two for E Tick, and two for H marking plus three for H Tick. These transparent counts expose temporal obligations but do not alone measure maintainability.
 
@@ -508,7 +508,7 @@ Each row records workload, variant, phase, entities, change percentage, rounds, 
 \bibitem{microsoftcycles}Microsoft, QueryThreadCycleTime function, Windows API documentation, updated May 21, 2025.
 \bibitem{linuxperf}Linux Kernel Documentation, Discovering Linux kernel subsystems used by a workload: perf, accessed Aug. 1, 2026. Available: \texttt{https://docs.kernel.org/admin-guide/workload-tracing.html}.
 \bibitem{clangdocs}LLVM Project, Clang command guide, accessed Aug. 1, 2026. Available: \texttt{https://clang.llvm.org/docs/CommandGuide/clang.html}.
-\bibitem{c11}ISO/IEC JTC 1/SC 22/WG 14, ISO/IEC 9899:2011, Information technology---Programming languages---C, 2011.
+\bibitem{c11}ISO/IEC JTC 1/SC 22/WG 14, ISO/IEC 9899:2011, Information technology: Programming languages: C, 2011.
 \end{thebibliography}
 
 \end{document}
