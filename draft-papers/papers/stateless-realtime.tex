@@ -1,0 +1,514 @@
+\title{Recompute, Dispatch, or Check? A Game-Tick Study of Stateless and Event-Driven State}
+\author{Martin Petkovski}
+\date{August 2026}
+\paperlanguage{en}
+\paperstatus{Preprint -- This paper has not been peer reviewed}
+\paperkeywords{video-game engines, Tick loop, stateless recomputation, event dispatch, dirty checking, vector arithmetic, frame time, C11}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Video-game systems continuously derive transforms, steering vectors, animation parameters, visibility values, and other transient outputs from entity data. Three implementation styles are common. A fully stateless Tick rebuilds every output from canonical inputs. A stateful event-driven component updates cached output in dispatchers outside Tick. A hybrid---often described informally as \lq\lq stateless with events''---marks changed inputs outside Tick, scans versions inside Tick, and recomputes only dirty entities. The last model is not literally stateless because it retains a cache and version metadata; the label is kept only to connect the experiment to common production terminology.
+
+This paper compares the three models using only a video-game workload. Each entity derives a three-dimensional gameplay vector. One configurable work round performs one component-wise vec3 multiplication and one vec3 addition, exactly three scalar multiplications and three scalar additions at source level. Entity count, change density, and rounds per entity are varied independently. Equivalent portable C11 implementations, fault-injection tests, 11 repeated measurements, direct allocation sizes, source call paths, and a reproducible analysis package are provided.
+
+On an AMD Ryzen 7 8845HS laptop, with 4,096 entities and 16 rounds, full recomputation averaged 83.1 microseconds when nothing changed, selective Tick evaluation 4.78 microseconds, and the cached stateful Tick 0.030 microseconds for total measured frame work. At one-percent change, the means were 81.2, 5.66, and 1.15 microseconds. At 100-percent change the ordering reversed: full recomputation averaged 89.8 microseconds, selective Tick evaluation 98.6 microseconds, and event dispatch 115.3 microseconds. The deeper per-event call path becomes overhead when every entity is dirty.
+
+For a practical calibration, a p99 increase reaching 1 ms is defined as a noticeable subsystem spike proxy. It is an engineering threshold, not a universal human-perception boundary. All total-frame paths remained below this p99 proxy at 655,360 vec3 multiplications plus 655,360 vec3 additions (3,932,160 scalar arithmetic operations), and crossed it at the next sampled point: 786,432 of each vector operation, or 4,718,592 scalar operations. Event-driven work stayed outside the critical Tick, but still consumed the frame's CPU time. Working memory at 4,096 entities ranged from 144 KiB for full recomputation, through 144--256 KiB for event-driven state, to 176--288 KiB for the selective hybrid as active event storage grew. The evidence favors event-driven state for sparse changes, full recomputation for small or densely changing sets, and the hybrid when bounded Tick placement and simpler change handling justify an entity scan.
+\end{abstract}
+
+\section{1 Introduction}
+
+The motivation for this study comes from production game code rather than an abstract preference for functional programming. An actor may be spawned, pooled, disabled, re-enabled, or reassigned while retaining cached targets, transform derivatives, animation parameters, cooldowns, or gameplay flags from an earlier lifecycle. A missed event or incomplete reset can leave a cache that is locally valid in type but temporally wrong. The defect may appear only under a rare event order, making it difficult to reproduce from the current call arguments.
+
+Tick is where the cost becomes visible. Epic describes actor ticking as regular execution, commonly once per frame, with groups and prerequisites because order relative to physics and other actors affects correctness \cite{epicticking,epicactortick}. Unity similarly documents a player loop whose update ordering matters when one component consumes another component's work \cite{unityupdate}. A 60-Hz game has 16.67 ms for the complete frame and a 120-Hz game has 8.33 ms. Gameplay calculation competes with animation, physics, navigation, networking, audio, rendering preparation, the operating system, and the GPU submission path \cite{gregory2019}.
+
+The practical choice is not simply stateful or stateless. A game can recompute all output every Tick; update a cache in event dispatchers before Tick; or retain a cache while Tick checks version metadata and selectively repairs changed entries. These choices move computation, branches, memory, and failure modes. Sparse-change and all-change scenes can therefore favor opposite designs.
+
+This paper contributes precise definitions; formal time and memory expressions in terms of entity count \(E\), changed entities \(C\), and vector work rounds \(K\); total-frame and Tick-only laptop measurements; a source-level function-stack comparison; and a measured arithmetic crossover for a declared 1-ms p99 proxy. No rolling average, checksum, parser, controller, or sensor benchmark is used as empirical evidence. Every measured workload is the same game-entity derived-vector calculation.
+
+\section{2 Problem Definition and Implementation Models}
+
+\subsection{2.1 Canonical input and derived game state}
+
+Each entity has canonical input consisting of a seed vector and a bias vector. The benchmark derives a complete output vector from these values. Canonical means the input selected as authoritative for this experiment; it does not imply that production data can never be wrong. For work round \(r\),
+
+\[
+\mathbf{v}_{r+1} = \mathbf{v}_{r} \odot \mathbf{s}_{r} + \mathbf{b},
+\qquad \mathbf{v}_0=\mathbf{seed},
+\]
+
+where \(\odot\) is component-wise multiplication. One round represents one vec3 multiplication and one vec3 addition: three floating-point multiplications and three additions. The kernel resembles repeated transform, steering, aim-offset, or animation-vector construction without claiming to reproduce a complete engine subsystem.
+
+\subsection{2.2 Model S: fully recomputed stateless Tick}
+
+Model S stores no derived value across frames. Tick loops over all \(E\) entities and rebuilds complete output from canonical inputs, whether or not an input changed. The output array exists for downstream consumption during the frame but is not a persistent cache. Identical canonical input and \(K\) produce identical output without an earlier call history.
+
+\subsection{2.3 Model E: stateful event-driven cache}
+
+Model E retains the latest derived output. When a change arrives before Tick, a dispatcher selects the entity, writes its canonical input, calls a component handler, and recomputes that entity. Tick only consumes the prepared cache. This is the requested event-driven model with work outside Tick. It is efficient when \(C \ll E\), but correctness depends on every relevant mutation producing the right event in the right lifecycle.
+
+\subsection{2.4 Model H: stateless-with-events or Tick-selective hybrid}
+
+Model H writes changed canonical input and increments a per-entity version outside Tick. Tick scans all entities; when input and evaluated versions differ, it rebuilds that entity and updates the evaluated version. Unchanged cached output is retained.
+
+The phrase stateless with events describes reconstruction of a selected entity from canonical input inside Tick. Formally, the complete component is stateful: it retains output and two version arrays. Calling it fully stateless would hide the mechanism under study. The paper therefore uses \emph{Tick-selective hybrid} in formal analysis.
+
+\begin{table}
+\caption{Table 1. The three game execution models.}
+\begin{tabular}{llll}
+Model & Work location & Retained cache & Recompute set \\
+\hline
+S: stateless full & inside Tick & no & all \(E\) entities \\
+E: stateful event & dispatcher before Tick & yes & changed \(C\) entities \\
+H: Tick-selective & inside Tick after scan & yes + versions & changed \(C\) entities \\
+\end{tabular}
+\end{table}
+
+\subsection{2.5 State ownership and scheduling remain distinct}
+
+Event-driven execution does not imply hidden global state, and periodic execution does not imply purity. An event callback can call a deterministic function with explicit input; a Tick can mutate an object field. Lauer and Needham's structural duality result cautions against treating message and procedure organizations as an automatic hierarchy \cite{lauer1979}. This study fixes ownership and scheduling to three concrete models rather than generalizing to every event system.
+
+\section{3 Research Questions and Hypotheses}
+
+\begin{itemize}
+\item RQ1: What are the formal and measured speed costs of S, E, and H as \(E\), \(C\), and \(K\) change?
+\item RQ2: What persistent, temporary, and active-event memory does each model require?
+\item RQ3: How complex is each source-level function stack on the outside-Tick and Tick paths?
+\item RQ4: At what measured arithmetic count does p99 frame work first reach the chosen 1-ms noticeable-spike proxy?
+\item RQ5: Which model is rational for sparse, moderate, and dense game-state changes, and what correctness risk accompanies it?
+\end{itemize}
+
+Hypotheses predict that E wins for sparse changes; S becomes competitive as all entities change; H lies between them under sparse changes because it scans \(E\); S can win at \(C=E\) through its uniform loop; H uses the most metadata; and absolute frame time matters more than a slowdown ratio.
+
+\section{4 Related Work}
+
+Parnas argues that volatile design decisions should be hidden behind module interfaces \cite{parnas1972}. Encapsulation can make state safer, but does not remove temporal coupling. Referential transparency makes output a function of explicit input \cite{gunter1992}; Hughes explains why functions without side effects improve composition \cite{hughes1989}. These ideas support deterministic evaluators but do not establish that recomputation is affordable.
+
+Incremental computation updates only affected output \cite{ramalingam1993}. Acar, Blelloch, and Harper show that functional semantics and efficient change propagation can coexist \cite{acar2006}. H is a simple manual form of this idea, while E pushes notification into a dispatcher.
+
+Game-engine literature treats the main loop as coordinator for game state, physics, animation, and rendering \cite{gregory2019}. Engine documentation exposes update ordering because values may be current or one frame old depending on group or callback \cite{epicticking,unityupdate}. These sources establish relevance but do not quantify this crossover.
+
+Real-time suitability requires deadlines, not averages alone \cite{liu1973,buttazzo2011}. Observed maxima are not formal WCET \cite{wilhelm2008}. Deterministic input helps generated testing \cite{claessen2000}, while whole-system replay additionally requires nondeterministic-interaction logging \cite{dunlap2002,srinivasan2004}. Shared state creates ordering risks \cite{lu2008}. Memory hierarchy can dominate simple arithmetic \cite{hennessy2017}, but cache counters are absent here.
+
+\section{5 Experimental Methodology}
+
+\subsection{5.1 Matrix and equivalence}
+
+The density matrix uses \(E=\{64,256,1024,4096\}\), \(C/E=\{0,1,10,100\}\) percent, and \(K=16\). Calibration fixes \(E=4096,C=E\), and samples \(K=\{1,4,16,64,96,128,160,192,256,1024\}\). Lists are deterministic and entities unique. Input generation is untimed.
+
+All variants use the same single-precision structures, operation order, and evaluator. S calls it for every entity in Tick, E through dispatch for changed entities before Tick, and H from the version scan. Allocation, I/O, initialization, checksums, and formatting are untimed. Updates allocate nothing.
+
+\subsection{5.2 Phases, timing, and practical threshold}
+
+\texttt{frame\_total} times input application, model evaluation, and Tick consumption. \texttt{tick\_only} applies changes first, then times Tick. This separates CPU cost from phase placement.
+
+\texttt{QueryPerformanceCounter} supplies the timer \cite{microsoftqpc}. The minimum of 20,000 adjacent reads was 0 ns under 100-ns quantization. Cases use 101--2,001 samples; largest calibration cases use at least 31 per repetition. Each warms 32 frames and runs 11 repetitions. \texttt{QueryThreadCycleTime} was recorded \cite{microsoftcycles}, but its raw field includes untimed change preparation and is not used for phase conclusions.
+
+A noticeable subsystem spike proxy is declared as p99 work of at least 1 ms, or an added p99 of 1 ms relative to cached Tick. One millisecond is 6 percent of a 60-Hz frame and 12 percent of a 120-Hz frame. This is a budget criterion, not a universal perception boundary. Memory comes from C11 \texttt{sizeof}, not RSS.
+
+\begin{table}
+\caption{Table 2. Experimental matrix.}
+\begin{tabular}{ll}
+Factor & Values \\
+\hline
+Entities \(E\) & 64, 256, 1,024, 4,096 \\
+Change density \(C/E\) & 0, 1, 10, 100 percent \\
+Normal work \(K\) & 16 rounds/entity \\
+Calibration \(K\) & 1--1,024 sampled rounds \\
+Phases & total work; Tick only \\
+Models/repetitions & S, E, H; 11 \\
+\end{tabular}
+\end{table}
+
+\section{6 Benchmark Algorithm and Formal Analysis}
+
+\subsection{6.1 Arithmetic and time}
+
+For each recomputed entity, the evaluator executes \(K\) vec3 multiplications and \(K\) vec3 additions. The source-level arithmetic count is
+
+\[
+A(R,K)=6RK,
+\]
+
+where \(R\) is the recomputed-entity count. This describes C floating-point operations. The compiler may fuse, schedule, vectorize, or lower them differently; without instruction counters it is not an executed-instruction count.
+
+Let \(c_a\) be average cost per vector round, \(c_d\) dispatcher overhead per change, \(c_v\) version-check cost per entity, and \(c_i\) input-write cost:
+
+\[
+T_S=Cc_i+EKc_a=\Theta(C+EK),
+\]
+\[
+T_E=C(c_i+c_d+Kc_a)+O(1)=\Theta(CK),
+\]
+\[
+T_H=Cc_i+Ec_v+CKc_a=\Theta(C+E+CK).
+\]
+
+For \(C=0\), E performs constant Tick work, H scans \(E\), and S performs \(EK\) arithmetic. For \(C=E\), all perform \(EK\) arithmetic; constants, call depth, branches, and layout determine the winner.
+
+\begin{table}
+\caption{Table 3. Formal time and arithmetic per frame.}
+\begin{tabular}{llll}
+Model & Outside Tick & Inside Tick & Arithmetic \\
+\hline
+S & \(\Theta(C)\) writes & \(\Theta(EK)\) & \(6EK\) \\
+E & \(\Theta(CK)\) dispatch & \(\Theta(1)\) handoff & \(6CK\) \\
+H & \(\Theta(C)\) marks & \(\Theta(E+CK)\) & \(6CK\) \\
+\end{tabular}
+\end{table}
+
+\subsection{6.2 Memory}
+
+On the measured ABI, input is 24 bytes, output 12 bytes, an event 28 bytes, and a version 4 bytes. Working memory, including active events and S's temporary output, is
+
+\[
+W_S=36E,\qquad W_E=36E+28C,\qquad W_H=44E+28C.
+\]
+
+S has \(24E\) persistent core bytes and \(12E\) temporary output. E persists \(36E\). H persists \(44E\). Event storage is transient and holds exactly \(C\) changes here.
+
+\subsection{6.3 Plain function stacks}
+
+The implementation preserves major evaluator and dispatcher frames with a compiler no-inline attribute. Complexity here means the longest named source path, not cyclomatic complexity or a proof of comprehensibility.
+
+\begin{table}
+\caption{Table 4. Source-level function stacks.}
+\begin{tabular}{lll}
+Model/path & Longest named path & Depth \\
+\hline
+S Tick & Tick \(\rightarrow\) recompute-all \(\rightarrow\) entity & 3 \\
+E outside Tick & dispatch \(\rightarrow\) one \(\rightarrow\) handler \(\rightarrow\) entity & 4 \\
+E Tick & Tick \(\rightarrow\) consume-cache & 2 \\
+H outside Tick & mark-changes \(\rightarrow\) mark-one & 2 \\
+H Tick & Tick \(\rightarrow\) scan-entity \(\rightarrow\) entity & 3 \\
+\end{tabular}
+\end{table}
+
+S has one uniform Tick entry and no change protocol. E has the deepest update stack and two temporally coupled paths: dispatch must precede consumption. H keeps a simpler marking path but adds a conditional decision for every entity in Tick.
+
+\section{7 Correctness Validation}
+
+Tests create 257 entities, run 211 frames, and cycle through zero, three, approximately ten-percent, and all-entity changes. After each frame, all components compare within \(2\times10^{-6}\) relative tolerance and full-array checksums agree. Boundary tests reject null storage, zero entities, excessive counts, and zero rounds. A 65,536-round case remains finite.
+
+The final CSV contains 1,716 rows, 572 for each model. Grouping workload, entity count, density, rounds, repetition, and phase produced 572 paired groups and zero cross-model checksum disagreements.
+
+A fault test changes canonical input without sending E's event and without incrementing H's version. Both caches remain stale while S reconstructs the new output. Dispatching or marking restores equality. S therefore removes stale \emph{derived} output, not stale canonical input. E is correct only when every mutation reaches dispatch; H only when every mutation changes the observed version.
+
+The optimized correctness executable passed, and Clang AddressSanitizer/UndefinedBehaviorSanitizer verification is included in the final audit. These tests establish equivalence for this workload, not arbitrary engine code.
+
+\section{8 Test Environment}
+
+\begin{table}
+\caption{Table 5. Measured platform and build.}
+\begin{tabular}{ll}
+Item & Value \\
+\hline
+Machine & HP Victus 16-s1xxx gaming laptop \\
+Processor & AMD Ryzen 7 8845HS, 8 cores/16 threads \\
+Memory & 16,440,479,744 bytes installed \\
+Operating system & Windows 11 Home 25H2, build 26200.8875 \\
+Compiler & Clang 21.1.0, x86-64 Windows \\
+Timed flags & C11, \texttt{-O3 -Wall -Wextra -Wpedantic} \\
+Correctness flags & C11, \texttt{-O2 -Wall -Wextra -Wpedantic} \\
+Power plan & High performance \\
+Affinity/priority & all 16 logical CPUs; normal priority \\
+Timer & QueryPerformanceCounter \\
+\end{tabular}
+\end{table}
+
+The process was not pinned, boost was not locked, and Windows was not isolated. There was no deliberate competing workload. This is representative of a personal game-development laptop, not a hard-real-time laboratory.
+
+\section{9 Performance Results}
+
+\subsection{9.1 Change density at 4,096 entities}
+
+\begin{table}
+\caption{Table 6. Total frame work at \(E=4096,K=16\).}
+\begin{tabular}{lrrrrr}
+Changed & Model & Mean us & p99 us & Max us & Ratio to E \\
+\hline
+0\% & E & 0.030 & 0.100 & 12.6 & 1.00 \\
+0\% & H & 4.781 & 4.700 & 25.0 & 161.03 \\
+0\% & S & 83.073 & 99.200 & 163.7 & 2797.89 \\
+1\% & E & 1.153 & 1.200 & 21.1 & 1.00 \\
+1\% & H & 5.660 & 9.400 & 46.1 & 4.91 \\
+1\% & S & 81.233 & 97.700 & 146.4 & 70.46 \\
+10\% & E & 11.382 & 20.300 & 70.4 & 1.00 \\
+10\% & H & 13.195 & 23.300 & 62.9 & 1.16 \\
+10\% & S & 83.814 & 102.900 & 262.3 & 7.36 \\
+100\% & E & 115.306 & 139.500 & 308.5 & 1.00 \\
+100\% & H & 98.558 & 137.200 & 1188.1 & 0.85 \\
+100\% & S & 89.780 & 120.300 & 225.1 & 0.78 \\
+\end{tabular}
+\end{table}
+
+Sparse changes strongly favor E. At zero change, S is almost 2,800 times slower by ratio, yet its absolute mean is only 0.083 ms. H's scan costs 0.0048 ms. Ratios alone exaggerate practical harm.
+
+At ten-percent change, H is within 16 percent of E while S remains 7.36 times slower. At full change, H and S are faster than E. The mathematics is identical; the difference is dispatch and scanning overhead. The assumption that event-driven state is always fastest is rejected for this dense case.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/change-density-frame-total.svg}
+\caption{Figure 1. Mean total work versus changed-entity density.}
+\end{figure}
+
+\subsection{9.2 Tick placement}
+
+\begin{table}
+\caption{Table 7. Tick-only latency at \(E=4096,K=16\).}
+\begin{tabular}{lrrrr}
+Changed & Model & Mean us & p99 us & Max us \\
+\hline
+0\% & E & 0.022 & 0.100 & 0.100 \\
+0\% & H & 4.990 & 7.900 & 28.4 \\
+0\% & S & 82.239 & 105.400 & 160.0 \\
+1\% & E & 0.023 & 0.100 & 0.100 \\
+1\% & H & 5.581 & 6.700 & 30.3 \\
+1\% & S & 82.221 & 96.400 & 135.8 \\
+10\% & E & 0.024 & 0.100 & 0.200 \\
+10\% & H & 12.532 & 23.100 & 47.5 \\
+10\% & S & 83.739 & 107.800 & 251.3 \\
+100\% & E & 0.033 & 0.100 & 0.500 \\
+100\% & H & 86.883 & 112.600 & 412.5 \\
+100\% & S & 84.240 & 117.300 & 218.9 \\
+\end{tabular}
+\end{table}
+
+E's Tick is nearly constant because arithmetic already ran. This is valuable when a Tick group has a strict allowance, but it is not a CPU saving: at full change E spent 115.3 microseconds total. H intentionally places selective repair in Tick. S has the most predictable change-independent Tick mean.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/change-density-tick-p99.svg}
+\caption{Figure 2. p99 critical-Tick time versus change density.}
+\end{figure}
+
+\subsection{9.3 Entity-count scaling}
+
+At \(E=1024,K=16\), no-change total means were 0.026 microseconds for E, 1.324 for H, and 21.701 for S. At one-percent change they were 0.324, 1.428, and 21.435. At full change they were 28.384, 23.530, and 21.519. The same crossover appears: sparse scenes favor E; full change favors the shallow S loop.
+
+\section{10 Arithmetic Threshold and Frame-Time Interpretation}
+
+\subsection{10.1 First sampled 1-ms p99 crossing}
+
+\begin{table}
+\caption{Table 8. Arithmetic boundary at 4,096 entities, total work.}
+\begin{tabular}{rrrrrr}
+Rounds & Vec3 mults & Vec3 adds & Scalar ops & Model p99 us & Mean us \\
+\hline
+128 & 524,288 & 524,288 & 3,145,728 & E: 783.8 & 753.3 \\
+128 & 524,288 & 524,288 & 3,145,728 & H: 762.4 & 726.5 \\
+128 & 524,288 & 524,288 & 3,145,728 & S: 745.3 & 719.3 \\
+160 & 655,360 & 655,360 & 3,932,160 & E: 992.4 & 956.7 \\
+160 & 655,360 & 655,360 & 3,932,160 & H: 956.6 & 915.4 \\
+160 & 655,360 & 655,360 & 3,932,160 & S: 937.2 & 918.2 \\
+192 & 786,432 & 786,432 & 4,718,592 & E: 1164.6 & 1126.9 \\
+192 & 786,432 & 786,432 & 4,718,592 & H: 1152.4 & 1094.7 \\
+192 & 786,432 & 786,432 & 4,718,592 & S: 1144.9 & 1092.3 \\
+\end{tabular}
+\end{table}
+
+RQ4 is interval-censored but practical. The p99 total path remained below 1 ms at 3,932,160 scalar calculations and crossed at 4,718,592. In game vocabulary, the first sampled crossing is 786,432 vec3 component-wise multiplications plus 786,432 vec3 additions in one frame.
+
+This is not a processor-wide arithmetic limit. Calls, branches, loads, stores, event writes, compiler lowering, and OS interference are included. Other kernels may use SIMD, fused operations, different dependencies, or different cache footprints.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/arithmetic-calibration-total-p99.svg}
+\caption{Figure 3. Total p99 versus source-level scalar arithmetic.}
+\end{figure}
+
+\subsection{10.2 Work moved outside Tick}
+
+At 192 rounds, Tick-only p99 was 1.149 ms for S, 1.138 ms for H, and 0.0002 ms for E. E's total p99 was still 1.165 ms because dispatch ran before Tick. Event placement can protect a callback or distribute work across phases, but a single thread does not recover the consumed frame budget.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/arithmetic-calibration-tick-p99.svg}
+\caption{Figure 4. Tick-only p99 exposes stateful work placement.}
+\end{figure}
+
+\subsection{10.3 What can a player notice?}
+
+A single isolated 1-ms task does not imply a visible hitch. At 60 Hz it consumes 6 percent of the frame; at 120 Hz, 12 percent. If a frame already uses 15.9 ms, another 1 ms misses a 16.67-ms interval. If it uses 8 ms, the same task may fit at 60 Hz but miss 120 Hz. Repeated variance can harm pacing even when the mean fits.
+
+The proxy answers when this subsystem should draw performance attention. It does not answer a universal psychophysical question. Production should test complete-frame p99 and p99.9 against the presentation deadline with a safety margin on target hardware.
+
+\section{11 Memory Results}
+
+\begin{table}
+\caption{Table 9. Formal and measured working memory at 4,096 entities.}
+\begin{tabular}{lrrr}
+Model & Formula & 0-percent changes & 100-percent changes \\
+\hline
+S & \(36E\) & 144 KiB & 144 KiB \\
+E & \(36E+28C\) & 144 KiB & 256 KiB \\
+H & \(44E+28C\) & 176 KiB & 288 KiB \\
+\end{tabular}
+\end{table}
+
+At one-percent change, allocations are 144 KiB for S, 145.1 KiB for E, and 177.1 KiB for H. At ten percent they are 144, 155.2, and 187.2 KiB. S minimizes persistent memory. H pays 32 KiB for two version arrays.
+
+Event allocation is not a universal queue requirement; engines may use fixed rings, pooled nodes, per-thread buffers, or direct callbacks. Executable size, allocator metadata, page rounding, and RSS are excluded.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{/draft-papers/stateless-realtime/results/game-models-final/working-memory-4096.svg}
+\caption{Figure 5. Working memory versus active change density.}
+\end{figure}
+
+Cache behavior was not measured. The contiguous 144--288 KiB arrays plausibly interact with cache levels, but attributing timing to cache misses without counters would be speculation. Linux instructions include \texttt{perf} events \cite{linuxperf}.
+
+\section{12 Statistical and Practical Analysis}
+
+\begin{table}
+\caption{Table 10. Practical change-density interpretation.}
+\begin{tabular}{llll}
+Condition & Fastest total & Best Tick placement & Dominant cost \\
+\hline
+\(C=0\) & E & E & S wastes \(EK\); H scans \(E\) \\
+\(C/E=1\%\) & E & E & only 41 entities dispatched \\
+\(C/E=10\%\) & E & E & H within 16 percent \\
+\(C=E\) & S & E & E dispatch; H scan/version writes \\
+\end{tabular}
+\end{table}
+
+H1--H4 are supported for this workload. H5 is partly supported: S uses the least persistent memory, but E ties S's working allocation when no events are active. H6 is supported by extreme ratios with small absolute cost. The no-change S/E ratio is 2,798, but the difference is only 0.083 ms.
+
+At 160 rounds, median repetition p99 remained just under 1 ms for all models, although some raw samples exceeded it: 12.61 percent for E, 2.64 percent for S, and 0.88 percent for H in the total phase. At 192 rounds, the 1-ms miss rate was 100 percent for all three. Thus 160 is marginal and 192 is a robust sampled failure point for this proxy.
+
+Maximum observations are noisier. S at 96 rounds had a 1.165-ms maximum despite 0.585-ms p99. Normal-priority Windows interruption can create rare spikes. Shipping tests should use complete-frame traces over longer sessions and multiple target machines.
+
+\section{13 Debugging and Maintainability Analysis}
+
+S removes one failure channel: derived output cannot survive from an earlier frame because every element is overwritten from canonical input. A test needs only the input snapshot and \(K\), without an event history or reset sequence. Property-based tests can generate independent snapshots \cite{claessen2000}.
+
+E has more temporal obligations. A producer mutates input, the correct dispatcher must run, the handler must select the right entity generation, cache update must finish before consumer Tick, and lifecycle reset must initialize input and cache. Its four-frame update stack is not inherently bad, but the dependency crosses time and entry points. The injected missing-event test shows the stale-cache mechanism.
+
+H reduces dispatcher work to a mark and centralizes evaluation in Tick. A debugger can inspect input version, evaluated version, and cache together; multiple pre-Tick changes can be coalesced. The mark remains mandatory. Direct input mutation without a version increment leaves stale output.
+
+\begin{table}
+\caption{Table 11. Debugging and maintenance tradeoffs.}
+\begin{tabular}{llll}
+Property & S & E & H \\
+\hline
+Visible snapshot determines output & yes & events also matter & versions also matter \\
+Derived-cache reset required & no & yes & yes \\
+Missing notification can stale output & no & yes & yes \\
+Call-order dependency & low & dispatch before Tick & mark before scan \\
+Replay requirement & snapshot & events + initial state & changes + versions \\
+\end{tabular}
+\end{table}
+
+These mechanisms support easier local testing for S, but the paper does not measure time-to-debug or defect density. Canonical input can be stale or attached to the wrong generation. E can be highly testable when transitions are encapsulated and observable \cite{parnas1972}. Whole-system replay still requires nondeterministic I/O, time, and scheduling to be recorded \cite{dunlap2002,srinivasan2004}.
+
+\section{14 Suitability, Energy, and Recommendations}
+
+\begin{table}
+\caption{Table 12. Game-oriented suitability matrix.}
+\begin{tabular}{llll}
+Game condition & Preferred & Reason & Avoid when \\
+\hline
+Rare equipment/stat changes & E & work follows \(C\) & events are missed \\
+Many idle entities & E & near-zero Tick & reset is unreliable \\
+Central dirty reconciliation & H & coalesced Tick work & scanning is costly \\
+Small bounded entity set & S & simplest rebuild & calculation is expensive \\
+Nearly every entity changes & S or H & avoids deep dispatch & Tick margin is narrow \\
+Strict Tick-group allowance & E & work placed earlier & earlier phase lacks budget \\
+Debug validation & S oracle + E/H & catches divergence & oracle is always on \\
+\end{tabular}
+\end{table}
+
+For sparse gameplay changes, E is the rational default here. It should be paired with whole-value construction, entity-generation checks, observable cache state, and tests that reject mutations bypassing dispatch.
+
+H is useful when many producers change inputs but evaluation should be centralized and coalesced. Its zero-change scan costs 4.78 microseconds at 4,096 entities. That is cheap here but can grow with larger worlds, scattered components, and multiple systems.
+
+S is rational when the set is small and bounded, computation cheap, most entities change, stale derived state costly, or snapshot testing valuable. At 4,096 entities and 16 rounds it stayed below 0.1 ms mean at every density. Avoid repeating the pattern across expensive systems near the 160--192-round boundary.
+
+A mixed production architecture is often strongest: explicit canonical ownership; event caches for expensive sparse systems; selective Tick repair where coalescing helps; and periodic full recomputation as a debug oracle or sampled integrity check.
+
+No energy instrument was available. Avoided arithmetic may reduce active time, but elapsed time is not energy. Wakeups, voltage, frequency, idle residency, and memory traffic matter. Embedded work shows periodic interrupts can reduce low-power residency \cite{zeng2008}; quantitative game-laptop claims require platform telemetry or an external meter.
+
+\section{15 Threats to Validity and Limitations}
+
+Only one AMD laptop, Windows build, and Clang version produced the numbers. Affinity, boost, temperature, and background activity were uncontrolled. The timer quantizes very short functions, so 0.1-microsecond results mean below reliable single-call resolution. Observed maxima are not WCET \cite{wilhelm2008}.
+
+The workload is controlled game-style vector derivation, not Unreal, Unity, physics, animation, ECS traversal, or a shipping game. It has contiguous warm arrays, no virtual dispatch, pointer chasing, collision, synchronization, or GPU work. Matrices, quaternions, normalization, trigonometry, and SIMD layouts may move the threshold.
+
+Change generation is untimed, as intended, but the cycle field includes preparation and is not phase-specific. Cache, branch, instruction, bandwidth, and energy counters are absent. The arithmetic count is exact at C source level, not machine-instruction level.
+
+The event list has at most one change per entity per frame. Real dispatchers may coalesce, allocate, cross threads, lock queues, or invoke subscribers. H uses 32-bit versions with wrap handling, but natural wrap was not timed. S receives canonical arrays already resident; building a snapshot may cost more in an engine.
+
+Displayed p99 is the median repetition p99. The largest calibration cases have 31 samples per repetition, so their per-repetition p99 is near the maximum. The 160-to-192 boundary is sampled, not continuous. Multiple comparisons are descriptive.
+
+The 1-ms proxy is a declared convention, not a measured perception threshold. It must be replaced by the project's frame-time and input-latency requirements. One isolated subsystem cannot predict complete frame rate. Finally, the stale-event fault is injected; it demonstrates a mechanism, not prevalence or developer productivity.
+
+\section{16 Conclusions}
+
+The answer is conditional. At 4,096 entities and one-percent change, E averaged 1.15 microseconds, H 5.66, and S 81.23. At ten-percent change E still led, while H was within 16 percent. At 100-percent change, S became fastest at 89.78 microseconds; H took 98.56 and E 115.31. Stateless is not always slower, and event-driven state is not always faster.
+
+Formally, S costs \(\Theta(EK)\) inside Tick. E costs \(\Theta(CK)\) outside Tick and constant consumption inside. H costs \(\Theta(E+CK)\) in Tick. Small \(C\) favors E. At \(C=E\), identical arithmetic leaves S's shorter uniform path ahead.
+
+At 4,096 entities, S uses 96 KiB persistent input plus 48 KiB temporary output. E uses 144 KiB persistent state, growing to 256 KiB with 4,096 active events. H uses 176 KiB persistent input/cache/version storage and grows to 288 KiB. S eliminates stale derived output but not stale canonical input; both cached models can become stale after a missed notification.
+
+The measured arithmetic boundary is between 3,932,160 and 4,718,592 scalar calculations. The first sampled p99 crossing used 786,432 vec3 multiplications plus 786,432 vec3 additions. E moved them outside Tick, leaving Tick-only p99 near timer resolution, but total p99 still exceeded 1 ms. Placement changes scheduling risk, not total CPU demand.
+
+The plain function stack is three named frames for S Tick, four for E update plus two for E Tick, and two for H marking plus three for H Tick. These transparent counts expose temporal obligations but do not alone measure maintainability.
+
+Use E for expensive sparse change, H when centralized coalesced repair justifies scanning, and S for small, dense, cheap, or validation-oriented state. Combine explicit ownership, generations, invariant checks, and a periodic recomputed oracle when stale-cache risk matters. The engineering lesson is to measure \(E\), \(C\), \(K\), memory, and phase placement against the real frame budget.
+
+\section{Appendix A Reproduction Package}
+
+The package is in \texttt{/draft-papers/stateless-realtime} and contains the C11 API, implementation, tests, runner, analysis script, environment, raw CSV, aggregate CSV, threshold table, and SVG figures.
+
+\begin{verbatim}
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+./build/sr_benchmark --profile full --repetitions 11 \
+  --output results/raw-game-models-final.csv
+python tools/analyze.py results/raw-game-models-final.csv \
+  results/game-models-final
+\end{verbatim}
+
+The raw file has 1,716 rows and the aggregate has 156 model/phase/workload groups.
+
+\section{Appendix B Raw-Result Schema}
+
+Each row records workload, variant, phase, entities, change percentage, rounds, repetition, samples, changed and recomputed entities, arithmetic count, mean, median, p95, p99, maximum, throughput, contextual cycles, misses at 100 microseconds/1 ms/16.67 ms, memory categories, source depth, and checksum.
+
+\section{Appendix C Unresolved Questions}
+
+\begin{itemize}
+\item Does the crossover persist in Unreal or Unity with engine traversal and dispatch?
+\item How do matrices, quaternions, collision, and SIMD layouts move the arithmetic boundary?
+\item How do cold caches, pinned CPUs, consoles, mobile systems, and lower-power CPUs change p99?
+\item Which cache, branch, instruction, bandwidth, and energy events explain the constants?
+\item Do developers diagnose missing-event faults faster with S or versioned H?
+\item What project-specific spike is perceptible under different displays and frame rates?
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{gregory2019}J. Gregory, Game Engine Architecture, 3rd ed. Boca Raton, FL, USA: CRC Press, 2019, ISBN: 978-1-138-03545-4.
+\bibitem{epicticking}Epic Games, Actor Ticking in Unreal Engine, Unreal Engine 5.8 Documentation, accessed Aug. 1, 2026. Available: \texttt{https://dev.epicgames.com/documentation/en-us/unreal-engine/actor-ticking-in-unreal-engine}.
+\bibitem{epicactortick}Epic Games, AActor::Tick, Unreal Engine 5.8 C++ API Reference, accessed Aug. 1, 2026. Available: \texttt{https://dev.epicgames.com/documentation/unreal-engine/API/Runtime/Engine/AActor/Tick}.
+\bibitem{unityupdate}Unity Technologies, Managing update and execution order, Unity Manual, accessed Aug. 1, 2026. Available: \texttt{https://docs.unity3d.com/Manual/managing-update-order.html}.
+\bibitem{parnas1972}D. L. Parnas, On the criteria to be used in decomposing systems into modules, Communications of the ACM, vol. 15, no. 12, pp. 1053--1058, 1972, doi: 10.1145/361598.361623.
+\bibitem{hughes1989}J. Hughes, Why functional programming matters, The Computer Journal, vol. 32, no. 2, pp. 98--107, 1989, doi: 10.1093/comjnl/32.2.98.
+\bibitem{gunter1992}C. A. Gunter, Semantics of Programming Languages: Structures and Techniques. MIT Press, 1992, ISBN: 978-0-262-57095-4.
+\bibitem{ramalingam1993}G. Ramalingam and T. W. Reps, A categorized bibliography on incremental computation, Proc. POPL, pp. 502--510, 1993, doi: 10.1145/158511.158710.
+\bibitem{acar2006}U. A. Acar, G. E. Blelloch, and R. Harper, Adaptive functional programming, ACM TOPLAS, vol. 28, no. 6, pp. 990--1034, 2006, doi: 10.1145/1186632.1186634.
+\bibitem{lauer1979}H. C. Lauer and R. M. Needham, On the duality of operating system structures, ACM SIGOPS OSR, vol. 13, no. 2, pp. 3--19, 1979, doi: 10.1145/850657.850658.
+\bibitem{liu1973}C. L. Liu and J. W. Layland, Scheduling algorithms for multiprogramming in a hard-real-time environment, JACM, vol. 20, no. 1, pp. 46--61, 1973, doi: 10.1145/321738.321743.
+\bibitem{buttazzo2011}G. C. Buttazzo, Hard Real-Time Computing Systems, 3rd ed. Springer, 2011, doi: 10.1007/978-1-4614-0676-1.
+\bibitem{wilhelm2008}R. Wilhelm et al., The worst-case execution-time problem, ACM TECS, vol. 7, no. 3, Art. 36, 2008, doi: 10.1145/1347375.1347389.
+\bibitem{hennessy2017}J. L. Hennessy and D. A. Patterson, Computer Architecture: A Quantitative Approach, 6th ed. Morgan Kaufmann, 2017, ISBN: 978-0-12-811905-1.
+\bibitem{claessen2000}K. Claessen and J. Hughes, QuickCheck, Proc. ICFP, pp. 268--279, 2000, doi: 10.1145/351240.351266.
+\bibitem{dunlap2002}G. W. Dunlap et al., ReVirt: Enabling intrusion analysis through virtual-machine logging and replay, Proc. OSDI, pp. 211--224, 2002. Available: \texttt{https://www.usenix.org/conference/osdi-02/revirt-enabling-intrusion-analysis-through-virtual-machine-logging-and-replay}.
+\bibitem{srinivasan2004}S. M. Srinivasan et al., Flashback: A lightweight extension for rollback and deterministic replay, Proc. USENIX ATC, pp. 29--44, 2004.
+\bibitem{lu2008}S. Lu, S. Park, E. Seo, and Y. Zhou, Learning from mistakes: A comprehensive study on real world concurrency bug characteristics, Proc. ASPLOS, pp. 329--339, 2008, doi: 10.1145/1346281.1346323.
+\bibitem{zeng2008}G. Zeng, H. Tomiyama, and H. Takada, Dynamic power management for embedded system idle state in the presence of periodic interrupt services, IPSJ TSLDM, vol. 1, pp. 48--57, 2008, doi: 10.2197/ipsjtsldm.1.48.
+\bibitem{microsoftqpc}Microsoft, QueryPerformanceCounter function, Windows API documentation, updated Nov. 21, 2025.
+\bibitem{microsoftcycles}Microsoft, QueryThreadCycleTime function, Windows API documentation, updated May 21, 2025.
+\bibitem{linuxperf}Linux Kernel Documentation, Discovering Linux kernel subsystems used by a workload: perf, accessed Aug. 1, 2026. Available: \texttt{https://docs.kernel.org/admin-guide/workload-tracing.html}.
+\bibitem{clangdocs}LLVM Project, Clang command guide, accessed Aug. 1, 2026. Available: \texttt{https://clang.llvm.org/docs/CommandGuide/clang.html}.
+\bibitem{c11}ISO/IEC JTC 1/SC 22/WG 14, ISO/IEC 9899:2011, Information technology---Programming languages---C, 2011.
+\end{thebibliography}
+
+\end{document}

@@ -366,6 +366,102 @@
     text-align: center;
 }
 
+.paper-table,
+.paper-figure {
+    break-inside: avoid;
+    margin: 8pt 0;
+    text-align: center;
+}
+
+.paper-table table {
+    border-collapse: collapse;
+    font-size: 7.2pt;
+    line-height: 1.12;
+    margin: 0 auto;
+    max-width: 100%;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.paper-table th,
+.paper-table td {
+    border-bottom: .45pt solid #777;
+    padding: 2.5pt 2pt;
+    text-align: right;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+
+.paper-table th:first-child,
+.paper-table td:first-child {
+    text-align: left;
+    width: 24%;
+}
+
+.paper-table-cols-7 table {
+    font-size: 6.5pt;
+}
+
+.paper-table-cols-7 th:first-child,
+.paper-table-cols-7 td:first-child {
+    width: 17%;
+}
+
+.paper-table-cols-7 th:nth-child(2),
+.paper-table-cols-7 td:nth-child(2) {
+    width: 15%;
+}
+
+.paper-table-cols-7 th:nth-child(3),
+.paper-table-cols-7 td:nth-child(3) {
+    width: 26%;
+}
+
+.paper-table-cols-7 th:nth-child(n+4):nth-child(-n+6),
+.paper-table-cols-7 td:nth-child(n+4):nth-child(-n+6) {
+    width: 10%;
+}
+
+.paper-table-cols-7 th:nth-child(7),
+.paper-table-cols-7 td:nth-child(7) {
+    width: 12%;
+}
+
+.paper-table th {
+    border-bottom-color: #111;
+    border-top: .7pt solid #111;
+    font-weight: bold;
+}
+
+.paper-table figcaption,
+.paper-figure figcaption {
+    font-size: 8pt;
+    line-height: 1.15;
+    margin-top: 4pt;
+    text-align: left;
+}
+
+.paper-figure img {
+    display: block;
+    height: auto;
+    margin: 0 auto;
+    max-height: 78mm;
+    max-width: 100%;
+}
+
+.paper-verbatim {
+    background: #f7f7f7;
+    border: .4pt solid #bbb;
+    break-inside: avoid;
+    font-family: "Computer Modern Typewriter", monospace;
+    font-size: 6.8pt;
+    line-height: 1.2;
+    margin: 7pt 0;
+    overflow-x: auto;
+    padding: 5pt;
+    white-space: pre-wrap;
+}
+
 .paper-reference-entry {
     font-size: 8pt;
     line-height: 1.08;

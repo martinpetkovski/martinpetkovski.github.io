@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+<style>text{font-family:Arial,sans-serif;fill:#222}.grid{stroke:#ddd;stroke-width:1}.axis{stroke:#222;stroke-width:1.5}.line{fill:none;stroke-width:2.5}.point{stroke:#fff;stroke-width:1}</style>
+<rect width="900" height="520" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-size="19">Sensor monitoring: scheduling and change density</text>
+<line class="grid" x1="95" y1="55.0" x2="875" y2="55.0"/>
+<text x="85" y="59.0" text-anchor="end" font-size="12">1.1e+04</text>
+<line class="grid" x1="95" y1="133.0" x2="875" y2="133.0"/>
+<text x="85" y="137.0" text-anchor="end" font-size="12">1.8e+03</text>
+<line class="grid" x1="95" y1="211.0" x2="875" y2="211.0"/>
+<text x="85" y="215.0" text-anchor="end" font-size="12">3.1e+02</text>
+<line class="grid" x1="95" y1="289.0" x2="875" y2="289.0"/>
+<text x="85" y="293.0" text-anchor="end" font-size="12">53</text>
+<line class="grid" x1="95" y1="367.0" x2="875" y2="367.0"/>
+<text x="85" y="371.0" text-anchor="end" font-size="12">9.1</text>
+<line class="grid" x1="95" y1="445.0" x2="875" y2="445.0"/>
+<text x="85" y="449.0" text-anchor="end" font-size="12">1.5</text>
+<text x="95.0" y="468" text-anchor="middle" font-size="12">64</text>
+<text x="485.0" y="468" text-anchor="middle" font-size="12">1024</text>
+<text x="875.0" y="468" text-anchor="middle" font-size="12">4096</text>
+<line class="axis" x1="95" y1="55" x2="95" y2="445"/>
+<line class="axis" x1="95" y1="445" x2="875" y2="445"/>
+<text x="485.0" y="500" text-anchor="middle" font-size="14">Sensor count</text>
+<text x="20" y="250.0" transform="rotate(-90 20 250.0)" text-anchor="middle" font-size="14">Mean tick latency (ns) (log scale)</text>
+<polyline class="line" stroke="#1f77b4" points="95.0,214.2 485.0,125.2 875.0,55.0"/>
+<circle class="point" fill="#1f77b4" cx="95.0" cy="214.2" r="4"/>
+<circle class="point" fill="#1f77b4" cx="485.0" cy="125.2" r="4"/>
+<circle class="point" fill="#1f77b4" cx="875.0" cy="55.0" r="4"/>
+<line x1="107" y1="69" x2="131" y2="69" stroke="#1f77b4" stroke-width="3"/>
+<text x="138" y="73" font-size="12">event_incremental / all_change</text>
+<polyline class="line" stroke="#d62728" points="95.0,435.1 485.0,445.0 875.0,414.5"/>
+<circle class="point" fill="#d62728" cx="95.0" cy="435.1" r="4"/>
+<circle class="point" fill="#d62728" cx="485.0" cy="445.0" r="4"/>
+<circle class="point" fill="#d62728" cx="875.0" cy="414.5" r="4"/>
+<line x1="107" y1="90" x2="131" y2="90" stroke="#d62728" stroke-width="3"/>
+<text x="138" y="94" font-size="12">event_incremental / no_change</text>
+<polyline class="line" stroke="#2ca02c" points="95.0,379.4 485.0,326.9 875.0,272.3"/>
+<circle class="point" fill="#2ca02c" cx="95.0" cy="379.4" r="4"/>
+<circle class="point" fill="#2ca02c" cx="485.0" cy="326.9" r="4"/>
+<circle class="point" fill="#2ca02c" cx="875.0" cy="272.3" r="4"/>
+<line x1="107" y1="111" x2="131" y2="111" stroke="#2ca02c" stroke-width="3"/>
+<text x="138" y="115" font-size="12">event_incremental / one_percent</text>
+<polyline class="line" stroke="#9467bd" points="95.0,233.9 485.0,120.1 875.0,56.5"/>
+<circle class="point" fill="#9467bd" cx="95.0" cy="233.9" r="4"/>
+<circle class="point" fill="#9467bd" cx="485.0" cy="120.1" r="4"/>
+<circle class="point" fill="#9467bd" cx="875.0" cy="56.5" r="4"/>
+<line x1="107" y1="132" x2="131" y2="132" stroke="#9467bd" stroke-width="3"/>
+<text x="138" y="136" font-size="12">periodic_recompute / all_change</text>
+<polyline class="line" stroke="#ff7f0e" points="95.0,310.9 485.0,202.4 875.0,129.3"/>
+<circle class="point" fill="#ff7f0e" cx="95.0" cy="310.9" r="4"/>
+<circle class="point" fill="#ff7f0e" cx="485.0" cy="202.4" r="4"/>
+<circle class="point" fill="#ff7f0e" cx="875.0" cy="129.3" r="4"/>
+<line x1="107" y1="153" x2="131" y2="153" stroke="#ff7f0e" stroke-width="3"/>
+<text x="138" y="157" font-size="12">periodic_recompute / no_change</text>
+<polyline class="line" stroke="#1f77b4" points="95.0,288.3 485.0,179.6 875.0,131.0"/>
+<circle class="point" fill="#1f77b4" cx="95.0" cy="288.3" r="4"/>
+<circle class="point" fill="#1f77b4" cx="485.0" cy="179.6" r="4"/>
+<circle class="point" fill="#1f77b4" cx="875.0" cy="131.0" r="4"/>
+<line x1="107" y1="174" x2="131" y2="174" stroke="#1f77b4" stroke-width="3"/>
+<text x="138" y="178" font-size="12">periodic_recompute / one_percent</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+<style>text{font-family:Arial,sans-serif;fill:#222}.grid{stroke:#ddd;stroke-width:1}.axis{stroke:#222;stroke-width:1.5}.line{fill:none;stroke-width:2.5}.point{stroke:#fff;stroke-width:1}</style>
+<rect width="900" height="520" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-size="19">Game Tick required memory: 4096 entities</text>
+<line class="grid" x1="95" y1="55.0" x2="875" y2="55.0"/>
+<text x="85" y="59.0" text-anchor="end" font-size="12">3.3e+06</text>
+<line class="grid" x1="95" y1="133.0" x2="875" y2="133.0"/>
+<text x="85" y="137.0" text-anchor="end" font-size="12">2.7e+06</text>
+<line class="grid" x1="95" y1="211.0" x2="875" y2="211.0"/>
+<text x="85" y="215.0" text-anchor="end" font-size="12">2e+06</text>
+<line class="grid" x1="95" y1="289.0" x2="875" y2="289.0"/>
+<text x="85" y="293.0" text-anchor="end" font-size="12">1.4e+06</text>
+<line class="grid" x1="95" y1="367.0" x2="875" y2="367.0"/>
+<text x="85" y="371.0" text-anchor="end" font-size="12">7.5e+05</text>
+<line class="grid" x1="95" y1="445.0" x2="875" y2="445.0"/>
+<text x="85" y="449.0" text-anchor="end" font-size="12">9.8e+04</text>
+<text x="95.0" y="468" text-anchor="middle" font-size="12">1</text>
+<text x="355.0" y="468" text-anchor="middle" font-size="12">4</text>
+<text x="615.0" y="468" text-anchor="middle" font-size="12">16</text>
+<text x="875.0" y="468" text-anchor="middle" font-size="12">64</text>
+<line class="axis" x1="95" y1="55" x2="95" y2="445"/>
+<line class="axis" x1="95" y1="445" x2="875" y2="445"/>
+<text x="485.0" y="500" text-anchor="middle" font-size="14">Replay history (frames)</text>
+<text x="20" y="250.0" transform="rotate(-90 20 250.0)" text-anchor="middle" font-size="14">Required bytes</text>
+<polyline class="line" stroke="#1f77b4" points="95.0,445.0 355.0,445.0 615.0,445.0 875.0,445.0"/>
+<circle class="point" fill="#1f77b4" cx="95.0" cy="445.0" r="4"/>
+<circle class="point" fill="#1f77b4" cx="355.0" cy="445.0" r="4"/>
+<circle class="point" fill="#1f77b4" cx="615.0" cy="445.0" r="4"/>
+<circle class="point" fill="#1f77b4" cx="875.0" cy="445.0" r="4"/>
+<line x1="107" y1="69" x2="131" y2="69" stroke="#1f77b4" stroke-width="3"/>
+<text x="138" y="73" font-size="12">explicit_stateful</text>
+<polyline class="line" stroke="#d62728" points="95.0,427.3 355.0,409.5 615.0,338.6 875.0,55.0"/>
+<circle class="point" fill="#d62728" cx="95.0" cy="427.3" r="4"/>
+<circle class="point" fill="#d62728" cx="355.0" cy="409.5" r="4"/>
+<circle class="point" fill="#d62728" cx="615.0" cy="338.6" r="4"/>
+<circle class="point" fill="#d62728" cx="875.0" cy="55.0" r="4"/>
+<line x1="107" y1="90" x2="131" y2="90" stroke="#d62728" stroke-width="3"/>
+<text x="138" y="94" font-size="12">stateless_replay</text>
+</svg>

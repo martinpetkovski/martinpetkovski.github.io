@@ -1,6 +1,16 @@
 {
   "papers": [
     {
+      "slug": "stateless-realtime",
+      "title": "Recompute, Dispatch, or Check? A Game-Tick Study of Stateless and Event-Driven State",
+      "author": "Martin Petkovski",
+      "updated": "August 2026",
+      "status": "Preprint",
+      "format": "Journal Paper Format",
+      "language": "English",
+      "abstract": "A formal and empirical C11 comparison of full stateless Tick recomputation, stateful event dispatch outside Tick, and version-checked selective recomputation inside Tick, including speed, memory, function-stack complexity, stale-cache faults, and a measured arithmetic threshold for a 1 ms p99 frame-work proxy."
+    },
+    {
       "slug": "masters-thesis",
       "title": "Analysis and Application of State Machines in the Design of Branching Systems, with Special Emphasis on Video Games",
       "author": "Martin Petkovski",

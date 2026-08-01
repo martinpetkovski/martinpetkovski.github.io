@@ -198,6 +198,17 @@
         workingBody = protectEnvironment(workingBody, 'align', content => (
             `<div class="paper-equation">\\[\\begin{aligned}${escapeHtml(content.trim())}\\end{aligned}\\]</div>`
         ), protectedBlocks);
+        workingBody = protectEnvironment(workingBody, 'table', content => (
+            renderTable(content, citations)
+        ), protectedBlocks);
+        workingBody = protectEnvironment(workingBody, 'figure', content => (
+            renderFigure(content, citations)
+        ), protectedBlocks);
+        workingBody = protectEnvironment(workingBody, 'verbatim', content => (
+            '<pre class="paper-verbatim">' +
+                escapeHtml(content.replace(/^\n|\n$/g, '')) +
+            '</pre>'
+        ), protectedBlocks);
         workingBody = protectEnvironment(workingBody, 'itemize', content => (
             renderList(content, false, citations)
         ), protectedBlocks);
@@ -260,6 +271,64 @@
             .join('');
 
         return `<${tag}>${items}</${tag}>`;
+    }
+
+    function renderTable(content, citations) {
+        const captionMatch = content.match(/\\caption\{([^}]*)\}/);
+        const tabularMatch = content.match(
+            /\\begin\{tabular\}\{[^}]*\}([\s\S]*?)\\end\{tabular\}/
+        );
+        const parsedRows = tabularMatch
+            ? tabularMatch[1]
+                .replace(/\\hline/g, '')
+                .split(/\\\\/)
+                .map(row => row.trim())
+                .filter(Boolean)
+                .map(row => row.split('&').map(cell => cell.trim()))
+            : [];
+        const rows = parsedRows
+                .map((cells, rowIndex) => {
+                    const tag = rowIndex === 0 ? 'th' : 'td';
+                    return '<tr>' + cells.map(cell => (
+                        '<' + tag + '>' + renderInline(cell, citations) +
+                        '</' + tag + '>'
+                    )).join('') + '</tr>';
+                })
+                .join('');
+        const columnCount = parsedRows.reduce(
+            (maximum, row) => Math.max(maximum, row.length),
+            0
+        );
+        const caption = captionMatch
+            ? '<figcaption>' + renderInline(captionMatch[1], citations) + '</figcaption>'
+            : '';
+        return '<figure class="paper-table paper-table-cols-' + columnCount + '"><table>' + rows +
+            '</table>' + caption + '</figure>';
+    }
+
+    function renderFigure(content, citations) {
+        const imageMatch = content.match(
+            /\\includegraphics(?:\[[^\]]*\])?\{([^}]*)\}/
+        );
+        const captionMatch = content.match(/\\caption\{([^}]*)\}/);
+        const imageSource = imageMatch ? safeImageSource(imageMatch[1]) : '';
+        const image = imageSource
+            ? '<img src="' + imageSource + '" alt="">'
+            : '';
+        const caption = captionMatch
+            ? '<figcaption>' + renderInline(captionMatch[1], citations) + '</figcaption>'
+            : '';
+        return '<figure class="paper-figure">' + image + caption + '</figure>';
+    }
+
+    function safeImageSource(value) {
+        const source = String(value).trim();
+
+        if (!/^\/[a-zA-Z0-9/_-]+\.(?:svg|png|jpe?g|webp)$/i.test(source)) {
+            return '';
+        }
+
+        return escapeHtml(source);
     }
 
     function renderInline(source, citations) {
