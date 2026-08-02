@@ -1,0 +1,21 @@
+# Local dependency checkout and installed packages
+/.vcpkg/
+/vcpkg_installed/
+
+# CMake and Visual Studio build output
+/build/
+/out/
+/.vs/
+/CMakeUserPresets.json
+
+# Generated distribution packages
+/dist/
+/package-staging/
+
+# Editor and operating-system files
+*.user
+*.suo
+*.VC.db
+*.VC.VC.opendb
+.DS_Store
+Thumbs.db

@@ -226,6 +226,70 @@ a:active {
     letter-spacing: .5px;
 }
 
+/* KAMAi MEDIA project grouping */
+.kamai-projects {
+    margin: 8px 0 20px;
+    padding: 2px 12px 7px 18px;
+    position: relative;
+}
+
+.kamai-projects::before {
+    background: #4a7fc4;
+    content: "";
+    left: 5px;
+    position: absolute;
+    top: 18px;
+    bottom: 3px;
+    width: 2px;
+}
+
+.kamai-projects::after {
+    background: linear-gradient(90deg, #4a7fc4 0, rgba(74, 127, 196, .65) 38%, rgba(74, 127, 196, 0) 100%);
+    border-radius: 0 2px 2px 0;
+    bottom: 3px;
+    content: "";
+    height: 2px;
+    left: 5px;
+    position: absolute;
+    width: 42px;
+}
+
+.kamai-projects h3 {
+    color: #1a3f77;
+    margin-top: 8px;
+    padding-left: 36px;
+    position: relative;
+}
+
+.kamai-projects h3::before {
+    background: linear-gradient(90deg, #4a7fc4 0, rgba(74, 127, 196, .65) 38%, rgba(74, 127, 196, 0) 100%);
+    border-radius: 0 2px 2px 0;
+    content: "";
+    height: 2px;
+    left: -13px;
+    position: absolute;
+    top: .72em;
+    transform: translateY(-1px);
+    width: 42px;
+}
+
+.kamai-company,
+.kamai-meta {
+    display: block;
+}
+
+.kamai-meta {
+    color: #8190a6;
+    font-size: 9px;
+    font-weight: normal;
+    letter-spacing: .45px;
+    margin-top: 2px;
+}
+
+.kamai-projects ul {
+    margin-bottom: 5px;
+}
+
 /* ============================================
    Footer & Misc
    ============================================ */
@@ -308,6 +372,10 @@ hr {
         display: flex;
         flex-wrap: wrap;
         gap: 4px 8px;
+    }
+
+    .kamai-projects {
+        padding-left: 18px;
     }
 
     .l-bar a {

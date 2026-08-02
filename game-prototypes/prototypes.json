@@ -1,0 +1,14 @@
+{
+  "prototypes": [
+    {
+      "title": "Pong",
+      "year": "2013",
+      "engine": "C++ / Allegro 5",
+      "description": "A Pong prototype with single-player, local multiplayer, and computer-versus-computer modes, restored from the original project paper.",
+      "video": "",
+      "build": "https://drive.google.com/file/d/1wLIV3wG7lWCaJ9Rh7YtLGQn4EqDrMrEJ/view?usp=sharing",
+      "source": "https://github.com/martinpetkovski/martinpetkovski.github.io/tree/master/game-prototypes/pong",
+      "document": "/game-prototypes/pong/pong.pdf"
+    }
+  ]
+}

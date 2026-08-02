@@ -17,7 +17,8 @@
             const manifest = await response.json();
             const papers = Array.isArray(manifest.papers) ? manifest.papers : [];
 
-            list.replaceChildren(...papers.map(renderPaper));
+            const cards = await Promise.all(papers.map(renderPaper));
+            list.replaceChildren(...cards);
             status.textContent = papers.length === 0 ? 'No papers have been published yet.' : '';
         } catch (error) {
             status.classList.add('is-error');
@@ -25,7 +26,7 @@
         }
     }
 
-    function renderPaper(paper) {
+    async function renderPaper(paper) {
         const article = document.createElement('article');
         const title = document.createElement('h3');
         const link = document.createElement('a');
@@ -44,7 +45,7 @@
         metadata.className = 'draft-card-meta';
         metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Working paper'} · ${paper.format || 'Research paper'}`;
         abstract.className = 'draft-card-abstract';
-        abstract.textContent = paper.abstract || '';
+        abstract.textContent = await loadAbstract(paper.slug);
 
         actions.className = 'draft-card-actions';
         readLink.href = link.href;
@@ -61,5 +62,29 @@
 
         article.append(title, metadata, abstract, actions);
         return article;
+    }
+
+    async function loadAbstract(slug) {
+        const response = await fetch(`/draft-papers/papers/${encodeURIComponent(slug)}.tex`);
+
+        if (!response.ok) {
+            throw new Error(`The abstract for ${slug} could not be loaded.`);
+        }
+
+        const source = await response.text();
+        const match = source.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
+
+        if (!match) {
+            return 'No abstract is available for this paper.';
+        }
+
+        return match[1]
+            .replace(/%.*$/gm, '')
+            .replace(/\\(?:emph|textit|textbf|texttt)\{([^{}]*)\}/g, '$1')
+            .replace(/\\(?:LaTeX|TeX)\b/g, 'LaTeX')
+            .replace(/``|''/g, '"')
+            .replace(/--/g, '–')
+            .replace(/\s+/g, ' ')
+            .trim();
     }
 })();

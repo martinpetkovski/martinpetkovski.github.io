@@ -1,0 +1,54 @@
+.prototypes-page { max-width: 760px; }
+
+.prototype-introduction h2 { margin-bottom: 6px; }
+
+.prototype-status {
+    color: #64748b;
+    font-size: 11px;
+    margin: 10px 0;
+}
+
+.prototype-status:empty { display: none; }
+.prototype-status.is-error { color: #b91c1c; font-weight: bold; }
+
+.prototype-list { display: grid; gap: 12px; }
+
+.prototype-card {
+    background: #fff;
+    border: 1px solid #4a7fc4;
+    border-left-width: 5px;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 220px 1fr;
+    padding: 10px 12px;
+}
+
+.prototype-media {
+    align-items: center;
+    aspect-ratio: 16 / 9;
+    background: #0b1020;
+    color: #8fb5e8;
+    display: flex;
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    justify-content: center;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.prototype-media video { height: 100%; width: 100%; }
+.prototype-card h3 { font-size: 13px; margin: 0 0 4px; text-transform: none; }
+.prototype-card p { margin: 0 0 7px; }
+
+.prototype-meta {
+    color: #64748b;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.prototype-actions { color: #64748b; font-size: 11px; }
+
+@media (max-width: 600px) {
+    .prototype-card { grid-template-columns: 1fr; }
+    .prototype-media { width: 100%; }
+}

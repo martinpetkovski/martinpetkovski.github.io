@@ -7,8 +7,7 @@
       "updated": "August 2026",
       "status": "Preprint",
       "format": "Journal Paper Format",
-      "language": "English",
-      "abstract": "A formal and empirical C11 comparison of full stateless Tick recomputation, stateful event dispatch outside Tick, and version-checked selective recomputation inside Tick, including speed, memory, function-stack complexity, stale-cache faults, and a measured arithmetic threshold for a 1 ms p99 frame-work proxy."
+      "language": "English"
     },
     {
       "slug": "masters-thesis",
@@ -18,7 +17,6 @@
       "status": "Master's Thesis",
       "format": "Journal Paper Format",
       "language": "Macedonian",
-      "abstract": "This thesis analyzes state-machine implementations for branching systems, proposes author-oriented methods and tools for nonlinear narratives, and demonstrates the approach through a branching-dialogue video game integrated with Unreal Engine 5.",
       "pdf": "/MartinPetkovski-Master.pdf"
     }
   ]
