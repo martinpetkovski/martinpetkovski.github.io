@@ -45,7 +45,7 @@
     cursor: pointer;
     display: grid;
     gap: 0;
-    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-columns: 78.22px minmax(0, 1fr);
     padding: 0;
 }
 
@@ -80,8 +80,9 @@
     display: flex;
     font-family: "Courier New", monospace;
     font-size: 7px;
+    height: 44px;
+    aspect-ratio: 16 / 9;
     justify-content: center;
-    min-height: 44px;
     overflow: hidden;
 }
 
@@ -149,5 +150,5 @@
     .prototype-search-label { font-size: 13px; }
     .prototype-search { font-size: 16px; }
     .prototype-summary h3 { font-size: 13px; }
-    .prototype-thumbnail { width: 48px; }
+    .prototype-thumbnail { width: 78.22px; }
 }
