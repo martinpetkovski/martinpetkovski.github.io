@@ -185,22 +185,6 @@
       ]
     },
     {
-      "title": "Codename: BitWars",
-      "year": "2026",
-      "event": "Return Zero",
-      "engine": "DirectX",
-      "credits": [],
-      "description": "You play as a CEO of a game development company starting from the 80s. Manage the company, develop games, hire employees, get your games on top of the charts, and much more!",
-      "image": "bit-wars/screenshot.png",
-      "video": "",
-      "links": [
-        {
-          "label": "Download Windows build",
-          "url": "https://drive.google.com/file/d/1Cppt-fx_ezYKN5kWwkYbwctZeomLcTGN/view?usp=sharing"
-        }
-      ]
-    },
-    {
       "title": "Wait For Me 2",
       "year": "2023",
       "event": "Return Zero",
