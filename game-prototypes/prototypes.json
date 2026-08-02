@@ -143,8 +143,8 @@
       "engine": "Unreal Engine 4",
       "credits": ["Stefan Kuzmanovski", "Bosko Koloski"],
       "description": "",
-      "image": "",
-      "video": "",
+      "image": "turbo-80/screenshot.png",
+      "video": "https://www.youtube.com/watch?v=ohsmCDMYE98",
       "links": [
         {
           "label": "Download Windows build",
@@ -153,11 +153,11 @@
       ]
     },
     {
-      "title": "Codename: JDM ",
-      "year": "2019",
+      "title": "Unnamed Lara Croft Game ",
+      "year": "2021",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski"],
+      "credits": ["Stefan Kuzmanovski", "Ana Zdravkova"],
       "description": "",
       "image": "",
       "video": "",
@@ -169,14 +169,14 @@
       ]
     },
     {
-      "title": "Turbo JDM ",
+      "title": "Mugri ",
       "year": "2019",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
       "credits": ["Stefan Kuzmanovski"],
       "description": "",
       "image": "",
-      "video": "",
+      "video": "https://www.youtube.com/watch?v=9dv4TovSMyg",
       "links": [
         {
           "label": "Download Windows build",
@@ -208,7 +208,7 @@
       "credits": [],
       "description": "",
       "image": "",
-      "video": "",
+      "video": "https://www.youtube.com/watch?v=a-q-yrh9OL4",
       "links": [
         {
           "label": "Download Windows build",
@@ -224,7 +224,7 @@
       "credits": [],
       "description": "",
       "image": "",
-      "video": "",
+      "video": "https://www.youtube.com/watch?v=vuiyOgPtG2k",
       "links": [
         {
           "label": "Download Windows build",
@@ -240,7 +240,7 @@
       "credits": ["Stefan Kuzmanovski"],
       "description": "",
       "image": "",
-      "video": "",
+      "video": "https://www.youtube.com/watch?v=ns1bDVNhDCg",
       "links": [
         {
           "label": "Download Windows build",

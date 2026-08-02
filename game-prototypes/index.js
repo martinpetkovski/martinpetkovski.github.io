@@ -142,11 +142,22 @@
         const videoFrame = document.createElement('div');
         videoFrame.className = 'prototype-media prototype-video';
         if (prototype.video) {
-            const video = document.createElement('video');
-            video.controls = true;
-            video.preload = 'metadata';
-            video.src = prototype.video;
-            videoFrame.append(video);
+            const youtubeId = getYouTubeId(prototype.video);
+            if (youtubeId) {
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId)}`;
+                iframe.title = `${prototype.title} gameplay video`;
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                iframe.allowFullscreen = true;
+                iframe.loading = 'lazy';
+                videoFrame.append(iframe);
+            } else {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.preload = 'metadata';
+                video.src = prototype.video;
+                videoFrame.append(video);
+            }
         } else {
             videoFrame.textContent = 'GAMEPLAY VIDEO COMING SOON';
         }
@@ -185,5 +196,21 @@
         details.append(title, actions, metadata, credits, description);
         article.append(imageFrame, details, videoFrame);
         return article;
+    }
+
+    function getYouTubeId(value) {
+        try {
+            const url = new URL(value, window.location.href);
+            const host = url.hostname.replace(/^www\./, '');
+
+            if (host === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
+            if (host !== 'youtube.com' && host !== 'm.youtube.com' && host !== 'youtube-nocookie.com') return '';
+            if (url.pathname === '/watch') return url.searchParams.get('v') || '';
+
+            const parts = url.pathname.split('/').filter(Boolean);
+            return ['embed', 'shorts', 'live'].includes(parts[0]) ? parts[1] || '' : '';
+        } catch {
+            return '';
+        }
     }
 })();

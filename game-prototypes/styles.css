@@ -120,6 +120,7 @@
 }
 
 .prototype-media video { height: 100%; width: 100%; }
+.prototype-media iframe { border: 0; height: 100%; width: 100%; }
 .prototype-media img { display: block; height: 100%; object-fit: contain; width: 100%; }
 .prototype-video {
     clear: both;
