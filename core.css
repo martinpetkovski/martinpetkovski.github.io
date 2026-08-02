@@ -278,6 +278,10 @@ a:active {
     display: block;
 }
 
+.kamai-company {
+    text-transform: none;
+}
+
 .kamai-meta {
     color: #8190a6;
     font-size: 9px;
@@ -347,6 +351,7 @@ hr {
     }
 
     .hdr-text {
+        flex: 1 1 0;
         padding: 8px;
         min-width: 0;
         overflow: hidden;
@@ -355,8 +360,10 @@ hr {
     h2 {
         font-size: 16px;
         padding: 4px 6px;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: -12px;
+        margin-right: -12px;
+        padding-left: 12px;
+        width: calc(100% + 24px);
     }
 
     h3 {
@@ -364,6 +371,7 @@ hr {
         font-weight: bold;
         margin-left: 0;
         margin-right: 0;
+        width: 100%;
     }
 
     .l-bar {
@@ -376,6 +384,19 @@ hr {
 
     .kamai-projects {
         padding-left: 18px;
+    }
+
+    .kamai-projects::before {
+        top: 20px;
+    }
+
+    .kamai-projects h3 {
+        line-height: 1.45;
+        width: 100%;
+    }
+
+    .kamai-projects h3::before {
+        top: .725em;
     }
 
     .l-bar a {

@@ -46,14 +46,51 @@
 }
 
 .draft-list {
+    border: 1px solid #cbd5e1;
     display: grid;
-    gap: 10px;
+    gap: 0;
 }
+
+.draft-summary {
+    align-items: center;
+    background: #fff;
+    border-bottom: 1px solid #cbd5e1;
+    cursor: pointer;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 5px 6px;
+}
+
+.draft-summary:last-child { border-bottom: 0; }
+
+.draft-summary:hover,
+.draft-summary:focus-visible {
+    background: #f8fbff;
+    outline: none;
+}
+
+.draft-summary:focus-visible { box-shadow: inset 0 0 0 2px #4a7fc4; }
+
+.draft-summary.is-active {
+    background: #1a3f77;
+    color: #fff;
+    box-shadow: inset 0 0 0 2px #0b1020;
+}
+
+.draft-summary.is-active .draft-card-meta { color: #dbeafe; }
+.draft-summary.is-active h3 { color: #fff; }
+
+.draft-summary h3 { font-size: 11px; margin: 0; text-transform: none; }
+.draft-summary p { margin: 0; }
+
+.draft-detail { margin: 0; }
+.draft-detail:empty { display: none; }
+.draft-detail .draft-card { border-width: 1px; }
 
 .draft-card {
     background: #fff;
     border: 1px solid #4a7fc4;
-    border-left-width: 5px;
     padding: 10px 12px;
 }
 
@@ -366,6 +403,27 @@
     text-align: center;
 }
 
+.draft-controls { margin: 10px 0 8px; }
+
+.draft-search-label {
+    color: #333;
+    display: block;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: .8px;
+    margin: 0 0 3px;
+    text-transform: uppercase;
+}
+
+.draft-search {
+    border: 1px solid #cbd5e1;
+    font-family: Verdana, Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 6px;
+    width: 100%;
+}
+
 .paper-table,
 .paper-figure {
     break-inside: avoid;
@@ -612,6 +670,13 @@
     .paper-sheet {
         box-shadow: 0 2px 10px rgba(15, 23, 42, .2);
     }
+}
+
+@media (max-width: 600px) {
+    .draft-search-label { font-size: 13px; }
+    .draft-search { font-size: 16px; }
+    .draft-summary { grid-template-columns: 1fr; gap: 2px; }
+    .draft-summary h3 { font-size: 13px; }
 }
 
 @page {

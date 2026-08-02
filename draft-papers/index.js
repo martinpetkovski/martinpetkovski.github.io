@@ -1,11 +1,15 @@
 (() => {
     'use strict';
 
+    let activePaper = '';
+
     document.addEventListener('DOMContentLoaded', initialize);
 
     async function initialize() {
         const status = document.querySelector('#paperStatus');
         const list = document.querySelector('#paperList');
+        const search = document.querySelector('#paperSearch');
+        const detail = document.querySelector('#paperDetail');
 
         try {
             const response = await fetch('/draft-papers/papers.json');
@@ -17,16 +21,84 @@
             const manifest = await response.json();
             const papers = Array.isArray(manifest.papers) ? manifest.papers : [];
 
-            const cards = await Promise.all(papers.map(renderPaper));
-            list.replaceChildren(...cards);
-            status.textContent = papers.length === 0 ? 'No papers have been published yet.' : '';
+            const papersWithAbstracts = await Promise.all(papers.map(async paper => ({
+                ...paper,
+                abstract: await loadAbstract(paper.slug)
+            })));
+            renderList(papersWithAbstracts, 'No papers have been published yet.');
+            search.addEventListener('input', () => {
+                const filtered = filterPapers(papersWithAbstracts, search.value);
+                renderList(filtered, 'No papers match your search.');
+            });
+
+            function renderList(items, emptyMessage) {
+                list.replaceChildren(...items.map(paper => renderPaperSummary(paper, list, detail)));
+                status.textContent = items.length ? '' : emptyMessage;
+                if (!items.some(paper => paper.slug === activePaper)) {
+                    activePaper = '';
+                    detail.replaceChildren();
+                } else {
+                    const activeItem = [...list.querySelectorAll('.draft-summary')]
+                        .find(item => item.dataset.slug === activePaper);
+                    if (activeItem) activeItem.after(detail);
+                }
+            }
         } catch (error) {
             status.classList.add('is-error');
             status.textContent = error.message;
         }
     }
 
-    async function renderPaper(paper) {
+    function renderPaperSummary(paper, list, detail) {
+        const item = document.createElement('article');
+        const title = document.createElement('h3');
+        const metadata = document.createElement('p');
+
+        item.className = 'draft-summary';
+        item.tabIndex = 0;
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-controls', 'paperDetail');
+        item.dataset.slug = paper.slug;
+        title.textContent = paper.title;
+        metadata.className = 'draft-card-meta';
+        metadata.textContent = getYear(paper.updated);
+        item.append(title, metadata);
+
+        const select = () => {
+            if (activePaper === paper.slug) {
+                activePaper = '';
+                detail.replaceChildren();
+            } else {
+                activePaper = paper.slug;
+                detail.replaceChildren(renderPaper(paper));
+                item.after(detail);
+            }
+            list.querySelectorAll('.draft-summary').forEach(updatePaperState);
+        };
+
+        item.addEventListener('click', select);
+        item.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                select();
+            }
+        });
+        updatePaperState(item);
+        return item;
+    }
+
+    function updatePaperState(item) {
+        const isActive = item.dataset.slug === activePaper;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    }
+
+    function getYear(value) {
+        const match = String(value || '').match(/\d{4}/);
+        return match ? match[0] : value || '';
+    }
+
+    function renderPaper(paper) {
         const article = document.createElement('article');
         const title = document.createElement('h3');
         const link = document.createElement('a');
@@ -45,7 +117,7 @@
         metadata.className = 'draft-card-meta';
         metadata.textContent = `${paper.author} · ${paper.updated} · ${paper.status || 'Working paper'} · ${paper.format || 'Research paper'}`;
         abstract.className = 'draft-card-abstract';
-        abstract.textContent = await loadAbstract(paper.slug);
+        abstract.textContent = paper.abstract;
 
         actions.className = 'draft-card-actions';
         readLink.href = link.href;
@@ -62,6 +134,24 @@
 
         article.append(title, metadata, abstract, actions);
         return article;
+    }
+
+    function filterPapers(papers, query) {
+        const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        if (!tokens.length) return papers;
+
+        return papers.filter(paper => {
+            const searchText = [
+                paper.title,
+                paper.author,
+                paper.updated,
+                paper.status,
+                paper.format,
+                paper.language,
+                paper.abstract
+            ].filter(Boolean).join(' ').toLowerCase();
+            return tokens.every(token => searchText.includes(token));
+        });
     }
 
     async function loadAbstract(slug) {

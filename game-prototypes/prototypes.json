@@ -1,14 +1,296 @@
 {
   "prototypes": [
     {
+      "title": "Wait For Me",
+      "year": "2014",
+      "event": "Global Game Jam in Bitola, Macedonia",
+      "engine": "GML / Game Maker Studio",
+      "credits": ["Aleksandar Krstik", "Ivo Shurbanovski", "Miroslav Boshevski", "Aleksandar Kirkovski", "Andrej Antunovic", "Darko <Insert Last Name Here>"],
+      "description": "Ok, in one 'word', our game is a split-screen-co-op-top-down-platformer. So you better grab a friend if you're gonna play it, as playing it alone is no fun (and that's just a nice way to say it's impossible). Since we forgot (disclaimer: I didn't forget, but the guy who was supposed to do it did) to show instructions in game, let me do it here. One of the players uses the arrow keys to move, and CTRL to jump, and the other the 'asdw' keys to move and SHIFT to jump. (note: we're aware that players can hit each-others jump keys but we believe that adds to just another game mechanic - it's a feature dammit) You should also know that both players have to step on a checkpoint in order to 'activate' it, and also that both players need to step to the end portal in order to go through. It's all co-op, and don't get discouraged, it is playable even if it's slightly difficult at times. We hope you enjoy it, grab a friend and Wait For Hiiiiim!!!! :)",
+      "image": "wait-for-me/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1g7sisBoI_phYJFptF7xszd8lJQ4FD_tR/view?usp=sharing"
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2014/games/wait-meeee"
+        }
+      ]
+    },
+    {
+      "title": "Codename: Farewell",
+      "year": "2017",
+      "event": "Global Game Jam in Bitola, Macedonia",
+      "engine": "GML / Game Maker Studio",
+      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec", "Andrej Mickov", "Marijana Nikolovska"],
+      "description": "Two player, splitscreen, co-op exploring game. The goal of the game is to capture all control points and reach the end. Each player (drone) has an electromagnetic gun in his possession. The waves the gun generates are used to reveal the floors on which he (or it) can walk on. The blue player may only reveal blue floors and the red player may reveal only red floors. Each of the drones can redirect each others waves and amplify them. We had the time of our lives creating this game and probably will be our last GameJam together in the years to come! Thanks to everyone that supported us! Controls: Player One - WASD to move, Shift to jump, E to fire the gun Player Two - Arrow keys to move, Ctrl to jump, Num 0 to fire the gun",
+      "image": "codename-farewell/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1BID0DOVTit6fKM3uOXTifkD8HclEqg3b/view?usp=sharing"
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2017/games/codenamefarewell"
+        }
+      ]
+    },
+    {
+      "title": "Super Cool Igra",
+      "year": "2018",
+      "event": "Global Game Jam in Bitola, Macedonia",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski", "Milan Petrovski", "Goce Mircevski", "Filip Spasenovski"],
+      "description": "Super Cool Igra is a 4-player multiplayer non-violent top down shooter where you are divided in teams of 2, and you have to push out the other teams out of arena. But there is one catch! You control the movement of your character, while the abilities are controlled by your teammate. It needs a lot of coordination and its super fun game to play with friends. Controls: Movement W - Move Forward S - Move Backward D - Move Right A - Move Left Abilities: Left Click - Projectile that push your enemies Right Click - Boost (On your teammate of course :) )",
+      "image": "super-cool-igra/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2018/games/super-cool-igra"
+        }
+      ]
+    },
+    {
+      "title": "Vavilon",
+      "year": "2020",
+      "event": "Global Game Jam in Bitola, Macedonia",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski", "Dimitar Kimovski", "Ilche Pejovski", "Goce Mircheski", "Antoni Korunovski"],
+      "description": "CONGA! ██████ 2 player co-op game. One player is a scout, other player is an engineer. The scout uses a drone to find runes or congas and then communicates their location to the player. When the drone has a conga it can activate it and distract the NPCs on the map. When NPCs are distracted the engineer that walks on land can pick up the runes and use them to fix the tower in the center of the map. When the tower is fixed it emits a light beam to communicate with his home planet. █████████████ Controls: ::::Engineer: WASD = Walk █ Space = Jump █ ██████ ::::Scout/Drone: Left thumbstick = Forward//Rotate █ Right thumbstick = LookUp █ Right trigger = Up █ Left trigger = Down █ Face Button A (green) = Drop Conga █",
+      "image": "vavilon/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2018/games/super-cool-igra"
+        }
+      ]
+    },
+    {
+      "title": "Nibiru",
+      "year": "2021",
+      "event": "Global Game Jam Macedonia",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski"],
+      "description": "You are dr. Archie Harper, an archeologist sent to the lost city of Nibiru. The lost city of Nibiru is going through a weird time-space anomaly which you must successfully navigate. Your mission: find all the chronorunes. WASD to move, left-click to take time balls, left-click to put back time ball that has already been taken. Time balls determine how fast the time is passing in a specific space. Slower balls make the time pass slower, faster balls make the time pass faster.",
+      "image": "nibiru/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2021/games/nibiru-1"
+        }
+      ]
+    },
+    {
+      "title": "Dai Mi Go",
+      "year": "2022",
+      "event": "Global Game Jam Macedonia",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski", "Ivan Kikerkov", "Ana Zdravkova", "Darko Jovanov"],
+      "description": "Ever wondered what it's like to fight over the wheel in a racing game? Dai Mi go is a co-op racer, where players navigate through a randomly generated course, race against AI pilots, and gain benefits based on their cooperation. The track is divided in two halves by a force field that swaps the controls between the two players. The red obstacles slow down the duo, while the blue ones speed them up. Blue: A D Red: Arrow Left, Arrow Right",
+      "image": "dai-mi-go/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2022/games/dai-mi-go-0"
+        }
+      ]
+    },
+    {
+      "title": "Cue Beat",
+      "year": "2016",
+      "event": "Game Developers Hive",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec"],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Turbo 80",
+      "year": "2017",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski", "Bosko Koloski"],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Codename: JDM ",
+      "year": "2019",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski"],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Turbo JDM ",
+      "year": "2019",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski"],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Codename: BitWars",
+      "year": "2026",
+      "event": "Return Zero",
+      "engine": "DirectX",
+      "credits": [],
+      "description": "You play as a CEO of a game development company starting from the 80s. Manage the company, develop games, hire employees, get your games on top of the charts, and much more!",
+      "image": "bit-wars/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1Cppt-fx_ezYKN5kWwkYbwctZeomLcTGN/view?usp=sharing"
+        }
+      ]
+    },
+    {
+      "title": "Wait For Me 2",
+      "year": "2023",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 5",
+      "credits": [],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Turbo 8000",
+      "year": "2024",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 5",
+      "credits": [],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Codename: Sierra Delta",
+      "year": "2018",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 4",
+      "credits": ["Stefan Kuzmanovski"],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": "Totems",
+      "year": "2016",
+      "event": "Global Game Jam in Bitola, Macedonia",
+      "engine": "GML / Game Maker Studio",
+      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec", "Vlado Markovski"],
+      "description": "The game consists of one player character, 6 totems and runes. The totems are activated by the player and communicate with him through music. The player has to identify what the totem is communicating with him and figure out which ritual to perform. The ritual might involve physical movement or search for runes using abilities provided by the totems. The controls are pretty weird and complicated: arrow keys for moving, ctrl for jumping, e to activate totem, pageup/pagedown to pick up or put down movable item, home/end to turn on or turn off the lights at the appropriate rune, F1 to place a bridge in front or behind you, F2 to blink yourself through a wall and/or obstacle, R to restart the game, Esc to exit the game. Whilst playing we found out that you can pass some obstacles by performing blink-jump (pressing ctrl while moving, waiting to reach the point just before the ground level and then pressing F2 to blink yourself in the direction you are moving). To stop the lava from flowing (orange) you have to place the movable object, which is colored dark blue, in the place-able (place i guess?), which is colored light blue.",
+      "image": "totems/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1-uOykqzs0LasgWSdcqNvn2hDpki-zbzT/view?usp=sharing"
+        },
+        {
+          "label": "Global Game Jam page",
+          "url": "https://v3.globalgamejam.org/2016/games/totems"
+        }
+      ]
+    },
+    {
       "title": "Pong",
       "year": "2013",
+      "event": "High school graduation project",
       "engine": "C++ / Allegro 5",
+      "credits": [],
       "description": "A Pong prototype with single-player, local multiplayer, and computer-versus-computer modes, restored from the original project paper.",
+      "image": "pong/canvas.png",
       "video": "",
-      "build": "https://drive.google.com/file/d/1wLIV3wG7lWCaJ9Rh7YtLGQn4EqDrMrEJ/view?usp=sharing",
-      "source": "https://github.com/martinpetkovski/martinpetkovski.github.io/tree/master/game-prototypes/pong",
-      "document": "/game-prototypes/pong/pong.pdf"
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1wLIV3wG7lWCaJ9Rh7YtLGQn4EqDrMrEJ/view?usp=sharing"
+        },
+        {
+          "label": "Source code",
+          "url": "https://github.com/martinpetkovski/martinpetkovski.github.io/tree/master/game-prototypes/pong"
+        },
+        {
+          "label": "Project PDF",
+          "url": "/game-prototypes/pong/pong.pdf"
+        }
+      ]
     }
   ]
 }

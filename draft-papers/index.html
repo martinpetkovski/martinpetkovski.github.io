@@ -31,8 +31,14 @@
 <p>Working papers, experiments, and technical notes. These documents may change substantially and should not be considered final publications.</p>
 </section>
 
+<div class="draft-controls">
+<label class="draft-search-label" for="paperSearch">Search</label>
+<input id="paperSearch" class="draft-search" type="search" placeholder="title, author, year, status, abstract..." autocomplete="off">
+</div>
+
 <div id="paperStatus" class="draft-status" role="status">Loading papers…</div>
 <div id="paperList" class="draft-list"></div>
+<div id="paperDetail" class="draft-detail" aria-live="polite"></div>
 
 <footer>
 <p>Copyright © Martin Petkovski 2013–2026</p>
