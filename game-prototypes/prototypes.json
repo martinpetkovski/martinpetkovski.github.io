@@ -76,7 +76,7 @@
         },
         {
           "label": "Global Game Jam page",
-          "url": "https://v3.globalgamejam.org/2018/games/super-cool-igra"
+          "url": "https://v3.globalgamejam.org/2020/games/vavilon-2"
         }
       ]
     },
@@ -127,8 +127,8 @@
       "engine": "Unreal Engine 4",
       "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec"],
       "description": "",
-      "image": "",
-      "video": "",
+      "image": "cue-beat/screenshot.png",
+      "video": "https://www.youtube.com/watch?v=PU-PwzdxcCY",
       "links": [
         {
           "label": "Download Windows build",
@@ -169,13 +169,13 @@
       ]
     },
     {
-      "title": "Mugri ",
+      "title": "Mugri",
       "year": "2019",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
       "credits": ["Stefan Kuzmanovski"],
       "description": "",
-      "image": "",
+      "image": "mugri/screenshot.png",
       "video": "https://www.youtube.com/watch?v=9dv4TovSMyg",
       "links": [
         {
@@ -218,7 +218,7 @@
     },
     {
       "title": "Codename: BitWars",
-      "year": "2026",
+      "year": "2025",
       "event": "Return Zero",
       "engine": "Custom",
       "credits": [],
@@ -233,13 +233,29 @@
       ]
     },
     {
+      "title": "Color Blast",
+      "year": "2021",
+      "event": "Return Zero",
+      "engine": "Unreal Engine 4",
+      "credits": [],
+      "description": "",
+      "image": "",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": ""
+        }
+      ]
+    },
+    {
       "title": "Codename: Sierra Delta",
       "year": "2018",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
       "credits": ["Stefan Kuzmanovski"],
       "description": "",
-      "image": "",
+      "image": "sierra-delta/screenshot.png",
       "video": "https://www.youtube.com/watch?v=ns1bDVNhDCg",
       "links": [
         {
