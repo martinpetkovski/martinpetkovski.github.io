@@ -47,6 +47,7 @@
         const thumbnail = document.createElement('div');
         const text = document.createElement('div');
         const title = document.createElement('h3');
+        const actions = renderPrototypeLinks(prototype, '', true);
         const metadata = document.createElement('p');
 
         item.className = 'prototype-summary';
@@ -66,10 +67,11 @@
             thumbnail.textContent = 'NO IMAGE';
         }
         title.textContent = prototype.year ? `${prototype.title} (${prototype.year})` : prototype.title;
+        actions.classList.add('prototype-summary-actions');
         metadata.className = 'prototype-meta';
         metadata.textContent = [prototype.event, prototype.engine].filter(Boolean).join(' · ');
         text.append(title, metadata);
-        item.append(thumbnail, text);
+        item.append(thumbnail, text, actions);
 
         const select = () => {
             if (activePrototype === prototype.title) {
@@ -84,6 +86,8 @@
         };
 
         item.addEventListener('click', select);
+        actions.addEventListener('click', event => event.stopPropagation());
+        actions.addEventListener('keydown', event => event.stopPropagation());
         item.addEventListener('keydown', event => {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
@@ -121,6 +125,57 @@
             ].filter(Boolean).join(' ').toLowerCase();
             return tokens.every(token => searchText.includes(token));
         });
+    }
+
+    function renderPrototypeLinks(prototype, emptyText = '', iconsOnly = false) {
+        const actions = document.createElement('p');
+        actions.className = 'prototype-actions';
+        const links = Array.isArray(prototype.links)
+            ? prototype.links.filter(link => link && link.label && link.url)
+            : [];
+        if (prototype.video) links.push({ label: 'Watch on YouTube', url: prototype.video });
+        links.sort((a, b) => Number(a.label.toLowerCase().includes('download'))
+            - Number(b.label.toLowerCase().includes('download')));
+
+        links.forEach(({ label, url }, index) => {
+            if (index > 0 && !iconsOnly) actions.append(' · ');
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            if (iconsOnly) {
+                link.className = 'prototype-icon-link';
+                link.setAttribute('aria-label', label);
+                link.title = label;
+                link.append(renderLinkIcon(label));
+            } else {
+                link.textContent = label;
+            }
+            actions.append(link);
+        });
+
+        if (!links.length) actions.textContent = emptyText;
+        return actions;
+    }
+
+    function renderLinkIcon(label) {
+        const iconClasses = {
+            download: ['fa-solid', 'fa-download'],
+            jam: ['fa-solid', 'fa-arrow-up-right-from-square'],
+            pdf: ['fa-solid', 'fa-file-pdf'],
+            source: ['fa-solid', 'fa-code'],
+            youtube: ['fa-brands', 'fa-youtube']
+        };
+        const normalizedLabel = label.toLowerCase();
+        const type = normalizedLabel.includes('download') ? 'download'
+            : normalizedLabel.includes('source') ? 'source'
+                : normalizedLabel.includes('pdf') ? 'pdf'
+                    : normalizedLabel.includes('youtube') ? 'youtube'
+                    : 'jam';
+        const icon = document.createElement('i');
+        icon.classList.add(...iconClasses[type]);
+        icon.setAttribute('aria-hidden', 'true');
+        return icon;
     }
 
     function renderPrototype(prototype) {

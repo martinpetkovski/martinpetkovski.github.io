@@ -92,7 +92,7 @@
       "links": [
         {
           "label": "Download Windows build",
-          "url": ""
+          "url": "https://drive.google.com/file/d/1UPfkBVETcCOr-8-9q37bu2PNB3_Zb3X3/view?usp=sharing"
         },
         {
           "label": "Global Game Jam page",
@@ -207,12 +207,28 @@
       "engine": "Unreal Engine 5",
       "credits": [],
       "description": "",
-      "image": "",
+      "image": "turbo-8000/screenshot.png",
       "video": "https://www.youtube.com/watch?v=vuiyOgPtG2k",
       "links": [
         {
           "label": "Download Windows build",
-          "url": ""
+          "url": "https://drive.google.com/file/d/1woxpKtkRHyfLs1NghqUMgdaM8rcWDvKP/view?usp=sharing"
+        }
+      ]
+    },
+    {
+      "title": "Codename: BitWars",
+      "year": "2026",
+      "event": "Return Zero",
+      "engine": "Custom",
+      "credits": [],
+      "description": "",
+      "image": "bit-wars/screenshot.png",
+      "video": "",
+      "links": [
+        {
+          "label": "Download Windows build",
+          "url": "https://drive.google.com/file/d/1Cppt-fx_ezYKN5kWwkYbwctZeomLcTGN/view?usp=sharing"
         }
       ]
     },
