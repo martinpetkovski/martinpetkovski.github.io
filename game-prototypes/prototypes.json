@@ -72,7 +72,7 @@
       "links": [
         {
           "label": "Download Windows build",
-          "url": ""
+          "url": "https://drive.google.com/file/d/1UBZiBHr6YTjqvk4fdgbxz0B1M8UAC5xg/view?usp=sharing"
         },
         {
           "label": "Global Game Jam page",
@@ -228,14 +228,14 @@
       "links": [
         {
           "label": "Download Windows build",
-          "url": "https://drive.google.com/file/d/1Cppt-fx_ezYKN5kWwkYbwctZeomLcTGN/view?usp=sharing"
+          "url": "https://drive.google.com/file/d/1P8r7PoARbd-1PvYeWWB8LM2U8u6S2raJ/view?usp=sharing"
         }
       ]
     },
     {
       "title": "Rogue Protocol",
       "year": "2022",
-      "event": "Return Zero",
+      "event": "Master's Thesis",
       "engine": "Unreal Engine 5",
       "credits": [],
       "description": "",
@@ -251,16 +251,20 @@
     {
       "title": "Color Blast",
       "year": "2021",
-      "event": "Return Zero",
+      "event": "Game Jam Plus",
       "engine": "Unreal Engine 4",
       "credits": [],
-      "description": "",
-      "image": "",
+      "description": "This is team Return Zero and our game is called Color Blast. We have a first-person view (we call our character Danny) and it’s starting at the point where the character is getting the paint gun filled with ammunition. In front of Danny, we have a map that is completely black, he needs to shoot paint at the surroundings to reveal the map in order to see where he is and where he is supposed to be going. If he shoots while he is standing next to the ammo point he is not wasting the ammo, in any other case you are wasting your limited ammo and you should go back and refill your paint gun. In the right bottom corner, we have directions, the left bottom corner is the number of steps and the left top corner is breadcrumbs. After a time of 30 seconds, the paint is fading away. So if you are in the middle of the map, the colors are starting to fade away and you have wasted all of your ammo, Danny has to find a way to go back and refill the gun. That can be done with the help of breadcrumbs. The breadcrumbs contain information like the direction at the point where you set the breadcrumb and how many steps you have taken from there. That can help you to move in the direction where you came from and find your way back and refill the gun so you can start making progress towards the end of the level. The level ends with a portal that is going to teleport you to the next level. <br>Controls: <br>- WASD - move<br>- Mouse Left - shoot<br>- Enter - set breadcrumbs<br>- Del - erase breadcrumbs<br>- Backspace - reset steps<br>- R - reset",
+      "image": "color-blast/screenshot.png",
       "video": "",
       "links": [
         {
           "label": "Download Windows build",
-          "url": ""
+          "url": "https://drive.google.com/file/d/1YjvUdJ78Q7JFDkM93u1Z4xOityEGckIk/view?usp=sharing"
+        },
+        {
+          "label": "Itch.io",
+          "url": "https://neelix64.itch.io/color-blast"
         }
       ]
     },
