@@ -1,15 +1,6 @@
 {
   "papers": [
     {
-      "slug": "stateless-realtime",
-      "title": "Recompute, Dispatch, or Check? A Game-Tick Study of Stateless and Event-Driven State",
-      "author": "Martin Petkovski",
-      "updated": "August 2026",
-      "status": "Preprint",
-      "format": "Journal Paper Format",
-      "language": "English"
-    },
-    {
       "slug": "masters-thesis",
       "title": "Analysis and Application of State Machines in the Design of Branching Systems, with Special Emphasis on Video Games",
       "author": "Martin Petkovski",
