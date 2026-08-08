@@ -1,0 +1,388 @@
+\title{MKQR: An Open URI-Based QR Payment Standard for Macedonian E-Invoicing and Mobile Banking}
+\author{Martin Petkovski and Ilija Jolevski}
+\date{August 2026}
+\paperlanguage{en}
+\paperstatus{Working Paper — This paper has not been peer reviewed}
+\paperkeywords{MKQR, QR payments, payment standards, e-invoicing, mobile banking, financial technology, interoperability, URI, North Macedonia, software validation}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The transition from cash and manually keyed payment orders to digital payment initiation creates a standardization problem: an invoice can be electronically produced while its beneficiary account, amount, reference, and payer data still have to be re-entered into a banking application. National QR payment initiatives demonstrate that a common machine-readable representation can reduce this friction, improve straight-through processing, and broaden access to low-cost digital payments. This paper analyzes MKQR, an open and independent draft standard proposed by the Faculty of Information and Communication Technologies in Bitola for encoding Macedonian financial-transaction data in QR codes. MKQR represents a payment instruction as a custom URI beginning with \texttt{mkqr://pay?}; its payload covers version and character encoding, creditor and debtor identity, IBAN and alternative IBANs, structured or combined addresses, amount and currency, payment references, domestic payment-form fields, auxiliary validation, and alternative payment values. An initial C++ reference implementation demonstrates field validation, parameter serialization, ISO/IEC 18004 QR generation, and rendering in either a red-to-black national color profile with a central MK logo or a monochromatic profile. Comparative analysis positions MKQR closest to the Swiss QR-bill, while QRIS in Indonesia, BharatQR in India, and NQR in Nigeria show that technical interoperability must be paired with governance, regulated participation, interoperability testing, and user-centered deployment. MKQR is therefore a credible academic foundation for interoperable invoice-to-bank workflows and a proposed payment-initiation format rather than a payment rail or regulatory scheme. A staged roadmap is proposed for continued specification development, bank integration, public-sector pilots, empirical usability research, and national governance.
+\end{abstract}
+
+\section{1 Introduction}
+
+Digital payments have moved from a supplementary banking channel to an important component of economic infrastructure. The World Bank's Global Findex 2025 reports that 79\% of adults globally owned a financial account in 2024, compared with 74\% in 2021, while mobile-phone ownership reached 86\% of adults \cite{worldbank2025}. Earlier Findex evidence already showed that the share of adults making digital payments in developing economies doubled between 2014 and 2021 \cite{worldbank2021}. These changes do not imply that cash has disappeared, nor that every digitized payment system is inclusive. They do show that payment initiation is increasingly expected to be immediate, mobile, and machine-readable.
+
+Invoices expose a persistent gap in that transition. An issuer may generate a digital invoice, deliver it by e-mail, and archive it electronically, yet the payer may still copy an account number, payment code, amount, and reference into a separate application. Manual transcription increases effort and creates opportunities for omitted digits, incorrect beneficiaries, and reconciliation failures. A standardized QR symbol can bridge the document and the payment interface: a banking application scans the symbol, parses the payment instruction, presents the decoded fields, and asks the user to authorize the transaction.
+
+The distinction between a \textit{payment instruction} and a \textit{payment rail} is fundamental. A QR code does not settle money, authenticate the payer, or prove that the printed creditor is legitimate. It transports data to a client. Settlement, account access, strong customer authentication, screening, fraud controls, and final authorization remain responsibilities of regulated payment service providers. This distinction prevents visual convenience from being confused with financial assurance.
+
+MKQR is a Macedonian open and independent draft standard proposed by the Faculty of Information and Communication Technologies (FIKT), University ``St. Kliment Ohridski''--Bitola. The initiative defines a textual entity format based on a custom URI scheme and a standardized QR rendering. Its intended applications include invoices, utility bills, donations, person-to-person transfers, domestic payment forms, coupons, loyalty points, tokens, and other transaction-like entities \cite{mkqrrepo,jolevski2024}. The repository includes the draft specification, a C++ generator and validator, a C-compatible application programming interface (API), automated tests, and a Windows Presentation Foundation example.
+
+The timing is institutionally relevant. North Macedonia's Law on Payment Services and Payment Systems has applied since 1 January 2023 and was designed to encourage new providers, competition, and compatibility with European payment practices \cite{mofpayments}. In January 2026, the Ministry of Finance and Public Revenue Office announced the launch of a national e-invoicing system \cite{mofeinvoice}. MKQR is not part of either legal instrument, but it addresses an interface problem that becomes more visible as structured electronic invoices and mobile payment services expand.
+
+This paper makes five contributions:
+
+\begin{itemize}
+\item it describes the MKQR data model, generation pipeline, and validation semantics defined by the draft proposal;
+\item it compares MKQR with the Swiss QR-bill and with the national QR payment ecosystems QRIS, BharatQR, and NQR;
+\item it connects technical design choices to adoption research based on the Unified Theory of Acceptance and Use of Technology (UTAUT) and the Technology Acceptance Model (TAM);
+\item it evaluates visual standardization, usability, security, and adoption considerations; and
+\item it proposes a staged path from an academic draft to a governed, testable, and bank-integrated national profile.
+\end{itemize}
+
+The analysis is architectural and documentary. It does not claim transaction-volume effects, fraud reduction, or nationwide user acceptance, because MKQR has not been evaluated through a national deployment. Its purpose is to determine what the draft already contributes and what must be specified or validated before operational adoption.
+
+\section{2 Related Work and Literature Review}
+
+\subsection{2.1 The Swiss QR-bill as a document-to-payment standard}
+
+The Swiss QR-bill is the closest operational analogue to MKQR. SIX Interbank Clearing introduced the QR-bill in June 2020, and it definitively replaced Switzerland's red and orange payment slips on 1 October 2022 \cite{sixoverview}. The transition is significant because it did not merely add a QR code to an invoice; it established a coordinated replacement for long-standing paper instruments across banks, postal channels, invoice issuers, accounting software, and consumers.
+
+The Swiss QR Code carries the information needed to initiate a payment, including an IBAN or QR-IBAN, creditor identity and address, amount and currency, debtor data, and a structured or unstructured reference. The payment section repeats core information in human-readable form so that the payer can verify decoded data and, when necessary, enter it manually. The Swiss profile also defines relationships between fields: a QR reference requires a QR-IBAN, whereas an ISO 11649 Creditor Reference is used with an ordinary IBAN \cite{sixguidelines,sixfaq}. Current Swiss Implementation Guidelines require structured addresses, illustrating that a successful standard continues to evolve after deployment.
+
+MKQR closely mirrors this bill-oriented model. Both standards place bank-account, payee, address, amount, currency, and reconciliation information inside a scannable symbol. Both distinguish structured and combined address representations in their design history, support QRR, SCOR, and no-reference modes, and seek to connect invoicing software with banking applications. The major difference is institutional maturity. The Swiss QR-bill is governed through the Swiss financial center, accompanied by implementation guidelines, processing rules, style requirements, validation tools, and a coordinated migration date. MKQR remains an open academic proposal with a reference implementation but without binding scheme rules, certification, or universal bank acceptance.
+
+The Swiss experience supplies four lessons for MKQR. First, payment data and printed presentation must be standardized together. Second, field dependencies require normative validation, not only examples. Third, human-readable redundancy is a safety and accessibility feature. Fourth, migration is an ecosystem program involving software vendors, invoice issuers, banks, public authorities, and users; publishing a payload format is necessary but insufficient.
+
+\subsection{2.2 QRIS, BharatQR, and NQR}
+
+Indonesia, India, and Nigeria demonstrate a second model: a national QR acceptance scheme connecting merchants, applications, payment service providers, and switching infrastructure. A 2025 systematic literature review by Asrihapsari, Putri, and Anaege analyzed 15 peer-reviewed studies and identified national QR implementations in all three countries. The review concludes that the schemes pursue financial inclusion, transaction efficiency, and transition toward cashless exchange, while research gaps remain in security, privacy, and macroeconomic effects \cite{asrihapsari2025}. These conclusions are best read as a synthesis of policy goals and research themes, not as proof that QR standardization alone causes inclusion.
+
+Bank Indonesia launched the Quick Response Code Indonesian Standard (QRIS) on 17 August 2019 and required payment service providers offering QR payments to use it after the transition period. QRIS was developed with the national payments industry using EMVCo foundations so that one merchant code can be read by applications from different approved providers \cite{bankindonesiaqris}. Its merchant-presented and customer-presented modes, national merchant repository, switching participants, provider approval, transaction limits, and cross-border linkages show that interoperability is simultaneously technical, operational, and regulatory.
+
+BharatQR was launched in India on 20 February 2017 through collaboration among the National Payments Corporation of India (NPCI) and major card networks under Reserve Bank of India direction. NPCI subsequently required integration of Unified Payments Interface credentials into the BharatQR specification, allowing a common symbol to represent card-linked and account-based payment identifiers \cite{npcibharatqr}. BharatQR's central contribution was to reduce scheme-specific merchant codes through a common interoperable acceptance representation.
+
+Nigeria Quick Response (NQR), operated within the Nigerian Inter-Bank Settlement System ecosystem, similarly provides a national scan-to-pay mechanism. NQR emphasizes account-based merchant acceptance, interoperability among participating institutions, and a common customer experience; NIBSS maintains implementation support and frequently asked questions for the service \cite{nibssnqr}. In the comparative literature, NQR is positioned as a tool for low-cost merchant digitization and financial inclusion, although evidence remains thinner than for QRIS and Indian payment systems \cite{asrihapsari2025}.
+
+\begin{table}
+\caption{Comparative positioning of national QR initiatives and MKQR.}
+\begin{tabular}{lllll}
+System & Primary context & Governance & Payload orientation & Main lesson for MKQR \\
+Swiss QR-bill & Invoices and payment slips & SIX / Swiss financial center & Bill and credit-transfer data & Coordinate data, layout, validation, and migration \\
+QRIS & Merchant and customer QR payments & Bank Indonesia and industry & EMVCo-based acceptance data & Mandated provider interoperability and oversight \\
+BharatQR & Interoperable merchant acceptance & RBI, NPCI, and card networks & Card and UPI payment identifiers & Unify multiple funding schemes behind one code \\
+NQR & Account-based scan-to-pay & NIBSS ecosystem & Merchant and transaction data & Pair low-cost acceptance with national switching \\
+MKQR & Bills, invoices, donations, and transfers & Open academic draft by FIKT & URI-based payment instruction & Build neutral tooling and multi-stakeholder governance \\
+\end{tabular}
+\end{table}
+
+The comparison also establishes a boundary. QRIS, BharatQR, and NQR are not simply file formats. Their value comes from participating institutions agreeing how a decoded identifier is routed, authenticated, cleared, settled, monitored, and disputed. MKQR currently standardizes the document-to-application handoff. Future Macedonian adoption would still need an operational scheme or mappings into existing credit-transfer infrastructure.
+
+\subsection{2.3 User acceptance: UTAUT, usefulness, and effort}
+
+Venkatesh et al. formulated UTAUT by integrating eight earlier acceptance models. Its central constructs are performance expectancy, effort expectancy, social influence, and facilitating conditions, with behavioral intention and actual use as outcomes \cite{venkatesh2003}. TAM uses closely related concepts of perceived usefulness and perceived ease of use. These models do not replace security engineering, but they explain why a technically correct payment code can still fail: users must perceive a benefit, understand the workflow, have compatible applications, and trust the institutions around it.
+
+Research on QRIS provides relevant evidence. In a study of 80 micro, small, and medium food-and-beverage enterprises in Jambi, performance expectancy and effort expectancy significantly influenced behavioral intention, while social influence and facilitating conditions were not individually significant in that sample \cite{pangestu2022}. A study of 239 QRIS users in Semarang found that performance expectancy, effort expectancy, and facilitating conditions influenced attitude; effort expectancy and facilitating conditions also had direct effects on behavioral intention \cite{wibowo2023}. A TAM study of 107 Indonesian SMEs found perceived usefulness to be significant for attitude and behavioral intention, and perceived ease of use to influence attitude and usefulness, though not behavioral intention directly \cite{syah2022}. A separate survey of 190 university students found perceived usefulness, ease of use, and privacy and security to affect behavioral intention toward QRIS \cite{kurnia2024}.
+
+The findings vary across samples, as adoption studies commonly do, but the engineering implication is consistent. MKQR should measurably reduce entry steps and transcription errors; scanning should work reliably across devices and print conditions; decoded beneficiary, amount, and reference fields should be legible before approval; and banking support should be broad enough that users do not encounter an unsupported code after learning to recognize it. Visual identity may aid discovery, but facilitating conditions are supplied by compatible applications, help materials, merchant or biller onboarding, and trusted institutional support.
+
+\subsection{2.4 MKQR's distinct position}
+
+MKQR occupies a useful middle layer. It is more semantically expressive for invoices than a generic URL or a merchant identifier, yet it is less operationally complete than a national payment scheme. Its custom URI gives desktop, web, print, and mobile software a common textual interchange representation. Because the standard is open, an enterprise-resource-planning system can generate the same instruction that a bank application consumes without depending on a proprietary QR vendor.
+
+This neutrality is valuable, but it is not equivalent to regulatory neutrality in settlement. Any application that converts an MKQR payload into a real payment must still comply with applicable authorization, security, consumer-protection, and payment-services requirements. The appropriate claim is therefore that MKQR can be an open \textit{payment-initiation data standard}, not that it independently constitutes an alternative banking system.
+
+\section{3 Methodology and Technical Architecture}
+
+\subsection{3.1 Analytical method and evidence base}
+
+This study uses a design-oriented technical analysis with three evidence sources. The first is the MKQR draft specification published in the project repository \cite{mkqrrepo}. The second is the FIKT conference paper that introduced MKQR for mobile banking and e-invoicing \cite{jolevski2024}. The third is comparative evidence from official payment-system documentation, international standards, and peer-reviewed adoption literature.
+
+The analysis considers the proposed data model, validation and generation workflow, and application contexts. The accompanying software is treated solely as an illustrative reference and is not evaluated for conformity, completeness, security, or production readiness.
+
+No performance benchmark, scanner experiment, bank pilot, or user study was conducted for this paper. Claims about expected efficiency are therefore derived from reduced data entry and from experience reported for comparable standards, not from measured MKQR transactions.
+
+\subsection{3.2 URI structure and processing pipeline}
+
+An MKQR entity is serialized as a URI whose fixed prefix is:
+
+\begin{verbatim}
+mkqr://pay?
+\end{verbatim}
+
+The query contains abbreviated key-value pairs. A minimal illustrative payment instruction is:
+
+\begin{verbatim}
+mkqr://pay?t=MKD&v=0100&c=2&iban=MK07250120000058984
+&cat=S&cn=Example%20Utility&cz=7000&cg=Bitola&cc=MK
+&a=1250.00&cur=MKD&rt=NON&pcd=289
+\end{verbatim}
+
+The line breaks above are only for presentation. A real symbol carries one continuous string. Textual values must be encoded unambiguously before concatenation. RFC 3986 requires octets that fall outside the permitted URI character set, or that conflict with delimiters such as \texttt{\&} and \texttt{=}, to be percent-encoded \cite{rfc3986}. Full Cyrillic values should first be represented in UTF-8 and then percent-encoded for a strict URI representation.
+
+Let \(D\) be the entered data set, \(V\) the validation function, \(S\) deterministic serialization, and \(Q\) QR symbol generation. The issuer-side operation can be expressed as:
+
+\begin{equation}
+M = Q(S(V(D))).
+\end{equation}
+
+The client-side inverse is not a direct payment. A conforming banking workflow performs the following sequence:
+
+\begin{enumerate}
+\item capture and decode the QR matrix into a byte string;
+\item verify the \texttt{mkqr} scheme, the \texttt{pay} action, and a supported version;
+\item parse keys before percent-decoding their values;
+\item reject malformed, duplicate, contradictory, or unsupported mandatory data;
+\item perform syntactic, semantic, and contextual validation;
+\item display the normalized beneficiary, account, amount, currency, and reference to the user;
+\item obtain explicit authenticated authorization; and
+\item translate the approved instruction into the bank's existing payment API and settlement rail.
+\end{enumerate}
+
+The custom URI also permits operating-system deep linking. An installed application can register recognition of the \texttt{mkqr} scheme. This improves usability when a code or link is opened digitally, but scheme registration must not silently authorize payment. Multiple installed handlers, malicious handler registration, and unsupported versions require an explicit application-selection and confirmation policy.
+
+\subsection{3.3 Payload model and constraints}
+
+The draft uses compact names to conserve QR capacity. Its fields can be grouped into six logical classes.
+
+\begin{table}
+\caption{Logical groups in the MKQR payload.}
+\begin{tabular}{llll}
+Group & Representative keys & Requirement pattern & Purpose \\
+Envelope & \texttt{t}, \texttt{v}, \texttt{c} & Mandatory & Standard type, version, and encoding profile \\
+Creditor & \texttt{iban}, \texttt{aiban}, \texttt{cat}, \texttt{cn}, \texttt{cadd1}, \texttt{cadd2}, \texttt{cz}, \texttt{cg}, \texttt{cc} & Mandatory and conditional & Beneficiary account, name, and address \\
+Payment & \texttt{a}, \texttt{cur}, \texttt{rt}, \texttt{ref}, \texttt{pcd}, \texttt{nac} & Mixed & Amount, currency, reference, and payment classification \\
+Debtor & \texttt{pat}, \texttt{pn}, \texttt{padd1}, \texttt{padd2}, \texttt{pz}, \texttt{pg}, \texttt{pc} & Optional and conditional & Payer identity and address \\
+Domestic forms & \texttt{us50}, \texttt{usek50}, \texttt{us30}, \texttt{usek30} & Optional & Fifteen-digit PP50 and PP30 accounts \\
+Extensions & \texttt{i}, \texttt{curl}, \texttt{ap}, \texttt{av}, \texttt{ad}, \texttt{ac} & Optional & Remittance text, validation URL, and alternative value scheme \\
+\end{tabular}
+\end{table}
+
+The envelope field \texttt{t} is fixed to \texttt{MKD}. The draft uses semantic versioning at the specification level and a four-digit compact payload representation; version 1.0.0 is represented as \texttt{v=0100}. The coding field distinguishes a restricted Latin-oriented UTF-8 profile from full UTF-8 including Cyrillic through \texttt{c=1} and \texttt{c=2}. Version and encoding indicators permit a client to reject unsupported semantics rather than guessing.
+
+The creditor block requires an IBAN, address type, creditor name, country, currency, reference type, and payment code in addition to the envelope. Alternative IBANs are separated with the pipe character and ordered by creditor preference. A client should not automatically substitute an alternative account without showing the change and applying bank policy. The name is limited to 70 characters. Country and currency are expressed using two- and three-character codes, respectively.
+
+MKQR provides address type \texttt{S} for structured data and \texttt{K} for a two-line combined address. In the structured form, postal code and town are conditional mandatory fields; street and building number use separate constrained fields. In the combined form, the first line is mandatory and both lines allow a larger limit. The same pattern is available for the ultimate debtor.
+
+Payment reference type accepts \texttt{QRR}, \texttt{SCOR}, or \texttt{NON}. QRR denotes a 27-digit reference with a recursive modulo-10 check digit; SCOR denotes an ISO 11649 RF Creditor Reference; and NON indicates no structured reference. The relationship between account type and reference type mirrors Swiss practice and should be made fully normative. ISO 11649 supports automated reconciliation across data-interchange and paper media \cite{iso11649}.
+
+Amount is optional in the draft, enabling a reusable donation or blank-payment code, while currency remains mandatory. The specification describes the amount as text convertible to an IEEE 754 double. This is implementable but unsuitable as the final monetary semantics: binary floating-point cannot exactly represent many decimal fractions. A national profile should instead define a canonical decimal lexical form, scale, maximum precision, range, decimal separator, and rounding rule. The PP30 and PP50 fields preserve compatibility with familiar Macedonian payment-form concepts, while alternative payment fields extend the entity beyond bank money to coupons, points, or tokens.
+
+\subsection{3.4 Pre-generation validation}
+
+The standard requires validation before QR generation. If mandatory data cannot be validated, generation stops. Invalid optional data produces a warning. The draft correctly acknowledges a boundary: local validation cannot establish that an IBAN corresponds to an open account or that the named creditor controls it.
+
+The proposed validation model covers field presence, length limits, permitted characters, numeric form, country and currency codes, IBAN structure, URL form, and address-length rules associated with the selected address type. Its unconditional mandatory list is:
+
+\begin{verbatim}
+t, v, c, iban, cat, cn, cc, cur, rt, pcd
+\end{verbatim}
+
+Conditional checks add \texttt{cadd1} for a combined creditor address, \texttt{cz} and \texttt{cg} for a structured creditor address, and the corresponding debtor fields when debtor address data are present. A final mandatory-field presence check precedes serialization.
+
+The validation result model separates success, a warning for invalid non-mandatory data, and an error for invalid mandatory data. This is a sound client-facing pattern because it allows an interface to block unsafe generation while preserving actionable feedback. Operational facts such as account status or ownership may additionally be checked by trusted banking services where available.
+
+\subsection{3.5 QR generation workflow}
+
+After validation, accepted parameters are serialized after the \texttt{mkqr://pay?} prefix and encoded as a QR module matrix. The rendered symbol can then be scaled for screen display or placement on an invoice without changing its logical payload.
+
+For the color profile, dark modules are interpolated vertically from Macedonian red at the top to black at the bottom; light modules remain white. A 13-by-13-module logo region is centered in the symbol. The logo uses yellow and red flag colors blended with the underlying matrix at the prescribed transparency. Monochrome output replaces the gradient with black and white while retaining the logo geometry.
+
+\subsection{3.6 Security and integrity architecture}
+
+An MKQR code is untrusted input. Error correction protects the QR symbol against physical damage; it does not protect payment data against intentional substitution. A criminal can replace an entire legitimate code with a perfectly readable fraudulent code, preserving the MK logo and all visual rules. Brand recognition can support usability, but only cryptographic and institutional controls can establish origin.
+
+At minimum, a bank client should normalize and display the creditor name, primary IBAN, amount, currency, payment reference, and any account substitution before authorization. High-value or first-time creditors may require additional warnings or name checks. Payment creation must occur inside the authenticated banking session, and no deep link or camera scan should bypass the final confirmation screen.
+
+The payload currently contains no issuer signature, certificate identifier, expiry time, nonce, or immutable invoice identifier. This is acceptable for a basic payment instruction, provided the user and bank treat it as unsigned. A future signed profile could add issuer identity, creation and expiry timestamps, a canonical payload hash, and a detached or embedded digital signature bound to a trust registry. Such an extension would require revocation, key rotation, algorithm agility, and clear behavior for unsigned legacy codes.
+
+Privacy must be evaluated independently of payment authorization. An invoice QR may contain the payer's full name and address, creditor details, reference number, and purchase-related information. Anyone who can photograph the invoice can recover those data. Implementers should minimize optional debtor and descriptive fields, avoid embedding sensitive personal or tax information unless required, define retention rules, and ensure that analytics do not silently associate scans with identifiable invoices.
+
+\section{4 Visual Standardization and Usability}
+
+\subsection{4.1 The MKQR visual profile}
+
+The visual standard offers two profiles. In the color profile, the dark QR modules form a vertical gradient from red \texttt{\#CC0708} at the top to black \texttt{\#000000} at the bottom. A centered MK logo occupies 13 modules in width and height. Its one-module frame and the letters MK use the yellow of the Macedonian flag, while its background uses flag red. The logo is blended at 20\% transparency so that underlying module information remains partially available. The monochromatic profile uses black and white with the same geometry and transparency.
+
+This design serves three usability functions. First, consistent visual identity allows invoice recipients to recognize the intended scanner workflow. Second, national colors can make an unfamiliar technical artifact feel locally situated rather than vendor-specific. Third, a monochrome fallback preserves use on office printers, thermal printers, photocopies, and documents where color reproduction is unreliable.
+
+The design must preserve QR fundamentals. Finder, alignment, timing, and format patterns cannot be treated as decorative space. Light and dark modules need sufficient luminance contrast, and the complete symbol needs a quiet zone free from text, borders, or invoice graphics. ISO/IEC 18004:2024 specifies QR encoding, symbol format, error-correction rules, decoding, dimensions, and production-quality requirements \cite{iso18004}. MKQR should incorporate these requirements by reference and state any stricter national profile.
+
+\subsection{4.2 Error correction and the central logo}
+
+QR error correction can recover codewords lost through dirt, damage, or obstruction, but its nominal levels are not a guarantee that any region of a given area may be erased. Logo position can intersect function patterns or concentrate damage in critical codewords. The initial implementation demonstrates a 13-module central logo region, while empirical testing can inform the appropriate correction profile for wider deployment.
+
+A stable profile should specify the error-correction level, maximum logo mask, quiet zone, minimum rendered module size, acceptable color contrast, and maximum QR version. It should also define whether the logo is painted only over data modules or over the complete matrix. A conservative design may require a higher correction level, but higher correction consumes capacity and can produce a denser or larger symbol. The correct value must be chosen through interoperability tests rather than aesthetics alone.
+
+The test matrix should include:
+
+\begin{itemize}
+\item low-, mid-, and high-end Android and iOS cameras;
+\item banking SDK decoders and multiple independent QR libraries;
+\item laser, inkjet, thermal, and offset print processes;
+\item grayscale conversion, photocopying, compression, scaling, folding, glare, low light, and camera angle;
+\item the shortest and longest valid payloads in both Latin and Cyrillic profiles; and
+\item every permitted error-correction, logo, and monochrome combination.
+\end{itemize}
+
+Pass criteria should be statistical: for each condition, define a first-scan success rate, time-to-decode distribution, false-decode rate, and minimum number of devices and samples. Images that fall below the selected reliability threshold should be revised before deployment.
+
+\subsection{4.3 Trust, recognition, and human verification}
+
+Visual consistency can increase perceived legitimacy and reduce effort expectancy, which adoption research associates with intention to use. It can also be abused. The logo must therefore be accompanied by a clear client message that the scan has supplied an instruction, not verified the biller. The banking interface is the trusted point at which account ownership, creditor history, amount anomalies, and authorization are evaluated.
+
+The Swiss QR-bill provides a useful safety pattern by printing core payment information in plain text next to the code. MKQR should define a human-readable payment block for invoices containing at least creditor name, masked or grouped IBAN, amount, currency, reference, and payment code. The decoded screen can then be compared with the invoice without rescanning. This also supports users whose devices cannot scan the code and provides an audit trail when a symbol is damaged.
+
+Accessibility requires more than a monochrome option. Instructions should not rely on red, yellow, or black as the only semantic signal. The printed payment block should use sufficient type size and contrast; screen readers should receive structured labels; validation errors should identify the field and corrective action; and the scan workflow should support Macedonian and Albanian user interfaces where applicable. These features directly strengthen facilitating conditions and perceived ease of use.
+
+\section{5 Discussion and Use Cases}
+
+\subsection{5.1 E-invoicing and business payments}
+
+The strongest MKQR use case is the payment layer of an electronic or printed invoice. An enterprise-resource-planning system already knows the creditor, invoice total, currency, due reference, and customer identifier. It can validate those values once and generate a code alongside human-readable data. The recipient's banking application reconstructs the transfer without manual re-entry. A structured reference allows the creditor's accounting system to reconcile the incoming payment with the invoice.
+
+MKQR should not be confused with the e-invoice itself. A compliant electronic invoice can contain tax, line-item, delivery, seller, buyer, and reporting data far beyond the appropriate capacity or privacy scope of a payment QR. The code should transport the minimum payment initiation subset and an invoice reference. This separation becomes particularly useful as North Macedonia develops a national e-invoicing system \cite{mofeinvoice}.
+
+For business-to-business use, signed issuer profiles and deterministic references would support automated accounts payable. A scanner could import a proposed payment into an approval queue, but organizational authorization, segregation of duties, and limits would remain in the enterprise and bank systems. For consumer invoices, the benefit is fewer entry steps and fewer reference errors.
+
+\subsection{5.2 Utility and government payments}
+
+Utilities generate high volumes of repetitive bills with structured creditor accounts and customer references. Electricity, water, heating, telecommunications, municipal fees, and similar obligations are well suited to a bill-specific QR. MKQR can encode the exact amount for a monthly bill or omit it where partial payment is allowed. The PP30 and PP50 fields provide a bridge to domestic payment-form practices.
+
+Government collection presents similar opportunities for taxes, administrative fees, licenses, court charges, education payments, and local services. A public-sector deployment would need a controlled biller registry, unambiguous revenue-account and payment-code validation, accessible alternatives, and formal archival rules. Because government is often a major payer and payee, interoperable digital collection can have broader infrastructure effects, but exclusion must be avoided for citizens without smartphones or supported banking applications.
+
+\subsection{5.3 Donations and person-to-person transfers}
+
+A charity can publish an MKQR code with a fixed beneficiary and currency while leaving the amount open. Campaign-specific references or additional information can improve reconciliation. Compared with a proprietary payment link, an open code can be generated without a platform account and consumed by any conforming bank. The same mechanism can support club dues, school campaigns, cultural institutions, emergency appeals, and person-to-person transfers.
+
+Donation codes are also a high-risk substitution target because they are often displayed publicly and scanned without a prior relationship. A bank should prominently display the legal account holder and treat fixed public codes as unsigned unless the issuer can be verified. Charities should periodically inspect physical posters and websites, and signed codes or a trusted registry should be prioritized for public fundraising.
+
+\subsection{5.4 Alternative values and extensibility}
+
+The fields for alternative payment scheme, value, description, and currency broaden MKQR beyond a conventional credit transfer. They could represent store coupons, loyalty points, event tokens, or institutional credit. Extensibility is attractive, but it can dilute the meaning of \texttt{mkqr://pay}. A bank must not interpret a loyalty token as sovereign currency or imply legal equivalence.
+
+Future versions should define typed extension namespaces and capability negotiation. Core payment fields should remain stable, while unsupported optional extensions can be ignored only when doing so cannot change the transaction's economic meaning. Any extension that changes the beneficiary, value, authorization, or settlement method should require explicit client support and user confirmation.
+
+\begin{table}
+\caption{Representative MKQR use cases and their principal controls.}
+\begin{tabular}{llll}
+Use case & Primary benefit & Principal risk & Required control \\
+Consumer invoice & Eliminates manual account and reference entry & Wrong or substituted beneficiary & Display normalized payee and require bank authorization \\
+B2B e-invoice & Straight-through import and reconciliation & Automation of unauthenticated data & Signed issuer profile and approval workflow \\
+Utility bill & High-volume standardized collection & Stale or duplicate reference & Unique reference and idempotent reconciliation \\
+Government fee & Correct revenue account and payment code & Exclusion or classification error & Registry, accessibility, and authoritative code lists \\
+Donation & Low-friction open collection & Public-code replacement fraud & Account-name check and trusted campaign identity \\
+Person-to-person & App-neutral account instruction & Privacy leakage and misdirection & Minimal fields and explicit recipient confirmation \\
+\end{tabular}
+\end{table}
+
+\subsection{5.5 Benefits of an open academic proposal}
+
+FIKT's role offers several advantages. An academic institution can publish the data model, source code, examples, and validation logic without tying acceptance to a single bank, telecom operator, card network, or QR vendor. Open review makes ambiguities and vulnerabilities observable. Students and researchers can build parsers, bindings, test tools, and adoption studies, creating domestic expertise in payment engineering. A neutral prototype can also lower coordination costs by giving banks and public institutions a concrete artifact to evaluate.
+
+The same origin imposes limits. A university cannot unilaterally require banks to register the URI scheme, guarantee account ownership, certify production implementations, set dispute rules, or mandate migration from existing payment forms. Long-term success requires a multi-stakeholder governance body with representation from the National Bank, Ministry of Finance, payment service providers, billers, software vendors, consumer and accessibility groups, security specialists, and academia. The open standard should remain vendor-neutral under that broader governance.
+
+To reinforce its open-standard character, future governance can publish explicit software and specification licenses, intellectual-property and contribution policies, a change-control process, and version-support commitments. Normative text, schemas, and shared examples can coexist with multiple independent implementations.
+
+\subsection{5.6 Inclusion, adoption, and ecosystem economics}
+
+QR codes can reduce merchant and biller hardware requirements because smartphones and printed paper replace dedicated card terminals for some workflows. International evidence links interoperable, accessible, efficient, standardized, safe, and reliable payment infrastructure with financial inclusion \cite{pafi}. BIS research also finds that QR transaction histories can help small firms form digital financial footprints and gain access to credit, though that evidence comes from a particular large-platform context and should not be generalized mechanically to MKQR \cite{beck2022}.
+
+MKQR's direct inclusion benefit is narrower: it can make account-based payment entry easier for people who already have access to a compatible device and payment account. It does not by itself solve account ownership, smartphone affordability, connectivity, disability access, financial literacy, or fees. A national program should therefore preserve manual and assisted channels, support low-cost applications, publish multilingual instructions, and monitor whether usage gaps emerge by age, income, location, disability, or gender.
+
+Adoption evaluation should begin before nationwide rollout. A Macedonian UTAUT study could measure performance expectancy, effort expectancy, social influence, facilitating conditions, perceived security, trust, and behavioral intention across consumers, small businesses, invoice issuers, and bank employees. Behavioral outcomes should include successful first scan, completion time, abandonment, correction rate, and later reuse. Experimental comparison with manual entry would provide stronger evidence than attitude surveys alone.
+
+\subsection{5.7 Governance and deployment roadmap}
+
+A safe transition can be organized into five phases.
+
+\begin{enumerate}
+\item \textbf{Specification consolidation}: refine the grammar, field dependencies, version policy, security model, and visual measurements through stakeholder review.
+\item \textbf{Interoperability infrastructure}: release shared payload examples, reference images, independent parsers, scanner-quality tests, and a public validation portal.
+\item \textbf{Controlled pilot}: integrate with a small number of banking sandboxes, one utility, one public institution, and several accounting vendors; use test accounts and limited transaction values.
+\item \textbf{Regulatory and industry profile}: establish governance, consumer-protection rules, security certification, biller identity, incident response, liability, accessibility, and data-protection requirements.
+\item \textbf{Phased adoption}: allow dual manual-and-MKQR invoices, measure outcomes, expand bank coverage, communicate clearly, and set any migration date only after objective readiness criteria are met.
+\end{enumerate}
+
+The Swiss transition demonstrates the value of parallel operation and an announced end state. QRIS demonstrates the value of requiring participating providers to implement one interoperable profile. MKQR can combine those lessons while retaining an openly implementable payload and public interoperability resources.
+
+\section{6 Conclusion and Future Work}
+
+MKQR addresses a concrete gap between electronic invoicing and mobile payment initiation in North Macedonia. Its main contribution is a compact, inspectable data representation beginning with \texttt{mkqr://pay?}, accompanied by field-level validation, national visual identity, monochrome output, and illustrative reference software. The draft covers more than a basic beneficiary-and-amount code: it includes alternative IBANs, structured and combined addresses, debtor data, reconciliation references, domestic payment-form fields, validation hooks, and alternative-value extensions.
+
+Comparison with the Swiss QR-bill confirms that embedding standardized account and payee data in invoices can replace manual payment slips when technical rules, visible presentation, banking support, and migration are coordinated. QRIS, BharatQR, and NQR demonstrate that national QR success additionally depends on regulated participation, routing and settlement interoperability, provider certification, risk management, and inclusive onboarding. Adoption research further indicates that usefulness, effort, facilitating conditions, privacy, and security perceptions must be designed and measured rather than assumed.
+
+The current draft should therefore be regarded as a strong proof of concept and a foundation for collaborative specification development rather than a finished national scheme. Future technical work can consolidate the URI grammar, field dependencies, validation model, version policy, and visual profile through stakeholder review, implementation experience, and empirical scanner testing.
+
+Security work can explore optional issuer-authenticity mechanisms, user confirmation requirements, biller identity, replay and duplicate-payment handling, privacy minimization, secure validation-service behavior, and bank-side fraud controls. Software work can add mature bindings, independent implementations, and shared interoperability tests. Institutional work should establish a transparent multi-stakeholder body and pilot MKQR with Macedonian banking applications, accounting systems, utilities, and the developing national e-invoicing infrastructure.
+
+Future research should evaluate scan reliability under realistic print and camera conditions, compare completion time and error rate against manual payment entry, and test adoption constructs across demographic and business groups. A longitudinal pilot should measure successful-payment rate, reconciliation accuracy, support burden, fraud attempts, and accessibility outcomes. If these studies show operational benefit and the standard is placed under credible governance, MKQR could evolve from an academic initiative into an open national payment-initiation interface that complements existing regulated payment rails.
+
+\begin{thebibliography}{99}
+
+\bibitem{worldbank2025}
+World Bank, \textit{The Global Findex Database 2025: Connectivity and Financial Inclusion in the Digital Economy}, Washington, DC, 2025. Available: https://www.worldbank.org/en/publication/globalfindex/report.
+
+\bibitem{worldbank2021}
+World Bank, \textit{The Global Findex Database 2021: Financial Inclusion, Digital Payments, and Resilience in the Age of COVID-19}, Washington, DC, 2022. Available: https://openknowledge.worldbank.org/handle/10986/37578.
+
+\bibitem{mkqrrepo}
+Faculty of Information and Communication Technologies--Bitola, ``MKQR draft standard,'' GitHub repository, 2024. Available: https://github.com/fiktedu/mkqr.
+
+\bibitem{jolevski2024}
+I. Jolevski, N. Blazheska-Tabakovska, S. Savoska, B. Ristevski, and A. Bocevska, ``MKQR Bill Standard and its Application on Mobile Banking and e-Invoicing,'' in \textit{Proceedings of the 16th ICT Innovations Conference}, Ohrid, North Macedonia, 2024, pp. 213--224. Available: https://proceedings.ictinnovations.org/2024/paper/608/mkqr-bill-standard-and-its-application-on-mobile-banking-and-e-invoicing.
+
+\bibitem{mofpayments}
+Ministry of Finance, Republic of North Macedonia, ``Financial market will be open for new service providers, new services, lower costs and consumer protection,'' Apr. 19, 2022. Available: https://arhiva.finance.gov.mk/2022/04/19/mof-financial-market-will-be-open-for-new-service-providers-new-services-lower-costs-and-consumer-protection/?lang=en.
+
+\bibitem{mofeinvoice}
+Ministry of Finance, Republic of North Macedonia, ``Launch of the E-Invoicing System--a major step in combating informal economy and reforming public finances,'' Jan. 5, 2026. Available: https://finance.gov.mk/en-GB/odnosi-so-javnost/novosti/dimitrieska-kocoska-sistemot-e-faktura-seriozen-cekor-vo-borbata-so-sivata-ekonomija-i-reforma-vo-javnite-finansii.
+
+\bibitem{sixoverview}
+SIX Interbank Clearing Ltd, ``QR-bill--Swiss Payment Standards,'' 2026. Available: https://www.six-group.com/en/products-services/banking-services/payment-standardization/standards/qr-bill.html.
+
+\bibitem{sixguidelines}
+SIX Interbank Clearing Ltd, \textit{Swiss Implementation Guidelines for the QR-bill}, version 2.3, Nov. 20, 2023. Available: https://www.six-group.com/dam/download/banking-services/standardization/qr-bill/ig-qr-bill-v2.3-en.pdf.
+
+\bibitem{sixfaq}
+SIX Interbank Clearing Ltd, ``FAQs: Payment Standards in Switzerland,'' 2026. Available: https://www.six-group.com/en/products-services/banking-services/payment-standardization/downloads-faq/faq.html.
+
+\bibitem{asrihapsari2025}
+A. Asrihapsari, I. S. Putri, and A. E. Anaege, ``Analysis of National QR Code Payment Systems: Practices in 3 Developing Countries (Indonesia, Nigeria, and India),'' \textit{AKUMULASI: Indonesian Journal of Applied Accounting and Finance}, vol. 4, no. 1, pp. 76--95, 2025, doi: 10.20961/akumulasi.v4i1.2539.
+
+\bibitem{bankindonesiaqris}
+Bank Indonesia, ``Quick Response Code Indonesian Standard (QRIS),'' 2026. Available: https://www.bi.go.id/en/fungsi-utama/sistem-pembayaran/ritel/kanal-layanan/qris/default.aspx.
+
+\bibitem{npcibharatqr}
+National Payments Corporation of India, ``Integration of Bharat QR with UPI credentials,'' Circular NPCI/2017-18/PD/004, Aug. 10, 2017. Available: https://www.npci.org.in/PDF/npci/upi/circular/2017/Circular28-Scanning-integrated-Bharat-through-UPI.pdf.
+
+\bibitem{nibssnqr}
+Nigeria Inter-Bank Settlement System Plc, ``Nigeria Quick Response Code--Frequently Asked Questions,'' July 21, 2024. Available: https://contactcentre.nibss-plc.com.ng/support/solutions/folders/47000778052.
+
+\bibitem{venkatesh2003}
+V. Venkatesh, M. G. Morris, G. B. Davis, and F. D. Davis, ``User Acceptance of Information Technology: Toward a Unified View,'' \textit{MIS Quarterly}, vol. 27, no. 3, pp. 425--478, 2003, doi: 10.2307/30036540.
+
+\bibitem{pangestu2022}
+M. G. Pangestu and J. P. K. Pasaribu, ``Behavior Intention Penggunaan Digital Payment QRIS Berdasarkan Model Unified Theory of Acceptance and Use of Technology (UTAUT),'' \textit{Jurnal Ilmiah Manajemen dan Kewirausahaan}, vol. 1, no. 1, 2022, doi: 10.33998/jumanage.2022.1.1.23.
+
+\bibitem{wibowo2023}
+R. I. Wibowo, ``Analisis Model UTAUT pada Pengguna QRIS di Kota Semarang,'' \textit{Jurnal Ilmiah Ekonomi Islam}, vol. 9, no. 2, 2023, doi: 10.29040/jiei.v9i2.9908.
+
+\bibitem{syah2022}
+D. H. Syah, F. R. Dongoran, E. W. Nugrahadi, and R. Aditia, ``Understanding the Technology Acceptance Model in the QRIS Usage: Evidence from SMEs in Indonesia,'' \textit{International Journal of Research in Business and Social Science}, vol. 11, no. 6, pp. 12--19, 2022, doi: 10.20525/ijrbs.v11i6.1917.
+
+\bibitem{kurnia2024}
+E. Kurnia and M. Yolanda, ``Impact of Perceived Usefulness, Ease of Use, and Privacy and Security on QRIS Adoption: Mediating Role of Behavioral Intention,'' \textit{Marketing Management Studies}, vol. 4, no. 2, pp. 157--169, 2024, doi: 10.24036/mms.v4i2.504.
+
+\bibitem{rfc3986}
+T. Berners-Lee, R. Fielding, and L. Masinter, ``Uniform Resource Identifier (URI): Generic Syntax,'' IETF RFC 3986, Jan. 2005. Available: https://www.rfc-editor.org/rfc/rfc3986.html.
+
+\bibitem{iso18004}
+International Organization for Standardization, \textit{ISO/IEC 18004:2024--Information Technology--Automatic Identification and Data Capture Techniques--QR Code Bar Code Symbology Specification}, 4th ed., 2024.
+
+\bibitem{iso11649}
+International Organization for Standardization, \textit{ISO 11649:2009--Financial Services--Core Banking--Structured Creditor Reference to Remittance Information}, 2009, confirmed 2025.
+
+\bibitem{pafi}
+Committee on Payments and Market Infrastructures and World Bank Group, \textit{Payment Aspects of Financial Inclusion}, Bank for International Settlements and World Bank Group, 2016. Available: https://www.bis.org/cpmi/publ/d144.htm.
+
+\bibitem{beck2022}
+T. Beck, L. Gambacorta, Y. Huang, Z. Li, and H. Qiu, ``Big Techs, QR Code Payments and Financial Inclusion,'' BIS Working Papers, no. 1011, May 2022. Available: https://www.bis.org/publ/work1011.htm.
+
+\end{thebibliography}
+
+\end{document}
