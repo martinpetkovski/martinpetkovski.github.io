@@ -1,0 +1,221 @@
+\title{Stateless, Hybrid, and Stateful Camera Management in a Data-Driven C++ Game Engine: Architecture, Complexity, and Cache-Sensitive Performance}
+\author{Martin Petkovski}
+\date{August 2026}
+\paperlanguage{en}
+\paperstatus{Working Paper — This paper has not been peer reviewed}
+\paperkeywords{game engines, camera systems, data-oriented design, state management, C++, cache locality, microbenchmarking, software architecture}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper compares three camera-follow architectures in a custom data-driven C++ game engine: Stateless polling, Hybrid polling with a locally cached target pointer, and Stateful event-driven target assignment. All implementations execute the same vector and quaternion operations, permitting the control path and data-access pattern to be studied independently of the mathematical workload. A reproducible C++20 benchmark validates numerical equivalence, batches one million ticks per sample, collects 31 trials, rotates execution order, and retains every raw observation. On a consumer laptop, the three designs are effectively tied when the manager and target remain cache-resident, with median costs between 28.448 and 28.601 ns per tick. Under a 40 MiB scattered-manager working set, median Stateless and Hybrid costs rise to 42.511 and 39.930 ns, while Stateful remains at 28.814 ns. Thus, asymptotically identical constant-time algorithms can exhibit materially different real costs when one must poll external memory. The performance advantage of Stateful execution is balanced by tighter structural coupling, explicit update obligations, and pointer-lifetime hazards. The results support a context-dependent choice: polling is an attractive default for discrete, cohesive camera components, whereas pushed state is justified when profiling demonstrates that external-state locality is a repeated bottleneck and robust lifetime management already exists.
+\end{abstract}
+
+\section{1 Introduction}
+
+A camera-follow system appears computationally small: read a target transform, interpolate a camera position, derive an orientation, and store the result. In a real-time engine, however, the location and ownership of the target reference determine which memory must be visited before that arithmetic can begin. A CPU can perform the same equations at different observed speeds depending on whether the required cache line is already close to the executing core or must be obtained from a more distant cache level or main memory. Pointer-based access is particularly sensitive to latency because a later load can depend on the result of an earlier load \cite{weisz2016}.
+
+This study examines the supplied implementation artifact rather than an abstract reconstruction \cite{sourceartifact}. It compares three designs. The Stateless camera asks the \texttt{GameManager} for the active entity on every tick. The Hybrid camera performs the same poll, compares the result with a locally stored pointer, and then follows the local pointer. The Stateful camera stores the pointer but does not poll; \texttt{GameManager::SetActiveEntity} pushes target changes through \texttt{MoveToTarget}. The shared \texttt{ApplyCameraFollowMath} function ensures that position interpolation, normalization, Euler conversion, and quaternion interpolation are identical.
+
+The paper makes four contributions:
+
+\begin{itemize}
+\item a reproducible nanosecond benchmark with correctness validation, warm-up, repeated batched observations, execution-order rotation, an optimization-resistant result sink, and machine-readable raw data;
+\item an empirical separation of a hot working set from a cache-pressure working set;
+\item a formal time- and space-complexity analysis that distinguishes asymptotic order from constant memory costs; and
+\item an engineering analysis of cohesion, coupling, ownership, and dangling-pointer risk.
+\end{itemize}
+
+The central result is deliberately qualified. Stateful execution is not inherently faster in Big-O terms, and it is not measurably superior in the ordinary hot case. Its advantage appears when the external manager access loses locality. Conversely, the simpler dependency structure of polling can be more valuable than nanoseconds saved in a subsystem that normally owns only one active camera.
+
+\section{2 System Model and Architectural Variants}
+
+\subsection{2.1 Common mathematical workload}
+
+Every tick uses the same target transform and the same \texttt{DeltaTime}. The common routine computes a fixed offset, a desired position, a linear position interpolation, a normalized direction, a quaternion from Euler components, and a spherical orientation interpolation. The vectors and quaternions have fixed dimension; no operation scales with the number of entities. Extracting this routine prevents a faster variant from silently performing less mathematical work.
+
+The follow operation still contains data dependencies. The target pointer must be resolved before its transform can be read, and the new direction depends on the newly interpolated camera position. These dependencies limit how much the processor can overlap. The benchmark therefore changes only how the target reference is obtained, not what happens after it is obtained.
+
+\subsection{2.2 Stateless polling}
+
+\texttt{CameraStateless::Tick} receives a const reference to \texttt{GameManager}, calls \texttt{GetActiveEntity}, checks the returned \texttt{Entity*}, and applies the common math. No target pointer is stored in the camera. This is stateless with respect to target selection, although the inherited camera transform naturally remains mutable state.
+
+The design is discrete and highly cohesive: target-follow policy stays inside the camera, and \texttt{GameManager} does not need to know that this camera implementation exists. The cost is a mandatory manager read every frame. When the manager is cache-resident this read is cheap; when managers or registries are scattered, the read can expose cache and translation latency.
+
+\subsection{2.3 Hybrid polling with local state}
+
+\texttt{CameraHybrid::Tick} also polls \texttt{GameManager} every frame. It compares the returned pointer with \texttt{CurrentTarget}, updates the local member on change, and follows that member. The architecture is therefore hybrid in ownership of knowledge, not in execution frequency: external state is still queried each tick.
+
+Like Stateless, Hybrid is cohesive and requires no callback from \texttt{GameManager}. It can become useful if target changes trigger additional camera-local transitions that should execute only when the pointer changes. In the supplied implementation, however, the cached pointer does not eliminate the external read, so it should not be assumed to remove polling cost.
+
+\subsection{2.4 Stateful pushed assignment}
+
+\texttt{CameraStateful} stores \texttt{CurrentTarget}; its tick reads that member and directly executes the shared math. When the active entity changes, \texttt{GameManager::SetActiveEntity} explicitly calls \texttt{MoveToTarget}. Work is shifted from per-frame discovery to change-time notification.
+
+This arrangement can keep the target reference adjacent to frequently accessed camera data, but it creates structural coupling: \texttt{GameManager} must know the stateful camera path and must never omit a notification. It also duplicates a non-owning \texttt{Entity*}. If an entity is destroyed or relocated without clearing the camera, the next tick can dereference a dangling pointer. A production design should replace the raw pointer with a stable handle, a generation-checked entity identifier, an observer-aware weak reference, or an explicit lifetime protocol.
+
+\begin{table}
+\caption{Architectural comparison of the supplied camera variants.}
+\begin{tabular}{llll}
+Variant & Target acquisition & Local target & External notification \\
+Stateless & Poll manager each tick & No & No \\
+Hybrid & Poll manager each tick & Yes & No \\
+Stateful & Read camera member & Yes & Yes \\
+\end{tabular}
+\end{table}
+
+\section{3 Experimental Method}
+
+\subsection{3.1 Correctness and optimization control}
+
+Before timing, the executable advances the original two-entity simulation for 600 frames and verifies that all three final transforms agree within a tolerance of \(10^{-8}\). A failed check terminates the benchmark. Tick entry points are marked no-inline for measurement, while the shared math remains optimizable. Each timed batch consumes the final transform through a volatile result sink, preventing dead-code elimination. The complete benchmark source and retained measurements are available with the paper \cite{sourceartifact,resultsartifact}.
+
+Individual operations are not timed separately because timer-call cost would be comparable to the operation. Instead, one sample contains 1,000,000 ticks; elapsed batch time is divided by the tick count. An untimed 100,000-iteration warm-up faults in the working set before collection. Thirty-one samples are recorded for each architecture and scenario. Reported central values are medians; minimum, arithmetic mean, 95th-percentile observation, and sample standard deviation are retained. All six architecture-scenario combinations rotate through all execution positions across trials to distribute scheduler, frequency, and thermal effects.
+
+Timing uses C++ \texttt{std::chrono::steady_clock}. On this Windows platform the monotonic high-resolution timing facility is backed by the operating system performance-counter mechanism; Microsoft recommends the performance counter rather than direct timestamp-counter instructions for portable interval timing \cite{microsoftqpc}. Batching makes fixed timer overhead negligible relative to each approximately 28–43 ms sample.
+
+\subsection{3.2 Workload scenarios}
+
+The \textbf{hot} scenario repeatedly ticks one camera against one manager and one target. It approximates the common engine case in which the active camera, manager, and followed entity are touched every frame and remain resident in nearby cache levels.
+
+The \textbf{cache-pressure} scenario allocates 262,144 \texttt{GameManager} objects. At 160 bytes each, the manager working set is 41,943,040 bytes, or 40 MiB. An odd stride visits the power-of-two array in a widely scattered order. Each manager points to the same target, so target-transform data and camera mathematics do not change. A volatile index calculation is performed for every architecture; only Stateless and Hybrid dereference the selected manager. This isolates the architectural consequence of polling an external working set while avoiding explicit cache-flush instructions.
+
+The working set exceeds the test processor's combined 8 MB L2 and 16 MB L3 capacities as published by its manufacturer \cite{amdspec}. Consequently, manager lines cannot all remain resident. The experiment should be read as a controlled locality stress test, not as a claim that a single-camera game naturally owns 262,144 game managers.
+
+\subsection{3.3 Platform and build}
+
+Measurements were captured on an HP Victus 16 consumer laptop equipped with an AMD Ryzen 7 8845HS, an eight-core Zen 4 mobile processor with 16 threads. The machine represents standard mid-range laptop-class consumer hardware rather than a server laboratory platform. The executable was built for 64-bit Windows using Clang 21.1.0, C++20, \texttt{-O2}, and \texttt{-DNDEBUG}. The processor supports up to 5.1 GHz but dynamically varies frequency according to load, power, and temperature \cite{amdspec}. No frequency lock or real-time scheduler was used, making repeated statistics and rotated order necessary.
+
+\section{4 Formal Algorithmic Complexity Analysis}
+
+\subsection{4.1 Time complexity}
+
+Let \(F\) be the number of rendered frames, \(E\) the number of active-target changes, \(c_a\) the fixed vector/quaternion cost, \(c_p\) the cost of polling and resolving external state, \(c_l\) the cost of reading a local cached pointer, and \(c_e\) the cost of pushing one change event. For one camera:
+
+\begin{align}
+T_{stateless}(F) &= \Theta(F(c_p+c_a)), \\
+T_{hybrid}(F) &= \Theta(F(c_p+c_l+c_a)), \\
+T_{stateful}(F,E) &= \Theta(F(c_l+c_a)+E c_e).
+\end{align}
+
+Each tick is \(O(1)\), and \(F\) ticks are \(O(F)\), for all three approaches. Target assignment or detection is also \(O(1)\). The fixed-dimension vector and quaternion operations are \(O(1)\). Therefore, Big-O notation alone cannot rank the implementations.
+
+The constants are nevertheless important. A local L1/L2-resident line can be obtained much sooner than a line that misses private caches and must be served from the last-level cache or memory. Irregular pointer traversal is latency-sensitive because address dependencies constrain overlap \cite{weisz2016}. In this single-threaded experiment, the relevant concept is cache \textit{residency and locality}, not multi-core cache-coherence traffic. The event-driven design moves target discovery from \(F\) frame events to \(E\) state-change events. When \(E \ll F\), this can remove repeated external fetches, although the arithmetic still runs every frame.
+
+For \(N\) active cameras, the aggregate tick work is \(O(N)\) per frame for every design. Stateful notification is additionally \(O(K)\) per target change if \(K\) observers are notified naively. An event dispatcher, subscriber list, or data-oriented batch can change constants and ownership, but not the linear bound in the number of recipients.
+
+\subsection{4.2 Space and memory complexity}
+
+Every class has constant \(O(1)\) instance space. On the measured 64-bit ABI, \texttt{Entity} and \texttt{CameraStateless} are 88 bytes. Adding \texttt{Entity* CurrentTarget} increases Hybrid and Stateful to 96 bytes. Thus, caching costs eight bytes per camera, including the pointer without additional padding in these measured layouts.
+
+\begin{table}
+\caption{Measured object footprint and incremental target state.}
+\begin{tabular}{llll}
+Variant & Size & Extra pointer & At \(N\) cameras \\
+Stateless & 88 B & 0 B & \(88N\) B \\
+Hybrid & 96 B & 8 B & \(96N\) B \\
+Stateful & 96 B & 8 B & \(96N\) B \\
+\end{tabular}
+\end{table}
+
+Asymptotically, all totals are \(O(N)\). Stateless has no camera-local target storage, but this does not imply zero memory cost for target discovery: it relies on external manager state that already exists and must be accessed. Hybrid and Stateful trade eight bytes of local storage for direct local availability after assignment. Stateful may also require observer bookkeeping outside the class, which is an architectural cost not reflected by \texttt{sizeof}.
+
+\section{5 Results}
+
+\begin{table}
+\caption{Per-tick measurements in nanoseconds; 31 trials of 1,000,000 ticks.}
+\begin{tabular}{llllll}
+Scenario & Variant & Min & Median & Mean & P95 \\
+Hot & Stateless & 28.321 & 28.601 & 28.767 & 29.683 \\
+Hot & Hybrid & 28.236 & 28.524 & 28.851 & 31.358 \\
+Hot & Stateful & 28.310 & 28.448 & 28.809 & 30.121 \\
+Pressure & Stateless & 41.585 & 42.511 & 43.199 & 47.544 \\
+Pressure & Hybrid & 39.199 & 39.930 & 40.200 & 42.066 \\
+Pressure & Stateful & 28.611 & 28.814 & 29.076 & 30.487 \\
+\end{tabular}
+\end{table}
+
+In the hot scenario, the largest median separation is 0.153 ns. Relative to Stateless, Hybrid is 0.27\% faster and Stateful is 0.53\% faster. These sub-percent differences are smaller than normal run-to-run effects and do not establish a practically meaningful ordering. With L1/L2-friendly data, the identical trigonometric, normalization, interpolation, and quaternion workload dominates.
+
+Cache pressure changes the result. Stateless rises from 28.601 to 42.511 ns, a 48.63\% penalty. Hybrid rises from 28.524 to 39.930 ns, a 39.99\% penalty. Stateful changes from 28.448 to 28.814 ns, only 1.29\%. Within the pressure scenario, Stateless is 47.54\% slower than Stateful and Hybrid is 38.58\% slower. Expressed as latency reduction, Stateful uses 32.22\% less time than Stateless and 27.84\% less than Hybrid.
+
+Because the mathematical instructions and target transform are common, the controlled difference is the manager data access. The 40 MiB manager working set exceeds the processor's private and last-level cache capacity, increasing the probability that polling loads are absent from L1/L2 and must be obtained from farther away. Even on a standard consumer laptop, tens of nanoseconds represent many CPU cycles; a dependent pointer path cannot always hide them behind the same fixed math. This explanation is an inference from the controlled access pattern and published cache capacity. Hardware performance counters were not collected, so the experiment does not directly count L1, L2, L3, or translation-lookaside-buffer misses.
+
+Hybrid's pressure median is 2.581 ns below Stateless despite an extra pointer comparison. This should not be generalized as a Hybrid advantage: both poll the same scattered manager, and small generated-code, branch-layout, and placement differences can affect a microbenchmark. The robust contrast is between the two polling variants and the non-polling Stateful variant. Raw standard deviations were 0.553, 1.059, and 0.754 ns in the hot case, and 1.678, 0.929, and 0.602 ns under pressure, respectively \cite{resultsartifact}.
+
+\subsection{5.1 Frame-budget interpretation}
+
+At 60 frames/s, one frame has 16.667 ms. A single measured camera tick consumes approximately 0.00017–0.00026\% of that budget and cannot produce an observable frame-rate change by itself. To answer how many equivalent operations would be required for a visible dip, a threshold must be defined: there is no universal frame-rate boundary for human perception because content, motion, display refresh, frame pacing, and observer sensitivity interact. Controlled perceptual work nevertheless finds meaningful preferences for higher frame rates and a complex dependence on rendered content and resolution \cite{debattista2017}.
+
+This paper adopts a transparent engineering threshold: a drop from an otherwise exactly saturated 60 frames/s workload to 50 frames/s. It adds 3.333 ms of CPU work per frame, a 16.7\% frame-rate reduction that is large enough to be operationally significant and commonly visible in motion. If \(t\) is the measured median nanoseconds per operation, the capacity estimate is
+
+\begin{equation}
+N_{60\rightarrow50}=\left\lfloor\frac{10^9(1/50-1/60)}{t}\right\rfloor.
+\end{equation}
+
+\begin{table}
+\caption{Equivalent extra camera ticks per frame required to move 60 to 50 frames/s.}
+\begin{tabular}{lll}
+Variant & Hot data & Cache pressure \\
+Stateless & 116,546 & 78,411 \\
+Hybrid & 116,860 & 83,479 \\
+Stateful & 117,172 & 115,684 \\
+\end{tabular}
+\end{table}
+
+These are capacity estimates, not recommended camera counts. They assume the rest of the engine already consumes exactly 16.667 ms, added ticks scale linearly, and CPU/GPU overlap does not change. Real frame loss results from the sum of animation, physics, rendering submission, streaming, audio, scripting, operating-system activity, and camera work. The practical conclusion is that one camera is negligible; architectural selection becomes performance-relevant only when the same pattern is replicated tens of thousands of times, appears in a broader family of polling systems, or participates in latency spikes near an already exhausted frame budget.
+
+\section{6 Implementation Complexity and Architectural Trade-offs}
+
+\subsection{6.1 Cohesion and coupling}
+
+Stateless and Hybrid keep camera behavior discrete. The camera receives the manager already available to the tick path, obtains the current target, and owns all follow logic. Adding or removing either camera does not require \texttt{GameManager} to call camera-specific functions. This improves cohesion, reduces integration points, and makes construction, testing, serialization, and hot reloading comparatively direct. Their implementation simplicity comes from polling: current truth is read where it is needed, so missed notifications cannot create stale selection state.
+
+Stateful replaces repeated discovery with an explicit protocol. \texttt{GameManager} must have a valid route through \texttt{CameraManager} to the stateful camera and must call \texttt{MoveToTarget} on every transition, including initialization, entity replacement, scene restoration, network correction, and teardown. This is tight structural coupling. A new state-changing path that updates \texttt{ActiveEntity} without sending the event can leave the camera silently following the wrong entity.
+
+The raw pointer also has no ownership semantics. Stateless can still receive a bad manager pointer, but it does not duplicate the target reference inside the camera. Hybrid and Stateful retain an \texttt{Entity*}; Stateful may retain it for an arbitrarily long interval without revalidating against the manager. Production stateful systems therefore need generation-checked handles, central invalidation, or lifetime-safe references. Those mechanisms increase implementation effort and may add their own constant-time validation cost.
+
+\subsection{6.2 Decision guidance}
+
+Stateless is the strongest default when there are few cameras, the manager is naturally hot, target selection is cheap, and minimizing coupling is important. Hybrid is justified when a camera needs local transition behavior while preserving pull-based integration; caching alone should not be advertised as a polling optimization. Stateful is appropriate when profiling identifies repeated external-state misses across many consumers, target changes are rare relative to ticks, and the engine already has reliable event delivery and entity-lifetime handles.
+
+The alternatives are not mutually exclusive at engine scale. A data-oriented camera system can push a stable entity handle on change while resolving transforms from compact component arrays during a batched tick. This preserves event-driven selection without binding \texttt{GameManager} directly to a concrete camera class. It also replaces long-lived raw pointers with verifiable identities. Such a design may achieve the locality benefit observed here with less structural coupling, but it is outside the supplied three-class comparison.
+
+\section{7 Threats to Validity}
+
+First, the results describe one compiler, optimization level, operating system, and mobile processor. Absolute nanoseconds will vary with frequency, standard library, compiler code generation, cooling, and background load. The raw samples and complete build command are retained to make those effects inspectable rather than hidden.
+
+Second, the pressure scenario is synthetic. It intentionally exceeds cache capacity and isolates one scattered manager fetch. A real engine may have a single hot manager, a compact entity-component registry, multiple dependent pointers, or simultaneous systems that create stronger or weaker pressure. Explicit cache flushing was avoided, but the chosen stride and object layout remain experimental parameters.
+
+Third, cache-miss attribution is controlled but indirect. No model-specific performance-counter events were recorded. The evidence establishes that changing external-manager locality changes polling latency while leaving math and target data fixed; it does not identify an exact number of L1, L2, L3, DRAM, or address-translation events.
+
+Fourth, the event update path is not included in per-tick Stateful timings. Its cost is paid only when targets change and is represented formally by \(E c_e\). If the active target changes every frame, or if one event fans out to many listeners, the Stateful advantage can shrink or reverse. Finally, no multithreaded contention was tested. Cache coherence, synchronization, false sharing, and event-queue contention require a separate experiment.
+
+\section{8 Conclusion}
+
+All three camera architectures have \(O(1)\) per-tick time and \(O(1)\) per-instance space, and all execute the same fixed mathematical work. Their practical behavior is nevertheless not identical. On a mid-range consumer laptop with a hot working set, Stateless, Hybrid, and Stateful medians differ by less than 0.6\%, so architectural clarity should decide. Under a 40 MiB scattered-manager working set, the polling designs rise to 39.930–42.511 ns while Stateful remains at 28.814 ns. The difference follows the data path, not the equations.
+
+The engineering trade-off is equally concrete. Stateless and Hybrid are discrete, cohesive, and simple to integrate because the manager need not know they exist. Stateful execution can improve tick locality by pushing rare changes, but it binds external systems to camera update obligations and extends the lifetime risk of a raw pointer. For an ordinary single-camera game, the measured operation is far too small to determine frame rate: approximately 78,000–116,000 additional ticks per frame would be required, under the stated saturation assumption, to move 60 to 50 frames/s. Accordingly, Stateful design should be adopted for demonstrated systemic locality problems and paired with safe handles; it should not be selected solely because its microbenchmark can be faster under deliberately adverse cache conditions.
+
+\begin{thebibliography}{99}
+\bibitem{sourceartifact}
+M. Petkovski, “Camera architecture and benchmark source,” \texttt{draft-papers/stateless-vs-stateful/main.cpp}, repository artifact, Aug. 2026.
+
+\bibitem{resultsartifact}
+M. Petkovski, “Raw and summarized camera benchmark measurements,” \texttt{draft-papers/stateless-vs-stateful/benchmark-results.csv}, 31 trials per variant and scenario, Aug. 2026.
+
+\bibitem{amdspec}
+Advanced Micro Devices, Inc., “AMD Ryzen 7 8845HS: General Specifications,” 2026. Available: https://www.amd.com/en/products/processors/laptop/ryzen/8000-series/amd-ryzen-7-8845hs.html.
+
+\bibitem{microsoftqpc}
+Microsoft, “Acquiring high-resolution time stamps,” Windows application development documentation, 2026. Available: https://learn.microsoft.com/en-us/windows/win32/sysinfo/acquiring-high-resolution-time-stamps.
+
+\bibitem{weisz2016}
+G. Weisz, J. Melber, Y. Wang, K. Fleming, E. Nurvitadhi, and J. C. Hoe, “A Study of Pointer-Chasing Performance on Shared-Memory Processor-FPGA Systems,” in \textit{Proceedings of FPGA '16}, 2016, doi: 10.1145/2847263.2847269.
+
+\bibitem{debattista2017}
+K. Debattista, K. Bugeja, S. Spina, T. Bashford-Rogers, and V. Hulusic, “Frame Rate vs Resolution: A Subjective Evaluation of Spatiotemporal Perceived Quality under Varying Computational Budgets,” \textit{Computer Graphics Forum}, vol. 37, no. 1, pp. 363–374, 2018, doi: 10.1111/cgf.13302.
+\end{thebibliography}
+
+\end{document}
