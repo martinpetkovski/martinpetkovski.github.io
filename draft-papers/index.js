@@ -162,7 +162,8 @@
         }
 
         const source = await response.text();
-        const match = source.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
+        const match = source.match(/\\begin\{abstractenglish\}([\s\S]*?)\\end\{abstractenglish\}/) ||
+            source.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
 
         if (!match) {
             return 'No abstract is available for this paper.';

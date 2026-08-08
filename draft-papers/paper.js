@@ -98,10 +98,15 @@
         let body = bodyMatch ? bodyMatch[1] : cleanSource;
         const abstractMatch = body.match(/\\begin\{abstract\}([\s\S]*?)\\end\{abstract\}/);
         const abstract = abstractMatch ? abstractMatch[1].trim() : '';
+        const englishAbstractMatch = body.match(
+            /\\begin\{abstractenglish\}([\s\S]*?)\\end\{abstractenglish\}/
+        );
+        const englishAbstract = englishAbstractMatch ? englishAbstractMatch[1].trim() : '';
 
         body = body
             .replace(/\\maketitle/g, '')
-            .replace(/\\begin\{abstract\}[\s\S]*?\\end\{abstract\}/g, '');
+            .replace(/\\begin\{abstract\}[\s\S]*?\\end\{abstract\}/g, '')
+            .replace(/\\begin\{abstractenglish\}[\s\S]*?\\end\{abstractenglish\}/g, '');
 
         const bibliography = parseBibliography(body);
         body = body.replace(/\\begin\{thebibliography\}\{[^}]*\}[\s\S]*?\\end\{thebibliography\}/g, '');
@@ -113,6 +118,7 @@
             language,
             status,
             abstract,
+            englishAbstract,
             keywords,
             content: renderDocumentBody(body, bibliography.citations),
             references: bibliography.items
@@ -408,7 +414,10 @@
 
         article.append(
             createTitleBlock(paper),
-            createAbstract(paper.abstract),
+            createAbstract(paper.abstract, text.abstract, paper.language),
+            ...(paper.englishAbstract
+                ? [createAbstract(paper.englishAbstract, localizedText.en.abstract, 'en')]
+                : []),
             createKeywords(paper.keywords),
             flow
         );
@@ -430,13 +439,14 @@
         return header;
     }
 
-    function createAbstract(abstractText) {
+    function createAbstract(abstractText, label, language) {
         const abstract = document.createElement('section');
         const abstractTitle = document.createElement('strong');
         const abstractBody = document.createElement('p');
 
         abstract.className = 'paper-abstract';
-        abstractTitle.textContent = text.abstract;
+        abstract.lang = language;
+        abstractTitle.textContent = label;
         abstractBody.innerHTML = renderInline(abstractText, new Map());
         abstract.append(abstractTitle, abstractBody);
         return abstract;
@@ -492,7 +502,7 @@
         const headings = Array.from(sourceFlow.querySelectorAll(':scope > h2'));
         const showContents = shouldShowContents(sourceFlow, headings);
         const pages = [];
-        const abstractSection = stagingPaper.querySelector('.paper-abstract');
+        const abstractSections = Array.from(stagingPaper.querySelectorAll('.paper-abstract'));
         const keywordsSection = stagingPaper.querySelector('.paper-keywords');
         let nextPageNumber = 1;
 
@@ -509,12 +519,28 @@
             pages.push(titlePage);
             documentView.appendChild(titlePage);
 
+            if (abstractSections.length > 1) {
+                const abstractsPage = createPage(
+                    paper,
+                    nextPageNumber++,
+                    'paper-abstracts-page'
+                );
+                abstractsPage.querySelector('.paper-page-main').append(
+                    ...abstractSections,
+                    keywordsSection
+                );
+                pages.push(abstractsPage);
+                documentView.appendChild(abstractsPage);
+            }
+
             const contentsResult = paginateContents(
                 documentView,
                 paper,
                 headings,
                 nextPageNumber,
-                [abstractSection, keywordsSection]
+                abstractSections.length > 1
+                    ? []
+                    : [...abstractSections, keywordsSection]
             );
 
             pages.push(...contentsResult.pages);
@@ -533,7 +559,7 @@
         }
 
         if (!showContents) {
-            articleOpeningMain.append(abstractSection, keywordsSection);
+            articleOpeningMain.append(...abstractSections, keywordsSection);
         }
         pages.push(articleOpeningPage);
         documentView.appendChild(articleOpeningPage);
