@@ -61,7 +61,9 @@
         item.dataset.slug = paper.slug;
         title.textContent = paper.title;
         metadata.className = 'draft-card-meta';
-        metadata.textContent = getYear(paper.updated);
+        metadata.textContent = [paper.author, getYear(paper.updated)]
+            .filter(Boolean)
+            .join(' · ');
         item.append(title, metadata);
 
         const select = () => {
