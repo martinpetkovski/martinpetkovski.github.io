@@ -1,5 +1,3 @@
-.prototypes-page { max-width: 760px; }
-
 .prototype-introduction h2 { margin-bottom: 6px; }
 
 .prototype-status {
@@ -105,9 +103,10 @@
     text-decoration: none;
 }
 
-.prototype-icon-link i {
-    font-size: 12px;
-    width: 12px;
+.prototype-link-icon {
+    display: block;
+    height: 14px;
+    width: 14px;
 }
 
 .prototype-summary-text { padding: 5px 6px; }
@@ -159,14 +158,7 @@
     text-align: center;
 }
 
-.prototype-media video { height: 100%; width: 100%; }
-.prototype-media iframe { border: 0; height: 100%; width: 100%; }
 .prototype-media img { display: block; height: 100%; object-fit: contain; width: 100%; }
-.prototype-video {
-    clear: both;
-    margin-top: 10px;
-    width: 100%;
-}
 .prototype-card h3 { font-size: 13px; margin: 0 0 4px; text-transform: none; }
 .prototype-card p { margin: 0 0 7px; }
 

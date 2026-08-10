@@ -222,26 +222,41 @@ a:active {
 }
 
 .l-bar {
+    align-items: center;
     background: transparent;
     border: 0;
-    font-size: 11px;
-}
-
-.l-bar a {
-    text-decoration: none;
-    margin: 0 4px;
-    color: #000;
-    padding: 2px 4px;
-}
-
-.l-bar a:hover {
-    color: #00e;
-    background: transparent;
-    text-decoration: underline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: inherit;
 }
 
 .link-item {
+    align-items: center;
+    display: inline-flex;
     white-space: nowrap;
+}
+
+.homepage .content li {
+    align-items: center;
+    column-gap: .35em;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.favicon-link {
+    align-items: center;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.favicon {
+    display: inline-block;
+    height: 12px;
+    margin-right: 4px;
+    object-fit: contain;
+    vertical-align: middle;
+    width: 12px;
 }
 
 .update {

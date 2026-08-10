@@ -22,10 +22,6 @@
     src: url("/draft-papers/fonts/cmu-typewriter-text-500-roman.woff2") format("woff2");
 }
 
-.draft-index-page {
-    max-width: 760px;
-}
-
 .draft-introduction h2 {
     margin-bottom: 6px;
 }

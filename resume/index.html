@@ -20,10 +20,15 @@
             text-align: justify;
         }
         .favicon {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             vertical-align: middle;
             margin-right: 3px;
+        }
+        .favicon-link {
+            align-items: center;
+            display: inline-flex;
+            vertical-align: middle;
         }
         header {
             text-align: center;
@@ -245,8 +250,9 @@
             }
         }
     </style>
+    <script src="/favicons/favicons.js" defer></script>
 </head>
-<body>
+<body class="favicon-links">
     <header>
         <h1>Martin Petkovski</h1>
         <div id="info">
@@ -470,18 +476,5 @@
         </div>
     </section>
 
-    <script>
-        document.querySelectorAll('.skill-box a, .company a, .project-link a, .jobSubtitle a').forEach(a => {
-            try {
-                const url = new URL(a.href);
-                if (!url.protocol.startsWith('http')) return;
-                const img = document.createElement('img');
-                img.src = 'https://www.google.com/s2/favicons?domain=' + url.hostname + '&sz=16';
-                img.className = 'favicon';
-                img.alt = '';
-                a.prepend(img);
-            } catch(e) {}
-        });
-    </script>
 </body>
 </html>

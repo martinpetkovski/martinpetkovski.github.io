@@ -5,9 +5,16 @@
       "year": "2014",
       "event": "Global Game Jam in Bitola, Macedonia",
       "engine": "GML / Game Maker Studio",
-      "credits": ["Aleksandar Krstik", "Ivo Shurbanovski", "Miroslav Boshevski", "Aleksandar Kirkovski", "Andrej Antunovic", "Darko <Insert Last Name Here>"],
+      "credits": [
+        "Aleksandar Krstik",
+        "Ivo Shurbanovski",
+        "Miroslav Boshevski",
+        "Aleksandar Kirkovski",
+        "Andrej Antunovic",
+        "Darko <Insert Last Name Here>"
+      ],
       "description": "Ok, in one 'word', our game is a split-screen-co-op-top-down-platformer. So you better grab a friend if you're gonna play it, as playing it alone is no fun (and that's just a nice way to say it's impossible). Since we forgot (disclaimer: I didn't forget, but the guy who was supposed to do it did) to show instructions in game, let me do it here. One of the players uses the arrow keys to move, and CTRL to jump, and the other the 'asdw' keys to move and SHIFT to jump. (note: we're aware that players can hit each-others jump keys but we believe that adds to just another game mechanic - it's a feature dammit) You should also know that both players have to step on a checkpoint in order to 'activate' it, and also that both players need to step to the end portal in order to go through. It's all co-op, and don't get discouraged, it is playable even if it's slightly difficult at times. We hope you enjoy it, grab a friend and Wait For Hiiiiim!!!! :)",
-      "image": "wait-for-me/screenshot.png",
+      "image": "wait-for-me/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -18,16 +25,23 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2014/games/wait-meeee"
         }
-      ]
+      ],
+      "thumbnail": "wait-for-me/screenshot-thumb.webp"
     },
     {
       "title": "Codename: Farewell",
       "year": "2017",
       "event": "Global Game Jam in Bitola, Macedonia",
       "engine": "GML / Game Maker Studio",
-      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec", "Andrej Mickov", "Marijana Nikolovska"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Bosko Koloski",
+        "Antonio Karapec",
+        "Andrej Mickov",
+        "Marijana Nikolovska"
+      ],
       "description": "Two player, splitscreen, co-op exploring game. The goal of the game is to capture all control points and reach the end. Each player (drone) has an electromagnetic gun in his possession. The waves the gun generates are used to reveal the floors on which he (or it) can walk on. The blue player may only reveal blue floors and the red player may reveal only red floors. Each of the drones can redirect each others waves and amplify them. We had the time of our lives creating this game and probably will be our last GameJam together in the years to come! Thanks to everyone that supported us! Controls: Player One - WASD to move, Shift to jump, E to fire the gun Player Two - Arrow keys to move, Ctrl to jump, Num 0 to fire the gun",
-      "image": "codename-farewell/screenshot.png",
+      "image": "codename-farewell/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -38,16 +52,22 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2017/games/codenamefarewell"
         }
-      ]
+      ],
+      "thumbnail": "codename-farewell/screenshot-thumb.webp"
     },
     {
       "title": "Super Cool Igra",
       "year": "2018",
       "event": "Global Game Jam in Bitola, Macedonia",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Milan Petrovski", "Goce Mircevski", "Filip Spasenovski"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Milan Petrovski",
+        "Goce Mircevski",
+        "Filip Spasenovski"
+      ],
       "description": "Super Cool Igra is a 4-player multiplayer non-violent top down shooter where you are divided in teams of 2, and you have to push out the other teams out of arena. But there is one catch! You control the movement of your character, while the abilities are controlled by your teammate. It needs a lot of coordination and its super fun game to play with friends. Controls: Movement W - Move Forward S - Move Backward D - Move Right A - Move Left Abilities: Left Click - Projectile that push your enemies Right Click - Boost (On your teammate of course :) )",
-      "image": "super-cool-igra/screenshot.png",
+      "image": "super-cool-igra/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -58,16 +78,23 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2018/games/super-cool-igra"
         }
-      ]
+      ],
+      "thumbnail": "super-cool-igra/screenshot-thumb.webp"
     },
     {
       "title": "Vavilon",
       "year": "2020",
       "event": "Global Game Jam in Bitola, Macedonia",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Dimitar Kimovski", "Ilche Pejovski", "Goce Mircheski", "Antoni Korunovski"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Dimitar Kimovski",
+        "Ilche Pejovski",
+        "Goce Mircheski",
+        "Antoni Korunovski"
+      ],
       "description": "CONGA! ██████ 2 player co-op game. One player is a scout, other player is an engineer. The scout uses a drone to find runes or congas and then communicates their location to the player. When the drone has a conga it can activate it and distract the NPCs on the map. When NPCs are distracted the engineer that walks on land can pick up the runes and use them to fix the tower in the center of the map. When the tower is fixed it emits a light beam to communicate with his home planet. █████████████ Controls: ::::Engineer: WASD = Walk █ Space = Jump █ ██████ ::::Scout/Drone: Left thumbstick = Forward//Rotate █ Right thumbstick = LookUp █ Right trigger = Up █ Left trigger = Down █ Face Button A (green) = Drop Conga █",
-      "image": "vavilon/screenshot.png",
+      "image": "vavilon/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -78,16 +105,19 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2020/games/vavilon-2"
         }
-      ]
+      ],
+      "thumbnail": "vavilon/screenshot-thumb.webp"
     },
     {
       "title": "Nibiru",
       "year": "2021",
       "event": "Global Game Jam Macedonia",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski"],
+      "credits": [
+        "Stefan Kuzmanovski"
+      ],
       "description": "You are dr. Archie Harper, an archeologist sent to the lost city of Nibiru. The lost city of Nibiru is going through a weird time-space anomaly which you must successfully navigate. Your mission: find all the chronorunes. WASD to move, left-click to take time balls, left-click to put back time ball that has already been taken. Time balls determine how fast the time is passing in a specific space. Slower balls make the time pass slower, faster balls make the time pass faster.",
-      "image": "nibiru/screenshot.png",
+      "image": "nibiru/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -98,16 +128,22 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2021/games/nibiru-1"
         }
-      ]
+      ],
+      "thumbnail": "nibiru/screenshot-thumb.webp"
     },
     {
       "title": "Dai Mi Go",
       "year": "2022",
       "event": "Global Game Jam Macedonia",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Ivan Kikerkov", "Ana Zdravkova", "Darko Jovanov"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Ivan Kikerkov",
+        "Ana Zdravkova",
+        "Darko Jovanov"
+      ],
       "description": "Ever wondered what it's like to fight over the wheel in a racing game? Dai Mi go is a co-op racer, where players navigate through a randomly generated course, race against AI pilots, and gain benefits based on their cooperation. The track is divided in two halves by a force field that swaps the controls between the two players. The red obstacles slow down the duo, while the blue ones speed them up. Blue: A D Red: Arrow Left, Arrow Right",
-      "image": "dai-mi-go/screenshot.png",
+      "image": "dai-mi-go/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -118,71 +154,88 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2022/games/dai-mi-go-0"
         }
-      ]
+      ],
+      "thumbnail": "dai-mi-go/screenshot-thumb.webp"
     },
     {
       "title": "Cue Beat [ Mangets / Totems ]",
       "year": "2016",
       "event": "Game Developers Hive",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Bosko Koloski",
+        "Antonio Karapec"
+      ],
       "description": "",
-      "image": "cue-beat/screenshot.png",
+      "image": "cue-beat/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=PU-PwzdxcCY",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1VDxQTjhm0UKvc6TYUXnhfsRGh0EjrAkz/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "cue-beat/screenshot-thumb.webp"
     },
     {
       "title": "Turbo 80",
       "year": "2017",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Bosko Koloski"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Bosko Koloski"
+      ],
       "description": "",
-      "image": "turbo-80/screenshot.png",
+      "image": "turbo-80/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=ohsmCDMYE98",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1rkGNZieZZn9DeNN6ZIcJR4M0wi-aEb58/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "turbo-80/screenshot-thumb.webp"
     },
     {
       "title": "Unnamed Lara Croft Game [ Codename Time Sands ]",
       "year": "2021",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski", "Ana Zdravkova"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Ana Zdravkova"
+      ],
       "description": "",
-      "image": "codename-time-sands/screenshot.png",
+      "image": "codename-time-sands/screenshot.webp",
       "video": "",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1KWx1G7SGUpopReMNEquzrUrBJzExMKCB/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "codename-time-sands/screenshot-thumb.webp"
     },
     {
       "title": "Mugri [ Dusk Till Dawn.exe ]",
       "year": "2019",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski"],
+      "credits": [
+        "Stefan Kuzmanovski"
+      ],
       "description": "",
-      "image": "mugri/screenshot.png",
+      "image": "mugri/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=9dv4TovSMyg",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1HXSNaa3hnfzgM4LGwYBr_PCBZ9luZ0rA/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "mugri/screenshot-thumb.webp"
     },
     {
       "title": "Wait For Me 2",
@@ -191,14 +244,15 @@
       "engine": "Unreal Engine 5",
       "credits": [],
       "description": "",
-      "image": "wait-for-me-2/screenshot.png",
+      "image": "wait-for-me-2/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=a-q-yrh9OL4",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1wv7N5-WFFtFzgV2duDgPbYkyYsBNvjk6/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "wait-for-me-2/screenshot-thumb.webp"
     },
     {
       "title": "Turbo 8000",
@@ -207,14 +261,15 @@
       "engine": "Unreal Engine 5",
       "credits": [],
       "description": "",
-      "image": "turbo-8000/screenshot.png",
+      "image": "turbo-8000/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=vuiyOgPtG2k",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1woxpKtkRHyfLs1NghqUMgdaM8rcWDvKP/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "turbo-8000/screenshot-thumb.webp"
     },
     {
       "title": "Codename: BitWars [ Vibed ]",
@@ -223,14 +278,15 @@
       "engine": "Custom",
       "credits": [],
       "description": "",
-      "image": "bit-wars/screenshot.png",
+      "image": "bit-wars/screenshot.webp",
       "video": "",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1P8r7PoARbd-1PvYeWWB8LM2U8u6S2raJ/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "bit-wars/screenshot-thumb.webp"
     },
     {
       "title": "Rogue Protocol",
@@ -239,14 +295,15 @@
       "engine": "Unreal Engine 5",
       "credits": [],
       "description": "",
-      "image": "rogue-protocol/screenshot.png",
+      "image": "rogue-protocol/screenshot.webp",
       "video": "",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/1yMDY1mbudxVd-HN8H7YYT_a5-DpoJgLU/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "rogue-protocol/screenshot-thumb.webp"
     },
     {
       "title": "Color Blast",
@@ -255,7 +312,7 @@
       "engine": "Unreal Engine 4",
       "credits": [],
       "description": "This is team Return Zero and our game is called Color Blast. We have a first-person view (we call our character Danny) and it’s starting at the point where the character is getting the paint gun filled with ammunition. In front of Danny, we have a map that is completely black, he needs to shoot paint at the surroundings to reveal the map in order to see where he is and where he is supposed to be going. If he shoots while he is standing next to the ammo point he is not wasting the ammo, in any other case you are wasting your limited ammo and you should go back and refill your paint gun. In the right bottom corner, we have directions, the left bottom corner is the number of steps and the left top corner is breadcrumbs. After a time of 30 seconds, the paint is fading away. So if you are in the middle of the map, the colors are starting to fade away and you have wasted all of your ammo, Danny has to find a way to go back and refill the gun. That can be done with the help of breadcrumbs. The breadcrumbs contain information like the direction at the point where you set the breadcrumb and how many steps you have taken from there. That can help you to move in the direction where you came from and find your way back and refill the gun so you can start making progress towards the end of the level. The level ends with a portal that is going to teleport you to the next level. <br>Controls: <br>- WASD - move<br>- Mouse Left - shoot<br>- Enter - set breadcrumbs<br>- Del - erase breadcrumbs<br>- Backspace - reset steps<br>- R - reset",
-      "image": "color-blast/screenshot.png",
+      "image": "color-blast/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -266,32 +323,41 @@
           "label": "Itch.io",
           "url": "https://neelix64.itch.io/color-blast"
         }
-      ]
+      ],
+      "thumbnail": "color-blast/screenshot-thumb.webp"
     },
     {
       "title": "Codename: Sierra Delta",
       "year": "2018",
       "event": "Return Zero",
       "engine": "Unreal Engine 4",
-      "credits": ["Stefan Kuzmanovski"],
+      "credits": [
+        "Stefan Kuzmanovski"
+      ],
       "description": "",
-      "image": "sierra-delta/screenshot.png",
+      "image": "sierra-delta/screenshot.webp",
       "video": "https://www.youtube.com/watch?v=ns1bDVNhDCg",
       "links": [
         {
           "label": "Download Windows build",
           "url": "https://drive.google.com/file/d/11m7e5TeRNY5VuNpEv9mZo9aHbGo5_HZ0/view?usp=sharing"
         }
-      ]
+      ],
+      "thumbnail": "sierra-delta/screenshot-thumb.webp"
     },
     {
       "title": "Totems",
       "year": "2016",
       "event": "Global Game Jam in Bitola, Macedonia",
       "engine": "GML / Game Maker Studio",
-      "credits": ["Stefan Kuzmanovski", "Bosko Koloski", "Antonio Karapec", "Vlado Markovski"],
+      "credits": [
+        "Stefan Kuzmanovski",
+        "Bosko Koloski",
+        "Antonio Karapec",
+        "Vlado Markovski"
+      ],
       "description": "The game consists of one player character, 6 totems and runes. The totems are activated by the player and communicate with him through music. The player has to identify what the totem is communicating with him and figure out which ritual to perform. The ritual might involve physical movement or search for runes using abilities provided by the totems. The controls are pretty weird and complicated: arrow keys for moving, ctrl for jumping, e to activate totem, pageup/pagedown to pick up or put down movable item, home/end to turn on or turn off the lights at the appropriate rune, F1 to place a bridge in front or behind you, F2 to blink yourself through a wall and/or obstacle, R to restart the game, Esc to exit the game. Whilst playing we found out that you can pass some obstacles by performing blink-jump (pressing ctrl while moving, waiting to reach the point just before the ground level and then pressing F2 to blink yourself in the direction you are moving). To stop the lava from flowing (orange) you have to place the movable object, which is colored dark blue, in the place-able (place i guess?), which is colored light blue.",
-      "image": "totems/screenshot.png",
+      "image": "totems/screenshot.webp",
       "video": "",
       "links": [
         {
@@ -302,7 +368,8 @@
           "label": "Global Game Jam page",
           "url": "https://v3.globalgamejam.org/2016/games/totems"
         }
-      ]
+      ],
+      "thumbnail": "totems/screenshot-thumb.webp"
     },
     {
       "title": "Pong",
@@ -311,7 +378,7 @@
       "engine": "C++ / Allegro 5",
       "credits": [],
       "description": "A Pong prototype with single-player, local multiplayer, and computer-versus-computer modes, restored from the original project paper.",
-      "image": "pong/canvas.png",
+      "image": "pong/canvas.webp",
       "video": "",
       "links": [
         {
@@ -326,7 +393,8 @@
           "label": "Project PDF",
           "url": "/game-prototypes/pong/pong.pdf"
         }
-      ]
+      ],
+      "thumbnail": "pong/canvas-thumb.webp"
     }
   ]
 }

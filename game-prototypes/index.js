@@ -59,9 +59,12 @@
         text.className = 'prototype-summary-text';
         if (prototype.image) {
             const image = document.createElement('img');
-            image.src = prototype.image;
+            image.src = prototype.thumbnail || prototype.image;
             image.alt = '';
             image.loading = 'lazy';
+            image.decoding = 'async';
+            image.width = 96;
+            image.height = 54;
             thumbnail.append(image);
         } else {
             thumbnail.textContent = 'NO IMAGE';
@@ -159,23 +162,36 @@
     }
 
     function renderLinkIcon(label) {
-        const iconClasses = {
-            download: ['fa-solid', 'fa-download'],
-            jam: ['fa-solid', 'fa-arrow-up-right-from-square'],
-            pdf: ['fa-solid', 'fa-file-pdf'],
-            source: ['fa-solid', 'fa-code'],
-            youtube: ['fa-brands', 'fa-youtube']
-        };
         const normalizedLabel = label.toLowerCase();
         const type = normalizedLabel.includes('download') ? 'download'
-            : normalizedLabel.includes('source') ? 'source'
-                : normalizedLabel.includes('pdf') ? 'pdf'
-                    : normalizedLabel.includes('youtube') ? 'youtube'
-                    : 'jam';
-        const icon = document.createElement('i');
-        icon.classList.add(...iconClasses[type]);
-        icon.setAttribute('aria-hidden', 'true');
-        return icon;
+            : normalizedLabel.includes('youtube') ? 'play'
+                : normalizedLabel.includes('source') ? 'source'
+                    : normalizedLabel.includes('pdf') ? 'file'
+                        : 'external';
+        const paths = {
+            download: 'M12 3v12m0 0 4-4m-4 4-4-4M5 20h14',
+            external: 'M14 5h5v5m0-5-9 9M19 13v6H5V5h6',
+            file: 'M6 2h9l5 5v15H6zM14 2v6h6',
+            play: 'M8 5v14l11-7z',
+            source: 'm9 18-6-6 6-6m6 0 6 6-6 6'
+        };
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        svg.classList.add('prototype-link-icon');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        path.setAttribute('d', paths[type]);
+        if (type === 'play') {
+            path.setAttribute('fill', 'currentColor');
+        } else {
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', 'currentColor');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            path.setAttribute('stroke-width', '2');
+        }
+        svg.append(path);
+        return svg;
     }
 
     function renderPrototype(prototype) {
@@ -188,33 +204,10 @@
             const image = document.createElement('img');
             image.src = prototype.image;
             image.alt = `${prototype.title} screenshot`;
-            image.loading = 'lazy';
+            image.decoding = 'async';
             imageFrame.append(image);
         } else {
             imageFrame.textContent = 'IMAGE COMING SOON';
-        }
-
-        const videoFrame = document.createElement('div');
-        videoFrame.className = 'prototype-media prototype-video';
-        if (prototype.video) {
-            const youtubeId = getYouTubeId(prototype.video);
-            if (youtubeId) {
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId)}`;
-                iframe.title = `${prototype.title} gameplay video`;
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-                videoFrame.append(iframe);
-            } else {
-                const video = document.createElement('video');
-                video.controls = true;
-                video.preload = 'metadata';
-                video.src = prototype.video;
-                videoFrame.append(video);
-            }
-        } else {
-            videoFrame.textContent = 'GAMEPLAY VIDEO COMING SOON';
         }
 
         const details = document.createElement('div');
@@ -231,41 +224,10 @@
         credits.hidden = collaborators.length === 0;
         const description = document.createElement('p');
         description.textContent = prototype.description;
-        const actions = document.createElement('p');
-        actions.className = 'prototype-actions';
-
-        const links = Array.isArray(prototype.links)
-            ? prototype.links.filter(link => link && link.label && link.url)
-            : [];
-
-        links.forEach(({ label, url }, index) => {
-            if (index > 0) actions.append(' · ');
-            const link = document.createElement('a');
-            link.href = url;
-            link.textContent = label;
-            actions.append(link);
-        });
-
-        if (!links.length) actions.textContent = 'Links coming soon';
+        const actions = renderPrototypeLinks(prototype, 'Links coming soon');
 
         details.append(title, actions, metadata, credits, description);
-        article.append(imageFrame, details, videoFrame);
+        article.append(imageFrame, details);
         return article;
-    }
-
-    function getYouTubeId(value) {
-        try {
-            const url = new URL(value, window.location.href);
-            const host = url.hostname.replace(/^www\./, '');
-
-            if (host === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
-            if (host !== 'youtube.com' && host !== 'm.youtube.com' && host !== 'youtube-nocookie.com') return '';
-            if (url.pathname === '/watch') return url.searchParams.get('v') || '';
-
-            const parts = url.pathname.split('/').filter(Boolean);
-            return ['embed', 'shorts', 'live'].includes(parts[0]) ? parts[1] || '' : '';
-        } catch {
-            return '';
-        }
     }
 })();
