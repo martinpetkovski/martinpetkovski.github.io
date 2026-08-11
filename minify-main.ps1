@@ -5,12 +5,18 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $utf8 = New-Object Text.UTF8Encoding($false)
 
-$cssSource = Join-Path $root 'core.css'
-$cssOutput = Join-Path $root 'core.min.css'
-$jsSource = Join-Path $root 'favicons\favicons.js'
-$jsOutput = Join-Path $root 'favicons\favicons.min.js'
+$classes = [ordered]@{
+    'favicon-links' = 'a'; 'homepage' = 'b'; 'page' = 'c'; 'hdr' = 'd'
+    'hdr-logo' = 'e'; 'hdr-text' = 'f'; 'sub' = 'g'; 'sub-inner' = 'h'
+    'content' = 'i'; 'kamai-projects' = 'j'; 'kamai-company' = 'k'
+    'kamai-meta' = 'l'; 'lang' = 'm'; 'l-bar' = 'n'; 'link-item' = 'o'
+    'email' = 'p'; 'favicon-link' = 'q'; 'favicon' = 'r'
+}
 
 function Minify-Css([string]$text) {
+    foreach ($name in $classes.Keys) {
+        $text = [regex]::Replace($text, '\.' + [regex]::Escape($name) + '(?![\w-])', '.' + $classes[$name])
+    }
     $text = [regex]::Replace($text, '(?s)/\*.*?\*/', '')
     $text = [regex]::Replace($text, '\s*([{}:;,>])\s*', '$1')
     $text = [regex]::Replace($text, ';}', '}')
@@ -18,6 +24,11 @@ function Minify-Css([string]$text) {
 }
 
 function Minify-JavaScript([string]$text) {
+    foreach ($name in $classes.Keys) {
+        $short = $classes[$name]
+        $text = $text.Replace("'.$name", "'.$short")
+        $text = $text.Replace("'$name'", "'$short'")
+    }
     $text = [regex]::Replace($text, '(?m)^\s*//.*(?:\r?\n|$)', '')
     $lines = foreach ($line in ($text -split '\r?\n')) {
         $trimmed = $line.Trim()
@@ -26,13 +37,40 @@ function Minify-JavaScript([string]$text) {
     return ($lines -join '')
 }
 
-$css = Minify-Css (Get-Content -Raw -LiteralPath $cssSource)
-$js = Minify-JavaScript (Get-Content -Raw -LiteralPath $jsSource)
-[IO.File]::WriteAllText($cssOutput, $css, $utf8)
-[IO.File]::WriteAllText($jsOutput, $js, $utf8)
+function Minify-Html([string]$text) {
+    $text = [regex]::Replace($text, 'class="([^"]+)"', {
+        param($match)
+        $names = foreach ($name in ($match.Groups[1].Value -split '\s+')) {
+            if ($classes.Contains($name)) { $classes[$name] } else { $name }
+        }
+        return 'class="' + ($names -join ' ') + '"'
+    })
+    $text = $text.Replace('href="core.css"', 'href="core.min.css"')
+    $text = $text.Replace('src="/favicons/favicons.js"', 'src="/favicons/favicons.min.js"')
+    $text = [regex]::Replace($text, '(?s)<!--(?!\[if).*?-->', '')
+    $text = [regex]::Replace($text, '>\s+<', '><')
+    $text = [regex]::Replace($text, '(?m)^\s+|\s+$', '')
+    return ([regex]::Replace($text, '(\r?\n)+', '')).Trim()
+}
 
-$sourceBytes = (Get-Item $cssSource).Length + (Get-Item $jsSource).Length
-$outputBytes = (Get-Item $cssOutput).Length + (Get-Item $jsOutput).Length
-Write-Host ("core.min.css: {0:N0} bytes" -f (Get-Item $cssOutput).Length)
-Write-Host ("favicons.min.js: {0:N0} bytes" -f (Get-Item $jsOutput).Length)
-Write-Host ("Saved {0:N0} bytes across the main-page CSS and JavaScript." -f ($sourceBytes - $outputBytes))
+$cssSource = Join-Path $root 'core.css'
+$jsSource = Join-Path $root 'favicons\favicons.js'
+$htmlSource = Join-Path $root 'index.src.html'
+$cssOutput = Join-Path $root 'core.min.css'
+$jsOutput = Join-Path $root 'favicons\favicons.min.js'
+$htmlOutput = Join-Path $root 'index.html'
+
+[IO.File]::WriteAllText($cssOutput, (Minify-Css (Get-Content -Raw -Encoding UTF8 -LiteralPath $cssSource)), $utf8)
+[IO.File]::WriteAllText($jsOutput, (Minify-JavaScript (Get-Content -Raw -Encoding UTF8 -LiteralPath $jsSource)), $utf8)
+[IO.File]::WriteAllText($htmlOutput, (Minify-Html (Get-Content -Raw -Encoding UTF8 -LiteralPath $htmlSource)), $utf8)
+
+$pairs = @(
+    @($cssSource, $cssOutput), @($jsSource, $jsOutput), @($htmlSource, $htmlOutput)
+)
+$sourceBytes = 0L; $outputBytes = 0L
+foreach ($pair in $pairs) {
+    $sourceBytes += (Get-Item -LiteralPath $pair[0]).Length
+    $outputBytes += (Get-Item -LiteralPath $pair[1]).Length
+    Write-Host ("{0}: {1:N0} bytes" -f (Split-Path -Leaf $pair[1]), (Get-Item -LiteralPath $pair[1]).Length)
+}
+Write-Host ("Saved {0:N0} bytes across the homepage HTML, CSS, and JavaScript." -f ($sourceBytes - $outputBytes))
