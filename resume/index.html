@@ -33,6 +33,32 @@
         header {
             text-align: center;
         }
+        .pdf-download {
+            align-items: center;
+            display: flex;
+            flex: 0 0 auto;
+            justify-content: center;
+            padding: 3px 8px;
+        }
+        .pdf-download a {
+            align-items: center;
+            display: flex;
+            height: 16px;
+            justify-content: center;
+            width: 16px;
+        }
+        .pdf-download svg {
+            display: block;
+            height: 16px;
+            width: 16px;
+        }
+        .flag {
+            height: 12px;
+            margin-right: 4px;
+            object-fit: cover;
+            vertical-align: -1px;
+            width: 16px;
+        }
         #info {
             display: flex;
             flex-wrap: wrap;
@@ -203,19 +229,26 @@
             vertical-align: middle;
         }
         @media print {
+            @page {
+                size: A4;
+                margin: 12mm;
+            }
             body {
                 padding: 8px;
+            }
+            .pdf-download {
+                display: none;
             }
             section {
                 padding: 0;
             }
             .descSection, .skill-box, .interest-box, .language-box {
                 background-color: transparent;
-                border: 1px solid #999;
+                border: 0;
             }
             .craft-badge, .year-badge {
                 background-color: transparent;
-                border: 1px solid #999;
+                border: 0;
             }
             header {
                 border-bottom: 1px solid #999;
@@ -250,16 +283,17 @@
             }
         }
     </style>
-    <script src="/favicons/favicons.js" defer></script>
+    <script src="../favicons/favicons.js" defer></script>
 </head>
 <body class="favicon-links">
     <header>
         <h1>Martin Petkovski</h1>
         <div id="info">
-            <span class="descSection"><a href="https://maps.app.goo.gl/Afmw8nfwpHwDcBbu6" target="_blank">🇲🇰 Macedonia</a></span>
+            <span class="descSection"><a href="https://maps.app.goo.gl/Afmw8nfwpHwDcBbu6" target="_blank"><img class="flag" src="flags/mk.png" alt="">Macedonia</a></span>
             <span class="descSection"><a href="tel:+38978306501" target="_blank">+389 78 306 501</a></span>
             <span class="descSection"><a href="mailto:martin@najjak.com" target="_blank">martin@najjak.com</a></span>
             <span class="descSection"><a href="https://www.najjak.com/" target="_blank">najjak.com</a></span>
+            <span class="descSection pdf-download"><a href="/output/pdf/Martin-Petkovski-CV.pdf" download title="Download PDF" aria-label="Download PDF"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M7 1h2v7l2.5-2.5L13 7l-5 5-5-5 1.5-1.5L7 8V1zm-4 12h10v2H3z"/></svg></a></span>
         </div>
     </header>
 
@@ -327,7 +361,7 @@
         <h2>Experience</h2>
         <div class="job">
             <div class="jobTitle">Senior Programmer</div>
-            <div class="company"><a href="https://kamaikamai.com/" target="_blank">KAMAi MEDIA, Macedonia 🇲🇰</a></div>
+            <div class="company"><a href="https://kamaikamai.com/" target="_blank">KAMAi MEDIA, Macedonia <img class="flag" src="flags/mk.png" alt="MK"></a></div>
             <div class="timespan">2017 - present</div>
             <div class="jobDescription">
                 <div class="subJob">
@@ -353,7 +387,7 @@
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://airportbriefing.aero/" target="_blank">Airport Briefing</a> <span>Project (Macedonia 🇲🇰)</span></div>
+                    <div class="jobSubtitle"><a href="https://airportbriefing.aero/" target="_blank">Airport Briefing</a> <span>Project (Macedonia <img class="flag" src="flags/mk.png" alt="MK">)</span></div>
                     <div class="timespan">2019 - 2020</div>
                     <div class="subJobDescription">
                         Worked on developing a functional demo and editing tools for the Airport Briefing software in <a href="https://unity.com" target="_blank">Unity</a>.
@@ -367,7 +401,7 @@
                     </div>
                 </div>
                 <div class="subJob">
-                    <div class="jobSubtitle"><a href="https://www.intetic.com/" target="_blank">Intetic</a> <span>Project (Macedonia 🇲🇰)</span></div>
+                    <div class="jobSubtitle"><a href="https://www.intetic.com/" target="_blank">Intetic</a> <span>Project (Macedonia <img class="flag" src="flags/mk.png" alt="MK">)</span></div>
                     <div class="timespan">2023</div>
                     <div class="subJobDescription">
                         Assistance on developing the sound on the game <a href="https://store.steampowered.com/app/1682400/The_Strange_Story_Of_Brian_Fisher_Chapter_2/" target="_blank">The Strange Story of Brian Fisher: Chapter 2</a>, both on the engineering side and on the creative side.
@@ -391,7 +425,7 @@
         </div>
         <div class="job">
             <div class="jobTitle">Undergraduate Teaching Assistant</div>
-            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en" target="_blank">Faculty for Information and Communication Technologies, Macedonia 🇲🇰</a></div>
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en" target="_blank">Faculty for Information and Communication Technologies, Macedonia <img class="flag" src="flags/mk.png" alt="MK"></a></div>
             <div class="timespan">2015 - 2017; 2021 - 2022</div>
             <div class="jobDescription">
                 Supported multiple undergraduate courses including Algorithms and Data Structures, and Advanced Databases and Data Warehouses. Facilitated learning by conducting lab sessions and providing one-on-one tutoring to enhance students' understanding of complex concepts. Developed supplementary materials and exercises to reinforce theoretical knowledge with practical applications, improving student engagement and comprehension.
@@ -403,7 +437,7 @@
         <h2>Education</h2>
         <div>
             <div class="jobTitle">MSc in Computer Science and Engineering</div>
-            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en" target="_blank">Faculty for Information and Communication Technologies, Macedonia 🇲🇰</a></div>
+            <div class="company"><a href="https://fikt.uklo.edu.mk/?lang=en" target="_blank">Faculty for Information and Communication Technologies, Macedonia <img class="flag" src="flags/mk.png" alt="MK"></a></div>
             <div class="timespan">November 2021 - October 2022</div>
             <div class="education-details"><strong>GPA:</strong> 10.0/10.0<br><strong>Thesis:</strong> Analysis and Application of State Machines in the Design of Branching Systems in Video Games</div>
         </div>
@@ -469,10 +503,10 @@
     <section>
         <h2>Languages</h2>
         <div class="tag-wrap">
-            <div class="language-box">🇬🇧 English - Excellent</div>
-            <div class="language-box">🇲🇰 Macedonian - Native</div>
-            <div class="language-box">🇷🇸 Serbian - Excellent</div>
-            <div class="language-box">🇫🇷 French - Essentials</div>
+            <div class="language-box"><img class="flag" src="flags/gb.png" alt="GB">English - Excellent</div>
+            <div class="language-box"><img class="flag" src="flags/mk.png" alt="MK">Macedonian - Native</div>
+            <div class="language-box"><img class="flag" src="flags/rs.png" alt="RS">Serbian - Excellent</div>
+            <div class="language-box"><img class="flag" src="flags/fr.png" alt="FR">French - Essentials</div>
         </div>
     </section>
 

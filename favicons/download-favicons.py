@@ -231,7 +231,7 @@ def write_runtime(icons: dict[str, str]) -> None:
             link.classList.add('favicon-link');
             if (link.querySelector('img.favicon')) return;
             const image = document.createElement('img');
-            image.src = source;
+            image.src = location.protocol === 'file:' ? '..' + source : source;
             image.className = 'favicon';
             image.alt = '';
             image.width = 16;
