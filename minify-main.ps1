@@ -11,6 +11,9 @@ $classes = [ordered]@{
     'content' = 'i'; 'kamai-projects' = 'j'; 'kamai-company' = 'k'
     'kamai-meta' = 'l'; 'lang' = 'm'; 'l-bar' = 'n'; 'link-item' = 'o'
     'email' = 'p'; 'favicon-link' = 'q'; 'favicon' = 'r'
+    'nav-btns' = 's'; 'nav-btn' = 't'; 'tl' = 'u'; 'tl-r' = 'v'
+    'tl-e' = 'w'; 'tl-x' = 'x'; 'tl-k' = 'y'; 'tl-i' = 'z'; 'tl-c' = 'a1'
+    'op' = 'a2'; 'op-v' = 'a3'; 'op-r' = 'a4'; 'op-o' = 'a5'; 'op-t' = 'a6'
 }
 
 function Minify-Css([string]$text) {

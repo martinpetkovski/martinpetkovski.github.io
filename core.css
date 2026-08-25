@@ -12,7 +12,7 @@ body {
     color: #0b1020;
     padding: 0;
     margin: 0;
-    line-height: 1.45;
+    line-height: 1.35;
 }
 
 /* Page Container */
@@ -56,8 +56,8 @@ body {
 
 .hdr-logo {
     display: block;
-    height: 84px;
-    width: 84px;
+    height: 76px;
+    width: 76px;
     flex: 0 0 auto;
     margin: 0;
     opacity: .9;
@@ -73,7 +73,7 @@ body {
 
 .hdr-text {
     min-width: 0;
-    padding: 8px 10px;
+    padding: 6px 10px;
 }
 
 /* ============================================
@@ -83,7 +83,7 @@ body {
 h1, h2 {
     font-family: "Trebuchet MS", Tahoma, Arial, sans-serif;
     color: #0b1020;
-    margin: 20px 0 10px;
+    margin: 14px 0 6px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -171,11 +171,15 @@ h2::after {
     max-width: 202px;
 }
 
+.content p {
+    margin: 6px 0;
+}
+
 h3 {
     font-family: Tahoma, Verdana, sans-serif;
     font-size: 11px;
     font-weight: bold;
-    margin: 14px 0 6px;
+    margin: 10px 0 4px;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #333;
@@ -186,13 +190,13 @@ h3 {
    ============================================ */
 
 ul {
-    margin: 6px 0 16px;
+    margin: 4px 0 10px;
     padding-left: 0;
     list-style: none;
 }
 
 li {
-    margin: 4px 0;
+    margin: 2px 0;
 }
 
 a {
@@ -211,6 +215,85 @@ a:hover {
 
 a:active {
     color: #f00;
+}
+
+/* ============================================
+   Nav Buttons
+   ============================================ */
+
+.nav-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 8px 0 10px;
+}
+
+.nav-btn {
+    background-color: #dbe7f8;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .035) 2px, rgba(0, 0, 0, .035) 4px),
+        linear-gradient(180deg, #f7fbff 0%, #cadef5 100%);
+    border: 2px solid;
+    border-color: #fff #7fa4d0 #7fa4d0 #fff;
+    box-shadow: 2px 2px 0 rgba(26, 63, 119, .25);
+    color: #0b1020;
+    display: block;
+    flex: 1 1 165px;
+    min-width: 0;
+    padding: 5px 8px 6px;
+    text-decoration: none;
+}
+
+.nav-btn b {
+    color: #1a3f77;
+    display: block;
+    font-family: "Trebuchet MS", Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: .6px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.nav-btn b::before {
+    content: "\00BB\00A0";
+}
+
+.nav-btn small {
+    color: #5b6b85;
+    display: block;
+    font-size: 9px;
+    line-height: 1.3;
+    margin-top: 2px;
+}
+
+.nav-btn:visited {
+    color: #0b1020;
+}
+
+.nav-btn:focus,
+.nav-btn:hover {
+    background-color: #4a7fc4;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, .06) 2px, rgba(0, 0, 0, .06) 4px),
+        linear-gradient(180deg, #6193d5 0%, #2f5f9e 100%);
+    border-color: #a6c8ec #1a3f77 #1a3f77 #a6c8ec;
+    color: #fff;
+}
+
+.nav-btn:focus b,
+.nav-btn:hover b {
+    color: #fff;
+}
+
+.nav-btn:focus small,
+.nav-btn:hover small {
+    color: #dbe7f8;
+}
+
+.nav-btn:active {
+    border-color: #7fa4d0 #fff #fff #7fa4d0;
+    box-shadow: none;
+    transform: translate(2px, 2px);
 }
 
 /* ============================================
@@ -281,60 +364,12 @@ a:active {
     letter-spacing: .5px;
 }
 
-/* KAMAi MEDIA project grouping */
 .kamai-projects {
-    margin: 8px 0 20px;
-    padding: 2px 12px 7px 18px;
-    position: relative;
+    margin: 4px 0 10px;
 }
 
-.kamai-projects::before {
-    background: #4a7fc4;
-    content: "";
-    left: 5px;
-    position: absolute;
-    top: 18px;
-    bottom: 3px;
-    width: 2px;
-}
-
-.kamai-projects::after {
-    background: linear-gradient(90deg, #4a7fc4 0, rgba(74, 127, 196, .65) 38%, rgba(74, 127, 196, 0) 100%);
-    border-radius: 0 2px 2px 0;
-    bottom: 3px;
-    content: "";
-    height: 2px;
-    left: 5px;
-    position: absolute;
-    width: 50%;
-}
-
-.kamai-projects h3 {
-    color: #1a3f77;
-    margin-top: 8px;
-    padding-left: 36px;
-    position: relative;
-}
-
-.kamai-projects h3::before {
-    background: linear-gradient(90deg, #4a7fc4 0, rgba(74, 127, 196, .65) 38%, rgba(74, 127, 196, 0) 100%);
-    border-radius: 0 2px 2px 0;
-    content: "";
-    height: 2px;
-    left: -13px;
-    position: absolute;
-    top: .72em;
-    transform: translateY(-1px);
-    width: 42px;
-}
-
-.kamai-company,
 .kamai-meta {
     display: block;
-}
-
-.kamai-company {
-    text-transform: none;
 }
 
 .kamai-meta {
@@ -345,8 +380,188 @@ a:active {
     margin-top: 2px;
 }
 
-.kamai-projects ul {
-    margin-bottom: 5px;
+/* ============================================
+   Project Timeline (packed single band)
+   ============================================ */
+
+.tl {
+    background: linear-gradient(90deg, #dae4f4 1px, transparent 0) 0 0 / calc(100% / 14) 100%;
+    margin: 4px 0 0;
+    padding: 3px 0 0;
+}
+
+.tl-r {
+    display: grid;
+    gap: 2px 0;
+    grid-auto-rows: 12px;
+    grid-template-columns: repeat(14, 1fr);
+}
+
+.tl-r i,
+.tl-c i,
+.tl-k li::before,
+.op li::before {
+    background: linear-gradient(180deg, #7ba6dd 0%, #4a7fc4 55%, #38669f 100%);
+    border: 1px solid;
+    box-sizing: border-box;
+    border-color: #a8c6e8 #1a3f77 #1a3f77 #a8c6e8;
+    color: #fff;
+    font: bold 9px Tahoma, Verdana, sans-serif;
+    line-height: 10px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.tl-r i {
+    grid-column: var(--s) / var(--e);
+    grid-row: var(--l);
+}
+
+.tl-r i:hover {
+    background: linear-gradient(180deg, #e8746e 0%, #cc0000 55%, #a10000 100%);
+    border-color: #f0b6b3 #6b0000 #6b0000 #f0b6b3;
+}
+
+.tl-r .tl-e,
+.tl-c .tl-e,
+.tl-k .tl-e::before {
+    background: repeating-linear-gradient(-45deg, #ccd7e8 0 3px, #eaeff7 3px 6px);
+    border-color: #fff #97a3b6 #97a3b6 #fff;
+    color: #56637a;
+}
+
+.tl-r .tl-i,
+.tl-c .tl-i,
+.tl-k .tl-i::before {
+    background: linear-gradient(180deg, #8cc9a3 0%, #4f9d69 55%, #3b7c52 100%);
+    border-color: #bde3cb #265f3a #265f3a #bde3cb;
+    color: #fff;
+}
+
+.tl-x {
+    color: #8190a6;
+    display: grid;
+    font-size: 9px;
+    grid-template-columns: repeat(14, 1fr);
+    letter-spacing: .45px;
+    margin-top: 1px;
+}
+
+.tl-x span {
+    border-left: 1px solid #cdd9ec;
+    padding-left: 2px;
+}
+
+.tl-c {
+    align-items: center;
+    color: #56637a;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 10px;
+    margin: 5px 0 0;
+}
+
+.tl-c i {
+    display: block;
+    height: 10px;
+    margin: 0 4px 0 12px;
+    width: 15px;
+}
+
+.tl-c i:first-child {
+    margin-left: 0;
+}
+
+.tl-c .favicon {
+    margin: 0 4px 0 12px;
+    width: 15px;
+}
+
+.tl-k {
+    counter-reset: k;
+    display: grid;
+    gap: 1px 14px;
+    grid-template-columns: repeat(2, 15px minmax(0, 1fr) auto);
+    list-style: none;
+    margin: 4px 0 2px;
+    padding: 0;
+}
+
+.content .tl-k li {
+    align-items: center;
+    column-gap: 5px;
+    counter-increment: k;
+    display: grid;
+    grid-column: span 3;
+    grid-template-columns: 15px minmax(0, 1fr) auto;
+    grid-template-columns: subgrid;
+    margin: 0;
+}
+
+.tl-k li::before {
+    content: counter(k);
+    line-height: 11px;
+}
+
+.tl-k .lang {
+    margin: 0;
+}
+
+.tl-k .tl-e {
+    color: #56637a;
+}
+
+/* ============================================
+   Opinions grid
+   ============================================ */
+
+.op {
+    display: grid;
+    gap: 1px 14px;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    list-style: none;
+    margin: 4px 0 10px;
+    padding: 0;
+}
+
+.content .op li {
+    column-gap: 5px;
+    margin: 1px 0;
+}
+
+.op li::before {
+    content: "";
+    flex: none;
+    height: 10px;
+    width: 15px;
+}
+
+.tl-c .op-t,
+.op .op-t::before {
+    background: linear-gradient(180deg, #a98fd0 0%, #7a5ea8 55%, #5d4585 100%);
+    border-color: #cbb8e6 #3f2c60 #3f2c60 #cbb8e6;
+}
+
+/* videos are marked by the YouTube favicon itself */
+.op .op-v::before {
+    display: none;
+}
+
+.op .favicon {
+    margin-right: 5px;
+    width: 15px;
+}
+
+.tl-c .op-r,
+.op .op-r::before {
+    background: linear-gradient(180deg, #e2bd6d 0%, #c08a2a 55%, #96681a 100%);
+    border-color: #f2dcae #6b4a10 #6b4a10 #f2dcae;
+}
+
+.tl-c .op-o,
+.op .op-o::before {
+    background: repeating-linear-gradient(-45deg, #ccd7e8 0 3px, #eaeff7 3px 6px);
+    border-color: #fff #97a3b6 #97a3b6 #fff;
 }
 
 /* ============================================
@@ -356,7 +571,7 @@ a:active {
 footer {
     font-size: 10px;
     border: 0;
-    padding: 10px 0;
+    padding: 8px 0 10px;
     color: #64748b;
 }
 
@@ -364,7 +579,7 @@ hr {
     border: 0;
     height: 1px;
     background: #cbd5e1;
-    margin: 16px 0;
+    margin: 10px 0;
 }
 
 /* ============================================
@@ -412,6 +627,18 @@ hr {
         overflow: hidden;
     }
 
+    .nav-btn {
+        padding: 6px 9px 7px;
+    }
+
+    .nav-btn b {
+        font-size: 15px;
+    }
+
+    .nav-btn small {
+        font-size: 11px;
+    }
+
     h2 {
         font-size: 16px;
         padding: 0 12px;
@@ -436,21 +663,12 @@ hr {
         gap: 4px 8px;
     }
 
-    .kamai-projects {
-        padding-left: 18px;
+    .tl-c {
+        font-size: 12px;
     }
 
-    .kamai-projects::before {
-        top: 20px;
-    }
-
-    .kamai-projects h3 {
-        line-height: 1.45;
-        width: 100%;
-    }
-
-    .kamai-projects h3::before {
-        top: .725em;
+    .tl-k {
+        grid-template-columns: 15px minmax(0, 1fr) auto;
     }
 
     .l-bar a {
