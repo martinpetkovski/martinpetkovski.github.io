@@ -1,0 +1,122 @@
+/* ============================================
+   NAJJAK.COM - phones, loaded with media="(max-width:600px)"
+   Simpler: no legends, no numbering, one column
+   ============================================ */
+
+body {
+    margin: 0;
+    font-size: 16px;
+}
+
+.sub {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sub-inner {
+    display: inline-block;
+}
+
+.page {
+    border-width: 0;
+    max-width: 100%;
+}
+
+.content {
+    margin: 12px;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+.hdr {
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.hdr-text {
+    flex: 1 1 0;
+    padding: 8px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.nav-btn {
+    flex: 1 1 100%;
+    padding: 6px 9px 7px;
+}
+
+.nav-btn b {
+    font-size: 15px;
+}
+
+.nav-btn small {
+    font-size: 11px;
+}
+
+h2 {
+    font-size: 16px;
+    padding: 0 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+    width: calc(100% + 24px);
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}
+
+.l-bar {
+    padding: 8px 12px;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+
+.tl-k {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.l-bar a {
+    margin: 0;
+}
+
+footer {
+    margin: 7px 12px 0;
+}
+
+/* legends, bar numbers and key badges are desktop detail */
+.tl-c {
+    display: none;
+}
+
+.tl-r i {
+    font-size: 0;
+}
+
+.tl-k li::before {
+    display: none;
+}
+
+.content .tl-k li {
+    grid-column: span 2;
+}
+
+.op li::before {
+    visibility: hidden;
+}
+
+.lang {
+    font-size: 11px;
+}
+
+.tl-k small {
+    font-size: 12px;
+}
