@@ -1,0 +1,5 @@
+# Any ONE of these gives scrape.py its PDF text extractor.
+# PyMuPDF is the fastest and the most reliable on these map PDFs.
+pymupdf>=1.24
+# pdfplumber>=0.11
+# pypdf>=4.0

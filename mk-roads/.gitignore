@@ -1,0 +1,4 @@
+cache/
+_discovery/
+__pycache__/
+*.pyc

@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MK Road Nodes</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F1F4F3; --surface:#FFFFFF; --surface-2:#E7ECEA; --surface-3:#DDE4E1;
+  --line:#C9D2CE; --line-soft:#E1E7E5;
+  --ink:#111C18; --ink-2:#48584F; --ink-3:#7B8B84;
+  --accent:#B8175F; --accent-ink:#FFFFFF; --accent-soft:rgba(184,23,95,.10);
+  --cls-a:#15785A; --cls-p1:#2560A6; --cls-p2:#9E6C15; --cls-p29:#63788A;
+  --warn:#A8601B; --bad:#B02A22;
+  --shadow:0 1px 2px rgba(17,28,24,.06),0 8px 24px rgba(17,28,24,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+  --ground:#0D1411; --surface:#131C18; --surface-2:#1A2520; --surface-3:#222F29;
+  --line:#2B3A34; --line-soft:#1F2C27;
+  --ink:#E7EEEB; --ink-2:#9CAFA8; --ink-3:#6D817B;
+  --accent:#FF4E93; --accent-ink:#1A0710; --accent-soft:rgba(255,78,147,.14);
+  --cls-a:#31C193; --cls-p1:#5F9DE2; --cls-p2:#DBA341; --cls-p29:#90A6B9;
+  --warn:#DFA24A; --bad:#E86A5F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+
+:root[data-theme="dark"]{
+  --ground:#0D1411; --surface:#131C18; --surface-2:#1A2520; --surface-3:#222F29;
+  --line:#2B3A34; --line-soft:#1F2C27;
+  --ink:#E7EEEB; --ink-2:#9CAFA8; --ink-3:#6D817B;
+  --accent:#FF4E93; --accent-ink:#1A0710; --accent-soft:rgba(255,78,147,.14);
+  --cls-a:#31C193; --cls-p1:#5F9DE2; --cls-p2:#DBA341; --cls-p29:#90A6B9;
+  --warn:#DFA24A; --bad:#E86A5F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:Archivo,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased;
+  display:grid; grid-template-rows:auto 1fr; overflow:hidden;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+/* ---------- header ---------- */
+header{
+  display:flex; align-items:center; gap:18px; padding:0 16px; height:54px;
+  background:var(--surface); border-bottom:1px solid var(--line); z-index:600;
+}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand h1{
+  margin:0; font-size:15px; font-weight:700; letter-spacing:-.01em; white-space:nowrap;
+}
+.brand .sub{
+  font-size:11px; color:var(--ink-3); letter-spacing:.08em; text-transform:uppercase;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.hstats{margin-left:auto;display:flex;gap:20px;align-items:center}
+.hstat{display:flex;flex-direction:column;line-height:1.1}
+.hstat b{font-size:14px;font-weight:600}
+.hstat span{font-size:10px;color:var(--ink-3);letter-spacing:.07em;text-transform:uppercase}
+.hbtns{display:flex;gap:6px}
+button,.btn{
+  font:inherit; font-size:12px; font-weight:500; color:var(--ink-2);
+  background:var(--surface-2); border:1px solid var(--line); border-radius:5px;
+  padding:6px 10px; cursor:pointer; transition:background .12s,color .12s,border-color .12s;
+}
+button:hover,.btn:hover{background:var(--surface-3);color:var(--ink)}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:344px 1fr;min-height:0}
+aside{
+  background:var(--surface); border-right:1px solid var(--line);
+  display:grid; grid-template-rows:auto auto 1fr auto; min-height:0;
+}
+.searchwrap{padding:12px 12px 10px;border-bottom:1px solid var(--line-soft)}
+input[type=search]{
+  width:100%; font:inherit; font-size:13px; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--line); border-radius:6px;
+  padding:9px 11px;
+}
+input[type=search]::placeholder{color:var(--ink-3)}
+input[type=search]:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+
+.filters{display:flex;flex-wrap:wrap;gap:5px;padding:10px 12px;border-bottom:1px solid var(--line-soft)}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;
+  letter-spacing:.03em;padding:4px 9px;border-radius:20px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
+}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+.chip[aria-pressed="true"]{background:var(--surface-3);color:var(--ink);border-color:var(--ink-3)}
+.chip[aria-pressed="false"]{opacity:.45}
+.chip.a{--c:var(--cls-a)} .chip.p1{--c:var(--cls-p1)}
+.chip.p2{--c:var(--cls-p2)} .chip.p29{--c:var(--cls-p29)}
+.chip .dot{background:var(--c)}
+
+.list{overflow-y:auto;min-height:0;padding:6px 0 12px}
+.grouphead{
+  position:sticky;top:0;z-index:2;background:var(--surface);
+  padding:10px 14px 5px;font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--line-soft);
+}
+.road{
+  display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;
+  padding:8px 14px;cursor:pointer;border-left:3px solid transparent;
+}
+.road:hover{background:var(--surface-2)}
+.road[aria-selected="true"]{background:var(--accent-soft);border-left-color:var(--accent)}
+.code{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+  padding:2px 6px;border-radius:3px;color:var(--surface);background:var(--c,var(--ink-2));
+  white-space:nowrap;
+}
+.road.a{--c:var(--cls-a)} .road.p1{--c:var(--cls-p1)}
+.road.p2{--c:var(--cls-p2)} .road.p29{--c:var(--cls-p29)}
+.rname{font-size:12px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rmeta{grid-column:2;font-size:11px;color:var(--ink-3)}
+.nodehit{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 14px;cursor:pointer;align-items:baseline}
+.nodehit:hover{background:var(--surface-2)}
+.nid{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3)}
+.empty{padding:24px 16px;color:var(--ink-3);font-size:12px;text-align:center}
+
+.foot{
+  padding:9px 14px;border-top:1px solid var(--line);
+  font-size:10px;color:var(--ink-3);display:flex;justify-content:space-between;gap:8px;
+}
+.foot a{color:var(--ink-3)}
+
+/* ---------- map ---------- */
+.mapwrap{position:relative;min-height:0}
+#map{position:absolute;inset:0;background:var(--surface-2)}
+.leaflet-container{font-family:Archivo,sans-serif;background:var(--surface-2)}
+.leaflet-control-attribution{
+  background:color-mix(in srgb,var(--surface) 88%,transparent)!important;
+  color:var(--ink-3)!important;font-size:10px!important;
+}
+.leaflet-control-attribution a{color:var(--ink-2)!important}
+.leaflet-bar a{background:var(--surface)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.leaflet-bar a:hover{background:var(--surface-2)!important}
+
+/* ---------- detail card ---------- */
+.detail{
+  position:absolute;left:14px;bottom:14px;z-index:500;width:min(330px,calc(100% - 28px));
+  background:var(--surface);border:1px solid var(--line);border-radius:9px;
+  box-shadow:var(--shadow);padding:14px 15px;display:none;
+}
+.detail.on{display:block}
+.detail .x{position:absolute;top:9px;right:9px;padding:3px 7px;font-size:13px;line-height:1}
+.dhead{display:flex;align-items:center;gap:8px;margin-bottom:2px;padding-right:22px}
+.dhead .nnum{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3)}
+.dname{font-size:15px;font-weight:600;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12px;margin-bottom:11px}
+.kv dt{color:var(--ink-3);font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding-top:2px}
+.kv dd{margin:0;font-family:"IBM Plex Mono",monospace;font-size:12px;font-variant-numeric:tabular-nums}
+.dtags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:11px}
+.dacts{display:flex;gap:6px;flex-wrap:wrap}
+.dacts a{
+  text-decoration:none;font-size:12px;font-weight:500;padding:6px 10px;border-radius:5px;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);
+}
+.dacts a:hover{background:var(--surface-3);color:var(--ink)}
+
+/* ---------- loader / error ---------- */
+.gate{
+  position:absolute;inset:0;z-index:700;display:grid;place-items:center;
+  background:var(--ground);padding:24px;
+}
+.gate.off{display:none}
+.gatebox{max-width:460px;text-align:center}
+.gatebox h2{font-size:17px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em}
+.gatebox p{color:var(--ink-2);font-size:13px;margin:0 0 8px;line-height:1.55}
+.gatebox code{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:4px;padding:2px 5px;
+}
+.gatebox pre{
+  text-align:left;font-family:"IBM Plex Mono",monospace;font-size:12px;
+  background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  padding:11px 13px;overflow-x:auto;color:var(--ink-2);margin:12px 0;
+}
+.spin{width:22px;height:22px;border:2px solid var(--line);border-top-color:var(--accent);
+  border-radius:50%;margin:0 auto 14px;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.gate .bad{color:var(--bad);font-weight:500}
+
+.tip{font-size:11px;color:var(--ink-3);padding:8px 14px;border-top:1px solid var(--line-soft);line-height:1.5}
+
+@media (max-width:860px){
+  body{overflow:auto}
+  .shell{grid-template-columns:1fr;grid-template-rows:52vh auto}
+  aside{border-right:none;border-top:1px solid var(--line);order:2;max-height:none}
+  .mapwrap{order:1;min-height:52vh}
+  .list{max-height:none;overflow:visible}
+  .hstats{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>MK Road Nodes</h1>
+    <span class="sub" id="brandsub">State road reference system</span>
+  </div>
+  <div class="hstats">
+    <div class="hstat"><b class="mono" id="sRoads">—</b><span>Roads</span></div>
+    <div class="hstat"><b class="mono" id="sNodes">—</b><span>Nodes</span></div>
+    <div class="hstat"><b class="mono" id="sSect">—</b><span>Sections</span></div>
+  </div>
+  <div class="hbtns">
+    <button id="btnLinks" aria-pressed="true" title="Draw straight links between consecutive nodes">Links</button>
+    <button id="btnLabels" aria-pressed="false" title="Show node names on the map">Labels</button>
+    <button id="btnTheme" title="Switch light / dark">Theme</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside>
+    <div class="searchwrap">
+      <input type="search" id="q" placeholder="Search a road or a node…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filters" id="filters">
+      <button class="chip a"   data-cls="a"   aria-pressed="true"><i class="dot"></i>Motorway</button>
+      <button class="chip p1"  data-cls="p1"  aria-pressed="true"><i class="dot"></i>National</button>
+      <button class="chip p2"  data-cls="p2"  aria-pressed="true"><i class="dot"></i>Regional</button>
+      <button class="chip p29" data-cls="p29" aria-pressed="true"><i class="dot"></i>Local link</button>
+    </div>
+    <div class="list" id="list"></div>
+    <div class="foot">
+      <span id="fGen">—</span>
+      <a href="https://webgis.roads.org.mk/roads/index.php" target="_blank" rel="noopener">source ↗</a>
+    </div>
+  </aside>
+
+  <div class="mapwrap">
+    <div id="map"></div>
+
+    <div class="detail" id="detail">
+      <button class="x" id="dClose" aria-label="Close">✕</button>
+      <div class="dhead"><span class="nnum" id="dNum"></span></div>
+      <h3 class="dname" id="dName"></h3>
+      <dl class="kv">
+        <dt>Lat / Lon</dt><dd id="dLL"></dd>
+        <dt>State grid</dt><dd id="dXY"></dd>
+      </dl>
+      <div class="dtags" id="dTags"></div>
+      <div class="dacts">
+        <a id="dPdf" target="_blank" rel="noopener">Source PDF ↗</a>
+        <a id="dOsm" target="_blank" rel="noopener">Open in OSM ↗</a>
+      </div>
+    </div>
+
+    <div class="gate" id="gate">
+      <div class="gatebox" id="gatebox">
+        <div class="spin"></div>
+        <p>Loading road data…</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+"use strict";
+
+var DATA_URL = "data/roads.json";
+var map, canvas, nodeLayer, linkLayer, labelLayer, hiLayer;
+var DATA = null, NODES = [], ROADS = [], BYID = {};
+var markers = {}, selectedRoad = null, selectedNode = null;
+var showLinks = true, showLabels = false;
+var CLS = {a:"Motorway", p1:"National", p2:"Regional", p29:"Local link"};
+var active = {a:true, p1:true, p2:true, p29:true};
+
+/* ---------- theme ---------- */
+function systemDark(){ return window.matchMedia("(prefers-color-scheme: dark)").matches; }
+function isDark(){
+  var t = document.documentElement.getAttribute("data-theme");
+  return t ? t === "dark" : systemDark();
+}
+function cssvar(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+document.getElementById("btnTheme").addEventListener("click", function(){
+  document.documentElement.setAttribute("data-theme", isDark() ? "light" : "dark");
+  try{ localStorage.setItem("mkroads-theme", isDark() ? "dark" : "light"); }catch(e){}
+  swapBasemap(); restyle();
+});
+try{
+  var savedTheme = localStorage.getItem("mkroads-theme");
+  if(savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+}catch(e){}
+
+/* ---------- classify ---------- */
+function classOf(code){
+  if(!code) return "p29";
+  if(code.charAt(0) === "A") return "a";
+  if(code.indexOf("P29") === 0) return "p29";
+  if(code.indexOf("P1") === 0) return "p1";
+  if(code.indexOf("P2") === 0) return "p2";
+  return "p29";
+}
+function colorOf(cls){ return cssvar("--cls-" + cls) || "#888"; }
+
+/* ---------- map ---------- */
+var base = null;
+var TILES = {
+  light:{url:"https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+         attr:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'},
+  dark: {url:"https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png",
+         attr:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}
+};
+function swapBasemap(){
+  var t = isDark() ? TILES.dark : TILES.light;
+  if(base) map.removeLayer(base);
+  base = L.tileLayer(t.url, {maxZoom:19, attribution:t.attr, subdomains:"abcd"}).addTo(map);
+  base.bringToBack();
+}
+
+function initMap(){
+  map = L.map("map", {zoomControl:true, preferCanvas:true, minZoom:7})
+         .setView([41.6, 21.7], 8);
+  canvas   = L.canvas({padding:0.4});
+  linkLayer  = L.layerGroup().addTo(map);
+  nodeLayer  = L.layerGroup().addTo(map);
+  hiLayer    = L.layerGroup().addTo(map);
+  labelLayer = L.layerGroup();
+  swapBasemap();
+}
+
+/* ---------- build ---------- */
+function build(){
+  linkLayer.clearLayers(); nodeLayer.clearLayers(); labelLayer.clearLayers();
+  markers = {};
+
+  ROADS.forEach(function(r){
+    if(!active[r.cls]) return;
+    var col = colorOf(r.cls);
+    if(showLinks){
+      r.sections.forEach(function(s){
+        var a = BYID[s.from.id], b = BYID[s.to.id];
+        if(!a || !b) return;
+        L.polyline([[a.lat,a.lon],[b.lat,b.lon]], {
+          renderer:canvas, color:col, weight:r.cls==="a"?2.4:1.5,
+          opacity:.55, interactive:false
+        }).addTo(linkLayer);
+      });
+    }
+  });
+
+  NODES.forEach(function(n){
+    if(!n.cls || !active[n.cls]) return;
+    var col = colorOf(n.cls);
+    var m = L.circleMarker([n.lat,n.lon], {
+      renderer:canvas, radius:n.cls==="a"?4.5:3.4,
+      color:col, weight:1.4, fillColor:col, fillOpacity:.55
+    });
+    m.on("click", function(){ selectNode(n, false); });
+    m.bindTooltip(n.name || ("Node " + n.id), {direction:"top", offset:[0,-4]});
+    m.addTo(nodeLayer);
+    markers[n.id] = m;
+
+    if(showLabels && n.name){
+      L.marker([n.lat,n.lon], {interactive:false, icon:L.divIcon({
+        className:"", html:'<span style="font:500 10px Archivo,sans-serif;color:'+cssvar("--ink-2")+
+          ';text-shadow:0 0 3px '+cssvar("--surface")+',0 0 3px '+cssvar("--surface")+
+          ';white-space:nowrap">'+esc(n.name)+'</span>',
+        iconSize:[0,0], iconAnchor:[-6,6]})}).addTo(labelLayer);
+    }
+  });
+
+  if(showLabels) labelLayer.addTo(map); else map.removeLayer(labelLayer);
+}
+function restyle(){ build(); if(selectedRoad) highlightRoad(selectedRoad); }
+
+/* ---------- selection ---------- */
+function highlightRoad(r){
+  hiLayer.clearLayers();
+  var pts = [];
+  r.sections.forEach(function(s){
+    var a = BYID[s.from.id], b = BYID[s.to.id];
+    if(!a || !b) return;
+    pts.push([a.lat,a.lon],[b.lat,b.lon]);
+    L.polyline([[a.lat,a.lon],[b.lat,b.lon]],
+      {color:cssvar("--accent"), weight:4, opacity:.9, interactive:false}).addTo(hiLayer);
+  });
+  if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.12), {maxZoom:13});
+}
+function selectRoad(r){
+  selectedRoad = r;
+  document.querySelectorAll(".road").forEach(function(el){
+    el.setAttribute("aria-selected", el.dataset.rid === r.id ? "true" : "false");
+  });
+  highlightRoad(r);
+}
+function selectNode(n, pan){
+  selectedNode = n;
+  document.getElementById("dNum").textContent = "NODE " + n.id;
+  document.getElementById("dName").textContent = n.name || "(unnamed)";
+  document.getElementById("dLL").textContent = n.lat.toFixed(6) + ", " + n.lon.toFixed(6);
+  document.getElementById("dXY").textContent = fmt(n.x) + " E   " + fmt(n.y) + " N";
+  var tags = document.getElementById("dTags");
+  tags.innerHTML = "";
+  (n.roads || []).forEach(function(code){
+    var s = document.createElement("span");
+    s.className = "code"; s.textContent = code;
+    s.style.setProperty("--c", colorOf(classOf(code)));
+    s.style.background = colorOf(classOf(code));
+    tags.appendChild(s);
+  });
+  document.getElementById("dPdf").href = n.pdf;
+  document.getElementById("dOsm").href =
+    "https://www.openstreetmap.org/?mlat=" + n.lat + "&mlon=" + n.lon + "#map=16/" + n.lat + "/" + n.lon;
+  document.getElementById("detail").classList.add("on");
+  if(pan) map.setView([n.lat,n.lon], Math.max(map.getZoom(), 14));
+  var m = markers[n.id];
+  if(m) m.openTooltip();
+}
+document.getElementById("dClose").addEventListener("click", function(){
+  document.getElementById("detail").classList.remove("on");
+});
+
+/* ---------- sidebar ---------- */
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function fmt(v){ return v == null ? "—" : v.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+
+function renderList(){
+  var q = document.getElementById("q").value.trim().toLowerCase();
+  var box = document.getElementById("list");
+  box.innerHTML = "";
+
+  if(q.length >= 2){
+    var hits = NODES.filter(function(n){
+      return active[n.cls] &&
+        ((n.name && n.name.toLowerCase().indexOf(q) >= 0) || n.id === q);
+    }).slice(0, 60);
+    if(hits.length){
+      box.appendChild(head("Nodes · " + hits.length));
+      hits.forEach(function(n){
+        var el = document.createElement("div");
+        el.className = "nodehit";
+        el.innerHTML = '<span class="nid">'+n.id+'</span><span class="rname">'+esc(n.name)+'</span>';
+        el.addEventListener("click", function(){ selectNode(n, true); });
+        box.appendChild(el);
+      });
+    }
+  }
+
+  var groups = {a:[], p1:[], p2:[], p29:[]};
+  ROADS.forEach(function(r){
+    if(!active[r.cls]) return;
+    if(q && (r.code+" "+r.name).toLowerCase().indexOf(q) < 0) return;
+    groups[r.cls].push(r);
+  });
+
+  var any = false;
+  Object.keys(groups).forEach(function(k){
+    if(!groups[k].length) return;
+    any = true;
+    box.appendChild(head(CLS[k] + " · " + groups[k].length));
+    groups[k].forEach(function(r){
+      var el = document.createElement("div");
+      el.className = "road " + r.cls;
+      el.dataset.rid = r.id;
+      el.setAttribute("aria-selected", !!(selectedRoad && selectedRoad.id === r.id));
+      el.innerHTML =
+        '<span class="code">'+esc(r.code)+'</span>' +
+        '<span class="rname" title="'+esc(r.name)+'">'+esc(r.name)+'</span>' +
+        '<span class="rmeta">'+r.sections.length+' sections · '+r.km+' km</span>';
+      el.addEventListener("click", function(){ selectRoad(r); });
+      box.appendChild(el);
+    });
+  });
+  if(!any && !box.children.length){
+    box.innerHTML = '<div class="empty">Nothing matches “'+esc(q)+'”.</div>';
+  }
+}
+function head(t){
+  var h = document.createElement("div");
+  h.className = "grouphead"; h.textContent = t;
+  return h;
+}
+
+/* ---------- controls ---------- */
+document.getElementById("q").addEventListener("input", renderList);
+document.getElementById("filters").addEventListener("click", function(e){
+  var b = e.target.closest(".chip"); if(!b) return;
+  var k = b.dataset.cls;
+  active[k] = !active[k];
+  b.setAttribute("aria-pressed", active[k]);
+  build(); renderList();
+});
+document.getElementById("btnLinks").addEventListener("click", function(){
+  showLinks = !showLinks; this.setAttribute("aria-pressed", showLinks); build();
+});
+document.getElementById("btnLabels").addEventListener("click", function(){
+  showLabels = !showLabels; this.setAttribute("aria-pressed", showLabels); build();
+});
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){
+  if(!document.documentElement.getAttribute("data-theme")){ swapBasemap(); restyle(); }
+});
+
+/* ---------- load ---------- */
+function ingest(json){
+  DATA = json;
+  BYID = json.nodes || {};
+  NODES = Object.keys(BYID).map(function(k){ return BYID[k]; });
+
+  ROADS = (json.roads || []).map(function(r){
+    var m = 0;
+    (r.sections || []).forEach(function(s){ m += (s.length_m || 0); });
+    return {
+      id:r.id, code:r.code, name:r.name || r.name_mk || "",
+      sections:r.sections || [], cls:classOf(r.code),
+      km:(m/1000).toFixed(1)
+    };
+  });
+  ROADS.sort(function(a,b){ return a.code.localeCompare(b.code, "en", {numeric:true}); });
+
+  NODES.forEach(function(n){
+    n.cls = (n.roads && n.roads.length) ? classOf(n.roads[0]) : "p29";
+  });
+  NODES.sort(function(a,b){ return (a.name||"").localeCompare(b.name||""); });
+
+  var st = json.stats || {};
+  document.getElementById("sRoads").textContent = st.roads != null ? st.roads : ROADS.length;
+  document.getElementById("sNodes").textContent = st.nodes != null ? st.nodes : NODES.length;
+  document.getElementById("sSect").textContent  = st.sections != null ? st.sections :
+    ROADS.reduce(function(a,r){ return a + r.sections.length; }, 0);
+  document.getElementById("fGen").textContent =
+    "scraped " + String(json.generated || "").slice(0,10) +
+    (json.crs && json.crs.datum_shift ? " · datum " + json.crs.datum_shift : "");
+  document.getElementById("brandsub").textContent =
+    "State road reference system · " + NODES.length + " surveyed nodes";
+
+  build(); renderList();
+  document.getElementById("gate").classList.add("off");
+
+  var pts = NODES.map(function(n){ return [n.lat,n.lon]; });
+  if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.05));
+}
+
+function gateFail(msg, detail){
+  var b = document.getElementById("gatebox");
+  b.innerHTML =
+    '<h2>' + esc(msg) + '</h2>' +
+    '<p class="bad">' + esc(detail) + '</p>' +
+    '<p>If you opened this file straight from the folder, the browser blocks it from ' +
+    'reading <code>data/roads.json</code>. Serve the folder instead:</p>' +
+    '<pre>cd ' + 'mk-roads\npython -m http.server 8000</pre>' +
+    '<p>…then open <code>http://localhost:8000</code>. Or pick the file by hand:</p>' +
+    '<p style="margin-top:12px"><input type="file" id="pick" accept=".json"></p>';
+  document.getElementById("pick").addEventListener("change", function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try{ ingest(JSON.parse(rd.result)); }
+      catch(err){ gateFail("That file could not be read", String(err)); }
+    };
+    rd.readAsText(f);
+  });
+}
+
+initMap();
+fetch(DATA_URL, {cache:"no-store"})
+  .then(function(r){
+    if(!r.ok) throw new Error("HTTP " + r.status + " for " + DATA_URL);
+    return r.json();
+  })
+  .then(ingest)
+  .catch(function(err){
+    gateFail("No road data loaded yet", String(err.message || err));
+  });
+
+})();
+</script>
+</body>
+</html>
