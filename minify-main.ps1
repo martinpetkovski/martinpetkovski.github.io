@@ -8,8 +8,7 @@ $utf8 = New-Object Text.UTF8Encoding($false)
 $classes = [ordered]@{
     'favicon-links' = 'a'; 'homepage' = 'b'; 'page' = 'c'; 'hdr' = 'd'
     'hdr-logo' = 'e'; 'hdr-text' = 'f'; 'sub' = 'g'; 'sub-inner' = 'h'
-    'content' = 'i'; 'kamai-projects' = 'j'; 'kamai-company' = 'k'
-    'kamai-meta' = 'l'; 'lang' = 'm'; 'l-bar' = 'n'; 'link-item' = 'o'
+    'content' = 'i'; 'lang' = 'm'; 'l-bar' = 'n'; 'link-item' = 'o'
     'email' = 'p'; 'favicon-link' = 'q'; 'favicon' = 'r'
     'nav-btns' = 's'; 'nav-btn' = 't'; 'tl' = 'u'; 'tl-r' = 'v'
     'tl-e' = 'w'; 'tl-x' = 'x'; 'tl-k' = 'y'; 'tl-i' = 'z'; 'tl-c' = 'a1'
