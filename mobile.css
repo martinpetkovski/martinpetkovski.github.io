@@ -10,12 +10,6 @@ body {
 
 .sub {
     margin: 0;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.sub-inner {
-    display: inline-block;
 }
 
 .page {

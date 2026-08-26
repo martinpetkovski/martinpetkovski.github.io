@@ -127,15 +127,35 @@ h2 > span {
     h2 > span { animation: none; }
 }
 
-/* Subtitle bar */
+/* Subtitle bar - two identical copies slide left by their own width,
+   so the second lands exactly where the first started and the loop is
+   seamless. Replaces <marquee>, which browsers no longer drive reliably. */
 .sub {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, "Times New Roman", serif;
     background-color: #1a3f77;
     color: #EEE;
+    display: flex;
     font-size: 13px;
     margin: 4px 0 0;
     max-width: 202px;
+    overflow: hidden;
+    white-space: nowrap;
 }
+
+.sub-inner {
+    animation: sub-slide var(--d, 14s) linear infinite;
+    flex: 0 0 auto;
+    padding-right: 2.5em;
+}
+
+@keyframes sub-slide {
+    to { transform: translateX(-100%) }
+}
+
+/* Deliberately not switched off under prefers-reduced-motion: the ticker is
+   the point of the header, same as the <marquee> it replaces. To honour the
+   setting instead, add:
+   @media (prefers-reduced-motion: reduce) { .sub-inner { animation: none } } */
 
 .content p {
     margin: 6px 0;
