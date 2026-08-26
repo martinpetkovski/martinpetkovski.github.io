@@ -71,6 +71,11 @@
     window.najjakSection = { flash, packLanes, renderTimeline, dimTimeline };
 
     document.addEventListener('DOMContentLoaded', () => {
+        /* Row cascade runs on the first paint only - once the intro is
+           over the class goes, so filtering never replays it. */
+        document.body.classList.add('anim');
+        setTimeout(() => document.body.classList.remove('anim'), 2200);
+
         const search = document.querySelector('[data-section-search]');
         const list = document.querySelector('[data-section-list]');
         if (!search || !list) return;
