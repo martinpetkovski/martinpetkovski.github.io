@@ -181,50 +181,50 @@
 
 /* Base delay is the last staggered step, so a timeline or list that
    outgrows the steps below still arrives at the end rather than first. */
-.tl-r i { animation: fly-left .19s ease-out both; animation-delay: 0.535s }
+.tl-r i { animation: fly-left .095s ease-out both; animation-delay: 0.2675s }
 
-.tl-r i:nth-child(1) { animation-delay: 0.250s }
-.tl-r i:nth-child(2) { animation-delay: 0.265s }
-.tl-r i:nth-child(3) { animation-delay: 0.280s }
-.tl-r i:nth-child(4) { animation-delay: 0.295s }
-.tl-r i:nth-child(5) { animation-delay: 0.310s }
-.tl-r i:nth-child(6) { animation-delay: 0.325s }
-.tl-r i:nth-child(7) { animation-delay: 0.340s }
-.tl-r i:nth-child(8) { animation-delay: 0.355s }
-.tl-r i:nth-child(9) { animation-delay: 0.370s }
-.tl-r i:nth-child(10) { animation-delay: 0.385s }
-.tl-r i:nth-child(11) { animation-delay: 0.400s }
-.tl-r i:nth-child(12) { animation-delay: 0.415s }
-.tl-r i:nth-child(13) { animation-delay: 0.430s }
-.tl-r i:nth-child(14) { animation-delay: 0.445s }
-.tl-r i:nth-child(15) { animation-delay: 0.460s }
-.tl-r i:nth-child(16) { animation-delay: 0.475s }
-.tl-r i:nth-child(17) { animation-delay: 0.490s }
-.tl-r i:nth-child(18) { animation-delay: 0.505s }
-.tl-r i:nth-child(19) { animation-delay: 0.520s }
-.tl-r i:nth-child(20) { animation-delay: 0.535s }
+.tl-r i:nth-child(1) { animation-delay: 0.125s }
+.tl-r i:nth-child(2) { animation-delay: 0.1325s }
+.tl-r i:nth-child(3) { animation-delay: 0.14s }
+.tl-r i:nth-child(4) { animation-delay: 0.1475s }
+.tl-r i:nth-child(5) { animation-delay: 0.155s }
+.tl-r i:nth-child(6) { animation-delay: 0.1625s }
+.tl-r i:nth-child(7) { animation-delay: 0.17s }
+.tl-r i:nth-child(8) { animation-delay: 0.1775s }
+.tl-r i:nth-child(9) { animation-delay: 0.185s }
+.tl-r i:nth-child(10) { animation-delay: 0.1925s }
+.tl-r i:nth-child(11) { animation-delay: 0.2s }
+.tl-r i:nth-child(12) { animation-delay: 0.2075s }
+.tl-r i:nth-child(13) { animation-delay: 0.215s }
+.tl-r i:nth-child(14) { animation-delay: 0.2225s }
+.tl-r i:nth-child(15) { animation-delay: 0.23s }
+.tl-r i:nth-child(16) { animation-delay: 0.2375s }
+.tl-r i:nth-child(17) { animation-delay: 0.245s }
+.tl-r i:nth-child(18) { animation-delay: 0.2525s }
+.tl-r i:nth-child(19) { animation-delay: 0.26s }
+.tl-r i:nth-child(20) { animation-delay: 0.2675s }
 
 /* Rows cascade on the first paint only: section.js drops the .anim
    class once the intro is over, so filtering never replays it. */
-.anim .sec-list li { animation: fly-left .16s ease-out both; animation-delay: 0.652s }
+.anim .sec-list li { animation: fly-left .08s ease-out both; animation-delay: 0.326s }
 
-.anim .sec-list li:nth-child(1) { animation-delay: 0.310s }
-.anim .sec-list li:nth-child(2) { animation-delay: 0.328s }
-.anim .sec-list li:nth-child(3) { animation-delay: 0.346s }
-.anim .sec-list li:nth-child(4) { animation-delay: 0.364s }
-.anim .sec-list li:nth-child(5) { animation-delay: 0.382s }
-.anim .sec-list li:nth-child(6) { animation-delay: 0.400s }
-.anim .sec-list li:nth-child(7) { animation-delay: 0.418s }
-.anim .sec-list li:nth-child(8) { animation-delay: 0.436s }
-.anim .sec-list li:nth-child(9) { animation-delay: 0.454s }
-.anim .sec-list li:nth-child(10) { animation-delay: 0.472s }
-.anim .sec-list li:nth-child(11) { animation-delay: 0.490s }
-.anim .sec-list li:nth-child(12) { animation-delay: 0.508s }
-.anim .sec-list li:nth-child(13) { animation-delay: 0.526s }
-.anim .sec-list li:nth-child(14) { animation-delay: 0.544s }
-.anim .sec-list li:nth-child(15) { animation-delay: 0.562s }
-.anim .sec-list li:nth-child(16) { animation-delay: 0.580s }
-.anim .sec-list li:nth-child(17) { animation-delay: 0.598s }
-.anim .sec-list li:nth-child(18) { animation-delay: 0.616s }
-.anim .sec-list li:nth-child(19) { animation-delay: 0.634s }
-.anim .sec-list li:nth-child(20) { animation-delay: 0.652s }
+.anim .sec-list li:nth-child(1) { animation-delay: 0.155s }
+.anim .sec-list li:nth-child(2) { animation-delay: 0.164s }
+.anim .sec-list li:nth-child(3) { animation-delay: 0.173s }
+.anim .sec-list li:nth-child(4) { animation-delay: 0.182s }
+.anim .sec-list li:nth-child(5) { animation-delay: 0.191s }
+.anim .sec-list li:nth-child(6) { animation-delay: 0.2s }
+.anim .sec-list li:nth-child(7) { animation-delay: 0.209s }
+.anim .sec-list li:nth-child(8) { animation-delay: 0.218s }
+.anim .sec-list li:nth-child(9) { animation-delay: 0.227s }
+.anim .sec-list li:nth-child(10) { animation-delay: 0.236s }
+.anim .sec-list li:nth-child(11) { animation-delay: 0.245s }
+.anim .sec-list li:nth-child(12) { animation-delay: 0.254s }
+.anim .sec-list li:nth-child(13) { animation-delay: 0.263s }
+.anim .sec-list li:nth-child(14) { animation-delay: 0.272s }
+.anim .sec-list li:nth-child(15) { animation-delay: 0.281s }
+.anim .sec-list li:nth-child(16) { animation-delay: 0.29s }
+.anim .sec-list li:nth-child(17) { animation-delay: 0.299s }
+.anim .sec-list li:nth-child(18) { animation-delay: 0.308s }
+.anim .sec-list li:nth-child(19) { animation-delay: 0.317s }
+.anim .sec-list li:nth-child(20) { animation-delay: 0.326s }

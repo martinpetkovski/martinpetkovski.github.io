@@ -324,15 +324,15 @@ footer p { margin: 0 }
     from { opacity: 0; transform: translateY(-16px) scale(.97) }
 }
 
-.hdr-logo { animation: fly-left .28s var(--ease) both }
+.hdr-logo { animation: fly-left .18s var(--ease) both }
 
-h1 { animation: fly-left .28s var(--ease) .04s both }
+h1 { animation: fly-left .18s var(--ease) .03s both }
 
-.sub { animation: fly-left .25s var(--ease) .09s both }
+.sub { animation: fly-left .25s var(--ease) .04s both }
 
 .nav-btn {
     animation: fly-down .21s var(--ease) both;
-    animation-delay: calc(var(--b, .15s) + var(--i, 0) * .03s);
+    animation-delay: calc(var(--b, .05s) + var(--i, 0) * .02s);
 }
 
 .nav-btn:nth-child(2) { --i: 1 }
@@ -343,8 +343,8 @@ h1 { animation: fly-left .28s var(--ease) .04s both }
 .nav-btn:nth-child(7) { --i: 6 }
 .nav-btn:nth-child(8) { --i: 7 }
 
-h2 { animation: fly-down .22s var(--ease) .33s both }
+h2 { animation: fly-down .12s var(--ease) .03s both }
 
-.link-btns { --b: .37s }
+.link-btns { --b: .01s }
 
-footer { animation: fly-down .2s var(--ease) .62s both }
+footer { animation: fly-down .2s var(--ease) .12s both }
