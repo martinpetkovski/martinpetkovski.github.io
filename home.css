@@ -180,9 +180,9 @@ a:active { color: #f00 }
 .nav-btn b {
     color: #1a3f77;
     display: block;
-    font-family: "Arial Black", Impact, "Trebuchet MS", Tahoma, sans-serif;
-    font-size: 12px;
-    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
     letter-spacing: .4px;
     line-height: 1.25;
     overflow: hidden;
