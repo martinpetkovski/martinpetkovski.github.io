@@ -175,44 +175,56 @@
 
 /* ---- the intro, continued (keyframes live in core.css) ---- */
 
-.sec-controls { animation: fly-down .4s cubic-bezier(.2, .9, .3, 1.35) .4s both }
+.sec-controls { animation: fly-down .2s var(--ease) .2s both }
 
-.tl-r i { animation: fly-left .38s ease-out both; animation-delay: .46s }
+.tl { animation: fly-down .2s var(--ease) .23s both }
 
-.tl-r i:nth-child(1) { animation-delay: calc(.46s + 0 * .03s) }
-.tl-r i:nth-child(2) { animation-delay: calc(.46s + 1 * .03s) }
-.tl-r i:nth-child(3) { animation-delay: calc(.46s + 2 * .03s) }
-.tl-r i:nth-child(4) { animation-delay: calc(.46s + 3 * .03s) }
-.tl-r i:nth-child(5) { animation-delay: calc(.46s + 4 * .03s) }
-.tl-r i:nth-child(6) { animation-delay: calc(.46s + 5 * .03s) }
-.tl-r i:nth-child(7) { animation-delay: calc(.46s + 6 * .03s) }
-.tl-r i:nth-child(8) { animation-delay: calc(.46s + 7 * .03s) }
-.tl-r i:nth-child(9) { animation-delay: calc(.46s + 8 * .03s) }
-.tl-r i:nth-child(10) { animation-delay: calc(.46s + 9 * .03s) }
-.tl-r i:nth-child(11) { animation-delay: calc(.46s + 10 * .03s) }
-.tl-r i:nth-child(12) { animation-delay: calc(.46s + 11 * .03s) }
-.tl-r i:nth-child(13) { animation-delay: calc(.46s + 12 * .03s) }
-.tl-r i:nth-child(14) { animation-delay: calc(.46s + 13 * .03s) }
-.tl-r i:nth-child(15) { animation-delay: calc(.46s + 14 * .03s) }
-.tl-r i:nth-child(16) { animation-delay: calc(.46s + 15 * .03s) }
-.tl-r i:nth-child(17) { animation-delay: calc(.46s + 16 * .03s) }
-.tl-r i:nth-child(18) { animation-delay: calc(.46s + 17 * .03s) }
+/* Base delay is the last staggered step, so a timeline or list that
+   outgrows the steps below still arrives at the end rather than first. */
+.tl-r i { animation: fly-left .19s ease-out both; animation-delay: 0.535s }
+
+.tl-r i:nth-child(1) { animation-delay: 0.250s }
+.tl-r i:nth-child(2) { animation-delay: 0.265s }
+.tl-r i:nth-child(3) { animation-delay: 0.280s }
+.tl-r i:nth-child(4) { animation-delay: 0.295s }
+.tl-r i:nth-child(5) { animation-delay: 0.310s }
+.tl-r i:nth-child(6) { animation-delay: 0.325s }
+.tl-r i:nth-child(7) { animation-delay: 0.340s }
+.tl-r i:nth-child(8) { animation-delay: 0.355s }
+.tl-r i:nth-child(9) { animation-delay: 0.370s }
+.tl-r i:nth-child(10) { animation-delay: 0.385s }
+.tl-r i:nth-child(11) { animation-delay: 0.400s }
+.tl-r i:nth-child(12) { animation-delay: 0.415s }
+.tl-r i:nth-child(13) { animation-delay: 0.430s }
+.tl-r i:nth-child(14) { animation-delay: 0.445s }
+.tl-r i:nth-child(15) { animation-delay: 0.460s }
+.tl-r i:nth-child(16) { animation-delay: 0.475s }
+.tl-r i:nth-child(17) { animation-delay: 0.490s }
+.tl-r i:nth-child(18) { animation-delay: 0.505s }
+.tl-r i:nth-child(19) { animation-delay: 0.520s }
+.tl-r i:nth-child(20) { animation-delay: 0.535s }
 
 /* Rows cascade on the first paint only: section.js drops the .anim
    class once the intro is over, so filtering never replays it. */
-.anim .sec-list li { animation: fly-left .32s ease-out both }
+.anim .sec-list li { animation: fly-left .16s ease-out both; animation-delay: 0.652s }
 
-.anim .sec-list li:nth-child(1) { animation-delay: calc(.62s + 0 * .035s) }
-.anim .sec-list li:nth-child(2) { animation-delay: calc(.62s + 1 * .035s) }
-.anim .sec-list li:nth-child(3) { animation-delay: calc(.62s + 2 * .035s) }
-.anim .sec-list li:nth-child(4) { animation-delay: calc(.62s + 3 * .035s) }
-.anim .sec-list li:nth-child(5) { animation-delay: calc(.62s + 4 * .035s) }
-.anim .sec-list li:nth-child(6) { animation-delay: calc(.62s + 5 * .035s) }
-.anim .sec-list li:nth-child(7) { animation-delay: calc(.62s + 6 * .035s) }
-.anim .sec-list li:nth-child(8) { animation-delay: calc(.62s + 7 * .035s) }
-.anim .sec-list li:nth-child(9) { animation-delay: calc(.62s + 8 * .035s) }
-.anim .sec-list li:nth-child(10) { animation-delay: calc(.62s + 9 * .035s) }
-.anim .sec-list li:nth-child(11) { animation-delay: calc(.62s + 10 * .035s) }
-.anim .sec-list li:nth-child(12) { animation-delay: calc(.62s + 11 * .035s) }
-.anim .sec-list li:nth-child(13) { animation-delay: calc(.62s + 12 * .035s) }
-.anim .sec-list li:nth-child(14) { animation-delay: calc(.62s + 13 * .035s) }
+.anim .sec-list li:nth-child(1) { animation-delay: 0.310s }
+.anim .sec-list li:nth-child(2) { animation-delay: 0.328s }
+.anim .sec-list li:nth-child(3) { animation-delay: 0.346s }
+.anim .sec-list li:nth-child(4) { animation-delay: 0.364s }
+.anim .sec-list li:nth-child(5) { animation-delay: 0.382s }
+.anim .sec-list li:nth-child(6) { animation-delay: 0.400s }
+.anim .sec-list li:nth-child(7) { animation-delay: 0.418s }
+.anim .sec-list li:nth-child(8) { animation-delay: 0.436s }
+.anim .sec-list li:nth-child(9) { animation-delay: 0.454s }
+.anim .sec-list li:nth-child(10) { animation-delay: 0.472s }
+.anim .sec-list li:nth-child(11) { animation-delay: 0.490s }
+.anim .sec-list li:nth-child(12) { animation-delay: 0.508s }
+.anim .sec-list li:nth-child(13) { animation-delay: 0.526s }
+.anim .sec-list li:nth-child(14) { animation-delay: 0.544s }
+.anim .sec-list li:nth-child(15) { animation-delay: 0.562s }
+.anim .sec-list li:nth-child(16) { animation-delay: 0.580s }
+.anim .sec-list li:nth-child(17) { animation-delay: 0.598s }
+.anim .sec-list li:nth-child(18) { animation-delay: 0.616s }
+.anim .sec-list li:nth-child(19) { animation-delay: 0.634s }
+.anim .sec-list li:nth-child(20) { animation-delay: 0.652s }

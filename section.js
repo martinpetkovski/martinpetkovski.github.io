@@ -74,7 +74,7 @@
         /* Row cascade runs on the first paint only - once the intro is
            over the class goes, so filtering never replays it. */
         document.body.classList.add('anim');
-        setTimeout(() => document.body.classList.remove('anim'), 2200);
+        setTimeout(() => document.body.classList.remove('anim'), 1400);
 
         const search = document.querySelector('[data-section-search]');
         const list = document.querySelector('[data-section-list]');

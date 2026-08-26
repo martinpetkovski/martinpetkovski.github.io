@@ -5,6 +5,10 @@
 /* Reset & Base */
 * { box-sizing: border-box }
 
+:root {
+    --ease: cubic-bezier(.2, .9, .3, 1.35);
+}
+
 body {
     font-family: Verdana, Tahoma, Arial, sans-serif;
     font-size: 13px;
@@ -598,11 +602,11 @@ hr {
    ============================================
    A staged entrance, the way DHTML front pages opened: the photo and
    the title fly in from the left, the marquee bar follows, then the
-   section bar drops and everything under it cascades. The easing
-   overshoots slightly so each piece lands with a bounce.
+   section bar drops and everything under it cascades to the footer.
+   The easing overshoots slightly so each piece lands with a bounce.
 
-   Deliberately not switched off under prefers-reduced-motion - these
-   run once and the period feel is the point. To honour the setting:
+   Deliberately not switched off under prefers-reduced-motion - it
+   runs once and the period feel is the point. To honour the setting:
    @media (prefers-reduced-motion: reduce) { * { animation: none } } */
 
 @keyframes fly-left {
@@ -613,10 +617,12 @@ hr {
     from { opacity: 0; transform: translateY(-16px) scale(.97) }
 }
 
-.hdr-logo { animation: fly-left .55s cubic-bezier(.2, .9, .3, 1.3) both }
+.hdr-logo { animation: fly-left .28s var(--ease) both }
 
-h1 { animation: fly-left .55s cubic-bezier(.2, .9, .3, 1.3) .08s both }
+h1 { animation: fly-left .28s var(--ease) .04s both }
 
-.sub { animation: fly-left .5s cubic-bezier(.2, .9, .3, 1.3) .18s both }
+.sub { animation: fly-left .25s var(--ease) .09s both }
 
-h2 { animation: fly-down .45s cubic-bezier(.2, .9, .3, 1.35) .3s both }
+h2 { animation: fly-down .22s var(--ease) .15s both }
+
+footer { animation: fly-down .2s var(--ease) .7s both }
