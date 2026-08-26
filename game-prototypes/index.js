@@ -2,6 +2,7 @@
     'use strict';
 
     let activePrototype = '';
+    const section = window.najjakSection || {};
 
     document.addEventListener('DOMContentLoaded', initialize);
 
@@ -9,7 +10,11 @@
         const status = document.querySelector('#prototypeStatus');
         const list = document.querySelector('#prototypeList');
         const search = document.querySelector('#prototypeSearch');
-        const detail = document.querySelector('#prototypeDetail');
+        const timeline = document.querySelector('#prototypeTimeline');
+        const detail = document.createElement('li');
+        detail.id = 'prototypeDetail';
+        detail.className = 'sec-detail';
+        detail.setAttribute('aria-live', 'polite');
 
         try {
             const response = await fetch('/game-prototypes/prototypes.json');
@@ -17,21 +22,26 @@
 
             const manifest = await response.json();
             const prototypes = Array.isArray(manifest.prototypes) ? [...manifest.prototypes] : [];
-            prototypes.sort((a, b) => parseYear(b.year) - parseYear(a.year));
-            renderList(prototypes, 'No prototypes have been added yet.');
+            prototypes.sort((a, b) => parseYear(a.year) - parseYear(b.year));
+            prototypes.forEach((prototype, index) => { prototype.number = index + 1; });
+            buildTimeline(timeline, prototypes, list);
+            renderList(prototypes, 'No prototypes have been added yet.', true);
             search.addEventListener('input', () => {
                 const filtered = filterPrototypes(prototypes, search.value);
-                renderList(filtered, 'No prototypes match your search.');
+                renderList(filtered, 'No prototypes match your search.', !search.value.trim());
             });
 
-            function renderList(items, emptyMessage) {
+            function renderList(items, emptyMessage, isComplete) {
                 list.replaceChildren(...items.map(prototype => renderPrototypeSummary(prototype, list, detail)));
-                status.textContent = items.length ? '' : emptyMessage;
+                if (!items.length) status.textContent = emptyMessage;
+                else if (isComplete) status.textContent = '';
+                else status.textContent = `${items.length} of ${prototypes.length} prototypes shown.`;
+                section.dimTimeline(timeline, new Set(items.map(item => String(item.number))), !isComplete);
                 if (!items.some(prototype => prototype.title === activePrototype)) {
                     activePrototype = '';
                     detail.replaceChildren();
                 } else {
-                    const activeItem = [...list.querySelectorAll('.prototype-summary')]
+                    const activeItem = [...list.querySelectorAll('.sec-row')]
                         .find(item => item.dataset.title === activePrototype);
                     if (activeItem) activeItem.after(detail);
                 }
@@ -42,39 +52,58 @@
         }
     }
 
-    function renderPrototypeSummary(prototype, list, detail) {
-        const item = document.createElement('article');
-        const thumbnail = document.createElement('div');
-        const text = document.createElement('div');
-        const title = document.createElement('h3');
-        const actions = renderPrototypeLinks(prototype, '', true);
-        const metadata = document.createElement('p');
+    function buildTimeline(timeline, prototypes, list) {
+        if (!timeline || !section.renderTimeline) return;
+        const years = prototypes.map(prototype => parseYear(prototype.year)).filter(Boolean);
+        if (!years.length) return;
+        const first = Math.min(...years);
+        const last = Math.max(...years);
+        const columns = last - first + 1;
+        const ranges = prototypes.map(prototype => {
+            const year = parseYear(prototype.year) || first;
+            return { start: year - first + 1, end: year - first + 2 };
+        });
+        const lanes = section.packLanes(ranges);
+        section.renderTimeline(timeline, {
+            columns,
+            axis: Array.from({ length: columns }, (unused, index) => `’${String(first + index).slice(2)}`),
+            bars: prototypes.map((prototype, index) => ({
+                key: String(prototype.number),
+                label: prototype.number,
+                title: `${prototype.title}, ${prototype.year}`,
+                start: ranges[index].start,
+                end: ranges[index].end,
+                lane: lanes[index]
+            })),
+            onSelect: key => {
+                const row = [...list.querySelectorAll('li[data-i]')].find(item => item.dataset.i === key);
+                if (!row) return;
+                row.scrollIntoView({ block: 'nearest' });
+                section.flash(row);
+            }
+        });
+    }
 
-        item.className = 'prototype-summary';
+    function renderPrototypeSummary(prototype, list, detail) {
+        const item = document.createElement('li');
+        const text = document.createElement('span');
+        const title = document.createElement('span');
+        const metadata = document.createElement('small');
+        const year = document.createElement('span');
+
+        item.className = 'sec-row';
         item.tabIndex = 0;
+        item.dataset.i = prototype.number;
         item.setAttribute('role', 'button');
         item.setAttribute('aria-controls', 'prototypeDetail');
         item.dataset.title = prototype.title;
-        thumbnail.className = 'prototype-thumbnail';
-        text.className = 'prototype-summary-text';
-        if (prototype.image) {
-            const image = document.createElement('img');
-            image.src = prototype.thumbnail || prototype.image;
-            image.alt = '';
-            image.loading = 'lazy';
-            image.decoding = 'async';
-            image.width = 96;
-            image.height = 54;
-            thumbnail.append(image);
-        } else {
-            thumbnail.textContent = 'NO IMAGE';
-        }
-        title.textContent = prototype.year ? `${prototype.title} (${prototype.year})` : prototype.title;
-        actions.classList.add('prototype-summary-actions');
-        metadata.className = 'prototype-meta';
-        metadata.textContent = [prototype.event, prototype.engine].filter(Boolean).join(' · ');
+        title.className = 'sec-title';
+        title.textContent = prototype.title;
+        metadata.textContent = prototype.engine || prototype.event || '';
+        year.className = 'lang';
+        year.textContent = prototype.year || '';
         text.append(title, metadata);
-        item.append(thumbnail, text, actions);
+        item.append(renderThumbnail(prototype), text, year);
 
         const select = () => {
             if (activePrototype === prototype.title) {
@@ -85,12 +114,10 @@
                 detail.replaceChildren(renderPrototype(prototype));
                 item.after(detail);
             }
-            list.querySelectorAll('.prototype-summary').forEach(updatePrototypeState);
+            list.querySelectorAll('.sec-row').forEach(updatePrototypeState);
         };
 
         item.addEventListener('click', select);
-        actions.addEventListener('click', event => event.stopPropagation());
-        actions.addEventListener('keydown', event => event.stopPropagation());
         item.addEventListener('keydown', event => {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
@@ -99,6 +126,25 @@
         });
         updatePrototypeState(item);
         return item;
+    }
+
+    function renderThumbnail(prototype) {
+        const source = prototype.thumbnail || prototype.image;
+        if (!source) {
+            const placeholder = document.createElement('span');
+            placeholder.className = 'sec-thumb sec-thumb-empty';
+            placeholder.textContent = 'NO IMAGE';
+            return placeholder;
+        }
+        const image = document.createElement('img');
+        image.className = 'sec-thumb';
+        image.src = source;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.width = 44;
+        image.height = 25;
+        return image;
     }
 
     function updatePrototypeState(item) {

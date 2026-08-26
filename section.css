@@ -1,0 +1,178 @@
+/* ============================================
+   NAJJAK.COM - shared section page chrome
+   Used by every subpage so they read like the
+   homepage: h2 bars, timelines, compact lists.
+   ============================================ */
+
+/* ---- back button ---- */
+
+.back-nav {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 8px 0 10px;
+}
+
+/* ---- search + status ---- */
+
+.sec-controls {
+    margin: 6px 0 2px;
+}
+
+.sec-search {
+    background: #fff;
+    border: 2px solid;
+    border-color: #7fa4d0 #fff #fff #7fa4d0;
+    color: #0b1020;
+    font-family: Verdana, Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    padding: 4px 6px;
+    width: 100%;
+}
+
+.sec-search:focus {
+    outline: 2px solid #4a7fc4;
+    outline-offset: -2px;
+}
+
+.sec-status {
+    color: #64748b;
+    font-size: 10px;
+    font-style: italic;
+    margin: 3px 0 0;
+}
+
+.sec-status:empty { display: none; }
+.sec-status.is-error { color: #b91c1c; font-style: normal; font-weight: bold; }
+
+/* ---- lists ---- */
+
+/* numbering comes from the markup, not a CSS counter, so filtering
+   rows out never renumbers the badges away from the timeline */
+.sec-num li::before { content: attr(data-i); }
+
+.sec-hidden { display: none !important; }
+
+/* single column variant, used where a row expands into a detail card */
+.sec-single {
+    grid-template-columns: 15px minmax(0, 1fr) auto;
+}
+
+.sec-list li[role="button"] {
+    cursor: pointer;
+}
+
+.sec-list li[role="button"]:focus-visible {
+    outline: 1px dotted #1a3f77;
+    outline-offset: 1px;
+}
+
+/* clickable rows read like the homepage's links */
+.sec-list li[role="button"] .sec-title {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.sec-list li[role="button"]:hover .sec-title,
+.sec-list li[role="button"]:focus-visible .sec-title {
+    color: #cc0000;
+    text-decoration: none;
+}
+
+.sec-list li.is-active .sec-title {
+    color: #0b1020;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ---- thumbnail lists ---- */
+
+.sec-thumbs {
+    grid-template-columns: repeat(2, 44px minmax(0, 1fr) auto);
+}
+
+.sec-thumbs li::before { display: none; }
+
+.sec-thumb {
+    align-self: start;
+    aspect-ratio: 16 / 9;
+    background: #0b1020;
+    border: 1px solid;
+    border-color: #a8c6e8 #1a3f77 #1a3f77 #a8c6e8;
+    box-sizing: border-box;
+    display: block;
+    margin-top: 2px;
+    object-fit: cover;
+    width: 44px;
+}
+
+.sec-thumb-empty {
+    color: #8fb5e8;
+    font: 5px "Courier New", monospace;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* the opinions grid relies on the homepage's flex rows */
+.section-page .op li {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* ---- detail row ---- */
+
+.content .sec-list .sec-detail {
+    display: block;
+    grid-column: 1 / -1;
+    margin: 2px 0 6px;
+}
+
+.content .sec-list .sec-detail::before {
+    content: none;
+    display: none;
+}
+
+.content .sec-list .sec-detail:empty { display: none; }
+
+/* ---- timeline ---- */
+
+.tl-r i[data-i] { cursor: pointer; }
+
+.tl-r i.is-dimmed,
+.tl-r .tl-i.is-dimmed,
+.tl-r .tl-e.is-dimmed {
+    background: repeating-linear-gradient(-45deg, #d7dfec 0 3px, #eef2f8 3px 6px);
+    border-color: #fff #b6c0d1 #b6c0d1 #fff;
+    color: #98a3b5;
+}
+
+.tl-r i.is-flash {
+    animation: sec-flash .9s ease-out;
+}
+
+@keyframes sec-flash {
+    0%, 40% { background: linear-gradient(180deg, #ffe9a8 0%, #ffc93c 55%, #e0a800 100%); border-color: #fff3cf #8a6400 #8a6400 #fff3cf; color: #4a3600; }
+    100% { }
+}
+
+.sec-list li.is-flash {
+    animation: sec-row-flash .9s ease-out;
+}
+
+@keyframes sec-row-flash {
+    0%, 40% { background: #ffe9a8; }
+    100% { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tl-r i.is-flash,
+    .sec-list li.is-flash { animation: none; }
+}
+
+@media (max-width: 600px) {
+    .sec-search { font-size: 16px; }
+    .sec-status { font-size: 12px; }
+    .sec-single { grid-template-columns: minmax(0, 1fr) auto; }
+    .sec-thumbs { grid-template-columns: 44px minmax(0, 1fr) auto; }
+    .content .sec-thumbs li { grid-column: span 3; }
+    .content .sec-list .sec-detail { grid-column: 1 / -1; }
+}

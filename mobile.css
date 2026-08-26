@@ -43,8 +43,11 @@ h1 {
     overflow: hidden;
 }
 
+.nav-btns {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .nav-btn {
-    flex: 1 1 100%;
     padding: 6px 9px 7px;
 }
 
@@ -86,6 +89,10 @@ h3 {
 
 .l-bar a {
     margin: 0;
+}
+
+.link-item {
+    flex: 0 0 auto;
 }
 
 footer {

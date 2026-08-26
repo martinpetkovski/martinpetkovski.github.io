@@ -2,6 +2,7 @@
     'use strict';
 
     let activePaper = '';
+    const section = window.najjakSection || {};
 
     document.addEventListener('DOMContentLoaded', initialize);
 
@@ -9,7 +10,11 @@
         const status = document.querySelector('#paperStatus');
         const list = document.querySelector('#paperList');
         const search = document.querySelector('#paperSearch');
-        const detail = document.querySelector('#paperDetail');
+        const timeline = document.querySelector('#paperTimeline');
+        const detail = document.createElement('li');
+        detail.id = 'paperDetail';
+        detail.className = 'sec-detail';
+        detail.setAttribute('aria-live', 'polite');
 
         try {
             const response = await fetch('/draft-papers/papers.json');
@@ -19,26 +24,32 @@
             }
 
             const manifest = await response.json();
-            const papers = Array.isArray(manifest.papers) ? manifest.papers : [];
+            const papers = Array.isArray(manifest.papers) ? [...manifest.papers] : [];
+            papers.sort((a, b) => Number(getYear(a.updated)) - Number(getYear(b.updated)));
 
-            const papersWithAbstracts = await Promise.all(papers.map(async paper => ({
+            const papersWithAbstracts = await Promise.all(papers.map(async (paper, index) => ({
                 ...paper,
+                number: index + 1,
                 abstract: await loadAbstract(paper.slug)
             })));
-            renderList(papersWithAbstracts, 'No papers have been published yet.');
+            buildTimeline(timeline, papersWithAbstracts, list);
+            renderList(papersWithAbstracts, 'No papers have been published yet.', true);
             search.addEventListener('input', () => {
                 const filtered = filterPapers(papersWithAbstracts, search.value);
-                renderList(filtered, 'No papers match your search.');
+                renderList(filtered, 'No papers match your search.', !search.value.trim());
             });
 
-            function renderList(items, emptyMessage) {
+            function renderList(items, emptyMessage, isComplete) {
                 list.replaceChildren(...items.map(paper => renderPaperSummary(paper, list, detail)));
-                status.textContent = items.length ? '' : emptyMessage;
+                if (!items.length) status.textContent = emptyMessage;
+                else if (isComplete) status.textContent = '';
+                else status.textContent = `${items.length} of ${papersWithAbstracts.length} papers shown.`;
+                section.dimTimeline(timeline, new Set(items.map(item => String(item.number))), !isComplete);
                 if (!items.some(paper => paper.slug === activePaper)) {
                     activePaper = '';
                     detail.replaceChildren();
                 } else {
-                    const activeItem = [...list.querySelectorAll('.draft-summary')]
+                    const activeItem = [...list.querySelectorAll('.sec-row')]
                         .find(item => item.dataset.slug === activePaper);
                     if (activeItem) activeItem.after(detail);
                 }
@@ -49,22 +60,58 @@
         }
     }
 
-    function renderPaperSummary(paper, list, detail) {
-        const item = document.createElement('article');
-        const title = document.createElement('h3');
-        const metadata = document.createElement('p');
+    function buildTimeline(timeline, papers, list) {
+        if (!timeline || !section.renderTimeline) return;
+        const years = papers.map(paper => Number(getYear(paper.updated))).filter(Boolean);
+        if (!years.length) return;
+        const first = Math.min(...years);
+        const last = Math.max(...years);
+        const columns = last - first + 1;
+        const ranges = papers.map(paper => {
+            const year = Number(getYear(paper.updated)) || first;
+            return { start: year - first + 1, end: year - first + 2 };
+        });
+        const lanes = section.packLanes(ranges);
+        section.renderTimeline(timeline, {
+            columns,
+            axis: Array.from({ length: columns }, (unused, index) => `’${String(first + index).slice(2)}`),
+            bars: papers.map((paper, index) => ({
+                key: String(paper.number),
+                label: paper.number,
+                title: `${paper.title}, ${paper.updated}`,
+                start: ranges[index].start,
+                end: ranges[index].end,
+                lane: lanes[index]
+            })),
+            onSelect: key => {
+                const row = [...list.querySelectorAll('li[data-i]')].find(item => item.dataset.i === key);
+                if (!row) return;
+                row.scrollIntoView({ block: 'nearest' });
+                section.flash(row);
+            }
+        });
+    }
 
-        item.className = 'draft-summary';
+    function renderPaperSummary(paper, list, detail) {
+        const item = document.createElement('li');
+        const text = document.createElement('span');
+        const title = document.createElement('span');
+        const metadata = document.createElement('small');
+        const year = document.createElement('span');
+
+        item.className = 'sec-row';
         item.tabIndex = 0;
+        item.dataset.i = paper.number;
         item.setAttribute('role', 'button');
         item.setAttribute('aria-controls', 'paperDetail');
         item.dataset.slug = paper.slug;
+        title.className = 'sec-title';
         title.textContent = paper.title;
-        metadata.className = 'draft-card-meta';
-        metadata.textContent = [paper.author, getYear(paper.updated)]
-            .filter(Boolean)
-            .join(' · ');
-        item.append(title, metadata);
+        metadata.textContent = [paper.author, paper.language].filter(Boolean).join(' · ');
+        year.className = 'lang';
+        year.textContent = getYear(paper.updated);
+        text.append(title, metadata);
+        item.append(text, year);
 
         const select = () => {
             if (activePaper === paper.slug) {
@@ -75,7 +122,7 @@
                 detail.replaceChildren(renderPaper(paper));
                 item.after(detail);
             }
-            list.querySelectorAll('.draft-summary').forEach(updatePaperState);
+            list.querySelectorAll('.sec-row').forEach(updatePaperState);
         };
 
         item.addEventListener('click', select);

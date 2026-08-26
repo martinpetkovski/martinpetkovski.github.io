@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="/core.css">
 <link rel="stylesheet" href="/desktop.css" media="(min-width:601px)">
 <link rel="stylesheet" href="/mobile.css" media="(max-width:600px)">
+<link rel="stylesheet" href="/section.css">
 <link rel="stylesheet" href="/game-prototypes/styles.css">
+<script src="/section.js" defer></script>
 <script src="/game-prototypes/index.js" defer></script>
 </head>
-<body>
+<body class="section-page">
 <div class="page prototypes-page">
 <div class="hdr">
 <img class="hdr-logo" src="/header.gif" alt="" aria-hidden="true">
@@ -22,17 +24,20 @@
 </div>
 </div>
 <main class="content">
-<p><b>» <a href="/index.html">Back to NAJJAK.COM</a></b></p>
-<section class="prototype-introduction">
-</section>
-<div class="prototype-controls">
-<label class="prototype-search-label" for="prototypeSearch"></label>
-<input id="prototypeSearch" class="prototype-search" type="search" placeholder="Search game, year, event, engine, credits..." autocomplete="off">
+<nav class="nav-btns back-nav">
+<a class="nav-btn" href="/index.html"><b>Back to NAJJAK.COM</b></a>
+</nav>
+<h2><span>Game Prototypes</span><small class="tl-c">Pick a row to open it</small></h2>
+<div id="prototypeTimeline" class="tl" data-section-timeline hidden>
+<div class="tl-r"></div>
+<div class="tl-x"></div>
 </div>
-<div id="prototypeStatus" class="prototype-status" role="status">Loading prototypes…</div>
-<div id="prototypeList" class="prototype-list"></div>
-<div id="prototypeDetail" class="prototype-detail" aria-live="polite"></div>
-<footer><p>Copyright © Martin Petkovski 2013–2026</p></footer>
+<div class="sec-controls">
+<input id="prototypeSearch" class="sec-search" type="search" placeholder="Search game, year, event, engine, credits..." aria-label="Search prototypes" autocomplete="off">
+<div id="prototypeStatus" class="sec-status" role="status">Loading prototypes…</div>
+</div>
+<ol id="prototypeList" class="tl-k sec-list sec-thumbs"></ol>
+<footer><p>Copyright © Martin Petkovski 2013-2026</p></footer>
 </main>
 </div>
 </body>

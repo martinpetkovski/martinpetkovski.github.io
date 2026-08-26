@@ -1,0 +1,85 @@
+{
+  "axis": ["’20", "’21", "’22", "’23", "’24", "’25", "’26"],
+  "projects": [
+    {
+      "title": "Sashe Ivanovski Simulator",
+      "year": "2020",
+      "kind": "handcrafted",
+      "description": "Swear words generator in Macedonian.",
+      "span": { "start": 1, "end": 2, "lane": 1 },
+      "links": [{ "label": "Open project", "url": "/sis/index.html" }]
+    },
+    {
+      "title": "Makedonski Leksikon",
+      "year": "2021",
+      "kind": "handcrafted",
+      "description": "All the words in the Macedonian language.",
+      "span": { "start": 2, "end": 3, "lane": 1 },
+      "links": [{ "label": "Open project", "url": "/makedonski" }]
+    },
+    {
+      "title": "NST: Nonlinear System Tools",
+      "year": "2021-2023",
+      "kind": "handcrafted",
+      "description": "My master’s thesis.",
+      "span": { "start": 2, "end": 4, "lane": 2 },
+      "links": [{ "label": "Open project", "url": "https://www.najjak.com/nst" }]
+    },
+    {
+      "title": "ImQuick",
+      "year": "2021",
+      "kind": "handcrafted",
+      "description": "A single header ImGui library.",
+      "span": { "start": 2, "end": 3, "lane": 3 },
+      "links": [{ "label": "View source on GitHub", "url": "https://github.com/martinpetkovski/ImQuick" }]
+    },
+    {
+      "title": "Sioto Jazz",
+      "year": "2022-2026",
+      "kind": "handcrafted",
+      "description": "Rock band I was playing guitar in.",
+      "span": { "start": 3, "end": 7, "lane": 3 },
+      "links": [{ "label": "Visit site", "url": "https://siotojazz.com/" }]
+    },
+    {
+      "title": "Custom QMK Firmwares",
+      "year": "2022",
+      "kind": "handcrafted",
+      "description": "Custom keyboard firmwares.",
+      "span": { "start": 3, "end": 4, "lane": 1 },
+      "links": [{ "label": "Read the write-up", "url": "https://www.reddit.com/r/MechanicalKeyboards/comments/vv35cr/gmmk_pro_build_qmk_and_hid_tips_tricks/" }]
+    },
+    {
+      "title": "toplista.mk",
+      "year": "2025-now",
+      "kind": "vibecrafted",
+      "description": "Macedonian music database.",
+      "span": { "start": 6, "end": 8, "lane": 2 },
+      "links": [{ "label": "Visit site", "url": "https://toplista.mk" }]
+    },
+    {
+      "title": "Just Notepad",
+      "year": "2025",
+      "kind": "vibecrafted",
+      "description": "Notepad using 3Mb RAM with plugin support.",
+      "span": { "start": 6, "end": 7, "lane": 1 },
+      "links": [{ "label": "Open project", "url": "/JustNotepad" }]
+    },
+    {
+      "title": "Sioto Loops",
+      "year": "2026",
+      "kind": "vibecrafted",
+      "description": "Custom JUCE DAW I use to make music.",
+      "span": { "start": 7, "end": 8, "lane": 1 },
+      "links": [{ "label": "Open project", "url": "/SiotoLoops" }]
+    },
+    {
+      "title": "Разигра",
+      "year": "2026-now",
+      "kind": "handcrafted",
+      "description": "GameJam we're organizing in Bitola",
+      "span": { "start": 7, "end": 8, "lane": 3 },
+      "links": [{ "label": "Visit site", "url": "https://www.kamaikamai.com/razigra" }]
+    }
+  ]
+}

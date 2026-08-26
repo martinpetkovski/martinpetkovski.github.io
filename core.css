@@ -188,9 +188,10 @@ a:active {
    ============================================ */
 
 .nav-btns {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 5px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: center;
     margin: 8px 0 10px;
 }
 
@@ -204,9 +205,9 @@ a:active {
     box-shadow: 2px 2px 0 rgba(26, 63, 119, .25);
     color: #0b1020;
     display: block;
-    flex: 1 1 165px;
     min-width: 0;
     padding: 5px 8px 6px;
+    text-align: center;
     text-decoration: none;
 }
 
@@ -278,11 +279,15 @@ a:active {
     flex-wrap: wrap;
     gap: 4px 10px;
     font-size: inherit;
+    justify-content: center;
 }
 
 .link-item {
     align-items: center;
     display: inline-flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
     white-space: nowrap;
 }
 

@@ -29,7 +29,13 @@ OUTPUT = Path(__file__).resolve().parent
 ROOT = OUTPUT.parent
 SITE_ORIGIN = "https://www.najjak.com"
 SITE_HOSTS = {"najjak.com", "www.najjak.com"}
-DEFAULT_SOURCES = (ROOT / "index.html", ROOT / "resume" / "index.html")
+DEFAULT_SOURCES = (
+    ROOT / "index.html",
+    ROOT / "resume" / "index.html",
+    ROOT / "my-code-has-powered" / "index.html",
+    ROOT / "vault" / "index.html",
+    ROOT / "opinions" / "index.html",
+)
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) najjak-favicon-cache/2.0"
 
 
@@ -67,7 +73,7 @@ def arguments() -> argparse.Namespace:
         nargs="*",
         type=Path,
         default=list(DEFAULT_SOURCES),
-        help="HTML files to scan (defaults to index.html and resume/index.html)",
+        help="HTML files to scan (defaults to the homepage, resume and section pages)",
     )
     return parser.parse_args()
 

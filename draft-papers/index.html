@@ -9,39 +9,36 @@
 <link rel="stylesheet" href="/core.css">
 <link rel="stylesheet" href="/desktop.css" media="(min-width:601px)">
 <link rel="stylesheet" href="/mobile.css" media="(max-width:600px)">
+<link rel="stylesheet" href="/section.css">
 <link rel="stylesheet" href="/draft-papers/styles.css">
+<script src="/section.js" defer></script>
 <script src="/draft-papers/index.js" defer></script>
 </head>
-<body>
+<body class="section-page">
 <div class="page draft-index-page">
 <div class="hdr">
 <img class="hdr-logo" src="/header.gif" alt="" aria-hidden="true">
 <div class="hdr-text">
 <h1>Draft Papers</h1>
-<div class="sub"><span class="sub-inner">
-    <marquee behavior="scroll" direction="left" scrollamount="5">
-    Working versions of research papers and technical notes.
-    </marquee>
-</span></div>
+<div class="sub"><span class="sub-inner"><marquee behavior="scroll" direction="left" scrollamount="5">Working versions of research papers and technical notes.</marquee></span></div>
 </div>
 </div>
 <main class="content">
-<p><b>» <a href="/index.html">Back to NAJJAK.COM</a></b></p>
-
-<section class="draft-introduction">
-</section>
-
-<div class="draft-controls">
-<label class="draft-search-label" for="paperSearch"></label>
-<input id="paperSearch" class="draft-search" type="search" placeholder="Search title, author, year, status, abstract..." autocomplete="off">
+<nav class="nav-btns back-nav">
+<a class="nav-btn" href="/index.html"><b>Back to NAJJAK.COM</b></a>
+</nav>
+<h2><span>Draft Papers</span><small class="tl-c">Pick a row to open it</small></h2>
+<div id="paperTimeline" class="tl" data-section-timeline hidden>
+<div class="tl-r"></div>
+<div class="tl-x"></div>
 </div>
-
-<div id="paperStatus" class="draft-status" role="status">Loading papers…</div>
-<div id="paperList" class="draft-list"></div>
-<div id="paperDetail" class="draft-detail" aria-live="polite"></div>
-
+<div class="sec-controls">
+<input id="paperSearch" class="sec-search" type="search" placeholder="Search title, author, year, status, abstract..." aria-label="Search papers" autocomplete="off">
+<div id="paperStatus" class="sec-status" role="status">Loading papers…</div>
+</div>
+<ol id="paperList" class="tl-k sec-list sec-num"></ol>
 <footer>
-<p>Copyright © Martin Petkovski 2013–2026</p>
+<p>Copyright © Martin Petkovski 2013-2026</p>
 </footer>
 </main>
 </div>
