@@ -324,9 +324,7 @@ footer p { margin: 0 }
     from { opacity: 0; transform: translateY(-16px) scale(.97) }
 }
 
-.hdr-logo { animation: fly-left .18s var(--ease) both }
-
-h1 { animation: fly-left .18s var(--ease) .03s both }
+h1 { animation: fly-left .18s var(--ease) .03s both } 
 
 .sub { animation: fly-left .25s var(--ease) .04s both }
 
