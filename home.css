@@ -157,7 +157,7 @@ a:active { color: #f00 }
 .nav-btns {
     display: grid;
     gap: 5px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: center;
     margin: 8px 0 10px;
 }
@@ -176,17 +176,20 @@ a:active { color: #f00 }
     text-decoration: none;
 }
 
+/* titles stay on one row - they ellipsize rather than wrap */
 .nav-btn b {
     color: #1a3f77;
     display: block;
-    font-family: "Trebuchet MS", Tahoma, Arial, sans-serif;
+    font-family: "Arial Black", Impact, "Trebuchet MS", Tahoma, sans-serif;
     font-size: 12px;
-    letter-spacing: .6px;
-    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: .4px;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-transform: uppercase;
+    white-space: nowrap;
 }
-
-.nav-btn b::before { content: "\00BB\00A0" }
 
 .nav-btn small {
     color: #5b6b85;
@@ -218,23 +221,14 @@ a:active { color: #f00 }
     transform: translate(2px, 2px);
 }
 
-/* ---- links bar ---- */
+/* ---- external links, same buttons at four across ---- */
 
-.l-bar {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 10px;
-    justify-content: center;
+.link-btns {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.link-item {
-    align-items: center;
-    display: inline-flex;
-    flex: 1 1 auto;
-    justify-content: center;
-    text-align: center;
-    white-space: nowrap;
+.link-btns .nav-btn {
+    padding: 7px 6px 8px;
 }
 
 /* ---- footer ---- */
@@ -304,11 +298,7 @@ footer p { margin: 0 }
         width: calc(100% + 24px);
     }
 
-    .l-bar { font-size: 14px; gap: 4px 8px; padding: 8px 12px }
-
-    .l-bar a { margin: 0 }
-
-    .link-item { flex: 0 0 auto }
+    .link-btns { grid-template-columns: repeat(2, minmax(0, 1fr)) }
 
     footer { margin: 7px 12px 0 }
 }

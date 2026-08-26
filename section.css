@@ -86,27 +86,30 @@
 /* ---- thumbnail lists ---- */
 
 .sec-thumbs {
-    grid-template-columns: repeat(2, 44px minmax(0, 1fr) auto);
+    grid-template-columns: repeat(2, 96px minmax(0, 1fr) auto);
 }
 
 .sec-thumbs li::before { display: none; }
 
+/* shown at the thumbnail's own 96x54 */
 .sec-thumb {
     align-self: start;
-    aspect-ratio: 16 / 9;
     background: #0b1020;
     border: 1px solid;
     border-color: #a8c6e8 #1a3f77 #1a3f77 #a8c6e8;
-    box-sizing: border-box;
+    box-sizing: content-box;
     display: block;
+    height: 54px;
     margin-top: 2px;
-    object-fit: cover;
-    width: 44px;
+    width: 96px;
 }
 
 .sec-thumb-empty {
+    align-items: center;
     color: #8fb5e8;
-    font: 5px "Courier New", monospace;
+    display: flex;
+    font: 8px "Courier New", monospace;
+    justify-content: center;
     overflow: hidden;
     text-align: center;
 }
@@ -172,7 +175,7 @@
     .sec-search { font-size: 16px; }
     .sec-status { font-size: 12px; }
     .sec-single { grid-template-columns: minmax(0, 1fr) auto; }
-    .sec-thumbs { grid-template-columns: 44px minmax(0, 1fr) auto; }
+    .sec-thumbs { grid-template-columns: 96px minmax(0, 1fr) auto; }
     .content .sec-thumbs li { grid-column: span 3; }
     .content .sec-list .sec-detail { grid-column: 1 / -1; }
 }
