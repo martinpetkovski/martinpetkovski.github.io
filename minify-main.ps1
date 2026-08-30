@@ -47,7 +47,7 @@ function Minify-Html([string]$text) {
         }
         return 'class="' + ($names -join ' ') + '"'
     })
-    foreach ($sheet in @('home', 'core', 'desktop', 'mobile')) {
+    foreach ($sheet in @('home')) {
         $text = $text.Replace('href="' + $sheet + '.css"', 'href="' + $sheet + '.min.css"')
     }
     $text = $text.Replace('src="/favicons/favicons.js"', 'src="/favicons/favicons.min.js"')
@@ -63,7 +63,7 @@ $jsOutput = Join-Path $root 'favicons\favicons.min.js'
 $htmlOutput = Join-Path $root 'index.html'
 
 $pairs = @()
-foreach ($sheet in @('home', 'core', 'desktop', 'mobile')) {
+foreach ($sheet in @('home')) {
     $cssSource = Join-Path $root ($sheet + '.css')
     $cssOutput = Join-Path $root ($sheet + '.min.css')
     [IO.File]::WriteAllText($cssOutput, (Minify-Css (Get-Content -Raw -Encoding UTF8 -LiteralPath $cssSource)), $utf8)
