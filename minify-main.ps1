@@ -40,6 +40,10 @@ function Minify-JavaScript([string]$text) {
 }
 
 function Minify-Html([string]$text) {
+    $text = [regex]::Replace($text, '(?s)<style>(.*?)</style>', {
+        param($match)
+        return '<style>' + (Minify-Css $match.Groups[1].Value) + '</style>'
+    })
     $text = [regex]::Replace($text, 'class="([^"]+)"', {
         param($match)
         $names = foreach ($name in ($match.Groups[1].Value -split '\s+')) {
