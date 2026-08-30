@@ -32,12 +32,12 @@ marked.setOptions({
 
     // Replace this page's content with the converted markdown to html
     // Wrap in main-page-like containers for consistent styling/alignment
-    // Add a persistent back button to the Opinions page
+    // Add a persistent back button to the main index
     document.body.innerHTML = `
         <div class="page">
             <div class="content">
                 <div class="topbar">
-                    <a class="home-btn" href="/opinions/index.html">[ ← Back to Opinions ]</a>
+                    <a class="home-btn" href="/index.html">[ ← Back to NAJJAK.COM ]</a>
                 </div>
                 <div id="toc" class="toc" aria-label="Contents" hidden></div>
                 ${marked(text)}
