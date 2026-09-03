@@ -56,9 +56,14 @@ function Minify-Html([string]$text) {
     }
     $text = $text.Replace('src="/favicons/favicons.js"', 'src="/favicons/favicons.min.js"')
     $text = [regex]::Replace($text, '(?s)<!--(?!\[if).*?-->', '')
-    $text = [regex]::Replace($text, '>\s+<', '><')
-    $text = [regex]::Replace($text, '(?m)^\s+|\s+$', '')
-    return ([regex]::Replace($text, '(\r?\n)+', '')).Trim()
+    # Whitespace between two inline elements is rendered text. Deleting it (the old
+    # '>\s+<' -> '><' rule) joined "Historikal" and "2025" into "Historikal2025".
+    # Collapse every run to one space, then strip it only beside block-level tags.
+    $block = 'html|head|body|div|main|footer|header|nav|section|article|aside|ul|ol|li|dl|dt|dd|h1|h2|h3|h4|h5|h6|p|blockquote|figure|table|thead|tbody|tr|td|th|form|style|script|meta|link|title|hr|br'
+    $text = [regex]::Replace($text, '\s+', ' ')
+    $text = [regex]::Replace($text, '\s+(?=</?(?:' + $block + ')\b)', '')
+    $text = [regex]::Replace($text, '(</?(?:' + $block + ')\b[^>]*>)\s+', '$1')
+    return $text.Trim()
 }
 
 $jsSource = Join-Path $root 'favicons\favicons.js'
