@@ -1,0 +1,6 @@
+# www.najjak.com
+User-agent: *
+Allow: /
+Disallow: /archive/
+
+Sitemap: https://www.najjak.com/sitemap.xml
