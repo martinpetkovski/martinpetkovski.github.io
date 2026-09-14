@@ -1,0 +1,1 @@
+(()=>{let h=document.querySelector(".hdr-text,.f"),s=document.querySelector(".hdr-nav .sub,.hdr-nav .g"),t=h&&h.querySelector("h1");if(!h||!s||!t)return;h.append(s);let f=()=>s.style.width=t.getBoundingClientRect().width+"px";new ResizeObserver(f).observe(t);document.fonts.ready.then(f);f()})();
