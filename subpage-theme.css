@@ -1,4 +1,4 @@
-@font-face{font-family:Najjak;src:url("font.otf") format("opentype"),url("font.ttf") format("truetype");font-display:swap}
+@font-face{font-family:Najjak;src:url("font.min.ttf") format("truetype"),url("font.ttf") format("truetype");font-display:swap}
 @font-face{font-family:TitleImpact;src:url("nst/resources/uni-sans.otf") format("opentype");font-display:swap}
 *{box-sizing:border-box}
 html,body{background:#fff}

@@ -70,6 +70,38 @@ $jsSource = Join-Path $root 'favicons\favicons.js'
 $htmlSource = Join-Path $root 'index.src.html'
 $jsOutput = Join-Path $root 'favicons\favicons.min.js'
 $htmlOutput = Join-Path $root 'index.html'
+$fontSource = Join-Path $root 'font.ttf'
+$fontOutput = Join-Path $root 'font.min.ttf'
+
+# Build the character set from every page and data file rendered with the site
+# font. FontTools keeps compound glyphs and rewrites the OpenType tables safely.
+$glyphSources = @(
+    $htmlSource,
+    (Join-Path $root 'header.js'),
+    (Join-Path $root 'sis\index.html'),
+    (Join-Path $root 'sis\navredi.json'),
+    (Join-Path $root 'makedonski\index.html'),
+    (Join-Path $root 'makedonski\korpus.json')
+)
+$glyphText = [string]::Concat(($glyphSources | ForEach-Object {
+    Get-Content -Raw -Encoding UTF8 -LiteralPath $_
+}))
+$glyphFile = [IO.Path]::GetTempFileName()
+[IO.File]::WriteAllText($glyphFile, $glyphText, $utf8)
+
+$python = (Get-Command python -ErrorAction SilentlyContinue).Source
+if (-not $python) {
+    $python = Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+}
+if (-not (Test-Path -LiteralPath $python)) {
+    throw 'Python with FontTools is required to build font.min.ttf (pip install fonttools).'
+}
+try {
+    & $python -m fontTools.subset $fontSource "--text-file=$glyphFile" "--output-file=$fontOutput" '--no-hinting' '--layout-features=*'
+    if ($LASTEXITCODE) { throw "Font subsetting failed with exit code $LASTEXITCODE." }
+} finally {
+    Remove-Item -LiteralPath $glyphFile -Force
+}
 
 $pairs = @()
 foreach ($sheet in @('home')) {
@@ -83,10 +115,11 @@ foreach ($sheet in @('home')) {
 
 $pairs += , @($jsSource, $jsOutput)
 $pairs += , @($htmlSource, $htmlOutput)
+$pairs += , @($fontSource, $fontOutput)
 $sourceBytes = 0L; $outputBytes = 0L
 foreach ($pair in $pairs) {
     $sourceBytes += (Get-Item -LiteralPath $pair[0]).Length
     $outputBytes += (Get-Item -LiteralPath $pair[1]).Length
     Write-Host ("{0}: {1:N0} bytes" -f (Split-Path -Leaf $pair[1]), (Get-Item -LiteralPath $pair[1]).Length)
 }
-Write-Host ("Saved {0:N0} bytes across the homepage HTML, CSS, and JavaScript." -f ($sourceBytes - $outputBytes))
+Write-Host ("Saved {0:N0} bytes across the homepage assets." -f ($sourceBytes - $outputBytes))
