@@ -10,8 +10,9 @@
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <meta name="theme-color" content="#4a7fc4">
 <link rel="icon" href="/favicon.png">
+<link rel="preload" href="font.min.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="index-theme.css">
-<style>@font-face{font-family:NajjakSubset;src:url("font.min.ttf") format("truetype"),url("font.ttf") format("truetype");font-display:swap}body,.sub,.g,.hdr-nav>a{font-family:NajjakSubset,Consolas,"Courier New",monospace!important}</style>
+<style>@font-face{font-family:NajjakSubset;src:url("font.min.woff2") format("woff2"),url("font.min.ttf") format("truetype"),url("font.ttf") format("truetype");font-display:fallback}body,.sub,.g,.hdr-nav>a{font-family:NajjakSubset,Consolas,"Courier New",monospace!important}</style>
 <script defer src="header.js"></script>
 <style>
 .hdr-nav>a,.hdr-nav>a:visited{color:#fff!important}
@@ -83,14 +84,14 @@ footer{margin-top:16px;font-size:10px}
 .hdr-nav::-webkit-scrollbar{display:none}
 .hdr-nav .sub{align-items:center;background:transparent;flex:1 1 auto;font:11px var(--mono);height:20px;margin:0;max-width:none;min-width:0}
 .hdr-nav .sub-inner{line-height:20px}
-.hdr-nav>a,.hdr-nav>a:visited{align-items:center;border-left:1px solid #6f91bc;color:#fff;display:flex;font:bold 9px var(--mono);height:20px;padding:0 5px;text-decoration:none}
+.hdr-nav>a,.hdr-nav>a:visited{align-items:center;color:#fff;display:flex;font:bold 9px var(--mono);height:20px;padding:0 5px;text-decoration:none}
 .hdr-nav>a:hover{background:#0b294e;text-decoration:underline}
 .sub-inner{animation:sub-slide var(--d,14s) linear infinite;flex:0 0 auto;padding-right:2.5em}
 @media(max-width:600px){
   .hdr-nav{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));height:38px;overflow:hidden}
   .hdr-nav .sub{grid-column:1/-1;height:18px;max-width:none;min-width:0}
   .hdr-nav .sub-inner{line-height:18px}
-  .hdr-nav>a,.hdr-nav>a:visited{border-top:1px solid #6f91bc;font-size:7px;height:20px;justify-content:center;min-width:0;overflow:hidden;padding:0 1px}
+  .hdr-nav>a,.hdr-nav>a:visited{font-size:7px;height:20px;justify-content:center;min-width:0;overflow:hidden;padding:0 1px}
 }
 </style>
 </head>

@@ -63,7 +63,57 @@ function Minify-Html([string]$text) {
     $text = [regex]::Replace($text, '\s+', ' ')
     $text = [regex]::Replace($text, '\s+(?=</?(?:' + $block + ')\b)', '')
     $text = [regex]::Replace($text, '(</?(?:' + $block + ')\b[^>]*>)\s+', '$1')
+
+    # HTML5 allows these end tags to be omitted in the contexts used here.
+    $text = [regex]::Replace($text, '</li>(?=\s*(?:<li\b|</(?:ol|ul)>))', '')
+    $text = [regex]::Replace($text, '</option>(?=\s*(?:<option\b|</select>))', '')
+    $pFollower = 'address|article|aside|blockquote|div|dl|fieldset|footer|form|h[1-6]|header|hgroup|hr|main|menu|nav|ol|p|pre|section|table|ul'
+    $text = [regex]::Replace($text, '</p>(?=\s*(?:<(?:' + $pFollower + ')\b|</(?:div|footer|main|section)>))', '')
+    $text = [regex]::Replace($text, '</head>(?=\s*<body\b)', '')
+    $text = [regex]::Replace($text, '</body>(?=\s*</html>)', '')
+    $text = [regex]::Replace($text, '</html>\s*$', '')
+
+    # Quotes are optional when an attribute contains none of HTML's forbidden
+    # unquoted-value characters. Restrict this pass to tags, never script text.
+    $safeAttribute = '="([^\s"''`=<>]+)"'
+    $text = [regex]::Replace($text, '<[^!][^>]*>', {
+        param($tag)
+        return [regex]::Replace($tag.Value, $safeAttribute, '=$1')
+    })
     return $text.Trim()
+}
+
+function ConvertTo-NativeArgument([string]$argument) {
+    if ($argument.Length -gt 0 -and $argument -notmatch '[\s"]') { return $argument }
+    $escaped = [regex]::Replace($argument, '(\\*)"', '$1$1\"')
+    $escaped = [regex]::Replace($escaped, '(\\+)$', '$1$1')
+    return '"' + $escaped + '"'
+}
+
+function Invoke-NativeCapture([string]$filePath, [string[]]$arguments) {
+    $startInfo = New-Object Diagnostics.ProcessStartInfo
+    $startInfo.FileName = $filePath
+    $startInfo.Arguments = (($arguments | ForEach-Object { ConvertTo-NativeArgument $_ }) -join ' ')
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+
+    $process = New-Object Diagnostics.Process
+    $process.StartInfo = $startInfo
+    try {
+        [void]$process.Start()
+        $standardOutput = $process.StandardOutput.ReadToEndAsync()
+        $standardError = $process.StandardError.ReadToEndAsync()
+        $process.WaitForExit()
+        return [pscustomobject]@{
+            ExitCode = $process.ExitCode
+            StdOut = $standardOutput.Result
+            StdErr = $standardError.Result
+        }
+    } finally {
+        $process.Dispose()
+    }
 }
 
 $jsSource = Join-Path $root 'favicons\favicons.js'
@@ -71,7 +121,7 @@ $htmlSource = Join-Path $root 'index.src.html'
 $jsOutput = Join-Path $root 'favicons\favicons.min.js'
 $htmlOutput = Join-Path $root 'index.html'
 $fontSource = Join-Path $root 'font.ttf'
-$fontOutput = Join-Path $root 'font.min.ttf'
+$fontOutput = Join-Path $root 'font.min.woff2'
 
 # Build the character set from every page and data file rendered with the site
 # font. FontTools keeps compound glyphs and rewrites the OpenType tables safely.
@@ -88,19 +138,58 @@ $glyphText = [string]::Concat(($glyphSources | ForEach-Object {
 }))
 $glyphFile = [IO.Path]::GetTempFileName()
 [IO.File]::WriteAllText($glyphFile, $glyphText, $utf8)
+$fontTempBase = [IO.Path]::GetTempFileName()
+$fontTemp = $fontTempBase + '.woff2'
 
-$python = (Get-Command python -ErrorAction SilentlyContinue).Source
-if (-not $python) {
-    $python = Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+$pythonCandidates = @()
+$pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+if ($pythonCommand) {
+    $pythonCandidates += [pscustomobject]@{ Exe = $pythonCommand.Source; Args = @(); Label = 'python' }
 }
-if (-not (Test-Path -LiteralPath $python)) {
-    throw 'Python with FontTools is required to build font.min.ttf (pip install fonttools).'
+$pyCommand = Get-Command py -ErrorAction SilentlyContinue
+if ($pyCommand) {
+    $pythonCandidates += [pscustomobject]@{ Exe = $pyCommand.Source; Args = @('-3'); Label = 'py -3' }
+}
+$codexPython = Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
+if (Test-Path -LiteralPath $codexPython) {
+    $pythonCandidates += [pscustomobject]@{ Exe = $codexPython; Args = @(); Label = 'Codex Python' }
+}
+
+$python = $null
+foreach ($candidate in $pythonCandidates) {
+    try {
+        $probe = Invoke-NativeCapture $candidate.Exe (@($candidate.Args) + @('-c', 'import fontTools, brotli'))
+    } catch {
+        continue
+    }
+    if ($probe.ExitCode -eq 0) {
+        $python = $candidate
+        break
+    }
 }
 try {
-    & $python -m fontTools.subset $fontSource "--text-file=$glyphFile" "--output-file=$fontOutput" '--no-hinting' '--layout-features=*'
-    if ($LASTEXITCODE) { throw "Font subsetting failed with exit code $LASTEXITCODE." }
+    if ($python) {
+        $subsetArguments = @($python.Args) + @(
+            '-m', 'fontTools.subset', $fontSource, "--text-file=$glyphFile",
+            "--output-file=$fontTemp", '--flavor=woff2', '--no-hinting', '--layout-features=*'
+        )
+        $subset = Invoke-NativeCapture $python.Exe $subsetArguments
+        if ($subset.ExitCode -eq 0 -and (Test-Path -LiteralPath $fontTemp)) {
+            [IO.File]::Copy($fontTemp, $fontOutput, $true)
+        } elseif (Test-Path -LiteralPath $fontOutput) {
+            Write-Warning "Font subsetting failed using $($python.Label); reusing the existing font.min.woff2. $($subset.StdErr.Trim())"
+        } else {
+            throw "Font subsetting failed using $($python.Label) with exit code $($subset.ExitCode).`n$($subset.StdErr.Trim())"
+        }
+    } elseif (Test-Path -LiteralPath $fontOutput) {
+        Write-Warning 'No Python interpreter with FontTools and Brotli was found; reusing the existing font.min.woff2.'
+    } else {
+        throw 'No Python interpreter with FontTools and Brotli was found, and font.min.woff2 does not exist. Run: python -m pip install fonttools brotli'
+    }
 } finally {
     Remove-Item -LiteralPath $glyphFile -Force
+    Remove-Item -LiteralPath $fontTempBase -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $fontTemp -Force -ErrorAction SilentlyContinue
 }
 
 $pairs = @()
