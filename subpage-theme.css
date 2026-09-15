@@ -1,0 +1,83 @@
+@font-face{font-family:Najjak;src:url("font.otf") format("opentype"),url("font.ttf") format("truetype");font-display:swap}
+@font-face{font-family:TitleImpact;src:url("nst/resources/uni-sans.otf") format("opentype");font-display:swap}
+*{box-sizing:border-box}
+html,body{background:#fff}
+body{color:#000;font:15px/1.2 Najjak,Consolas,"Courier New",monospace;margin:0}
+.page{background:#fff;border:0;max-width:640px;margin:0 auto;padding:0}
+.hdr{align-items:center;background-color:#4a7fc4!important;color:#fff;display:flex;gap:10px;height:76px!important;min-height:76px;padding:0!important}
+.hdr-logo{display:block;flex:0 0 76px;height:76px!important;width:76px!important;object-fit:contain;opacity:.9;filter:saturate(1.05) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,#000 50%,#0000);mask-image:linear-gradient(90deg,#000 50%,#0000)}
+.hdr-text{align-items:flex-start;align-self:stretch;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:5px 10px!important}
+.hdr h1{color:#fff;font:48px/1 Impact,TitleImpact,Haettenschweiler,"Arial Black",sans-serif;letter-spacing:1.5px;margin:0;text-transform:none;white-space:nowrap}
+.sub{background:transparent!important;color:#eee;display:flex;font:12px/14px Najjak,Consolas,"Courier New",monospace!important;height:14px;margin:0!important;max-width:246px;overflow:hidden;padding:0!important;white-space:nowrap;width:246px}
+.sub span{animation:sub-slide 14s linear infinite;flex:0 0 auto;padding-right:2.5em}
+@keyframes sub-slide{to{transform:translateX(-100%)}}
+.sub-nav{align-items:stretch;background:#1a3f77;display:flex;height:20px}
+.sub-nav a,.sub-nav a:visited{align-items:center;color:#fff;display:flex;font-size:10px;padding:0 6px;text-decoration:none}
+.sub-nav a:hover{color:#fff;text-decoration:underline}
+.content{margin:0!important;padding:5px}
+h2{background:none!important;border:0;color:#039!important;font:20px/1.1 Najjak,Consolas,"Courier New",monospace!important;letter-spacing:0;margin:14px 0 2px!important;padding:0!important;text-transform:none}
+h3{color:#039;font:16px/1.1 Najjak,Consolas,"Courier New",monospace;letter-spacing:0;margin:12px 0 3px;text-transform:none}
+p{margin:2px 0 6px}
+a,a:visited{color:#00e}
+a:hover{background:none;color:#1478eb;text-decoration:underline}
+hr{background:#eee;border:0;height:1px;margin:12px 0}
+footer{border:0;color:#555;font-size:10px;margin:8px 0 0;padding:5px 0}
+button,input,select{font:inherit}
+button{min-height:28px}
+.sis-form{border-spacing:0 5px;margin:6px 0}
+.sis-row label{font-weight:400;padding-right:8px}
+.sis-form input[type=number],.sis-form select,#q,.game-actions input{background:#fff;border:1px solid #777;color:#000;min-height:28px;padding:4px 6px}
+.sis-form input[type=number]{width:80px}
+.sis-form select{min-width:120px}
+.sis-actions,.modes,.game-actions{display:flex;gap:4px;margin:6px 0}
+.sis-actions button,.mode-btn,.game-actions button{background:#fff;border:1px solid #1478eb;color:#00e;cursor:pointer;font-size:13px;font-weight:400;min-height:28px;padding:4px 8px;text-transform:none}
+.sis-actions button{flex:1}
+.sis-actions button:hover,.mode-btn:hover,.game-actions button:hover{background:#fff;color:#1478eb;text-decoration:underline}
+.modes{display:grid;grid-template-columns:repeat(5,1fr)}
+.mode-btn{width:100%}
+.mode-btn.active{background:#1478eb;color:#fff;border-color:#1478eb}
+#q{font-size:15px;margin:8px 0;width:100%}
+#result{background:#fff;border:1px solid #1478eb;color:#cb092c;min-height:38px;padding:6px}
+.results{gap:4px}
+.results li{background:#fff;border:1px solid #b8cbe3;padding:5px 6px}
+.results li:hover{background:#edf5ff}
+.results li.active{background:#1478eb;border-color:#1478eb;color:#fff}
+.results li strong{color:inherit;font-size:15px}
+.score,.syl,.badge{background:#edf5ff;color:#555;font-weight:400}
+.wotd,.empty{background:#fff;border-color:#b8cbe3;padding:6px}
+.game-box{border:1px solid #1478eb;padding:10px}
+.game-box h2{color:#039!important}
+.cell{border:1px solid #b8cbe3}
+.stats-bar{border-color:#eee}
+mark{color:#cb092c}
+.error,.error-message{color:#cb092c}
+/* SIS uses clean, compact late-90s web controls rather than desktop chrome. */
+.sis-form{background:transparent;border:0;padding:0}
+.sis-form input[type=number],.sis-form select{background:#fff;border:1px solid #777;border-radius:0;box-shadow:none;color:#000;min-height:25px;padding:2px 4px}
+.sis-form input[type=checkbox]{accent-color:#1478eb;border-radius:0;height:15px;width:15px}
+.sis-actions{background:transparent;border:0;gap:4px;padding:0}
+.sis-actions button{background:#eee;border:1px solid #777;box-shadow:none;color:#000;min-height:27px;text-decoration:none}
+.sis-actions button:hover{background:#fff;border-color:#1478eb;color:#00e;text-decoration:underline}
+.sis-actions button:active{background:#ddd;border-color:#555;box-shadow:none;padding:4px 8px;text-decoration:none}
+.sis-actions button:focus-visible{outline:1px dotted #000;outline-offset:-3px}
+#result{border:1px solid #1478eb;box-shadow:none}
+@media(max-width:600px){
+ body{font-size:16px}
+ .page{max-width:100%}
+ .hdr-text{overflow:hidden;padding:6px!important}
+ .hdr h1{font-size:28px}
+ .sub{font-size:11px;height:13px;line-height:13px;max-width:144px;width:144px}
+ .content{margin:0 7px!important;padding:5px}
+ .sub-nav{height:22px}
+ .sub-nav a{font-size:11px}
+ h2{font-size:20px!important}
+ .sis-form{display:grid;grid-template-columns:max-content 1fr;gap:5px 8px;width:100%}
+ .sis-row{display:contents}
+ .sis-row label{align-self:center;margin:0;text-align:left}
+ .sis-input{display:block}
+ .sis-form input[type=number],.sis-form select,#q{font-size:16px;width:100%}
+ .sis-actions{flex-direction:row}
+ .modes{grid-template-columns:repeat(2,1fr);gap:4px}
+ .mode-btn{font-size:12px;padding:5px 3px}
+ .results li{flex:1 1 100%;min-width:0}
+}
