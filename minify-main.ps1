@@ -131,7 +131,10 @@ $glyphSources = @(
     (Join-Path $root 'sis\index.html'),
     (Join-Path $root 'sis\navredi.json'),
     (Join-Path $root 'makedonski\index.html'),
-    (Join-Path $root 'makedonski\korpus.json')
+    (Join-Path $root 'makedonski\korpus.json'),
+    (Join-Path $root 'music\index.html'),
+    (Join-Path $root 'music\player.js'),
+    (Join-Path $root 'archive\music\index.html')
 )
 $glyphText = [string]::Concat(($glyphSources | ForEach-Object {
     Get-Content -Raw -Encoding UTF8 -LiteralPath $_
