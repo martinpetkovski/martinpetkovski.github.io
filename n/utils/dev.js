@@ -30,19 +30,11 @@ marked.setOptions({
     // Get text from response
     const text = await response.text();
 
-    // Replace this page's content with the converted markdown to html
-    // Wrap in main-page-like containers for consistent styling/alignment
-    // Add a persistent back button to the main index
-    document.body.innerHTML = `
-        <div class="page">
-            <div class="content">
-                <div class="topbar">
-                    <a class="home-btn" href="/index.html">[ ← Back to NAJJAK.COM ]</a>
-                </div>
-                <div id="toc" class="toc" aria-label="Contents" hidden></div>
-                ${marked(text)}
-            </div>
-        </div>
+    // Keep the shared site shell intact and replace only the article body.
+    const content = document.getElementById('n-content');
+    content.innerHTML = `
+        <div id="toc" class="toc" aria-label="Contents" hidden></div>
+        ${marked(text)}
     `;
 
     buildContentsTable();

@@ -75,7 +75,8 @@ markdown.forEach(file => {
     // Convert markdown to html
     const content = marked(markdownText);
     
-    // Replace index dev script with page content
+    // Replace the development loader with the rendered article while retaining
+    // the same shared header and page shell used during local development.
     let output = indexTemplate.replace('<script type="module" src="./utils/dev.js"></script>', content);
 
     // Update html lang attribute
@@ -91,7 +92,7 @@ markdown.forEach(file => {
             `<div id="opinions-list" style="display:none;">${listHtml}</div>`);
             
         // Add script for hover behavior
-        output += `
+        const opinionsScript = `
         <script>
             (function(){
                 const hero = document.getElementById('hero-opinions');
@@ -102,11 +103,17 @@ markdown.forEach(file => {
                 }
             })();
         </script>`;
+        output = output.replace(/\s*<\/body>/, `${opinionsScript}\n    </body>`);
     }
 
     // Replace title with content of first <h1> tag
-    const newTitle = output.match(/>(.*?)<\/h1>/)[1] || null;
-    if (newTitle) output = output.replace(/<title>(.*?)<\/title>/, `<title>${newTitle}</title>`);
+    const titleMatch = content.match(/<h1[^>]*>(.*?)<\/h1>/i);
+    const fallbackTitle = baseName
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    const newTitle = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '') : fallbackTitle;
+    output = output.replace(/<title>(.*?)<\/title>/, `<title>${newTitle}</title>`);
 
     // Replace 'docs/assets' links with 'assets'
     output = output.replace(/docs\/assets/g, 'assets');
@@ -119,15 +126,6 @@ markdown.forEach(file => {
             return `href="${p1}.html"`;
         }
     });
-    
-    // Inject Language Switcher
-    const switcherHtml = `
-    <div style="position: fixed; top: 10px; right: 10px; background: #fff; padding: 5px; border: 1px solid #ccc; z-index: 1000;">
-        <a href="${baseName}.html" style="${lang==='en'?'font-weight:bold':''}">EN</a> | 
-        <a href="${baseName}.mk.html" style="${lang==='mk'?'font-weight:bold':''}">MK</a>
-    </div>
-    `;
-    output = output.replace('</body>', `${switcherHtml}</body>`);
     
     // Output built html to build folder
     const outputFile = file.replace('.md', '.html');
