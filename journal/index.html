@@ -79,7 +79,7 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 
 header.top{position:relative;z-index:2;flex:0 0 auto;text-align:center;
   min-height:calc(var(--lh)*3.5);display:flex;flex-direction:column;justify-content:center}
-h1.brand{margin:0;font-size:min(1.55em,7.2vw);font-weight:700;line-height:calc(var(--lh)*2);white-space:nowrap}
+h1.brand{margin:0;font-size:min(1.85em,8.8vw);font-weight:700;line-height:calc(var(--lh)*2);white-space:nowrap}
 h1.brand a{border:none}
 nav.nav{line-height:var(--lh)}
 nav.nav a{margin:0 .42em;font-size:.92em;border-bottom:none;white-space:nowrap}
@@ -228,7 +228,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     var b=probe.lastElementChild.getBoundingClientRect().top-probe.getBoundingClientRect().top;
     flow.removeChild(probe);return b;
   }
-  var SHIFT=7;
+  function shiftFor(lh){return lh*0.19;}   /* the writing rides this far below its rule */
   function snap(p,origin,lh){
     var blocks=p.flow.querySelectorAll('h2,p,li');
     for(var pass=0;pass<2;pass++)
@@ -256,7 +256,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     /* the writing sits 5px above its rule */
     var base=baselineOf(p.flow);
     p.pad.style.setProperty('--rule-offset',((((base)%lh)-lh)%lh).toFixed(2)+'px');
-    snap(p,p.sheet.getBoundingClientRect().top+base+SHIFT,lh);
+    snap(p,p.sheet.getBoundingClientRect().top+base+shiftFor(lh),lh);
     /* a song never spills off its page: shrink the hand until it fits */
     var root=getComputedStyle(document.documentElement);
     var fs0=parseFloat(root.getPropertyValue('--fs')), lh0=parseFloat(root.getPropertyValue('--lh'));
@@ -268,7 +268,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
       p.sheet.style.height=(Math.max(3,Math.floor(avail/lh))*lh)+'px';
       base=baselineOf(p.flow);
       p.pad.style.setProperty('--rule-offset',((((base)%lh)-lh)%lh).toFixed(2)+'px');
-      snap(p,p.sheet.getBoundingClientRect().top+base+SHIFT,lh);
+      snap(p,p.sheet.getBoundingClientRect().top+base+shiftFor(lh),lh);
     }
     p.lh=lh;
     p.ruleOffset=(((base)%lh)-lh)%lh;
@@ -282,14 +282,14 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     var pb=p.pad.getBoundingClientRect(), sb=p.sheet.getBoundingClientRect();
     if(!pb.width)return;
     var w=pb.width,h=pb.height,x0=sb.left-pb.left,x1=x0+sb.width;
-    var top=sb.top-pb.top, bottom=top+sb.height, d='';
+    var top=sb.top-pb.top, bottom=top+sb.height, d='', amp=Math.min(1,lh/34);
     for(var y=top+offset+lh;y<bottom+1;y+=lh){
       var yy=y-1;
-      d+=' M '+(x0+jitter(-1,2)).toFixed(1)+' '+(yy+jitter(-.7,.7)).toFixed(1);
+      d+=' M '+(x0+jitter(-1,2)).toFixed(1)+' '+(yy+jitter(-.7,.7)*amp).toFixed(1);
       var steps=Math.max(4,Math.round(sb.width/90));
       for(var i=1;i<=steps;i++){
         var x=x0+sb.width*i/steps, cx=x-sb.width/steps/2;
-        d+=' Q '+cx.toFixed(1)+' '+(yy+jitter(-1.1,1.1)).toFixed(1)+' '+x.toFixed(1)+' '+(yy+jitter(-.8,.8)).toFixed(1);
+        d+=' Q '+cx.toFixed(1)+' '+(yy+jitter(-1.1,1.1)*amp).toFixed(1)+' '+x.toFixed(1)+' '+(yy+jitter(-.8,.8)*amp).toFixed(1);
       }
     }
     var mx=x0-18,md='M '+(mx+jitter(-1,1)).toFixed(1)+' 0';
