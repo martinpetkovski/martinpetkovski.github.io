@@ -1,0 +1,50 @@
+{
+  "how": [
+    "I get bored by the algorithm (want human music)",
+    "I pick you and ask you for a playlist",
+    "You send me a **hand-picked** playlist",
+    "I listen to it without skip",
+    "I pick a song I like",
+    "I write down a note about it",
+    "You may get a link to here **if you ask for it**",
+    "We may chat about music and that's cool"
+  ],
+  "notes": [
+    {
+      "slug": "2026-09-17-duvet",
+      "date": "2026-09-17",
+      "title": "Duvet",
+      "artist": "Bôa",
+      "source_label": "september playlist",
+      "body": "The bass moves the whole time, patient and low, while the guitar hangs on one chord shape and lets it. The **drum fill** into the second chorus is the only moment the band lets itself be loud, and it lasts about a second.",
+      "sample": true
+    },
+    {
+      "slug": "2026-09-11-kiss-from-a-rose",
+      "date": "2026-09-11",
+      "title": "Kiss from a Rose",
+      "artist": "Seal",
+      "source_label": "a walk-home mix",
+      "body": "It is in **6/8**, which is why it sways rather than marches, and the a cappella opening sets the whole harmonic stack before an instrument arrives. Underneath the chorus the strings move in slow contrary motion to the bass, which is what makes the lift feel inevitable.",
+      "sample": true
+    },
+    {
+      "slug": "2026-09-05-fields-of-gold",
+      "date": "2026-09-05",
+      "title": "Fields of Gold",
+      "artist": "Sting",
+      "source_label": "kitchen at 1am",
+      "body": "A single guitar figure loops nearly unchanged from start to finish, and the arrangement builds by adding instruments that never disturb it. What carries it is the **pedal tone** underneath: the harmony shifts while the same note keeps ringing.",
+      "sample": true
+    },
+    {
+      "slug": "2026-08-30-autumn-tactics",
+      "date": "2026-08-30",
+      "title": "Autumn Tactics",
+      "artist": "Chicane",
+      "source_label": "a night-drive mix",
+      "body": "The pads come up so slowly that you notice the beat before you notice the chords. When the lead finally enters it is a **four-note motif**, delayed and washed until the repeats blur into each other.",
+      "sample": true
+    }
+  ]
+}
