@@ -7,6 +7,7 @@
 <meta name="description" content="Music demos, recordings and unfinished ideas by Martin Petkovski.">
 <link rel="icon" href="/favicon.png">
 <link rel="preload" href="/font.min.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
 @font-face{font-family:Najjak;src:url("/font.min.woff2") format("woff2"),url("/font.ttf") format("truetype");font-display:fallback}
 *{box-sizing:border-box}
@@ -20,32 +21,59 @@ body{margin:0;background:#fff;color:#000;font:15px/1.25 Najjak,Consolas,"Courier
 .hdr-text small{display:block;overflow:hidden;color:#eee;font-size:11px;white-space:nowrap}
 .back,.back:visited{display:flex;align-items:center;justify-content:center;height:20px;background:#1a3f77;color:#fff;font-size:10px;text-decoration:none}
 .back:hover,.back:focus-visible{text-decoration:underline}
-main{padding:5px}
-h1,h2{margin:12px 0 3px;color:#039;font-size:20px;line-height:1.1}
-h2{font-size:16px}
-p{margin:2px 0 7px}
-#status{min-height:1.4em;color:#555;font-size:12px}
-#stop{padding:0;border:0;background:none;color:#00e;font:inherit;text-decoration:underline;cursor:pointer}
-#stop[hidden]{display:none}
-#tracks{margin:4px 0;padding-left:28px}
-#tracks li{margin:2px 0}
-.track{padding:0;border:0;background:none;color:#00e;font:inherit;text-align:left;text-decoration:underline;cursor:pointer}
-.track:visited{color:#00e}.track:hover,.track:focus-visible,#stop:hover,#stop:focus-visible{color:#1478eb}
+
+/* player */
+#player{position:sticky;top:0;z-index:5;background:#fff;padding:6px 0;font-size:13px;line-height:1.4}
+#now-title{overflow:hidden;white-space:nowrap;color:#cb092c}
+#now-title .mq{display:inline-flex;white-space:nowrap}
+#now-title.scroll .mq{animation:marquee 12s linear infinite}
+#now-title.scroll:hover .mq{animation-play-state:paused}
+#now-title.scroll span{padding-right:3em}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){#now-title.scroll .mq{animation:none}}
+#bar{position:relative;display:block;height:10px;margin:4px 0 5px;background:#edf5ff;border:1px solid #1a3f77;cursor:pointer}
+#bar:focus-visible{outline:1px dotted #555;outline-offset:2px}
+#fill{display:block;height:100%;width:0;background:#1a3f77}
+#row{display:flex;align-items:center;gap:10px}
+#time{margin-left:auto;color:#555}
+#controls button{padding:0 3px;border:0;background:none;color:#1a3f77;font-size:13px;cursor:pointer}
+#controls button:hover,#controls button:focus-visible{color:#4a7fc4}
+#controls button[aria-pressed="true"]{color:#cb092c}
+#controls .sep{display:inline-block;width:8px}
+
+main{padding:0 0 6px}
+#status{color:#cb092c;font-size:12px;padding:6px 0 0}
+#status:empty{display:none}
+#status a{color:#00e}
+
+#tracks{margin:0;padding:0;width:100%;list-style:none;counter-reset:n}
+#tracks li{counter-increment:n}
+
+.track::before{content:counter(n) ".";flex:0 0 auto;min-width:1.8em;color:#999;font-size:11px}
+.track{display:flex;align-items:baseline;gap:6px;width:100%;padding:3px 0;color:#00e;text-decoration:none}
+
+.track .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline}
+.track:hover,.track:focus-visible{background:#edf5ff;color:#1478eb}
 .track[aria-current="true"]{color:#cb092c}
-.year{color:#555;font-size:12px}
+.track .year{flex:0 0 auto;color:#555;font-size:11px}
+.track .len{flex:0 0 auto;min-width:3.2em;color:#999;font-size:11px;text-align:right}
 footer{padding:5px;margin-top:14px;font-size:10px}
-@media(max-width:600px){body{font-size:16px}.hdr-text{padding:6px}.hdr-text strong{font-size:28px}.hdr-text small{font-size:10px}main,footer{padding-left:12px;padding-right:12px}.track{font-size:15px}}
+@media(max-width:600px){body{font-size:16px}.hdr-text{padding:6px}.hdr-text strong{font-size:28px}.hdr-text small{font-size:10px}main,footer{padding-left:12px;padding-right:12px}}
 </style>
 <script defer src="player.js"></script>
 </head>
 <body>
 <div class="page">
 <header><div class="hdr-main"><img class="hdr-logo" src="/header.webp" width="76" height="76" alt=""><div class="hdr-text"><strong>NAJJAK.COM</strong><small>Music demos, recordings and unfinished ideas.</small></div></div><a class="back" href="/#vault">BACK TO THE VAULT</a></header>
+
+<div id="player">
+<div id="now-title"><span class="mq"><span>-- nothing playing --</span></span></div>
+<span id="bar" role="slider" aria-label="Seek" tabindex="0"><span id="fill"></span></span>
+<div id="row"><span id="controls"><button id="prev" type="button" aria-label="Previous track" title="Previous track"><i class="fa-solid fa-backward-step"></i></button> <button id="back10" type="button" aria-label="Back 10 seconds" title="Back 10s"><i class="fa-solid fa-rotate-left"></i></button> <button id="play" type="button" aria-label="Play" title="Play / pause"><i id="play-icon" class="fa-solid fa-play"></i></button> <button id="fwd10" type="button" aria-label="Forward 10 seconds" title="Forward 10s"><i class="fa-solid fa-rotate-right"></i></button> <button id="next" type="button" aria-label="Next track" title="Next track"><i class="fa-solid fa-forward-step"></i></button><span class="sep"></span><button id="shuffle" type="button" aria-pressed="false" aria-label="Shuffle" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button> <button id="repeat" type="button" aria-pressed="false" aria-label="Repeat one" title="Repeat one"><i class="fa-solid fa-repeat"></i></button></span><span id="time">0:00/0:00</span></div>
+</div>
+
 <main>
-<h1>Music Demos</h1>
-<p>Old songs, live recordings, drafts and unfinished ideas. Click a title to play it.</p>
-<p id="status" role="status" aria-live="polite">Loading catalogue…</p>
-<button id="stop" type="button" hidden>Stop</button>
+<p id="status" role="status" aria-live="polite"></p>
 <ol id="tracks"></ol>
 <noscript><p>JavaScript is required for the music player. <a href="/archive/music/">Browse the archive directly.</a></p></noscript>
 </main>
