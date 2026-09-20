@@ -3,9 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Listening Journal</title>
-<meta name="description" content="One song out of someone else's mix, written down.">
+<title>Listening Journal &mdash; NAJJAK.COM</title>
+<meta name="description" content="Notes on one song out of someone else's playlist. A handwritten listening journal by Martin Petkovski &mdash; what the arrangement does, not whether it is good.">
+<link rel="canonical" href="https://www.najjak.com/journal/">
+<meta name="author" content="Martin Petkovski">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<meta name="theme-color" content="#efe6d0">
 <link rel="icon" href="/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NAJJAK.COM">
+<meta property="og:title" content="Listening Journal">
+<meta property="og:description" content="Notes on one song out of someone else's playlist &mdash; what the arrangement does, not whether it is good.">
+<meta property="og:url" content="https://www.najjak.com/journal/">
+<meta property="og:image" content="https://www.najjak.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Listening Journal &mdash; NAJJAK.COM">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@misteriozen">
+<meta name="twitter:title" content="Listening Journal">
+<meta name="twitter:description" content="Notes on one song out of someone else's playlist.">
+<meta name="twitter:image" content="https://www.najjak.com/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
@@ -126,6 +145,14 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
 </style>
 </head>
 <body>
+<noscript>
+  <div style="max-width:40rem;margin:3rem auto;padding:0 1rem;color:#f5eddb;font-family:Georgia,serif;line-height:1.5">
+    <h1>Listening Journal</h1>
+    <p>Notes on one song out of someone else&rsquo;s playlist: what the arrangement does, not whether it is good.
+    The notes are stored in <a href="data.json" style="color:#9db8e8">data.json</a> and need JavaScript to be laid out on the page.</p>
+    <p><a href="/" style="color:#9db8e8">Back to najjak.com</a></p>
+  </div>
+</noscript>
 <div class="shell">
   <div class="book" id="book">
     <div class="stack" id="stack" aria-hidden="true"></div>
@@ -671,7 +698,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     if(a){
       e.preventDefault();
       go(a.getAttribute('data-go')==='how'?pages.length:1);
-      document.title=(a.getAttribute('data-go')==='how'?'How this works':'Journal')+' \u2014 Listening Journal';
+      document.title=(a.getAttribute('data-go')==='how'?'How this works \u2014 Listening Journal':'Listening Journal')+' \u2014 NAJJAK.COM';
       markNav(a.getAttribute('data-go'));
       return;
     }
@@ -699,13 +726,48 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
     if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.4) step(dx<0?1:-1);},{passive:true});
 
+  function seo(d){
+    try{
+      var site='https://www.najjak.com', here=site+'/journal/';
+      var items=notes().map(function(n,i){
+        return {'@type':'ListItem','position':i+1,'item':{
+          '@type':'MusicRecording','name':n.title,
+          'byArtist':{'@type':'MusicGroup','name':n.artist},
+          'description':String(n.body||'').replace(/[*_]{2}/g,'').slice(0,300)}};
+      });
+      var ld={'@context':'https://schema.org','@graph':[
+        {'@type':'WebPage','@id':here+'#webpage','url':here,'name':'Listening Journal',
+         'description':"Notes on one song out of someone else's playlist.",
+         'inLanguage':'en','isPartOf':{'@id':site+'/#website'},
+         'author':{'@id':site+'/#martin'},
+         'breadcrumb':{'@type':'BreadcrumbList','itemListElement':[
+           {'@type':'ListItem','position':1,'name':'NAJJAK.COM','item':site+'/'},
+           {'@type':'ListItem','position':2,'name':'Listening Journal','item':here}]}},
+        {'@type':'ItemList','@id':here+'#songs','name':'Songs written about','numberOfItems':items.length,
+         'itemListOrder':'https://schema.org/ItemListOrderDescending','itemListElement':items}
+      ]};
+      var s=document.createElement('script');
+      s.type='application/ld+json';
+      s.textContent=JSON.stringify(ld);
+      document.head.appendChild(s);
+      var dates=notes().map(function(n){return n.date;}).sort();
+      if(dates.length){
+        var m=document.createElement('meta');
+        m.setAttribute('property','article:modified_time');
+        m.setAttribute('content',dates[dates.length-1]);
+        document.head.appendChild(m);
+      }
+    }catch(e){}
+  }
+
   fetch('data.json').then(function(r){return r.json();}).then(function(d){
     DATA=d;
     buildPages();
     dress(pages[0]);
     initTurn();
     ready=true;
-    document.title='Journal \u2014 Listening Journal';
+    document.title='Listening Journal \u2014 NAJJAK.COM';
+    seo(d);
     /* write out the rest of the pad while nobody is looking */
     var i=1;
     (function more(){
