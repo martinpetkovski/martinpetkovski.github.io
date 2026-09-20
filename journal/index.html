@@ -64,11 +64,15 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.14' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)' opacity='0.14'/%3E%3C/svg%3E");
   background-size:180px 180px,420px 420px}
+.crumple{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:multiply;opacity:.85}
 .vignette{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(120% 100% at 30% 20%,rgba(255,255,255,.35),rgba(0,0,0,0) 45%,rgba(60,45,20,.13) 100%)}
 .paperlines{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
 .paperlines path{fill:none;stroke:var(--rule);stroke-width:1.1;stroke-linecap:round;opacity:.75}
 .paperlines path.margin{stroke:var(--margin-line);stroke-width:1.4;opacity:.55}
+.paperlines path.crease{stroke:rgba(84,66,32,.085);stroke-width:.9;opacity:1}
+.paperlines path.creaselit{stroke:rgba(255,255,255,.3);stroke-width:.9;opacity:1}
+.paperlines path.creasesoft{stroke:rgba(84,66,32,.05);stroke-width:8;opacity:1;filter:url(#soften)}
 @media (max-width:639px){.long{display:none}}
 @media (min-width:640px){h1.brand{font-size:1.8em}nav.nav a{margin:0 .55em;font-size:1.02em}}
 @media (max-width:639px){nav.nav a{font-size:min(.92em,4.6vw)}}
@@ -93,6 +97,9 @@ nav.nav a[aria-current="page"]{border-bottom:none}
 .flow p.tight{margin:0}
 .flow ol{margin:0 0 var(--lh);padding-left:1.4em}
 .song{font-weight:700;font-size:1.5em;line-height:var(--lh);display:block;margin:0}
+.song .tolink{border-bottom:none;text-decoration:none}
+.titleink{position:absolute;pointer-events:none;overflow:visible;z-index:3}
+.titleink path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;opacity:.5}
 .meta{color:var(--ink-faint)}
 .byline{color:var(--ink-soft)}
 .hook{color:var(--ink-soft);padding-left:12px;border-left:2px solid var(--margin-line)}
@@ -127,12 +134,13 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
   <div class="pad">
     <svg class="paperlines" aria-hidden="true"></svg>
     <div class="grain" aria-hidden="true"></div>
+    <div class="crumple" aria-hidden="true"></div>
     <div class="vignette" aria-hidden="true"></div>
     <div class="holes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     <header class="top">
-      <h1 class="brand"><a href="#/journal">Listening Journal</a></h1>
+      <h1 class="brand"><a href="/journal/" data-go="journal">Listening Journal</a></h1>
       <nav class="nav" aria-label="Primary">
-        <a href="#/journal">Journal</a><a href="#/journal/how">How<span class="long"> this works</span></a><a href="/">Back<span class="long"> to the site</span></a>
+        <a href="/journal/" data-go="journal">Journal</a><a href="/journal/" data-go="how">How<span class="long"> this works</span></a><a href="/">Back<span class="long"> to the site</span></a>
       </nav>
     </header>
     <div class="sheet"><div class="flow"></div></div>
@@ -211,7 +219,10 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     return String(s).replace(/\*\*([^*]+)\*\*/g,'<span class="circled">$1</span>');
   }
   function noteHTML(n){
-    return '<p class="tight song">'+marks(esc(n.title))+' <span class="byline">&mdash; '+esc(n.artist)+'</span></p>'+
+    var q=encodeURIComponent(n.title+' '+n.artist);
+    return '<p class="tight song"><a class="tolink" href="https://www.youtube.com/results?search_query='+q+
+      '" target="_blank" rel="noopener noreferrer">'+marks(esc(n.title))+'</a>'+
+      ' <span class="byline">&mdash; '+esc(n.artist)+'</span></p>'+
       '<p class="meta">'+fmt(n.date)+' &middot; '+esc(n.source_label)+'</p>'+
       '<p>'+marks(esc(n.body))+'</p>';
   }
@@ -299,7 +310,58 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     }
     svg.setAttribute('viewBox','0 0 '+w.toFixed(0)+' '+h.toFixed(0));
     svg.setAttribute('width',w.toFixed(0));svg.setAttribute('height',h.toFixed(0));
-    svg.innerHTML='<path class="margin" d="'+md+'"/><path d="'+d.trim()+'"/>';
+    /* creases: crooked runs that wander and fade, the way a folded sheet keeps them */
+    var cr='';
+    function crease(x,y,ang,len,depth){
+      var pts=[[x,y]],steps=Math.max(3,Math.round(len/34));
+      for(var s=0;s<steps;s++){
+        ang+=jitter(-0.28,0.28);
+        var step=len/steps;
+        x+=Math.cos(ang)*step;y+=Math.sin(ang)*step;
+        pts.push([x,y]);
+      }
+      var dd='M '+pts.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L ');
+      var op=(0.3+Math.random()*0.45)*(depth?0.5:1);
+      cr+='<path class="creasesoft" d="'+dd+'" style="opacity:'+(op*0.8).toFixed(2)+'"/>';
+      cr+='<path class="crease" d="'+dd+'" style="opacity:'+op.toFixed(2)+'"/>';
+      var nx=Math.sin(ang)*1.1,ny=-Math.cos(ang)*1.1;
+      cr+='<path class="creaselit" d="M '+pts.map(function(q){return (q[0]+nx).toFixed(1)+' '+(q[1]+ny).toFixed(1);}).join(' L ')+
+          '" style="opacity:'+(op*0.75).toFixed(2)+'"/>';
+      /* every so often it splits */
+      if(!depth&&Math.random()<0.65){
+        var b=pts[(pts.length*(0.3+Math.random()*0.4))|0];
+        crease(b[0],b[1],ang+jitter(-1.1,1.1),len*jitter(0.25,0.5),1);
+      }
+    }
+    for(var c=0;c<4;c++){
+      var fromEdge=Math.random()<0.6, sx,sy,ang;
+      if(fromEdge){
+        var side=(Math.random()*4)|0;
+        sx=side===1?w:side===3?0:jitter(0,w);
+        sy=side===0?0:side===2?h:jitter(0,h);
+        ang=Math.atan2(h/2-sy,w/2-sx)+jitter(-0.6,0.6);
+      }else{
+        sx=jitter(w*0.15,w*0.85);sy=jitter(h*0.15,h*0.85);ang=jitter(0,Math.PI*2);
+      }
+      crease(sx,sy,ang,jitter(h*0.25,h*1.05),0);
+    }
+    svg.innerHTML='<defs><filter id="soften" x="-20%" y="-20%" width="140%" height="140%">'+
+      '<feGaussianBlur stdDeviation="2.4"/></filter></defs>'+
+      cr+'<path class="margin" d="'+md+'"/><path d="'+d.trim()+'"/>';
+    /* and a little crumple, different on every sheet */
+    var g=p.pad.querySelector('.grain');
+    if(g){
+      g.style.backgroundPosition=(Math.random()*180|0)+'px '+(Math.random()*180|0)+'px, '+
+        (Math.random()*420|0)+'px '+(Math.random()*420|0)+'px';
+      var blobs=[];
+      for(var q2=0;q2<5;q2++){
+        blobs.push('radial-gradient('+(28+Math.random()*40).toFixed(0)+'% '+(18+Math.random()*30).toFixed(0)+
+          '% at '+(Math.random()*100).toFixed(0)+'% '+(Math.random()*100).toFixed(0)+'%,rgba(120,96,50,'+
+          (0.05+Math.random()*0.06).toFixed(3)+'),rgba(0,0,0,0) 70%)');
+      }
+      var soft=p.pad.querySelector('.crumple');
+      if(soft) soft.style.backgroundImage=blobs.join(',');
+    }
   }
 
   function jitter(a,b){return a+Math.random()*(b-a);}
@@ -340,6 +402,43 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
       d+=(i?' L ':'M ')+x.toFixed(1)+' '+y.toFixed(1);
     }
     return d;
+  }
+  function drawUnderlines(p){
+    [].forEach.call(p.pad.querySelectorAll('.titleink'),function(el){el.remove();});
+    var hb=p.pad.getBoundingClientRect();
+    [].forEach.call(p.flow.querySelectorAll('.song .tolink'),function(a){
+      /* one stroke per line of the title, not one per glyph box */
+      var raw=a.getClientRects(),lines=[];
+      for(var q=0;q<raw.length;q++){
+        var rr=raw[q];
+        if(rr.width<1)continue;
+        var key=Math.round(rr.bottom/4);
+        var line=null;
+        for(var z=0;z<lines.length;z++) if(lines[z].key===key) line=lines[z];
+        if(!line){line={key:key,left:rr.left,right:rr.right,bottom:rr.bottom};lines.push(line);}
+        else {line.left=Math.min(line.left,rr.left);line.right=Math.max(line.right,rr.right);
+              line.bottom=Math.max(line.bottom,rr.bottom);}
+      }
+      var rects=lines.map(function(l){return {left:l.left,right:l.right,bottom:l.bottom,width:l.right-l.left};});
+      for(var i=0;i<rects.length;i++){
+        var r=rects[i];
+        if(r.width<6)continue;
+        var w=r.width+6,h=12,y=6,d='M 1 '+(y+jitter(-1.2,1.2)).toFixed(1);
+        var steps=Math.max(3,Math.round(w/30));
+        for(var k=1;k<=steps;k++){
+          var x=1+(w-2)*k/steps, cx=x-(w-2)/steps/2;
+          d+=' Q '+cx.toFixed(1)+' '+(y+jitter(-2.6,2.6)).toFixed(1)+' '+x.toFixed(1)+' '+(y+jitter(-1.7,1.7)).toFixed(1);
+        }
+        var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('class','titleink');svg.setAttribute('aria-hidden','true');
+        svg.style.left=(r.left-hb.left-3).toFixed(1)+'px';
+        svg.style.top=(r.bottom-hb.top-7).toFixed(1)+'px';
+        svg.setAttribute('width',w.toFixed(1));svg.setAttribute('height',h);
+        svg.setAttribute('viewBox','0 0 '+w.toFixed(1)+' '+h);
+        svg.innerHTML='<path d="'+d+'"/>';
+        p.pad.appendChild(svg);
+      }
+    });
   }
   function drawRings(p){
     [].forEach.call(p.pad.querySelectorAll('.ring'),function(el){el.remove();});
@@ -396,9 +495,9 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     groups.forEach(function(g){
       var label=g.length>1?(seen+1)+'\u2013'+(seen+g.length)+' of '+list.length:(seen+1)+' of '+list.length;
       seen+=g.length;
-      frag.appendChild(mkPage(g.map(noteHTML).join(''),label,'#/journal'));
+      frag.appendChild(mkPage(g.map(noteHTML).join(''),label,'journal'));
     });
-    frag.appendChild(mkPage(howHTML(),'','#/journal/how'));
+    frag.appendChild(mkPage(howHTML(),'','how'));
     flipbook.appendChild(frag);
   }
   function mkPage(html,label,nav){
@@ -411,14 +510,14 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     p.flow.innerHTML=html;
     p.no.textContent=label;
     [].forEach.call(pad.querySelectorAll('nav.nav a'),function(a){
-      if(a.getAttribute('href')===nav)a.setAttribute('aria-current','page');});
+      if(a.getAttribute('data-go')===nav)a.setAttribute('aria-current','page');});
     pages.push(p);
     return page;
   }
   function dress(p){
     if(!p)return;
     if(!p.written){p.written=true;handwrite(p.flow);}
-    if(!p.laid){p.laid=layout(p);if(p.laid){drawPaper(p,p.lh,p.ruleOffset);drawInkline(p);drawRings(p);}}
+    if(!p.laid){p.laid=layout(p);if(p.laid){drawPaper(p,p.lh,p.ruleOffset);drawInkline(p);drawUnderlines(p);drawRings(p);}}
   }
 
   /* ---------- turn.js ---------- */
@@ -473,11 +572,26 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
 
   /* ---------- input ---------- */
   book.addEventListener('click',function(e){
+    var a=e.target.closest('a[data-go]');
+    if(a){
+      e.preventDefault();
+      go(a.getAttribute('data-go')==='how'?pages.length:1);
+      document.title=(a.getAttribute('data-go')==='how'?'How this works':'Journal')+' \u2014 Listening Journal';
+      markNav(a.getAttribute('data-go'));
+      return;
+    }
     var b=e.target.closest('button');
     if(!b)return;
     if(b.classList.contains('next'))step(1);
     if(b.classList.contains('prev'))step(-1);
   });
+  function markNav(which){
+    [].forEach.call(document.querySelectorAll('#flipbook nav.nav a[data-go]'),function(a){
+      if(a.getAttribute('data-go')===which)a.setAttribute('aria-current','page');
+      else a.removeAttribute('aria-current');
+    });
+    pages.forEach(function(p){if(p.laid)drawInkline(p);});
+  }
   document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){step(1);e.preventDefault();}
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){step(-1);e.preventDefault();}
@@ -489,13 +603,6 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     if(!tracking)return;tracking=false;
     var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
     if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.4) step(dx<0?1:-1);},{passive:true});
-  window.addEventListener('hashchange',route);
-  function route(){
-    if(!ready)return;
-    var how=/how/.test(location.hash||'');
-    document.title=(how?'How this works':'Journal')+' — Listening Journal';
-    go(how?pages.length:1);
-  }
 
   fetch('data.json').then(function(r){return r.json();}).then(function(d){
     DATA=d;
@@ -503,7 +610,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     dress(pages[0]);
     initTurn();
     ready=true;
-    route();
+    document.title='Journal \u2014 Listening Journal';
     /* write out the rest of the pad while nobody is looking */
     var i=1;
     (function more(){
