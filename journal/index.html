@@ -93,14 +93,17 @@ nav.nav a[aria-current="page"]{border-bottom:none}
 
 .flow{position:relative;z-index:1;height:100%}
 .flow h2{margin:0 0 var(--lh);font-size:1.5em;font-weight:700;line-height:calc(var(--lh)*2)}
-.flow p{margin:0 0 var(--lh)}
+.flow p{margin:0}
+.flow p.cont{margin:0}
 .flow p.tight{margin:0}
 .flow ol{margin:0 0 var(--lh);padding-left:1.4em}
 .song{font-weight:700;font-size:1.5em;line-height:var(--lh);display:block;margin:0}
 .song .tolink{border-bottom:none;text-decoration:none}
 .titleink{position:absolute;pointer-events:none;overflow:visible;z-index:3}
 .titleink path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;opacity:.5}
+.underlined{position:relative}
 .meta{color:var(--ink-faint)}
+.flow p.meta{margin-bottom:0}
 .byline{color:var(--ink-soft)}
 .hook{color:var(--ink-soft);padding-left:12px;border-left:2px solid var(--margin-line)}
 footer.bottom{position:relative;z-index:2;flex:0 0 auto;line-height:var(--lh);
@@ -187,11 +190,13 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     function r(a,b){return a+Math.random()*(b-a);}
     var css='';
     for(var i=0;i<VARIANTS;i++){
-      var w=Math.round(r(380,720));
-      css+='.v'+i+'{font-weight:'+w+';font-variation-settings:"wght" '+w+';letter-spacing:'+r(-0.5,0.7).toFixed(2)+'px;'+
-        'transform:translate('+r(-0.7,0.7).toFixed(2)+'px,'+r(-1.3,1.3).toFixed(2)+'px) rotate('+r(-4.2,4.2).toFixed(2)+
-        'deg) skewX('+r(-7,7).toFixed(2)+'deg) scale('+r(0.9,1.13).toFixed(3)+','+r(0.9,1.14).toFixed(3)+');'+
-        (Math.random()<0.16?'opacity:'+r(.74,.94).toFixed(2)+';':'')+'}';
+      /* the hand wobbles, it does not change pen size: keep every glyph near the same scale */
+      var w=Math.round(r(440,600));
+      var sc=r(0.975,1.035);
+      css+='.v'+i+'{font-weight:'+w+';font-variation-settings:"wght" '+w+';letter-spacing:'+r(-0.4,0.6).toFixed(2)+'px;'+
+        'transform:translate('+r(-0.7,0.7).toFixed(2)+'px,'+r(-1.2,1.2).toFixed(2)+'px) rotate('+r(-4.2,4.2).toFixed(2)+
+        'deg) skewX('+r(-7,7).toFixed(2)+'deg) scale('+sc.toFixed(3)+','+(sc*r(0.99,1.015)).toFixed(3)+');'+
+        (Math.random()<0.16?'opacity:'+r(.78,.95).toFixed(2)+';':'')+'}';
     }
     styleEl=document.createElement('style');styleEl.textContent=css;document.head.appendChild(styleEl);
   }
@@ -216,16 +221,19 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
 
   /* ---------- page content ---------- */
   function marks(s){
-    return String(s).replace(/\*\*([^*]+)\*\*/g,'<span class="circled">$1</span>');
+    return String(s)
+      .replace(/\*\*([^*]+)\*\*/g,'<span class="circled">$1</span>')
+      .replace(/__([^_]+)__/g,'<span class="underlined">$1</span>');
   }
-  function noteHTML(n){
+  function noteHead(n){
     var q=encodeURIComponent(n.title+' '+n.artist);
     return '<p class="tight song"><a class="tolink" href="https://www.youtube.com/results?search_query='+q+
       '" target="_blank" rel="noopener noreferrer">'+marks(esc(n.title))+'</a>'+
       ' <span class="byline">&mdash; '+esc(n.artist)+'</span></p>'+
-      '<p class="meta">'+fmt(n.date)+' &middot; '+esc(n.source_label)+'</p>'+
-      '<p>'+marks(esc(n.body))+'</p>';
+      '<p class="meta">'+fmt(n.date)+' &middot; '+esc(n.source_label)+'</p>';
   }
+  function noteBody(text){return '<p>'+marks(esc(text))+'</p>';}
+  function noteHTML(n){return noteHead(n)+noteBody(n.body);}
   function howHTML(){
     return '<h2>How this works</h2><ol>'+DATA.how.map(function(x){return '<li>'+marks(esc(x))+'</li>';}).join('')+'</ol>';
   }
@@ -255,7 +263,16 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
         el.style.paddingTop=pad?pad.toFixed(2)+'px':'';
       }
   }
+  var SCALE=1;                       /* one size for every page in the book */
+  function applyScale(pad,k){
+    var root=getComputedStyle(document.documentElement);
+    var fs0=parseFloat(root.getPropertyValue('--fs')), lh0=parseFloat(root.getPropertyValue('--lh'));
+    if(k>=0.999){pad.style.removeProperty('--fs');pad.style.removeProperty('--lh');}
+    else {pad.style.setProperty('--fs',(fs0*k).toFixed(1)+'px');
+          pad.style.setProperty('--lh',Math.max(19,Math.round(lh0*k))+'px');}
+  }
   function layout(p,mode){   /* mode: undefined = fit hard, 'soft' = only a little, true = none */
+    applyScale(p.pad,SCALE);
     var lh=parseFloat(getComputedStyle(p.flow).lineHeight)||31;
     var cs=getComputedStyle(p.pad);
     var avail=p.pad.getBoundingClientRect().height
@@ -269,12 +286,11 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     p.pad.style.setProperty('--rule-offset',((((base)%lh)-lh)%lh).toFixed(2)+'px');
     snap(p,p.sheet.getBoundingClientRect().top+base+shiftFor(lh),lh);
     /* a song never spills off its page: shrink the hand until it fits */
-    var root=getComputedStyle(document.documentElement);
-    var fs0=parseFloat(root.getPropertyValue('--fs')), lh0=parseFloat(root.getPropertyValue('--lh'));
-    var floor=(mode===true)?1.01:(mode==='soft'?0.8:0.66);
-    for(var k=0.94;p.flow.scrollHeight>p.sheet.clientHeight+2&&k>=floor;k-=0.06){
-      p.pad.style.setProperty('--fs',(fs0*k).toFixed(1)+'px');
-      p.pad.style.setProperty('--lh',Math.max(19,Math.round(lh0*k))+'px');
+    var floor=(mode===true)?SCALE+0.01:0.62;
+    var used=SCALE;
+    for(var k=SCALE-0.05;p.flow.scrollHeight>p.sheet.clientHeight+2&&k>=floor;k-=0.05){
+      used=k;
+      applyScale(p.pad,k);
       lh=parseFloat(getComputedStyle(p.flow).lineHeight);
       p.sheet.style.height=(Math.max(3,Math.floor(avail/lh))*lh)+'px';
       base=baselineOf(p.flow);
@@ -283,11 +299,17 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     }
     p.lh=lh;
     p.ruleOffset=(((base)%lh)-lh)%lh;
+    /* if one page had to go smaller, the whole notebook follows it */
+    if(!mode&&used<SCALE-0.001){
+      SCALE=used;
+      pages.forEach(function(o){if(o!==p)o.laid=false;});
+    }
     return true;
   }
 
   /* ---------- pen strokes ---------- */
   function drawPaper(p,lh,offset){
+    useSeed(p);
     var svg=p.pad.querySelector('.paperlines');
     if(!svg)return;
     var pb=p.pad.getBoundingClientRect(), sb=p.sheet.getBoundingClientRect();
@@ -321,22 +343,22 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
         pts.push([x,y]);
       }
       var dd='M '+pts.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L ');
-      var op=(0.3+Math.random()*0.45)*(depth?0.5:1);
+      var op=(0.3+rnd()*0.45)*(depth?0.5:1);
       cr+='<path class="creasesoft" d="'+dd+'" style="opacity:'+(op*0.8).toFixed(2)+'"/>';
       cr+='<path class="crease" d="'+dd+'" style="opacity:'+op.toFixed(2)+'"/>';
       var nx=Math.sin(ang)*1.1,ny=-Math.cos(ang)*1.1;
       cr+='<path class="creaselit" d="M '+pts.map(function(q){return (q[0]+nx).toFixed(1)+' '+(q[1]+ny).toFixed(1);}).join(' L ')+
           '" style="opacity:'+(op*0.75).toFixed(2)+'"/>';
       /* every so often it splits */
-      if(!depth&&Math.random()<0.65){
-        var b=pts[(pts.length*(0.3+Math.random()*0.4))|0];
+      if(!depth&&rnd()<0.65){
+        var b=pts[(pts.length*(0.3+rnd()*0.4))|0];
         crease(b[0],b[1],ang+jitter(-1.1,1.1),len*jitter(0.25,0.5),1);
       }
     }
     for(var c=0;c<4;c++){
-      var fromEdge=Math.random()<0.6, sx,sy,ang;
+      var fromEdge=rnd()<0.6, sx,sy,ang;
       if(fromEdge){
-        var side=(Math.random()*4)|0;
+        var side=(rnd()*4)|0;
         sx=side===1?w:side===3?0:jitter(0,w);
         sy=side===0?0:side===2?h:jitter(0,h);
         ang=Math.atan2(h/2-sy,w/2-sx)+jitter(-0.6,0.6);
@@ -351,21 +373,33 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     /* and a little crumple, different on every sheet */
     var g=p.pad.querySelector('.grain');
     if(g){
-      g.style.backgroundPosition=(Math.random()*180|0)+'px '+(Math.random()*180|0)+'px, '+
-        (Math.random()*420|0)+'px '+(Math.random()*420|0)+'px';
+      g.style.backgroundPosition=(rnd()*180|0)+'px '+(rnd()*180|0)+'px, '+
+        (rnd()*420|0)+'px '+(rnd()*420|0)+'px';
       var blobs=[];
       for(var q2=0;q2<5;q2++){
-        blobs.push('radial-gradient('+(28+Math.random()*40).toFixed(0)+'% '+(18+Math.random()*30).toFixed(0)+
-          '% at '+(Math.random()*100).toFixed(0)+'% '+(Math.random()*100).toFixed(0)+'%,rgba(120,96,50,'+
-          (0.05+Math.random()*0.06).toFixed(3)+'),rgba(0,0,0,0) 70%)');
+        blobs.push('radial-gradient('+(28+rnd()*40).toFixed(0)+'% '+(18+rnd()*30).toFixed(0)+
+          '% at '+(rnd()*100).toFixed(0)+'% '+(rnd()*100).toFixed(0)+'%,rgba(120,96,50,'+
+          (0.05+rnd()*0.06).toFixed(3)+'),rgba(0,0,0,0) 70%)');
       }
       var soft=p.pad.querySelector('.crumple');
       if(soft) soft.style.backgroundImage=blobs.join(',');
     }
   }
 
-  function jitter(a,b){return a+Math.random()*(b-a);}
+  /* every page draws from its own fixed seed, so turning back shows the same sheet */
+  function seeded(seed){
+    return function(){
+      seed|=0;seed=seed+0x6D2B79F5|0;
+      var x=Math.imul(seed^seed>>>15,1|seed);
+      x=x+Math.imul(x^x>>>7,61|x)^x;
+      return ((x^x>>>14)>>>0)/4294967296;
+    };
+  }
+  var rnd=Math.random;
+  function useSeed(p){rnd=seeded(((p&&p.seed)||1)*2654435761|0);}
+  function jitter(a,b){return a+rnd()*(b-a);}
   function drawInkline(p){
+    useSeed(p);
     /* one pen stroke under each menu item */
     var head=p.pad.querySelector('header.top');
     [].forEach.call(head.querySelectorAll('.navink'),function(el){el.remove();});
@@ -404,9 +438,10 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     return d;
   }
   function drawUnderlines(p){
+    useSeed(p);
     [].forEach.call(p.pad.querySelectorAll('.titleink'),function(el){el.remove();});
     var hb=p.pad.getBoundingClientRect();
-    [].forEach.call(p.flow.querySelectorAll('.song .tolink'),function(a){
+    [].forEach.call(p.flow.querySelectorAll('.song .tolink,.underlined'),function(a){
       /* one stroke per line of the title, not one per glyph box */
       var raw=a.getClientRects(),lines=[];
       for(var q=0;q<raw.length;q++){
@@ -441,6 +476,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     });
   }
   function drawRings(p){
+    useSeed(p);
     [].forEach.call(p.pad.querySelectorAll('.ring'),function(el){el.remove();});
     var host=p.pad, hb=host.getBoundingClientRect();  /* the pad, not the ruled area: rings can reach into the margins */
     [].forEach.call(p.flow.querySelectorAll('.circled'),function(el){
@@ -465,37 +501,96 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
   function buildPages(){
     var list=notes(), frag=document.createDocumentFragment();
 
-    /* a hidden page to try songs on before committing them */
+    /* a hidden page to try text on before committing it */
     var probeEl=document.createElement('div');
     probeEl.className='page';
     probeEl.style.cssText='position:absolute;inset:0;visibility:hidden;pointer-events:none';
     var probePad=tpl.content.firstElementChild.cloneNode(true);
     probeEl.appendChild(probePad);
     flipbook.appendChild(probeEl);
-    var probe={page:probeEl,pad:probePad,sheet:probePad.querySelector('.sheet'),
+    var probe={seed:1,page:probeEl,pad:probePad,sheet:probePad.querySelector('.sheet'),
       flow:probePad.querySelector('.flow'),no:probePad.querySelector('.pageno')};
-    function fits(group){
-      probe.pad.style.removeProperty('--fs');probe.pad.style.removeProperty('--lh');
-      probe.flow.innerHTML=group.map(noteHTML).join('');
+
+    function measure(html){
+      probe.flow.innerHTML=html;
       handwrite(probe.flow);
-      if(!layout(probe,'soft')) return group.length<2;
-      return probe.flow.scrollHeight<=probe.sheet.clientHeight+2;
+      if(!layout(probe,true)) return {fits:false,lastLines:0};
+      var last=probe.flow.lastElementChild;
+      var lh=parseFloat(getComputedStyle(probe.flow).lineHeight)||1;
+      return {
+        fits:probe.flow.scrollHeight<=probe.sheet.clientHeight+2,
+        lastLines:last?Math.round(last.getBoundingClientRect().height/lh):0
+      };
     }
 
-    var groups=[],cur=[];
-    list.forEach(function(n){
-      var test=cur.concat([n]);
-      if(!cur.length||fits(test)) cur=test;
-      else {groups.push(cur);cur=[n];}
-    });
-    if(cur.length)groups.push(cur);
+    function build(){
+      var out=[],cur='',curNotes=[],anyText=false;
+      function flush(){
+        if(!cur)return;
+        out.push({html:cur,notes:curNotes.slice()});
+        cur='';curNotes=[];anyText=false;
+      }
+      for(var i=0;i<list.length;i++){
+        var n=list[i], words=String(n.body).split(/\s+/), first=true, guard=0;
+        while(words.length&&guard++<40){
+          var head=first?noteHead(n):'';
+          var tag=first?'':' class="cont"';
+          var whole=cur+head+'<p'+tag+'>'+marks(esc(words.join(' ')))+'</p>';
+          if(measure(whole).fits){
+            cur=whole;anyText=true;
+            if(curNotes.indexOf(i)<0)curNotes.push(i);
+            words=[];break;
+          }
+          /* how much of the note fits here? */
+          var lo=1,hi=words.length-1,best=0;
+          while(lo<=hi){
+            var mid=(lo+hi)>>1;
+            var test=cur+head+'<p'+tag+'>'+marks(esc(words.slice(0,mid).join(' ')))+'</p>';
+            if(measure(test).fits){best=mid;lo=mid+1;} else hi=mid-1;
+          }
+          var keep=false;
+          if(best>0){
+            var t2=cur+head+'<p'+tag+'>'+marks(esc(words.slice(0,best).join(' ')))+'</p>';
+            /* the heading may never sit alone: at least one line of the note has to stay with it */
+            keep=measure(t2).lastLines>=1;
+            if(keep){
+              cur=t2;
+              if(curNotes.indexOf(i)<0)curNotes.push(i);
+              words=words.slice(best);
+              first=false;
+              flush();
+              continue;
+            }
+          }
+          if(cur){flush();continue;}        /* start this note on a fresh page instead */
+          /* a fresh page that still cannot hold a line: put it down anyway */
+          cur=head+'<p'+tag+'>'+marks(esc(words.join(' ')))+'</p>';
+          curNotes.push(i);words=[];flush();
+        }
+      }
+      flush();
+      return out;
+    }
+
+    /* keep the hand as large as possible */
+    var built=null;
+    for(var attempt=0;attempt<9;attempt++){
+      SCALE=1-attempt*0.05;
+      if(SCALE<0.62)SCALE=0.62;
+      built=build();
+      probe.flow.innerHTML=howHTML();handwrite(probe.flow);
+      var howOk=!layout(probe,true)||probe.flow.scrollHeight<=probe.sheet.clientHeight+2;
+      if(howOk||SCALE<=0.62)break;
+    }
     probeEl.remove();
 
-    var seen=0;
-    groups.forEach(function(g){
-      var label=g.length>1?(seen+1)+'\u2013'+(seen+g.length)+' of '+list.length:(seen+1)+' of '+list.length;
-      seen+=g.length;
-      frag.appendChild(mkPage(g.map(noteHTML).join(''),label,'journal'));
+    built.forEach(function(pageDef){
+      var ns=pageDef.notes,label='';
+      if(ns.length){
+        label=ns.length>1?(ns[0]+1)+'\u2013'+(ns[ns.length-1]+1)+' of '+list.length
+                         :(ns[0]+1)+' of '+list.length;
+      }
+      frag.appendChild(mkPage(pageDef.html,label,'journal'));
     });
     frag.appendChild(mkPage(howHTML(),'','how'));
     flipbook.appendChild(frag);
@@ -505,7 +600,7 @@ footer.bottom button[disabled]{opacity:.3;cursor:default}
     page.className='page';
     var pad=tpl.content.firstElementChild.cloneNode(true);
     page.appendChild(pad);
-    var p={page:page,pad:pad,sheet:pad.querySelector('.sheet'),flow:pad.querySelector('.flow'),
+    var p={seed:pages.length+7,page:page,pad:pad,sheet:pad.querySelector('.sheet'),flow:pad.querySelector('.flow'),
       no:pad.querySelector('.pageno'),label:label,nav:nav,written:false};
     p.flow.innerHTML=html;
     p.no.textContent=label;
