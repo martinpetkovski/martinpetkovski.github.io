@@ -95,7 +95,6 @@ video/trailer-poster.jpg .. trailer still
 images/screenshots/ ....... 8 in-engine screenshots, 1920x1080 PNG (+ thumbs)
 images/logo/ .............. logo, stacked / one line / with tagline, transparent PNG
 images/key-art/ ........... key art 1920x1080, with and without the logo
-images/art/ ............... game icon (PNG, full size and 256px)
 
 
 USE OF THESE MATERIALS
@@ -104,3 +103,10 @@ Screenshots, footage, logos and art in this press kit may be used for editorial
 coverage, reviews, previews and streams of Static Over Midtown. Please don't
 alter the logo or present the assets as your own. Steam and the Steam logo are
 trademarks of Valve Corporation. © Return Zero. All rights reserved.
+
+
+AI DISCLOSURE
+---------------------------------------------------------------------
+This press kit was generated with AI: the page, its text, the logo renders and
+the key art composition. The screenshots and trailer are captured in engine by
+the developer.
