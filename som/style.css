@@ -1,0 +1,31 @@
+@font-face { font-family: "Russo One"; src: url("fonts/RussoOne-Regular.ttf") format("truetype"); font-display: block; }
+@font-face { font-family: "Press Start 2P"; src: url("fonts/PressStart2P-Regular.ttf") format("truetype"); font-display: block; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #030305; overflow: hidden; }
+
+#screen { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block;
+  image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* the two copies of the video, full screen behind the canvas (crossfaded by script.js) */
+.video { position: fixed; inset: 0; width: 100vw; height: 100vh; object-fit: cover; opacity: 0; pointer-events: none; background: #000; }
+#screen { z-index: 2; }
+
+/* the real link, invisible, over the button the canvas draws */
+.wishlist { position: fixed; z-index: 3; display: block; color: transparent; font-size: 1px; overflow: hidden;
+  pointer-events: none; cursor: pointer; outline: none; }
+.wishlist.live { pointer-events: auto; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* the loop picker (index.html?loop) */
+.picker { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 5; padding: 12px 14px; display: grid; gap: 8px;
+  background: rgba(12, 10, 16, .88); border: 1px solid #3a3040; border-radius: 6px; color: #f2e6dc;
+  font: 13px/1.4 system-ui, sans-serif; }
+.picker .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.picker input[type=range] { flex: 1; min-width: 160px; accent-color: #ffa829; }
+.picker input[type=number] { width: 64px; background: #1a141a; color: inherit; border: 1px solid #3a3040; border-radius: 4px; padding: 3px 6px; }
+.picker button { background: #2a2028; color: inherit; border: 1px solid #4a3a48; border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+.picker button:hover { border-color: #ffa829; }
+.picker code { flex: 1; min-width: 200px; font: 13px ui-monospace, monospace; color: #ffa829; }
+.picker .hint { color: #8a7f8c; font-size: 12px; }

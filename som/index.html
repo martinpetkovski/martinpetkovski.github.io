@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Static Over Midtown</title>
+<meta name="description" content="Static Over Midtown: a multiplayer retro-futuristic flying car combat game. Wishlist it on Steam.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- The video (assets/trailer.mp4) is preloaded by script.js and drawn into the canvas.
+       Its loop point is in loop.js (find it by opening index.html?loop) -->
+  <canvas id="screen" aria-hidden="true"></canvas>
+
+  <!-- Readable copy for search engines and screen readers; the canvas draws the same text -->
+  <main class="sr-only">
+    <h1>Static Over Midtown</h1>
+    <p>A multiplayer retro-futuristic flying car combat game.</p>
+    <p>All footage captured in engine.</p>
+  </main>
+
+  <a class="wishlist" id="wishlist" href="https://store.steampowered.com/" target="_blank" rel="noopener">The council wants you to wishlist this on Steam</a>
+
+  <script src="loop.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
