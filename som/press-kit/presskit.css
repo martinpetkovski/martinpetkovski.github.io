@@ -1,0 +1,178 @@
+/* Static Over Midtown - press kit. The look follows the game's menus (native/src/ui.c, data.json game.ui):
+   menu orange #ffa829 > #f55c00, pause tint #0c0a10, text #f2e6dc, hint #8a7f8c, Russo One + Press Start 2P. */
+@font-face { font-family: "Russo One"; src: url("fonts/RussoOne-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Press Start 2P"; src: url("fonts/PressStart2P-Regular.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --ink: #0c0a10;
+  --panel: #1a141a;
+  --panel-2: #221a22;
+  --edge: #2e2430;
+  --text: #f2e6dc;
+  --cream: #dbcfb8;
+  --hint: #8a7f8c;
+  --orange: #ffa829;
+  --orange-2: #f55c00;
+  --orange-deep: #4a1a00;
+  --red: #dc2138;
+  --blue: #2982e0;
+  --maxw: 1180px;
+  --cut: 14px;                 /* the cut corners of the game's display lettering */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: linear-gradient(180deg, #1a141a 0, var(--ink) 900px) var(--ink);
+  color: var(--text); font: 17px/1.65 "Russo One", system-ui, sans-serif; letter-spacing: .01em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
+a { color: var(--orange); text-decoration: none; }
+a:hover { color: #ffd27a; }
+::selection { background: var(--orange-2); color: #fff; }
+
+/* ---------------------------------------------------------------- type */
+.tag {   /* Press Start 2P labels, like the game's numbers and hints */
+  font: 10px/1.6 "Press Start 2P", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--hint);
+}
+.tag.orange { color: var(--orange); }
+h2.title, .title {   /* the game's header lettering: italic, menu orange, dark extrusion and ink */
+  font: italic 400 clamp(30px, 4.6vw, 52px)/1.05 "Russo One", sans-serif; text-transform: uppercase; letter-spacing: .02em;
+  color: var(--orange);
+  background: linear-gradient(180deg, #ffd27a 0%, var(--orange) 38%, var(--orange-2) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 #7a2c00) drop-shadow(0 2px 0 #3d1500) drop-shadow(0 3px 0 var(--ink)) drop-shadow(2px 6px 0 rgba(0,0,0,.45));
+}
+h3 { font: 400 20px/1.3 "Russo One", sans-serif; text-transform: uppercase; letter-spacing: .03em; color: var(--text); }
+p + p { margin-top: .9em; }
+.lead { font-size: 20px; color: var(--cream); }
+.muted { color: var(--hint); }
+
+/* ---------------------------------------------------------------- layout */
+.wrap { width: min(var(--maxw), 100% - 32px); margin-inline: auto; }
+section { padding: 88px 0 24px; scroll-margin-top: 56px; }
+.section-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.grid { display: grid; gap: 20px; }
+.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.cols-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.cols-4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+
+.panel {   /* a HUD panel: dark, a lit top edge, cut corners */
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 2px solid var(--edge); padding: 24px;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  box-shadow: inset 0 2px 0 rgba(255, 220, 170, .05);
+}
+
+/* ---------------------------------------------------------------- nav */
+.nav {
+  position: sticky; top: 0; z-index: 20; background: rgba(12, 10, 16, .92); backdrop-filter: blur(6px);
+  border-bottom: 2px solid var(--edge);
+}
+.nav .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+.nav .brand { font: italic 18px "Russo One"; text-transform: uppercase; color: var(--orange); white-space: nowrap; }
+.nav ul { display: flex; gap: 18px; list-style: none; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+.nav ul::-webkit-scrollbar { display: none; }
+.nav a.tag { color: var(--hint); white-space: nowrap; }
+.nav a.tag:hover { color: var(--orange); }
+
+/* ---------------------------------------------------------------- hero */
+.hero { position: relative; min-height: min(88vh, 860px); display: grid; place-items: center; overflow: hidden; padding: 64px 0 96px; }
+.hero .bg { position: absolute; inset: 0; background: center / cover no-repeat; }
+.hero .bg::after { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, rgba(12,10,16,.15), rgba(12,10,16,.75) 70%), linear-gradient(180deg, rgba(12,10,16,.2) 40%, var(--ink)); }
+.hero .inner { position: relative; text-align: center; display: grid; justify-items: center; gap: 26px; }
+.hero .logo { width: min(820px, 92vw); height: auto; filter: drop-shadow(0 18px 40px rgba(0,0,0,.6)); }
+.hero .sub { font: 12px/1.8 "Press Start 2P", monospace; letter-spacing: .2em; color: var(--cream); text-transform: uppercase; text-shadow: 2px 2px 0 #000; }
+.hero .status { display: flex; gap: 10px 22px; flex-wrap: wrap; justify-content: center; }
+.hero .status span { text-shadow: 1px 1px 0 #000; }
+
+/* ---------------------------------------------------------------- buttons: the game's menu items */
+.btns { display: flex; flex-wrap: wrap; gap: 14px 26px; justify-content: center; align-items: center; }
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 10px 6px;
+  font: 400 20px/1 "Russo One", sans-serif; text-transform: uppercase; letter-spacing: .03em; color: #fff;
+  text-shadow: 0 1px 0 #9a9aa2, 0 2px 0 #55555c, 0 3px 0 #2a2a30, 1px 5px 0 rgba(0,0,0,.45);
+  background: none; border: 0; cursor: pointer;
+}
+.btn::before, .btn::after { font: 14px "Press Start 2P", monospace; color: var(--orange); opacity: 0; transition: opacity .15s, transform .15s; text-shadow: 0 2px 0 var(--orange-deep); }
+.btn::before { content: "»"; transform: translateX(-8px); }
+.btn::after { content: "«"; transform: translateX(8px); }
+.btn:hover, .btn:focus-visible { color: var(--orange); text-shadow: 0 1px 0 #b04400, 0 2px 0 #6e2800, 0 3px 0 #2a1000, 1px 5px 0 rgba(0,0,0,.45); outline: none; }
+.btn:hover::before, .btn:hover::after, .btn:focus-visible::before, .btn:focus-visible::after { opacity: 1; transform: none; }
+.btn.primary { color: var(--orange); text-shadow: 0 1px 0 #b04400, 0 2px 0 #6e2800, 0 3px 0 #2a1000, 1px 5px 0 rgba(0,0,0,.45); }
+.btn.primary::before, .btn.primary::after { opacity: 1; transform: none; animation: chevron 1s ease-in-out infinite alternate; }
+.btn.primary::after { animation-direction: alternate-reverse; }
+.btn .size { font: 9px "Press Start 2P"; color: var(--hint); text-shadow: none; letter-spacing: .1em; }
+@keyframes chevron { to { translate: -4px 0; } }
+.btn.primary::after { animation-name: chevron-r; }
+@keyframes chevron-r { to { translate: 4px 0; } }
+
+/* ---------------------------------------------------------------- fact sheet */
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 0; }
+.facts dt, .facts dd { padding: 12px 0; border-bottom: 1px solid var(--edge); }
+.facts dt { padding-right: 28px; padding-top: 16px; }
+.facts dd { color: var(--text); }
+.facts dd .muted { font-size: 14px; }
+.tba { color: var(--orange); }
+@media (max-width: 560px) { .facts { grid-template-columns: 1fr; } .facts dt { border: 0; padding-bottom: 0; } }
+
+/* ---------------------------------------------------------------- copy blocks */
+.copy { position: relative; }
+.copy .copy-btn {
+  position: absolute; top: 18px; right: 18px; font: 9px "Press Start 2P"; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--hint); background: var(--ink); border: 2px solid var(--edge); padding: 8px 10px; cursor: pointer;
+}
+.copy .copy-btn:hover { color: var(--orange); border-color: var(--orange-2); }
+.copy .copy-btn.done { color: #7ee08a; border-color: #2f6b3a; }
+.copy h3 { margin-bottom: 12px; padding-right: 90px; }
+
+/* ---------------------------------------------------------------- features */
+.feature { display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start; }
+.feature .num { font: italic 34px/1 "Russo One", sans-serif; color: var(--orange); padding-top: 2px;
+  background: linear-gradient(180deg, #ffd27a, var(--orange) 40%, var(--orange-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 #7a2c00) drop-shadow(0 2px 0 #3d1500) drop-shadow(0 3px 0 var(--ink)); }
+.feature h3 { margin-bottom: 6px; }
+.feature p { color: var(--cream); font-size: 16px; }
+
+/* ---------------------------------------------------------------- media */
+.video { position: relative; border: 2px solid var(--edge); background: #000; aspect-ratio: 16 / 9; }
+.video video { width: 100%; height: 100%; display: block; }
+.shots { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+.shot { position: relative; display: block; border: 2px solid var(--edge); background: #000; overflow: hidden; aspect-ratio: 16 / 9; }
+.shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease, filter .35s; }
+.shot:hover img { transform: scale(1.04); filter: brightness(1.08); }
+.shot .dl { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 12px 10px; display: flex; justify-content: space-between; align-items: end;
+  background: linear-gradient(transparent, rgba(12,10,16,.9)); opacity: 0; transition: opacity .2s; }
+.shot:hover .dl, .shot:focus-visible .dl { opacity: 1; }
+.shot:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+/* ---------------------------------------------------------------- assets */
+.asset { display: grid; gap: 14px; align-content: start; }
+.asset .preview { display: grid; place-items: center; aspect-ratio: 16 / 9; background: repeating-conic-gradient(#1f1820 0 25%, #171217 0 50%) 0 0 / 20px 20px; border: 2px solid var(--edge); padding: 14px; overflow: hidden; }
+.asset .preview.dark { background: var(--ink); }
+.asset .preview img { max-height: 100%; object-fit: contain; }
+.asset .preview.cover { padding: 0; }
+.asset .preview.cover img { width: 100%; height: 100%; object-fit: cover; }
+.asset .links { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.asset .links a { font: 9px/2 "Press Start 2P"; letter-spacing: .08em; text-transform: uppercase; }
+
+/* ---------------------------------------------------------------- download banner */
+.download { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.download .title { font-size: clamp(24px, 3vw, 34px); }
+
+/* ---------------------------------------------------------------- footer */
+footer { padding: 72px 0 48px; margin-top: 64px; border-top: 2px solid var(--edge); background: #08070b; }
+footer p { color: var(--hint); font-size: 14px; }
+
+/* ---------------------------------------------------------------- lightbox */
+.lightbox { position: fixed; inset: 0; z-index: 50; display: none; place-items: center; background: rgba(6, 5, 8, .94); padding: 24px; }
+.lightbox.open { display: grid; }
+.lightbox img { max-width: min(1600px, 100%); max-height: calc(100vh - 110px); border: 2px solid var(--edge); }
+.lightbox .bar { display: flex; gap: 22px; justify-content: center; align-items: center; margin-top: 14px; }
+.lightbox button { background: none; border: 0; color: var(--text); font: 11px "Press Start 2P"; letter-spacing: .1em; cursor: pointer; padding: 8px; }
+.lightbox button:hover, .lightbox a:hover { color: var(--orange); }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn.primary::before, .btn.primary::after { animation: none; } .shot img { transition: none; } }

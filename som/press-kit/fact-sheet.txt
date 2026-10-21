@@ -1,0 +1,106 @@
+STATIC OVER MIDTOWN · PRESS KIT
+A multiplayer retro-futuristic flying car combat game
+=====================================================================
+
+FACT SHEET
+---------------------------------------------------------------------
+Title           Static Over Midtown
+Developer       Return Zero (created by Martin Petkovski)
+Publisher       TBA
+Release date    TBA · coming soon to Steam
+Platform        Windows PC (Steam)
+Price           TBA
+Genre           Team-based flying car combat · arena action
+Players         1v1 up to 5v5 · AI drivers fill any empty seat
+Modes           Matches against AI · local multiplayer · target practice
+                (LAN and online play in development)
+Controls        Keyboard & mouse, gamepad (XInput) · fully rebindable
+Engine          Spookee Engine (in-house, C and Direct3D 11)
+Languages       English
+Status          Pre-alpha
+Press contact   deeeeelay@gmail.com
+Steam page      TBA
+Website         TBA
+
+All screenshots and footage are captured in engine from a pre-alpha build
+and are subject to change.
+
+
+TAGLINE
+---------------------------------------------------------------------
+You dreamed of flying cars. You got them. But not without a fight.
+
+
+ONE LINE
+---------------------------------------------------------------------
+Team-based flying car combat over a neon pixel-art city of the future.
+
+
+SHORT DESCRIPTION
+---------------------------------------------------------------------
+Static Over Midtown is a multiplayer retro-futuristic flying car combat game.
+Two teams of up to five flying cars battle across a neon-lit pixel-art city of
+the future, racing to bring down the enemy's main tower.
+
+
+LONG DESCRIPTION
+---------------------------------------------------------------------
+The future arrived exactly as the brochures promised: hover-buses drifting
+between office towers, landmark spires lit up against the night, and a flying
+car in every garage. Then the city split in two. Red against Blue. Static Over
+Midtown drops you into the cockpit of a hovering supercar and asks you to take
+the skyline back, one tower at a time.
+
+Matches pit two teams of up to five cars against each other, from tense
+one-on-one duels to full five-on-five brawls. Each side defends a main tower
+and two defense towers that shell anyone who strays too close. The main tower
+also heals its team, so every push is a gamble: break through the defenses,
+survive the crossfire, and destroy the enemy's main tower to win.
+
+Every car brings its own set of abilities, from steerable rockets to shields
+and gravity wells. Cars carry real momentum, so thrust, drift and collisions
+are weapons too. Empty seats are filled by AI drivers that flank, retreat to
+heal and pick their moments.
+
+It all runs on Spookee Engine, Return Zero's in-house engine, which lights
+detailed pixel art with dynamic lights, normal maps, screen-space shadows,
+bloom and light shafts, so the city glows the way you remember the future.
+
+
+KEY FEATURES
+---------------------------------------------------------------------
+- Red vs Blue, up to 5v5: matches scale from 1v1 to 5v5, and AI drivers take
+  any empty seat.
+- Take the tower: each team defends a main tower and two defense towers that
+  fire arcing shots at attackers. Main towers heal nearby allies. Destroy the
+  enemy's main tower to win.
+- Handling with momentum: thrust builds and releases smoothly, inertia carries
+  you through turns, and knockback, ramming and boosts make the car a weapon.
+- A city of the future: a night-time megacity of glowing office blocks and
+  landmark towers, with sky traffic and border police patrolling the edges of
+  the map.
+- Pixel art, real light: hand-crafted pixel art lit by an in-house engine with
+  dynamic lights, normal-mapped sprites, screen-space shadows, bloom, light
+  shafts and heat haze.
+- Play your way: keyboard and mouse or gamepad, every control rebindable;
+  fight AI drivers, play local multiplayer or practise on targets.
+
+
+CONTENTS OF THIS KIT
+---------------------------------------------------------------------
+index.html ................ the press kit page (open in a browser)
+fact-sheet.txt ............ this file
+video/trailer.mp4 ......... announcement trailer, 1920x1080, 60 fps, H.264
+video/trailer-poster.jpg .. trailer still
+images/screenshots/ ....... 8 in-engine screenshots, 1920x1080 PNG (+ thumbs)
+images/logo/ .............. logo, stacked / one line / with tagline, transparent PNG
+images/key-art/ ........... key art 1920x1080, with and without the logo
+images/art/ ............... game icon (PNG, full size and 256px)
+
+
+USE OF THESE MATERIALS
+---------------------------------------------------------------------
+Screenshots, footage, logos and art in this press kit may be used for editorial
+coverage, reviews, previews and streams of Static Over Midtown. Please don't
+alter the logo or present the assets as your own. Steam and the Steam logo are
+trademarks of Valve Corporation. © Return Zero. All rights reserved.
