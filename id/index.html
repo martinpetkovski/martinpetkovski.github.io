@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="mk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Македонска Доктрина.">
+  <title>Македонска Доктрина</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: #111;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(100% - 40px, 700px);
+      margin: 0 auto;
+      padding: 80px 0;
+    }
+
+    header {
+      margin-bottom: 64px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: normal;
+      line-height: 1.15;
+    }
+
+    header p { margin: 0; }
+
+    article { margin-bottom: 48px; }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 1.15rem;
+      text-align: center;
+    }
+
+    article p {
+      margin: 0 0 16px;
+      text-align: justify;
+      text-wrap: pretty;
+      hyphens: auto;
+    }
+
+    @media (max-width: 520px) {
+      body { font-size: 17px; }
+      main { padding: 48px 0; }
+      header { margin-bottom: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <main id="doctrine"></main>
+
+  <script>
+    const container = document.querySelector("#doctrine");
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      })[character]);
+    }
+
+    function parseMarkdown(markdown) {
+      const blocks = markdown.trim().split(/\r?\n\s*\r?\n/);
+      let html = "";
+      let headerOpen = false;
+      let articleOpen = false;
+      let articleNumber = 0;
+
+      for (const block of blocks) {
+        const text = block.trim();
+
+        if (text.startsWith("# ")) {
+          if (articleOpen) html += "</article>";
+          html += `<header><h1>${escapeHtml(text.slice(2).trim())}</h1>`;
+          headerOpen = true;
+          articleOpen = false;
+          continue;
+        }
+
+        if (text === "## {{article}}") {
+          if (headerOpen) html += "</header>";
+          if (articleOpen) html += "</article>";
+          articleNumber += 1;
+          html += `<article><h2>Член ${articleNumber}</h2>`;
+          headerOpen = false;
+          articleOpen = true;
+          continue;
+        }
+
+        if (text.startsWith("## ")) {
+          if (headerOpen) html += "</header>";
+          if (articleOpen) html += "</article>";
+          html += `<article><h2>${escapeHtml(text.slice(3).trim())}</h2>`;
+          headerOpen = false;
+          articleOpen = true;
+          continue;
+        }
+
+        html += `<p>${escapeHtml(text.replace(/\r?\n/g, " "))}</p>`;
+      }
+
+      if (headerOpen) html += "</header>";
+      if (articleOpen) html += "</article>";
+      return html;
+    }
+
+    fetch("doctrine.md", { cache: "no-cache" })
+      .then(response => {
+        if (!response.ok) throw new Error("Markdown could not be loaded.");
+        return response.text();
+      })
+      .then(markdown => {
+        container.innerHTML = parseMarkdown(markdown);
+      })
+      .catch(() => {
+        container.innerHTML = "<p>Текстот на Доктрината не може да се вчита.</p>";
+      });
+  </script>
+</body>
+</html>
