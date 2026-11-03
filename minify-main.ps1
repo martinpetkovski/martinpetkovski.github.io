@@ -78,7 +78,8 @@ function Minify-Html([string]$text) {
     $safeAttribute = '="([^\s"''`=<>]+)"'
     $text = [regex]::Replace($text, '<[^!][^>]*>', {
         param($tag)
-        return [regex]::Replace($tag.Value, $safeAttribute, '=$1')
+        if ($tag.Value.EndsWith('/>')) { return $tag.Value }
+        return $tag.Value
     })
     return $text.Trim()
 }
