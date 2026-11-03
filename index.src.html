@@ -56,7 +56,7 @@ body{margin:0;padding:0;background:#fff;color:#000;font:15px/1.2 var(--mono)}
 .sub{display:flex;max-width:230px;overflow:hidden;white-space:nowrap;color:#eee;font:12px var(--mono)}
 .sub-inner{flex:0 0 auto;padding-right:2.5em;animation:sub-slide var(--d,14s) linear infinite}
 @keyframes sub-slide{to{transform:translateX(-100%)}}
-main,footer{margin-left:0px;margin-right:0px; padding:5px; padding-top:0px}
+main,footer{margin:0;padding:0}
 h2{margin:14px 0 2px;color:#039;font-size:20px;line-height:1.1}
 section p{margin:0 0 4px;color:#777;font-size:13px}
 p{margin:2px 0 6px}
@@ -75,7 +75,7 @@ footer{margin-top:16px;font-size:10px}
   .hdr-text{flex:1 1 0;min-width:0;overflow:hidden;padding:6px}
   .hdr h1{font-size:28px}
   .sub{max-width:155px}
-  main,footer{margin-left:7px;margin-right:7px}
+  main,footer{margin:0;padding:0}
   h2{margin-top:12px}
 }
 #prototypes .meta+small{margin-left:.4em}
@@ -93,6 +93,13 @@ footer{margin-top:16px;font-size:10px}
   .hdr-nav .sub-inner{line-height:18px}
   .hdr-nav>a,.hdr-nav>a:visited{font-size:7px;height:20px;justify-content:center;min-width:0;overflow:hidden;padding:0 1px}
 }
+</style>
+<style>
+#highlights{margin:0;padding:0}
+#highlights ul{display:flex;gap:10px;list-style:none;margin:0;padding:0}
+#highlights li{flex:1;min-width:0;margin:0;padding:0;overflow-wrap:anywhere}
+#highlights a{font-weight:bold}
+#highlights small{display:block;color:#555}
 </style>
 </head>
 <body>
@@ -120,6 +127,18 @@ footer{margin-top:16px;font-size:10px}
 </header>
 
 <main>
+
+<!-- Edit these entries to choose the work featured at the top of the homepage. -->
+<section id="highlights" aria-labelledby="highlights-title">
+<h2 id="highlights-title">Welcome</h2>
+<p>These are highlights of what I'm doing currently.</p>
+<ul>
+<li><a href="https://kamaikamai.com/">KAMAi MEDIA</a><small>It's my current company.</small></li>
+<li><a href="https://www.angelicthegame.com/">Angelic</a><small>I currently do work on this game there.</small></li>
+<li><a href="https://criticspalace.com">Critics Palace</a><small>Some friends and I find obscure games and review them.</small></li>
+<li><a href="https://toplista.mk">Top Lista MK</a><small>I sometimes maintain this list of all Macedoinan music.</small></li>
+</ul>
+</section>
 
 <section id="powered">
 <h2>My Code Has Powered</h2>
@@ -169,7 +188,7 @@ footer{margin-top:16px;font-size:10px}
 <h2>The Vault</h2>
 <p>Side projects, tools and other things I built and kept around.</p>
 <ol>
-<li><a href="https://criticspalace.com/"></a>Critics Palace</a> <span class="meta">2026-now</span><br><small>Some friends and I find obscure games and review them.</small></li>
+<li><a href="https://criticspalace.com/">Critics Palace</a> <span class="meta">2026-now</span><br><small>Some friends and I find obscure games and review them.</small></li>
 <li><a href="https://www.razigra.com/">Разигра</a> <span class="meta">2026-now</span><br><small>A game jam we're organizing in Bitola.</small></li>
 <li><a href="/SiotoLoops">Sioto Loops</a> <span class="meta">2026</span><br><small>Custom JUCE DAW I use to make music.</small></li>
 <li><a href="/JustNotepad">Just Notepad</a> <span class="meta">2025</span><br><small>Notepad using 3 MB RAM with plugin support.</small></li>
@@ -208,7 +227,7 @@ footer{margin-top:16px;font-size:10px}
 <li><a href="https://www.youtube.com/watch?v=mQVrMzWtqgU">On Love and Happiness</a> <span class="meta">Video</span></li>
 <li><a href="https://www.youtube.com/watch?v=67tHtpac5ws">I, Pencil</a> <span class="meta">Video</span></li>
 <li><a href="https://www.youtube.com/watch?v=xtpgkX588nM">The Negative Income Tax</a> <span class="meta">Video</span></li>
-<li><a href="/id">The Basics of the Macedonian Ideology</a></li>
+<li><a href="/id">The Basics of the Macedonian Ideology</a> <span class="meta">Article · MK</span></li>
 <li><a href="/n/?code-standard-cpp">C++ Code Standard</a> <span class="meta">Technical doc · EN</span></li>
 <li><a href="/n/?life-balance">Life Balance</a> <span class="meta">Article · EN</span></li>
 <li><a href="/n/?zanaetchiski-raspored">Занаетчиски Распоред</a> <span class="meta">Article · MK</span></li>
@@ -225,7 +244,7 @@ footer{margin-top:16px;font-size:10px}
 <p><a href="https://open.spotify.com/user/31mf67wrbng5tnj4lpgteudoygze">Spotify</a> · <a href="https://www.youtube.com/channel/UCcbyTxWAorYwBVSq70vqBqQ/videos">YouTube</a> · <a href="https://github.com/martinpetkovski">GitHub</a> · <a href="https://www.linkedin.com/in/martin-petkovski/">LinkedIn</a> · <a href="https://twitter.com/misteriozen">X</a> · <a href="https://twitter.com/OficialZaev">X (goofy)</a> · <a href="https://www.instagram.com/najnajjak/">Instagram</a> · <a href="mailto:martin@najjak.com">Email</a></p>
 
 <h2 id="friends">Friends</h2>
-<p><a href="https://bute-verse.com/">Andre</a> · <a href="https://www.artstation.com/exuvac">Stefan</a> · <a href="https://scholar.google.com/citations?user=NJxnLvYAAAAJ&hl=en">Boshko</a> · <a href="https://store.steampowered.com/search/?developer=Odime%20Games">Filip</a> · <a href="https://drangovski.com/">Bojan</a></p>
+<p><a href="https://bute-verse.com/">Andre</a> · <a href="https://www.artstation.com/exuvac">Stefan</a> · <a href="https://scholar.google.com/citations?user=NJxnLvYAAAAJ&hl=en">Boshko</a> · <a href="https://store.steampowered.com/search/?developer=Odime%20Games">Filip</a> · <a href="https://drangovski.com/">Bojan</a> · <a href="https://kinesiofirst.mk/">Hristijan</a></p>
 
 </main>
 
