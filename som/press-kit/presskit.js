@@ -20,7 +20,7 @@
   shots.innerHTML = SHOTS.map(([n, cap], i) => `
     <a class="shot" href="images/screenshots/${n}.png" data-i="${i}">
       <img src="images/screenshots/thumbs/${n}.jpg" alt="${esc(cap)}" loading="lazy" width="960" height="540">
-      <span class="dl"><span class="tag" style="color:var(--text)">${esc(cap)}</span><span class="tag orange">PNG</span></span>
+      <span class="dl"><span>${esc(cap)}</span><i class="fa-solid fa-expand"></i></span>
     </a>`).join('');
 
   /* lightbox */
@@ -37,8 +37,9 @@
     e.preventDefault(); show(+a.dataset.i);
   });
   lb.addEventListener('click', (e) => {
-    if (e.target.dataset.go) show(at + +e.target.dataset.go);
-    else if (e.target === lb || 'close' in e.target.dataset) lb.classList.remove('open');
+    const t = e.target.closest('button') || e.target;
+    if (t.dataset.go) show(at + +t.dataset.go);
+    else if (t === lb || 'close' in t.dataset) lb.classList.remove('open');
   });
   addEventListener('keydown', (e) => {
     if (!lb.classList.contains('open')) return;
@@ -51,9 +52,10 @@
   document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
     const el = document.querySelector(b.dataset.copy);
     const text = [...el.querySelectorAll('p')].map((p) => p.textContent.trim()).join('\n\n') || el.textContent.trim();
-    try { await navigator.clipboard.writeText(text); b.textContent = 'Copied'; b.classList.add('done'); }
-    catch (e) { const r = document.createRange(); r.selectNodeContents(el); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = 'Selected'; }
-    setTimeout(() => { b.textContent = 'Copy'; b.classList.remove('done'); }, 1600);
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(el); getSelection().removeAllRanges(); getSelection().addRange(r); }
+    b.classList.add('done'); b.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => { b.innerHTML = '<i class="fa-regular fa-copy"></i>'; b.classList.remove('done'); }, 1600);
   }));
 
   /* file sizes next to download buttons (when served from a web server) */

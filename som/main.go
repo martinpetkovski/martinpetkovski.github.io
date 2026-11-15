@@ -129,7 +129,12 @@ type commentView struct {
 	Name, Avatar, Profile string
 	Text                  string
 	At                    time.Time
-	Mine, ByAdmin         bool
+	Deleted               bool
+	ByAdmin               bool
+	CanDelete, CanReply   bool
+	Depth                 int
+	Replies               []*commentView
+	Count                 int // replies at every level below
 }
 
 type pageData struct {
@@ -137,7 +142,8 @@ type pageData struct {
 	SiteURL  string
 	Me       *user
 	Admin    bool
-	Comments []commentView
+	Comments []*commentView
+	Total    int
 	Message  string
 }
 
@@ -158,15 +164,14 @@ func (a *app) me(r *http.Request) *user {
 }
 
 var messages = map[string]string{
-	"joined": "You're on the list.",
-	"left":   "You left the playtest.",
-	"closed": "Sign-ups for the playtest are closed right now.",
-	"signin": "Sign in with Steam first.",
-	"failed": "The Steam sign-in didn't go through. Please try again.",
-	"banned": "You can't comment.",
-	"slow":   "That's a lot of comments. Try again in a few minutes.",
-	"empty":  "Write something first.",
-	"saved":  "Saved.",
+	"joined": "Enlisted.",
+	"left":   "Stood down.",
+	"closed": "The gates are shut. For now.",
+	"signin": "Identify yourself first.",
+	"failed": "Signal lost. Try again.",
+	"banned": "Your channel is closed.",
+	"slow":   "Too much noise. Wait a few minutes.",
+	"empty":  "Nothing to transmit.",
 }
 
 func (a *app) home(w http.ResponseWriter, r *http.Request) {
@@ -174,16 +179,7 @@ func (a *app) home(w http.ResponseWriter, r *http.Request) {
 	d := pageData{SiteURL: a.cfg.SiteURL, Me: me, Admin: me != nil && a.cfg.Admins[me.ID], Message: messages[r.URL.Query().Get("m")]}
 	a.db.view(func(s *state) {
 		d.S = s.Settings
-		for i := len(s.Comments) - 1; i >= 0 && len(d.Comments) < 300; i-- {
-			c := s.Comments[i]
-			u := s.Users[c.User]
-			if u == nil {
-				continue
-			}
-			d.Comments = append(d.Comments, commentView{ID: c.ID, Name: u.Name, Avatar: u.Avatar,
-				Profile: "https://steamcommunity.com/profiles/" + u.ID, Text: c.Text, At: c.At,
-				Mine: me != nil && me.ID == u.ID, ByAdmin: a.cfg.Admins[u.ID]})
-		}
+		d.Comments, d.Total = a.threads(s, me)
 	})
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store") // the page shows who is signed in
@@ -193,6 +189,46 @@ func (a *app) home(w http.ResponseWriter, r *http.Request) {
 }
 
 // post wraps a form handler: same-site forms only; it answers with where to go next.
+// threads: the comments as trees, newest threads first, replies oldest first.
+func (a *app) threads(s *state, me *user) ([]*commentView, int) {
+	admin := me != nil && a.cfg.Admins[me.ID]
+	views := map[int64]*commentView{}
+	for _, c := range s.Comments {
+		v := &commentView{ID: c.ID, Text: c.Text, At: c.At, Deleted: c.Deleted}
+		if u := s.Users[c.User]; u != nil && !c.Deleted {
+			v.Name, v.Avatar, v.Profile, v.ByAdmin = u.Name, u.Avatar, "https://steamcommunity.com/profiles/"+u.ID, a.cfg.Admins[u.ID]
+			v.CanDelete = admin || me != nil && me.ID == u.ID
+		}
+		v.CanReply = me != nil && !me.Banned
+		views[c.ID] = v
+	}
+	var top []*commentView
+	total := 0
+	for _, c := range s.Comments { // stored oldest first
+		v := views[c.ID]
+		if !c.Deleted {
+			total++
+		}
+		if p := views[c.Parent]; c.Parent != 0 && p != nil {
+			p.Replies = append(p.Replies, v)
+		} else {
+			top = append([]*commentView{v}, top...)
+		}
+	}
+	var walk func(v *commentView, depth int) int
+	walk = func(v *commentView, depth int) int {
+		v.Depth = depth
+		for _, r := range v.Replies {
+			v.Count += 1 + walk(r, depth+1)
+		}
+		return v.Count
+	}
+	for _, v := range top {
+		walk(v, 0)
+	}
+	return top, total
+}
+
 func (a *app) post(f func(r *http.Request, me *user) string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !sameOrigin(r) {
@@ -294,16 +330,20 @@ func (a *app) addComment(r *http.Request, me *user) string {
 	if !a.lim.allow("c:" + me.ID) {
 		return "/?m=slow#comments"
 	}
+	parent, _ := strconv.ParseInt(r.FormValue("parent"), 10, 64)
 	var id int64
 	a.db.do(func(s *state) bool {
-		if !s.Settings.Comments {
+		if !s.Settings.Comments || parent != 0 && s.comment(parent) == nil {
 			return false
 		}
 		s.NextID++
 		id = s.NextID
-		s.Comments = append(s.Comments, comment{ID: id, User: me.ID, Text: text, At: time.Now().UTC()})
+		s.Comments = append(s.Comments, comment{ID: id, Parent: parent, User: me.ID, Text: text, At: time.Now().UTC()})
 		return true
 	})
+	if id == 0 {
+		return "/#comments"
+	}
 	return "/#c" + strconv.FormatInt(id, 10)
 }
 
@@ -313,16 +353,21 @@ func (a *app) deleteComment(r *http.Request, me *user) string {
 		return "/#comments"
 	}
 	admin := a.cfg.Admins[me.ID]
+	back := "/#comments"
 	a.db.do(func(s *state) bool {
-		for i, c := range s.Comments {
-			if c.ID == id && (c.User == me.ID || admin) {
-				s.Comments = append(s.Comments[:i], s.Comments[i+1:]...)
-				return true
-			}
+		c := s.comment(id)
+		if c == nil || c.Deleted || c.User != me.ID && !admin {
+			return false
 		}
-		return false
+		if c.Parent != 0 {
+			back = "/#c" + strconv.FormatInt(c.Parent, 10)
+		}
+		return s.removeComment(id)
 	})
-	return "/#comments"
+	if strings.HasPrefix(r.FormValue("back"), "/admin") && admin {
+		return "/admin#comments"
+	}
+	return back
 }
 
 // ---------------------------------------------------------------- admin
@@ -339,6 +384,16 @@ type adminData struct {
 	Comments int
 	Banned   []user
 	Emails   int
+	Recent   []recentComment
+}
+
+type recentComment struct {
+	ID     int64
+	Name   string
+	UserID string
+	Text   string
+	At     time.Time
+	Reply  bool
 }
 
 func (a *app) admin(w http.ResponseWriter, r *http.Request) {
@@ -355,6 +410,17 @@ func (a *app) admin(w http.ResponseWriter, r *http.Request) {
 				if u.Key == "" {
 					d.Waiting++
 				}
+			}
+			for i := len(s.Comments) - 1; i >= 0 && len(d.Recent) < 50; i-- {
+				c := s.Comments[i]
+				if c.Deleted {
+					continue
+				}
+				rc := recentComment{ID: c.ID, UserID: c.User, Text: c.Text, At: c.At, Reply: c.Parent != 0}
+				if u := s.Users[c.User]; u != nil {
+					rc.Name = u.Name
+				}
+				d.Recent = append(d.Recent, rc)
 			}
 			for _, u := range s.Users {
 				if u.Banned {
@@ -422,7 +488,7 @@ func (a *app) saveSettings(r *http.Request) string {
 		st.Comments = r.FormValue("comments") != ""
 		return true
 	})
-	return "Settings saved."
+	return "Saved."
 }
 
 func (a *app) addKeys(r *http.Request) string {
@@ -444,7 +510,7 @@ func (a *app) addKeys(r *http.Request) string {
 	})
 	msg := strconv.Itoa(added) + " key(s) added."
 	if dup > 0 {
-		msg += " " + strconv.Itoa(dup) + " were already there."
+		msg += " " + strconv.Itoa(dup) + " duplicate(s) skipped."
 	}
 	return msg
 }
@@ -468,9 +534,9 @@ func (a *app) giveKeys(r *http.Request) string {
 		}
 		return given > 0
 	})
-	msg := strconv.Itoa(given) + " tester(s) got a key."
+	msg := strconv.Itoa(given) + " key(s) sent."
 	if short > 0 {
-		msg += " " + strconv.Itoa(short) + " still waiting: add more keys."
+		msg += " Out of keys: " + strconv.Itoa(short) + " still waiting."
 	}
 	return msg
 }
@@ -489,33 +555,35 @@ func (a *app) userAction(r *http.Request) string {
 				u.SignedUp = time.Now().UTC()
 			}
 			if s.giveKey(u) {
-				msg = u.Name + " got a key."
+				msg = "Key sent to " + u.Name + "."
 				return true
 			}
 			msg = "No keys left."
 		case "revoke": // the key is not reused: it may have been seen
 			if u.Key != "" {
 				u.Key, u.KeyAt = "", time.Time{}
-				msg = u.Name + "'s key was taken back."
+				msg = "Key taken from " + u.Name + "."
 				return true
 			}
 		case "remove":
 			u.SignedUp, u.Key, u.KeyAt = time.Time{}, "", time.Time{}
-			msg = u.Name + " was removed from the playtest."
+			msg = u.Name + " removed."
 			return true
 		case "ban", "unban":
 			u.Banned = act == "ban"
 			if u.Banned {
-				kept := s.Comments[:0]
+				var ids []int64
 				for _, c := range s.Comments {
-					if c.User != id {
-						kept = append(kept, c)
+					if c.User == id && !c.Deleted {
+						ids = append(ids, c.ID)
 					}
 				}
-				s.Comments = kept
-				msg = u.Name + " can no longer comment; their comments were removed."
+				for _, cid := range ids {
+					s.removeComment(cid)
+				}
+				msg = u.Name + " silenced."
 			} else {
-				msg = u.Name + " can comment again."
+				msg = u.Name + " can speak again."
 			}
 			return true
 		}

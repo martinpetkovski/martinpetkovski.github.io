@@ -2,6 +2,9 @@
    (art/fonts/title.ttf) in flat warm yellow with a soft glow. Plain, crisp lines. */
 @font-face { font-family: "Gamecuben"; src: url("fonts/title.ttf") format("truetype"); font-display: swap; }
 
+/* GAMECUBEN has no hyphen: hyphens fall back to a plain heavy face instead of a blank */
+@font-face { font-family: "Gamecuben"; src: local("Arial Black"), local("Arial Bold"), local("Arial"), local("DejaVu Sans Bold"); unicode-range: U+002D, U+2010-2014; }
+
 :root {
   --px: 2px;                         /* line width */
   --yellow: #ffcb35;                 /* the title colour */
@@ -110,70 +113,164 @@ body {
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-/* ---------------------------------------------------------------- signed in: the bar */
-.bar { position: fixed; top: 0; right: 0; z-index: 5; display: flex; gap: 18px; align-items: center; padding: 10px 16px;
-  background: rgba(7, 7, 13, .86); border-left: var(--px) solid var(--line); border-bottom: var(--px) solid var(--line);
-  font-size: 14px; }
-.adm .bar { left: 0; border-left: 0; justify-content: space-between; }
-.bar a { color: var(--yellow); text-decoration: none; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
-.bar form { display: inline; }
-.who { display: flex; gap: 8px; align-items: center; color: var(--text); }
-.who img { border: 1px solid var(--line); }
-.link { background: none; border: 0; padding: 0; font: inherit; color: var(--hint); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.link:hover, .link:focus-visible { color: var(--yellow); }
-.small { font-size: 14px; color: var(--hint); }
-.small a { color: var(--yellow); }
-a.cta { text-decoration: none; display: inline-block; }
+/* ================================================================ shared bits (Steam, comments, admin) */
+/* Gamecuben sits a little high in its line box: every control that uses it centres with flex
+   and a small optical nudge, so text and icons line up. */
+.cta, .act, .copy, .bar a, .foot a, .tabs a, .say.ghost { display: inline-flex; align-items: center; justify-content: center; gap: .6em; line-height: 1; }
+.cta > span, .tabs a > span, .foot a > span, .say.ghost > span { padding-top: .14em; }
+.cta i { font-size: .95em; }
+a.cta { text-decoration: none; }
+.cta.sm { font-size: 14px; padding: 10px 18px; margin: 0; letter-spacing: .1em; }
+.cta[disabled] { opacity: .35; cursor: not-allowed; background: none; color: var(--yellow); }
 .signup form { display: grid; justify-items: center; }
+.signup .cta { justify-self: center; }
+.flash { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 13px; color: var(--yellow); }
+.small { font-size: 13px; color: var(--hint); }
+.muted { color: var(--hint); }
+.link { background: none; border: 0; padding: 0; font: inherit; font-size: 13px; color: var(--hint); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover, .link:focus-visible { color: var(--yellow); }
+code { font-family: ui-monospace, Consolas, monospace; }
+.ico { display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; background: none; border: 1px solid transparent;
+  color: var(--hint); cursor: pointer; text-decoration: none; font-size: 14px; line-height: 1; }
+.ico:hover, .ico:focus-visible { color: var(--yellow); border-color: var(--line); outline: none; }
+.ico.danger:hover { color: var(--red); }
 
-/* the key */
-.key { display: flex; justify-content: center; align-items: stretch; gap: 0; margin: 4px auto; max-width: 100%; }
-.key code { font: 600 clamp(16px, 3vw, 22px)/1 ui-monospace, Consolas, monospace; letter-spacing: .08em; color: #fff;
-  background: rgba(3, 3, 8, .75); border: var(--px) solid var(--yellow); padding: 14px 16px; overflow-wrap: anywhere;
-  text-shadow: 0 0 9px var(--glow); }
-.copy { border: var(--px) solid var(--yellow); border-left: 0; background: rgba(255, 203, 53, .12); color: var(--yellow); cursor: pointer;
-  padding: 0 16px; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .1em; font-size: 12px; }
-.copy:hover { background: var(--yellow); color: var(--ink); }
+/* ---------------------------------------------------------------- the bar */
+.bar { position: fixed; top: 0; right: 0; z-index: 5; display: flex; gap: 10px; align-items: center; height: 46px; padding: 0 8px 0 14px;
+  background: rgba(7, 7, 13, .9); border-left: var(--px) solid var(--line); border-bottom: var(--px) solid var(--line); font-size: 14px; }
+.bar form { display: contents; }
+.bar.wide { left: 0; border-left: 0; padding: 0 12px; gap: 14px; }
+.bar .brand { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .2em; color: var(--yellow); font-size: 14px; padding-top: .14em; text-shadow: 0 0 9px var(--glow); }
+.who { display: flex; gap: 8px; align-items: center; color: var(--text); margin-left: auto; white-space: nowrap; }
+.bar:not(.wide) .who { margin-left: 0; }
+.who img { display: block; border: 1px solid var(--line); }
+.tabs { display: flex; gap: 2px; height: 100%; }
+.tabs a { height: 100%; padding: 0 12px; color: var(--hint); text-decoration: none; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; border-bottom: var(--px) solid transparent; }
+.tabs a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+/* ---------------------------------------------------------------- the key */
+.key { display: flex; justify-content: center; max-width: 100%; }
+.key code { display: flex; align-items: center; font-size: clamp(16px, 3vw, 22px); font-weight: 600; letter-spacing: .08em; color: #fff;
+  background: rgba(3, 3, 8, .75); border: var(--px) solid var(--yellow); padding: 12px 16px; overflow-wrap: anywhere; text-shadow: 0 0 9px var(--glow); }
+.copy { width: 52px; border: var(--px) solid var(--yellow); border-left: 0; background: rgba(255, 203, 53, .1); color: var(--yellow); cursor: pointer; font-size: 18px; }
+.copy:hover, .copy.done { background: var(--yellow); color: var(--ink); }
 
 /* ---------------------------------------------------------------- comments */
-.comments { justify-self: center; width: min(760px, 100%); display: grid; gap: 18px; }
-.small-title { font-size: clamp(22px, 3.4vw, 32px); text-align: center; }
-.say { display: grid; gap: 12px; background: var(--panel); border: var(--px) solid var(--line); padding: 18px; }
-.say .cta { justify-self: end; font-size: 16px; padding: 10px 26px; margin: 0; }
-.field textarea { width: 100%; font: inherit; color: var(--text); background: rgba(3, 3, 8, .75); border: var(--px) solid var(--line);
-  padding: 12px 14px; outline: none; resize: vertical; }
-.field textarea:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
-.list { list-style: none; display: grid; gap: 0; }
-.list li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
-.list li.none { display: block; color: var(--hint); text-align: center; }
-.list li:target { background: rgba(255, 203, 53, .06); }
-.pic img { display: block; border: 1px solid var(--line); }
-.meta { font-size: 14px; color: var(--hint); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
-.meta a { color: var(--yellow); text-decoration: none; font-weight: 600; }
-.meta .del { margin-left: auto; display: inline; }
-.dev { font: 400 10px "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 2px 6px; }
-.text { white-space: pre-line; overflow-wrap: anywhere; margin-top: 4px; }
+.comments { justify-self: center; width: min(760px, 100%); display: grid; gap: 16px; }
+.sub-title { font-size: clamp(22px, 3.4vw, 30px); text-align: center; display: flex; justify-content: center; align-items: center; gap: 14px; }
+.count { font-size: 13px; letter-spacing: .1em; color: var(--ink); background: var(--yellow); padding: 5px 8px 3px; text-shadow: none; line-height: 1; }
+.say { display: flex; gap: 10px; align-items: stretch; }
+.say textarea { flex: 1; min-height: 48px; height: 48px; font: inherit; font-size: 15px; color: var(--text); background: rgba(3, 3, 8, .75); border: var(--px) solid var(--line);
+  padding: 11px 14px; outline: none; resize: vertical; }
+.say textarea:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
+.say textarea::placeholder { color: #5d5b74; }
+.say .cta { height: auto; }
+.say.ghost { justify-content: center; height: 46px; border: var(--px) dashed var(--line); color: var(--hint); text-decoration: none;
+  font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 12px; }
+.say.ghost:hover { color: var(--yellow); border-color: var(--yellow); }
+.say.reply { flex-direction: column; margin: 8px 0 4px; }
+.say.reply .acts { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+.say.reply textarea { height: 64px; }
 
-/* ---------------------------------------------------------------- admin */
-.admin { width: min(1040px, 100% - 32px); gap: 28px; padding-top: 90px; }
-.admin > .title { font-size: clamp(30px, 5vw, 48px); }
-.panel { background: var(--panel); border: var(--px) solid var(--line); padding: clamp(18px, 3vw, 28px); display: grid; gap: 14px; }
-.panel h2 { font-family: "Gamecuben", sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); font-size: 18px; }
-.panel .cta { justify-self: start; font-size: 15px; padding: 10px 22px; margin: 0; }
-.panel code, .admin p code { font-family: ui-monospace, Consolas, monospace; color: #fff; background: rgba(3,3,8,.75); padding: 1px 6px; border: 1px solid var(--line); }
-.row { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
-.row .field { width: 160px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
-.stats div { background: var(--panel); border: var(--px) solid var(--line); padding: 14px 16px; display: grid; }
-.stats b { font: 400 30px "Gamecuben", sans-serif; color: var(--yellow); text-shadow: 0 0 9px var(--glow); }
-.stats span { color: var(--hint); font-size: 13px; }
+.thread { list-style: none; display: grid; }
+.comments > .thread > .c { border-top: 1px solid var(--line); padding: 14px 0 6px; }
+.comments > .thread > .none { border-top: 1px solid var(--line); padding: 26px 0; text-align: center; color: var(--hint);
+  font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .2em; font-size: 12px; }
+.c-head { display: flex; align-items: center; gap: 8px; min-height: 28px; font-size: 13px; color: var(--hint); }
+.fold { display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none; padding: 0; font-size: 9px; color: var(--hint);
+  background: none; border: 1px solid var(--line); cursor: pointer; }
+.fold:hover { color: var(--yellow); border-color: var(--yellow); }
+.c-pic { display: grid; place-items: center; width: 24px; height: 24px; flex: none; background: rgba(3,3,8,.75); border: 1px solid var(--line); color: var(--hint); font-size: 12px; overflow: hidden; }
+.c-pic img { display: block; width: 100%; height: 100%; }
+.c-name { color: var(--yellow); text-decoration: none; font-weight: 600; font-size: 14px; }
+.c-name.muted { color: var(--hint); font-weight: 400; font-style: italic; }
+.dev { font: 400 10px/1 "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 4px 6px 2px; }
+.folded-n { display: none; }
+.c-body { margin-left: 8px; padding-left: 18px; border-left: 1px solid var(--line); }
+.c-body:hover { border-left-color: #3d4068; }
+.c-text { white-space: pre-line; overflow-wrap: anywhere; font-size: 15px; line-height: 1.55; padding: 2px 0 2px; }
+.c-acts { display: flex; gap: 14px; align-items: center; min-height: 26px; }
+.c-acts form { display: contents; }
+.act { gap: .45em; padding: 0; background: none; border: 0; color: var(--hint); cursor: pointer; font: 600 12px system-ui, sans-serif; letter-spacing: .02em; }
+.act i { font-size: 11px; }
+.act:hover, .act:focus-visible { color: var(--yellow); outline: none; }
+.c .thread { margin-top: 4px; }
+.c .thread > .c { padding-top: 8px; }
+.c.gone > .c-head { opacity: .7; }
+.c.folded > .c-body { display: none; }
+.c.folded > .c-head .folded-n { display: inline; color: var(--yellow); }
+.c.folded > .c-head { opacity: .75; }
+.c:target > .c-head .c-name, .c:target > .c-body > .c-text { text-shadow: 0 0 9px var(--glow); }
+.c:target > .c-body { border-left-color: var(--yellow); }
+/* deep threads stop stepping in, so phones keep room for the words */
+.c .c .c .c .c .c-body { margin-left: 0; padding-left: 10px; }
+
+.foot a i { font-size: 12px; }
+
+/* ================================================================ admin */
+.adm { padding-top: 46px; }
+.admin { width: min(1040px, 100% - 32px); margin: 0 auto; padding: 28px 0 60px; display: grid; gap: 20px; }
+.admin [id] { scroll-margin-top: 62px; }
+.panel { background: var(--panel); border: var(--px) solid var(--line); padding: clamp(16px, 3vw, 24px); display: grid; gap: 16px; }
+.panel.center { justify-items: center; text-align: center; padding: 48px 20px; }
+.panel h2 { display: flex; align-items: center; gap: 12px; font-family: "Gamecuben", sans-serif; font-weight: 400; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--yellow); font-size: 16px; line-height: 1; }
+.panel h2 > i { width: 20px; text-align: center; font-size: 15px; }
+.panel h2 .tools { margin-left: auto; display: flex; gap: 6px; }
+.panel h2 .tools a { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px; color: var(--hint); border: 1px solid var(--line); text-decoration: none; font-size: 14px; }
+.panel h2 .tools a:hover { color: var(--yellow); border-color: var(--yellow); }
+.panel h2 .tools small { font: 600 12px system-ui, sans-serif; letter-spacing: 0; }
+.panel code, .admin p code { color: #fff; background: rgba(3,3,8,.75); padding: 2px 6px; border: 1px solid var(--line); font-size: 13px; }
+.panel .lead i { color: var(--yellow); margin-right: 6px; }
+.admin .flash { padding: 12px 16px; border: var(--px) solid var(--yellow-dim); background: rgba(255, 203, 53, .06); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stats div { display: grid; grid-template-columns: 22px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center;
+  background: var(--panel); border: var(--px) solid var(--line); padding: 14px 16px; }
+.stats i { grid-row: 1 / 3; color: var(--yellow-dim); font-size: 18px; text-align: center; }
+.stats b { font: 400 28px/1 "Gamecuben", sans-serif; color: var(--yellow); text-shadow: 0 0 9px var(--glow); }
+.stats span { color: var(--hint); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.stack { display: grid; gap: 10px; align-content: start; }
+.stack .cta { justify-self: start; }
+.admin textarea, .admin input:not([type=checkbox]) { width: 100%; font: inherit; font-size: 14px; color: var(--text); background: rgba(3, 3, 8, .75);
+  border: var(--px) solid var(--line); padding: 10px 12px; outline: none; resize: vertical; }
+.admin textarea { font-family: ui-monospace, Consolas, monospace; }
+.admin textarea:focus, .admin input:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
+
 .scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { text-align: left; font: 400 11px "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--hint); padding: 8px; border-bottom: var(--px) solid var(--line); }
-td { padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
-td a { color: var(--yellow); text-decoration: none; }
-td i { color: var(--hint); }
-.acts form { display: flex; flex-wrap: wrap; gap: 4px 12px; }
-.inline { display: inline; margin-right: 10px; }
-.admin .status { text-align: left; }
-.admin .check { color: var(--text); }
+th { text-align: left; font: 400 10px/1 "Gamecuben", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--hint); padding: 0 10px 10px; border-bottom: var(--px) solid var(--line); }
+td { height: 46px; padding: 4px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; white-space: nowrap; }
+tr:hover td { background: rgba(255, 255, 255, .02); }
+.person { display: inline-flex; align-items: center; gap: 10px; color: var(--yellow); text-decoration: none; }
+.person img { display: block; border: 1px solid var(--line); }
+.icons { display: flex; justify-content: flex-end; gap: 2px; }
+
+.feed { list-style: none; display: grid; max-height: 520px; overflow-y: auto; }
+.feed li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.feed-head { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.feed-head a { color: var(--yellow); text-decoration: none; font-weight: 600; }
+.feed-head .icons:first-of-type { margin-left: auto; }
+.feed-head .icons .ico { width: 28px; height: 28px; }
+.feed .c-text { font-size: 14px; color: var(--text); opacity: .9; }
+.silenced { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding-left: 10px; border: 1px solid var(--line); color: var(--text); }
+.chip .ico { width: 26px; height: 26px; }
+
+.settings { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+.settings .wide { grid-column: 1 / -1; }
+.settings .field span { font-size: 11px; }
+.toggles { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; padding-top: 4px; }
+.toggles .cta { margin-left: auto; }
+.toggles .check { align-items: center; color: var(--text); }
+.toggles .check input { margin-top: 0; }
+
+@media (max-width: 720px) {
+  .split, .settings { grid-template-columns: 1fr; }
+  .tabs a span { display: none; }
+  .who span { display: none; }
+  .say:not(.reply) { flex-direction: column; }
+  .say:not(.reply) .cta { align-self: flex-end; padding: 12px 18px; }
+}

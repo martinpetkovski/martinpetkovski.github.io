@@ -29,10 +29,12 @@ type user struct {
 func (u *user) tester() bool { return u != nil && !u.SignedUp.IsZero() }
 
 type comment struct {
-	ID   int64     `json:"id"`
-	User string    `json:"user"`
-	Text string    `json:"text"`
-	At   time.Time `json:"at"`
+	ID      int64     `json:"id"`
+	Parent  int64     `json:"parent,omitempty"` // the comment this replies to (0: a new thread)
+	User    string    `json:"user"`
+	Text    string    `json:"text"`
+	At      time.Time `json:"at"`
+	Deleted bool      `json:"deleted,omitempty"` // kept as "deleted" while it has replies
 }
 
 type settings struct {
@@ -63,9 +65,9 @@ func defaultSettings(youtube string) settings {
 	return settings{
 		YouTubeID:   youtube,
 		Tagline:     "A multiplayer retro futuristic flying car combat game",
-		Lead:        "Sign in with Steam to join the playtest. When a test opens, your Steam key appears right here.",
-		VideoNote:   "All footage captured in engine",
-		KeyNote:     "Redeem it on Steam, then find Static Over Midtown in your library.",
+		Lead:        "Midtown is calling.",
+		VideoNote:   "Captured in engine",
+		KeyNote:     "",
 		SignupsOpen: true,
 		Comments:    true,
 	}
@@ -89,6 +91,17 @@ func openDB(dir, youtube string) (*db, error) {
 	}
 	if d.s.Users == nil {
 		d.s.Users = map[string]*user{}
+	}
+	// the first version's wordy texts: the new, shorter ones (texts changed in the admin panel stay)
+	old := map[string]string{
+		"Sign in with Steam to join the playtest. When a test opens, your Steam key appears right here.": "Midtown is calling.",
+		"All footage captured in engine":                                     "Captured in engine",
+		"Redeem it on Steam, then find Static Over Midtown in your library.": "",
+	}
+	for _, p := range []*string{&d.s.Settings.Lead, &d.s.Settings.VideoNote, &d.s.Settings.KeyNote} {
+		if v, ok := old[*p]; ok {
+			*p = v
+		}
 	}
 	return d, nil
 }
@@ -147,4 +160,54 @@ func (s *state) keyUsed(k string) bool {
 		}
 	}
 	return false
+}
+
+// removeComment deletes a comment; one with replies stays as "deleted" so the thread holds.
+func (s *state) removeComment(id int64) bool {
+	for i := range s.Comments {
+		if s.Comments[i].ID != id {
+			continue
+		}
+		for _, c := range s.Comments {
+			if c.Parent == id {
+				s.Comments[i].Deleted, s.Comments[i].Text = true, ""
+				return true
+			}
+		}
+		s.Comments = append(s.Comments[:i], s.Comments[i+1:]...)
+		s.pruneDeleted()
+		return true
+	}
+	return false
+}
+
+// pruneDeleted drops "deleted" comments whose replies are all gone.
+func (s *state) pruneDeleted() {
+	for {
+		has := map[int64]bool{}
+		for _, c := range s.Comments {
+			has[c.Parent] = true
+		}
+		kept, gone := s.Comments[:0], false
+		for _, c := range s.Comments {
+			if c.Deleted && !has[c.ID] {
+				gone = true
+				continue
+			}
+			kept = append(kept, c)
+		}
+		s.Comments = kept
+		if !gone {
+			return
+		}
+	}
+}
+
+func (s *state) comment(id int64) *comment {
+	for i := range s.Comments {
+		if s.Comments[i].ID == id {
+			return &s.Comments[i]
+		}
+	}
+	return nil
 }

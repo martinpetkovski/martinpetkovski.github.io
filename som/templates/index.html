@@ -3,34 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Static Over Midtown · Join the playtest</title>
-<meta name="description" content="Static Over Midtown is a multiplayer retro-futuristic flying car combat game. Sign in with Steam to join the playtest.">
+<title>Static Over Midtown</title>
+<meta name="description" content="A multiplayer retro-futuristic flying car combat game.">
 <meta property="og:title" content="Static Over Midtown">
-<meta property="og:description" content="A multiplayer retro-futuristic flying car combat game. Sign in with Steam to join the playtest.">
+<meta property="og:description" content="A multiplayer retro-futuristic flying car combat game.">
 <meta property="og:url" content="{{.SiteURL}}">
 <meta property="og:image" content="{{.SiteURL}}press-kit/images/key-art/key-art-1920x1080.jpg">
 <link rel="preload" href="static/fonts/title.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
 
 {{with .Me}}
 <nav class="bar">
-  <span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="28" height="28">{{end}}{{.Name}}</span>
-  {{if $.Admin}}<a href="/admin">Admin</a>{{end}}
-  <form method="post" action="/auth/logout"><button type="submit" class="link">Sign out</button></form>
+  <span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
+  {{if $.Admin}}<a class="ico" href="/admin" title="Admin"><i class="fa-solid fa-sliders"></i></a>{{end}}
+  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>
 </nav>
 {{end}}
 
 <main class="page">
   <header class="hero">
     <h1 class="logo"><span>Static Over</span><span>Midtown</span></h1>
-    <p class="tagline">{{.S.Tagline}}</p>
+    {{with .S.Tagline}}<p class="tagline">{{.}}</p>{{end}}
   </header>
 
   <section class="video" aria-label="Trailer">
     <div class="frame">
-      <!-- Click to load: YouTube is only contacted once the visitor presses play -->
       <button class="poster" type="button" data-id="{{.S.YouTubeID}}" aria-label="Play the trailer">
         <img src="https://i.ytimg.com/vi/{{.S.YouTubeID}}/maxresdefault.jpg" alt="" loading="lazy"
              onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{.S.YouTubeID}}/hqdefault.jpg'">
@@ -42,76 +42,91 @@
 
   <section class="signup" id="playtest">
     <h2 class="title">The council wants <em>you</em></h2>
-    {{with .Message}}<p class="status ok">{{.}}</p>{{end}}
+    {{with .Message}}<p class="flash">{{.}}</p>{{end}}
 
     {{if not .Me}}
-      <p class="lead">{{.S.Lead}}</p>
-      <a class="cta steam" href="/auth/steam"><span>Sign in with Steam</span></a>
-      <p class="small">We only get your public Steam name and picture.</p>
+      {{with .S.Lead}}<p class="lead">{{.}}</p>{{end}}
+      <a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a>
     {{else if .Me.Key}}
-      <p class="lead">Your playtest key</p>
+      <p class="lead">Access granted.</p>
       <div class="key">
         <code id="key">{{.Me.Key}}</code>
-        <button type="button" class="copy" data-copy="key">Copy</button>
+        <button type="button" class="copy" data-copy="key" title="Copy"><i class="fa-regular fa-copy"></i></button>
       </div>
-      <a class="cta" href="https://store.steampowered.com/account/registerkey?key={{.Me.Key}}" target="_blank" rel="noopener"><span>Redeem on Steam</span></a>
+      <a class="cta" href="https://store.steampowered.com/account/registerkey?key={{.Me.Key}}" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i><span>Redeem</span></a>
       {{with .S.KeyNote}}<p class="small">{{.}}</p>{{end}}
     {{else if .Me.SignedUp.IsZero}}
       {{if .S.SignupsOpen}}
-        <p class="lead">Join the playtest. When a test opens, your Steam key appears right here.</p>
-        <form method="post" action="/playtest/join"><button class="cta" type="submit"><span>Join the playtest</span></button></form>
+        <p class="lead">Your seat is waiting.</p>
+        <form method="post" action="/playtest/join"><button class="cta" type="submit"><i class="fa-solid fa-satellite-dish"></i><span>Enlist</span></button></form>
       {{else}}
-        <p class="lead">Sign-ups for the playtest are closed right now. Check back soon.</p>
+        <p class="lead">The gates are shut. For now.</p>
       {{end}}
     {{else}}
-      <p class="lead">You're on the list. When a test opens, your Steam key will appear right here.</p>
-      <form method="post" action="/playtest/leave"><button class="link" type="submit">Leave the playtest</button></form>
+      <p class="lead">Enlisted. Watch this space.</p>
+      <form method="post" action="/playtest/leave"><button class="link" type="submit">Stand down</button></form>
     {{end}}
   </section>
 
   {{if .S.Comments}}
   <section class="comments" id="comments">
-    <h2 class="title small-title">Comms channel</h2>
+    <h2 class="title sub-title">Comms <span class="count">{{.Total}}</span></h2>
     {{if .Me}}
-      {{if .Me.Banned}}
-        <p class="small">You can't comment.</p>
-      {{else}}
+      {{if not .Me.Banned}}
       <form class="say" method="post" action="/comments">
-        <label class="field">
-          <span>Say something</span>
-          <textarea name="text" rows="3" maxlength="1000" required placeholder="What do you think?"></textarea>
-        </label>
-        <button class="cta" type="submit"><span>Post</span></button>
+        <textarea name="text" rows="2" maxlength="1000" required placeholder="Transmit…" aria-label="Your message"></textarea>
+        <button class="cta sm" type="submit"><i class="fa-solid fa-tower-broadcast"></i><span>Transmit</span></button>
       </form>
       {{end}}
     {{else}}
-      <p class="small"><a href="/auth/steam">Sign in with Steam</a> to comment.</p>
+      <a class="say ghost" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in to transmit</span></a>
     {{end}}
 
-    <ol class="list">
-      {{range .Comments}}
-      <li id="c{{.ID}}">
-        <a class="pic" href="{{.Profile}}" target="_blank" rel="noopener nofollow">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="40" height="40" loading="lazy">{{end}}</a>
-        <div>
-          <p class="meta"><a href="{{.Profile}}" target="_blank" rel="noopener nofollow">{{.Name}}</a>{{if .ByAdmin}} <b class="dev">Dev</b>{{end}} <time datetime="{{.At.Format "2006-01-02T15:04:05Z"}}">{{ago .At}}</time>
-            {{if or .Mine $.Admin}}<form method="post" action="/comments/delete" class="del"><input type="hidden" name="id" value="{{.ID}}"><button type="submit" class="link">Delete</button></form>{{end}}
-          </p>
-          <p class="text">{{.Text}}</p>
-        </div>
-      </li>
-      {{else}}
-      <li class="none">No comments yet. Be the first.</li>
-      {{end}}
+    <ol class="thread">
+      {{range .Comments}}{{template "comment" .}}{{else}}<li class="none">Static on the line.</li>{{end}}
     </ol>
   </section>
   {{end}}
 </main>
 
 <footer class="foot">
-  <a href="press-kit/">Press kit</a>
+  <a href="press-kit/"><i class="fa-solid fa-newspaper"></i><span>Press kit</span></a>
   <span>© Return Zero</span>
 </footer>
+
+<template id="reply-form">
+  <form class="say reply" method="post" action="/comments">
+    <input type="hidden" name="parent">
+    <textarea name="text" rows="2" maxlength="1000" required placeholder="Reply…" aria-label="Your reply"></textarea>
+    <div class="acts"><button type="button" class="link" data-cancel>Cancel</button><button class="cta sm" type="submit"><i class="fa-solid fa-reply"></i><span>Reply</span></button></div>
+  </form>
+</template>
 
 <script src="static/app.js" defer></script>
 </body>
 </html>
+
+{{define "comment"}}
+<li class="c{{if .Deleted}} gone{{end}}" id="c{{.ID}}">
+  <div class="c-head">
+    <button type="button" class="fold" title="Collapse" aria-expanded="true"><i class="fa-solid fa-minus"></i></button>
+    {{if .Deleted}}
+      <span class="c-name muted">[deleted]</span>
+    {{else}}
+      <a class="c-pic" href="{{.Profile}}" target="_blank" rel="noopener nofollow">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="24" height="24" loading="lazy">{{else}}<i class="fa-solid fa-user-astronaut"></i>{{end}}</a>
+      <a class="c-name" href="{{.Profile}}" target="_blank" rel="noopener nofollow">{{.Name}}</a>
+      {{if .ByAdmin}}<span class="dev">Dev</span>{{end}}
+    {{end}}
+    <time datetime="{{.At.Format "2006-01-02T15:04:05Z"}}" title="{{.At.Format "2 Jan 2006 15:04 UTC"}}">{{ago .At}}</time>
+    {{if .Count}}<span class="folded-n">+{{.Count}}</span>{{end}}
+  </div>
+  <div class="c-body">
+    {{if not .Deleted}}<p class="c-text">{{.Text}}</p>{{end}}
+    {{if or (and .CanReply (not .Deleted)) .CanDelete}}<div class="c-acts">
+      {{if and .CanReply (not .Deleted)}}<button type="button" class="act" data-reply="{{.ID}}"><i class="fa-solid fa-reply"></i><span>Reply</span></button>{{end}}
+      {{if .CanDelete}}<form method="post" action="/comments/delete"><input type="hidden" name="id" value="{{.ID}}"><button type="submit" class="act" data-confirm="Delete this?"><i class="fa-regular fa-trash-can"></i><span>Delete</span></button></form>{{end}}
+    </div>{{end}}
+    {{if .Replies}}<ol class="thread">{{range .Replies}}{{template "comment" .}}{{end}}</ol>{{end}}
+  </div>
+</li>
+{{end}}

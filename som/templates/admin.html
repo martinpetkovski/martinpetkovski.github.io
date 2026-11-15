@@ -4,93 +4,121 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Static Over Midtown · Admin</title>
+<title>Admin · Static Over Midtown</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="static/style.css">
 </head>
 <body class="adm">
-<nav class="bar">
-  <a href="/">← Site</a>
-  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="28" height="28">{{end}}{{.Name}}</span>
-  <form method="post" action="/auth/logout"><button type="submit" class="link">Sign out</button></form>{{end}}
+<nav class="bar wide">
+  <a class="ico" href="/" title="Back to the site"><i class="fa-solid fa-arrow-left"></i></a>
+  <span class="brand">Control</span>
+  {{if .IsAdmin}}
+  <span class="tabs">
+    <a href="#keys"><i class="fa-solid fa-key"></i><span>Keys</span></a>
+    <a href="#testers"><i class="fa-solid fa-users"></i><span>Testers</span></a>
+    <a href="#comments"><i class="fa-solid fa-comments"></i><span>Comms</span></a>
+    <a href="#page"><i class="fa-solid fa-sliders"></i><span>Page</span></a>
+  </span>
+  {{end}}
+  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
+  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>{{end}}
 </nav>
-<main class="page admin">
-  <h1 class="title">Admin</h1>
 
+<main class="admin">
   {{if not .Me}}
-    <section class="panel"><p>Sign in with your Steam account.</p><a class="cta steam" href="/auth/steam"><span>Sign in with Steam</span></a></section>
+    <section class="panel center"><a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a></section>
   {{else if not .IsAdmin}}
-    <section class="panel">
-      <p>This Steam account is not an admin.</p>
-      <p>Its Steam ID is <code>{{.Me.ID}}</code>. To make it the admin, add <code>ADMIN_STEAM_ID={{.Me.ID}}</code> to this site's settings in the server manager.</p>
+    <section class="panel center">
+      <p class="lead"><i class="fa-solid fa-lock"></i> No clearance.</p>
+      <p class="small">Steam ID <code>{{.Me.ID}}</code> · to grant it, set <code>ADMIN_STEAM_ID={{.Me.ID}}</code> in the server manager.</p>
     </section>
   {{else}}
-    {{with .Message}}<p class="status ok">{{.}}</p>{{end}}
+    {{with .Message}}<p class="flash">{{.}}</p>{{end}}
 
     <section class="stats">
-      <div><b>{{len .Testers}}</b><span>testers</span></div>
-      <div><b>{{.Waiting}}</b><span>waiting for a key</span></div>
-      <div><b>{{.Keys}}</b><span>unused keys</span></div>
-      <div><b>{{.Users}}</b><span>Steam accounts</span></div>
-      <div><b>{{.Comments}}</b><span>comments</span></div>
+      <div><i class="fa-solid fa-users"></i><b>{{len .Testers}}</b><span>Testers</span></div>
+      <div><i class="fa-solid fa-hourglass-half"></i><b>{{.Waiting}}</b><span>Waiting</span></div>
+      <div><i class="fa-solid fa-key"></i><b>{{.Keys}}</b><span>Keys left</span></div>
+      <div><i class="fa-brands fa-steam"></i><b>{{.Users}}</b><span>Accounts</span></div>
+      <div><i class="fa-solid fa-comments"></i><b>{{.Comments}}</b><span>Comments</span></div>
     </section>
 
-    <section class="panel">
-      <h2>Steam keys</h2>
-      <form method="post" action="/admin/keys/give" class="row">
-        <label class="field"><span>How many</span><input type="number" name="n" min="0" placeholder="all {{.Waiting}}"></label>
-        <button class="cta" type="submit"><span>Give keys to waiting testers</span></button>
-      </form>
-      <p class="small">Oldest sign-ups first. Each tester sees their key on the site as soon as it's given.</p>
-      <form method="post" action="/admin/keys">
-        <label class="field"><span>Add keys (one per line)</span><textarea name="keys" rows="5" placeholder="XXXXX-XXXXX-XXXXX"></textarea></label>
-        <button class="cta" type="submit"><span>Add keys</span></button>
-      </form>
+    <section class="panel" id="keys">
+      <h2><i class="fa-solid fa-key"></i>Keys</h2>
+      <div class="split">
+        <form method="post" action="/admin/keys" class="stack">
+          <textarea name="keys" rows="4" placeholder="One key per line" aria-label="Keys to add"></textarea>
+          <button class="cta sm" type="submit"><i class="fa-solid fa-plus"></i><span>Add</span></button>
+        </form>
+        <form method="post" action="/admin/keys/give" class="stack">
+          <input type="number" name="n" min="0" placeholder="All {{.Waiting}} waiting" aria-label="How many">
+          <button class="cta sm" type="submit" {{if or (not .Waiting) (not .Keys)}}disabled{{end}}><i class="fa-solid fa-paper-plane"></i><span>Send keys</span></button>
+        </form>
+      </div>
     </section>
 
-    <section class="panel">
-      <h2>Testers</h2>
-      <p class="small"><a href="/admin/testers.csv">Download as CSV</a>{{if .Emails}} · <a href="/admin/email-signups.csv">{{.Emails}} older email sign-ups (CSV)</a>{{end}}</p>
+    <section class="panel" id="testers">
+      <h2><i class="fa-solid fa-users"></i>Testers
+        <span class="tools"><a href="/admin/testers.csv" title="Download CSV"><i class="fa-solid fa-file-csv"></i></a>{{if .Emails}}<a href="/admin/email-signups.csv" title="{{.Emails}} old email sign-ups"><i class="fa-solid fa-envelope"></i><small>{{.Emails}}</small></a>{{end}}</span></h2>
       <div class="scroll">
       <table>
-        <thead><tr><th>Tester</th><th>Joined</th><th>Key</th><th></th></tr></thead>
+        <thead><tr><th>Tester</th><th>Enlisted</th><th>Key</th><th></th></tr></thead>
         <tbody>
         {{range .Testers}}
           <tr>
-            <td><a href="https://steamcommunity.com/profiles/{{.ID}}" target="_blank" rel="noopener">{{.Name}}</a>{{if .Banned}} <i>(no comments)</i>{{end}}</td>
-            <td>{{date .SignedUp}}</td>
-            <td>{{if .Key}}<code>{{.Key}}</code>{{else}}<i>waiting</i>{{end}}</td>
-            <td class="acts">
-              <form method="post" action="/admin/user"><input type="hidden" name="id" value="{{.ID}}">
-                {{if .Key}}<button class="link" name="do" value="revoke" data-confirm="Take back this key? It won't be given to anyone else.">Take key back</button>
-                {{else}}<button class="link" name="do" value="give">Give key</button>{{end}}
-                <button class="link" name="do" value="remove" data-confirm="Remove {{.Name}} from the playtest?">Remove</button>
-                {{if .Banned}}<button class="link" name="do" value="unban">Allow comments</button>
-                {{else}}<button class="link" name="do" value="ban" data-confirm="Stop {{.Name}} commenting and delete their comments?">Block comments</button>{{end}}
+            <td><a class="person" href="https://steamcommunity.com/profiles/{{.ID}}" target="_blank" rel="noopener">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="24" height="24">{{end}}<span>{{.Name}}</span></a>{{if .Banned}} <i class="fa-solid fa-comment-slash muted" title="Silenced"></i>{{end}}</td>
+            <td class="muted">{{date .SignedUp}}</td>
+            <td>{{if .Key}}<code>{{.Key}}</code>{{else}}<span class="muted">—</span>{{end}}</td>
+            <td>
+              <form method="post" action="/admin/user" class="icons"><input type="hidden" name="id" value="{{.ID}}">
+                {{if .Key}}<button class="ico" name="do" value="revoke" title="Take key back" data-confirm="Take back this key? It won't be reused."><i class="fa-solid fa-rotate-left"></i></button>
+                {{else}}<button class="ico" name="do" value="give" title="Send a key"><i class="fa-solid fa-paper-plane"></i></button>{{end}}
+                {{if .Banned}}<button class="ico" name="do" value="unban" title="Let them speak"><i class="fa-solid fa-comment"></i></button>
+                {{else}}<button class="ico" name="do" value="ban" title="Silence (deletes their comments)" data-confirm="Silence {{.Name}} and delete their comments?"><i class="fa-solid fa-comment-slash"></i></button>{{end}}
+                <button class="ico danger" name="do" value="remove" title="Remove from the playtest" data-confirm="Remove {{.Name}} from the playtest?"><i class="fa-solid fa-user-xmark"></i></button>
               </form>
             </td>
           </tr>
         {{else}}
-          <tr><td colspan="4"><i>Nobody yet.</i></td></tr>
+          <tr><td colspan="4" class="muted">No one yet.</td></tr>
         {{end}}
         </tbody>
       </table>
       </div>
-      {{if .Banned}}<p class="small">Blocked from commenting:
-        {{range .Banned}}<form method="post" action="/admin/user" class="inline"><input type="hidden" name="id" value="{{.ID}}">{{.Name}} <button class="link" name="do" value="unban">allow</button></form>{{end}}</p>{{end}}
-      <p class="small">To delete a comment or block someone who isn't a tester, use Delete under the comment on the site.</p>
     </section>
 
-    <section class="panel">
-      <h2>Page</h2>
-      <form method="post" action="/admin/settings" class="form">
-        <label class="field"><span>Trailer (YouTube link or id)</span><input name="youtube" value="{{.S.YouTubeID}}"></label>
+    <section class="panel" id="comments">
+      <h2><i class="fa-solid fa-comments"></i>Comms</h2>
+      <ol class="feed">
+        {{range .Recent}}
+        <li>
+          <div class="feed-head"><a href="/#c{{.ID}}">{{.Name}}</a>{{if .Reply}}<i class="fa-solid fa-reply fa-flip-horizontal muted" title="Reply"></i>{{end}}<time class="muted">{{ago .At}}</time>
+            <form method="post" action="/comments/delete" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin">
+              <button class="ico danger" type="submit" title="Delete" data-confirm="Delete this?"><i class="fa-regular fa-trash-can"></i></button></form>
+            <form method="post" action="/admin/user" class="icons"><input type="hidden" name="id" value="{{.UserID}}">
+              <button class="ico" name="do" value="ban" title="Silence" data-confirm="Silence {{.Name}} and delete their comments?"><i class="fa-solid fa-comment-slash"></i></button></form>
+          </div>
+          <p class="c-text">{{.Text}}</p>
+        </li>
+        {{else}}<li class="muted">Silence.</li>{{end}}
+      </ol>
+      {{if .Banned}}<p class="small silenced"><i class="fa-solid fa-comment-slash"></i>
+        {{range .Banned}}<form method="post" action="/admin/user" class="chip"><input type="hidden" name="id" value="{{.ID}}"><span>{{.Name}}</span><button class="ico" name="do" value="unban" title="Let them speak"><i class="fa-solid fa-xmark"></i></button></form>{{end}}</p>{{end}}
+    </section>
+
+    <section class="panel" id="page">
+      <h2><i class="fa-solid fa-sliders"></i>Page</h2>
+      <form method="post" action="/admin/settings" class="settings">
+        <label class="field"><span>Trailer</span><input name="youtube" value="{{.S.YouTubeID}}" placeholder="YouTube link or id"></label>
         <label class="field"><span>Tagline</span><input name="tagline" value="{{.S.Tagline}}"></label>
         <label class="field"><span>Under the trailer</span><input name="videonote" value="{{.S.VideoNote}}"></label>
-        <label class="field"><span>Playtest text (signed-out visitors)</span><textarea name="lead" rows="2">{{.S.Lead}}</textarea></label>
-        <label class="field"><span>Shown with a tester's key</span><textarea name="keynote" rows="2">{{.S.KeyNote}}</textarea></label>
-        <label class="check"><input type="checkbox" name="open" value="1" {{if .S.SignupsOpen}}checked{{end}}><span>Playtest sign-ups are open</span></label>
-        <label class="check"><input type="checkbox" name="comments" value="1" {{if .S.Comments}}checked{{end}}><span>Show the comment section</span></label>
-        <button class="cta" type="submit"><span>Save</span></button>
+        <label class="field"><span>Lobby line</span><input name="lead" value="{{.S.Lead}}"></label>
+        <label class="field wide"><span>With the key</span><input name="keynote" value="{{.S.KeyNote}}"></label>
+        <div class="toggles wide">
+          <label class="check"><input type="checkbox" name="open" value="1" {{if .S.SignupsOpen}}checked{{end}}><span>Enlisting open</span></label>
+          <label class="check"><input type="checkbox" name="comments" value="1" {{if .S.Comments}}checked{{end}}><span>Comms open</span></label>
+          <button class="cta sm" type="submit"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+        </div>
       </form>
     </section>
   {{end}}

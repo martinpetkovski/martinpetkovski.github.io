@@ -8,6 +8,8 @@
 <meta property="og:title" content="Static Over Midtown · Press Kit">
 <meta property="og:description" content="A multiplayer retro-futuristic flying car combat game. Fact sheet, trailer, screenshots, logos and art.">
 <meta property="og:image" content="images/key-art/key-art-1920x1080.jpg">
+<link rel="preload" href="../static/fonts/title.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="presskit.css">
 </head>
 <body>
@@ -19,7 +21,7 @@
 
 <nav class="nav">
   <div class="wrap">
-    <a class="brand" href="#top">Static Over Midtown</a>
+    <a class="back" href="../" title="Back to the site"><i class="fa-solid fa-arrow-left"></i></a><a class="brand" href="#top">Static Over Midtown</a>
     <ul>
       <li><a class="tag" href="#facts">Fact sheet</a></li>
       <li><a class="tag" href="#about">About</a></li>
@@ -36,15 +38,15 @@
   <div class="bg" style="background-image:url('images/key-art/key-art-clean-1920x1080.jpg')"></div>
   <div class="inner wrap">
     <p class="tag orange">Press kit</p>
-    <h1><img class="logo" src="images/logo/logo-stacked-1000.png" alt="Static Over Midtown" width="1000" height="364"></h1>
+    <h1 class="logo"><span>Static Over</span><span>Midtown</span></h1>
     <p class="sub">A multiplayer retro-futuristic flying car combat game</p>
     <div class="status">
       <span class="tag">Return Zero</span><span class="tag">Windows PC · Steam</span><span class="tag">Pre-alpha</span><span class="tag">Coming soon</span>
     </div>
     <div class="btns">
-      <a class="btn primary" href="static-over-midtown-press-kit.zip" download>Download press kit <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
-      <a class="btn" href="#trailer">Watch the trailer</a>
-      <a class="btn" href="https://store.steampowered.com/" target="_blank" rel="noopener">Wishlist on Steam</a>
+      <a class="btn primary" href="static-over-midtown-press-kit.zip" download><i class="fa-solid fa-file-zipper"></i>Download press kit <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
+      <a class="btn" href="#trailer"><i class="fa-solid fa-play"></i>Trailer</a>
+      <a class="btn" href="https://store.steampowered.com/" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i>Wishlist</a>
     </div>
   </div>
 </header>
@@ -86,23 +88,23 @@
     <div class="section-head"><p class="tag orange">02 · About the game</p><h2 class="title">You dreamed of flying cars</h2></div>
     <div class="grid cols-3">
       <div class="panel copy">
-        <button class="copy-btn" data-copy="#d-tag">Copy</button>
+        <button class="copy-btn" data-copy="#d-tag" title="Copy"><i class="fa-regular fa-copy"></i></button>
         <h3>Tagline</h3>
         <p id="d-tag">You dreamed of flying cars. You got them. But not without a fight.</p>
       </div>
       <div class="panel copy">
-        <button class="copy-btn" data-copy="#d-short">Copy</button>
+        <button class="copy-btn" data-copy="#d-short" title="Copy"><i class="fa-regular fa-copy"></i></button>
         <h3>Short description</h3>
         <p id="d-short">Static Over Midtown is a multiplayer retro-futuristic flying car combat game. Two teams of up to five flying cars battle across a neon-lit pixel-art city of the future, racing to bring down the enemy's main tower.</p>
       </div>
       <div class="panel copy">
-        <button class="copy-btn" data-copy="#d-one">Copy</button>
+        <button class="copy-btn" data-copy="#d-one" title="Copy"><i class="fa-regular fa-copy"></i></button>
         <h3>One line</h3>
         <p id="d-one">Team-based flying car combat over a neon pixel-art city of the future.</p>
       </div>
     </div>
     <div class="panel copy" style="margin-top:20px">
-      <button class="copy-btn" data-copy="#d-long">Copy</button>
+      <button class="copy-btn" data-copy="#d-long" title="Copy"><i class="fa-regular fa-copy"></i></button>
       <h3>Long description</h3>
       <div id="d-long">
         <p>The future arrived exactly as the brochures promised: hover-buses drifting between office towers, landmark spires lit up against the night, and a flying car in every garage. Then the city split in two. Red against Blue. Static Over Midtown drops you into the cockpit of a hovering supercar and asks you to take the skyline back, one tower at a time.</p>
@@ -141,7 +143,7 @@
     <div class="section-head"><p class="tag orange">04 · Trailer</p><h2 class="title">Announcement trailer</h2></div>
     <div class="video"><video controls preload="metadata" poster="video/trailer-poster.jpg" src="video/trailer.mp4"></video></div>
     <div class="btns" style="justify-content:flex-start;margin-top:18px">
-      <a class="btn" href="video/trailer.mp4" download>Download trailer <span class="size" data-size="video/trailer.mp4"></span></a>
+      <a class="btn" href="video/trailer.mp4" download><i class="fa-solid fa-download"></i>Download trailer <span class="size" data-size="video/trailer.mp4"></span></a>
       <span class="tag">1920×1080 · 60 fps · H.264 · captured in engine</span>
     </div>
   </div>
@@ -177,7 +179,7 @@
     <div class="panel download" style="margin-top:28px">
       <div><p class="tag orange">Everything in one file</p><h2 class="title">Press kit .zip</h2>
         <p class="muted">Fact sheet, descriptions, trailer, screenshots, logos and key art.</p></div>
-      <a class="btn primary" href="static-over-midtown-press-kit.zip" download>Download <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
+      <a class="btn primary" href="static-over-midtown-press-kit.zip" download><i class="fa-solid fa-file-zipper"></i>Download <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
     </div>
   </div>
 </section>
@@ -214,7 +216,7 @@
 </footer>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot">
-  <div><img alt=""><div class="bar"><button data-go="-1">« Prev</button><a class="tag" download>Download PNG</a><button data-go="1">Next »</button><button data-close>Close ×</button></div></div>
+  <div><img alt=""><div class="bar"><button data-go="-1" title="Previous"><i class="fa-solid fa-chevron-left"></i></button><a download title="Download PNG"><i class="fa-solid fa-download"></i></a><button data-go="1" title="Next"><i class="fa-solid fa-chevron-right"></i></button><button data-close title="Close"><i class="fa-solid fa-xmark"></i></button></div></div>
 </div>
 
 <script src="presskit.js"></script>
