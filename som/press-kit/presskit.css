@@ -1,9 +1,12 @@
 /* Static Over Midtown - press kit, in the website's look: black, the GAMECUBEN title font in warm
    yellow with a soft glow, plain crisp lines, no rounded corners. */
-@font-face { font-family: "Gamecuben"; src: url("../static/fonts/title.ttf") format("truetype"); font-display: swap; }
+/* the font's metrics are set so its capitals (it is only ever used in capitals) sit exactly in the middle
+   of the line box: caps are 0.8 em tall, so 0.9 em above the baseline and 0.1 below. Text and icons then
+   line up with plain centring, no nudges. */
+@font-face { font-family: "Gamecuben"; src: url("../static/fonts/title.ttf") format("truetype"); font-display: swap; ascent-override: 90%; descent-override: 10%; line-gap-override: 0%; }
 
 /* GAMECUBEN has no hyphen: hyphens fall back to a plain heavy face instead of a blank */
-@font-face { font-family: "Gamecuben"; src: local("Arial Black"), local("Arial Bold"), local("Arial"), local("DejaVu Sans Bold"); unicode-range: U+002D, U+2010-2014; }
+@font-face { font-family: "Gamecuben"; src: local("Arial Black"), local("Arial Bold"), local("Arial"), local("DejaVu Sans Bold"); unicode-range: U+002D, U+2010-2014; ascent-override: 90%; descent-override: 10%; line-gap-override: 0%; }
 
 :root {
   --px: 2px;
@@ -57,11 +60,11 @@ section { padding: clamp(56px, 9vw, 96px) 0; border-top: 1px solid var(--line); 
 .nav .back { display: grid; place-items: center; width: 32px; height: 32px; color: var(--hint); border: 1px solid var(--line); flex: none; }
 .nav .back:hover { color: var(--yellow); border-color: var(--yellow); text-shadow: none; }
 .nav .brand { font: 400 14px/1 "Gamecuben", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--yellow);
-  text-shadow: 0 0 9px var(--glow); white-space: nowrap; padding-top: .14em; }
+  text-shadow: 0 0 9px var(--glow); white-space: nowrap; }
 .nav ul { list-style: none; display: flex; gap: 2px; margin-left: auto; height: 100%; overflow-x: auto; scrollbar-width: none; }
 .nav ul::-webkit-scrollbar { display: none; }
 .nav li { display: flex; }
-.nav a.tag { display: flex; align-items: center; padding: .14em 10px 0; white-space: nowrap; color: var(--hint); border-bottom: var(--px) solid transparent; }
+.nav a.tag { display: flex; align-items: center; padding: 0 10px; white-space: nowrap; color: var(--hint); border-bottom: var(--px) solid transparent; }
 .nav a.tag:hover { color: var(--yellow); border-color: var(--yellow); text-shadow: none; }
 @media (max-width: 860px) { .nav .brand { display: none; } .nav ul { margin-left: 0; } }
 
@@ -75,18 +78,18 @@ section { padding: clamp(56px, 9vw, 96px) 0; border-top: 1px solid var(--line); 
 .logo span:first-child { font-size: .62em; letter-spacing: .06em; }
 .hero .sub { font: 400 clamp(11px, 1.6vw, 14px)/1.4 "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em; opacity: .85; }
 .hero .status { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.hero .status span { display: inline-flex; align-items: center; height: 28px; padding: .14em 10px 0; border: 1px solid var(--line); background: rgba(7,7,13,.7); }
+.hero .status span { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--line); background: rgba(7,7,13,.7); }
 
 /* ---------------------------------------------------------------- buttons */
 .btns { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
-.btn { display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: .14em 22px 0; border: var(--px) solid var(--line);
+.btn { display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 22px; border: var(--px) solid var(--line);
   background: rgba(7, 7, 13, .7); color: var(--text); font: 400 14px/1 "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .1em;
   transition: background .15s, color .15s, border-color .15s; }
-.btn i { margin-top: -.14em; font-size: 15px; }
+.btn i { display: block; line-height: 1; font-size: 15px; }
 .btn:hover, .btn:focus-visible { border-color: var(--yellow); color: var(--yellow); text-shadow: none; outline: none; }
 .btn.primary { border-color: var(--yellow); color: var(--yellow); background: rgba(255, 203, 53, .08); text-shadow: 0 0 9px var(--glow); box-shadow: 0 0 15px rgba(255, 203, 53, .25); }
 .btn.primary:hover, .btn.primary:focus-visible { background: var(--yellow); color: var(--ink); text-shadow: none; }
-.btn .size { font: 600 12px/1 system-ui, sans-serif; letter-spacing: 0; opacity: .7; margin-top: -.14em; }
+.btn .size { font: 600 12px/1 system-ui, sans-serif; letter-spacing: 0; opacity: .7; }
 .btn .size:empty { display: none; }
 
 /* ---------------------------------------------------------------- fact sheet */
@@ -143,9 +146,9 @@ section { padding: clamp(56px, 9vw, 96px) 0; border-top: 1px solid var(--line); 
 .asset .preview.cover { padding: 0; }
 .asset .preview.cover img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 .asset .links { display: flex; flex-wrap: wrap; gap: 6px; }
-.asset .links a { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: .14em 10px 0; border: 1px solid var(--line);
+.asset .links a { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border: 1px solid var(--line);
   font: 400 10px/1 "Gamecuben", sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--text); }
-.asset .links a::before { content: "\f019"; font: 900 11px/1 "Font Awesome 6 Free"; color: var(--yellow); margin-top: -.14em; }
+.asset .links a::before { content: "\f019"; font: 900 11px/1 "Font Awesome 6 Free"; color: var(--yellow); }
 .asset .links a:hover { border-color: var(--yellow); color: var(--yellow); text-shadow: none; }
 .download { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; border-color: var(--yellow-dim); }
 .download > div { display: grid; gap: 10px; }

@@ -57,14 +57,13 @@
       {{with .S.KeyNote}}<p class="small">{{.}}</p>{{end}}
     {{else if .Me.SignedUp.IsZero}}
       {{if .S.SignupsOpen}}
-        <p class="lead">Your seat is waiting.</p>
-        <form method="post" action="/playtest/join"><button class="cta" type="submit"><i class="fa-solid fa-satellite-dish"></i><span>Enlist</span></button></form>
+        <form method="post" action="/playtest/join"><button class="cta lg" type="submit"><i class="fa-solid fa-satellite-dish"></i><span>Enlist</span></button></form>
       {{else}}
         <p class="lead">The gates are shut. For now.</p>
       {{end}}
     {{else}}
       <p class="lead">Enlisted. Watch this space.</p>
-      <form method="post" action="/playtest/leave"><button class="link" type="submit">Stand down</button></form>
+      <form method="post" action="/playtest/leave"><button class="cta ghost" type="submit"><i class="fa-solid fa-person-walking-arrow-right"></i><span>Stand down</span></button></form>
     {{end}}
   </section>
 

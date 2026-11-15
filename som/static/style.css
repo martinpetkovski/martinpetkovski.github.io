@@ -1,9 +1,12 @@
 /* Static Over Midtown - website. The look follows the game's current menus: the GAMECUBEN title font
    (art/fonts/title.ttf) in flat warm yellow with a soft glow. Plain, crisp lines. */
-@font-face { font-family: "Gamecuben"; src: url("fonts/title.ttf") format("truetype"); font-display: swap; }
+/* the font's metrics are set so its capitals (it is only ever used in capitals) sit exactly in the middle
+   of the line box: caps are 0.8 em tall, so 0.9 em above the baseline and 0.1 below. Text and icons then
+   line up with plain centring, no nudges. */
+@font-face { font-family: "Gamecuben"; src: url("fonts/title.ttf") format("truetype"); font-display: swap; ascent-override: 90%; descent-override: 10%; line-gap-override: 0%; }
 
 /* GAMECUBEN has no hyphen: hyphens fall back to a plain heavy face instead of a blank */
-@font-face { font-family: "Gamecuben"; src: local("Arial Black"), local("Arial Bold"), local("Arial"), local("DejaVu Sans Bold"); unicode-range: U+002D, U+2010-2014; }
+@font-face { font-family: "Gamecuben"; src: local("Arial Black"), local("Arial Bold"), local("Arial"), local("DejaVu Sans Bold"); unicode-range: U+002D, U+2010-2014; ascent-override: 90%; descent-override: 10%; line-gap-override: 0%; }
 
 :root {
   --px: 2px;                         /* line width */
@@ -114,11 +117,13 @@ body {
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* ================================================================ shared bits (Steam, comments, admin) */
-/* Gamecuben sits a little high in its line box: every control that uses it centres with flex
-   and a small optical nudge, so text and icons line up. */
-.cta, .act, .copy, .bar a, .foot a, .tabs a, .say.ghost { display: inline-flex; align-items: center; justify-content: center; gap: .6em; line-height: 1; }
-.cta > span, .tabs a > span, .foot a > span, .say.ghost > span { padding-top: .14em; }
-.cta i { font-size: .95em; }
+/* every control: icon and text centred on one line */
+.cta, .act, .copy, .bar a, .foot a, .tabs a, .say.ghost, .person, .chip, .panel h2 .tools a { display: inline-flex; align-items: center; justify-content: center; gap: .6em; line-height: 1; }
+.cta i, .act i, .copy i, .bar i, .foot i, .tabs i, .say i, .ico i, .panel h2 i, .stats i, .lead i, .silenced i, .fold i, .c-pic i { display: block; line-height: 1; }
+.cta i { font-size: .95em; line-height: 1; }
+.cta.lg { font-size: 28px; padding: 22px 60px; gap: .55em; }   /* the one action that matters: enlist */
+.cta.ghost { font-size: 13px; padding: 10px 20px; border-color: var(--line); background: none; color: var(--hint); text-shadow: none; box-shadow: none; letter-spacing: .12em; }
+.cta.ghost:hover, .cta.ghost:focus-visible { border-color: var(--yellow); color: var(--yellow); background: none; }
 a.cta { text-decoration: none; }
 .cta.sm { font-size: 14px; padding: 10px 18px; margin: 0; letter-spacing: .1em; }
 .cta[disabled] { opacity: .35; cursor: not-allowed; background: none; color: var(--yellow); }
@@ -140,7 +145,7 @@ code { font-family: ui-monospace, Consolas, monospace; }
   background: rgba(7, 7, 13, .9); border-left: var(--px) solid var(--line); border-bottom: var(--px) solid var(--line); font-size: 14px; }
 .bar form { display: contents; }
 .bar.wide { left: 0; border-left: 0; padding: 0 12px; gap: 14px; }
-.bar .brand { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .2em; color: var(--yellow); font-size: 14px; padding-top: .14em; text-shadow: 0 0 9px var(--glow); }
+.bar .brand { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .2em; color: var(--yellow); font-size: 14px; text-shadow: 0 0 9px var(--glow); }
 .who { display: flex; gap: 8px; align-items: center; color: var(--text); margin-left: auto; white-space: nowrap; }
 .bar:not(.wide) .who { margin-left: 0; }
 .who img { display: block; border: 1px solid var(--line); }
@@ -158,7 +163,7 @@ code { font-family: ui-monospace, Consolas, monospace; }
 /* ---------------------------------------------------------------- comments */
 .comments { justify-self: center; width: min(760px, 100%); display: grid; gap: 16px; }
 .sub-title { font-size: clamp(22px, 3.4vw, 30px); text-align: center; display: flex; justify-content: center; align-items: center; gap: 14px; }
-.count { font-size: 13px; letter-spacing: .1em; color: var(--ink); background: var(--yellow); padding: 5px 8px 3px; text-shadow: none; line-height: 1; }
+.count { font-size: 13px; letter-spacing: .1em; color: var(--ink); background: var(--yellow); padding: 4px 8px; text-shadow: none; line-height: 1; }
 .say { display: flex; gap: 10px; align-items: stretch; }
 .say textarea { flex: 1; min-height: 48px; height: 48px; font: inherit; font-size: 15px; color: var(--text); background: rgba(3, 3, 8, .75); border: var(--px) solid var(--line);
   padding: 11px 14px; outline: none; resize: vertical; }
@@ -184,7 +189,7 @@ code { font-family: ui-monospace, Consolas, monospace; }
 .c-pic img { display: block; width: 100%; height: 100%; }
 .c-name { color: var(--yellow); text-decoration: none; font-weight: 600; font-size: 14px; }
 .c-name.muted { color: var(--hint); font-weight: 400; font-style: italic; }
-.dev { font: 400 10px/1 "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 4px 6px 2px; }
+.dev { font: 400 10px/1 "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 3px 6px; }
 .folded-n { display: none; }
 .c-body { margin-left: 8px; padding-left: 18px; border-left: 1px solid var(--line); }
 .c-body:hover { border-left-color: #3d4068; }
