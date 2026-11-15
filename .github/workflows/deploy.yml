@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_run:
+    workflows: ["Build ytcut.exe", "Generate Spotify Chart Data"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tell the server to update
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_SECRET }}
+        run: |
+          curl -fsS --retry 5 --retry-delay 10 --retry-all-errors -X POST \
+            -A "SpookieServerManager-Deploy/1.0" -H "X-Deploy-Secret: $DEPLOY_SECRET" \
+            https://som.najjak.com/deploy/hook
