@@ -73,9 +73,9 @@ body {
 /* ---------------------------------------------------------------- sign-up */
 .signup {
   justify-self: center; width: min(640px, 100%); display: grid; gap: 14px; text-align: center;
-  background: var(--panel); border: var(--px) solid var(--line); padding: clamp(24px, 4vw, 40px);
-  backdrop-filter: blur(4px);
+  border: var(--px) solid var(--line); padding: clamp(24px, 4vw, 40px);
 }
+.press { justify-self: center; margin-top: calc(clamp(36px, 7vh, 72px) * -.5); }   /* right under the playtest box */
 .title { font-size: clamp(28px, 4.6vw, 46px); }
 .title em { font-style: normal; color: #fff; text-shadow: 0 0 9px rgba(255,255,255,.6), 0 0 30px var(--glow); }
 .lead { color: var(--text); opacity: .9; }
