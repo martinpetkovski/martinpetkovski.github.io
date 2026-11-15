@@ -49,7 +49,7 @@ body {
 
 /* ---------------------------------------------------------------- video */
 .frame {
-  position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 16 / 9; background: #000;
+  position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #000;
   border: var(--px) solid var(--yellow-dim);
   box-shadow: 0 0 36px rgba(255, 203, 53, .18);
 }
@@ -59,7 +59,7 @@ body {
 .poster:hover img, .poster:focus-visible img { opacity: 1; }
 .poster:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: -9px; }
 .play {   /* a pixel play button: a stepped triangle in a framed box */
-  position: absolute; left: 50%; top: 50%; width: 88px; height: 64px; border-radius: 6px; translate: -50% -50%;
+  position: absolute; left: 50%; top: 50%; width: 88px; height: 64px; translate: -50% -50%;
   background: rgba(7, 7, 13, .78); border: var(--px) solid var(--yellow);
   box-shadow: 0 0 18px var(--glow);
 }
@@ -72,7 +72,7 @@ body {
 /* ---------------------------------------------------------------- sign-up */
 .signup {
   justify-self: center; width: min(640px, 100%); display: grid; gap: 14px; text-align: center;
-  background: var(--panel); border: var(--px) solid var(--line); border-radius: 10px; padding: clamp(24px, 4vw, 40px);
+  background: var(--panel); border: var(--px) solid var(--line); padding: clamp(24px, 4vw, 40px);
   backdrop-filter: blur(4px);
 }
 .title { font-size: clamp(28px, 4.6vw, 46px); }
@@ -85,20 +85,20 @@ body {
 .field i { font-style: normal; color: var(--hint); letter-spacing: .06em; }
 .field input {
   width: 100%; font: inherit; color: var(--text); background: rgba(3, 3, 8, .75);
-  border: var(--px) solid var(--line); padding: 12px 14px; outline: none; border-radius: 6px;
+  border: var(--px) solid var(--line); padding: 12px 14px; outline: none;
 }
 .field input::placeholder { color: #5d5b74; }
 .field input:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
 .field input[aria-invalid="true"] { border-color: var(--red); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 14px; color: var(--hint); cursor: pointer; }
-.check input { appearance: none; width: 18px; height: 18px; border-radius: 3px; margin-top: 2px; border: var(--px) solid var(--line); background: rgba(3,3,8,.75); cursor: pointer; display: grid; place-content: center; }
+.check input { appearance: none; width: 18px; height: 18px; margin-top: 2px; border: var(--px) solid var(--line); background: rgba(3,3,8,.75); cursor: pointer; display: grid; place-content: center; }
 .check input:checked { border-color: var(--yellow); }
-.check input:checked::after { content: ""; width: 8px; height: 8px; border-radius: 1px; background: var(--yellow); box-shadow: 0 0 var(--px) var(--glow); }
+.check input:checked::after { content: ""; width: 8px; height: 8px; background: var(--yellow); box-shadow: 0 0 var(--px) var(--glow); }
 .check input:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: var(--px); }
 
 .cta {   /* a menu item: glowing title lettering in a framed bar */
-  justify-self: center; margin-top: 6px; cursor: pointer; border: var(--px) solid var(--yellow); border-radius: 6px; background: rgba(255, 203, 53, .08);
+  justify-self: center; margin-top: 6px; cursor: pointer; border: var(--px) solid var(--yellow); background: rgba(255, 203, 53, .08);
   padding: 14px 34px; font-family: "Gamecuben", sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: .08em;
   color: var(--yellow); text-shadow: 0 0 9px var(--glow); box-shadow: 0 0 15px rgba(255, 203, 53, .25);
   transition: background .15s, color .15s;
@@ -116,20 +116,26 @@ body {
 .foot a { color: var(--hint); text-decoration: none; border-bottom: 1px solid transparent; }
 .foot a:hover { color: var(--yellow); border-color: var(--yellow); }
 
-/* ---------------------------------------------------------------- the entrance
-   the logo comes first, big in the middle of the screen, word by word; then it glides up to its place
-   and the rest of the site fades in */
-.sky, .tagline, .video, .signup, .foot { transition: opacity 1s ease, translate 1s ease; }
-.intro .sky { opacity: 0; }
-.intro .tagline, .intro .video, .intro .signup, .intro .foot { opacity: 0; translate: 0 24px; }
-.ready .tagline { transition-delay: .1s; } .ready .video { transition-delay: .3s; }
-.ready .signup { transition-delay: .5s; } .ready .foot { transition-delay: .7s; }
-.logo { transform-origin: 50% 50%; will-change: transform; }
-.logo.moving { transition: transform 1.2s cubic-bezier(.65, 0, .25, 1); }
-.logo span { display: block; }
-.intro .logo span { opacity: 0; filter: blur(12px); letter-spacing: .5em; }
-.logo span { transition: opacity 1s ease, filter 1s ease, letter-spacing 1.4s cubic-bezier(.2, .7, .2, 1); }
-.intro .logo.lit span:first-child { opacity: 1; filter: none; letter-spacing: .06em; }
-.intro .logo.lit span:last-child { opacity: 1; filter: none; letter-spacing: .02em; transition-delay: .35s; }
-
+/* ---------------------------------------------------------------- the entrance (intro.js)
+   the game's loading screen: on black, a glowing outline triangle zooms in, turns and sweeps across,
+   uncovering the logo behind it, lightning strikes; the logo rises to its place, the page wipe's slanted
+   stripes cross the screen and the items glitch in one after another, as the game's menu pages do */
+.curtain { position: fixed; inset: 0; z-index: 50; background: #000; }
+.fx { position: fixed; inset: 0; z-index: 70; pointer-events: none; width: 100vw; height: 100vh; }
+.curtain, .fx { display: none; }
+.intro .curtain, .intro .fx, .outro .curtain, .outro .fx { display: block; }
+.outro .curtain { opacity: 0; transition: opacity .5s ease; }
+.intro .logo, .outro .logo { position: relative; z-index: 60; }
+.intro .tagline, .intro .video, .intro .signup, .intro .foot { opacity: 0; }
+.glitch-in { animation: glitch-in .34s steps(1, end) both; }
+@keyframes glitch-in {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; translate: -14px 0; clip-path: inset(10% 0 55% 0); filter: hue-rotate(-30deg) brightness(1.6); }
+  24%  { translate: 10px 0; clip-path: inset(60% 0 8% 0); }
+  36%  { translate: -6px 0; clip-path: inset(0 0 30% 0); filter: brightness(1.3); }
+  48%  { opacity: .55; translate: 4px 0; clip-path: inset(35% 0 0 0); }
+  62%  { opacity: 1; translate: -2px 0; clip-path: none; filter: none; }
+  76%  { translate: 1px 0; }
+  100% { opacity: 1; translate: 0 0; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
