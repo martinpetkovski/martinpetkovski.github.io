@@ -7,14 +7,13 @@ FACT SHEET
 Title           Static Over Midtown
 Developer       Return Zero (created by Martin Petkovski)
 Publisher       TBA
-Release date    TBA · coming soon to Steam
+Release date    TBA
 Platform        Windows PC (Steam)
 Price           TBA
 Genre           Team-based flying car combat · arena action
-Players         1v1 up to 5v5 · AI drivers fill any empty seat
-Modes           Online on Steam (server browser, quick join, friend invites,
-                passworded servers) · LAN · local two-player · against AI
-                · tutorial · practice
+Players         Up to 5v5
+Modes           Online multiplayer · LAN multiplayer · local multiplayer
+                · single player
 Controls        Keyboard & mouse, gamepad (XInput) · fully rebindable
 Engine          Spookee Engine (in-house, C and Direct3D 11)
 Languages       English
@@ -54,15 +53,13 @@ the skyline back, one tower at a time.
 
 Matches pit two teams of up to five cars against each other, from tense
 one-on-one duels to full five-on-five brawls. Each side defends a main tower
-and two defense towers that shell anyone who strays too close. The main tower
-also heals its team, so every push is a gamble: break through the defenses,
-survive the crossfire, and destroy the enemy's main tower to win.
+and two defense towers that shell anyone who strays too close. Break through
+the defenses, survive the crossfire, and destroy the enemy's main tower to
+win.
 
-Before every match each driver drafts their abilities, from steerable rockets
-to shields and gravity wells, then upgrades them at the team's station
-mid-fight. Cars carry real momentum, so thrust, drift and collisions
-are weapons too. Empty seats are filled by AI drivers that flank, retreat to
-heal and pick their moments.
+Every driver brings abilities to the fight, from steerable rockets to shields
+and gravity wells. Cars carry real momentum, so thrust, drift and collisions
+are weapons too.
 
 It all runs on Spookee Engine, Return Zero's in-house engine, which lights
 detailed pixel art with dynamic lights, normal maps, screen-space shadows,
@@ -71,10 +68,9 @@ bloom and light shafts, so the city glows the way you remember the future.
 
 KEY FEATURES
 ---------------------------------------------------------------------
-- Volts vs Specters, up to 5v5: matches scale from 1v1 to 5v5, and AI drivers take
-  any empty seat.
+- Volts vs Specters, up to 5v5: duel one-on-one or bring the whole squad.
 - Take the tower: each team defends a main tower and two defense towers that
-  fire arcing shots at attackers. Main towers heal nearby allies. Destroy the
+  fire arcing shots at attackers. Destroy the
   enemy's main tower to win.
 - Handling with momentum: thrust builds and releases smoothly, inertia carries
   you through turns, and knockback, ramming and boosts make the car a weapon.
@@ -84,10 +80,8 @@ KEY FEATURES
 - Pixel art, real light: hand-crafted pixel art lit by an in-house engine with
   dynamic lights, normal-mapped sprites, screen-space shadows, bloom, light
   shafts and heat haze.
-- Play your way: online on Steam with a server browser, quick join and friend
-  invites, over LAN, or two players on one screen. Keyboard and mouse or
-  gamepad, every control rebindable. Fight AI drivers, learn in the tutorial
-  or sharpen up in practice.
+- Play your way: online multiplayer, LAN multiplayer, local multiplayer or
+  single player. Keyboard and mouse or gamepad.
 
 
 CONTENTS OF THIS KIT

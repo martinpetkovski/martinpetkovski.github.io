@@ -45,6 +45,9 @@ body {
 .tagline { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em;
   font-size: clamp(11px, 1.6vw, 15px); color: var(--text); opacity: .85; text-shadow: 0 var(--px) 0 #000; }
 
+.badge { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border: var(--px) solid var(--red); color: var(--red);
+  font: 400 12px/1 "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .18em; text-shadow: 0 0 9px rgba(255, 74, 85, .5); }
+
 /* ---------------------------------------------------------------- video */
 .frame {
   position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #000;

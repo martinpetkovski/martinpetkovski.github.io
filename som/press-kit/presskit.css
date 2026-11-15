@@ -131,7 +131,7 @@ section { padding: clamp(56px, 9vw, 96px) 0; border-top: 1px solid var(--line); 
 /* ---------------------------------------------------------------- screenshots */
 .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .shot { position: relative; display: block; border: var(--px) solid var(--line); overflow: hidden; background: #000; }
-.shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; opacity: .85; transition: opacity .2s; }
+.shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; opacity: .85; transition: opacity .2s; }
 .shot:hover, .shot:focus-visible { border-color: var(--yellow); outline: none; text-shadow: none; }
 .shot:hover img { opacity: 1; }
 .shot .dl { position: absolute; inset: auto 0 0 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px;
