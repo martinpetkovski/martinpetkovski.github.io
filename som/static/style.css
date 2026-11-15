@@ -1,0 +1,126 @@
+/* Static Over Midtown - website. The look follows the game's current menus: the GAMECUBEN title font
+   (art/fonts/title.ttf) in flat warm yellow with a soft glow, over the night city, and everything
+   else on the game's pixel grid (game.pixelSize 3): 3px lines, 3px steps, cut corners. */
+@font-face { font-family: "Gamecuben"; src: url("fonts/title.ttf") format("truetype"); font-display: swap; }
+
+:root {
+  --px: 3px;                         /* one game pixel */
+  --yellow: #ffcb35;                 /* the title colour */
+  --yellow-dim: #b98a12;
+  --glow: rgba(255, 203, 53, .55);
+  --ink: #07070d;
+  --night: #0b0d1c;
+  --panel: rgba(9, 10, 22, .82);
+  --line: #2a2c48;
+  --text: #f2e6dc;
+  --hint: #8d8aa4;
+  --red: #ff4a55;
+  --cut: calc(var(--px) * 4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--ink); }
+body {
+  min-height: 100vh; color: var(--text);
+  font: 400 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+::selection { background: var(--yellow); color: var(--ink); }
+
+/* the night city behind everything, dimmed and pixel-crisp */
+.sky {
+  position: fixed; inset: 0; z-index: -1;
+  background: url("../press-kit/images/key-art/key-art-clean-1920x1080.jpg") center 30% / cover no-repeat;
+  image-rendering: pixelated;
+}
+.sky::after { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 28%, rgba(11,13,28,.15), rgba(7,7,13,.78) 80%), linear-gradient(180deg, rgba(7,7,13,0) 30%, var(--ink) 100%); }
+
+.page { width: min(1040px, 100% - 32px); margin: 0 auto; padding: clamp(40px, 9vh, 96px) 0 48px; display: grid; gap: clamp(36px, 7vh, 72px); }
+
+/* ---------------------------------------------------------------- title, as in the menus */
+.logo, .title {
+  font-family: "Gamecuben", "Arial Black", sans-serif; font-weight: 400; text-transform: uppercase;
+  color: var(--yellow); line-height: .95; letter-spacing: .02em;
+  text-shadow: 0 0 calc(var(--px) * 3) var(--glow), 0 0 calc(var(--px) * 10) rgba(255, 203, 53, .28);
+}
+.hero { text-align: center; display: grid; gap: 18px; justify-items: center; }
+.logo { display: grid; font-size: clamp(42px, 9.6vw, 116px); }
+.logo span:first-child { font-size: .62em; letter-spacing: .06em; }
+.tagline { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em;
+  font-size: clamp(11px, 1.6vw, 15px); color: var(--text); opacity: .85; text-shadow: 0 var(--px) 0 #000; }
+
+/* ---------------------------------------------------------------- video */
+.frame {
+  position: relative; aspect-ratio: 16 / 9; background: #000;
+  border: var(--px) solid var(--yellow-dim);
+  box-shadow: 0 0 0 var(--px) var(--ink), 0 0 calc(var(--px) * 12) rgba(255, 203, 53, .18);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.frame iframe, .poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.poster { cursor: pointer; background: #000; padding: 0; }
+.poster img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: opacity .2s; }
+.poster:hover img, .poster:focus-visible img { opacity: 1; }
+.poster:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: calc(var(--px) * -3); }
+.play {   /* a pixel play button: a stepped triangle in a framed box */
+  position: absolute; left: 50%; top: 50%; width: calc(var(--px) * 30); height: calc(var(--px) * 22); translate: -50% -50%;
+  background: rgba(7, 7, 13, .78); border: var(--px) solid var(--yellow);
+  box-shadow: 0 0 calc(var(--px) * 6) var(--glow);
+}
+.play::after { content: ""; position: absolute; left: 50%; top: 50%; translate: -38% -50%;
+  width: calc(var(--px) * 9); height: calc(var(--px) * 10); background: var(--yellow);
+  clip-path: polygon(0 0, 33% 0, 33% 10%, 55% 10%, 55% 20%, 78% 20%, 78% 30%, 100% 30%, 100% 70%, 78% 70%, 78% 80%, 55% 80%, 55% 90%, 33% 90%, 33% 100%, 0 100%); }
+.poster:hover .play { background: rgba(255, 203, 53, .16); }
+.note { margin-top: 12px; text-align: center; font-family: "Gamecuben", sans-serif; text-transform: uppercase;
+  letter-spacing: .22em; font-size: 11px; color: var(--hint); }
+
+/* ---------------------------------------------------------------- sign-up */
+.signup {
+  justify-self: center; width: min(640px, 100%); display: grid; gap: 14px; text-align: center;
+  background: var(--panel); border: var(--px) solid var(--line); padding: clamp(24px, 4vw, 40px);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  backdrop-filter: blur(4px);
+}
+.title { font-size: clamp(28px, 4.6vw, 46px); }
+.title em { font-style: normal; color: #fff; text-shadow: 0 0 calc(var(--px) * 3) rgba(255,255,255,.6), 0 0 calc(var(--px) * 10) var(--glow); }
+.lead { color: var(--text); opacity: .9; }
+
+.form { display: grid; gap: 14px; margin-top: 8px; text-align: left; }
+.field { display: grid; gap: 6px; }
+.field span { font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 12px; color: var(--yellow); }
+.field i { font-style: normal; color: var(--hint); letter-spacing: .06em; }
+.field input {
+  width: 100%; font: inherit; color: var(--text); background: rgba(3, 3, 8, .75);
+  border: var(--px) solid var(--line); padding: 12px 14px; outline: none; border-radius: 0;
+}
+.field input::placeholder { color: #5d5b74; }
+.field input:focus { border-color: var(--yellow); box-shadow: 0 0 calc(var(--px) * 4) var(--glow); }
+.field input[aria-invalid="true"] { border-color: var(--red); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 14px; color: var(--hint); cursor: pointer; }
+.check input { appearance: none; width: calc(var(--px) * 6); height: calc(var(--px) * 6); margin-top: 2px; border: var(--px) solid var(--line); background: rgba(3,3,8,.75); cursor: pointer; display: grid; place-content: center; }
+.check input:checked { border-color: var(--yellow); }
+.check input:checked::after { content: ""; width: calc(var(--px) * 2); height: calc(var(--px) * 2); background: var(--yellow); box-shadow: 0 0 var(--px) var(--glow); }
+.check input:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: var(--px); }
+
+.cta {   /* a menu item: glowing title lettering in a framed bar */
+  justify-self: center; margin-top: 6px; cursor: pointer; border: var(--px) solid var(--yellow); background: rgba(255, 203, 53, .08);
+  padding: 14px 34px; font-family: "Gamecuben", sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--yellow); text-shadow: 0 0 calc(var(--px) * 3) var(--glow); box-shadow: 0 0 calc(var(--px) * 5) rgba(255, 203, 53, .25);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition: background .15s, color .15s;
+}
+.cta:hover, .cta:focus-visible { background: var(--yellow); color: var(--ink); text-shadow: none; outline: none; }
+.cta[disabled] { opacity: .55; cursor: progress; }
+.status { min-height: 1.6em; text-align: center; font-size: 15px; }
+.status.ok { color: var(--yellow); }
+.status.err { color: var(--red); }
+.form.done .field, .form.done .check, .form.done .cta { display: none; }
+
+/* ---------------------------------------------------------------- footer */
+.foot { display: flex; gap: 24px; justify-content: center; padding: 24px 16px 40px; font-family: "Gamecuben", sans-serif;
+  text-transform: uppercase; letter-spacing: .16em; font-size: 12px; color: var(--hint); }
+.foot a { color: var(--hint); text-decoration: none; border-bottom: var(--px) solid transparent; }
+.foot a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

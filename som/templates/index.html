@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Static Over Midtown · Sign up for the playtest</title>
+<meta name="description" content="Static Over Midtown is a multiplayer retro-futuristic flying car combat game. Sign up for the playtest and get a Steam key.">
+<meta property="og:title" content="Static Over Midtown">
+<meta property="og:description" content="A multiplayer retro-futuristic flying car combat game. Sign up for the playtest and get a Steam key.">
+<meta property="og:url" content="{{.SiteURL}}">
+<meta property="og:image" content="{{.SiteURL}}press-kit/images/key-art/key-art-1920x1080.jpg">
+<link rel="preload" href="static/fonts/title.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+
+<main class="page">
+  <header class="hero">
+    <h1 class="logo"><span>Static Over</span><span>Midtown</span></h1>
+    <p class="tagline">A multiplayer retro futuristic flying car combat game</p>
+  </header>
+
+  <section class="video" aria-label="Trailer">
+    <div class="frame">
+      <!-- Click to load: YouTube is only contacted once the visitor presses play -->
+      <button class="poster" type="button" data-id="{{.YouTubeID}}" aria-label="Play the trailer">
+        <img src="https://i.ytimg.com/vi/{{.YouTubeID}}/maxresdefault.jpg" alt="" loading="lazy"
+             onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{.YouTubeID}}/hqdefault.jpg'">
+        <span class="play" aria-hidden="true"></span>
+      </button>
+    </div>
+    <p class="note">All footage captured in engine</p>
+  </section>
+
+  <section class="signup" id="playtest">
+    <h2 class="title">The council wants <em>you</em></h2>
+    <p class="lead">Sign up for the playtest. When a test opens, we'll email you a Steam key.</p>
+
+    <form id="signup" class="form" method="post" action="api/signup" novalidate>
+      <label class="field">
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com" maxlength="254">
+      </label>
+      <label class="field">
+        <span>Name <i>(optional)</i></span>
+        <input type="text" name="name" autocomplete="nickname" maxlength="80" placeholder="What should we call you?">
+      </label>
+      <label class="hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <label class="check">
+        <input type="checkbox" name="consent" value="1" required>
+        <span>Email me about the Static Over Midtown playtest. You can ask to be removed at any time.</span>
+      </label>
+      <button class="cta" type="submit"><span>Sign me up</span></button>
+      <p class="status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+
+<footer class="foot">
+  <a href="press-kit/">Press kit</a>
+  <span>© Return Zero</span>
+</footer>
+
+<script src="static/app.js" defer></script>
+</body>
+</html>
