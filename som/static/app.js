@@ -2,6 +2,27 @@
 (() => {
   'use strict';
 
+  /* the entrance: the logo alone in the middle, word by word, then up to its place, then everything else */
+  const root = document.documentElement, logo = document.querySelector('.logo');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (logo && !still && root.classList.contains('intro')) {
+    const place = () => {   // from where it sits to the middle of the screen, a little bigger
+      logo.style.transform = ''; const r = logo.getBoundingClientRect();
+      const dy = innerHeight / 2 - (r.top + r.height / 2);
+      logo.style.transform = `translateY(${dy}px) scale(1.15)`;
+    };
+    place();
+    const go = () => {
+      requestAnimationFrame(() => logo.classList.add('lit'));
+      setTimeout(() => {
+        logo.classList.add('moving'); logo.style.transform = '';
+        root.classList.add('ready'); root.classList.remove('intro');
+      }, 2000);
+      setTimeout(() => logo.classList.remove('moving'), 3400);
+    };
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { place(); go(); });
+  } else root.classList.remove('intro');
+
   /* the trailer: YouTube loads only once the visitor presses play (privacy-enhanced domain) */
   const poster = document.querySelector('.poster');
   if (poster) poster.addEventListener('click', () => {

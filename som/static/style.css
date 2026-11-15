@@ -1,10 +1,9 @@
 /* Static Over Midtown - website. The look follows the game's current menus: the GAMECUBEN title font
-   (art/fonts/title.ttf) in flat warm yellow with a soft glow, over the night city, and everything
-   else on the game's pixel grid (game.pixelSize 3): 3px lines, 3px steps, cut corners. */
+   (art/fonts/title.ttf) in flat warm yellow with a soft glow, over the night city. Plain, crisp lines. */
 @font-face { font-family: "Gamecuben"; src: url("fonts/title.ttf") format("truetype"); font-display: swap; }
 
 :root {
-  --px: 3px;                         /* one game pixel */
+  --px: 2px;                         /* line width */
   --yellow: #ffcb35;                 /* the title colour */
   --yellow-dim: #b98a12;
   --glow: rgba(255, 203, 53, .55);
@@ -15,7 +14,6 @@
   --text: #f2e6dc;
   --hint: #8d8aa4;
   --red: #ff4a55;
-  --cut: calc(var(--px) * 4);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +29,6 @@ body {
 .sky {
   position: fixed; inset: 0; z-index: -1;
   background: url("../press-kit/images/key-art/key-art-clean-1920x1080.jpg") center 30% / cover no-repeat;
-  image-rendering: pixelated;
 }
 .sky::after { content: ""; position: absolute; inset: 0;
   background: radial-gradient(ellipse at 50% 28%, rgba(11,13,28,.15), rgba(7,7,13,.78) 80%), linear-gradient(180deg, rgba(7,7,13,0) 30%, var(--ink) 100%); }
@@ -42,7 +39,7 @@ body {
 .logo, .title {
   font-family: "Gamecuben", "Arial Black", sans-serif; font-weight: 400; text-transform: uppercase;
   color: var(--yellow); line-height: .95; letter-spacing: .02em;
-  text-shadow: 0 0 calc(var(--px) * 3) var(--glow), 0 0 calc(var(--px) * 10) rgba(255, 203, 53, .28);
+  text-shadow: 0 0 9px var(--glow), 0 0 30px rgba(255, 203, 53, .28);
 }
 .hero { text-align: center; display: grid; gap: 18px; justify-items: center; }
 .logo { display: grid; font-size: clamp(42px, 9.6vw, 116px); }
@@ -52,24 +49,22 @@ body {
 
 /* ---------------------------------------------------------------- video */
 .frame {
-  position: relative; aspect-ratio: 16 / 9; background: #000;
+  position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 16 / 9; background: #000;
   border: var(--px) solid var(--yellow-dim);
-  box-shadow: 0 0 0 var(--px) var(--ink), 0 0 calc(var(--px) * 12) rgba(255, 203, 53, .18);
-  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  box-shadow: 0 0 36px rgba(255, 203, 53, .18);
 }
 .frame iframe, .poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .poster { cursor: pointer; background: #000; padding: 0; }
 .poster img { width: 100%; height: 100%; object-fit: cover; opacity: .82; transition: opacity .2s; }
 .poster:hover img, .poster:focus-visible img { opacity: 1; }
-.poster:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: calc(var(--px) * -3); }
+.poster:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: -9px; }
 .play {   /* a pixel play button: a stepped triangle in a framed box */
-  position: absolute; left: 50%; top: 50%; width: calc(var(--px) * 30); height: calc(var(--px) * 22); translate: -50% -50%;
+  position: absolute; left: 50%; top: 50%; width: 88px; height: 64px; border-radius: 6px; translate: -50% -50%;
   background: rgba(7, 7, 13, .78); border: var(--px) solid var(--yellow);
-  box-shadow: 0 0 calc(var(--px) * 6) var(--glow);
+  box-shadow: 0 0 18px var(--glow);
 }
-.play::after { content: ""; position: absolute; left: 50%; top: 50%; translate: -38% -50%;
-  width: calc(var(--px) * 9); height: calc(var(--px) * 10); background: var(--yellow);
-  clip-path: polygon(0 0, 33% 0, 33% 10%, 55% 10%, 55% 20%, 78% 20%, 78% 30%, 100% 30%, 100% 70%, 78% 70%, 78% 80%, 55% 80%, 55% 90%, 33% 90%, 33% 100%, 0 100%); }
+.play::after { content: ""; position: absolute; left: 50%; top: 50%; translate: -35% -50%;
+  border-style: solid; border-width: 13px 0 13px 22px; border-color: transparent transparent transparent var(--yellow); }
 .poster:hover .play { background: rgba(255, 203, 53, .16); }
 .note { margin-top: 12px; text-align: center; font-family: "Gamecuben", sans-serif; text-transform: uppercase;
   letter-spacing: .22em; font-size: 11px; color: var(--hint); }
@@ -77,12 +72,11 @@ body {
 /* ---------------------------------------------------------------- sign-up */
 .signup {
   justify-self: center; width: min(640px, 100%); display: grid; gap: 14px; text-align: center;
-  background: var(--panel); border: var(--px) solid var(--line); padding: clamp(24px, 4vw, 40px);
-  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  background: var(--panel); border: var(--px) solid var(--line); border-radius: 10px; padding: clamp(24px, 4vw, 40px);
   backdrop-filter: blur(4px);
 }
 .title { font-size: clamp(28px, 4.6vw, 46px); }
-.title em { font-style: normal; color: #fff; text-shadow: 0 0 calc(var(--px) * 3) rgba(255,255,255,.6), 0 0 calc(var(--px) * 10) var(--glow); }
+.title em { font-style: normal; color: #fff; text-shadow: 0 0 9px rgba(255,255,255,.6), 0 0 30px var(--glow); }
 .lead { color: var(--text); opacity: .9; }
 
 .form { display: grid; gap: 14px; margin-top: 8px; text-align: left; }
@@ -91,23 +85,22 @@ body {
 .field i { font-style: normal; color: var(--hint); letter-spacing: .06em; }
 .field input {
   width: 100%; font: inherit; color: var(--text); background: rgba(3, 3, 8, .75);
-  border: var(--px) solid var(--line); padding: 12px 14px; outline: none; border-radius: 0;
+  border: var(--px) solid var(--line); padding: 12px 14px; outline: none; border-radius: 6px;
 }
 .field input::placeholder { color: #5d5b74; }
-.field input:focus { border-color: var(--yellow); box-shadow: 0 0 calc(var(--px) * 4) var(--glow); }
+.field input:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
 .field input[aria-invalid="true"] { border-color: var(--red); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .check { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: 14px; color: var(--hint); cursor: pointer; }
-.check input { appearance: none; width: calc(var(--px) * 6); height: calc(var(--px) * 6); margin-top: 2px; border: var(--px) solid var(--line); background: rgba(3,3,8,.75); cursor: pointer; display: grid; place-content: center; }
+.check input { appearance: none; width: 18px; height: 18px; border-radius: 3px; margin-top: 2px; border: var(--px) solid var(--line); background: rgba(3,3,8,.75); cursor: pointer; display: grid; place-content: center; }
 .check input:checked { border-color: var(--yellow); }
-.check input:checked::after { content: ""; width: calc(var(--px) * 2); height: calc(var(--px) * 2); background: var(--yellow); box-shadow: 0 0 var(--px) var(--glow); }
+.check input:checked::after { content: ""; width: 8px; height: 8px; border-radius: 1px; background: var(--yellow); box-shadow: 0 0 var(--px) var(--glow); }
 .check input:focus-visible { outline: var(--px) solid var(--yellow); outline-offset: var(--px); }
 
 .cta {   /* a menu item: glowing title lettering in a framed bar */
-  justify-self: center; margin-top: 6px; cursor: pointer; border: var(--px) solid var(--yellow); background: rgba(255, 203, 53, .08);
+  justify-self: center; margin-top: 6px; cursor: pointer; border: var(--px) solid var(--yellow); border-radius: 6px; background: rgba(255, 203, 53, .08);
   padding: 14px 34px; font-family: "Gamecuben", sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: .08em;
-  color: var(--yellow); text-shadow: 0 0 calc(var(--px) * 3) var(--glow); box-shadow: 0 0 calc(var(--px) * 5) rgba(255, 203, 53, .25);
-  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  color: var(--yellow); text-shadow: 0 0 9px var(--glow); box-shadow: 0 0 15px rgba(255, 203, 53, .25);
   transition: background .15s, color .15s;
 }
 .cta:hover, .cta:focus-visible { background: var(--yellow); color: var(--ink); text-shadow: none; outline: none; }
@@ -120,7 +113,23 @@ body {
 /* ---------------------------------------------------------------- footer */
 .foot { display: flex; gap: 24px; justify-content: center; padding: 24px 16px 40px; font-family: "Gamecuben", sans-serif;
   text-transform: uppercase; letter-spacing: .16em; font-size: 12px; color: var(--hint); }
-.foot a { color: var(--hint); text-decoration: none; border-bottom: var(--px) solid transparent; }
+.foot a { color: var(--hint); text-decoration: none; border-bottom: 1px solid transparent; }
 .foot a:hover { color: var(--yellow); border-color: var(--yellow); }
+
+/* ---------------------------------------------------------------- the entrance
+   the logo comes first, big in the middle of the screen, word by word; then it glides up to its place
+   and the rest of the site fades in */
+.sky, .tagline, .video, .signup, .foot { transition: opacity 1s ease, translate 1s ease; }
+.intro .sky { opacity: 0; }
+.intro .tagline, .intro .video, .intro .signup, .intro .foot { opacity: 0; translate: 0 24px; }
+.ready .tagline { transition-delay: .1s; } .ready .video { transition-delay: .3s; }
+.ready .signup { transition-delay: .5s; } .ready .foot { transition-delay: .7s; }
+.logo { transform-origin: 50% 50%; will-change: transform; }
+.logo.moving { transition: transform 1.2s cubic-bezier(.65, 0, .25, 1); }
+.logo span { display: block; }
+.intro .logo span { opacity: 0; filter: blur(12px); letter-spacing: .5em; }
+.logo span { transition: opacity 1s ease, filter 1s ease, letter-spacing 1.4s cubic-bezier(.2, .7, .2, 1); }
+.intro .logo.lit span:first-child { opacity: 1; filter: none; letter-spacing: .06em; }
+.intro .logo.lit span:last-child { opacity: 1; filter: none; letter-spacing: .02em; transition-delay: .35s; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
