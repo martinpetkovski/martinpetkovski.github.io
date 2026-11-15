@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Static Over Midtown · Press Kit</title>
-<meta name="description" content="Press kit for Static Over Midtown, a multiplayer retro-futuristic flying car combat game by Return Zero. Fact sheet, descriptions, trailer, screenshots, logos and art.">
+<meta name="description" content="Press kit for Static Over Midtown, a multiplayer retro-futuristic flying car combat game by Return Zero. Fact sheet, descriptions, screenshots, logos and key art.">
 <meta property="og:title" content="Static Over Midtown · Press Kit">
-<meta property="og:description" content="A multiplayer retro-futuristic flying car combat game. Fact sheet, trailer, screenshots, logos and art.">
-<meta property="og:image" content="images/key-art/key-art-1920x1080.jpg">
+<meta property="og:description" content="A multiplayer retro-futuristic flying car combat game. Fact sheet, screenshots, logos and key art.">
+<meta property="og:image" content="media/previews/key-art.jpg">
 <link rel="preload" href="../static/fonts/title.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 <link rel="stylesheet" href="presskit.css">
@@ -35,7 +35,7 @@
 </nav>
 
 <header class="hero" id="top">
-  <div class="bg" style="background-image:url('images/key-art/key-art-clean-1920x1080.jpg')"></div>
+  <div class="bg" style="background-image:url('media/previews/wallpaper.jpg')"></div>
   <div class="inner wrap">
     <p class="tag orange">Press kit</p>
     <h1 class="logo"><span>Static Over</span><span>Midtown</span></h1>
@@ -46,7 +46,6 @@
     <div class="btns">
       <a class="btn primary" href="static-over-midtown-press-kit.zip" download><i class="fa-solid fa-file-zipper"></i>Download press kit <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
       <a class="btn" href="#trailer"><i class="fa-solid fa-play"></i>Trailer</a>
-      <a class="btn" href="https://store.steampowered.com/" target="_blank" rel="noopener"><i class="fa-brands fa-steam"></i>Wishlist</a>
     </div>
   </div>
 </header>
@@ -59,7 +58,7 @@
     <div>
       <div class="section-head"><p class="tag orange">01 · Fact sheet</p><h2 class="title">The basics</h2></div>
       <p class="lead">Two teams of flying cars, a neon city at night, and one goal: bring down the other side's main tower.</p>
-      <p class="muted" style="margin-top:1em">All screenshots and footage in this kit are captured in engine from a pre-alpha build. Everything is subject to change.</p>
+      <p class="muted" style="margin-top:1em">All images in this kit are exported from the game from a pre-alpha build. Everything is subject to change.</p>
     </div>
     <div class="panel">
       <dl class="facts">
@@ -85,12 +84,12 @@
 <!-- ================================================================ ABOUT -->
 <section id="about">
   <div class="wrap">
-    <div class="section-head"><p class="tag orange">02 · About the game</p><h2 class="title">You dreamed of flying cars</h2></div>
+    <div class="section-head"><p class="tag orange">02 · About the game</p><h2 class="title">You wanted flying cars</h2></div>
     <div class="grid cols-3">
       <div class="panel copy">
         <button class="copy-btn" data-copy="#d-tag" title="Copy"><i class="fa-regular fa-copy"></i></button>
         <h3>Tagline</h3>
-        <p id="d-tag">You dreamed of flying cars. You got them. But not without a fight.</p>
+        <p id="d-tag">You wanted flying cars. You got them. But not without a fight.</p>
       </div>
       <div class="panel copy">
         <button class="copy-btn" data-copy="#d-short" title="Copy"><i class="fa-regular fa-copy"></i></button>
@@ -140,11 +139,11 @@
 <!-- ================================================================ TRAILER -->
 <section id="trailer">
   <div class="wrap">
-    <div class="section-head"><p class="tag orange">04 · Trailer</p><h2 class="title">Announcement trailer</h2></div>
-    <div class="video"><video controls preload="metadata" poster="video/trailer-poster.jpg" src="video/trailer.mp4"></video></div>
+    <div class="section-head"><p class="tag orange">04 · Trailer</p><h2 class="title">Trailer</h2></div>
+    <!-- the YouTube video set in the admin panel (/api/trailer); YouTube loads only when play is pressed -->
+    <div class="video" id="trailer-video"></div>
     <div class="btns" style="justify-content:flex-start;margin-top:18px">
-      <a class="btn" href="video/trailer.mp4" download><i class="fa-solid fa-download"></i>Download trailer <span class="size" data-size="video/trailer.mp4"></span></a>
-      <span class="tag">1920×1080 · 60 fps · H.264 · captured in engine</span>
+      <a class="btn" id="trailer-link" href="https://www.youtube.com/" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i>Watch on YouTube</a>
     </div>
   </div>
 </section>
@@ -153,7 +152,7 @@
 <section id="screenshots">
   <div class="wrap">
     <div class="section-head"><p class="tag orange">05 · Screenshots</p><h2 class="title">Captured in engine</h2>
-      <p class="muted">1920×1080 PNG, straight from a pre-alpha build. Click to view, or download them all in the press kit.</p></div>
+      <p class="muted">3840×2160 PNG, exported from a pre-alpha build. Click to view, or download them all in the press kit.</p></div>
     <div class="shots" id="shots">
       <!-- filled from the list in presskit.js (one place to add screenshots) -->
     </div>
@@ -164,21 +163,19 @@
 <section id="assets">
   <div class="wrap">
     <div class="section-head"><p class="tag orange">06 · Logos &amp; art</p><h2 class="title">Logos &amp; art</h2>
-      <p class="muted">Transparent PNGs at full size. The logo is pixel art: scale it by whole numbers (or with nearest-neighbour filtering) to keep it crisp.</p></div>
+      <p class="muted">PNG at full size, exported from the game.</p></div>
     <div class="grid cols-3">
-      <div class="panel asset"><div class="preview"><img src="images/logo/logo-stacked.png" alt="Stacked logo"></div>
-        <h3>Logo · stacked</h3><div class="links"><a href="images/logo/logo-stacked.png" download>PNG full</a><a href="images/logo/logo-stacked-1000.png" download>PNG 1000px</a><a href="images/logo/logo-stacked-on-dark.png" download>On dark</a></div></div>
-      <div class="panel asset"><div class="preview"><img src="images/logo/logo-wide.png" alt="Wide logo"></div>
-        <h3>Logo · one line</h3><div class="links"><a href="images/logo/logo-wide.png" download>PNG full</a><a href="images/logo/logo-wide-1600.png" download>PNG 1600px</a></div></div>
-      <div class="panel asset"><div class="preview"><img src="images/logo/logo-stacked-tagline.png" alt="Logo with tagline"></div>
-        <h3>Logo · with tagline</h3><div class="links"><a href="images/logo/logo-stacked-tagline.png" download>PNG full</a></div></div>
-      <div class="panel asset"><div class="preview cover"><img src="images/key-art/key-art-1920x1080.jpg" alt="Key art"></div>
-        <h3>Key art</h3><div class="links"><a href="images/key-art/key-art-1920x1080.png" download>With logo</a><a href="images/key-art/key-art-clean-1920x1080.png" download>Without logo</a></div></div>
-                      </div>
+      <div class="panel asset"><div class="preview"><img src="media/previews/logo.png" alt="Logo"></div>
+        <h3>Logo · transparent</h3><div class="links"><a href="media/logo.png" download>PNG 3840×2160</a></div></div>
+      <div class="panel asset"><div class="preview cover"><img src="media/previews/logo-dark.png" alt="Logo on dark"></div>
+        <h3>Logo · on dark</h3><div class="links"><a href="media/logo-dark.png" download>PNG 1920×1080</a></div></div>
+      <div class="panel asset"><div class="preview cover"><img src="media/previews/key-art.jpg" alt="Key art"></div>
+        <h3>Key art</h3><div class="links"><a href="media/key-art.png" download>PNG 3840×2160</a></div></div>
+    </div>
 
     <div class="panel download" style="margin-top:28px">
       <div><p class="tag orange">Everything in one file</p><h2 class="title">Press kit .zip</h2>
-        <p class="muted">Fact sheet, descriptions, trailer, screenshots, logos and key art.</p></div>
+        <p class="muted">Fact sheet, screenshots, logos and key art.</p></div>
       <a class="btn primary" href="static-over-midtown-press-kit.zip" download><i class="fa-solid fa-file-zipper"></i>Download <span class="size" data-size="static-over-midtown-press-kit.zip"></span></a>
     </div>
   </div>
@@ -194,7 +191,6 @@
     <div class="panel">
       <dl class="facts">
         <dt class="tag">Press</dt><dd><a href="mailto:deeeeelay@gmail.com">deeeeelay@gmail.com</a></dd>
-        <dt class="tag">Steam</dt><dd><a href="https://store.steampowered.com/" target="_blank" rel="noopener">Wishlist on Steam</a> <span class="tba">(store link TBA)</span></dd>
         <dt class="tag">Website</dt><dd><a href="../">Official site</a></dd>
         <dt class="tag">Studio</dt><dd>Return Zero · Martin Petkovski</dd>
       </dl>
@@ -207,11 +203,11 @@
 <footer>
   <div class="wrap grid cols-2">
     <div><p class="tag orange" style="margin-bottom:10px">Use of these materials</p>
-      <p>Screenshots, footage, logos and art in this press kit may be used for editorial coverage, reviews, previews and streams of Static Over Midtown. Please don't alter the logo or present the assets as your own.</p></div>
+      <p>Screenshots, logos and art in this press kit may be used for editorial coverage, reviews, previews and streams of Static Over Midtown. Please don't alter the logo or present the assets as your own.</p></div>
     <div><p class="tag orange" style="margin-bottom:10px">Notes</p>
-      <p>All footage and screenshots are captured in engine from a pre-alpha build and do not represent the final game. Steam and the Steam logo are trademarks of Valve Corporation. © Return Zero. All rights reserved.</p></div>
+      <p>All images are exported from a pre-alpha build of the game and do not represent the final game. Steam and the Steam logo are trademarks of Valve Corporation. © Return Zero. All rights reserved.</p></div>
     <div style="grid-column:1/-1"><p class="tag orange" style="margin-bottom:10px">AI disclosure</p>
-      <p>This press kit was generated with AI: the page, its text, the logo renders and the key art composition. The screenshots and trailer are captured in engine by the developer.</p></div>
+      <p>The page and its text were written with AI. The screenshots, logos and key art are exported from the game by the developer.</p></div>
   </div>
 </footer>
 

@@ -2,24 +2,33 @@
 (() => {
   'use strict';
 
-  /* screenshots: images/screenshots/<name>.png (full) and images/screenshots/thumbs/<name>.jpg */
+  /* screenshots: media/<name>.png (full, 3840x2160) and media/previews/<name>.jpg */
   const SHOTS = [
-    ['screenshot-01', 'A five-on-five brawl over Midtown'],
-    ['screenshot-02', 'Fighting around the radio tower'],
-    ['screenshot-03', 'Dogfight between the office blocks'],
-    ['screenshot-04', 'A blue car cuts through the park'],
-    ['screenshot-05', 'Beams and smoke over the skyline'],
-    ['screenshot-06', 'Explosions in the business district'],
-    ['screenshot-07', 'Night flight past the city tower'],
-    ['screenshot-08', 'Cruising past the old station'],
+    ['screenshot', 'Five on five over Midtown'],
+    ['wallpaper', 'Crossfire between the office towers'],
   ];
+
+  /* the trailer: the YouTube video set in the admin panel; YouTube loads only once play is pressed */
+  const box = document.getElementById('trailer-video');
+  if (box) fetch('../api/trailer').then((r) => r.json()).then(({ youtubeId: id }) => {
+    if (!id) return;
+    const v = encodeURIComponent(id);
+    document.getElementById('trailer-link').href = `https://www.youtube.com/watch?v=${v}`;
+    box.innerHTML = `<button class="poster" type="button" aria-label="Play the trailer">
+      <img src="https://i.ytimg.com/vi/${v}/maxresdefault.jpg" alt="" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${v}/hqdefault.jpg'">
+      <span class="play" aria-hidden="true"></span></button>`;
+    box.querySelector('.poster').addEventListener('click', () => {
+      box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${v}?autoplay=1&rel=0" title="Static Over Midtown trailer"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+    });
+  }).catch(() => {});
 
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   const shots = document.getElementById('shots');
   shots.innerHTML = SHOTS.map(([n, cap], i) => `
-    <a class="shot" href="images/screenshots/${n}.png" data-i="${i}">
-      <img src="images/screenshots/thumbs/${n}.jpg" alt="${esc(cap)}" loading="lazy" width="960" height="540">
+    <a class="shot" href="media/${n}.png" data-i="${i}">
+      <img src="media/previews/${n}.jpg" alt="${esc(cap)}" loading="lazy" width="1600" height="900">
       <span class="dl"><span>${esc(cap)}</span><i class="fa-solid fa-expand"></i></span>
     </a>`).join('');
 
@@ -29,7 +38,7 @@
   const show = (i) => {
     at = (i + SHOTS.length) % SHOTS.length;
     const [n, cap] = SHOTS[at];
-    lbImg.src = `images/screenshots/${n}.png`; lbImg.alt = cap; lbDl.href = lbImg.src;
+    lbImg.src = `media/${n}.png`; lbImg.alt = cap; lbDl.href = lbImg.src;
     lb.classList.add('open');
   };
   shots.addEventListener('click', (e) => {

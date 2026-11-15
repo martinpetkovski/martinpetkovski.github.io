@@ -79,6 +79,7 @@ func main() {
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok")) })
 	mux.HandleFunc("GET /{$}", a.home)
 	mux.HandleFunc("GET /index.html", a.home)
+	mux.HandleFunc("GET /api/trailer", a.trailer)
 	mux.HandleFunc("GET /auth/steam", steamLogin)
 	mux.HandleFunc("GET /auth/steam/callback", a.steamCallback)
 	mux.HandleFunc("POST /auth/logout", a.logout)
