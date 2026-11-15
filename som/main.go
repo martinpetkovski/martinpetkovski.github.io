@@ -165,9 +165,8 @@ func (a *app) me(r *http.Request) *user {
 }
 
 var messages = map[string]string{
-	"joined": "Enlisted.",
+	// (joining and closed sign-ups need no flash: the playtest box already says "Enlisted." / "The gates are shut.")
 	"left":   "Stood down.",
-	"closed": "The gates are shut. For now.",
 	"signin": "Identify yourself first.",
 	"failed": "Signal lost. Try again.",
 	"banned": "Your channel is closed.",
