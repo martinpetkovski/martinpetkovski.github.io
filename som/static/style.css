@@ -16,7 +16,7 @@
   --red: #ff4a55;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }   /* the rule: no rounded corners anywhere, browser defaults included */
 html, body { background: #000; }
 body {
   min-height: 100vh; color: var(--text);
