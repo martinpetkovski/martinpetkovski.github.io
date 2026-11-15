@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Static Over Midtown · Admin</title>
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body class="adm">
+<nav class="bar">
+  <a href="/">← Site</a>
+  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="28" height="28">{{end}}{{.Name}}</span>
+  <form method="post" action="/auth/logout"><button type="submit" class="link">Sign out</button></form>{{end}}
+</nav>
+<main class="page admin">
+  <h1 class="title">Admin</h1>
+
+  {{if not .Me}}
+    <section class="panel"><p>Sign in with your Steam account.</p><a class="cta steam" href="/auth/steam"><span>Sign in with Steam</span></a></section>
+  {{else if not .IsAdmin}}
+    <section class="panel">
+      <p>This Steam account is not an admin.</p>
+      <p>Its Steam ID is <code>{{.Me.ID}}</code>. To make it the admin, add <code>ADMIN_STEAM_ID={{.Me.ID}}</code> to this site's settings in the server manager.</p>
+    </section>
+  {{else}}
+    {{with .Message}}<p class="status ok">{{.}}</p>{{end}}
+
+    <section class="stats">
+      <div><b>{{len .Testers}}</b><span>testers</span></div>
+      <div><b>{{.Waiting}}</b><span>waiting for a key</span></div>
+      <div><b>{{.Keys}}</b><span>unused keys</span></div>
+      <div><b>{{.Users}}</b><span>Steam accounts</span></div>
+      <div><b>{{.Comments}}</b><span>comments</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Steam keys</h2>
+      <form method="post" action="/admin/keys/give" class="row">
+        <label class="field"><span>How many</span><input type="number" name="n" min="0" placeholder="all {{.Waiting}}"></label>
+        <button class="cta" type="submit"><span>Give keys to waiting testers</span></button>
+      </form>
+      <p class="small">Oldest sign-ups first. Each tester sees their key on the site as soon as it's given.</p>
+      <form method="post" action="/admin/keys">
+        <label class="field"><span>Add keys (one per line)</span><textarea name="keys" rows="5" placeholder="XXXXX-XXXXX-XXXXX"></textarea></label>
+        <button class="cta" type="submit"><span>Add keys</span></button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Testers</h2>
+      <p class="small"><a href="/admin/testers.csv">Download as CSV</a>{{if .Emails}} · <a href="/admin/email-signups.csv">{{.Emails}} older email sign-ups (CSV)</a>{{end}}</p>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Tester</th><th>Joined</th><th>Key</th><th></th></tr></thead>
+        <tbody>
+        {{range .Testers}}
+          <tr>
+            <td><a href="https://steamcommunity.com/profiles/{{.ID}}" target="_blank" rel="noopener">{{.Name}}</a>{{if .Banned}} <i>(no comments)</i>{{end}}</td>
+            <td>{{date .SignedUp}}</td>
+            <td>{{if .Key}}<code>{{.Key}}</code>{{else}}<i>waiting</i>{{end}}</td>
+            <td class="acts">
+              <form method="post" action="/admin/user"><input type="hidden" name="id" value="{{.ID}}">
+                {{if .Key}}<button class="link" name="do" value="revoke" data-confirm="Take back this key? It won't be given to anyone else.">Take key back</button>
+                {{else}}<button class="link" name="do" value="give">Give key</button>{{end}}
+                <button class="link" name="do" value="remove" data-confirm="Remove {{.Name}} from the playtest?">Remove</button>
+                {{if .Banned}}<button class="link" name="do" value="unban">Allow comments</button>
+                {{else}}<button class="link" name="do" value="ban" data-confirm="Stop {{.Name}} commenting and delete their comments?">Block comments</button>{{end}}
+              </form>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4"><i>Nobody yet.</i></td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+      {{if .Banned}}<p class="small">Blocked from commenting:
+        {{range .Banned}}<form method="post" action="/admin/user" class="inline"><input type="hidden" name="id" value="{{.ID}}">{{.Name}} <button class="link" name="do" value="unban">allow</button></form>{{end}}</p>{{end}}
+      <p class="small">To delete a comment or block someone who isn't a tester, use Delete under the comment on the site.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Page</h2>
+      <form method="post" action="/admin/settings" class="form">
+        <label class="field"><span>Trailer (YouTube link or id)</span><input name="youtube" value="{{.S.YouTubeID}}"></label>
+        <label class="field"><span>Tagline</span><input name="tagline" value="{{.S.Tagline}}"></label>
+        <label class="field"><span>Under the trailer</span><input name="videonote" value="{{.S.VideoNote}}"></label>
+        <label class="field"><span>Playtest text (signed-out visitors)</span><textarea name="lead" rows="2">{{.S.Lead}}</textarea></label>
+        <label class="field"><span>Shown with a tester's key</span><textarea name="keynote" rows="2">{{.S.KeyNote}}</textarea></label>
+        <label class="check"><input type="checkbox" name="open" value="1" {{if .S.SignupsOpen}}checked{{end}}><span>Playtest sign-ups are open</span></label>
+        <label class="check"><input type="checkbox" name="comments" value="1" {{if .S.Comments}}checked{{end}}><span>Show the comment section</span></label>
+        <button class="cta" type="submit"><span>Save</span></button>
+      </form>
+    </section>
+  {{end}}
+</main>
+<script src="static/app.js" defer></script>
+</body>
+</html>

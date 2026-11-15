@@ -1,4 +1,4 @@
-/* Static Over Midtown - website: click-to-play YouTube trailer and the playtest sign-up. */
+/* Static Over Midtown - website: click-to-play YouTube trailer, copying the key, confirmations. */
 (() => {
   'use strict';
 
@@ -13,37 +13,20 @@
     poster.replaceWith(f);
   });
 
-  /* the sign-up */
-  const form = document.getElementById('signup');
-  if (!form) return;
-  const status = form.querySelector('.status'), button = form.querySelector('.cta');
-  const say = (text, kind) => { status.textContent = text; status.className = 'status ' + (kind || ''); };
+  /* copy the key */
+  document.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    const text = document.getElementById(b.dataset.copy).textContent.trim();
+    try { await navigator.clipboard.writeText(text); b.textContent = 'Copied'; }
+    catch (e) { getSelection().selectAllChildren(document.getElementById(b.dataset.copy)); }
+    setTimeout(() => { b.textContent = 'Copy'; }, 1800);
+  }));
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = form.email.value.trim();
-    form.email.setAttribute('aria-invalid', 'false');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      form.email.setAttribute('aria-invalid', 'true'); form.email.focus();
-      return say("That email address doesn't look right.", 'err');
-    }
-    if (!form.consent.checked) return say('Please agree to be contacted about the playtest.', 'err');
-    button.disabled = true; say('Sending…');
-    try {
-      const r = await fetch(form.getAttribute('action'), {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name: form.name.value.trim(), website: form.website.value, consent: true }),
-      });
-      const out = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(out.error || 'Something went wrong. Please try again.');
-      form.classList.add('done');
-      say(out.status === 'already'
-        ? "You're already on the list. We'll email your Steam key when a test opens."
-        : "You're in. We'll email your Steam key when a test opens.", 'ok');
-    } catch (err) {
-      say(err.message || 'Something went wrong. Please try again.', 'err');
-    } finally {
-      button.disabled = false;
-    }
+  /* deleting a comment and admin actions ask first */
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-confirm], form.del button');
+    if (b && !confirm(b.dataset.confirm || 'Delete this comment?')) e.preventDefault();
   });
+
+  /* when a post or action brings you back, drop the ?m= note from the address */
+  if (location.search.includes('m=')) history.replaceState(null, '', location.pathname + location.hash);
 })();

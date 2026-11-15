@@ -109,3 +109,71 @@ body {
 .foot a:hover { color: var(--yellow); border-color: var(--yellow); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------------------------------------------------------------- signed in: the bar */
+.bar { position: fixed; top: 0; right: 0; z-index: 5; display: flex; gap: 18px; align-items: center; padding: 10px 16px;
+  background: rgba(7, 7, 13, .86); border-left: var(--px) solid var(--line); border-bottom: var(--px) solid var(--line);
+  font-size: 14px; }
+.adm .bar { left: 0; border-left: 0; justify-content: space-between; }
+.bar a { color: var(--yellow); text-decoration: none; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; }
+.bar form { display: inline; }
+.who { display: flex; gap: 8px; align-items: center; color: var(--text); }
+.who img { border: 1px solid var(--line); }
+.link { background: none; border: 0; padding: 0; font: inherit; color: var(--hint); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.link:hover, .link:focus-visible { color: var(--yellow); }
+.small { font-size: 14px; color: var(--hint); }
+.small a { color: var(--yellow); }
+a.cta { text-decoration: none; display: inline-block; }
+.signup form { display: grid; justify-items: center; }
+
+/* the key */
+.key { display: flex; justify-content: center; align-items: stretch; gap: 0; margin: 4px auto; max-width: 100%; }
+.key code { font: 600 clamp(16px, 3vw, 22px)/1 ui-monospace, Consolas, monospace; letter-spacing: .08em; color: #fff;
+  background: rgba(3, 3, 8, .75); border: var(--px) solid var(--yellow); padding: 14px 16px; overflow-wrap: anywhere;
+  text-shadow: 0 0 9px var(--glow); }
+.copy { border: var(--px) solid var(--yellow); border-left: 0; background: rgba(255, 203, 53, .12); color: var(--yellow); cursor: pointer;
+  padding: 0 16px; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .1em; font-size: 12px; }
+.copy:hover { background: var(--yellow); color: var(--ink); }
+
+/* ---------------------------------------------------------------- comments */
+.comments { justify-self: center; width: min(760px, 100%); display: grid; gap: 18px; }
+.small-title { font-size: clamp(22px, 3.4vw, 32px); text-align: center; }
+.say { display: grid; gap: 12px; background: var(--panel); border: var(--px) solid var(--line); padding: 18px; }
+.say .cta { justify-self: end; font-size: 16px; padding: 10px 26px; margin: 0; }
+.field textarea { width: 100%; font: inherit; color: var(--text); background: rgba(3, 3, 8, .75); border: var(--px) solid var(--line);
+  padding: 12px 14px; outline: none; resize: vertical; }
+.field textarea:focus { border-color: var(--yellow); box-shadow: 0 0 12px var(--glow); }
+.list { list-style: none; display: grid; gap: 0; }
+.list li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.list li.none { display: block; color: var(--hint); text-align: center; }
+.list li:target { background: rgba(255, 203, 53, .06); }
+.pic img { display: block; border: 1px solid var(--line); }
+.meta { font-size: 14px; color: var(--hint); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.meta a { color: var(--yellow); text-decoration: none; font-weight: 600; }
+.meta .del { margin-left: auto; display: inline; }
+.dev { font: 400 10px "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: var(--yellow); padding: 2px 6px; }
+.text { white-space: pre-line; overflow-wrap: anywhere; margin-top: 4px; }
+
+/* ---------------------------------------------------------------- admin */
+.admin { width: min(1040px, 100% - 32px); gap: 28px; padding-top: 90px; }
+.admin > .title { font-size: clamp(30px, 5vw, 48px); }
+.panel { background: var(--panel); border: var(--px) solid var(--line); padding: clamp(18px, 3vw, 28px); display: grid; gap: 14px; }
+.panel h2 { font-family: "Gamecuben", sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .1em; color: var(--yellow); font-size: 18px; }
+.panel .cta { justify-self: start; font-size: 15px; padding: 10px 22px; margin: 0; }
+.panel code, .admin p code { font-family: ui-monospace, Consolas, monospace; color: #fff; background: rgba(3,3,8,.75); padding: 1px 6px; border: 1px solid var(--line); }
+.row { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
+.row .field { width: 160px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.stats div { background: var(--panel); border: var(--px) solid var(--line); padding: 14px 16px; display: grid; }
+.stats b { font: 400 30px "Gamecuben", sans-serif; color: var(--yellow); text-shadow: 0 0 9px var(--glow); }
+.stats span { color: var(--hint); font-size: 13px; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font: 400 11px "Gamecuben", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--hint); padding: 8px; border-bottom: var(--px) solid var(--line); }
+td { padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td a { color: var(--yellow); text-decoration: none; }
+td i { color: var(--hint); }
+.acts form { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.inline { display: inline; margin-right: 10px; }
+.admin .status { text-align: left; }
+.admin .check { color: var(--text); }

@@ -1,44 +1,38 @@
 // Static Over Midtown - website server.
 //
-// Serves the landing page (a template, so the YouTube video id and other settings come from the
-// environment), its static files, the existing press kit, and the playtest sign-up:
+// The landing page with the trailer, the playtest (sign in with Steam, join, and the Steam key
+// shows up on the page once it is given out), comments from signed-in Steam users, the press
+// kit, and an admin panel (/admin, only for the Steam accounts in ADMIN_STEAM_ID) for the
+// page's texts, the trailer, the playtest keys and the testers.
 //
-//	POST /api/signup            JSON or form: email, name (optional), consent; stored in data/signups.jsonl
-//	GET  /admin/signups.csv     every sign-up as CSV (HTTP basic auth, ADMIN_PASSWORD)
-//
-// Configuration (environment variables, all optional except ADMIN_PASSWORD for the export):
+// Configuration (environment variables):
 //
 //	PORT            listen port (default 8080)
-//	YOUTUBE_ID      the trailer's YouTube video id
-//	DATA_DIR        where signups.jsonl is kept (default ./data)
-//	ADMIN_USER      basic-auth user for the export (default admin)
-//	ADMIN_PASSWORD  basic-auth password for the export (export disabled when empty)
-//	SITE_URL        canonical address, used in the page's meta tags (default https://martinpetkovski.com/som/)
+//	ADMIN_STEAM_ID  SteamID64 of the admin (several: comma separated). Sign in and open /admin
+//	                to see yours.
+//	YOUTUBE_ID      the trailer's YouTube id on first start (after that: the admin panel)
+//	DATA_DIR        where the site's data is kept (default ./data)
+//	SITE_URL        canonical address for the page's meta tags (default https://som.najjak.com/)
 //
 // Run: go run .   (from this folder)
 package main
 
 import (
-	"crypto/sha256"
-	"crypto/subtle"
 	"encoding/csv"
-	"encoding/hex"
-	"encoding/json"
-	"errors"
 	"html/template"
 	"log"
-	"net"
 	"net/http"
-	"net/mail"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 )
 
 type config struct {
-	Port, YouTubeID, DataDir, AdminUser, AdminPassword, SiteURL string
+	Port, DataDir, SiteURL string
+	Admins                 map[string]bool
 }
 
 func env(key, def string) string {
@@ -48,93 +42,532 @@ func env(key, def string) string {
 	return def
 }
 
-func loadConfig() config {
-	return config{
-		Port:          env("PORT", "8080"),
-		YouTubeID:     env("YOUTUBE_ID", "M7lc1UVf-VE"), // TODO: the real trailer's id (this one is a placeholder)
-		DataDir:       env("DATA_DIR", "data"),
-		AdminUser:     env("ADMIN_USER", "admin"),
-		AdminPassword: os.Getenv("ADMIN_PASSWORD"),
-		SiteURL:       env("SITE_URL", "https://martinpetkovski.com/som/"),
-	}
+type app struct {
+	cfg   config
+	db    *db
+	sess  *sessions
+	pages *template.Template
+	lim   *limiter
 }
 
-// ---------------------------------------------------------------- sign-ups
-
-type signup struct {
-	Email   string    `json:"email"`
-	Name    string    `json:"name,omitempty"`
-	At      time.Time `json:"at"`
-	IPHash  string    `json:"ipHash"` // a hash, so the list holds no raw IP addresses
-	Agent   string    `json:"agent,omitempty"`
-	Referer string    `json:"referer,omitempty"`
-}
-
-type store struct {
-	mu     sync.Mutex
-	path   string
-	emails map[string]bool
-}
-
-func openStore(dir string) (*store, error) {
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return nil, err
+func main() {
+	cfg := config{
+		Port:    env("PORT", "8080"),
+		DataDir: env("DATA_DIR", "data"),
+		SiteURL: env("SITE_URL", "https://som.najjak.com/"),
+		Admins:  map[string]bool{},
 	}
-	s := &store{path: filepath.Join(dir, "signups.jsonl"), emails: map[string]bool{}}
-	all, err := s.all()
-	if err != nil {
-		return nil, err
-	}
-	for _, r := range all {
-		s.emails[strings.ToLower(r.Email)] = true
-	}
-	return s, nil
-}
-
-func (s *store) all() ([]signup, error) {
-	b, err := os.ReadFile(s.path)
-	if errors.Is(err, os.ErrNotExist) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	var out []signup
-	for _, line := range strings.Split(string(b), "\n") {
-		if strings.TrimSpace(line) == "" {
-			continue
-		}
-		var r signup
-		if json.Unmarshal([]byte(line), &r) == nil {
-			out = append(out, r)
+	for _, id := range strings.Split(os.Getenv("ADMIN_STEAM_ID"), ",") {
+		if id = strings.TrimSpace(id); id != "" {
+			cfg.Admins[id] = true
 		}
 	}
-	return out, nil
-}
-
-var errDuplicate = errors.New("duplicate")
-
-func (s *store) add(r signup) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	key := strings.ToLower(r.Email)
-	if s.emails[key] {
-		return errDuplicate
-	}
-	f, err := os.OpenFile(s.path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o600)
+	d, err := openDB(cfg.DataDir, env("YOUTUBE_ID", "M7lc1UVf-VE"))
 	if err != nil {
-		return err
+		log.Fatalf("data: %v", err)
 	}
-	defer f.Close()
-	b, _ := json.Marshal(r)
-	if _, err := f.Write(append(b, '\n')); err != nil {
-		return err
+	s, err := loadSessions(cfg.DataDir)
+	if err != nil {
+		log.Fatalf("data: %v", err)
 	}
-	s.emails[key] = true
-	return nil
+	a := &app{cfg: cfg, db: d, sess: s, lim: &limiter{hits: map[string][]time.Time{}},
+		pages: template.Must(template.New("").Funcs(funcs).ParseGlob("templates/*.html"))}
+
+	mux := http.NewServeMux()
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	mux.Handle("/press-kit/", http.StripPrefix("/press-kit/", http.FileServer(http.Dir("press-kit"))))
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok")) })
+	mux.HandleFunc("GET /{$}", a.home)
+	mux.HandleFunc("GET /index.html", a.home)
+	mux.HandleFunc("GET /auth/steam", steamLogin)
+	mux.HandleFunc("GET /auth/steam/callback", a.steamCallback)
+	mux.HandleFunc("POST /auth/logout", a.logout)
+	mux.HandleFunc("POST /playtest/join", a.post(a.join))
+	mux.HandleFunc("POST /playtest/leave", a.post(a.leave))
+	mux.HandleFunc("POST /comments", a.post(a.addComment))
+	mux.HandleFunc("POST /comments/delete", a.post(a.deleteComment))
+	mux.HandleFunc("GET /admin", a.admin)
+	mux.HandleFunc("POST /admin/settings", a.adminPost(a.saveSettings))
+	mux.HandleFunc("POST /admin/keys", a.adminPost(a.addKeys))
+	mux.HandleFunc("POST /admin/keys/give", a.adminPost(a.giveKeys))
+	mux.HandleFunc("POST /admin/user", a.adminPost(a.userAction))
+	mux.HandleFunc("GET /admin/testers.csv", a.testersCSV)
+	mux.HandleFunc("GET /admin/email-signups.csv", a.emailCSV)
+
+	log.Printf("Static Over Midtown site on :%s (data in %s, %d admin(s))", cfg.Port, cfg.DataDir, len(cfg.Admins))
+	srv := &http.Server{Addr: ":" + cfg.Port, Handler: security(mux), ReadHeaderTimeout: 10 * time.Second}
+	log.Fatal(srv.ListenAndServe())
 }
 
-// a small per-IP limiter: a few sign-ups per 10 minutes
+var funcs = template.FuncMap{
+	"date": func(t time.Time) string {
+		if t.IsZero() {
+			return ""
+		}
+		return t.Format("2 Jan 2006")
+	},
+	"ago": func(t time.Time) string {
+		d := time.Since(t)
+		switch {
+		case d < time.Minute:
+			return "just now"
+		case d < time.Hour:
+			return strconv.Itoa(int(d/time.Minute)) + " min ago"
+		case d < 24*time.Hour:
+			return strconv.Itoa(int(d/time.Hour)) + " h ago"
+		case d < 30*24*time.Hour:
+			return strconv.Itoa(int(d/(24*time.Hour))) + " d ago"
+		}
+		return t.Format("2 Jan 2006")
+	},
+}
+
+// ---------------------------------------------------------------- the page
+
+type commentView struct {
+	ID                    int64
+	Name, Avatar, Profile string
+	Text                  string
+	At                    time.Time
+	Mine, ByAdmin         bool
+}
+
+type pageData struct {
+	S        settings
+	SiteURL  string
+	Me       *user
+	Admin    bool
+	Comments []commentView
+	Message  string
+}
+
+// me: the signed-in user (a copy), or nil.
+func (a *app) me(r *http.Request) *user {
+	id := a.sess.id(r)
+	if id == "" {
+		return nil
+	}
+	var out *user
+	a.db.view(func(s *state) {
+		if u := s.Users[id]; u != nil {
+			c := *u
+			out = &c
+		}
+	})
+	return out
+}
+
+var messages = map[string]string{
+	"joined": "You're on the list.",
+	"left":   "You left the playtest.",
+	"closed": "Sign-ups for the playtest are closed right now.",
+	"signin": "Sign in with Steam first.",
+	"failed": "The Steam sign-in didn't go through. Please try again.",
+	"banned": "You can't comment.",
+	"slow":   "That's a lot of comments. Try again in a few minutes.",
+	"empty":  "Write something first.",
+	"saved":  "Saved.",
+}
+
+func (a *app) home(w http.ResponseWriter, r *http.Request) {
+	me := a.me(r)
+	d := pageData{SiteURL: a.cfg.SiteURL, Me: me, Admin: me != nil && a.cfg.Admins[me.ID], Message: messages[r.URL.Query().Get("m")]}
+	a.db.view(func(s *state) {
+		d.S = s.Settings
+		for i := len(s.Comments) - 1; i >= 0 && len(d.Comments) < 300; i-- {
+			c := s.Comments[i]
+			u := s.Users[c.User]
+			if u == nil {
+				continue
+			}
+			d.Comments = append(d.Comments, commentView{ID: c.ID, Name: u.Name, Avatar: u.Avatar,
+				Profile: "https://steamcommunity.com/profiles/" + u.ID, Text: c.Text, At: c.At,
+				Mine: me != nil && me.ID == u.ID, ByAdmin: a.cfg.Admins[u.ID]})
+		}
+	})
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-store") // the page shows who is signed in
+	if err := a.pages.ExecuteTemplate(w, "index.html", d); err != nil {
+		log.Printf("page: %v", err)
+	}
+}
+
+// post wraps a form handler: same-site forms only; it answers with where to go next.
+func (a *app) post(f func(r *http.Request, me *user) string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !sameOrigin(r) {
+			http.Error(w, "forbidden", http.StatusForbidden)
+			return
+		}
+		r.Body = http.MaxBytesReader(w, r.Body, 64<<10)
+		r.ParseForm()
+		http.Redirect(w, r, f(r, a.me(r)), http.StatusSeeOther)
+	}
+}
+
+func (a *app) steamCallback(w http.ResponseWriter, r *http.Request) {
+	id, err := verifySteam(r.Context(), r)
+	if err != nil {
+		log.Printf("steam sign-in: %v", err)
+		http.Redirect(w, r, "/?m=failed#playtest", http.StatusSeeOther)
+		return
+	}
+	name, avatar := steamProfile(r.Context(), id)
+	a.db.do(func(s *state) bool {
+		u := s.Users[id]
+		if u == nil {
+			u = &user{ID: id, Joined: time.Now().UTC()}
+			s.Users[id] = u
+		}
+		if name != "" {
+			u.Name = name
+		}
+		if u.Name == "" {
+			u.Name = "Steam user"
+		}
+		if avatar != "" {
+			u.Avatar = avatar
+		}
+		return true
+	})
+	a.sess.set(w, r, id)
+	log.Printf("steam sign-in: %s", id)
+	http.Redirect(w, r, "/#playtest", http.StatusSeeOther)
+}
+
+func (a *app) logout(w http.ResponseWriter, r *http.Request) {
+	if sameOrigin(r) {
+		a.sess.clear(w)
+	}
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func (a *app) join(r *http.Request, me *user) string {
+	if me == nil {
+		return "/?m=signin#playtest"
+	}
+	open := true
+	a.db.do(func(s *state) bool {
+		open = s.Settings.SignupsOpen
+		if u := s.Users[me.ID]; open && u != nil && u.SignedUp.IsZero() {
+			u.SignedUp = time.Now().UTC()
+			return true
+		}
+		return false
+	})
+	if !open {
+		return "/?m=closed#playtest"
+	}
+	log.Printf("playtest: %s joined", me.ID)
+	return "/?m=joined#playtest"
+}
+
+func (a *app) leave(r *http.Request, me *user) string {
+	if me == nil {
+		return "/#playtest"
+	}
+	a.db.do(func(s *state) bool {
+		u := s.Users[me.ID]
+		if u == nil || u.Key != "" { // a tester who has a key stays one
+			return false
+		}
+		u.SignedUp = time.Time{}
+		return true
+	})
+	return "/?m=left#playtest"
+}
+
+func (a *app) addComment(r *http.Request, me *user) string {
+	if me == nil {
+		return "/?m=signin#comments"
+	}
+	if me.Banned {
+		return "/?m=banned#comments"
+	}
+	text := strings.TrimSpace(strings.ReplaceAll(r.FormValue("text"), "\r", ""))
+	if text == "" {
+		return "/?m=empty#comments"
+	}
+	if r := []rune(text); len(r) > 1000 {
+		text = string(r[:1000])
+	}
+	if !a.lim.allow("c:" + me.ID) {
+		return "/?m=slow#comments"
+	}
+	var id int64
+	a.db.do(func(s *state) bool {
+		if !s.Settings.Comments {
+			return false
+		}
+		s.NextID++
+		id = s.NextID
+		s.Comments = append(s.Comments, comment{ID: id, User: me.ID, Text: text, At: time.Now().UTC()})
+		return true
+	})
+	return "/#c" + strconv.FormatInt(id, 10)
+}
+
+func (a *app) deleteComment(r *http.Request, me *user) string {
+	id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
+	if me == nil {
+		return "/#comments"
+	}
+	admin := a.cfg.Admins[me.ID]
+	a.db.do(func(s *state) bool {
+		for i, c := range s.Comments {
+			if c.ID == id && (c.User == me.ID || admin) {
+				s.Comments = append(s.Comments[:i], s.Comments[i+1:]...)
+				return true
+			}
+		}
+		return false
+	})
+	return "/#comments"
+}
+
+// ---------------------------------------------------------------- admin
+
+type adminData struct {
+	S        settings
+	Me       *user
+	IsAdmin  bool
+	Message  string
+	Keys     int
+	Testers  []user
+	Waiting  int
+	Users    int
+	Comments int
+	Banned   []user
+	Emails   int
+}
+
+func (a *app) admin(w http.ResponseWriter, r *http.Request) {
+	me := a.me(r)
+	d := adminData{Me: me, IsAdmin: me != nil && a.cfg.Admins[me.ID], Message: messages[r.URL.Query().Get("m")]}
+	if m := r.URL.Query().Get("m"); d.Message == "" && m != "" && len(m) < 120 {
+		d.Message = m
+	}
+	if d.IsAdmin {
+		a.db.view(func(s *state) {
+			d.S, d.Keys, d.Users, d.Comments = s.Settings, len(s.Keys), len(s.Users), len(s.Comments)
+			for _, u := range s.testers() {
+				d.Testers = append(d.Testers, *u)
+				if u.Key == "" {
+					d.Waiting++
+				}
+			}
+			for _, u := range s.Users {
+				if u.Banned {
+					d.Banned = append(d.Banned, *u)
+				}
+			}
+		})
+		e, _ := emailSignups(filepath.Join(a.cfg.DataDir, "signups.jsonl"))
+		d.Emails = len(e)
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-store")
+	w.Header().Set("X-Robots-Tag", "noindex")
+	if err := a.pages.ExecuteTemplate(w, "admin.html", d); err != nil {
+		log.Printf("admin page: %v", err)
+	}
+}
+
+func (a *app) isAdmin(r *http.Request) bool { id := a.sess.id(r); return id != "" && a.cfg.Admins[id] }
+
+func (a *app) adminPost(f func(r *http.Request) string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !sameOrigin(r) || !a.isAdmin(r) {
+			http.Error(w, "forbidden", http.StatusForbidden)
+			return
+		}
+		r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
+		r.ParseForm()
+		http.Redirect(w, r, "/admin?m="+urlq(f(r)), http.StatusSeeOther)
+	}
+}
+
+func urlq(s string) string { return strings.ReplaceAll(template.URLQueryEscaper(s), "+", "%20") }
+
+func clip(s string, n int) string {
+	s = strings.TrimSpace(s)
+	if r := []rune(s); len(r) > n {
+		return string(r[:n])
+	}
+	return s
+}
+
+func (a *app) saveSettings(r *http.Request) string {
+	yt := clip(r.FormValue("youtube"), 200)
+	if i := strings.Index(yt, "v="); i >= 0 { // a whole YouTube link pasted
+		yt = yt[i+2:]
+	} else if i := strings.LastIndex(yt, "/"); i >= 0 {
+		yt = yt[i+1:]
+	}
+	if f := strings.FieldsFunc(yt, func(c rune) bool { return c == '&' || c == '?' || c == '#' }); len(f) > 0 {
+		yt = f[0]
+	} else {
+		yt = ""
+	}
+	a.db.do(func(s *state) bool {
+		st := &s.Settings
+		if yt != "" {
+			st.YouTubeID = yt
+		}
+		st.Tagline = clip(r.FormValue("tagline"), 200)
+		st.Lead = clip(r.FormValue("lead"), 400)
+		st.VideoNote = clip(r.FormValue("videonote"), 200)
+		st.KeyNote = clip(r.FormValue("keynote"), 400)
+		st.SignupsOpen = r.FormValue("open") != ""
+		st.Comments = r.FormValue("comments") != ""
+		return true
+	})
+	return "Settings saved."
+}
+
+func (a *app) addKeys(r *http.Request) string {
+	added, dup := 0, 0
+	a.db.do(func(s *state) bool {
+		for _, k := range strings.Fields(r.FormValue("keys")) {
+			k = strings.ToUpper(strings.TrimSpace(k))
+			if len(k) < 5 || len(k) > 64 {
+				continue
+			}
+			if s.keyUsed(k) {
+				dup++
+				continue
+			}
+			s.Keys = append(s.Keys, k)
+			added++
+		}
+		return added > 0
+	})
+	msg := strconv.Itoa(added) + " key(s) added."
+	if dup > 0 {
+		msg += " " + strconv.Itoa(dup) + " were already there."
+	}
+	return msg
+}
+
+func (a *app) giveKeys(r *http.Request) string {
+	n, _ := strconv.Atoi(r.FormValue("n"))
+	given, short := 0, 0
+	a.db.do(func(s *state) bool {
+		for _, u := range s.testers() {
+			if u.Key != "" {
+				continue
+			}
+			if n > 0 && given >= n {
+				break
+			}
+			if !s.giveKey(u) {
+				short++
+				continue
+			}
+			given++
+		}
+		return given > 0
+	})
+	msg := strconv.Itoa(given) + " tester(s) got a key."
+	if short > 0 {
+		msg += " " + strconv.Itoa(short) + " still waiting: add more keys."
+	}
+	return msg
+}
+
+func (a *app) userAction(r *http.Request) string {
+	id, act := r.FormValue("id"), r.FormValue("do")
+	msg := "Nothing changed."
+	a.db.do(func(s *state) bool {
+		u := s.Users[id]
+		if u == nil {
+			return false
+		}
+		switch act {
+		case "give":
+			if u.SignedUp.IsZero() {
+				u.SignedUp = time.Now().UTC()
+			}
+			if s.giveKey(u) {
+				msg = u.Name + " got a key."
+				return true
+			}
+			msg = "No keys left."
+		case "revoke": // the key is not reused: it may have been seen
+			if u.Key != "" {
+				u.Key, u.KeyAt = "", time.Time{}
+				msg = u.Name + "'s key was taken back."
+				return true
+			}
+		case "remove":
+			u.SignedUp, u.Key, u.KeyAt = time.Time{}, "", time.Time{}
+			msg = u.Name + " was removed from the playtest."
+			return true
+		case "ban", "unban":
+			u.Banned = act == "ban"
+			if u.Banned {
+				kept := s.Comments[:0]
+				for _, c := range s.Comments {
+					if c.User != id {
+						kept = append(kept, c)
+					}
+				}
+				s.Comments = kept
+				msg = u.Name + " can no longer comment; their comments were removed."
+			} else {
+				msg = u.Name + " can comment again."
+			}
+			return true
+		}
+		return false
+	})
+	return msg
+}
+
+func (a *app) testersCSV(w http.ResponseWriter, r *http.Request) {
+	if !a.isAdmin(r) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	w.Header().Set("Content-Type", "text/csv; charset=utf-8")
+	w.Header().Set("Content-Disposition", `attachment; filename="som-playtesters.csv"`)
+	c := csv.NewWriter(w)
+	c.Write([]string{"steam_id", "name", "profile", "joined_playtest_utc", "key", "key_given_utc"})
+	a.db.view(func(s *state) {
+		for _, u := range s.testers() {
+			kt := ""
+			if !u.KeyAt.IsZero() {
+				kt = u.KeyAt.Format(time.RFC3339)
+			}
+			c.Write([]string{u.ID, u.Name, "https://steamcommunity.com/profiles/" + u.ID, u.SignedUp.Format(time.RFC3339), u.Key, kt})
+		}
+	})
+	c.Flush()
+}
+
+func (a *app) emailCSV(w http.ResponseWriter, r *http.Request) {
+	if !a.isAdmin(r) {
+		http.Error(w, "forbidden", http.StatusForbidden)
+		return
+	}
+	all, err := emailSignups(filepath.Join(a.cfg.DataDir, "signups.jsonl"))
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	w.Header().Set("Content-Type", "text/csv; charset=utf-8")
+	w.Header().Set("Content-Disposition", `attachment; filename="som-email-signups.csv"`)
+	c := csv.NewWriter(w)
+	c.Write([]string{"email", "name", "signed_up_utc"})
+	for _, s := range all {
+		c.Write([]string{s.Email, s.Name, s.At.Format(time.RFC3339)})
+	}
+	c.Flush()
+}
+
+// ---------------------------------------------------------------- bits
+
+// a small limiter: a few actions per 10 minutes per key
 type limiter struct {
 	mu   sync.Mutex
 	hits map[string][]time.Time
@@ -158,136 +591,6 @@ func (l *limiter) allow(key string) bool {
 	return true
 }
 
-func clientIP(r *http.Request) string {
-	if f := r.Header.Get("X-Forwarded-For"); f != "" { // behind a proxy / load balancer
-		return strings.TrimSpace(strings.Split(f, ",")[0])
-	}
-	host, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return r.RemoteAddr
-	}
-	return host
-}
-
-func hashIP(ip string) string {
-	h := sha256.Sum256([]byte("som-signup:" + ip))
-	return hex.EncodeToString(h[:8])
-}
-
-func validEmail(s string) bool {
-	if len(s) > 254 || strings.ContainsAny(s, " <>,;\"") {
-		return false
-	}
-	a, err := mail.ParseAddress(s)
-	if err != nil || a.Address != s {
-		return false
-	}
-	at := strings.LastIndex(s, "@")
-	return at > 0 && strings.Contains(s[at+1:], ".")
-}
-
-func jsonReply(w http.ResponseWriter, code int, v any) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(v)
-}
-
-func signupHandler(st *store, lim *limiter) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			w.Header().Set("Allow", "POST")
-			http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		r.Body = http.MaxBytesReader(w, r.Body, 4<<10)
-		var in struct {
-			Email, Name, Website string // Website: a honeypot people never see
-			Consent              bool
-		}
-		if strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
-			if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-				jsonReply(w, 400, map[string]string{"error": "Something went wrong. Please try again."})
-				return
-			}
-		} else {
-			r.ParseForm()
-			in.Email, in.Name, in.Website = r.FormValue("email"), r.FormValue("name"), r.FormValue("website")
-			in.Consent = r.FormValue("consent") != ""
-		}
-		in.Email, in.Name = strings.TrimSpace(in.Email), strings.TrimSpace(in.Name)
-		if in.Website != "" { // a bot filled the hidden field: pretend it worked
-			jsonReply(w, 200, map[string]string{"status": "ok"})
-			return
-		}
-		if !validEmail(in.Email) {
-			jsonReply(w, 400, map[string]string{"error": "That email address doesn't look right."})
-			return
-		}
-		if !in.Consent {
-			jsonReply(w, 400, map[string]string{"error": "Please agree to be contacted about the playtest."})
-			return
-		}
-		if len(in.Name) > 80 {
-			in.Name = in.Name[:80]
-		}
-		ip := clientIP(r)
-		if !lim.allow(ip) {
-			jsonReply(w, 429, map[string]string{"error": "Too many sign-ups from here. Try again in a few minutes."})
-			return
-		}
-		rec := signup{Email: in.Email, Name: in.Name, At: time.Now().UTC(), IPHash: hashIP(ip),
-			Agent: trim(r.UserAgent(), 200), Referer: trim(r.Referer(), 200)}
-		switch err := st.add(rec); {
-		case errors.Is(err, errDuplicate):
-			jsonReply(w, 200, map[string]string{"status": "already"})
-		case err != nil:
-			log.Printf("signup: %v", err)
-			jsonReply(w, 500, map[string]string{"error": "Something went wrong on our side. Please try again later."})
-		default:
-			log.Printf("signup: new tester (%s)", rec.IPHash)
-			jsonReply(w, 200, map[string]string{"status": "ok"})
-		}
-	}
-}
-
-func trim(s string, n int) string {
-	if len(s) > n {
-		return s[:n]
-	}
-	return s
-}
-
-func exportHandler(cfg config, st *store) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if cfg.AdminPassword == "" {
-			http.Error(w, "export disabled: set ADMIN_PASSWORD", http.StatusNotFound)
-			return
-		}
-		u, p, ok := r.BasicAuth()
-		if !ok || subtle.ConstantTimeCompare([]byte(u), []byte(cfg.AdminUser)) != 1 ||
-			subtle.ConstantTimeCompare([]byte(p), []byte(cfg.AdminPassword)) != 1 {
-			w.Header().Set("WWW-Authenticate", `Basic realm="som-admin"`)
-			http.Error(w, "unauthorized", http.StatusUnauthorized)
-			return
-		}
-		all, err := st.all()
-		if err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
-		w.Header().Set("Content-Type", "text/csv; charset=utf-8")
-		w.Header().Set("Content-Disposition", `attachment; filename="som-playtest-signups.csv"`)
-		c := csv.NewWriter(w)
-		c.Write([]string{"email", "name", "signed_up_utc", "ip_hash"})
-		for _, s := range all {
-			c.Write([]string{s.Email, s.Name, s.At.Format(time.RFC3339), s.IPHash})
-		}
-		c.Flush()
-	}
-}
-
-// ---------------------------------------------------------------- pages
-
 func security(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
@@ -295,35 +598,4 @@ func security(h http.Handler) http.Handler {
 		w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 		h.ServeHTTP(w, r)
 	})
-}
-
-func main() {
-	cfg := loadConfig()
-	st, err := openStore(cfg.DataDir)
-	if err != nil {
-		log.Fatalf("data: %v", err)
-	}
-	page := template.Must(template.ParseFiles("templates/index.html"))
-	lim := &limiter{hits: map[string][]time.Time{}}
-
-	mux := http.NewServeMux()
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	mux.Handle("/press-kit/", http.StripPrefix("/press-kit/", http.FileServer(http.Dir("press-kit"))))
-	mux.HandleFunc("/api/signup", signupHandler(st, lim))
-	mux.HandleFunc("/admin/signups.csv", exportHandler(cfg, st))
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok")) })
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" && r.URL.Path != "/index.html" {
-			http.NotFound(w, r)
-			return
-		}
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		if err := page.Execute(w, cfg); err != nil {
-			log.Printf("page: %v", err)
-		}
-	})
-
-	log.Printf("Static Over Midtown site on :%s (video %s, data in %s)", cfg.Port, cfg.YouTubeID, cfg.DataDir)
-	srv := &http.Server{Addr: ":" + cfg.Port, Handler: security(mux), ReadHeaderTimeout: 10 * time.Second}
-	log.Fatal(srv.ListenAndServe())
 }
