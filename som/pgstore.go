@@ -109,6 +109,7 @@ func openPG(ctx context.Context, url, dir, youtube string) (*db, error) {
 	}
 	d.normalize()
 	p.last = copyState(&d.s)
+	go p.pruneLoop() // old match reports: only the host's are kept whole (prune.go)
 	return d, nil
 }
 

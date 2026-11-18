@@ -10,6 +10,7 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -280,6 +281,52 @@ func steamTicket(ctx context.Context, ticket, identity string) (id string, confi
 	return p.SteamID, true, nil
 }
 
+// tickets: the tickets Steam confirmed lately (ticket+identity -> SteamID64), for 6 hours,
+// so a player's next reports with the same ticket need no new check.
+var tickets = &ticketCache{at: map[[32]byte]ticketEntry{}}
+
+type ticketEntry struct {
+	id      string
+	expires time.Time
+}
+
+type ticketCache struct {
+	sync.Mutex
+	at map[[32]byte]ticketEntry
+}
+
+func ticketKey(ticket, identity string) [32]byte { return sha256.Sum256([]byte(identity + "\x00" + ticket)) }
+
+func (c *ticketCache) get(ticket, identity string) (string, bool) {
+	if ticket == "" {
+		return "", false
+	}
+	c.Lock()
+	defer c.Unlock()
+	e, ok := c.at[ticketKey(ticket, identity)]
+	if !ok || time.Now().After(e.expires) {
+		return "", false
+	}
+	return e.id, true
+}
+
+func (c *ticketCache) put(ticket, identity, id string) {
+	c.Lock()
+	defer c.Unlock()
+	now := time.Now()
+	if len(c.at) >= 100000 { // forget the expired ones (and, if still full, everything)
+		for k, e := range c.at {
+			if now.After(e.expires) {
+				delete(c.at, k)
+			}
+		}
+		if len(c.at) >= 100000 {
+			c.at = map[[32]byte]ticketEntry{}
+		}
+	}
+	c.at[ticketKey(ticket, identity)] = ticketEntry{id: id, expires: now.Add(6 * time.Hour)}
+}
+
 // ---------------------------------------------------------------- the game's endpoint
 
 func apiAnswer(w http.ResponseWriter, status int, message string) {
@@ -342,7 +389,24 @@ func (a *app) gameMatch(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 20*time.Second)
 	defer cancel()
 	claimed := rep.player(rep.ReporterSlot).Steam
-	id, configured, err := steamTicket(ctx, in.Ticket, in.Identity)
+	// Steam allows a publisher key ~100 000 checks a day, so not every report is checked:
+	// a ticket Steam already confirmed is remembered for 6 hours, and of the others only the
+	// host's is checked (the match's own rows come from it). A player's report that is not
+	// checked is kept as unverified, and does not change their name or country.
+	var id string
+	var configured bool
+	var err error
+	checked := true
+	if known, ok := tickets.get(in.Ticket, in.Identity); ok {
+		id, configured = known, true
+	} else if rep.ReporterSlot != rep.HostSlot && strings.TrimSpace(os.Getenv("STEAM_WEB_API_KEY")) != "" {
+		id, configured, checked = claimed, true, false
+	} else {
+		id, configured, err = steamTicket(ctx, in.Ticket, in.Identity)
+		if err == nil && configured {
+			tickets.put(in.Ticket, in.Identity, id)
+		}
+	}
 	switch {
 	case errors.Is(err, errTicket):
 		apiAnswer(w, http.StatusUnauthorized, err.Error())
@@ -363,7 +427,7 @@ func (a *app) gameMatch(w http.ResponseWriter, r *http.Request) {
 	}
 	ip := clip(r.Header.Get("CF-Connecting-IP"), 64)
 	raw, _ := json.Marshal(rep) // (as checked and trimmed, not as sent)
-	status, err := a.db.pg.storeReport(ctx, &rep, string(raw), id, configured, ip)
+	status, err := a.db.pg.storeReport(ctx, &rep, string(raw), id, configured && checked, ip)
 	if err != nil {
 		log.Printf("match report %s: %v", rep.Key, err)
 		apiAnswer(w, http.StatusServiceUnavailable, "try again later")
@@ -436,7 +500,7 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 		if q.AI {
 			continue
 		}
-		if q.Steam == reporter {
+		if q.Steam == reporter && (verified || os.Getenv("STEAM_WEB_API_KEY") == "") {
 			_, err = tx.Exec(ctx, `INSERT INTO game_players (steam_id, name, country) VALUES ($1, $2, $3)
 				ON CONFLICT (steam_id) DO UPDATE SET name = EXCLUDED.name, country = EXCLUDED.country, last_seen = now()`, q.Steam, q.Name, q.Country)
 		} else {
