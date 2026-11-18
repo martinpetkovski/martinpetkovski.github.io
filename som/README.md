@@ -10,7 +10,7 @@ Run: `go run .` from this folder, then open http://localhost:8080
 
 Env vars: `ADMIN_STEAM_ID`, `PORT`, `DATA_DIR`, `SITE_URL`, `YOUTUBE_ID` (first start only; then the admin panel).
 
-Match reports: the game posts every finished online match to `POST /api/game/match` with a Steam ticket; `/admin/game/matches` lists them.
+Match reports: the game posts every finished online match to `POST /api/game/match` with a Steam ticket; `/admin/game/matches` lists them. `GET /api/game/ladder?me=STEAMID&country=CC` serves the in-game ladder (top 50 players and countries).
 Needs the database, and `STEAM_WEB_API_KEY` (a Steamworks publisher key; `STEAM_APP_ID` if not 5466920) to check the tickets;
 without the key, reports are stored as unverified.
 
