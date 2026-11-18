@@ -16,11 +16,11 @@
   {{template "gametabs" .}}
   {{with .Message}}<p class="flash">{{.}}</p>{{end}}
   {{if not .Database}}
-    <section class="panel center"><p class="lead">The game's pages need the database (DATABASE_URL).</p></section>
+    <section class="panel center"><p class="lead">No database (DATABASE_URL).</p></section>
   {{else if eq .Tab "players"}}
     <section class="panel">
-      <h2><i class="fa-solid fa-users"></i>Players <span class="muted">({{len .Players}})</span></h2>
-      <form method="get" action="/admin/game/players" class="stack">
+      <h2><i class="fa-solid fa-users"></i>Players <span class="tally">{{len .Players}}</span></h2>
+      <form method="get" action="/admin/game/players" class="search">
         <input type="text" name="q" value="{{.Query}}" placeholder="Name, SteamID64 or country code" aria-label="Search">
         <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
       </form>
@@ -37,7 +37,7 @@
             <td class="muted">{{ago .LastSeen}}</td>
             <td>
               <form method="post" action="/admin/game/player" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin/game/players">
-                <input type="text" name="note" value="{{.Note}}" maxlength="500" placeholder="Note" aria-label="Note" class="note">
+                <input type="text" name="note" value="{{.Note}}" maxlength="500" placeholder="Note" aria-label="Note" class="memo">
                 <button class="ico" name="do" value="note" title="Save the note"><i class="fa-solid fa-floppy-disk"></i></button></form>
             </td>
             <td>
@@ -46,7 +46,7 @@
                 {{if .Hidden}}<button class="ico" name="do" value="show" title="Back on the ladders"><i class="fa-solid fa-eye"></i></button>
                 {{else}}<button class="ico" name="do" value="hide" title="Hide from the ladders"><i class="fa-solid fa-eye-slash"></i></button>{{end}}
                 {{if .Banned}}<button class="ico" name="do" value="unban" title="Lift the ban"><i class="fa-solid fa-unlock"></i></button>
-                {{else}}<button class="ico danger" name="do" value="ban" title="Ban: their match reports are refused and they leave the ladders" data-confirm="Ban {{.Name}}?"><i class="fa-solid fa-gavel"></i></button>{{end}}
+                {{else}}<button class="ico danger" name="do" value="ban" title="Ban" data-confirm="Ban {{.Name}}?"><i class="fa-solid fa-gavel"></i></button>{{end}}
               </form>
             </td>
           </tr>
@@ -59,9 +59,8 @@
     </section>
   {{else if eq .Tab "ladder"}}
     <section class="panel">
-      <h2><i class="fa-solid fa-ranking-star"></i>Player ladder <span class="muted">(provisional · {{.Rated}} rated match{{if ne .Rated 1}}es{{end}})</span></h2>
-      <p class="small muted">Elo from every public match with at least one all-human team, replayed from the start on each visit. Winning counts twice as much as the score. Banned and hidden players are left out.</p>
-      <form method="get" action="/admin/game/ladder" class="stack">
+      <h2><i class="fa-solid fa-ranking-star"></i>Player ladder <span class="tally">{{.Rated}} rated</span></h2>
+      <form method="get" action="/admin/game/ladder" class="search">
         <input type="text" name="q" value="{{.Query}}" placeholder="Country code or name" aria-label="Filter">
         <button class="cta sm" type="submit"><i class="fa-solid fa-filter"></i><span>Filter</span></button>
       </form>
@@ -87,8 +86,7 @@
     </section>
   {{else if eq .Tab "countries"}}
     <section class="panel">
-      <h2><i class="fa-solid fa-earth-europe"></i>Country ladder <span class="muted">(provisional · {{.Rated}} rated match{{if ne .Rated 1}}es{{end}})</span></h2>
-      <p class="small muted">A country's rating is the average of its ranked players' ratings (the profile country each player chose).</p>
+      <h2><i class="fa-solid fa-earth-europe"></i>Country ladder <span class="tally">{{.Rated}} rated</span></h2>
       <div class="scroll">
       <table>
         <thead><tr><th>#</th><th>Country</th><th>Rating</th><th>Players</th><th>Matches played</th><th>Wins</th><th>Best player</th></tr></thead>
@@ -110,8 +108,7 @@
     </section>
   {{else if eq .Tab "servers"}}
     <section class="panel">
-      <h2><i class="fa-solid fa-server"></i>Servers <span class="muted">(hosts of the reported matches)</span></h2>
-      <p class="small muted">Every player who has hosted a reported match. Blocking is recorded here; the game does not yet refuse a blocked host's rooms.</p>
+      <h2><i class="fa-solid fa-server"></i>Servers <span class="tally">{{len .Hosts}}</span></h2>
       <div class="scroll">
       <table>
         <thead><tr><th>Host</th><th>Matches hosted</th><th>Voided</th><th>Players served</th><th>Last match</th><th></th></tr></thead>

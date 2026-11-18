@@ -62,7 +62,7 @@
                 {{if .Key}}<button class="ico" name="do" value="revoke" title="Take key back" data-confirm="Take back this key? It won't be reused."><i class="fa-solid fa-rotate-left"></i></button>
                 {{else}}<button class="ico" name="do" value="give" title="Send a key"><i class="fa-solid fa-paper-plane"></i></button>{{end}}
                 {{if .Banned}}<button class="ico" name="do" value="unban" title="Let them speak"><i class="fa-solid fa-comment"></i></button>
-                {{else}}<button class="ico" name="do" value="ban" title="Silence (deletes their comments)" data-confirm="Silence {{.Name}} and delete their comments?"><i class="fa-solid fa-comment-slash"></i></button>{{end}}
+                {{else}}<button class="ico" name="do" value="ban" title="Silence" data-confirm="Silence {{.Name}} and delete their comments?"><i class="fa-solid fa-comment-slash"></i></button>{{end}}
                 <button class="ico danger" name="do" value="remove" title="Remove from the playtest" data-confirm="Remove {{.Name}} from the playtest?"><i class="fa-solid fa-user-xmark"></i></button>
               </form>
             </td>

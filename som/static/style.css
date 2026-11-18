@@ -286,3 +286,67 @@ tr:hover td { background: rgba(255, 255, 255, .02); }
   .say:not(.reply) { flex-direction: column; }
   .say:not(.reply) .cta { align-self: flex-end; padding: 12px 18px; }
 }
+
+/* ================================================================ admin skin: flat, system font, everything centred vertically */
+.adm { font: 400 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #06060b; }
+.adm .bar .brand, .adm .tabs a, .adm .panel h2, .adm .cta, .adm .flash, .adm th, .adm .stats b, .adm .stats span, .adm .field span, .adm .lead {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-shadow: none; }
+.adm .bar { height: 46px; background: #0a0a14; }
+.adm .bar .brand { font-size: 13px; font-weight: 700; letter-spacing: .18em; }
+.adm .tabs { align-items: stretch; }
+.adm .tabs a { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .08em; line-height: 1; }
+.adm .subtabs { height: 40px; margin: 0; border-bottom: 1px solid var(--line); }
+.adm .subtabs a { height: 40px; padding: 0 14px; }
+.adm .admin { gap: 16px; padding-top: 20px; }
+.adm .panel { background: #0c0d18; border: 1px solid var(--line); padding: 0; gap: 0; }
+.adm .panel > * { padding: 14px 16px; }
+.adm .panel > .scroll { padding: 0; }
+.adm .panel.center { padding: 40px 20px; gap: 12px; }
+.adm .panel.center > * { padding: 0; }
+.adm .panel h2 { height: 46px; padding: 0 16px; font-size: 12px; font-weight: 700; letter-spacing: .12em; border-bottom: 1px solid var(--line); line-height: 1; }
+.adm .panel h2 > i { width: 16px; font-size: 13px; }
+.adm .panel h2 .tally { background: none; display: inline-flex; align-items: center; height: 20px; padding: 0 7px; font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  color: var(--hint); border: 1px solid var(--line); text-transform: none; }
+.adm .panel h2 .tools a { height: 28px; }
+.adm .flash, .adm .lead { display: flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: .06em; line-height: 1; }
+.adm .admin .flash { min-height: 40px; padding: 0 14px; border: 1px solid var(--yellow-dim); }
+/* controls: one height */
+.adm .cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 34px; margin: 0; padding: 0 14px; line-height: 1;
+  font-size: 12px; font-weight: 700; letter-spacing: .08em; border-width: 1px; box-shadow: none; }
+.adm .cta.danger { border-color: var(--red); color: var(--red); background: rgba(255, 74, 85, .06); }
+.adm .cta.danger:hover { background: var(--red); color: var(--ink); }
+.adm .admin input:not([type=checkbox]) { height: 34px; padding: 0 10px; border-width: 1px; line-height: 1; }
+.adm .admin textarea { border-width: 1px; padding: 8px 10px; }
+.adm .admin textarea:focus, .adm .admin input:focus { box-shadow: none; }
+.adm .ico { width: 30px; height: 30px; vertical-align: middle; }
+.adm .search { display: flex; align-items: center; gap: 8px; }
+.adm .search input { flex: 1; min-width: 0; }
+.adm .stack { align-items: center; }
+.adm .icons { align-items: center; }
+.adm .icons .cta { margin: 0; }
+.adm .icons input.memo { width: 200px; height: 30px; }
+/* tables */
+.adm table { font-size: 13px; }
+.adm th { height: 36px; padding: 0 12px; vertical-align: middle; font-size: 11px; font-weight: 600; letter-spacing: .08em; line-height: 1; border-bottom: 1px solid var(--line); background: #0a0a14; }
+.adm td { height: 42px; padding: 0 12px; vertical-align: middle; line-height: 1; }
+.adm td i, .adm td img, .adm td code, .adm td .ico { vertical-align: middle; }
+.adm td a { color: var(--yellow); text-decoration: none; }
+.adm td a:hover { text-decoration: underline; }
+.adm tbody tr:last-child td { border-bottom: 0; }
+.adm .person img { display: block; }
+/* stats */
+.adm .stats div { border-width: 1px; background: #0c0d18; padding: 12px 14px; }
+.adm .stats b { font-size: 22px; font-weight: 700; }
+.adm .stats span { font-size: 11px; margin-top: 2px; }
+.adm .stats i { font-size: 16px; }
+/* the rest */
+.adm .feed-head { min-height: 30px; }
+.adm .feed li { padding: 10px 0; }
+.adm .chip { height: 28px; }
+.adm .check { align-items: center; }
+.adm .check input { margin-top: 0; }
+.adm .field span { font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+.adm summary { display: flex; align-items: center; gap: 6px; min-height: 30px; cursor: pointer; }
+.adm pre { white-space: pre-wrap; padding: 10px; background: #06060b; border: 1px solid var(--line); }
+@media (max-width: 720px) { .adm .icons input.memo { width: 120px; } }
+.adm td form.icons:has(.memo) { justify-content: flex-start; }

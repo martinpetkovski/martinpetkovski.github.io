@@ -18,10 +18,10 @@
   {{else if not .IsAdmin}}
     <section class="panel center"><p class="lead"><i class="fa-solid fa-lock"></i> No clearance.</p></section>
   {{else if not .Database}}
-    <section class="panel center"><p class="lead">Matches need the database (DATABASE_URL).</p></section>
+    <section class="panel center"><p class="lead">No database (DATABASE_URL).</p></section>
   {{else}}
     {{with .Message}}<p class="flash">{{.}}</p>{{end}}
-    {{if not .KeySet}}<p class="flash"><i class="fa-solid fa-triangle-exclamation"></i> STEAM_WEB_API_KEY is not set: reports are stored as unverified.</p>{{end}}
+    {{if not .KeySet}}<p class="flash"><i class="fa-solid fa-triangle-exclamation"></i>STEAM_WEB_API_KEY not set</p>{{end}}
 
     {{with .One}}
     <section class="panel">
@@ -40,8 +40,8 @@
         <span class="icons">
           <button class="cta sm" name="do" value="note"><i class="fa-solid fa-floppy-disk"></i><span>Save note</span></button>
           {{if .Voided}}<button class="cta sm" name="do" value="unvoid"><i class="fa-solid fa-rotate-left"></i><span>Restore</span></button>
-          {{else}}<button class="cta sm" name="do" value="void" data-confirm="Void this match? It stays stored but no longer counts."><i class="fa-solid fa-ban"></i><span>Void</span></button>{{end}}
-          <button class="cta sm danger" name="do" value="delete" data-confirm="Delete this match and its reports for good?"><i class="fa-solid fa-trash"></i><span>Delete</span></button>
+          {{else}}<button class="cta sm" name="do" value="void" data-confirm="Void this match?"><i class="fa-solid fa-ban"></i><span>Void</span></button>{{end}}
+          <button class="cta sm danger" name="do" value="delete" data-confirm="Delete this match for good?"><i class="fa-solid fa-trash"></i><span>Delete</span></button>
         </span>
       </form>
     </section>
@@ -80,8 +80,8 @@
     </section>
     {{else}}
     <section class="panel">
-      <h2><i class="fa-solid fa-flag-checkered"></i>Matches <span class="muted">({{.Total}} stored)</span></h2>
-      <form method="get" action="/admin/game/matches" class="stack">
+      <h2><i class="fa-solid fa-flag-checkered"></i>Matches <span class="tally">{{.Total}}</span></h2>
+      <form method="get" action="/admin/game/matches" class="search">
         <input type="text" name="q" value="{{.Query}}" placeholder="SteamID64 or match key" aria-label="Search">
         <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
       </form>
