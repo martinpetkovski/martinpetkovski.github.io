@@ -15,6 +15,9 @@
 //	                Without it: data/site.json (handy for running it on your own PC)
 //	DATA_DIR        the session key, and the files from before the database (default ./data)
 //	SITE_URL        canonical address for the page's meta tags (default https://som.najjak.com/)
+//	STEAM_WEB_API_KEY  Steamworks publisher Web API key: the game's match reports are checked with it
+//	                (without it they are stored as unverified). Never in the repository.
+//	STEAM_APP_ID    the game's Steam app id (default 5466920)
 //
 // Run: go run .   (from this folder)
 package main
@@ -104,6 +107,10 @@ func main() {
 	mux.HandleFunc("POST /admin/user", a.adminPost(a.userAction))
 	mux.HandleFunc("GET /admin/testers.csv", a.testersCSV)
 	mux.HandleFunc("GET /admin/email-signups.csv", a.emailCSV)
+	mux.HandleFunc("POST /api/game/match", a.gameMatch) // the game's match reports (matches.go)
+	mux.HandleFunc("GET /admin/matches", a.adminMatches)
+	mux.HandleFunc("GET /admin/matches/{id}", a.adminMatches)
+	mux.HandleFunc("POST /admin/matches/action", a.adminMatchAction)
 
 	log.Printf("Static Over Midtown site on :%s (data in %s, %d admin(s))", cfg.Port, cfg.DataDir, len(cfg.Admins))
 	srv := &http.Server{Addr: ":" + cfg.Port, Handler: security(mux), ReadHeaderTimeout: 10 * time.Second}

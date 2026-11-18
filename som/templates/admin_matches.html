@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Matches · Static Over Midtown</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="adm">
+<nav class="bar wide">
+  <a class="ico" href="{{if .One}}/admin/matches{{else}}/admin{{end}}" title="Back"><i class="fa-solid fa-arrow-left"></i></a>
+  <span class="brand">Matches</span>
+  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
+  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>{{end}}
+</nav>
+
+<main class="admin">
+  {{if not .Me}}
+    <section class="panel center"><a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a></section>
+  {{else if not .IsAdmin}}
+    <section class="panel center"><p class="lead"><i class="fa-solid fa-lock"></i> No clearance.</p></section>
+  {{else if not .Database}}
+    <section class="panel center"><p class="lead">Matches need the database (DATABASE_URL).</p></section>
+  {{else}}
+    {{with .Message}}<p class="flash">{{.}}</p>{{end}}
+    {{if not .KeySet}}<p class="flash"><i class="fa-solid fa-triangle-exclamation"></i> STEAM_WEB_API_KEY is not set: reports are stored as unverified.</p>{{end}}
+
+    {{with .One}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-flag-checkered"></i>Match {{.ID}}{{if .Voided}} <span class="muted">(voided)</span>{{end}}</h2>
+      <p class="small">
+        <code>{{.Key}}</code> · {{.Ended.Format "2 Jan 2006 15:04 UTC"}} · {{.Format}} · {{.Duration}} ·
+        Volts {{.Score1}} – {{.Score0}} Specters · winner: {{if .Winner}}Volts{{else}}Specters{{end}} ·
+        towers left {{.Towers1}} / {{.Towers0}} · {{.Humans}} human{{if ne .Humans 1}}s{{end}}{{if .Locked}} · password room{{end}} ·
+        status <b>{{.Status}}</b> · {{.Verified}}/{{.Reports}} reports verified{{if not .FromHost}} · host's report missing{{end}}
+      </p>
+      <p class="small">Host <a href="https://steamcommunity.com/profiles/{{.HostID}}" target="_blank" rel="noopener">{{if .HostName}}{{.HostName}}{{else}}{{.HostID}}{{end}}</a> ·
+        protocol {{.Protocol}} · data {{.Content}}</p>
+      <form method="post" action="/admin/matches/action" class="stack">
+        <input type="hidden" name="id" value="{{.ID}}">
+        <input type="text" name="note" value="{{.Note}}" maxlength="500" placeholder="Note" aria-label="Note">
+        <span class="icons">
+          <button class="cta sm" name="do" value="note"><i class="fa-solid fa-floppy-disk"></i><span>Save note</span></button>
+          {{if .Voided}}<button class="cta sm" name="do" value="unvoid"><i class="fa-solid fa-rotate-left"></i><span>Restore</span></button>
+          {{else}}<button class="cta sm" name="do" value="void" data-confirm="Void this match? It stays stored but no longer counts."><i class="fa-solid fa-ban"></i><span>Void</span></button>{{end}}
+          <button class="cta sm danger" name="do" value="delete" data-confirm="Delete this match and its reports for good?"><i class="fa-solid fa-trash"></i><span>Delete</span></button>
+        </span>
+      </form>
+    </section>
+    {{range $side, $players := $.Teams}}
+    <section class="panel">
+      <h2>{{if eq $side 0}}Volts{{else}}Specters{{end}}</h2>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Player</th><th>Car</th><th>Lvl</th><th>K</th><th>D</th><th>A</th><th>Score</th><th>Damage</th><th>Abilities (score)</th><th>Passives</th></tr></thead>
+        <tbody>
+        {{range $players}}
+          <tr>
+            <td>{{if .AI}}<span class="muted">{{.Name}} (AI)</span>{{else}}<a href="/admin/matches?q={{.Steam}}" title="{{.Steam}}">{{.Name}}</a>{{if .Country}} <span class="muted">{{.Country}}</span>{{end}}{{end}}</td>
+            <td class="muted">{{.Vehicle}}</td><td>{{.Level}}</td><td>{{.Kills}}</td><td>{{.Deaths}}</td><td>{{.Assists}}</td>
+            <td>{{printf "%.0f" .Score}}</td><td>{{printf "%.0f" .Damage}}</td>
+            <td class="small">{{.AbilityText}}</td><td class="small">{{.PassiveText}}</td>
+          </tr>
+        {{else}}
+          <tr><td colspan="10" class="muted">No one.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    {{end}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-file-lines"></i>Reports</h2>
+      {{range $.Reports}}
+        <details>
+          <summary>{{if .Name}}{{.Name}}{{else}}{{.Reporter}}{{end}}{{if .IsHost}} · host{{end}} · {{if .Verified}}verified{{else}}<b>unverified</b>{{end}} · {{.Received.Format "2 Jan 15:04:05"}}{{if .IP}} · <span class="muted">{{.IP}}</span>{{end}}</summary>
+          <pre class="small">{{.Body}}</pre>
+        </details>
+      {{else}}
+        <p class="muted">None.</p>
+      {{end}}
+    </section>
+    {{else}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-flag-checkered"></i>Matches <span class="muted">({{.Total}} stored)</span></h2>
+      <form method="get" action="/admin/matches" class="stack">
+        <input type="text" name="q" value="{{.Query}}" placeholder="SteamID64 or match key" aria-label="Search">
+        <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+      </form>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Ended (UTC)</th><th>Host</th><th>Format</th><th>Length</th><th>Volts – Specters</th><th>Humans</th><th>Reports</th><th>Status</th></tr></thead>
+        <tbody>
+        {{range .Matches}}
+          <tr>
+            <td><a href="/admin/matches/{{.ID}}">{{.ID}}</a></td>
+            <td class="muted">{{.Ended.Format "2 Jan 15:04"}}</td>
+            <td>{{if .HostName}}{{.HostName}}{{else}}<span class="muted">{{.HostID}}</span>{{end}}</td>
+            <td>{{.Format}}{{if .Locked}} <i class="fa-solid fa-lock" title="Password room"></i>{{end}}</td>
+            <td>{{.Duration}}</td>
+            <td>{{.Score1}} – {{.Score0}}</td>
+            <td>{{.Humans}}/{{.Capacity}}</td>
+            <td>{{.Verified}}/{{.Reports}}</td>
+            <td>{{if .Voided}}<span class="muted">voided</span>{{else}}{{.Status}}{{end}}</td>
+          </tr>
+        {{else}}
+          <tr><td colspan="9" class="muted">Nothing yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    {{end}}
+  {{end}}
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

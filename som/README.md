@@ -9,5 +9,9 @@ Run: `go run .` from this folder, then open http://localhost:8080
 
 Env vars: `ADMIN_STEAM_ID`, `PORT`, `DATA_DIR`, `SITE_URL`, `YOUTUBE_ID` (first start only; then the admin panel).
 
+Match reports: the game posts every finished online match to `POST /api/game/match` with a Steam ticket; `/admin/matches` lists them.
+Needs the database, and `STEAM_WEB_API_KEY` (a Steamworks publisher key; `STEAM_APP_ID` if not 5466920) to check the tickets;
+without the key, reports are stored as unverified.
+
 Data is kept in `data/` (git-ignored): `site.json` (accounts, testers, keys, comments, settings) and `session.key`.
 The old email sign-ups (`data/signups.jsonl`) can be downloaded from the admin panel.
