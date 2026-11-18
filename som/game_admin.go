@@ -192,7 +192,7 @@ func (a *app) loadLadders(ctx context.Context, d *gamePage) error {
 	}
 	var order []int64
 	games := map[int64]*match{}
-	rows, err := pool.Query(ctx, `SELECT id, winner, ended FROM matches WHERE NOT voided AND NOT locked ORDER BY ended, id`)
+	rows, err := pool.Query(ctx, `SELECT id, winner, ended FROM matches WHERE NOT voided AND NOT locked AND NOT abandoned ORDER BY ended, id`)
 	if err != nil {
 		return err
 	}

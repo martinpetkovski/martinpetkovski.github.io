@@ -93,6 +93,8 @@ CREATE TABLE IF NOT EXISTS match_reports (  -- every report as it came, one per 
   body      JSONB NOT NULL,
   PRIMARY KEY (match_id, reporter)
 );
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS abandoned BOOLEAN NOT NULL DEFAULT false;        -- never finished: the last host left (winner: ahead on points, -1 level)
+ALTER TABLE match_players ADD COLUMN IF NOT EXISTS left_match BOOLEAN NOT NULL DEFAULT false;  -- left mid-match (a bot drove on)
 `
 
 type reportAbility struct {
@@ -109,6 +111,7 @@ type reportPlayer struct {
 	Slot      int             `json:"slot"`
 	Team      int             `json:"team"`
 	AI        bool            `json:"ai"`
+	Left      bool            `json:"left"` // left mid-match: still counted as themselves
 	Steam     string          `json:"steam"`
 	Name      string          `json:"name"`
 	Country   string          `json:"country"`
@@ -130,6 +133,7 @@ type matchReport struct {
 	Content      float64        `json:"content"`
 	Seconds      float64        `json:"seconds"`
 	Winner       int            `json:"winner"`
+	Abandoned    bool           `json:"abandoned"` // the last host left before the end
 	Scores       [2]int         `json:"scores"`
 	Towers       [2]int         `json:"towers"`
 	Capacity     int            `json:"capacity"`
@@ -161,7 +165,7 @@ func (m *matchReport) check() error {
 	if m.Capacity < 2 || m.Capacity > 10 || m.Capacity%2 != 0 || len(m.Players) != m.Capacity {
 		return errors.New("bad player count")
 	}
-	if m.Winner < 0 || m.Winner > 1 || !finite(m.Seconds, 86400) || !finite(m.Protocol, 1e12) || !finite(m.Content, 1e12) {
+	if m.Winner < -1 || m.Winner > 1 || (m.Winner < 0 && !m.Abandoned) || !finite(m.Seconds, 86400) || !finite(m.Protocol, 1e12) || !finite(m.Content, 1e12) {
 		return errors.New("bad result")
 	}
 	for _, v := range []int{m.Scores[0], m.Scores[1], m.Towers[0], m.Towers[1]} {
@@ -465,28 +469,28 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 	}
 	isHost := m.ReporterSlot == m.HostSlot
 	var id int64
-	var created, fromHost bool
+	var created, fromHost, wasAbandoned bool
 	err = tx.QueryRow(ctx, `INSERT INTO matches (match_key) VALUES ($1)
 		ON CONFLICT (match_key) DO UPDATE SET match_key = EXCLUDED.match_key
-		RETURNING id, (xmax = 0), from_host`, m.Key).Scan(&id, &created, &fromHost)
+		RETURNING id, (xmax = 0), from_host, abandoned`, m.Key).Scan(&id, &created, &fromHost, &wasAbandoned)
 	if err != nil {
 		return 0, err
 	}
-	if created || (isHost && !fromHost) {
+	if created || (isHost && !fromHost) || (wasAbandoned && !m.Abandoned) { // (a finished report beats an abandoned one)
 		if _, err := tx.Exec(ctx, `UPDATE matches SET host_id = $2, seconds = $3, winner = $4, score0 = $5, score1 = $6, towers0 = $7, towers1 = $8,
-			capacity = $9, humans = $10, locked = $11, protocol = $12, content = $13, from_host = $14 WHERE id = $1`,
+			capacity = $9, humans = $10, locked = $11, protocol = $12, content = $13, from_host = $14, abandoned = $15 WHERE id = $1`,
 			id, m.player(m.HostSlot).Steam, int(m.Seconds), m.Winner, m.Scores[0], m.Scores[1], m.Towers[0], m.Towers[1],
-			m.Capacity, m.humans(), m.Locked, int64(m.Protocol), int64(m.Content), isHost); err != nil {
+			m.Capacity, m.humans(), m.Locked, int64(m.Protocol), int64(m.Content), isHost, m.Abandoned); err != nil {
 			return 0, err
 		}
 		if _, err := tx.Exec(ctx, `DELETE FROM match_players WHERE match_id = $1`, id); err != nil {
 			return 0, err
 		}
 		for _, q := range m.Players {
-			if _, err := tx.Exec(ctx, `INSERT INTO match_players (match_id, slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities, passives)
-				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb, $16::jsonb)`,
+			if _, err := tx.Exec(ctx, `INSERT INTO match_players (match_id, slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities, passives, left_match)
+				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb, $16::jsonb, $17)`,
 				id, q.Slot, q.Team, q.AI, q.Steam, q.Name, q.Country, q.Vehicle, q.Level, q.Kills, q.Deaths, q.Assists, q.Score, q.Damage,
-				jsonText(q.Abilities), jsonText(q.Passives)); err != nil {
+				jsonText(q.Abilities), jsonText(q.Passives), q.Left && !q.AI); err != nil {
 				return 0, err
 			}
 		}
@@ -521,7 +525,7 @@ type matchRow struct {
 	Ended                               time.Time
 	Seconds, Winner, Score0, Score1     int
 	Towers0, Towers1, Capacity, Humans  int
-	Locked, FromHost, Voided            bool
+	Locked, FromHost, Voided, Abandoned bool
 	Protocol, Content                   int64
 	Reports, Verified                   int
 }
@@ -559,11 +563,11 @@ type matchesPage struct {
 
 const matchColumns = `m.id, m.match_key, m.host_id, coalesce(h.name, ''), m.status, m.note, m.ended, m.seconds, m.winner, m.score0, m.score1,
 	m.towers0, m.towers1, m.capacity, m.humans, m.locked, m.from_host, m.voided, m.protocol, m.content,
-	(SELECT count(*) FROM match_reports r WHERE r.match_id = m.id), (SELECT count(*) FROM match_reports r WHERE r.match_id = m.id AND r.verified)`
+	(SELECT count(*) FROM match_reports r WHERE r.match_id = m.id), (SELECT count(*) FROM match_reports r WHERE r.match_id = m.id AND r.verified), m.abandoned`
 
 func scanMatch(row pgx.Row, m *matchRow) error {
 	return row.Scan(&m.ID, &m.Key, &m.HostID, &m.HostName, &m.Status, &m.Note, &m.Ended, &m.Seconds, &m.Winner, &m.Score0, &m.Score1,
-		&m.Towers0, &m.Towers1, &m.Capacity, &m.Humans, &m.Locked, &m.FromHost, &m.Voided, &m.Protocol, &m.Content, &m.Reports, &m.Verified)
+		&m.Towers0, &m.Towers1, &m.Capacity, &m.Humans, &m.Locked, &m.FromHost, &m.Voided, &m.Protocol, &m.Content, &m.Reports, &m.Verified, &m.Abandoned)
 }
 
 func (a *app) adminMatches(w http.ResponseWriter, r *http.Request) {
@@ -617,7 +621,7 @@ func (a *app) adminMatches(w http.ResponseWriter, r *http.Request) {
 
 func (a *app) matchDetail(ctx context.Context, d *matchesPage, id int64) {
 	pool := a.db.pg.pool
-	rows, err := pool.Query(ctx, `SELECT slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities::text, passives::text
+	rows, err := pool.Query(ctx, `SELECT slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities::text, passives::text, left_match
 		FROM match_players WHERE match_id = $1 ORDER BY team DESC, slot`, id)
 	if err != nil {
 		log.Printf("admin match: %v", err)
@@ -626,7 +630,7 @@ func (a *app) matchDetail(ctx context.Context, d *matchesPage, id int64) {
 	for rows.Next() {
 		var p matchPlayerRow
 		var abilities, passives string
-		if err := rows.Scan(&p.Slot, &p.Team, &p.AI, &p.Steam, &p.Name, &p.Country, &p.Vehicle, &p.Level, &p.Kills, &p.Deaths, &p.Assists, &p.Score, &p.Damage, &abilities, &passives); err != nil {
+		if err := rows.Scan(&p.Slot, &p.Team, &p.AI, &p.Steam, &p.Name, &p.Country, &p.Vehicle, &p.Level, &p.Kills, &p.Deaths, &p.Assists, &p.Score, &p.Damage, &abilities, &passives, &p.Left); err != nil {
 			break
 		}
 		json.Unmarshal([]byte(abilities), &p.Abilities)

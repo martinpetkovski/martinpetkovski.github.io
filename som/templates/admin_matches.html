@@ -25,10 +25,10 @@
 
     {{with .One}}
     <section class="panel">
-      <h2><i class="fa-solid fa-flag-checkered"></i>Match {{.ID}}{{if .Voided}} <span class="muted">(voided)</span>{{end}}</h2>
+      <h2><i class="fa-solid fa-flag-checkered"></i>Match {{.ID}}{{if .Voided}} <span class="muted">(voided)</span>{{end}}{{if .Abandoned}} <span class="muted">(abandoned)</span>{{end}}</h2>
       <p class="small">
         <code>{{.Key}}</code> · {{.Ended.Format "2 Jan 2006 15:04 UTC"}} · {{.Format}} · {{.Duration}} ·
-        Volts {{.Score1}} – {{.Score0}} Specters · winner: {{if .Winner}}Volts{{else}}Specters{{end}} ·
+        Volts {{.Score1}} – {{.Score0}} Specters · winner: {{if lt .Winner 0}}none{{else if .Winner}}Volts{{else}}Specters{{end}} ·
         towers left {{.Towers1}} / {{.Towers0}} · {{.Humans}} human{{if ne .Humans 1}}s{{end}}{{if .Locked}} · password room{{end}} ·
         status <b>{{.Status}}</b> · {{.Verified}}/{{.Reports}} reports verified{{if not .FromHost}} · host's report missing{{end}}
       </p>
@@ -54,7 +54,7 @@
         <tbody>
         {{range $players}}
           <tr>
-            <td>{{if .AI}}<span class="muted">{{.Name}} (AI)</span>{{else}}<a href="/admin/game/players?q={{.Steam}}" title="{{.Steam}}">{{.Name}}</a>{{if .Country}} <span class="muted">{{.Country}}</span>{{end}}{{end}}</td>
+            <td>{{if .AI}}<span class="muted">{{.Name}} (AI)</span>{{else}}<a href="/admin/game/players?q={{.Steam}}" title="{{.Steam}}">{{.Name}}</a>{{if .Left}} <span class="muted">(left)</span>{{end}}{{if .Country}} <span class="muted">{{.Country}}</span>{{end}}{{end}}</td>
             <td class="muted">{{.Vehicle}}</td><td>{{.Level}}</td><td>{{.Kills}}</td><td>{{.Deaths}}</td><td>{{.Assists}}</td>
             <td>{{printf "%.0f" .Score}}</td><td>{{printf "%.0f" .Damage}}</td>
             <td class="small">{{.AbilityText}}</td><td class="small">{{.PassiveText}}</td>
@@ -99,7 +99,7 @@
             <td>{{.Score1}} – {{.Score0}}</td>
             <td>{{.Humans}}/{{.Capacity}}</td>
             <td>{{.Verified}}/{{.Reports}}</td>
-            <td>{{if .Voided}}<span class="muted">voided</span>{{else}}{{.Status}}{{end}}</td>
+            <td>{{if .Voided}}<span class="muted">voided</span>{{else if .Abandoned}}<span class="muted">abandoned</span>{{else}}{{.Status}}{{end}}</td>
           </tr>
         {{else}}
           <tr><td colspan="9" class="muted">Nothing yet.</td></tr>
