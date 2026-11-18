@@ -141,7 +141,7 @@ type matchReport struct {
 var (
 	matchKeyRe = regexp.MustCompile(`^\d{5,20}-\d{1,10}$`)
 	steam64Re  = regexp.MustCompile(`^\d{17}$`)
-	hexRe      = regexp.MustCompile(`^[0-9a-fA-F]{16,5120}$`)
+	hexRe      = regexp.MustCompile(`^[0-9a-fA-F]+$`) // length checked apart: Go allows repeats up to {,1000}
 	countryRe  = regexp.MustCompile(`^[A-Z]{2}$`)
 )
 
@@ -243,7 +243,7 @@ func steamTicket(ctx context.Context, ticket, identity string) (id string, confi
 	if key == "" {
 		return "", false, nil
 	}
-	if !hexRe.MatchString(ticket) {
+	if n := len(ticket); n < 16 || n > 5120 || !hexRe.MatchString(ticket) {
 		return "", true, errTicket
 	}
 	q := url.Values{"key": {key}, "appid": {env("STEAM_APP_ID", "5466920")}, "ticket": {ticket}}
