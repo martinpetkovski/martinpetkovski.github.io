@@ -1,9 +1,10 @@
 package main
 
-// Everything the site remembers, in one JSON file (data/site.json): the Steam accounts that
-// signed in, who joined the playtest and which key they got, the comments, the unused keys
-// and the settings the admin panel changes. Small enough to keep in memory; every change is
-// written straight away (to a temporary file first, so a crash never leaves half a file).
+// Everything the site remembers: the Steam accounts that signed in, who joined the playtest and
+// which key they got, the comments, the unused keys and the settings the admin panel changes.
+// Small enough to keep in memory; every change is written straight away: to PostgreSQL when
+// DATABASE_URL is set (pgstore.go; on the server), else to one JSON file (data/site.json,
+// written to a temporary file first, so a crash never leaves half a file).
 
 import (
 	"encoding/json"
@@ -59,6 +60,7 @@ type db struct {
 	mu   sync.Mutex
 	path string
 	s    state
+	pg   *pgStore // set: the data lives in PostgreSQL
 }
 
 func defaultSettings(youtube string) settings {
@@ -89,6 +91,11 @@ func openDB(dir, youtube string) (*db, error) {
 			return nil, err
 		}
 	}
+	d.normalize()
+	return d, nil
+}
+
+func (d *db) normalize() {
 	if d.s.Users == nil {
 		d.s.Users = map[string]*user{}
 	}
@@ -103,7 +110,6 @@ func openDB(dir, youtube string) (*db, error) {
 			*p = v
 		}
 	}
-	return d, nil
 }
 
 // do runs f with the data locked and saves when f says it changed something.
@@ -112,6 +118,9 @@ func (d *db) do(f func(s *state) bool) error {
 	defer d.mu.Unlock()
 	if !f(&d.s) {
 		return nil
+	}
+	if d.pg != nil {
+		return d.pg.save(&d.s)
 	}
 	b, err := json.MarshalIndent(d.s, "", " ")
 	if err != nil {

@@ -17,7 +17,7 @@ type emailSignup struct {
 	At    time.Time `json:"at"`
 }
 
-func emailSignups(path string) ([]emailSignup, error) {
+func emailSignupsFile(path string) ([]emailSignup, error) {
 	b, err := os.ReadFile(path)
 	if errors.Is(err, os.ErrNotExist) {
 		return nil, nil

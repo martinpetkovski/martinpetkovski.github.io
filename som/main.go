@@ -11,19 +11,21 @@
 //	ADMIN_STEAM_ID  SteamID64 of the admin (several: comma separated). Sign in and open /admin
 //	                to see yours.
 //	YOUTUBE_ID      the trailer's YouTube id on first start (after that: the admin panel)
-//	DATA_DIR        where the site's data is kept (default ./data)
+//	DATABASE_URL    PostgreSQL (the server manager gives it): the site's data lives there.
+//	                Without it: data/site.json (handy for running it on your own PC)
+//	DATA_DIR        the session key, and the files from before the database (default ./data)
 //	SITE_URL        canonical address for the page's meta tags (default https://som.najjak.com/)
 //
 // Run: go run .   (from this folder)
 package main
 
 import (
+	"context"
 	"encoding/csv"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -62,7 +64,15 @@ func main() {
 			cfg.Admins[id] = true
 		}
 	}
-	d, err := openDB(cfg.DataDir, env("YOUTUBE_ID", "M7lc1UVf-VE"))
+	var d *db
+	var err error
+	if url := os.Getenv("DATABASE_URL"); url != "" {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		d, err = openPG(ctx, url, cfg.DataDir, env("YOUTUBE_ID", "M7lc1UVf-VE"))
+		cancel()
+	} else {
+		d, err = openDB(cfg.DataDir, env("YOUTUBE_ID", "M7lc1UVf-VE"))
+	}
 	if err != nil {
 		log.Fatalf("data: %v", err)
 	}
@@ -428,7 +438,7 @@ func (a *app) admin(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		})
-		e, _ := emailSignups(filepath.Join(a.cfg.DataDir, "signups.jsonl"))
+		e, _ := a.emailSignups()
 		d.Emails = len(e)
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -618,7 +628,7 @@ func (a *app) emailCSV(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}
-	all, err := emailSignups(filepath.Join(a.cfg.DataDir, "signups.jsonl"))
+	all, err := a.emailSignups()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
