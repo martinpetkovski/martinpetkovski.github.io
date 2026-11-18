@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Game · Static Over Midtown</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="adm">
+{{template "adminnav" .}}
+<main class="admin">
+  {{template "gate" .}}
+  {{if .IsAdmin}}
+  {{template "gametabs" .}}
+  {{with .Message}}<p class="flash">{{.}}</p>{{end}}
+  {{if not .Database}}
+    <section class="panel center"><p class="lead">The game's pages need the database (DATABASE_URL).</p></section>
+  {{else if eq .Tab "players"}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-users"></i>Players <span class="muted">({{len .Players}})</span></h2>
+      <form method="get" action="/admin/game/players" class="stack">
+        <input type="text" name="q" value="{{.Query}}" placeholder="Name, SteamID64 or country code" aria-label="Search">
+        <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+      </form>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Player</th><th>Country</th><th>Matches</th><th>Won</th><th>K / D / A</th><th>Last seen</th><th>Note</th><th></th></tr></thead>
+        <tbody>
+        {{range .Players}}
+          <tr>
+            <td><a href="/admin/game/matches?q={{.ID}}" title="{{.ID}}">{{if .Name}}{{.Name}}{{else}}{{.ID}}{{end}}</a>
+              {{if .Banned}} <i class="fa-solid fa-gavel danger-text" title="Banned"></i>{{end}}{{if .Hidden}} <i class="fa-solid fa-eye-slash muted" title="Off the ladders"></i>{{end}}{{if .HostBlocked}} <i class="fa-solid fa-server muted" title="Blocked as a host"></i>{{end}}</td>
+            <td>{{.Country}}</td>
+            <td>{{.Matches}}</td><td>{{.Wins}}</td><td>{{.Kills}} / {{.Deaths}} / {{.Assists}}</td>
+            <td class="muted">{{ago .LastSeen}}</td>
+            <td>
+              <form method="post" action="/admin/game/player" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin/game/players">
+                <input type="text" name="note" value="{{.Note}}" maxlength="500" placeholder="Note" aria-label="Note" class="note">
+                <button class="ico" name="do" value="note" title="Save the note"><i class="fa-solid fa-floppy-disk"></i></button></form>
+            </td>
+            <td>
+              <form method="post" action="/admin/game/player" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin/game/players">
+                <a class="ico" href="https://steamcommunity.com/profiles/{{.ID}}" target="_blank" rel="noopener" title="Steam profile"><i class="fa-brands fa-steam"></i></a>
+                {{if .Hidden}}<button class="ico" name="do" value="show" title="Back on the ladders"><i class="fa-solid fa-eye"></i></button>
+                {{else}}<button class="ico" name="do" value="hide" title="Hide from the ladders"><i class="fa-solid fa-eye-slash"></i></button>{{end}}
+                {{if .Banned}}<button class="ico" name="do" value="unban" title="Lift the ban"><i class="fa-solid fa-unlock"></i></button>
+                {{else}}<button class="ico danger" name="do" value="ban" title="Ban: their match reports are refused and they leave the ladders" data-confirm="Ban {{.Name}}?"><i class="fa-solid fa-gavel"></i></button>{{end}}
+              </form>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="8" class="muted">No one has played an online match yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  {{else if eq .Tab "ladder"}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-ranking-star"></i>Player ladder <span class="muted">(provisional · {{.Rated}} rated match{{if ne .Rated 1}}es{{end}})</span></h2>
+      <p class="small muted">Elo from every public match with at least one all-human team, replayed from the start on each visit. Winning counts twice as much as the score. Banned and hidden players are left out.</p>
+      <form method="get" action="/admin/game/ladder" class="stack">
+        <input type="text" name="q" value="{{.Query}}" placeholder="Country code or name" aria-label="Filter">
+        <button class="cta sm" type="submit"><i class="fa-solid fa-filter"></i><span>Filter</span></button>
+      </form>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Player</th><th>Country</th><th>Rating</th><th>Played</th><th>W – L</th><th>Last match</th></tr></thead>
+        <tbody>
+        {{range .Ladder}}
+          <tr>
+            <td>{{.Rank}}</td>
+            <td><a href="/admin/game/matches?q={{.ID}}" title="{{.ID}}">{{.Name}}</a></td>
+            <td>{{if .Country}}<a href="/admin/game/ladder?q={{.Country}}">{{.Country}}</a>{{end}}</td>
+            <td><b>{{printf "%.0f" .Rating}}</b></td>
+            <td>{{.Played}}</td><td>{{.Wins}} – {{.Losses}}</td>
+            <td class="muted">{{ago .Last}}</td>
+          </tr>
+        {{else}}
+          <tr><td colspan="7" class="muted">No rated matches yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  {{else if eq .Tab "countries"}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-earth-europe"></i>Country ladder <span class="muted">(provisional · {{.Rated}} rated match{{if ne .Rated 1}}es{{end}})</span></h2>
+      <p class="small muted">A country's rating is the average of its ranked players' ratings (the profile country each player chose).</p>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Country</th><th>Rating</th><th>Players</th><th>Matches played</th><th>Wins</th><th>Best player</th></tr></thead>
+        <tbody>
+        {{range .Countries}}
+          <tr>
+            <td>{{.Rank}}</td>
+            <td><a href="/admin/game/ladder?q={{.Country}}">{{.Flag}} {{.Country}}</a></td>
+            <td><b>{{printf "%.0f" .Rating}}</b></td>
+            <td>{{.Players}}</td><td>{{.Played}}</td><td>{{.Wins}}</td>
+            <td>{{.Best}} <span class="muted">{{printf "%.0f" .BestRating}}</span></td>
+          </tr>
+        {{else}}
+          <tr><td colspan="7" class="muted">No ranked players with a country yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  {{else if eq .Tab "servers"}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-server"></i>Servers <span class="muted">(hosts of the reported matches)</span></h2>
+      <p class="small muted">Every player who has hosted a reported match. Blocking is recorded here; the game does not yet refuse a blocked host's rooms.</p>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Host</th><th>Matches hosted</th><th>Voided</th><th>Players served</th><th>Last match</th><th></th></tr></thead>
+        <tbody>
+        {{range .Hosts}}
+          <tr>
+            <td><a href="/admin/game/matches?q={{.ID}}" title="{{.ID}}">{{if .Name}}{{.Name}}{{else}}{{.ID}}{{end}}</a>{{if .Blocked}} <i class="fa-solid fa-ban danger-text" title="Blocked"></i>{{end}}</td>
+            <td>{{.Hosted}}</td><td>{{.Voided}}</td><td>{{.Humans}}</td>
+            <td class="muted">{{ago .Last}}</td>
+            <td>
+              <form method="post" action="/admin/game/player" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin/game/servers">
+                {{if .Blocked}}<button class="ico" name="do" value="unblock" title="Lift the block"><i class="fa-solid fa-unlock"></i></button>
+                {{else}}<button class="ico danger" name="do" value="block" title="Block as a host" data-confirm="Block {{.Name}} from hosting?"><i class="fa-solid fa-ban"></i></button>{{end}}
+              </form>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="6" class="muted">No hosted matches yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+  {{end}}
+  {{end}}
+</main>
+<script src="/static/app.js" defer></script>
+</body>
+</html>

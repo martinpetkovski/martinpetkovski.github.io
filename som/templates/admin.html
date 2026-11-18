@@ -6,26 +6,13 @@
 <meta name="robots" content="noindex">
 <title>Admin · Static Over Midtown</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="adm">
-<nav class="bar wide">
-  <a class="ico" href="/" title="Back to the site"><i class="fa-solid fa-arrow-left"></i></a>
-  <span class="brand">Control</span>
-  {{if .IsAdmin}}
-  <span class="tabs">
-    <a href="#keys"><i class="fa-solid fa-key"></i><span>Keys</span></a>
-    <a href="#testers"><i class="fa-solid fa-users"></i><span>Testers</span></a>
-    <a href="#comments"><i class="fa-solid fa-comments"></i><span>Comms</span></a>
-    <a href="#page"><i class="fa-solid fa-sliders"></i><span>Page</span></a>
-    <a href="/admin/matches"><i class="fa-solid fa-flag-checkered"></i><span>Matches</span></a>
-  </span>
-  {{end}}
-  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
-  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>{{end}}
-</nav>
+{{template "adminnav" .}}
 
 <main class="admin">
+  {{if .IsAdmin}}{{template "testtabs"}}{{end}}
   {{if not .Me}}
     <section class="panel center"><a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a></section>
   {{else if not .IsAdmin}}
@@ -94,7 +81,7 @@
         {{range .Recent}}
         <li>
           <div class="feed-head"><a href="/#c{{.ID}}">{{.Name}}</a>{{if .Reply}}<i class="fa-solid fa-reply fa-flip-horizontal muted" title="Reply"></i>{{end}}<time class="muted">{{ago .At}}</time>
-            <form method="post" action="/comments/delete" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin">
+            <form method="post" action="/comments/delete" class="icons"><input type="hidden" name="id" value="{{.ID}}"><input type="hidden" name="back" value="/admin/test">
               <button class="ico danger" type="submit" title="Delete" data-confirm="Delete this?"><i class="fa-regular fa-trash-can"></i></button></form>
             <form method="post" action="/admin/user" class="icons"><input type="hidden" name="id" value="{{.UserID}}">
               <button class="ico" name="do" value="ban" title="Silence" data-confirm="Silence {{.Name}} and delete their comments?"><i class="fa-solid fa-comment-slash"></i></button></form>
@@ -124,6 +111,6 @@
     </section>
   {{end}}
 </main>
-<script src="static/app.js" defer></script>
+<script src="/static/app.js" defer></script>
 </body>
 </html>

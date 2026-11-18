@@ -9,14 +9,10 @@
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body class="adm">
-<nav class="bar wide">
-  <a class="ico" href="{{if .One}}/admin/matches{{else}}/admin{{end}}" title="Back"><i class="fa-solid fa-arrow-left"></i></a>
-  <span class="brand">Matches</span>
-  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
-  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>{{end}}
-</nav>
+{{template "adminnav" .}}
 
 <main class="admin">
+  {{if .IsAdmin}}{{template "gametabs" .}}{{end}}
   {{if not .Me}}
     <section class="panel center"><a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a></section>
   {{else if not .IsAdmin}}
@@ -58,7 +54,7 @@
         <tbody>
         {{range $players}}
           <tr>
-            <td>{{if .AI}}<span class="muted">{{.Name}} (AI)</span>{{else}}<a href="/admin/matches?q={{.Steam}}" title="{{.Steam}}">{{.Name}}</a>{{if .Country}} <span class="muted">{{.Country}}</span>{{end}}{{end}}</td>
+            <td>{{if .AI}}<span class="muted">{{.Name}} (AI)</span>{{else}}<a href="/admin/game/players?q={{.Steam}}" title="{{.Steam}}">{{.Name}}</a>{{if .Country}} <span class="muted">{{.Country}}</span>{{end}}{{end}}</td>
             <td class="muted">{{.Vehicle}}</td><td>{{.Level}}</td><td>{{.Kills}}</td><td>{{.Deaths}}</td><td>{{.Assists}}</td>
             <td>{{printf "%.0f" .Score}}</td><td>{{printf "%.0f" .Damage}}</td>
             <td class="small">{{.AbilityText}}</td><td class="small">{{.PassiveText}}</td>
@@ -85,7 +81,7 @@
     {{else}}
     <section class="panel">
       <h2><i class="fa-solid fa-flag-checkered"></i>Matches <span class="muted">({{.Total}} stored)</span></h2>
-      <form method="get" action="/admin/matches" class="stack">
+      <form method="get" action="/admin/game/matches" class="stack">
         <input type="text" name="q" value="{{.Query}}" placeholder="SteamID64 or match key" aria-label="Search">
         <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
       </form>
@@ -95,7 +91,7 @@
         <tbody>
         {{range .Matches}}
           <tr>
-            <td><a href="/admin/matches/{{.ID}}">{{.ID}}</a></td>
+            <td><a href="/admin/game/matches/{{.ID}}">{{.ID}}</a></td>
             <td class="muted">{{.Ended.Format "2 Jan 15:04"}}</td>
             <td>{{if .HostName}}{{.HostName}}{{else}}<span class="muted">{{.HostID}}</span>{{end}}</td>
             <td>{{.Format}}{{if .Locked}} <i class="fa-solid fa-lock" title="Password room"></i>{{end}}</td>

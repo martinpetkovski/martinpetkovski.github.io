@@ -6,7 +6,7 @@ package main
 // kept (match_reports); the match's own rows (matches, match_players) come from the host's
 // report, or from the first one until the host's arrives. Needs the database (DATABASE_URL).
 //
-// The admin's pages: /admin/matches (the list) and /admin/matches/{id} (one match).
+// The admin's pages: /admin/game/matches (the list) and /admin/game/matches/{id} (one match).
 
 import (
 	"context"
@@ -145,7 +145,9 @@ var (
 	countryRe  = regexp.MustCompile(`^[A-Z]{2}$`)
 )
 
-func finite(v float64, max float64) bool { return !math.IsNaN(v) && !math.IsInf(v, 0) && v >= 0 && v <= max }
+func finite(v float64, max float64) bool {
+	return !math.IsNaN(v) && !math.IsInf(v, 0) && v >= 0 && v <= max
+}
 
 // check makes sure a report is one the game could have written (shape and bounds only).
 func (m *matchReport) check() error {
@@ -450,14 +452,14 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 // ---------------------------------------------------------------- the admin's pages
 
 type matchRow struct {
-	ID                                       int64
-	Key, HostID, HostName, Status, Note      string
-	Ended                                    time.Time
-	Seconds, Winner, Score0, Score1          int
-	Towers0, Towers1, Capacity, Humans       int
-	Locked, FromHost, Voided                 bool
-	Protocol, Content                        int64
-	Reports, Verified                        int
+	ID                                  int64
+	Key, HostID, HostName, Status, Note string
+	Ended                               time.Time
+	Seconds, Winner, Score0, Score1     int
+	Towers0, Towers1, Capacity, Humans  int
+	Locked, FromHost, Voided            bool
+	Protocol, Content                   int64
+	Reports, Verified                   int
 }
 
 func (m matchRow) Duration() string { return fmt.Sprintf("%d:%02d", m.Seconds/60, m.Seconds%60) }
@@ -476,6 +478,8 @@ type matchReportRow struct {
 }
 
 type matchesPage struct {
+	Section  string
+	Tab      string
 	Me       *user
 	IsAdmin  bool
 	Message  string
@@ -500,7 +504,7 @@ func scanMatch(row pgx.Row, m *matchRow) error {
 
 func (a *app) adminMatches(w http.ResponseWriter, r *http.Request) {
 	me := a.me(r)
-	d := matchesPage{Me: me, IsAdmin: me != nil && a.cfg.Admins[me.ID], Database: a.db.pg != nil,
+	d := matchesPage{Section: "game", Tab: "matches", Me: me, IsAdmin: me != nil && a.cfg.Admins[me.ID], Database: a.db.pg != nil,
 		KeySet: strings.TrimSpace(os.Getenv("STEAM_WEB_API_KEY")) != "", Query: clip(strings.TrimSpace(r.URL.Query().Get("q")), 64)}
 	if m := r.URL.Query().Get("m"); m != "" && len(m) < 120 {
 		d.Message = m
@@ -607,7 +611,7 @@ func (a *app) adminMatchAction(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 	pool := a.db.pg.pool
 	var err error
-	back, message := "/admin/matches/"+strconv.FormatInt(id, 10), "Done."
+	back, message := "/admin/game/matches/"+strconv.FormatInt(id, 10), "Done."
 	switch r.PostFormValue("do") {
 	case "void":
 		_, err = pool.Exec(ctx, `UPDATE matches SET voided = true WHERE id = $1`, id)
@@ -620,7 +624,7 @@ func (a *app) adminMatchAction(w http.ResponseWriter, r *http.Request) {
 		message = "Note saved."
 	case "delete":
 		_, err = pool.Exec(ctx, `DELETE FROM matches WHERE id = $1`, id)
-		back, message = "/admin/matches", "Match deleted."
+		back, message = "/admin/game/matches", "Match deleted."
 	default:
 		message = "Nothing to do."
 	}

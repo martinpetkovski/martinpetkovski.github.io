@@ -100,7 +100,8 @@ func main() {
 	mux.HandleFunc("POST /playtest/leave", a.post(a.leave))
 	mux.HandleFunc("POST /comments", a.post(a.addComment))
 	mux.HandleFunc("POST /comments/delete", a.post(a.deleteComment))
-	mux.HandleFunc("GET /admin", a.admin)
+	mux.HandleFunc("GET /admin", redirect("/admin/game"))
+	mux.HandleFunc("GET /admin/test", a.admin)
 	mux.HandleFunc("POST /admin/settings", a.adminPost(a.saveSettings))
 	mux.HandleFunc("POST /admin/keys", a.adminPost(a.addKeys))
 	mux.HandleFunc("POST /admin/keys/give", a.adminPost(a.giveKeys))
@@ -108,8 +109,20 @@ func main() {
 	mux.HandleFunc("GET /admin/testers.csv", a.testersCSV)
 	mux.HandleFunc("GET /admin/email-signups.csv", a.emailCSV)
 	mux.HandleFunc("POST /api/game/match", a.gameMatch) // the game's match reports (matches.go)
-	mux.HandleFunc("GET /admin/matches", a.adminMatches)
-	mux.HandleFunc("GET /admin/matches/{id}", a.adminMatches)
+	mux.HandleFunc("GET /admin/game", redirect("/admin/game/matches"))
+	mux.HandleFunc("GET /admin/game/matches", a.adminMatches)
+	mux.HandleFunc("GET /admin/game/matches/{id}", a.adminMatches)
+	mux.HandleFunc("GET /admin/game/{tab}", a.gameAdmin)
+	mux.HandleFunc("POST /admin/game/player", a.gamePlayerAction)
+	oldMatches := func(w http.ResponseWriter, r *http.Request) { // the old addresses
+		u := "/admin/game" + strings.TrimPrefix(r.URL.Path, "/admin")
+		if r.URL.RawQuery != "" {
+			u += "?" + r.URL.RawQuery
+		}
+		http.Redirect(w, r, u, http.StatusMovedPermanently)
+	}
+	mux.HandleFunc("GET /admin/matches", oldMatches)
+	mux.HandleFunc("GET /admin/matches/{id}", oldMatches)
 	mux.HandleFunc("POST /admin/matches/action", a.adminMatchAction)
 
 	log.Printf("Static Over Midtown site on :%s (data in %s, %d admin(s))", cfg.Port, cfg.DataDir, len(cfg.Admins))
@@ -382,7 +395,7 @@ func (a *app) deleteComment(r *http.Request, me *user) string {
 		return s.removeComment(id)
 	})
 	if strings.HasPrefix(r.FormValue("back"), "/admin") && admin {
-		return "/admin#comments"
+		return "/admin/test#comments"
 	}
 	return back
 }
@@ -390,6 +403,7 @@ func (a *app) deleteComment(r *http.Request, me *user) string {
 // ---------------------------------------------------------------- admin
 
 type adminData struct {
+	Section  string
 	S        settings
 	Me       *user
 	IsAdmin  bool
@@ -415,7 +429,7 @@ type recentComment struct {
 
 func (a *app) admin(w http.ResponseWriter, r *http.Request) {
 	me := a.me(r)
-	d := adminData{Me: me, IsAdmin: me != nil && a.cfg.Admins[me.ID], Message: messages[r.URL.Query().Get("m")]}
+	d := adminData{Section: "test", Me: me, IsAdmin: me != nil && a.cfg.Admins[me.ID], Message: messages[r.URL.Query().Get("m")]}
 	if m := r.URL.Query().Get("m"); d.Message == "" && m != "" && len(m) < 120 {
 		d.Message = m
 	}
@@ -466,7 +480,7 @@ func (a *app) adminPost(f func(r *http.Request) string) http.HandlerFunc {
 		}
 		r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
 		r.ParseForm()
-		http.Redirect(w, r, "/admin?m="+urlq(f(r)), http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/test?m="+urlq(f(r)), http.StatusSeeOther)
 	}
 }
 
@@ -683,4 +697,9 @@ func security(h http.Handler) http.Handler {
 		w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 		h.ServeHTTP(w, r)
 	})
+}
+
+// redirect: a GET handler that sends the browser to url.
+func redirect(url string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) { http.Redirect(w, r, url, http.StatusSeeOther) }
 }

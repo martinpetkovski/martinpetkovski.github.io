@@ -155,6 +155,10 @@ code { font-family: ui-monospace, Consolas, monospace; }
 .tabs { display: flex; gap: 2px; height: 100%; }
 .tabs a { height: 100%; padding: 0 12px; color: var(--hint); text-decoration: none; font-family: "Gamecuben", sans-serif; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; border-bottom: var(--px) solid transparent; }
 .tabs a:hover { color: var(--yellow); border-color: var(--yellow); }
+.tabs a.on { color: var(--yellow); border-color: var(--yellow); }
+.subtabs { height: auto; flex-wrap: wrap; margin: 0 0 18px; border-bottom: 1px solid var(--line, rgba(255,255,255,.12)); }
+.subtabs a { height: auto; padding: 10px 12px; }
+.danger-text { color: #ff5a4a; }
 
 /* ---------------------------------------------------------------- the key */
 .key { display: flex; justify-content: center; max-width: 100%; }

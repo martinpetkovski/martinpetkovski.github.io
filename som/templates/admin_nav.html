@@ -1,0 +1,44 @@
+{{define "adminnav"}}
+<nav class="bar wide">
+  <a class="ico" href="/" title="Back to the site"><i class="fa-solid fa-arrow-left"></i></a>
+  <span class="brand">Control</span>
+  {{if .IsAdmin}}
+  <span class="tabs">
+    <a href="/admin/game" class="{{if eq .Section "game"}}on{{end}}"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>
+    <a href="/admin/test" class="{{if eq .Section "test"}}on{{end}}"><i class="fa-solid fa-flask"></i><span>Test enlistment</span></a>
+  </span>
+  {{end}}
+  {{with .Me}}<span class="who">{{if .Avatar}}<img src="{{.Avatar}}" alt="" width="26" height="26">{{end}}<span>{{.Name}}</span></span>
+  <form method="post" action="/auth/logout"><button type="submit" class="ico" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></button></form>{{end}}
+</nav>
+{{end}}
+
+{{define "gametabs"}}
+<nav class="tabs subtabs">
+  <a href="/admin/game/matches" class="{{if eq .Tab "matches"}}on{{end}}"><i class="fa-solid fa-flag-checkered"></i><span>Matches</span></a>
+  <a href="/admin/game/players" class="{{if eq .Tab "players"}}on{{end}}"><i class="fa-solid fa-users"></i><span>Players</span></a>
+  <a href="/admin/game/ladder" class="{{if eq .Tab "ladder"}}on{{end}}"><i class="fa-solid fa-ranking-star"></i><span>Ladder</span></a>
+  <a href="/admin/game/countries" class="{{if eq .Tab "countries"}}on{{end}}"><i class="fa-solid fa-earth-europe"></i><span>Countries</span></a>
+  <a href="/admin/game/servers" class="{{if eq .Tab "servers"}}on{{end}}"><i class="fa-solid fa-server"></i><span>Servers</span></a>
+</nav>
+{{end}}
+
+{{define "testtabs"}}
+<nav class="tabs subtabs">
+  <a href="#keys"><i class="fa-solid fa-key"></i><span>Keys</span></a>
+  <a href="#testers"><i class="fa-solid fa-users"></i><span>Testers</span></a>
+  <a href="#comments"><i class="fa-solid fa-comments"></i><span>Comms</span></a>
+  <a href="#page"><i class="fa-solid fa-sliders"></i><span>Page</span></a>
+</nav>
+{{end}}
+
+{{define "gate"}}
+  {{if not .Me}}
+    <section class="panel center"><a class="cta" href="/auth/steam"><i class="fa-brands fa-steam"></i><span>Sign in with Steam</span></a></section>
+  {{else if not .IsAdmin}}
+    <section class="panel center">
+      <p class="lead"><i class="fa-solid fa-lock"></i> No clearance.</p>
+      <p class="small">Steam ID <code>{{.Me.ID}}</code> · to grant it, set <code>ADMIN_STEAM_ID={{.Me.ID}}</code> in the server manager.</p>
+    </section>
+  {{end}}
+{{end}}
