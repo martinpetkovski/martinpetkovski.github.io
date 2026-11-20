@@ -7,7 +7,7 @@ package main
 //
 // The ladders are provisional: they are computed from the stored matches on every visit (stage 4 of
 // claude/match-logging-plan.md keeps them). Rated matches: not voided, no password, at least one
-// team all human. Elo: every player against the enemy team's average rating (AI seats at a fixed
+// team all human, and counted by the cross-check (crosscheck.go: verified, single or accepted). Elo: every player against the enemy team's average rating (AI seats at a fixed
 // rating); the result counts twice as much as the player's score against the enemy team's.
 
 import (
@@ -192,7 +192,7 @@ func (a *app) loadLadders(ctx context.Context, d *gamePage) error {
 	}
 	var order []int64
 	games := map[int64]*match{}
-	rows, err := pool.Query(ctx, `SELECT id, winner, ended FROM matches WHERE NOT voided AND NOT locked AND NOT abandoned ORDER BY ended, id`)
+	rows, err := pool.Query(ctx, `SELECT m.id, m.winner, m.ended FROM matches m WHERE NOT m.voided AND NOT m.locked AND NOT m.abandoned AND `+countedMatch+` ORDER BY m.ended, m.id`)
 	if err != nil {
 		return err
 	}
@@ -207,7 +207,7 @@ func (a *app) loadLadders(ctx context.Context, d *gamePage) error {
 		order = append(order, id)
 	}
 	rows.Close()
-	rows, err = pool.Query(ctx, `SELECT p.match_id, p.team, p.ai, p.steam_id, p.score FROM match_players p JOIN matches m ON m.id = p.match_id WHERE NOT m.voided AND NOT m.locked`)
+	rows, err = pool.Query(ctx, `SELECT p.match_id, p.team, p.ai, p.steam_id, p.score FROM match_players p JOIN matches m ON m.id = p.match_id WHERE NOT m.voided AND NOT m.locked AND `+countedMatch)
 	if err != nil {
 		return err
 	}

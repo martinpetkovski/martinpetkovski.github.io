@@ -4,7 +4,8 @@ package main
 // own report with a Steam ticket; the ticket is checked with Steam (STEAM_WEB_API_KEY, a
 // publisher key), so a report can only be filed under the account that played. All reports are
 // kept (match_reports); the match's own rows (matches, match_players) come from the host's
-// report, or from the first one until the host's arrives. Needs the database (DATABASE_URL).
+// report, or from the first one until the host's arrives. The reports are then compared with each
+// other (crosscheck.go), which sets the match's status. Needs the database (DATABASE_URL).
 //
 // The admin's pages: /admin/game/matches (the list) and /admin/game/matches/{id} (one match).
 
@@ -95,6 +96,7 @@ CREATE TABLE IF NOT EXISTS match_reports (  -- every report as it came, one per 
 );
 ALTER TABLE matches ADD COLUMN IF NOT EXISTS abandoned BOOLEAN NOT NULL DEFAULT false;        -- never finished: the last host left (winner: ahead on points, -1 level)
 ALTER TABLE match_players ADD COLUMN IF NOT EXISTS left_match BOOLEAN NOT NULL DEFAULT false;  -- left mid-match (a bot drove on)
+ALTER TABLE matches ADD COLUMN IF NOT EXISTS crosscheck BOOLEAN NOT NULL DEFAULT false;       -- its status comes from the cross-check (crosscheck.go); false: stored before it
 `
 
 type reportAbility struct {
@@ -393,18 +395,16 @@ func (a *app) gameMatch(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 20*time.Second)
 	defer cancel()
 	claimed := rep.player(rep.ReporterSlot).Steam
-	// Steam allows a publisher key ~100 000 checks a day, so not every report is checked:
-	// a ticket Steam already confirmed is remembered for 6 hours, and of the others only the
-	// host's is checked (the match's own rows come from it). A player's report that is not
-	// checked is kept as unverified, and does not change their name or country.
+	// Every report's ticket is checked, the cross-check needs each one tied to its account. Steam
+	// allows a publisher key ~100 000 checks a day: a ticket Steam already confirmed is remembered
+	// for 6 hours and the game keeps using the same ticket for as long, so Steam is asked about
+	// once per player per session, not once per match.
 	var id string
 	var configured bool
 	var err error
 	checked := true
 	if known, ok := tickets.get(in.Ticket, in.Identity); ok {
 		id, configured = known, true
-	} else if rep.ReporterSlot != rep.HostSlot && strings.TrimSpace(os.Getenv("STEAM_WEB_API_KEY")) != "" {
-		id, configured, checked = claimed, true, false
 	} else {
 		id, configured, err = steamTicket(ctx, in.Ticket, in.Identity)
 		if err == nil && configured {
@@ -500,6 +500,9 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 		id, reporter, verified, isHost, ip, raw); err != nil {
 		return 0, err
 	}
+	if err := crossCheck(ctx, tx, id); err != nil {
+		return 0, err
+	}
 	for _, q := range m.Players { // everyone in it is known from now on; a name and country only from their own report
 		if q.AI {
 			continue
@@ -592,9 +595,9 @@ func (a *app) adminMatches(w http.ResponseWriter, r *http.Request) {
 				d.Message = "No such match."
 			}
 		} else {
-			// q: a SteamID64 (matches that account played) or part of a match key
+			// q: a SteamID64 (matches that account played), part of a match key, or a status ("disputed")
 			rows, err := pool.Query(ctx, `SELECT `+matchColumns+` FROM matches m LEFT JOIN game_players h ON h.steam_id = m.host_id
-				WHERE $1 = '' OR m.match_key LIKE '%' || $1 || '%' OR EXISTS (SELECT 1 FROM match_players p WHERE p.match_id = m.id AND p.steam_id = $1)
+				WHERE $1 = '' OR m.status = $1 OR m.match_key LIKE '%' || $1 || '%' OR EXISTS (SELECT 1 FROM match_players p WHERE p.match_id = m.id AND p.steam_id = $1)
 				ORDER BY m.ended DESC LIMIT 200`, d.Query)
 			if err != nil {
 				log.Printf("admin matches: %v", err)
@@ -666,7 +669,7 @@ func (a *app) matchDetail(ctx context.Context, d *matchesPage, id int64) {
 	rows.Close()
 }
 
-// POST /admin/matches/action: void / unvoid / delete one match, or a note on it.
+// POST /admin/matches/action: void / unvoid / accept / delete one match, or a note on it.
 func (a *app) adminMatchAction(w http.ResponseWriter, r *http.Request) {
 	if !sameOrigin(r) || !a.isAdmin(r) || a.db.pg == nil {
 		http.Error(w, "forbidden", http.StatusForbidden)
@@ -687,6 +690,9 @@ func (a *app) adminMatchAction(w http.ResponseWriter, r *http.Request) {
 	case "unvoid":
 		_, err = pool.Exec(ctx, `UPDATE matches SET voided = false WHERE id = $1`, id)
 		message = "Match restored."
+	case "accept": // a disputed match the admin has looked at: it counts, whatever reports still arrive
+		_, err = pool.Exec(ctx, `UPDATE matches SET status = 'accepted', crosscheck = true WHERE id = $1`, id)
+		message = "Match accepted."
 	case "note":
 		_, err = pool.Exec(ctx, `UPDATE matches SET note = $2 WHERE id = $1`, id, clip(strings.TrimSpace(r.PostFormValue("note")), 500))
 		message = "Note saved."

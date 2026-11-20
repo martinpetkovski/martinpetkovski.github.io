@@ -41,6 +41,7 @@
           <button class="cta sm" name="do" value="note"><i class="fa-solid fa-floppy-disk"></i><span>Save note</span></button>
           {{if .Voided}}<button class="cta sm" name="do" value="unvoid"><i class="fa-solid fa-rotate-left"></i><span>Restore</span></button>
           {{else}}<button class="cta sm" name="do" value="void" data-confirm="Void this match?"><i class="fa-solid fa-ban"></i><span>Void</span></button>{{end}}
+          {{if eq .Status "disputed"}}<button class="cta sm" name="do" value="accept" data-confirm="Accept this match as reported by its host?"><i class="fa-solid fa-check"></i><span>Accept</span></button>{{end}}
           <button class="cta sm danger" name="do" value="delete" data-confirm="Delete this match for good?"><i class="fa-solid fa-trash"></i><span>Delete</span></button>
         </span>
       </form>
@@ -84,6 +85,7 @@
       <form method="get" action="/admin/game/matches" class="search">
         <input type="text" name="q" value="{{.Query}}" placeholder="SteamID64 or match key" aria-label="Search">
         <button class="cta sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+        <a class="cta sm" href="/admin/game/matches?q=disputed"><i class="fa-solid fa-scale-unbalanced"></i><span>Disputed</span></a>
       </form>
       <div class="scroll">
       <table>
