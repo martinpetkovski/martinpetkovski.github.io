@@ -10,6 +10,8 @@ Run: `go run .` from this folder, then open http://localhost:8080
 
 Env vars: `ADMIN_STEAM_ID`, `PORT`, `DATA_DIR`, `SITE_URL`, `YOUTUBE_ID` (first start only; then the admin panel).
 
+Standing (`standing.go`): `GET /api/game/standing?who=..&who=..[&event=ID]` answers where up to ten players stand right now - the provisional ladder by SteamID64 (ladders no older than 5 s), or an event's score and achievement ladders by nickname. The game asks before and after a match and shows the difference on its results screen.
+
 Online events (`events.go`): `/admin/game/events` creates an event (name, start in UTC, length); the game lists the running and coming ones (`GET /api/game/events`), claims nicknames under a Steam ticket (`POST /api/game/event/nickname`: the first account to claim one owns it in that event) and shows the event's ladder (`GET /api/game/event/ladder`: total score per nickname, and each of the ten achievements as a ladder of its own in `boards`). Event matches are ordinary reports carrying the event id and nicknames; they never count for the global ladder.
 
 Match reports: the game posts every finished online match to `POST /api/game/match` with a Steam ticket; the reports of a match are cross-checked (`crosscheck.go`: verified when two confirmed reports agree, disputed when they differ, single for a one-human match; only verified, single and admin-accepted matches count for the ladders, and `/admin/game/matches?q=disputed` lists the ones to review); `/admin/game/matches` lists them. `GET /api/game/ladder?me=STEAMID&country=CC` serves the in-game ladder (top 50 players and countries).

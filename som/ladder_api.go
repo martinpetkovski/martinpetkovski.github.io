@@ -38,9 +38,14 @@ var ladderCache struct {
 }
 
 func (a *app) cachedLadders(ctx context.Context) (*gamePage, error) {
+	return a.laddersWithin(ctx, time.Minute)
+}
+
+// laddersWithin: the ladders no older than age (recomputed, and kept for everyone, when they are).
+func (a *app) laddersWithin(ctx context.Context, age time.Duration) (*gamePage, error) {
 	ladderCache.Lock()
 	defer ladderCache.Unlock()
-	if ladderCache.d != nil && time.Since(ladderCache.at) < time.Minute {
+	if ladderCache.d != nil && time.Since(ladderCache.at) < age {
 		return ladderCache.d, nil
 	}
 	d := &gamePage{}

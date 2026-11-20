@@ -112,6 +112,7 @@ func main() {
 	mux.HandleFunc("GET /api/game/events", a.eventsAPI)              // online events (events.go)
 	mux.HandleFunc("POST /api/game/event/nickname", a.eventNickname) // a nickname claimed for an event
 	mux.HandleFunc("GET /api/game/event/ladder", a.eventLadderAPI)
+	mux.HandleFunc("GET /api/game/standing", a.standingAPI) // where players stand, for the end-of-match records (standing.go)
 	mux.HandleFunc("POST /admin/game/event", a.eventAction)
 	mux.HandleFunc("GET /api/game/ladder", a.ladderAPI)  // the game's LADDER screen (ladder_api.go)
 	mux.HandleFunc("GET /admin/game", redirect("/admin/game/matches"))
