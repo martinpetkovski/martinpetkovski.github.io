@@ -20,6 +20,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -215,6 +216,31 @@ type eventAward struct {
 	Value           float64
 }
 
+// eventFigures: the achievements, each a figure of an entry; id is what the game picks the icon by.
+var eventFigures = []struct {
+	id, title string
+	of        func(e *eventEntry) float64
+}{
+	{"kills", "MOST KILLS", func(e *eventEntry) float64 { return float64(e.Kills) }},
+	{"assists", "MOST ASSISTS", func(e *eventEntry) float64 { return float64(e.Assists) }},
+	{"damage", "MOST DAMAGE", func(e *eventEntry) float64 { return e.Damage }},
+	{"wins", "MOST WINS", func(e *eventEntry) float64 { return float64(e.Wins) }},
+	{"best", "BEST MATCH", func(e *eventEntry) float64 { return e.Best }},
+	{"casts", "MOST ABILITIES USED", func(e *eventEntry) float64 { return float64(e.Casts) }},
+	{"towerDamage", "TOWER BREAKER", func(e *eventEntry) float64 { return e.TowerDamage }},
+	{"towerKills", "LAST HIT", func(e *eventEntry) float64 { return float64(e.TowerKills) }},
+	{"filmed", "ON AIR", func(e *eventEntry) float64 { return e.Filmed }},
+	{"streak", "LONGEST STREAK", func(e *eventEntry) float64 { return float64(e.Streak) }},
+}
+
+// eventBoard: one achievement's own ladder for the game (the top 50 entries by its figure, and the asked nickname's row).
+type eventBoard struct {
+	ID      string        `json:"id"`
+	Title   string        `json:"title"`
+	Entries []ladderEntry `json:"entries"`
+	Me      *ladderEntry  `json:"me,omitempty"`
+}
+
 // eventLadder: an event's entries, the highest total score first, and its achievements.
 func (a *app) eventLadder(ctx context.Context, event int64) ([]eventEntry, []eventAward, int, error) {
 	pool := a.db.pg.pool
@@ -243,23 +269,8 @@ func (a *app) eventLadder(ctx context.Context, event int64) ([]eventEntry, []eve
 	if err := rows.Err(); err != nil {
 		return nil, nil, 0, err
 	}
-	figures := []struct {
-		title string
-		of    func(e *eventEntry) float64
-	}{
-		{"MOST KILLS", func(e *eventEntry) float64 { return float64(e.Kills) }},
-		{"MOST ASSISTS", func(e *eventEntry) float64 { return float64(e.Assists) }},
-		{"MOST DAMAGE", func(e *eventEntry) float64 { return e.Damage }},
-		{"MOST WINS", func(e *eventEntry) float64 { return float64(e.Wins) }},
-		{"BEST MATCH", func(e *eventEntry) float64 { return e.Best }},
-		{"MOST ABILITIES USED", func(e *eventEntry) float64 { return float64(e.Casts) }},
-		{"TOWER BREAKER", func(e *eventEntry) float64 { return e.TowerDamage }},
-		{"LAST HIT", func(e *eventEntry) float64 { return float64(e.TowerKills) }},
-		{"ON AIR", func(e *eventEntry) float64 { return e.Filmed }},
-		{"LONGEST STREAK", func(e *eventEntry) float64 { return float64(e.Streak) }},
-	}
 	var awards []eventAward
-	for _, f := range figures { // one holder each: the highest figure (a tie: the higher on the ladder)
+	for _, f := range eventFigures { // one holder each: the highest figure (a tie: the higher on the ladder)
 		best := -1
 		for i := range list {
 			if v := f.of(&list[i]); v > 0 && (best < 0 || v > f.of(&list[best])) {
@@ -275,8 +286,8 @@ func (a *app) eventLadder(ctx context.Context, event int64) ([]eventEntry, []eve
 
 // GET /api/game/event/ladder?event=ID&nick=NICKNAME: an event's ladder in the shape of the game's
 // LADDER screen (ladder_api.go): "players" the top 50 entries with the total score as the rating,
-// "me" the asked nickname's row, "countries" the achievements (the title and its holder as the name,
-// the figure as the rating).
+// "me" the asked nickname's row, "countries" the achievements' holders (the title and its holder as
+// the name, the figure as the rating), and "boards": each achievement as a ladder of its own.
 func (a *app) eventLadderAPI(w http.ResponseWriter, r *http.Request) {
 	if a.db.pg == nil {
 		http.Error(w, "no database", http.StatusServiceUnavailable)
@@ -306,9 +317,34 @@ func (a *app) eventLadderAPI(w http.ResponseWriter, r *http.Request) {
 	for i, x := range awards {
 		out.Countries = append(out.Countries, ladderEntry{Rank: i + 1, Name: x.Title + ": " + x.Nickname, Rating: int(x.Value + .5)})
 	}
+	boards := []eventBoard{} // every achievement as a ladder of its own: the entries with something to show, the highest first
+	for _, f := range eventFigures {
+		order := make([]*eventEntry, 0, len(list))
+		for i := range list {
+			if f.of(&list[i]) > 0 {
+				order = append(order, &list[i])
+			}
+		}
+		sort.SliceStable(order, func(a, b int) bool { return f.of(order[a]) > f.of(order[b]) })
+		board := eventBoard{ID: f.id, Title: f.title, Entries: []ladderEntry{}}
+		for i, e := range order {
+			row := ladderEntry{Rank: i + 1, Name: e.Nickname, Country: e.Country, Rating: int(f.of(e) + .5)}
+			if i < ladderTop {
+				board.Entries = append(board.Entries, row)
+			}
+			if mine != "" && nickKey(e.Nickname) == mine {
+				me := row
+				board.Me = &me
+			}
+		}
+		boards = append(boards, board)
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")
-	json.NewEncoder(w).Encode(out)
+	json.NewEncoder(w).Encode(struct {
+		ladderReply
+		Boards []eventBoard `json:"boards"`
+	}{out, boards})
 }
 
 // ---------------------------------------------------------------- the admin's page
