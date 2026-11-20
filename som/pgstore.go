@@ -79,7 +79,7 @@ func openPG(ctx context.Context, url, dir, youtube string) (*db, error) {
 	if _, err := pool.Exec(ctx, pgSchema); err != nil {
 		return nil, fmt.Errorf("database tables: %w", err)
 	}
-	if _, err := pool.Exec(ctx, matchSchema); err != nil { // the game's matches (matches.go)
+	if _, err := pool.Exec(ctx, matchSchema+eventSchema); err != nil { // the game's matches (matches.go) and events (events.go)
 		return nil, fmt.Errorf("match tables: %w", err)
 	}
 	p := &pgStore{pool: pool}

@@ -74,6 +74,12 @@ type gamePage struct {
 	Countries []countryRow
 	Hosts     []hostRow
 	Rated     int // matches the ladders count
+	// the Events tab (events.go)
+	Events      []eventRow
+	Event       *eventRow
+	EventLadder []eventEntry
+	EventAwards []eventAward
+	Nicknames   []nickRow
 }
 
 func (a *app) nav(r *http.Request, section, tab string) adminNav {
@@ -103,7 +109,7 @@ func flag(code string) string {
 func (a *app) gameAdmin(w http.ResponseWriter, r *http.Request) {
 	tab := r.PathValue("tab")
 	switch tab {
-	case "players", "ladder", "countries", "servers":
+	case "players", "ladder", "countries", "servers", "events":
 	default:
 		http.Redirect(w, r, "/admin/game/matches", http.StatusSeeOther)
 		return
@@ -120,6 +126,9 @@ func (a *app) gameAdmin(w http.ResponseWriter, r *http.Request) {
 			err = a.loadLadders(ctx, &d)
 		case "servers":
 			err = a.loadHosts(ctx, &d)
+		case "events":
+			id, _ := strconv.ParseInt(r.URL.Query().Get("id"), 10, 64)
+			err = a.loadEvents(ctx, &d, id)
 		}
 		if err != nil {
 			log.Printf("admin game %s: %v", tab, err)
@@ -192,7 +201,7 @@ func (a *app) loadLadders(ctx context.Context, d *gamePage) error {
 	}
 	var order []int64
 	games := map[int64]*match{}
-	rows, err := pool.Query(ctx, `SELECT m.id, m.winner, m.ended FROM matches m WHERE NOT m.voided AND NOT m.locked AND NOT m.abandoned AND `+countedMatch+` ORDER BY m.ended, m.id`)
+	rows, err := pool.Query(ctx, `SELECT m.id, m.winner, m.ended FROM matches m WHERE NOT m.voided AND NOT m.locked AND NOT m.abandoned AND `+ladderMatch+` ORDER BY m.ended, m.id`)
 	if err != nil {
 		return err
 	}
@@ -207,7 +216,7 @@ func (a *app) loadLadders(ctx context.Context, d *gamePage) error {
 		order = append(order, id)
 	}
 	rows.Close()
-	rows, err = pool.Query(ctx, `SELECT p.match_id, p.team, p.ai, p.steam_id, p.score FROM match_players p JOIN matches m ON m.id = p.match_id WHERE NOT m.voided AND NOT m.locked AND `+countedMatch)
+	rows, err = pool.Query(ctx, `SELECT p.match_id, p.team, p.ai, p.steam_id, p.score FROM match_players p JOIN matches m ON m.id = p.match_id WHERE NOT m.voided AND NOT m.locked AND `+ladderMatch)
 	if err != nil {
 		return err
 	}

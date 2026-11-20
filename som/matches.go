@@ -126,6 +126,13 @@ type reportPlayer struct {
 	Damage    float64         `json:"damage"`
 	Abilities []reportAbility `json:"abilities"`
 	Passives  []reportPassive `json:"passives"`
+	// an event's match (events.go), and what its achievements count
+	Nickname    string  `json:"nickname"`
+	Casts       int     `json:"casts"`
+	TowerDamage float64 `json:"towerDamage"`
+	TowerKills  int     `json:"towerKills"`
+	Filmed      float64 `json:"filmed"`
+	Streak      int     `json:"streak"`
 }
 
 type matchReport struct {
@@ -142,6 +149,7 @@ type matchReport struct {
 	Locked       bool           `json:"locked"`
 	ReporterSlot int            `json:"reporterSlot"`
 	HostSlot     int            `json:"hostSlot"`
+	Event        int64          `json:"event"` // the online event it was played in (0 none)
 	Players      []reportPlayer `json:"players"`
 }
 
@@ -175,7 +183,7 @@ func (m *matchReport) check() error {
 			return errors.New("bad score")
 		}
 	}
-	if m.ReporterSlot < 0 || m.ReporterSlot >= m.Capacity || m.HostSlot < 0 || m.HostSlot >= m.Capacity {
+	if m.ReporterSlot < 0 || m.ReporterSlot >= m.Capacity || m.HostSlot < 0 || m.HostSlot >= m.Capacity || m.Event < 0 {
 		return errors.New("bad slot")
 	}
 	seen := map[int]bool{}
@@ -198,6 +206,13 @@ func (m *matchReport) check() error {
 		p.Name, p.Vehicle = clip(strings.TrimSpace(p.Name), 64), clip(p.Vehicle, 96)
 		if p.Level < 0 || p.Level > 10000 || p.Kills < 0 || p.Kills > 1000000 || p.Deaths < 0 || p.Deaths > 1000000 ||
 			p.Assists < 0 || p.Assists > 1000000 || !finite(p.Score, 1e9) || !finite(p.Damage, 1e12) {
+			return errors.New("bad player figures")
+		}
+		if p.Nickname = clip(p.Nickname, 40); p.AI || m.Event == 0 {
+			p.Nickname = ""
+		}
+		if p.Casts < 0 || p.Casts > 1000000 || p.TowerKills < 0 || p.TowerKills > 1000 || p.Streak < 0 || p.Streak > 1000000 ||
+			!finite(p.TowerDamage, 1e12) || !finite(p.Filmed, 86400) {
 			return errors.New("bad player figures")
 		}
 		if len(p.Abilities) > 8 || len(p.Passives) > 8 {
@@ -477,6 +492,23 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 		return 0, err
 	}
 	if created || (isHost && !fromHost) || (wasAbandoned && !m.Abandoned) { // (a finished report beats an abandoned one)
+		// an event's match: the event it names, when the match began inside its window (it ended when
+		// its first report arrived; two minutes' grace before the start for the countdown)
+		event := int64(0)
+		if m.Event > 0 {
+			var inside bool
+			if err := tx.QueryRow(ctx, `SELECT x.ended - make_interval(secs => $3) >= e.starts - interval '2 minutes'
+					AND x.ended - make_interval(secs => $3) < e.starts + make_interval(secs => e.seconds)
+				FROM events e, matches x WHERE e.id = $1 AND x.id = $2`, m.Event, id, m.Seconds).Scan(&inside); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+				return 0, err
+			}
+			if inside {
+				event = m.Event
+			}
+		}
+		if _, err := tx.Exec(ctx, `UPDATE matches SET event_id = $2 WHERE id = $1`, id, event); err != nil {
+			return 0, err
+		}
 		if _, err := tx.Exec(ctx, `UPDATE matches SET host_id = $2, seconds = $3, winner = $4, score0 = $5, score1 = $6, towers0 = $7, towers1 = $8,
 			capacity = $9, humans = $10, locked = $11, protocol = $12, content = $13, from_host = $14, abandoned = $15 WHERE id = $1`,
 			id, m.player(m.HostSlot).Steam, int(m.Seconds), m.Winner, m.Scores[0], m.Scores[1], m.Towers[0], m.Towers[1],
@@ -487,10 +519,18 @@ func (p *pgStore) storeReport(ctx context.Context, m *matchReport, raw, reporter
 			return 0, err
 		}
 		for _, q := range m.Players {
-			if _, err := tx.Exec(ctx, `INSERT INTO match_players (match_id, slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities, passives, left_match)
-				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb, $16::jsonb, $17)`,
+			nick := "" // the event entry: the nickname as its owner wrote it; none when it is not this player's own
+			if event != 0 && !q.AI && q.Nickname != "" {
+				if err := tx.QueryRow(ctx, `SELECT nickname FROM event_nicknames WHERE event_id = $1 AND nick_key = $2 AND steam_id = $3`,
+					event, nickKey(q.Nickname), q.Steam).Scan(&nick); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+					return 0, err
+				}
+			}
+			if _, err := tx.Exec(ctx, `INSERT INTO match_players (match_id, slot, team, ai, steam_id, name, country, vehicle, level, kills, deaths, assists, score, damage, abilities, passives, left_match,
+					nickname, casts, tower_damage, tower_kills, filmed, streak)
+				VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15::jsonb, $16::jsonb, $17, $18, $19, $20, $21, $22, $23)`,
 				id, q.Slot, q.Team, q.AI, q.Steam, q.Name, q.Country, q.Vehicle, q.Level, q.Kills, q.Deaths, q.Assists, q.Score, q.Damage,
-				jsonText(q.Abilities), jsonText(q.Passives), q.Left && !q.AI); err != nil {
+				jsonText(q.Abilities), jsonText(q.Passives), q.Left && !q.AI, nick, q.Casts, q.TowerDamage, q.TowerKills, q.Filmed, q.Streak); err != nil {
 				return 0, err
 			}
 		}

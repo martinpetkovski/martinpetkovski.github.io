@@ -132,6 +132,85 @@
       </table>
       </div>
     </section>
+  {{else if eq .Tab "events"}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-calendar-days"></i>Online events <span class="tally">{{len .Events}}</span></h2>
+      <form method="post" action="/admin/game/event" class="search">
+        <input type="text" name="name" maxlength="60" placeholder="Name" aria-label="Name" required>
+        <input type="datetime-local" name="starts" aria-label="Start (UTC)" title="Start (UTC)" required>
+        <input type="number" name="minutes" min="1" max="86400" placeholder="Minutes" aria-label="Length in minutes" required>
+        <button class="cta sm" name="do" value="create"><i class="fa-solid fa-plus"></i><span>Create</span></button>
+      </form>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Event</th><th>Start (UTC)</th><th>End (UTC)</th><th>Length</th><th>State</th><th>Matches</th><th>Nicknames</th><th></th></tr></thead>
+        <tbody>
+        {{range .Events}}
+          <tr>
+            <td><a href="/admin/game/events?id={{.ID}}">{{.Name}}</a></td>
+            <td>{{.Starts.Format "2 Jan 2006 15:04"}}</td><td>{{.Ends.Format "2 Jan 2006 15:04"}}</td>
+            <td>{{.Minutes}} min</td><td>{{.State}}</td><td>{{.Matches}}</td><td>{{.Nicknames}}</td>
+            <td>
+              <form method="post" action="/admin/game/event" class="icons"><input type="hidden" name="id" value="{{.ID}}">
+                {{if eq .State "running"}}<button class="ico" name="do" value="end" title="End it now" data-confirm="End {{.Name}} now?"><i class="fa-solid fa-stop"></i></button>{{end}}
+                <button class="ico danger" name="do" value="delete" title="Delete" data-confirm="Delete {{.Name}} with its nicknames and ladder?"><i class="fa-solid fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="8" class="muted">No events yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    {{with .Event}}
+    <section class="panel">
+      <h2><i class="fa-solid fa-ranking-star"></i>{{.Name}} <span class="tally">{{$.Rated}} counted</span></h2>
+      {{if $.EventAwards}}<p class="small">{{range $.EventAwards}}<b>{{.Title}}</b> {{.Nickname}} ({{printf "%.0f" .Value}}) · {{end}}</p>{{end}}
+      <div class="scroll">
+      <table>
+        <thead><tr><th>#</th><th>Nickname</th><th>Player</th><th>Score</th><th>Matches</th><th>Wins</th><th>Kills</th><th>Assists</th><th>Damage</th><th>Abilities</th><th>Tower damage</th><th>Last hits</th><th>Filmed</th><th>Streak</th></tr></thead>
+        <tbody>
+        {{range $.EventLadder}}
+          <tr>
+            <td>{{.Rank}}</td><td>{{.Nickname}}</td>
+            <td><a href="/admin/game/matches?q={{.Steam}}">{{.Steam}}</a></td>
+            <td><b>{{printf "%.0f" .Score}}</b></td><td>{{.Matches}}</td><td>{{.Wins}}</td><td>{{.Kills}}</td><td>{{.Assists}}</td>
+            <td>{{printf "%.0f" .Damage}}</td><td>{{.Casts}}</td><td>{{printf "%.0f" .TowerDamage}}</td><td>{{.TowerKills}}</td><td>{{printf "%.0f" .Filmed}} s</td><td>{{.Streak}}</td>
+          </tr>
+        {{else}}
+          <tr><td colspan="14" class="muted">No counted matches yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    <section class="panel">
+      <h2><i class="fa-solid fa-id-badge"></i>Nicknames <span class="tally">{{len $.Nicknames}}</span></h2>
+      <div class="scroll">
+      <table>
+        <thead><tr><th>Nickname</th><th>Owner</th><th>Claimed</th><th></th></tr></thead>
+        <tbody>
+        {{range $.Nicknames}}
+          <tr>
+            <td>{{.Nickname}}</td>
+            <td><a href="/admin/game/matches?q={{.Steam}}" title="{{.Steam}}">{{if .Name}}{{.Name}}{{else}}{{.Steam}}{{end}}</a></td>
+            <td class="muted">{{ago .Created}}</td>
+            <td>
+              <form method="post" action="/admin/game/event" class="icons"><input type="hidden" name="id" value="{{$.Event.ID}}"><input type="hidden" name="key" value="{{.Key}}">
+                <button class="ico danger" name="do" value="nickname" title="Remove the nickname and its entry" data-confirm="Remove {{.Nickname}} from this event?"><i class="fa-solid fa-user-xmark"></i></button>
+              </form>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4" class="muted">No nicknames yet.</td></tr>
+        {{end}}
+        </tbody>
+      </table>
+      </div>
+    </section>
+    {{end}}
   {{end}}
   {{end}}
 </main>

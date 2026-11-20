@@ -109,6 +109,10 @@ func main() {
 	mux.HandleFunc("GET /admin/testers.csv", a.testersCSV)
 	mux.HandleFunc("GET /admin/email-signups.csv", a.emailCSV)
 	mux.HandleFunc("POST /api/game/match", a.gameMatch) // the game's match reports (matches.go)
+	mux.HandleFunc("GET /api/game/events", a.eventsAPI)              // online events (events.go)
+	mux.HandleFunc("POST /api/game/event/nickname", a.eventNickname) // a nickname claimed for an event
+	mux.HandleFunc("GET /api/game/event/ladder", a.eventLadderAPI)
+	mux.HandleFunc("POST /admin/game/event", a.eventAction)
 	mux.HandleFunc("GET /api/game/ladder", a.ladderAPI)  // the game's LADDER screen (ladder_api.go)
 	mux.HandleFunc("GET /admin/game", redirect("/admin/game/matches"))
 	mux.HandleFunc("GET /admin/game/matches", a.adminMatches)

@@ -29,13 +29,13 @@ func near(a, b float64) bool {
 // agree: both reports describe the same match with the same result.
 func (m *matchReport) agree(o *matchReport) bool {
 	if m.Key != o.Key || m.Winner != o.Winner || m.Abandoned != o.Abandoned || m.Scores != o.Scores || m.Towers != o.Towers ||
-		m.Capacity != o.Capacity || len(m.Players) != len(o.Players) || math.Abs(m.Seconds-o.Seconds) > 5 {
+		m.Capacity != o.Capacity || m.Event != o.Event || len(m.Players) != len(o.Players) || math.Abs(m.Seconds-o.Seconds) > 5 {
 		return false
 	}
 	for i := range m.Players {
 		p := &m.Players[i]
 		q := o.player(p.Slot)
-		if p.Team != q.Team || p.AI != q.AI || p.Steam != q.Steam || p.Kills != q.Kills || p.Deaths != q.Deaths || p.Assists != q.Assists ||
+		if p.Team != q.Team || p.AI != q.AI || p.Steam != q.Steam || p.Nickname != q.Nickname || p.Kills != q.Kills || p.Deaths != q.Deaths || p.Assists != q.Assists ||
 			!near(p.Score, q.Score) || !near(p.Damage, q.Damage) {
 			return false
 		}
